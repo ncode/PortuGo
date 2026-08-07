@@ -1,0 +1,258 @@
+Every numbered group is one stacked pull-request boundary. During apply, mark each checkbox in the same commit that completes it; do not batch task-state updates at the end of a group. Do not start the next group until the current group's focused and full checks pass and its draft PR is published.
+
+## 1. Quality Baseline and CI
+
+- [ ] 1.1 Add a failing repository quality-policy test that detects the currently missing required CI, formatter, lint, race, fuzz, platform, and OpenSpec validation gates, and confirm it fails for those omissions.
+- [ ] 1.2 Add reusable golden-file helpers with explicit update mode, stable path reporting, byte-level diffs, and table-driven self-tests.
+- [ ] 1.3 Add lexer and parser fuzz entry points and deterministic seed corpora that assert termination and no panic for arbitrary input.
+- [ ] 1.4 Add `.golangci.yml` and tool documentation that pin project-compatible `staticcheck` and `golangci-lint` behavior without adding a core-package dependency.
+- [ ] 1.5 Add CI jobs for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, and `go test -race -count=1 ./...`.
+- [ ] 1.6 Add Windows, macOS, and Linux ordinary-test jobs plus separate 30-second lexer and parser fuzz jobs on supported runners.
+- [ ] 1.7 Add strict OpenSpec validation and a placeholder oracle-manifest validation gate that becomes active when the corpus lands.
+- [ ] 1.8 Record a baseline quality report identifying current test, lint, fuzz, platform, and conformance coverage and link it from project documentation.
+- [ ] 1.9 Update `docs/language.md` where test-visible guarantees are formalized and add the quality/CI foundation to `CHANGELOG.md`.
+- [ ] 1.10 Run focused helper and policy tests, then run build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, and race tests; record any environment-qualified fuzz/platform checks.
+- [ ] 1.11 Mark every completed 1.x task immediately, commit the focused diff, push the first implementation branch, and open its stacked draft PR before group 2.
+
+## 2. Windows Oracle Recorder and Specification Corrections
+
+- [ ] 2.1 Add a failing manifest-validator test covering missing reference provenance, probe evidence, raw hashes, normalization version, trace links, and prohibited reference binaries.
+- [ ] 2.2 Inventory every `[VERIFICAR]`, original compatibility-checklist item, audited defect, current behavior assumption, environment command, official feature, and bundled `.alg` example into stable manifest IDs.
+- [ ] 2.3 Define the JSON reference manifest and probe-directory schema under `testdata/conformance/visualg-3.0.7`, including source/input bytes, raw and normalized observations, generated files, screenshots, classifications, and bidirectional trace links.
+- [ ] 2.4 Implement and test a versioned normalizer that preserves significant whitespace, casing, decimal syntax, error locations, and generated-file bytes while removing only declared host noise.
+- [ ] 2.5 Implement and test the manifest validator, including SHA-256 verification, missing/stale trace detection, path containment, prohibited artifact rejection, and accepted-example coverage.
+- [ ] 2.6 Build the interactive Windows recorder workflow that stages reduced sources and inputs, guides manual VisuAlg 3.0.7 execution, captures pasted output/errors and generated files, attaches GUI screenshots/transcriptions, and updates hashes reproducibly.
+- [ ] 2.7 Create reduced lexical, newline, identifier, keyword, comment, literal, declaration-order, post-`fimalgoritmo`, recovery, and canonical-syntax probe batches.
+- [ ] 2.8 Create reduced type, constant, alias, record, field, vector, 500-slot, copying, reference-parameter, call-form, visibility, recursion, and return probe batches.
+- [ ] 2.9 Create reduced precedence, unary, coercion, logical evaluation, comparison, case/range, loop, interruption, evaluation-order, and overflow probe batches.
+- [ ] 2.10 Create reduced console formatting/input, CP1252, `arquivo`, fallback recording, random-input, built-in, timer, echo, chronometer, pause/debug, clear-screen, color/display, and other discovered host-command probe batches.
+- [ ] 2.11 Record all blocking probes on the interactive Windows reference host, commit only redistributable evidence, inventory every official bundled example, and leave no required behavior in an unresolved manifest state.
+- [ ] 2.12 Correct the delta specifications, `design.md`, `AGENTS.md`, and `docs/language.md` wherever recorded VisuAlg 3.0.7 behavior overrides the current specification or plan, and describe those corrections in `CHANGELOG.md`.
+- [ ] 2.13 Run focused recorder, normalizer, manifest, and traceability tests; then run the full quality suite and strict OpenSpec validation with zero manifest errors.
+- [ ] 2.14 Mark every completed 2.x task immediately, commit the evidence and corrections, push the next stacked branch, and open its draft PR before group 3.
+
+## 3. Semantic Handoff, Interpreter Options, Diagnostics, and CLI Statuses
+
+- [ ] 3.1 Add failing tests for `sema.Analyze` resolved facts, the option-configured interpreter, fake host/random injection, each `R001`-`R008` category, positioned runtime rendering, and CLI exit statuses 0, 1, and 2.
+- [ ] 3.2 Extend diagnostics with stable severity, spans, optional wrapped causes, deterministic ordering, and the eight locked runtime codes without changing existing compile-time codes unintentionally.
+- [ ] 3.3 Implement immutable `sema.Info` storage and query methods for resolved types, constants, record/vector layouts, slot counts, and declaration/use bindings.
+- [ ] 3.4 Replace `sema.Check` with `sema.Analyze(*ast.Program) (*sema.Info, []diag.Diagnostic)` and migrate semantic tests to assert both diagnostics and resolved facts.
+- [ ] 3.5 Add `interp.Options`, `RandomSource`, typed `Host`, typed breakpoint/display values, deterministic fakes, and the documented default headless behavior.
+- [ ] 3.6 Replace interpreter construction with `interp.New(interp.Options)` and resolve input, output, working directory, host, and random defaults once per interpreter.
+- [ ] 3.7 Replace `Run(program) error` with `Run(program, info) []diag.Diagnostic`, position every existing runtime failure, and defensively reject missing or inconsistent semantic information.
+- [ ] 3.8 Migrate CLI, REPL, integration tests, and all other callers atomically to the semantic handoff and new interpreter boundary; remove the old execution paths.
+- [ ] 3.9 Refactor CLI command dispatch to preserve language stdout, render diagnostics on stderr, return 1 for operational/source/runtime failures, and reserve 2 for usage errors.
+- [ ] 3.10 Add subprocess golden tests for `run`, `check`, `fmt`, and invalid usage, including output produced before a runtime failure.
+- [ ] 3.11 Update `docs/language.md` with the runtime diagnostic and exit-status contract and record the breaking internal boundary in `CHANGELOG.md`.
+- [ ] 3.12 Run focused sema/interpreter/diagnostic/CLI tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+- [ ] 3.13 Mark every completed 3.x task immediately, commit the focused migration, push the next stacked branch, and open its draft PR before group 4.
+
+## 4. Newline-Aware Lexing, Strict Grammar, Recovery, and Printing
+
+- [ ] 4.1 Add failing lexer/parser goldens for CRLF and LF newlines, comments at line boundaries, strict identifiers, accented vocabulary, literal edge cases, malformed recovery, and source after `fimalgoritmo`.
+- [ ] 4.2 Preserve positioned physical newline tokens through source decoding and lexing, including comments and original byte-to-decoded-position mapping.
+- [ ] 4.3 Implement the oracle-recorded identifier character set, case-preserving token text, locale-independent canonical matching, and rejection of unsupported identifier forms.
+- [ ] 4.4 Replace the keyword table with the complete oracle-recorded command vocabulary, accented and unaccented spellings, aliases, and non-reserved lookalikes.
+- [ ] 4.5 Implement exact comment, string, integer, real, range-punctuation, delimiter, and malformed-literal rules with positioned recovery.
+- [ ] 4.6 Make parser production boundaries newline-aware and enforce the reference program header, declaration region, body, terminators, and post-`fimalgoritmo` behavior.
+- [ ] 4.7 Add structural and newline synchronization that collects independent parser diagnostics without panics, duplicate errors, or infinite loops.
+- [ ] 4.8 Extend the canonical printer for the grammar in this group and add idempotence plus parse-print-parse equivalence tests across all lexer/parser fixtures.
+- [ ] 4.9 Expand lexer and parser fuzz seeds with newline, encoding, comment, literal, deep-nesting, truncation, and oversized cases and confirm bounded termination.
+- [ ] 4.10 Update `docs/language.md`, grammar examples, and `CHANGELOG.md` with strict spellings, newline rules, recovery guarantees, and any breaking rejections.
+- [ ] 4.11 Run focused source/lexer/parser/printer tests and fuzz smoke tests, then the full build, lint, ordinary, race, and strict OpenSpec suites.
+- [ ] 4.12 Mark every completed 4.x task immediately, commit the focused grammar changes, push the next stacked branch, and open its draft PR before group 5.
+
+## 5. Declaration and Call Compatibility
+
+- [ ] 5.1 Add failing parser, semantic, and runtime cases for parameterless declarations, optional parentheses, bare procedure calls, invalid call contexts, exact `var` typing, argument evaluation order, global lexical scope, shadowing, and recursion visibility.
+- [ ] 5.2 Parse every oracle-confirmed procedure/function declaration and call form while retaining enough syntax information for canonical printing.
+- [ ] 5.3 Resolve call statements versus expression calls and ordinary designators according to the recorded ambiguity rules.
+- [ ] 5.4 Implement parameter grouping, arity, value-parameter coercion, and exact reference-parameter type and assignability validation in semantic analysis.
+- [ ] 5.5 Evaluate all call arguments exactly once in the oracle-confirmed order and capture reference designators before entering the callee.
+- [ ] 5.6 Replace caller-derived lookup with fixed lexical bindings so globals, parameters, locals, and allowed shadowing never depend on dynamic call order.
+- [ ] 5.7 Implement oracle-confirmed declaration visibility, direct recursion, mutual recursion, and independent recursive call frames.
+- [ ] 5.8 Add call-frame and alias regression tests for fields/vector elements already representable at this stage, including early failure with no partial call setup.
+- [ ] 5.9 Extend canonical printing and examples for all accepted bare and parenthesized call forms.
+- [ ] 5.10 Update `docs/language.md` and `CHANGELOG.md` with declaration, call, parameter, evaluation-order, scope, and recursion compatibility.
+- [ ] 5.11 Run focused parser/sema/interpreter call tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+- [ ] 5.12 Mark every completed 5.x task immediately, commit the focused call changes, push the next stacked branch, and open its draft PR before group 6.
+
+## 6. Constants, Named Types, Records, Fields, and Aggregate Semantics
+
+- [ ] 6.1 Add failing AST, parser, semantic, and runtime fixtures for ordered declaration sections, constant expressions and cycles, aliases and cycles, nested records, field errors, assignment aliases, zero values, aggregate copies, and explicit references.
+- [ ] 6.2 Replace split program/local declaration collections with ordered declaration nodes for constants, types, variables, procedures, and functions while migrating all visitors and callers.
+- [ ] 6.3 Add constant declarations and declaration-time expression evaluation with immutable values, dependency ordering, overflow checks, and cycle diagnostics.
+- [ ] 6.4 Add named-type and alias syntax plus semantic identity/compatibility resolution with unknown-type and cycle diagnostics.
+- [ ] 6.5 Add record type syntax, ordered field declarations, nested layouts, duplicate-field validation, and immutable layout data in `sema.Info`.
+- [ ] 6.6 Add positioned field designators to the AST, parser, printer, semantic binding/type queries, and runtime location selection.
+- [ ] 6.7 Accept only oracle-confirmed assignment aliases and normalize them to the assignment AST without losing source positions.
+- [ ] 6.8 Implement scalar and aggregate zero initialization from resolved layouts and one recursive value-copy operation for assignment and value parameters.
+- [ ] 6.9 Implement location-based aliases for `var` parameters so nested fields and aggregate values mutate caller storage without write-back temporaries.
+- [ ] 6.10 Add parser goldens, semantic diagnostic tables, runtime fixtures, parse-print-parse coverage, and an example program combining constants, aliases, records, fields, copies, and references.
+- [ ] 6.11 Update `docs/language.md` and `CHANGELOG.md` with ordered declarations, constants, named types, records, fields, assignment spelling, and copy/reference semantics.
+- [ ] 6.12 Run focused AST/parser/sema/runtime aggregate tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+- [ ] 6.13 Mark every completed 6.x task immediately, commit the focused type/declaration changes, push the next stacked branch, and open its draft PR before group 7.
+
+## 7. Vector Bounds, Slot Accounting, Allocation, and Indexing
+
+- [ ] 7.1 Add failing boundary fixtures for constant/expression bounds, negative and non-one lower bounds, multidimensional ordering, exactly 500 and 501 slots, record/vector accounting, overflowing dimensions, wrong index counts, and each out-of-bounds dimension.
+- [ ] 7.2 Store vector bound syntax as positioned expressions and resolve every dimension to immutable lower/upper bounds in `sema.Info`.
+- [ ] 7.3 Implement oracle-recorded slot accounting for scalars, records, vectors, declaration contexts, and boundaries with checked addition and multiplication.
+- [ ] 7.4 Reject invalid bounds, unresolved constants, reversed ranges, 501-slot programs, and arithmetic overflow before runtime allocation with positioned semantic diagnostics.
+- [ ] 7.5 Refactor vector storage to use resolved layouts, preserve all declared offsets, allocate only checked sizes, and initialize elements recursively.
+- [ ] 7.6 Implement overflow-safe row/dimension flattening and validate dimensionality plus each bound before every read or write.
+- [ ] 7.7 Return `R003` at the indexing expression for runtime index/storage failures and guarantee no backing access or partial mutation after failure.
+- [ ] 7.8 Add property/table tests for flattening, bounds, slot totals, defensive corrupted layouts, and maximum-size allocations.
+- [ ] 7.9 Extend canonical printer coverage and add an example using constants, records, and multidimensional non-one-based vectors.
+- [ ] 7.10 Update `docs/language.md` and `CHANGELOG.md` with bound expressions, dimension order, the exact 500-slot rule, and defensive failure behavior.
+- [ ] 7.11 Run focused semantic/runtime vector tests and then the full build, lint, ordinary, race, malformed-size, and strict OpenSpec suites.
+- [ ] 7.12 Mark every completed 7.x task immediately, commit the focused vector changes, push the next stacked branch, and open its draft PR before group 8.
+
+## 8. Expressions, Precedence, Coercion, Comparison, and Choice Matching
+
+- [ ] 8.1 Add failing oracle-table tests for every unary/binary operator, ambiguous precedence and associativity, numeric coercion/result types, eager or short-circuit side effects, boolean/string comparisons, evaluation order, and ordinary `escolha` labels.
+- [ ] 8.2 Rebuild precedence parsing and operator alias recognition from the committed oracle table, including parentheses and all unary forms.
+- [ ] 8.3 Resolve expression types and implicit coercions in `sema.Info` for every accepted numeric and logical operator combination.
+- [ ] 8.4 Implement overflow-safe integer arithmetic, real division, integer division, modulo, exponentiation, unary operations, and `R002` domain failures exactly as recorded.
+- [ ] 8.5 Implement logical operand evaluation order and short-circuit/eager behavior with side-effect tests that pin the oracle result.
+- [ ] 8.6 Implement numeric, logical, and character comparison compatibility, ordering, case/accent behavior, and positioned rejection of unsupported pairs.
+- [ ] 8.7 Guarantee one-time oracle-ordered evaluation for binary operands, indices, statement expressions, and ordinary case labels.
+- [ ] 8.8 Evaluate an `escolha` selector once, choose the first matching ordinary label, prevent fall-through, and execute `outrocaso` only after no match.
+- [ ] 8.9 Add parser goldens, semantic diagnostic tables, runtime `.out`/`.err` fixtures, and an example that makes precedence/coercion/comparison choices observable.
+- [ ] 8.10 Update `docs/language.md` and `CHANGELOG.md` with the empirical precedence table, coercion matrix, logical evaluation, comparison, and `escolha` rules.
+- [ ] 8.11 Run focused expression/parser/sema/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+- [ ] 8.12 Mark every completed 8.x task immediately, commit the focused expression changes, push the next stacked branch, and open its draft PR before group 9.
+
+## 9. Repeat Forms, Case Ranges, Return/Break, and Overflow-Safe For Loops
+
+- [ ] 9.1 Add failing oracle regressions for conditional and infinite repeat forms, `fimrepita`, inclusive case ranges and invalid overlaps, nested return/break propagation, zero/negative steps, bound evaluation timing, loop-variable mutation, and integer-boundary iteration.
+- [ ] 9.2 Add explicit optional repeat conditions, ranged case labels, and optional return expressions to the AST and canonical printer.
+- [ ] 9.3 Parse every accepted repeat terminator, range-label syntax, return form, and `para` form with newline-aware recovery.
+- [ ] 9.4 Validate repeat conditions, constant range endpoints, label type/overlap rules, return contexts/types/path completeness, break contexts, and integer loop control.
+- [ ] 9.5 Implement conditional and oracle-confirmed infinite repeats without sentinel expressions or accidental busy loops in invalid states.
+- [ ] 9.6 Implement inclusive range matching, first-arm selection, and no fall-through while evaluating the selector once.
+- [ ] 9.7 Propagate return and break control through nested conditions, choices, and repeats to the exact call or innermost-loop boundary.
+- [ ] 9.8 Implement `para` bound/step evaluation timing, negative and zero-step behavior, mutation rules, and overflow-safe termination at integer limits.
+- [ ] 9.9 Return `R005` or `R006` for runtime-only invalid return/loop state with positions and no panic.
+- [ ] 9.10 Add parser goldens, semantic diagnostic tables, runtime `.out`/`.err` fixtures, and examples for ranges, repeat variants, and descending boundary-safe loops.
+- [ ] 9.11 Update `docs/language.md` and `CHANGELOG.md` with repeat, ranges, return, break, and exact `para` semantics.
+- [ ] 9.12 Run focused control-flow tests and then the full build, lint, ordinary, race, malformed/overflow, and strict OpenSpec suites.
+- [ ] 9.13 Mark every completed 9.x task immediately, commit the focused control-flow changes, push the next stacked branch, and open its draft PR before group 10.
+
+## 10. CP1252, Input Parsing, Output Formatting, and I/O Validation
+
+- [ ] 10.1 Add failing byte-golden and diagnostic fixtures for CP1252 text, shared buffered reads, every scalar input form, invalid/overflowing input, exact mixed output, logical casing, decimal syntax, negative zero, width/precision boundaries, and invalid I/O statements.
+- [ ] 10.2 Consolidate BOM-aware UTF-8 and Windows-1252 decode/encode helpers with original-byte position mapping and explicit unsupported-character behavior.
+- [ ] 10.3 Implement one interpreter-owned buffered console input controller that preserves unread data across multi-target and consecutive `leia` calls.
+- [ ] 10.4 Implement oracle-confirmed integer, real, logical, and character input parsing, whitespace/line consumption, retry/end-of-input behavior, and mutation only after successful conversion.
+- [ ] 10.5 Implement exact `escreva`/`escreval` separation, spacing, newline, string, integer, real, logical, decimal, and negative-zero output bytes.
+- [ ] 10.6 Implement width and precision expression evaluation, validation, alignment, padding, rounding/truncation, sign, and overflow-width behavior.
+- [ ] 10.7 Reject invalid `leia` destinations and invalid output format arity/types/ranges during parsing or semantic analysis wherever statically knowable.
+- [ ] 10.8 Return positioned `R004` diagnostics for runtime input exhaustion/conversion failures and preserve destination values and preceding output.
+- [ ] 10.9 Add CP1252 source/input/output fixtures, CLI subprocess byte checks, fake failing readers/writers, and an example covering reference formatting.
+- [ ] 10.10 Update `docs/language.md` and `CHANGELOG.md` with exact input, output, encoding, formatting, and failure behavior.
+- [ ] 10.11 Run focused source/I/O/sema/interpreter/CLI tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
+- [ ] 10.12 Mark every completed 10.x task immediately, commit the focused I/O changes, push the next stacked branch, and open its draft PR before group 11.
+
+## 11. Unified Built-in Registry and Numeric Functions
+
+- [ ] 11.1 Add failing catalog completeness/drift tests and oracle tables for every numeric built-in name, alias, call form, arity, parameter/result type, angle unit, rounding, boundary, and domain failure.
+- [ ] 11.2 Define immutable built-in descriptors and registry construction checks for duplicate aliases, incomplete signatures, parameter modes, result rules, domains, and missing evaluators.
+- [ ] 11.3 Replace semantic built-in switches and name lists with descriptor-driven binding, arity, argument, mode, and result-type analysis.
+- [ ] 11.4 Replace runtime built-in name maps and switches with descriptor lookup and evaluator dispatch while preserving per-interpreter state.
+- [ ] 11.5 Implement or correct `abs`, `raizq`, `exp`, `log`, `logn`, `pi`, `sen`, `cos`, `tan`, `int`, `frac`, and every oracle-confirmed numeric alias.
+- [ ] 11.6 Add explicit numeric domain, finite-value, integer-overflow, precision-tolerance, and positioned `R007` behavior matching the oracle table.
+- [ ] 11.7 Add a generated or table-driven catalog report that proves semantic and runtime coverage for every descriptor without making generated source authoritative.
+- [ ] 11.8 Add semantic signature tests, runtime value/error tables, integration fixtures, and a numeric built-ins example.
+- [ ] 11.9 Update `docs/language.md` authoritative built-in catalog and `CHANGELOG.md` with corrected names, signatures, units, values, and errors.
+- [ ] 11.10 Run focused registry/sema/stdlib/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+- [ ] 11.11 Mark every completed 11.x task immediately, commit the focused registry/numeric changes, push the next stacked branch, and open its draft PR before group 12.
+
+## 12. Text, Character-Code, and Conversion Built-ins
+
+- [ ] 12.1 Add failing oracle tables for all text/conversion names and aliases, empty/boundary strings, 1-based slicing/search, CP1252 accents and codes, case conversion, invalid codes, numeric text forms, overflow, and dynamic `caracpnum` result types.
+- [ ] 12.2 Complete descriptors and evaluators for `copia`, `maiusc`, `minusc`, `compr`, `pos`, and every oracle-confirmed text alias.
+- [ ] 12.3 Implement 1-based reference bounds, empty/not-found behavior, and CP1252-aware text indexing and case conversion without UTF-8 byte or Unicode-code-point leakage.
+- [ ] 12.4 Complete descriptors and evaluators for `asc`, `carac`, all character-code aliases, and exact Windows-1252 domain/failure behavior.
+- [ ] 12.5 Complete explicit integer, real, logical, and character conversion descriptors and evaluators with oracle decimal, sign, whitespace, range, and fallback rules.
+- [ ] 12.6 Implement dynamic numeric `caracpnum` analysis and runtime selection so integer and real results retain their reference types and invalid uses are diagnosed.
+- [ ] 12.7 Return positioned `R007` for runtime-only text/code/conversion failures and verify invalid input cannot panic or return a partially converted value.
+- [ ] 12.8 Add catalog signature tests, byte-precise runtime tables, integration fixtures, and an example combining accented text, codes, search, slicing, and conversions.
+- [ ] 12.9 Update `docs/language.md` and `CHANGELOG.md` with the full text, code, conversion, and dynamic-result contracts.
+- [ ] 12.10 Run focused registry/sema/stdlib/interpreter conversion tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
+- [ ] 12.11 Mark every completed 12.x task immediately, commit the focused text/conversion changes, push the next stacked branch, and open its draft PR before group 13.
+
+## 13. Injected Randomness, Rand, Randi, and Random-Input Command
+
+- [ ] 13.1 Add failing deterministic-fake and property tests for `rand`, `randi`, aliases, each arity, inclusive/exclusive boundaries, reversed/empty/overflowing ranges, generator consumption, and command-form random input transitions.
+- [ ] 13.2 Finish per-interpreter `RandomSource` plumbing through the builtin library and input controller with deterministic recording fakes and no global mutable generator.
+- [ ] 13.3 Implement descriptor signatures and exact oracle value domains/result types for `rand`, `randi`, and every confirmed alias without promising an exact reference sequence.
+- [ ] 13.4 Implement overflow-safe bound normalization and rejection, including full integer-domain cases, while consuming random values only when the reference does.
+- [ ] 13.5 Add typed AST, parser, printer, and semantic validation for command-form `aleatorio` and any oracle-confirmed range/disable companion commands.
+- [ ] 13.6 Implement random-input activation, destination conversion, bounds, echo state, and return to the prior/default input mode.
+- [ ] 13.7 Return positioned `R007` for builtin random failures and `R004` for random-input failures with no panic or invalid source call.
+- [ ] 13.8 Add repeatable runtime fixtures using scripted random values, property checks across many seeds, and an example that asserts domains rather than sequences.
+- [ ] 13.9 Update `docs/language.md` and `CHANGELOG.md` with exact random domains, modes, seeding guarantees, errors, and the explicit sequence non-goal.
+- [ ] 13.10 Run focused random/registry/input/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+- [ ] 13.11 Mark every completed 13.x task immediately, commit the focused randomness changes, push the next stacked branch, and open its draft PR before group 14.
+
+## 14. Arquivo Paths, Encoding, Exhaustion, Fallback, and Echo
+
+- [ ] 14.1 Add failing temporary-filesystem fixtures for relative and nested paths, existing/missing/unreadable/empty/exhausted files, CP1252 bytes, mixed value types, fallback recording, generated files, echo combinations, cleanup, and positioned failures.
+- [ ] 14.2 Add typed AST, parser, canonical-printer, and semantic rules for every oracle-confirmed `arquivo` form and path expression.
+- [ ] 14.3 Resolve relative file paths against `interp.Options.WorkingDir`, reject invalid resolution safely, and keep tests isolated in temporary directories.
+- [ ] 14.4 Implement the file-input mode with shared buffering and the exact Windows-1252, newline, token/line, conversion, and consecutive-read behavior.
+- [ ] 14.5 Implement oracle behavior for missing, unreadable, empty, and exhausted files, including transitions to console or random input where recorded.
+- [ ] 14.6 Implement fallback recording and generated-file byte behavior atomically, including file creation/truncation/append rules and partial-failure cleanup.
+- [ ] 14.7 Integrate input echo with file values, fallback console values, random values, formatting, and mode transitions exactly as recorded.
+- [ ] 14.8 Return `R008` at the `arquivo` statement for path/open/read/write/encode/close failures and `R004` at the consuming `leia` where required by the oracle.
+- [ ] 14.9 Add cross-platform path tests, byte-hash integration fixtures, fake reader/writer failures, and an example that uses only temporary/sandbox-safe relative data.
+- [ ] 14.10 Update `docs/language.md` and `CHANGELOG.md` with `arquivo` path, encoding, state, fallback, recording, echo, and error semantics.
+- [ ] 14.11 Run focused filesystem/input/interpreter/CLI tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
+- [ ] 14.12 Mark every completed 14.x task immediately, commit the focused `arquivo` changes, push the next stacked branch, and open its draft PR before group 15.
+
+## 15. Timer, Pause, Debug, Echo, Chronometer, Screen, and Color
+
+- [ ] 15.1 Add failing parser/sema/runtime fixtures and fake-host call traces for timer/delay, pause, debug/breakpoint, echo, chronometer, clear-screen, color/display, invalid arguments, host failures, clock regressions, and every additional command discovered by the oracle inventory.
+- [ ] 15.2 Add typed environment statement nodes, tokens, parser productions, printer output, and semantic validation for all recorded environment commands not completed in earlier groups.
+- [ ] 15.3 Implement timer/delay units, argument evaluation, ordering, and failure behavior through `Host.Delay` without direct sleeps in interpreter logic.
+- [ ] 15.4 Implement pause and debug/breakpoint commands through typed `Host.Breakpoint` events with non-blocking default headless behavior.
+- [ ] 15.5 Complete echo commands and state transitions not owned by `arquivo` or random-input groups, including oracle-confirmed output text.
+- [ ] 15.6 Implement chronometer start/query/reset/stop semantics through `Host.Now`, including deterministic elapsed calculations and clock-edge cases.
+- [ ] 15.7 Implement clear-screen and color/display operations through `Host.ClearScreen` and `Host.SetDisplay`, preserving call order and making UI-only default-headless effects no-ops.
+- [ ] 15.8 Implement every other oracle-confirmed host command with a typed operation and regression evidence; do not add generic string-based host dispatch.
+- [ ] 15.9 Return positioned `R008` for host failures and validate that headless execution emits no accidental terminal escapes, blocks, or platform-specific errors.
+- [ ] 15.10 Add fake clock/host tables, CLI headless fixtures, canonical-print coverage, and an example demonstrating portable environment-command behavior.
+- [ ] 15.11 Update `docs/language.md` and `CHANGELOG.md` with all environment commands, host effects, headless deviations, timing units, and failures.
+- [ ] 15.12 Run focused parser/sema/host/interpreter tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
+- [ ] 15.13 Mark every completed 15.x task immediately, commit the focused environment changes, push the next stacked branch, and open its draft PR before group 16.
+
+## 16. REPL Input, Completion, Recovery, and Formatter Coverage
+
+- [ ] 16.1 Add failing transcript tests for shared program/input buffering, blank lines in incomplete programs, immediate `fimalgoritmo` submission, lookalikes in strings/comments, consecutive programs, `leia`, EOF, exit commands, and recovery after every diagnostic stage.
+- [ ] 16.2 Replace competing scanners with one buffered input abstraction shared by REPL prompting, source accumulation, and interpreter `leia` consumption.
+- [ ] 16.3 Add a lexer/parser completeness result that distinguishes incomplete input from invalid complete input without string matching or swallowing diagnostics.
+- [ ] 16.4 Preserve meaningful blank lines while incomplete, handle EOF cleanly, and keep prompt/output/error ordering deterministic.
+- [ ] 16.5 Automatically analyze and run as soon as a real terminating `fimalgoritmo` completes the accumulated program, then reset only per-program state.
+- [ ] 16.6 Recover to a clean primary prompt after decoding, lexical, syntax, semantic, runtime, or host diagnostics without contaminating the next buffer.
+- [ ] 16.7 Verify `leia`, `arquivo`, random-input mode, echo, and environment commands consume only their intended shared input and leave the next REPL program intact.
+- [ ] 16.8 Complete canonical-printer and `portugol fmt` coverage for every AST node, declaration, literal, call, range, record, environment command, comment, and optional form added by groups 4-15.
+- [ ] 16.9 Add formatter standard-output, check, in-place, idempotence, malformed-no-overwrite, and parse-print-parse subprocess tests.
+- [ ] 16.10 Update REPL/formatter documentation, `docs/language.md`, examples, and `CHANGELOG.md` with submission, blank-line, recovery, shared-input, and formatting behavior.
+- [ ] 16.11 Run focused REPL/parser/printer/CLI tests and then the full build, lint, ordinary, race, fuzz smoke, and strict OpenSpec suites.
+- [ ] 16.12 Mark every completed 16.x task immediately, commit the focused tooling changes, push the next stacked branch, and open its draft PR before group 17.
+
+## 17. Traceability Closure, Documentation, Archive, and Version 0.1.0
+
+- [ ] 17.1 Add a failing final-acceptance test/report that enumerates every deterministic oracle mismatch, untraced requirement, unresolved manifest state, unsupported accepted example, missing positioned runtime error, incomplete OpenSpec item, and unavailable quality result.
+- [ ] 17.2 Complete bidirectional trace links for every OpenSpec requirement, `[VERIFICAR]`, original checklist item, audited defect, discovered official feature, implementation test, and bundled example with no stale IDs.
+- [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
+- [ ] 17.4 Add final adversarial coverage for malformed, deeply nested, oversized, 500/501-slot, overflow, invalid-encoding, exhausted-input, failing-host, and failing-filesystem cases with zero user-input panics.
+- [ ] 17.5 Run and archive results for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, race tests, Windows/macOS/Linux tests, and 30-second lexer and parser fuzz jobs.
+- [ ] 17.6 Run strict OpenSpec and oracle-manifest validation and produce a conformance report proving zero deterministic mismatches, zero untraced requirements, stable positioned runtime diagnostics, and complete accepted-example support.
+- [ ] 17.7 Reconcile `AGENTS.md`, `docs/language.md`, every example, and `CHANGELOG.md` with the oracle-backed final behavior and remove all obsolete open questions or compatibility claims.
+- [ ] 17.8 Perform a clean-checkout release rehearsal of all CLI commands, REPL transcripts, fixtures, manifest validation, and build artifacts on the supported platforms.
+- [ ] 17.9 Mark every remaining OpenSpec task complete immediately after its evidence lands and verify `openspec status` reports the change ready to archive.
+- [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.
+- [ ] 17.11 After the complete stack is reviewed and merged with all gates green, archive `complete-visualg-3-0-7-conformance`, strictly validate the archived specs, and commit/push the archive result.
+- [ ] 17.12 Create and push the annotated `v0.1.0` tag only after archive validation proves every final acceptance condition remains satisfied.
