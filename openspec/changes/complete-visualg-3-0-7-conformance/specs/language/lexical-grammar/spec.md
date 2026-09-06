@@ -85,8 +85,16 @@ Malformed input SHALL produce collected diagnostics rather than a user-visible p
 - **THEN** parsing returns diagnostics for each recoverable error with stable positions and does not panic or loop indefinitely
 
 ### Requirement: Canonical source printing
-Canonical printing SHALL emit valid VisuAlg 3.0.7 source for every representable valid syntax tree, preserve behavior and required comments, be idempotent, and support parse-print-parse equivalence modulo documented normalization of trivia and spelling.
+Canonical printing SHALL emit valid VisuAlg 3.0.7 source for every representable valid syntax tree, preserve behavior and all accepted comments, be idempotent, and support parse-print-parse equivalence modulo documented normalization of indentation, line endings, and spelling. Comment contents, order, and association with surrounding constructs SHALL survive decoding, lexing, parsing, and printing. Any reference-ignored suffix after program termination SHALL remain ignored and SHALL be retained when formatting.
 
 #### Scenario: Canonical round trip
 - **WHEN** a valid program is parsed, canonically printed, parsed again, and printed again
 - **THEN** the second syntax tree is structurally equivalent to the first and both printed results are byte-identical
+
+#### Scenario: Preserve comments around declarations and blocks
+- **WHEN** a valid program contains leading, same-line, comment-only-block, pre-terminator, and trailing comments, including CP1252 text
+- **THEN** formatting retains each decoded comment exactly once in the same order and associated location, including on a second formatting pass
+
+#### Scenario: Preserve ignored trailing notes
+- **WHEN** the reference ignores text following `fimalgoritmo`
+- **THEN** formatting retains that suffix after the terminator without interpreting it as executable syntax

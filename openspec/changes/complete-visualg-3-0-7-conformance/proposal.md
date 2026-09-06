@@ -5,15 +5,16 @@ The current interpreter implements a useful VisuAlg-like subset, but its grammar
 ## What Changes
 
 - Establish official VisuAlg 3.0.7 as the behavioral authority and require disputed behavior to be recorded on an interactive Windows reference host before implementation.
-- Add a reproducible oracle corpus containing probes, inputs, normalized output and errors, raw hashes, generated file bytes, and screenshots for GUI-only observations; do not vendor the VisuAlg executable or archive.
+- Add a reproducible oracle corpus containing probes, inputs, normalized output and errors, raw hashes, generated file bytes, and screenshots for GUI-only observations, with separate evidence and implementation states and incremental replay gates; do not vendor the VisuAlg executable or archive.
 - **BREAKING** Tighten lexical, syntactic, semantic, runtime, formatting, and diagnostic behavior wherever the current implementation differs from the oracle, even when the current behavior is more permissive.
-- Complete the language surface, including physical-newline rules, declarations and aliases, constants, named and record types, fields, multidimensional vectors, ranged case labels, subprogram call variants, returns, and the oracle-confirmed expression and control-flow rules.
+- Complete the oracle-confirmed language surface, including physical-newline rules, declarations, vectors, subprogram call variants, returns, expressions, and control flow. Treat constants, named types, records, fields, assignment aliases, and case ranges as disputed candidates: implement accepted forms and preserve rejection tests for unsupported forms, revising dependent plans after recording.
 - Reproduce VisuAlg's 500-slot storage limit, checked allocation and indexing, zero values, copying and aliasing rules, and overflow behavior.
 - Complete console I/O, CP1252 handling, `arquivo`, random-input mode, timers, echo, chronometer, pause/debug, screen/color integration, and any additional oracle-confirmed environment commands through injectable headless host hooks.
 - Replace duplicated built-in knowledge with one authoritative descriptor registry shared by semantic analysis and runtime, and implement the oracle-confirmed numeric, text, conversion, `rand`, and `randi` behavior.
-- **BREAKING** Introduce stable positioned runtime diagnostic codes, correct CLI exit statuses, strict formatter behavior, and REPL submission when `fimalgoritmo` completes a program.
+- **BREAKING** Introduce stable positioned runtime diagnostic codes, correct CLI exit statuses, a formatter that retains comments through lexing and parsing, and REPL submission when `fimalgoritmo` completes a program.
+- Define documented source, nesting, call-depth, and value-size safeguards plus opt-in execution budgets for bounded tests, while allowing intentional infinite loops in ordinary execution.
 - Match random value domains and command semantics while explicitly excluding byte-for-byte random sequences.
-- Deliver the work as focused stacked pull requests with test-first regressions, immediate task tracking, documentation and changelog updates, full oracle traceability, and final `v0.1.0` acceptance.
+- Deliver the work as focused stacked pull requests with test-first regressions, immediate task tracking, documentation and changelog updates, full oracle traceability, and final implementation acceptance. Archive and `v0.1.0` tagging follow the separate post-merge checklist in `release.md`.
 - Exclude a vendored reference executable, native compilation or a bytecode VM, an LSP, recreation of the VisuAlg GUI, and exact RNG sequence reproduction.
 
 ## Capabilities
@@ -22,7 +23,7 @@ The current interpreter implements a useful VisuAlg-like subset, but its grammar
 
 - `conformance/visualg-3-0-7`: Defines the reference release, oracle evidence, compatibility authority, traceability, and conformance acceptance for bundled examples.
 - `language/lexical-grammar`: Defines source encoding, physical newlines, tokens, identifiers, keywords, comments, literals, declaration grammar, recovery, and canonical printing.
-- `language/types-declarations`: Defines constants, named and record types, fields, vectors, assignments, coercion, storage semantics, and the 500-slot limit.
+- `language/types-declarations`: Defines confirmed declarations, vectors, assignments, coercion, storage semantics, and the 500-slot limit, with evidence-dependent acceptance or rejection of constants, named types, records, and fields.
 - `language/expressions-control-flow`: Defines operators and precedence, comparisons, cases and ranges, loops, interruption, I/O statement validation, and overflow behavior.
 - `language/subprograms`: Defines declaration and call forms, parameters, exact reference typing, evaluation order, lexical scope, recursion, and return behavior.
 - `runtime/io-environment`: Defines console and file input, output formatting, encoding, random-input mode, timers, echo, chronometer, and host-backed environment commands.

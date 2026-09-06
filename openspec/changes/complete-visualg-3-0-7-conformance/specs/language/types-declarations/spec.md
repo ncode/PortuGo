@@ -4,6 +4,17 @@ Defines VisuAlg 3.0.7 declarations, types, storage accounting, designators, init
 
 ## ADDED Requirements
 
+### Requirement: Declaration feature scope
+Acceptance requirements and scenarios for constants, named types, aliases, records, fields, and their use inside aggregates SHALL apply only to forms accepted by recorded VisuAlg 3.0.7 evidence. Rejected forms SHALL produce positioned diagnostics and SHALL NOT acquire positive support through dependent vector, assignment, or subprogram requirements. Before dependent implementation, positive requirements and scenarios disproved by the reference SHALL be replaced by explicit rejection requirements with traceable dispositions.
+
+#### Scenario: Reference rejects record declarations
+- **WHEN** a program uses a record declaration form rejected by the recorded reference
+- **THEN** the implementation diagnoses that form and does not need a record layout, field-access runtime, or successful record example to satisfy conformance
+
+#### Scenario: Reference accepts a disputed declaration form
+- **WHEN** reduced probes confirm a candidate declaration form and its use contexts
+- **THEN** only those confirmed forms and contexts become positive declaration and dependent aggregate requirements
+
 ### Requirement: Ordered declaration sections
 The language SHALL support the complete oracle-confirmed declaration section vocabulary for constants, named types, variables, records, and subprogram-local declarations. It SHALL enforce the reference ordering, repetition, visibility, and duplicate-name rules while preserving declarations in source order.
 
@@ -16,7 +27,7 @@ The language SHALL support the complete oracle-confirmed declaration section voc
 - **THEN** semantic or syntax analysis reports the positioned traced diagnostic without losing later independent declarations
 
 ### Requirement: Constants and declaration expressions
-Constant declarations SHALL be immutable, case-insensitive named values evaluated according to the reference's declaration-time expression rules. Every context that the reference permits to use a constant expression, including vector bounds, case labels, and other declarations, SHALL resolve it before execution and SHALL diagnose cycles, non-constant dependencies, overflow, and invalid types.
+If constant declarations are accepted by the reference, they SHALL be immutable, case-insensitive named values evaluated according to the recorded declaration-time expression rules. Every context that the reference permits to use a constant expression, including vector bounds, case labels, and other declarations, SHALL resolve it before execution and SHALL diagnose cycles, non-constant dependencies, overflow, and invalid types. Rejection of constant declarations SHALL NOT prohibit literal bounds or other expression forms independently accepted by the reference.
 
 #### Scenario: Use a constant in a vector bound
 - **WHEN** an integer constant is referenced by a vector bound accepted by the oracle

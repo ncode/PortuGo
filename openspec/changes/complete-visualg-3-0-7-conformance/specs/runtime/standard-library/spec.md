@@ -5,26 +5,34 @@ Defines one complete VisuAlg 3.0.7 built-in catalog with consistent semantic sig
 ## ADDED Requirements
 
 ### Requirement: Authoritative built-in catalog
-The project SHALL maintain one authoritative catalog of every VisuAlg 3.0.7 built-in name, alias, callable form, arity, parameter mode and type, result type, domain restriction, and runtime operation. Semantic call validation and runtime dispatch SHALL agree with that catalog, and validation SHALL fail if either layer lacks or contradicts an entry.
+The project SHALL maintain one authoritative catalog of every VisuAlg 3.0.7 built-in name, alias, callable form, arity, parameter mode and type, result type, domain restriction, and runtime operation. Semantic call validation and runtime dispatch SHALL agree with that catalog. Completeness SHALL also be compared against the independently recorded reference inventory, and validation SHALL fail if a required function is absent from both implementation layers or either layer contradicts an entry.
 
 #### Scenario: Validate the catalog against both stages
 - **WHEN** the built-in catalog conformance test enumerates all descriptors
 - **THEN** every descriptor has matching semantic acceptance and runtime behavior and no extra semantic-only or runtime-only built-in exists
+
+#### Scenario: Detect a function omitted from both layers
+- **WHEN** an accepted reference function has no implementation catalog entry, semantic signature, or runtime evaluator
+- **THEN** the independent inventory comparison fails and names that missing function
 
 #### Scenario: Resolve a built-in alias
 - **WHEN** a program calls an oracle-confirmed alias using any accepted letter case
 - **THEN** it receives the same signature and behavior as the catalog's canonical built-in
 
 ### Requirement: Numeric built-ins
-The catalog SHALL implement the full oracle-confirmed numeric set, including `abs`, `raizq`, `exp`, `log`, `logn`, `pi`, `sen`, `cos`, `tan`, `int`, and `frac`, with the reference arity, accepted numeric types, result types, angle units, rounding or truncation, constants, domains, and exceptional behavior.
+The catalog SHALL implement the full oracle-confirmed numeric set with the reference arity, accepted numeric types, result types, angle units, rounding or truncation, constants, domains, and exceptional behavior. The candidate inventory SHALL explicitly include `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, and the existing `frac`, plus any additional discovered functions and aliases. Every candidate SHALL receive a recorded disposition; accepted names SHALL be implemented as distinct operations where their semantics differ, and rejected legacy names SHALL receive rejection coverage.
 
 #### Scenario: Evaluate numeric boundary cases
 - **WHEN** each numeric built-in receives zero, negative, positive, integral, fractional, and domain-boundary inputs applicable to its signature
 - **THEN** its value, type, or positioned failure matches the corresponding VisuAlg 3.0.7 oracle rows
 
 #### Scenario: Use trigonometric functions
-- **WHEN** `sen`, `cos`, or `tan` receives an accepted angle
+- **WHEN** `sen`, `cos`, `tan`, `cotan`, an inverse trigonometric function, or an angle-conversion function receives an argument accepted by its recorded signature
 - **THEN** the result uses the same angle unit and reference-compatible precision as VisuAlg 3.0.7
+
+#### Scenario: Validate exponentiation arity
+- **WHEN** the numeric catalog is qualified against the reference inventory
+- **THEN** the recorded acceptance and result of `exp(base, expoente)` are checked explicitly, and a one-argument implementation cannot satisfy that probe
 
 ### Requirement: Text built-ins
 The catalog SHALL implement the full oracle-confirmed text set, including `copia`, `maiusc`, `minusc`, `compr`, and `pos`, using the reference's 1-based positions, substring bounds, not-found value, case conversion, accented-character behavior, empty-string behavior, and result types.
