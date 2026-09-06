@@ -14,7 +14,11 @@ Every numbered group is one stacked pull-request boundary. During apply, mark ea
 - [x] 1.8 Record a baseline quality report identifying current test, lint, fuzz, platform, and conformance coverage and link it from project documentation.
 - [x] 1.9 Update `docs/language.md` where test-visible guarantees are formalized and add the quality/CI foundation to `CHANGELOG.md`.
 - [x] 1.10 Run focused helper and policy tests, then run build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, and race tests; record any environment-qualified fuzz/platform checks.
-- [ ] 1.11 Mark every completed 1.x task immediately, commit the focused diff, push the first implementation branch, and open its stacked draft PR before group 2.
+- [x] 1.11 Mark every completed 1.x task immediately, commit the focused diff, push the first implementation branch, and open its stacked draft PR before group 2.
+
+Group 1 handoff: [draft PR #2](https://github.com/ncode/PortuGo/pull/2), branch
+`codex/visualg-quality-baseline`, regression `01581da`, implementation `552c294`.
+Validation and platform qualifications are recorded in `docs/quality-baseline.md`.
 
 ## 2. Windows Oracle Recorder and Specification Corrections
 
