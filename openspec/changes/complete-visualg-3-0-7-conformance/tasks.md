@@ -4,16 +4,16 @@ Every numbered group is one stacked pull-request boundary. During apply, mark ea
 
 ## 1. Quality Baseline and CI
 
-- [ ] 1.1 Add a failing repository quality-policy test that detects the currently missing required CI, formatter, lint, race, fuzz, platform, and OpenSpec validation gates, and confirm it fails for those omissions.
-- [ ] 1.2 Add reusable golden-file helpers with explicit update mode, stable path reporting, byte-level diffs, and table-driven self-tests.
-- [ ] 1.3 Extend the existing `FuzzLexer` and `FuzzParser` entry points and seed corpora, bounding generated input to the 64 KiB test profile and using failing subprocess watchdogs for adversarial cases; retain crashes and hangs as failures.
-- [ ] 1.4 Add `.golangci.yml` and tool documentation that pin project-compatible `staticcheck` and `golangci-lint` behavior without adding a core-package dependency.
-- [ ] 1.5 Add CI jobs for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, and `go test -race -count=1 ./...`.
-- [ ] 1.6 Add Windows, macOS, and Linux ordinary-test jobs plus separate 30-second lexer and parser fuzz jobs on supported runners.
-- [ ] 1.7 Add strict OpenSpec validation and a placeholder oracle-manifest gate that activates in evidence mode when group 2 lands and uses the phase rules thereafter.
-- [ ] 1.8 Record a baseline quality report identifying current test, lint, fuzz, platform, and conformance coverage and link it from project documentation.
-- [ ] 1.9 Update `docs/language.md` where test-visible guarantees are formalized and add the quality/CI foundation to `CHANGELOG.md`.
-- [ ] 1.10 Run focused helper and policy tests, then run build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, and race tests; record any environment-qualified fuzz/platform checks.
+- [x] 1.1 Add a failing repository quality-policy test that detects the currently missing required CI, formatter, lint, race, fuzz, platform, and OpenSpec validation gates, and confirm it fails for those omissions.
+- [x] 1.2 Add reusable golden-file helpers with explicit update mode, stable path reporting, byte-level diffs, and table-driven self-tests.
+- [x] 1.3 Extend the existing `FuzzLexer` and `FuzzParser` entry points and seed corpora, bounding generated input to the 64 KiB test profile and using failing subprocess watchdogs for adversarial cases; retain crashes and hangs as failures.
+- [x] 1.4 Add `.golangci.yml` and tool documentation that pin project-compatible `staticcheck` and `golangci-lint` behavior without adding a core-package dependency.
+- [x] 1.5 Add CI jobs for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, and `go test -race -count=1 ./...`.
+- [x] 1.6 Add Windows, macOS, and Linux ordinary-test jobs plus separate 30-second lexer and parser fuzz jobs on supported runners.
+- [x] 1.7 Add strict OpenSpec validation and a placeholder oracle-manifest gate that activates in evidence mode when group 2 lands and uses the phase rules thereafter.
+- [x] 1.8 Record a baseline quality report identifying current test, lint, fuzz, platform, and conformance coverage and link it from project documentation.
+- [x] 1.9 Update `docs/language.md` where test-visible guarantees are formalized and add the quality/CI foundation to `CHANGELOG.md`.
+- [x] 1.10 Run focused helper and policy tests, then run build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, and race tests; record any environment-qualified fuzz/platform checks.
 - [ ] 1.11 Mark every completed 1.x task immediately, commit the focused diff, push the first implementation branch, and open its stacked draft PR before group 2.
 
 ## 2. Windows Oracle Recorder and Specification Corrections

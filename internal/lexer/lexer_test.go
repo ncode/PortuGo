@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/ncode/portugol-go/internal/testprocess"
 	"github.com/ncode/portugol-go/internal/token"
 )
 
@@ -45,10 +46,42 @@ func FuzzLexer(f *testing.F) {
 		"algoritmo \"x\"\ninicio\nfimalgoritmo",
 		"vetor[1..10] de inteiro",
 		"se verdadeiro e falso entao fimse",
+		"Algoritmo \"á\"\r\ninicio // comment\r\nfimalgoritmo\r\n",
+		"{ unterminated\n",
+		"\"unterminated\nnext",
+		"1..10 1.5 1e+2 1e-",
+		"\x00\xff\xc3",
 	} {
 		f.Add(seed)
 	}
 	f.Fuzz(func(t *testing.T, src string) {
-		Scan("fuzz.alg", src)
+		if len(src) > testprocess.MaxSourceBytes {
+			t.Skip("outside 64 KiB fuzz profile")
+		}
+		_, toks, _ := Scan("fuzz.alg", src)
+		if len(toks) == 0 || toks[len(toks)-1].Kind != token.EOF {
+			t.Fatal("missing final EOF token")
+		}
+		for i, tok := range toks {
+			if tok.Pos < 0 || int(tok.Pos) > len(src) {
+				t.Fatalf("token position %d outside source", tok.Pos)
+			}
+			if i > 0 && tok.Pos < toks[i-1].Pos {
+				t.Fatal("token positions are not monotonic")
+			}
+		}
 	})
+}
+
+func TestFuzzAdversarial(t *testing.T) {
+	for _, tt := range []struct{ name, src string }{
+		{"long comment", "//" + strings.Repeat("x", testprocess.MaxSourceBytes-2)},
+		{"unterminated string", "\"" + strings.Repeat("x", testprocess.MaxSourceBytes-1)},
+		{"invalid bytes", strings.Repeat("\xff", testprocess.MaxSourceBytes)},
+		{"punctuation", strings.Repeat("[]():+-", 8192)},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			testprocess.Run(t, func() { Scan("adversarial.alg", tt.src) })
+		})
+	}
 }

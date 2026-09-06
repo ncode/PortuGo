@@ -2,17 +2,21 @@ package portugol_test
 
 import (
 	"bytes"
+	"flag"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 
+	"github.com/ncode/portugol-go/internal/golden"
 	"github.com/ncode/portugol-go/internal/interp"
 	"github.com/ncode/portugol-go/internal/lexer"
 	"github.com/ncode/portugol-go/internal/parser"
 	"github.com/ncode/portugol-go/internal/sema"
 	"github.com/ncode/portugol-go/internal/source"
 )
+
+var updateGolden = flag.Bool("update", false, "update expected fixture bytes")
 
 func TestRunFixtures(t *testing.T) {
 	files, err := filepath.Glob("testdata/run/*.alg")
@@ -40,13 +44,12 @@ func TestRunFixtures(t *testing.T) {
 				t.Fatalf("sema diagnostics: %v", semaDiags)
 			}
 			in := readOptional(t, strings.TrimSuffix(path, ".alg")+".in")
-			want := readOptional(t, strings.TrimSuffix(path, ".alg")+".out")
 			var out bytes.Buffer
 			if err := interp.New(strings.NewReader(in), &out).Run(prog); err != nil {
 				t.Fatal(err)
 			}
-			if out.String() != want {
-				t.Fatalf("stdout mismatch\nwant: %q\n got: %q", want, out.String())
+			if err := golden.Compare(".", strings.TrimSuffix(path, ".alg")+".out", out.Bytes(), *updateGolden); err != nil {
+				t.Fatal(err)
 			}
 		})
 	}

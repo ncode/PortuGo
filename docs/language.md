@@ -84,3 +84,19 @@ not emulated.
 ## Out Of Scope
 
 File I/O and GUI primitives are not implemented in v1.
+
+## Validation status
+
+The current implementation is a VisuAlg-like subset. Its behavior has not yet
+been qualified against recorded VisuAlg 3.0.7 observations. The active OpenSpec
+change tracks that work; passing implementation tests alone is not a claim of
+reference conformance.
+
+Runtime fixture output is compared byte for byte, including decimal separators,
+whitespace, and newlines. Lexer/parser fuzz tests use a 64 KiB generated-source
+profile and adversarial cases have failing subprocess watchdogs. This profile
+is a test bound, not an enforced language source or nesting limit. Production
+resource guards are planned in groups 3 and 4 of the conformance change.
+
+See [development checks](development.md) and the
+[quality baseline](quality-baseline.md) for commands and measured coverage.
