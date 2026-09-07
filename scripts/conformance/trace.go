@@ -6,6 +6,9 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"io/fs"
+	"os"
+	"path"
 	"regexp"
 	"strconv"
 	"strings"
@@ -100,7 +103,10 @@ func validateInventory(root string, m manifest, probes map[string]probe) error {
 		if item.ID == "" || ids[item.ID] {
 			problems = append(problems, fmt.Errorf("duplicate or empty inventory ID %q", item.ID))
 		}
-		ids[item.ID], links[item.Link] = true, true
+		ids[item.ID] = true
+		if item.Kind == "requirement" {
+			links[item.Link] = true
+		}
 		switch item.Kind {
 		case "requirement", "checklist", "defect", "assumption", "feature", "example":
 		default:
@@ -127,7 +133,27 @@ func validateInventory(root string, m manifest, probes map[string]probe) error {
 	if len(m.InventorySources) == 0 {
 		problems = append(problems, fmt.Errorf("missing inventory sources"))
 	}
-	for _, name := range m.InventorySources {
+	// Discover the change's complete specification tree independently of the
+	// declared sources, so removing a source cannot remove its obligations.
+	sources := append([]string(nil), m.InventorySources...)
+	seen := make(map[string]bool)
+	for _, name := range sources {
+		seen[name] = true
+	}
+	err := fs.WalkDir(os.DirFS(root), path.Join(path.Dir(m.TasksPath), "specs"), func(name string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if !d.IsDir() && strings.HasSuffix(name, ".md") && !seen[name] {
+			sources = append(sources, name)
+			seen[name] = true
+		}
+		return nil
+	})
+	if err != nil {
+		problems = append(problems, fmt.Errorf("discover specifications: %w", err))
+	}
+	for _, name := range sources {
 		data, err := readFile(root, name)
 		if err != nil {
 			problems = append(problems, err)

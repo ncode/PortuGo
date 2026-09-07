@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Made corpus traceability discover every specification in the change's spec tree.
+  Added retained GUI error evidence and labeled transcriptions for the three
+  earlier rejection probes; the broader evidence inventory remains incomplete.
 - Fixed corpus gates to enforce recorded acceptance/rejection and complete
   generated-file inventories. Validation now requires a history comparison, and
   CI supplies the base commit. Recording rejects altered auxiliary input files

@@ -23,7 +23,7 @@ func writeArtifact(t *testing.T, root, path, content string) artifact {
 func testManifest(t *testing.T) (string, manifest) {
 	t.Helper()
 	root := t.TempDir()
-	writeArtifact(t, root, "spec.md", "### Requirement: Output\n")
+	writeArtifact(t, root, "specs/output/spec.md", "### Requirement: Output\n")
 	writeArtifact(t, root, "tasks.md", "## 2. Evidence\n- [ ] 2.1 Record output\n## 10. Output\n- [ ] 10.1 Implement output\n")
 	writeArtifact(t, root, "output_test.go", "package example\nimport \"testing\"\nfunc TestOutput(t *testing.T) {}\n")
 	source := writeArtifact(t, root, "probes/output/source.alg", "algoritmo \"output\"\ninicio\nescreval(1)\nfimalgoritmo\n")
@@ -34,8 +34,8 @@ func testManifest(t *testing.T) (string, manifest) {
 	m := manifest{
 		Version: 1, RecorderVersion: "manual-v1", NormalizerVersion: "panel-v1",
 		Reference: reference{Product: "VisuAlg", Version: "3.0.7.0", SourceURL: "https://example.invalid/reference", AcquiredDate: "2026-09-07", ArchiveSHA256: strings.Repeat("a", 64), ExecutableSHA256: strings.Repeat("b", 64), OS: "Windows amd64", Culture: "en-US"},
-		TasksPath: "tasks.md", InventorySources: []string{"spec.md"},
-		Inventory: []inventoryItem{{ID: "requirement.output", Kind: "requirement", Link: "spec.md#Requirement: Output", Probes: []string{"output"}}},
+		TasksPath: "tasks.md", InventorySources: []string{"specs/output/spec.md"},
+		Inventory: []inventoryItem{{ID: "requirement.output", Kind: "requirement", Link: "specs/output/spec.md#Requirement: Output", Probes: []string{"output"}}},
 		Probes: []probe{{ID: "output", OwnerGroup: 10, Tasks: []string{"10.1"}, Source: source, Input: input, TimeoutMS: 1000,
 			Evidence:       evidence{State: "recorded", Accepted: &accepted, CapturedAt: "2026-09-07T12:00:00Z", Raw: raw, Normalized: normalized, Normalizer: "panel-v1"},
 			Implementation: implementation{State: "pending", Expected: observation{Stdout: normalized}},
@@ -85,9 +85,17 @@ func TestManifestValidation(t *testing.T) {
 		{name: "duplicate probe", mode: "evidence", want: "duplicate probe", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes = append(m.Probes, m.Probes[0]) }},
 		{name: "missing task", mode: "evidence", want: "task link", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].Tasks = []string{"10.99"} }},
 		{name: "wrong owner", mode: "evidence", want: "owner group", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].OwnerGroup = 9 }},
-		{name: "stale requirement", mode: "evidence", want: "trace link", mutate: func(_ *testing.T, _ string, m *manifest) { m.Inventory[0].Link = "spec.md#Requirement: Missing" }},
+		{name: "stale requirement", mode: "evidence", want: "trace link", mutate: func(_ *testing.T, _ string, m *manifest) {
+			m.Inventory[0].Link = "specs/output/spec.md#Requirement: Missing"
+		}},
 		{name: "untraced requirement", mode: "evidence", want: "untraced requirement", mutate: func(t *testing.T, root string, _ *manifest) {
-			writeArtifact(t, root, "spec.md", "### Requirement: Output\n### Requirement: Input\n")
+			writeArtifact(t, root, "specs/output/spec.md", "### Requirement: Output\n### Requirement: Input\n")
+		}},
+		{name: "omitted specification", mode: "evidence", want: "untraced requirement", mutate: func(t *testing.T, root string, _ *manifest) {
+			writeArtifact(t, root, "specs/input/spec.md", "### Requirement: Input\n")
+		}},
+		{name: "wrong requirement kind", mode: "evidence", want: "untraced requirement", mutate: func(_ *testing.T, _ string, m *manifest) {
+			m.Inventory[0].Kind = "assumption"
 		}},
 		{name: "missing probe link", mode: "evidence", want: "probe link", mutate: func(_ *testing.T, _ string, m *manifest) { m.Inventory[0].Probes = []string{"missing"} }},
 		{name: "unreviewed exemption", mode: "evidence", want: "review", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].Evidence.State = "not-applicable" }},

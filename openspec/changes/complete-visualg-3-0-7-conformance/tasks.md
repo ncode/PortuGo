@@ -36,7 +36,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 - [ ] 2.12 Record all blocking probes on the interactive Windows reference host, commit only redistributable evidence, inventory every official bundled example, and leave no required evidence unrecorded. Assign later implementations to pending owning tasks rather than inventing tests or claiming conformance.
 - [ ] 2.13 Correct `proposal.md`, delta specs, `design.md`, `tasks.md`, `AGENTS.md`, and affected language documentation from the recordings. Replace rejected candidate features with negative coverage, remove dependent AST/layout/example obligations, preserve retired-ID dispositions, and describe corrections in `CHANGELOG.md`.
 - [ ] 2.14 Run recorder, normalizer, replay, manifest, and traceability tests plus the full quality suite and strict OpenSpec validation; require zero evidence-mode errors and zero verified regressions, and publish the remaining pending implementation inventory.
-- [ ] 2.15 Mark every completed 2.x task immediately, commit the evidence and corrections, push the next stacked branch, and open its draft PR before group 3.
+- [x] 2.15 Mark every completed 2.x task immediately, commit the evidence and corrections, push the next stacked branch, and open its draft PR before group 3.
 
 ## 3. Semantic Handoff, Interpreter Options, Diagnostics, and CLI Statuses
 

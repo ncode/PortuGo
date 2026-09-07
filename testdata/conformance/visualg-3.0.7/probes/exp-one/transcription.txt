@@ -1,0 +1,6 @@
+Manual transcription of the original GUI error screenshot.
+Title: Aviso
+Reported source line: 4
+Message: Esperava encontrar ')'.
+Source line: escreval(exp(2))
+Explanation: Não há explicação disponível para este problema.

@@ -1,0 +1,6 @@
+Manual transcription of the original GUI error screenshot.
+Title: Aviso
+Reported source line: 6
+Message: Erro na atribuição de valores à variável X: REAL para INTEIRO.
+Source line: x <- 4/2
+Explanation: Não há explicação disponível para este problema.

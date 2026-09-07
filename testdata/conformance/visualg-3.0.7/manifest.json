@@ -1148,18 +1148,27 @@
       },
       "timeoutMS": 5000,
       "evidence": {
-        "state": "unrecorded",
+        "state": "recorded",
         "accepted": false,
         "capturedAt": "2026-09-07T16:10:53.5517986Z",
         "raw": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/exp-one/raw.txt",
-          "sha256": "71e31c4273c494303af60e2e912311d3cbb85eedc42a30042aaea03d1717aefe"
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-one/transcription.txt",
+          "sha256": "4bb7798432a911fe267e3a3598f1ee3d9d46ad33ea519a89230c80c328bf0207"
         },
         "normalized": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/exp-one/raw.txt",
-          "sha256": "71e31c4273c494303af60e2e912311d3cbb85eedc42a30042aaea03d1717aefe"
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-one/transcription.txt",
+          "sha256": "4bb7798432a911fe267e3a3598f1ee3d9d46ad33ea519a89230c80c328bf0207"
         },
-        "normalizer": "text-v1"
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-one/screenshot.png",
+          "sha256": "a1ed7ccae2c77d871e7a92d3f4312cc91f9f91e5837e64cea0bf9cabda9c1ec0"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-one/transcription.txt",
+          "sha256": "4bb7798432a911fe267e3a3598f1ee3d9d46ad33ea519a89230c80c328bf0207"
+        }
       },
       "implementation": {
         "state": "verified",
@@ -1287,18 +1296,27 @@
       },
       "timeoutMS": 5000,
       "evidence": {
-        "state": "unrecorded",
+        "state": "recorded",
         "accepted": false,
         "capturedAt": "2026-09-07T16:12:34.1129767Z",
         "raw": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/exact-division-integer/raw.txt",
-          "sha256": "71e31c4273c494303af60e2e912311d3cbb85eedc42a30042aaea03d1717aefe"
+          "path": "testdata/conformance/visualg-3.0.7/probes/exact-division-integer/transcription.txt",
+          "sha256": "0f7cf0eae3b353e96c8ccc90a9545f4099d90e4a359792ea4e9b5b95978249bf"
         },
         "normalized": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/exact-division-integer/raw.txt",
-          "sha256": "71e31c4273c494303af60e2e912311d3cbb85eedc42a30042aaea03d1717aefe"
+          "path": "testdata/conformance/visualg-3.0.7/probes/exact-division-integer/transcription.txt",
+          "sha256": "0f7cf0eae3b353e96c8ccc90a9545f4099d90e4a359792ea4e9b5b95978249bf"
         },
-        "normalizer": "text-v1"
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exact-division-integer/screenshot.png",
+          "sha256": "e4aaf0d841b0eee71edfb82be9b5adca230420d775fcfe2cda352d3d80be2aac"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exact-division-integer/transcription.txt",
+          "sha256": "0f7cf0eae3b353e96c8ccc90a9545f4099d90e4a359792ea4e9b5b95978249bf"
+        }
       },
       "implementation": {
         "state": "verified",
@@ -1469,18 +1487,27 @@
       },
       "timeoutMS": 5000,
       "evidence": {
-        "state": "unrecorded",
+        "state": "recorded",
         "accepted": false,
         "capturedAt": "2026-09-07T16:33:20.8846649Z",
         "raw": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding/raw.txt",
-          "sha256": "7e9b118313511c00259244c531e710fb637d43b09a8ce431d894c16341e519b8"
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding/transcription.txt",
+          "sha256": "2e13fee887c78e246ce60e53be007a909cc2175548bfa9f780bbdd5c4f1a62dd"
         },
         "normalized": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding/raw.txt",
-          "sha256": "7e9b118313511c00259244c531e710fb637d43b09a8ce431d894c16341e519b8"
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding/transcription.txt",
+          "sha256": "2e13fee887c78e246ce60e53be007a909cc2175548bfa9f780bbdd5c4f1a62dd"
         },
-        "normalizer": "text-v1"
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding/screenshot.png",
+          "sha256": "6a6356fe6fad1240090562ccdcb7e43d3379bac5bc9b34af0951d0500a7c05c1"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding/transcription.txt",
+          "sha256": "2e13fee887c78e246ce60e53be007a909cc2175548bfa9f780bbdd5c4f1a62dd"
+        }
       },
       "implementation": {
         "state": "verified",

@@ -10,9 +10,9 @@ The initial manifest contains 18 reduced probes:
 
 - Eleven accepted observations from the earlier Windows validation have complete
   source, raw output and normalized output artifacts, with existing replay tests.
-- Three earlier rejection tests remain implemented and passing, but need complete
-  error evidence for this corpus. Their evidence state remains `unrecorded` until
-  that capture is available; recording and implementation states are independent.
+- Three earlier rejection tests are implemented and passing. Their retained
+  original GUI screenshots now supply the missing error evidence, with labeled
+  manual transcriptions and source hashes checked against the original captures.
 - Four fresh declaration observations have complete recorded evidence and pending
   implementation, as detailed below.
 
@@ -38,4 +38,7 @@ claim of complete VisuAlg compatibility.
 The tooling review corrections now enforce reference acceptance/rejection,
 unique generated-file coverage, mandatory history comparison in validation and
 CI, and auxiliary input integrity during capture. These corrections do not fill
-the outstanding recordings or inventory mappings; group 2 remains in progress.
+the outstanding inventory mappings; group 2 remains in progress. All 18 currently
+registered probes have evidence; additional required probes still need to be
+prepared and recorded. Inventory validation discovers the entire change's spec
+tree independently of the manifest's source list.

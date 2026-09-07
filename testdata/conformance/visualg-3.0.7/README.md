@@ -86,7 +86,9 @@ hashes are lowercase SHA-256 of the exact published bytes.
 - Inventory items have stable `id`, `kind`, `link`, and `probes`. Kinds cover
   requirements, checklist items, defects, assumptions, discovered features and
   bundled examples. Links use `file#Requirement: Exact heading` where applicable.
-  Every requirement in the declared source files must be traced.
+  Every requirement in the `specs/` tree adjacent to `tasksPath`, plus every
+  requirement in additional declared source files, must have a requirement-kind
+  trace. Omitting a source file from `inventorySources` cannot hide its requirements.
 - Probes have stable `id`, `ownerGroup`, existing `tasks`, `source`, `input`,
   optional initial `files`, `timeoutMS`, `evidence`, and `implementation`.
 - Recorded evidence includes explicit `accepted`, UTC `capturedAt`, hashed `raw`
@@ -105,6 +107,12 @@ hashes are lowercase SHA-256 of the exact published bytes.
   Project-specific safeguards may have reference non-applicability while their
   implementation is pending; verification still requires actual project tests.
   Retired IDs retain a reviewed disposition and optional replacement probe.
+
+The three earlier rejection probes include their original GUI screenshots and
+explicitly labeled manual transcriptions. For those probes, `raw`, `normalized`
+and `transcription` refer to the transcription bytes under `text-v1`; the original
+screenshot is separately hashed. Their earlier partial output panels remain in
+`raw.txt`. Capture timestamps and source hashes are from the original recordings.
 
 Evidence mode requires every required observation or reviewed exception.
 Incremental mode also rejects pending behavior owned by completed task groups.
