@@ -202,9 +202,10 @@ func TestFormattedItemBoundary(t *testing.T) {
 
 func TestBuiltinTextLimits(t *testing.T) {
 	testprocess.Run(t, func() {
-		p, info := analyzed(t, "algoritmo \"case\"\nvar s: caractere\ninicio\nleia(s)\nescreva(maiusc(s))\nfimalgoritmo")
-		ds := New(Options{Input: strings.NewReader(strings.Repeat("\u023f", 8<<20))}).Run(p, info)
-		if len(ds) != 1 || ds[0].Code != diag.RStorage {
+		src := "algoritmo \"case\"\nvar s: caractere\nn: inteiro\ninicio\ns <- \"\u023f\"\npara n de 1 ate 23 faca\ns <- s+s\nfimpara\nescreva(maiusc(s))\nfimalgoritmo"
+		p, info := analyzed(t, src)
+		ds := New(Options{MaxSteps: 10000}).Run(p, info)
+		if len(ds) != 1 || ds[0].Code != diag.RStorage || ds[0].Pos != token.Pos(strings.Index(src, "maiusc")) {
 			t.Fatalf("case expansion bypassed value limit: %v", ds)
 		}
 		p, info = analyzed(t, "algoritmo \"copy\"\ninicio\nescreva(copia(\"abc\", 2, 9223372036854775807))\nfimalgoritmo")
