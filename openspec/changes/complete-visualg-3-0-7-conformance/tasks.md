@@ -89,7 +89,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 - [ ] 4.11 Expand lexer/parser fuzz and subprocess adversarial cases with newline, encoding, comment, literal, deep-nesting, truncation, and oversized inputs; assert controlled limit diagnostics and fail on watchdog expiration.
 - [ ] 4.12 Update `docs/language.md`, grammar examples, and `CHANGELOG.md` with spellings, newline rules, retained comments/suffixes, source/depth limits, and breaking rejections.
 - [ ] 4.13 Run focused source/lexer/parser/sema/printer tests and fuzz smoke tests, then the full build, lint, ordinary, race, incremental corpus, and strict OpenSpec suites.
-- [ ] 4.14 Mark every completed 4.x task immediately, commit the focused grammar changes, push the next stacked branch, and open its draft PR before group 5.
+- [x] 4.14 Mark every completed 4.x task immediately, commit the focused grammar changes, push the next stacked branch, and open its draft PR before group 5.
 
 ## 5. Declaration and Call Compatibility
 
