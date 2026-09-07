@@ -29,7 +29,7 @@ go test -race -count=1 ./...
 go mod tidy
 git diff --exit-code -- go.mod go.sum
 openspec validate --all --strict --no-interactive
-bash scripts/check-oracle.sh
+bash scripts/check-oracle.sh --base origin/main
 go test ./internal/lexer -run=TestFuzz -fuzz=FuzzLexer -fuzztime=30s -timeout=2m -parallel=2
 go test ./internal/parser -run=TestFuzz -fuzz=FuzzParser -fuzztime=30s -timeout=2m -parallel=2
 ```
@@ -51,9 +51,12 @@ and quoted context without normalizing whitespace or encoding.
 This preserves committed fixture bytes on checkout and staging, including LF,
 CRLF, and Windows-1252 data, even when `core.autocrlf=true` on Windows.
 
-The oracle gate is a visible placeholder until group 2 installs the corpus and
-validator. It then runs evidence validation, which allows recorded probes with
-pending implementations. Groups 3–16 will additionally require incremental
+The oracle gate runs evidence validation, which allows recorded probes with
+pending implementations and currently fails for missing recordings and mappings.
+Supply the PR base or parent branch with `--base` (replace `origin/main` for
+stacked work); history comparison is required to detect unreviewed coverage
+downgrades. CI supplies the PR base or pre-push commit and fetches its history.
+Groups 3–16 will additionally require incremental
 replay of completed groups; final acceptance rejects every pending behavior.
 Missing reference evidence is never proof of compatibility.
 

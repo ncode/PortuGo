@@ -5,15 +5,17 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"time"
 )
 
 type stagedRecording struct {
-	ID        string   `json:"id"`
-	Source    artifact `json:"source"`
-	Input     artifact `json:"input"`
-	Generated []string `json:"generated,omitempty"`
+	ID        string     `json:"id"`
+	Source    artifact   `json:"source"`
+	Input     artifact   `json:"input"`
+	Files     []artifact `json:"files,omitempty"`
+	Generated []string   `json:"generated,omitempty"`
 }
 
 func writeNew(name string, data []byte) error {
@@ -70,6 +72,7 @@ func prepareRecording(root string, p probe, stage string) error {
 			return err
 		}
 	}
+	staged := stagedRecording{ID: p.ID, Source: artifact{Path: "source.alg", SHA256: hashBytes(source)}, Input: artifact{Path: "input.txt", SHA256: hashBytes(input)}}
 	for _, file := range p.Files {
 		data, err := readArtifact(root, file.Content)
 		if err != nil {
@@ -85,8 +88,8 @@ func prepareRecording(root string, p probe, stage string) error {
 		if err := writeNew(name, data); err != nil {
 			return err
 		}
+		staged.Files = append(staged.Files, artifact{Path: file.Path, SHA256: hashBytes(data)})
 	}
-	staged := stagedRecording{ID: p.ID, Source: artifact{Path: "source.alg", SHA256: hashBytes(source)}, Input: artifact{Path: "input.txt", SHA256: hashBytes(input)}}
 	for _, file := range p.Implementation.Expected.Generated {
 		if _, err := safePath(stage, file.Path); err != nil {
 			return err
@@ -102,6 +105,7 @@ func prepareRecording(root string, p probe, stage string) error {
 	}
 	return writeNew(filepath.Join(stage, "instructions.txt"), []byte(`1. Open source.alg in the official VisuAlg 3.0.7 Windows application.
 2. Verify the editor contains exactly this source; supply input.txt values in order.
+   Keep auxiliary input files unchanged unless declared as generated outputs.
 3. Run the program. Record acceptance/rejection and the capture time in UTC.
 4. Save unchanged output/error control text as UTF-8 raw.txt. Do not trim spaces.
 5. Preserve generated files as bytes. For GUI-only results, retain screenshot.png
@@ -131,6 +135,14 @@ func captureRecording(stage string, accepted bool, capturedAt, normalizer string
 	for _, a := range []artifact{staged.Source, staged.Input} {
 		if _, err := readArtifact(stage, a); err != nil {
 			return e, err
+		}
+	}
+	for _, a := range staged.Files {
+		// Files declared as outputs may be changed by the reference program.
+		if !slices.Contains(staged.Generated, a.Path) {
+			if _, err := readArtifact(stage, a); err != nil {
+				return e, err
+			}
 		}
 	}
 	raw, err := readFile(stage, "raw.txt")

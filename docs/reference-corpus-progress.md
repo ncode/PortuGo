@@ -34,3 +34,8 @@ describe staging, capture, normalization, validation and bounded CLI replay.
 The evidence gate deliberately fails while required recordings or mappings are
 missing. A successful tooling test suite is not evidence-mode acceptance or a
 claim of complete VisuAlg compatibility.
+
+The tooling review corrections now enforce reference acceptance/rejection,
+unique generated-file coverage, mandatory history comparison in validation and
+CI, and auxiliary input integrity during capture. These corrections do not fill
+the outstanding recordings or inventory mappings; group 2 remains in progress.

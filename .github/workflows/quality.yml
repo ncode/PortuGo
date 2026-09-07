@@ -90,6 +90,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-go@v5
         with:
           go-version: '1.25.0'
@@ -99,4 +101,6 @@ jobs:
           node-version: '22'
       - run: npm install --global @fission-ai/openspec@1.8.0
       - run: openspec validate --all --strict --no-interactive
-      - run: bash scripts/check-oracle.sh
+      - run: bash scripts/check-oracle.sh --base "$CONFORMANCE_BASE"
+        env:
+          CONFORMANCE_BASE: ${{ github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}

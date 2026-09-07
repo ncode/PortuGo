@@ -142,6 +142,64 @@ func TestManifestPreservesVerifiedHistory(t *testing.T) {
 	}
 }
 
+func TestManifestReferenceDisposition(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		name        string
+		accepted    bool
+		exitCode    int
+		diagnostics []diagnostic
+		valid       bool
+	}{
+		{name: "accepted success", accepted: true, valid: true},
+		{name: "accepted failure", accepted: true, exitCode: 1},
+		{name: "accepted diagnostics", accepted: true, diagnostics: []diagnostic{{Code: "E004", Line: 4}}},
+		{name: "rejected success"},
+		{name: "rejected without diagnostics", exitCode: 1},
+		{name: "rejected wrong exit", exitCode: 2, diagnostics: []diagnostic{{Code: "E004", Line: 4}}},
+		{name: "rejected with coverage", exitCode: 1, diagnostics: []diagnostic{{Code: "E004", Line: 4}}, valid: true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			root, m := testManifest(t)
+			p := &m.Probes[0]
+			p.Evidence.Accepted = &tt.accepted
+			if !tt.accepted {
+				a := writeArtifact(t, root, "error.txt", "Rejected on line 4\n")
+				p.Evidence.Raw, p.Evidence.Normalized, p.Evidence.Normalizer = a, a, "bytes-v1"
+			}
+			p.Implementation.State = "verified"
+			p.Implementation.Tests = []string{"output_test.go#TestOutput"}
+			p.Implementation.Expected.ExitCode = tt.exitCode
+			p.Implementation.Expected.Diagnostics = tt.diagnostics
+			err := validate(root, m, "implementation-acceptance", nil)
+			if tt.valid && err != nil {
+				t.Fatal(err)
+			}
+			if !tt.valid && (err == nil || !strings.Contains(err.Error(), "reference disposition")) {
+				t.Fatalf("error = %v, want reference disposition mismatch", err)
+			}
+		})
+	}
+}
+
+func TestManifestGeneratedInventory(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	a := writeArtifact(t, root, "first.dat", "first")
+	b := writeArtifact(t, root, "second.dat", "second")
+	p := &m.Probes[0]
+	p.Evidence.Generated = []generatedFile{{Path: "first.dat", Content: a}, {Path: "second.dat", Content: b}}
+	p.Implementation.Expected.Generated = append([]generatedFile(nil), p.Evidence.Generated...)
+	if err := validate(root, m, "evidence", nil); err != nil {
+		t.Fatal(err)
+	}
+	p.Implementation.Expected.Generated[1] = p.Implementation.Expected.Generated[0]
+	if err := validate(root, m, "evidence", nil); err == nil || !strings.Contains(err.Error(), "generated") {
+		t.Fatalf("error = %v, want duplicate generated path rejection", err)
+	}
+}
+
 func TestManifestRejectsSymlink(t *testing.T) {
 	t.Parallel()
 	root, m := testManifest(t)

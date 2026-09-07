@@ -171,11 +171,16 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		out, err := readArtifact(root, i.Expected.Stdout)
 		add(err)
 		if e.Accepted != nil && *e.Accepted {
+			if i.Expected.ExitCode != 0 || len(i.Expected.Diagnostics) != 0 {
+				add(fmt.Errorf("reference disposition requires successful replay without diagnostics"))
+			}
 			want, err := readArtifact(root, e.Normalized)
 			add(err)
 			if err == nil && !bytes.Equal(out, want) {
 				add(fmt.Errorf("expected stdout differs from reference evidence"))
 			}
+		} else if e.Accepted != nil && (i.Expected.ExitCode != 1 || len(i.Expected.Diagnostics) == 0) {
+			add(fmt.Errorf("reference disposition requires rejection with exit status 1 and mapped diagnostics"))
 		}
 	}
 	for _, file := range append(append([]generatedFile(nil), p.Files...), i.Expected.Generated...) {
@@ -203,6 +208,8 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			if generated[file.Path] != file.Content.SHA256 {
 				add(fmt.Errorf("generated reference differs from replay expectation: %s", file.Path))
 			}
+			// Each reference path must match exactly one replay expectation.
+			delete(generated, file.Path)
 		}
 	}
 	for _, a := range []*artifact{i.Expected.State, i.Expected.HostTrace} {

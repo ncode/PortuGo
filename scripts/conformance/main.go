@@ -112,6 +112,10 @@ func run(args []string, out, stderr io.Writer) (status int) {
 		_, _ = fmt.Fprintln(stderr, "choose --base or --previous")
 		return 2
 	}
+	if *base == "" && *previous == "" {
+		_, _ = fmt.Fprintln(stderr, "validate requires --base or --previous for history validation")
+		return 2
+	}
 	var old *manifest
 	if *previous != "" {
 		value, err := loadManifest(rootPath, *previous)

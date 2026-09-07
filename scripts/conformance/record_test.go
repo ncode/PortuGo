@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -86,5 +87,45 @@ func TestCaptureGeneratedBytes(t *testing.T) {
 	}
 	if len(e.Generated) != 1 || e.Generated[0].Content != want {
 		t.Fatalf("generated evidence = %+v, want %+v", e.Generated, want)
+	}
+}
+
+func TestCaptureInitialFiles(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		name, content string
+		generated     bool
+		valid         bool
+	}{
+		{name: "unchanged input", content: "original", valid: true},
+		{name: "changed input", content: "changed"},
+		{name: "declared output", content: "changed", generated: true, valid: true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+			root, m := testManifest(t)
+			p := m.Probes[0]
+			a := writeArtifact(t, root, "fixture.dat", "original")
+			p.Files = []generatedFile{{Path: "data/input.dat", Content: a}}
+			if tt.generated {
+				p.Implementation.Expected.Generated = p.Files
+			}
+			stage := filepath.Join(t.TempDir(), "recording")
+			if err := prepareRecording(root, p, stage); err != nil {
+				t.Fatal(err)
+			}
+			writeArtifact(t, stage, "data/input.dat", tt.content)
+			writeArtifact(t, stage, "raw.txt", "Início da execução\r\n 1\r\n\r\nFim da execução.\r\n")
+			e, err := captureRecording(stage, true, "2026-09-07T12:00:00Z", "panel-v1", false)
+			if tt.valid && err != nil {
+				t.Fatal(err)
+			}
+			if !tt.valid && (err == nil || !strings.Contains(err.Error(), "hash mismatch")) {
+				t.Fatalf("capture = %+v, error = %v, want changed input rejection", e, err)
+			}
+			if tt.generated && (len(e.Generated) != 1 || e.Generated[0].Content.SHA256 != hashBytes([]byte(tt.content))) {
+				t.Fatalf("generated evidence = %+v", e.Generated)
+			}
+		})
 	}
 }

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Fixed corpus gates to enforce recorded acceptance/rejection and complete
+  generated-file inventories. Validation now requires a history comparison, and
+  CI supplies the base commit. Recording rejects altered auxiliary input files
+  while permitting declared outputs to change.
 - Added reference-corpus validation, bounded CLI replay, and a private staging
   and capture workflow. The initial corpus includes an inventory of requirements
   and bundled examples, earlier observations, and fresh declaration probes.

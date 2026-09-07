@@ -129,7 +129,10 @@ are not a claim of full reference conformance.
 The [reference corpus progress](reference-corpus-progress.md) tracks the broader
 recording work. New observations confirm particular constant, named-type and
 record forms in the reference application; those forms remain pending in this
-implementation.
+implementation. Corpus validation requires expected acceptance/rejection and
+generated files to agree with the reference, and an explicit history base to
+detect unreviewed regressions in coverage. Recording verifies input-only file
+hashes before accepting a capture.
 
 Runtime fixture output is compared byte for byte, including decimal separators,
 whitespace, and newlines. Git preserves committed fixture bytes on every
