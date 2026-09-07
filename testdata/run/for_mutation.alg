@@ -7,4 +7,5 @@ inicio
     i <- 100
   fimpara
   escreval()
+  escreval("FINAL=[", i, "]")
 fimalgoritmo

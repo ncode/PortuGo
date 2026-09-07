@@ -48,3 +48,29 @@ func checkSource(t *testing.T, src string) []diag.Diagnostic {
 	}
 	return Check(prog)
 }
+
+func TestExpArguments(t *testing.T) {
+	for _, tt := range []struct {
+		expr string
+		code diag.Code
+	}{
+		{"exp(2, 3)", ""},
+		{"exp(2.0, 0.5)", ""},
+		{"exp()", diag.ECall},
+		{"exp(2)", diag.ECall},
+		{"exp(2, 3, 4)", diag.ECall},
+		{`exp("2", 3)`, diag.ETypeMismatch},
+		{"exp(2, verdadeiro)", diag.ETypeMismatch},
+	} {
+		t.Run(tt.expr, func(t *testing.T) {
+			diags := checkSource(t, "algoritmo \"exp\"\ninicio\nescreval("+tt.expr+")\nfimalgoritmo")
+			if tt.code == "" {
+				if len(diags) != 0 {
+					t.Fatalf("unexpected diagnostics: %v", diags)
+				}
+			} else if len(diags) != 1 || diags[0].Code != tt.code {
+				t.Fatalf("got diagnostics %v, want one %s", diags, tt.code)
+			}
+		})
+	}
+}

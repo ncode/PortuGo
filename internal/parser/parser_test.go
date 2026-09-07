@@ -1,12 +1,38 @@
 package parser
 
 import (
+	"bytes"
 	"strings"
 	"testing"
 
+	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/lexer"
 	"github.com/ncode/portugol-go/internal/testprocess"
 )
+
+func TestPowerPrecedence(t *testing.T) {
+	for _, tt := range []struct{ source, printed string }{
+		{"2^3^2", "((2 ^ 3) ^ 2)"},
+		{"-2^2", "((- 2) ^ 2)"},
+		{"2^(3^2)", "(2 ^ (3 ^ 2))"},
+		{"-(2^2)", "(- (2 ^ 2))"},
+	} {
+		t.Run(tt.source, func(t *testing.T) {
+			_, toks, lexDiags := lexer.Scan("power.alg", "algoritmo \"power\"\ninicio\nescreval("+tt.source+")\nfimalgoritmo")
+			prog, parseDiags := Parse(toks)
+			if len(lexDiags)+len(parseDiags) != 0 {
+				t.Fatalf("diagnostics: %v %v", lexDiags, parseDiags)
+			}
+			var out bytes.Buffer
+			if err := ast.Fprint(&out, prog); err != nil {
+				t.Fatal(err)
+			}
+			if !strings.Contains(out.String(), "escreval("+tt.printed+")") {
+				t.Fatalf("want expression %s in:\n%s", tt.printed, &out)
+			}
+		})
+	}
+}
 
 func FuzzParser(f *testing.F) {
 	for _, seed := range []string{

@@ -37,6 +37,10 @@ Input SHALL reproduce the reference syntax and range rules for integers, reals, 
 - **WHEN** equivalent items are emitted once with `escreva` and once with `escreval`
 - **THEN** the only newline differences are those observed in VisuAlg 3.0.7
 
+#### Scenario: Replay the recorded portable output profile
+- **WHEN** selected 2026-09-07 `en-US` reference observations run through the portable CLI
+- **THEN** program output uses decimal dots, numeric and logical leading spaces, and uppercase logical values, with only fixed reference UI notices removed and CRLF converted to LF for comparison; other locale behavior remains pending evidence
+
 ### Requirement: Width and precision formatting
 Output width and precision fields SHALL accept the expression forms and value domains supported by VisuAlg 3.0.7 and SHALL reproduce its alignment, padding, rounding, truncation, sign placement, overflow-width, and non-real precision behavior. Invalid format values SHALL produce positioned diagnostics.
 
@@ -47,6 +51,10 @@ Output width and precision fields SHALL accept the expression forms and value do
 #### Scenario: Value exceeds requested width
 - **WHEN** a rendered value is wider than its valid requested width
 - **THEN** output expands, truncates, or fails exactly as the reference does
+
+#### Scenario: Replay recorded field formatting
+- **WHEN** the recorded width and decimal fields are applied
+- **THEN** width zero ignores decimals, positive numeric fields round decimal ties away from zero and expand as necessary, positive string fields left-align and truncate, and logical field widths are rejected before execution
 
 ### Requirement: CP1252 file and stream behavior
 Source-independent text read from or written to VisuAlg-compatible files SHALL use the oracle-confirmed Windows-1252 and newline behavior. Unsupported Unicode output SHALL follow a documented reference-compatible substitution or positioned failure rule; conversion SHALL never silently corrupt unrelated bytes.

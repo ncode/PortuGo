@@ -1,0 +1,10 @@
+BEGIN:output-edges
+N=[ -1][ -1.5]
+Z=[ 0][ 0]
+W0=[ 1][ 1.5]
+W1=[123][2]
+W5=[   -1][   -2]
+D=[ 1.5][ -1.5]
+I=[ 1][123.00]
+S=[x  ][ VERDADEIRO][ FALSO]
+END:output-edges

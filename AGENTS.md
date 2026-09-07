@@ -141,7 +141,7 @@ Booleans literals: `verdadeiro`, `falso`. String literals use `"..."`. No char t
 - String concat: `+` (when both operands are `caractere`)
 - Assignment: `<-`
 
-Precedence (high → low): `^`, unary `-`/`nao`, `* / \ % MOD`, `+ -`, relational, `e`, `xou`, `ou`. Parenthesize when in doubt — VisuAlg's actual precedence has historical quirks.
+Precedence (high → low): unary `-`, left-associative `^`, `nao`, `* / \ % MOD`, `+ -`, relational, `e`, `xou`, `ou`. Recorded VisuAlg 3.0.7 probes pin `2^3^2 = 64` and `-2^2 = 4`; parentheses override those rules.
 
 ### 6.4 Control flow
 
@@ -163,7 +163,7 @@ para <i> de <a> ate <b> [passo <p>] faca ... fimpara
 interrompa     // break out of innermost loop
 ```
 
-`para` semantics: `i` is `inteiro`, `passo` defaults to 1, supports negative step. Loop variable is mutable inside the body but reassigning it does not affect iteration count (define this explicitly in tests).
+`para` semantics: `i` is `inteiro`, `passo` defaults to 1, supports negative step. Loop variable is mutable inside the body but reassigning it does not affect iteration count. Recorded exit-state rules, including descending, empty, and interrupted loops, are defined and tested in `docs/language.md`.
 
 ### 6.5 I/O
 
@@ -172,7 +172,7 @@ interrompa     // break out of innermost loop
 - `escreval(...)` — write with newline
 - Format specifiers: `x:n` for width, `x:n:m` for real width and decimals
 
-VisuAlg uses comma as decimal separator in I/O. **Decision needed (see Open questions):** match exactly, or use `.` and document the deviation.
+The CLI uses the recorded VisuAlg `en-US` output profile deterministically: decimal `.`, numeric/logical leading spaces, uppercase logical output, and LF. Input accepts comma or dot. Width and rounding rules are documented in `docs/language.md`; other reference locales remain unverified.
 
 ### 6.6 Subprograms
 
@@ -201,6 +201,7 @@ fimfuncao
 ### 6.7 Built-in functions (initial set)
 
 Numeric: `abs`, `raizq`, `exp`, `log`, `logn`, `pi`, `sen`, `cos`, `tan`, `int`, `frac`, `aleatorio`
+`exp(base, exponent)` takes two numeric arguments and returns real-valued power.
 String: `copia(s, p, n)`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, `pos`
 Conversion: implicit `inteiro` → `real`; explicit elsewhere via built-ins (`int`, etc.)
 
@@ -217,7 +218,7 @@ These cost time when wrong. Each must have a regression test.
 3. **Short-circuit `e` / `ou`.** VisuAlg historically does **not** short-circuit. Decide once, document, test both branches always evaluate. This is a common source of student bugs and we should not silently change it.
 4. **Case-insensitivity.** `Soma`, `soma`, `SOMA` all refer to the same identifier. Canonicalize at the symbol-table boundary. Keywords likewise.
 5. **Encoding.** Real VisuAlg files are Windows-1252. Detect BOM / UTF-8 validity; otherwise assume CP1252 and transcode. Never read as raw bytes into a Go string and hope.
-6. **Number formatting on output.** Decision pending — see Open questions.
+6. **Number formatting on output.** Use the recorded deterministic profile in `docs/language.md`; compare fixture bytes exactly.
 7. **Reading multiple values with `leia`.** Each variable consumes one whitespace-delimited token from stdin, not one line. Match VisuAlg.
 8. **`escolha` fall-through.** Does **not** fall through. Each `caso` is independent.
 9. **`interrompa` outside a loop** is a sema error, not a runtime error.
@@ -255,7 +256,7 @@ These are real decisions, not rhetorical. Resolve before implementing the affect
 
 1. **Dialect target.** VisuAlg only, or also Portugol Studio (UNIVALI)? They differ on vector syntax (`vetor[10]` vs `vetor[1..10]`), subprogram syntax, and stdlib. Pick one for v1.
 2. **Short-circuit `e` / `ou`.** Spec-faithful (no SC) or pragmatic (SC)? Affects observable behavior of programs with side effects in conditions.
-3. **Decimal separator on I/O.** Match VisuAlg (comma) or use `.` and document the deviation? Affects `escreva` output and `leia` of `real`.
+3. **Decimal separator on I/O — resolved for the current profile.** Output uses the recorded `en-US` decimal dot on every host; input accepts comma or dot. Other reference locales remain unverified.
 4. **`aleatorio` semantics.** Match VisuAlg's RNG exactly (would need to reverse-engineer it) or use Go's `math/rand/v2` with documented seeding?
 5. **File I/O.** v1 = no, v2 = maybe. Confirm.
 6. **CLI framework.** stdlib `flag` or `cobra`? Default: `flag`.

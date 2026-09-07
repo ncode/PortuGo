@@ -53,11 +53,13 @@ func runCmd(args []string) error {
 	if fs.NArg() != 1 {
 		return fmt.Errorf("usage: portugol run file.alg")
 	}
-	file, prog, ok, err := checkedProgram(fs.Arg(0))
-	if err != nil || !ok {
+	_, prog, ok, err := checkedProgram(fs.Arg(0))
+	if err != nil {
 		return err
 	}
-	_ = file
+	if !ok {
+		return fmt.Errorf("check failed")
+	}
 	return interp.New(os.Stdin, os.Stdout).Run(prog)
 }
 

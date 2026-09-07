@@ -40,7 +40,7 @@ func (l *Library) Call(name string, args []runtime.Value) (runtime.Value, bool, 
 	case "raizq":
 		return real1(args, math.Sqrt)
 	case "exp":
-		return real1(args, math.Exp)
+		return exp(args)
 	case "log":
 		return real1(args, math.Log)
 	case "logn":
@@ -105,6 +105,21 @@ func real1(args []runtime.Value, fn func(float64) float64) (runtime.Value, bool,
 		return runtime.Value{}, true, err
 	}
 	return runtime.Value{Kind: runtime.RealValue, Real: fn(x)}, true, nil
+}
+
+func exp(args []runtime.Value) (runtime.Value, bool, error) {
+	if len(args) != 2 {
+		return runtime.Value{}, true, fmt.Errorf("exp expects 2 arguments")
+	}
+	base, err := asFloat(args[0])
+	if err != nil {
+		return runtime.Value{}, true, err
+	}
+	exponent, err := asFloat(args[1])
+	if err != nil {
+		return runtime.Value{}, true, err
+	}
+	return runtime.Value{Kind: runtime.RealValue, Real: math.Pow(base, exponent)}, true, nil
 }
 
 func logn(args []runtime.Value) (runtime.Value, bool, error) {

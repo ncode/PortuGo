@@ -8,5 +8,5 @@ if [[ -e "$manifest" || -d scripts/conformance ]]; then
   test -d scripts/conformance
   go run ./scripts/conformance validate --mode evidence
 else
-  printf '%s\n' 'Oracle gate pending group 2: no reference evidence or conformance claim yet.'
+  printf '%s\n' 'Oracle gate pending group 2: the complete corpus and conformance claim remain unfinished.'
 fi

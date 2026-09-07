@@ -1,0 +1,206 @@
+{
+  "purpose": "Preliminary interactive reference evidence; not the planned conformance manifest or an implementation-acceptance result.",
+  "change": "complete-visualg-3-0-7-conformance",
+  "candidateCommit": "90365a2e3e5357fbfcde670949de4dfc972c6829",
+  "candidateToolchain": "go1.26.4 windows/amd64",
+  "reference": {
+    "version": "3.0.7.0",
+    "acquiredDate": "2026-09-07",
+    "sourceURL": "https://sourceforge.net/projects/visualg30/files/visualg3.0.7.rar/download",
+    "archiveSHA256": "45b8c4787b9af2077aecacf19d4e81b05718d9c2f9f2e6565cef2e6f9ae6c33f",
+    "executableSHA256": "7b297fb338e2ca7004ed55b42aef215c17a1a1d44b27cff50b6dc9be6dd3becf",
+    "os": "Windows amd64",
+    "culture": "en-US",
+    "systemLocale": "en-US"
+  },
+  "method": "Reduced CP1252 sources were entered into the VisuAlg editor and read back for equality before execution. Raw reference panel text was read through WM_GETTEXT and encoded as UTF-8. Desktop captures and operational details are retained privately.",
+  "limitations": [
+    "Eight selected probes, not the complete blocking inventory or the 73 bundled examples.",
+    "No generated-file or stdin-input behavior was tested in these eight probes.",
+    "Reference panel text is a Unicode control observation encoded as UTF-8, not original console output bytes.",
+    "The reference panel includes application start/end notices and CRLF; its text is retained unchanged.",
+    "The first power-associativity capture retained a preceding error dialog and was discarded. This entry uses the fresh rerun with unique source/output markers.",
+    "Reference error messages in windowless labels are evidenced by screenshots; summaries do not invent diagnostic columns.",
+    "Published candidate diagnostic paths are reduced to filenames. Candidate stderr hashes describe the published redacted text. Desktop captures are not published."
+  ],
+  "probes": [
+    {
+      "id": "output-format",
+      "owningTasks": [
+        "10.1",
+        "10.5"
+      ],
+      "capturedAtUTC": "2026-09-07T16:09:14.7279097Z",
+      "sourceEncoding": "Windows-1252",
+      "source": "algoritmo \"output-format\"\r\ninicio\r\nescreval(\"BEGIN\")\r\nescreval(\"I=[\", 1, \"]\")\r\nescreval(\"R=[\", 1.5, \"]\")\r\nescreval(\"Z=[\", 2.0, \"]\")\r\nescreval(\"W=[\", 1:3, \"]\")\r\nescreval(\"P=[\", 1.5:5:2, \"]\")\r\nescreval(\"END\")\r\nfimalgoritmo\r\n",
+      "sourceSHA256": "c5f32b93d20f950bc26b3113c5dc8ec19cc46d167b2798c76dca24902f049359",
+      "input": "",
+      "referenceAcceptsSource": true,
+      "referenceErrorLine": null,
+      "referencePanelText": "Início da execução\r\nBEGIN\r\nI=[ 1]\r\nR=[ 1.5]\r\nZ=[ 2]\r\nW=[  1]\r\nP=[ 1.50]\r\nEND\r\n\r\nFim da execução.\r\n",
+      "referencePanelUTF8SHA256": "b1a57dd94ee8c3406da3114b100ad2712f241f43f730f88e9ecbfb1c727b8bea",
+      "candidateStdout": "BEGIN\nI=[1]\nR=[1,5]\nZ=[2]\nW=[  1]\nP=[ 1,50]\nEND\n",
+      "candidateStdoutSHA256": "ff6285607ef4a30ee83cb0087c4dc1ba4cff9c84689c441508ec7d75883224a0",
+      "candidateStderr": "",
+      "candidateStderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidateExitCode": 0,
+      "comparison": "VisuAlg inserts a leading space for unformatted positive numbers and uses a decimal point on this en-US guest; PortuGo omits that space and uses a comma."
+    },
+    {
+      "id": "exp-two",
+      "owningTasks": [
+        "11.1",
+        "11.6",
+        "3.9"
+      ],
+      "capturedAtUTC": "2026-09-07T16:10:09.6519177Z",
+      "sourceEncoding": "Windows-1252",
+      "source": "algoritmo \"exp-two\"\r\ninicio\r\nescreval(\"BEGIN\")\r\nescreval(exp(2, 3))\r\nescreval(\"END\")\r\nfimalgoritmo\r\n",
+      "sourceSHA256": "7746e6deb2b9f9d79d9dde7a04f90fcd7ddb9d8e9b2dd79d220962ceaef139ec",
+      "input": "",
+      "referenceAcceptsSource": true,
+      "referenceErrorLine": null,
+      "referencePanelText": "Início da execução\r\nBEGIN\r\n 8\r\nEND\r\n\r\nFim da execução.\r\n",
+      "referencePanelUTF8SHA256": "b3ed838bb35f19478ac790d2aec3b2bbe78b5eba02d342d3e213bfd47a709f23",
+      "candidateStdout": "",
+      "candidateStdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidateStderr": "current.alg:4:10: E004: \"exp\" expects 1 arguments, got 2\n",
+      "candidateStderrSHA256": "5998632a343653f46b1f826d1a8a93827d06810c3f521a4c677d8cabec5355b5",
+      "candidateExitCode": 0,
+      "comparison": "VisuAlg accepts exp(2, 3) and prints 8; PortuGo emits E004 for the second argument and exits 0."
+    },
+    {
+      "id": "exp-one",
+      "owningTasks": [
+        "11.1",
+        "11.6"
+      ],
+      "capturedAtUTC": "2026-09-07T16:10:53.5517986Z",
+      "sourceEncoding": "Windows-1252",
+      "source": "algoritmo \"exp-one\"\r\ninicio\r\nescreval(\"BEGIN\")\r\nescreval(exp(2))\r\nescreval(\"END\")\r\nfimalgoritmo\r\n",
+      "sourceSHA256": "8a2299ec299ad479fa426dc11b2cc35f0d5e14ee403aea78e78da4e2f11239f4",
+      "input": "",
+      "referenceAcceptsSource": false,
+      "referenceErrorLine": 4,
+      "referencePanelText": "Início da execução\r\nBEGIN\r\n\r\n",
+      "referencePanelUTF8SHA256": "71e31c4273c494303af60e2e912311d3cbb85eedc42a30042aaea03d1717aefe",
+      "candidateStdout": "BEGIN\n7,38905609893065\nEND\n",
+      "candidateStdoutSHA256": "b1d13f38ace5c5ace0a3e7b277c0d51438168648f55a8fd41a369048dff421bc",
+      "candidateStderr": "",
+      "candidateStderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidateExitCode": 0,
+      "comparison": "VisuAlg reports a syntax error at line 4 for exp(2); PortuGo accepts it and prints 7,38905609893065."
+    },
+    {
+      "id": "power-associativity",
+      "owningTasks": [
+        "8.1",
+        "8.2"
+      ],
+      "capturedAtUTC": "2026-09-07T16:14:25.5120611Z",
+      "sourceEncoding": "Windows-1252",
+      "source": "algoritmo \"power-associativity\"\r\ninicio\r\nescreval(\"BEGIN:power-associativity\")\r\nescreval(2^3^2)\r\nescreval(\"END:power-associativity\")\r\nfimalgoritmo\r\n",
+      "sourceSHA256": "4304a2de1ee67cd73bf3c58dccd9494deaf54057115b477f597d3ca5b662af5f",
+      "input": "",
+      "referenceAcceptsSource": true,
+      "referenceErrorLine": null,
+      "referencePanelText": "Início da execução\r\nBEGIN:power-associativity\r\n 64\r\nEND:power-associativity\r\n\r\nFim da execução.\r\n",
+      "referencePanelUTF8SHA256": "7828d526e5cf10abe78f1c9b9fa9dbff760cd4e5df99ac1fd197b7dc66b8bb49",
+      "candidateStdout": "BEGIN:power-associativity\n512\nEND:power-associativity\n",
+      "candidateStdoutSHA256": "7be419640654ee8dbd6f4f18a49dfaa510dfe8ede1a8bf796ce146d429701931",
+      "candidateStderr": "",
+      "candidateStderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidateExitCode": 0,
+      "comparison": "VisuAlg prints 64 for 2^3^2; PortuGo prints 512."
+    },
+    {
+      "id": "unary-power",
+      "owningTasks": [
+        "8.1",
+        "8.2"
+      ],
+      "capturedAtUTC": "2026-09-07T16:12:04.3154700Z",
+      "sourceEncoding": "Windows-1252",
+      "source": "algoritmo \"unary-power\"\r\ninicio\r\nescreval(\"BEGIN\")\r\nescreval(-2^2)\r\nescreval(\"END\")\r\nfimalgoritmo\r\n",
+      "sourceSHA256": "617d9d8fb8d8db309aa5c2d1a10cc04089dd183c83c1afd0bfd5803c64c27dba",
+      "input": "",
+      "referenceAcceptsSource": true,
+      "referenceErrorLine": null,
+      "referencePanelText": "Início da execução\r\nBEGIN\r\n 4\r\nEND\r\n\r\nFim da execução.\r\n",
+      "referencePanelUTF8SHA256": "24a47c40992b234da370345cc831c9c5627c9a0bcfc46c834c2e4ec943b55176",
+      "candidateStdout": "BEGIN\n-4\nEND\n",
+      "candidateStdoutSHA256": "a06d9243f12be00c25df15d17e060944220b89155c1dc6435cbd6e169c6bb9fd",
+      "candidateStderr": "",
+      "candidateStderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidateExitCode": 0,
+      "comparison": "VisuAlg prints 4 for -2^2; PortuGo prints -4."
+    },
+    {
+      "id": "exact-division-integer",
+      "owningTasks": [
+        "8.1",
+        "8.3",
+        "3.9"
+      ],
+      "capturedAtUTC": "2026-09-07T16:12:34.1129767Z",
+      "sourceEncoding": "Windows-1252",
+      "source": "algoritmo \"exact-division-integer\"\r\nvar\r\nx: inteiro\r\ninicio\r\nescreval(\"BEGIN\")\r\nx <- 4/2\r\nescreval(x)\r\nescreval(\"END\")\r\nfimalgoritmo\r\n",
+      "sourceSHA256": "3434c57fdd2023ce459e1aa0ce1203fe58be76337defcce30c735adef5ce9d3e",
+      "input": "",
+      "referenceAcceptsSource": false,
+      "referenceErrorLine": 6,
+      "referencePanelText": "Início da execução\r\nBEGIN\r\n\r\n",
+      "referencePanelUTF8SHA256": "71e31c4273c494303af60e2e912311d3cbb85eedc42a30042aaea03d1717aefe",
+      "candidateStdout": "",
+      "candidateStdoutSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidateStderr": "current.alg:6:7: E001: cannot assign real to inteiro\n",
+      "candidateStderrSHA256": "ab124ef1ef5d61207df87614824aeab88ce5147779addda5b1841ba1ce9fb127",
+      "candidateExitCode": 0,
+      "comparison": "Both reject assigning 4/2 to inteiro. VisuAlg prints the BEGIN marker before reporting REAL para INTEIRO at line 6; PortuGo emits E001 before execution and exits 0."
+    },
+    {
+      "id": "logical-evaluation",
+      "owningTasks": [
+        "8.1",
+        "8.5"
+      ],
+      "capturedAtUTC": "2026-09-07T16:13:05.2831276Z",
+      "sourceEncoding": "Windows-1252",
+      "source": "algoritmo \"logical-evaluation\"\r\nvar\r\nn: inteiro\r\nfuncao right(): logico\r\ninicio\r\nn <- n + 1\r\nretorne verdadeiro\r\nfimfuncao\r\ninicio\r\nescreval(\"BEGIN:logical-evaluation\")\r\nn <- 0\r\nse falso e right() entao\r\nescreval(\"UNEXPECTED\")\r\nfimse\r\nescreval(\"E=\", n)\r\nn <- 0\r\nse verdadeiro ou right() entao\r\nescreval(\"OU=\", n)\r\nfimse\r\nescreval(\"END:logical-evaluation\")\r\nfimalgoritmo\r\n",
+      "sourceSHA256": "71ce5c732a97ce726be5f0e020a778e9b1a63d34c2dda6caca4fdabc0701c8a0",
+      "input": "",
+      "referenceAcceptsSource": true,
+      "referenceErrorLine": null,
+      "referencePanelText": "Início da execução\r\nBEGIN:logical-evaluation\r\nE= 1\r\nOU= 1\r\nEND:logical-evaluation\r\n\r\nFim da execução.\r\n",
+      "referencePanelUTF8SHA256": "a86d5b8ac01db7ca80a35a9e81da732124f651e46382d194c7bbcb1e6271b978",
+      "candidateStdout": "BEGIN:logical-evaluation\nE=1\nOU=1\nEND:logical-evaluation\n",
+      "candidateStdoutSHA256": "b2f56440a0c68cc7b5ac59de5f994a738e782cad7c12fed71f90fd74073ef974",
+      "candidateStderr": "",
+      "candidateStderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidateExitCode": 0,
+      "comparison": "Both right-hand calls execute: n is 1 after falso e right() and verdadeiro ou right(). Numeric spacing differs."
+    },
+    {
+      "id": "for-mutation",
+      "owningTasks": [
+        "9.1",
+        "9.8"
+      ],
+      "capturedAtUTC": "2026-09-07T16:13:35.3527499Z",
+      "sourceEncoding": "Windows-1252",
+      "source": "algoritmo \"for-mutation\"\r\nvar\r\ni, n: inteiro\r\ninicio\r\nescreval(\"BEGIN:for-mutation\")\r\nn <- 0\r\npara i de 1 ate 3 faca\r\nn <- n + 1\r\ni <- 100\r\nfimpara\r\nescreval(\"N=\", n)\r\nescreval(\"I=\", i)\r\nescreval(\"END:for-mutation\")\r\nfimalgoritmo\r\n",
+      "sourceSHA256": "6c303112832379b8c4a21d6fe1cfc4a7f009bef9f6c3df720ac675968f8b5b6b",
+      "input": "",
+      "referenceAcceptsSource": true,
+      "referenceErrorLine": null,
+      "referencePanelText": "Início da execução\r\nBEGIN:for-mutation\r\nN= 3\r\nI= 3\r\nEND:for-mutation\r\n\r\nFim da execução.\r\n",
+      "referencePanelUTF8SHA256": "3aef09435cb67022404814a0bddb4c7c31442fda5b0406abfb432cd97b17ac70",
+      "candidateStdout": "BEGIN:for-mutation\nN=3\nI=100\nEND:for-mutation\n",
+      "candidateStdoutSHA256": "1efa7a5bff21f2e636915e528dc731d75a07c97450c22d901856352c725e372d",
+      "candidateStderr": "",
+      "candidateStderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "candidateExitCode": 0,
+      "comparison": "Both execute three loop bodies despite assigning i <- 100. After the loop VisuAlg prints i as 3 while PortuGo prints 100. VisuAlg memory grid still displays 100; the screenshot preserves that UI discrepancy."
+    }
+  ]
+}

@@ -17,11 +17,7 @@ func (p *parser) parseExpr(minPrec int) ast.Expr {
 			return left
 		}
 		p.advance()
-		nextMin := prec + 1
-		if op.Kind == token.POW {
-			nextMin = prec
-		}
-		right := p.parseExpr(nextMin)
+		right := p.parseExpr(prec + 1)
 		left = &ast.BinaryExpr{Op: op, Left: left, Right: right}
 	}
 }
@@ -29,7 +25,11 @@ func (p *parser) parseExpr(minPrec int) ast.Expr {
 func (p *parser) parseUnary() ast.Expr {
 	if p.peek().Kind == token.SUB || p.peek().Kind == token.NAO {
 		op := p.advance()
-		return &ast.UnaryExpr{Op: op, X: p.parseExpr(7)}
+		prec := 7
+		if op.Kind == token.SUB {
+			prec = 9 // VisuAlg binds unary minus more tightly than power.
+		}
+		return &ast.UnaryExpr{Op: op, X: p.parseExpr(prec)}
 	}
 	return p.parsePrimary()
 }

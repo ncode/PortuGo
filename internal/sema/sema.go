@@ -252,8 +252,11 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		}
 	case *ast.WriteStmt:
 		for _, arg := range s.Args {
-			c.expr(arg.Expr)
+			typ := c.expr(arg.Expr)
 			if arg.Width != nil {
+				if typ.Kind == runtime.BoolType {
+					c.error(arg.Expr.Start(), diag.ETypeMismatch, "cannot format logico with a field width")
+				}
 				c.requireInt(arg.Width)
 			}
 			if arg.Decimals != nil {

@@ -143,6 +143,7 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (control, error) {
 	if step == 0 {
 		return control{}, fmt.Errorf("para passo cannot be zero")
 	}
+	final := from
 	for cur := from; (step > 0 && cur <= to) || (step < 0 && cur >= to); cur += step {
 		if err := assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: cur}); err != nil {
 			return control{}, err
@@ -152,11 +153,15 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (control, error) {
 			return control{}, err
 		}
 		if ctrl.kind == breakControl {
-			return control{}, nil
+			final = min(cell.Value.Int, to)
+			break
 		}
 		if ctrl.kind != noControl {
 			return ctrl, nil
 		}
+		// VisuAlg caps the exposed exit value at the terminal bound, even
+		// for descending loops. Body assignments do not change progression.
+		final = min(cur+step, to)
 	}
-	return control{}, nil
+	return control{}, assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final})
 }

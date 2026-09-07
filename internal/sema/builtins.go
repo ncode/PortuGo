@@ -29,15 +29,15 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 			c.error(call.Args[0].Start(), diag.ETypeMismatch, "abs requires numeric argument")
 		}
 		return runtime.Type{Kind: runtime.InvalidType}, true
-	case "raizq", "exp", "log", "sen", "cos", "tan", "frac":
+	case "raizq", "log", "sen", "cos", "tan", "frac":
 		c.checkBuiltinArgs(call, runtime.Type{Kind: runtime.RealType})
 		return runtime.Type{Kind: runtime.RealType}, true
-	case "logn":
+	case "exp", "logn":
 		if c.requireArity(call, 2, 2) {
 			for _, arg := range call.Args {
 				t := c.expr(arg)
 				if !isNumeric(t) {
-					c.error(arg.Start(), diag.ETypeMismatch, "logn requires numeric arguments")
+					c.error(arg.Start(), diag.ETypeMismatch, "%q requires numeric arguments", call.Name.Text)
 				}
 			}
 		}

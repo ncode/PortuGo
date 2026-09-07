@@ -268,3 +268,18 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 17.8 Perform a clean-checkout release rehearsal of all CLI commands, REPL transcripts, fixtures, manifest validation, and build artifacts on the supported platforms.
 - [ ] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
 - [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.
+
+## 18. Recorded Windows Probe Corrections (PR #2 Follow-up)
+
+The user requested these bounded fixes on the current PR after the 2026-09-07
+Windows reference observations. They cover recorded portions of groups 3, 8, 9, 10,
+and 11; they do not complete those groups or the group 2 corpus infrastructure.
+
+- [x] 18.1 Preserve the reference sources, raw output, screenshots, and hashes; probe formatting and loop termination edges before choosing fixes.
+- [x] 18.2 Add failing CLI, numeric, precedence, and loop regression tests for the recorded mismatches.
+- [x] 18.3 Return a failure status from `run` after lexical, parse, or semantic rejection, without executing invalid programs.
+- [x] 18.4 Correct two-argument numeric `exp`, left-associative power, and unary-minus precedence.
+- [x] 18.5 Correct the recorded numeric output profile and loop-variable state, including confirmed edge cases.
+- [x] 18.6 Reconcile the language reference, agent guidance, changelog, and validation report with the scoped evidence and remaining limitations.
+- [x] 18.7 Pass local quality gates and fresh native Windows tests, CLI checks, and replay of all recorded probes.
+- [x] 18.8 Commit and push the fixes to PR #2, update its description, and confirm checks on the final head.

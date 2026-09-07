@@ -2,6 +2,7 @@ package interp
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 
@@ -97,25 +98,35 @@ func formatValue(v runtime.Value, width, decimals int) string {
 	var s string
 	switch v.Kind {
 	case runtime.IntegerValue:
-		if width > 0 {
-			return fmt.Sprintf("%*d", width, v.Int)
+		s = strconv.FormatInt(v.Int, 10)
+		if width <= 0 {
+			return " " + s
 		}
-		return strconv.FormatInt(v.Int, 10)
+		if decimals > 0 {
+			s += "." + strings.Repeat("0", decimals)
+		}
 	case runtime.RealValue:
-		if decimals >= 0 {
-			s = fmt.Sprintf("%.*f", decimals, v.Real)
-		} else {
-			s = strconv.FormatFloat(v.Real, 'f', -1, 64)
+		if width <= 0 {
+			return " " + strconv.FormatFloat(v.Real, 'f', -1, 64)
 		}
-		s = strings.ReplaceAll(s, ".", ",")
+		decimals = max(0, decimals)
+		// The reference rounds decimal ties away from zero.
+		scale := math.Pow10(decimals)
+		rounded := v.Real
+		if scaled := rounded * scale; !math.IsInf(scale, 0) && !math.IsInf(scaled, 0) {
+			rounded = math.Round(scaled) / scale
+		}
+		s = strconv.FormatFloat(rounded, 'f', decimals, 64)
 	case runtime.StringValue:
-		s = v.Str
+		if width > 0 {
+			return fmt.Sprintf("%-*.*s", width, width, v.Str)
+		}
+		return v.Str
 	case runtime.BoolValue:
 		if v.Bool {
-			s = "verdadeiro"
-		} else {
-			s = "falso"
+			return " VERDADEIRO"
 		}
+		return " FALSO"
 	case runtime.VoidValue:
 		s = ""
 	default:

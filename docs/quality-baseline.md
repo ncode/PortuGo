@@ -4,6 +4,9 @@ Recorded 2026-09-06 on macOS arm64 with Go 1.25.0, starting from merged plan
 commit `90365a2`. This report describes the group 1 changes, before the oracle
 corpus or language changes exist.
 
+For the subsequent recorded behavior fixes and fresh Windows validation on
+the same PR, see the [2026-09-07 Windows report](windows-lab-validation-2026-09-07.md).
+
 | Check | Observed result |
 | --- | --- |
 | Policy regression before implementation | Failed: CI workflow, lint configuration, and tool documentation were absent |

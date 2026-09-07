@@ -15,6 +15,10 @@ The language SHALL implement the complete VisuAlg 3.0.7 unary, arithmetic, relat
 - **WHEN** parentheses form a valid grouping
 - **THEN** the grouped expression is evaluated first and produces the reference result
 
+#### Scenario: Replay recorded power precedence
+- **WHEN** the recorded expressions `2^3^2` and `-2^2` are evaluated
+- **THEN** they produce real values 64 and 4 respectively, reflecting left-associative power and tighter unary minus
+
 ### Requirement: Numeric evaluation and coercion
 Arithmetic SHALL use the reference operand compatibility, promotion, result type, rounding, truncation, division, modulo, exponentiation, unary sign, and overflow behavior. Statically invalid combinations SHALL be semantic diagnostics; runtime-only failures SHALL return positioned arithmetic diagnostics and SHALL never surface a Go panic, infinity, NaN, or wraparound unless the oracle explicitly produces the corresponding observable value.
 
@@ -84,6 +88,10 @@ Subexpressions, designator indices, statement expressions, and format expression
 #### Scenario: Approach an integer boundary
 - **WHEN** a `para` iteration reaches the maximum or minimum integer and another increment would overflow
 - **THEN** the loop terminates or reports the reference-compatible diagnostic without wrapping
+
+#### Scenario: Replay recorded loop exit state
+- **WHEN** the finite integer loops in the 2026-09-07 Windows observations complete normally, execute zero iterations, or reach `interrompa`
+- **THEN** normal nonempty completion exposes the smaller of the next iteration value and terminal bound, an empty loop exposes its initial bound, and interruption exposes the smaller of the body value and terminal bound, including the recorded descending cases
 
 ### Requirement: Interruption and return propagation
 `interrompa` and `retorne` SHALL be valid only in the oracle-confirmed contexts and SHALL propagate through nested blocks to the correct loop or call boundary. They SHALL not be swallowed by `escolha`, conditional, or repeat bodies, and a misplaced command SHALL be rejected before execution when statically knowable.
