@@ -13,13 +13,21 @@ import (
 func Parse(tokens []token.Token) (*ast.Program, []diag.Diagnostic) {
 	p := &parser{tokens: tokens}
 	prog := p.parseProgram()
+	if p.limited {
+		return nil, p.diags
+	}
+	if ds := ast.CheckLimits(prog); len(ds) != 0 {
+		return nil, diag.Ordered(append(p.diags, ds...))
+	}
 	return prog, p.diags
 }
 
 type parser struct {
-	tokens []token.Token
-	pos    int
-	diags  []diag.Diagnostic
+	tokens  []token.Token
+	pos     int
+	diags   []diag.Diagnostic
+	depth   int
+	limited bool
 }
 
 func (p *parser) parseProgram() *ast.Program {
@@ -64,6 +72,10 @@ func (p *parser) parseVarDecl() ast.VarDecl {
 }
 
 func (p *parser) parseType() ast.TypeSpec {
+	if !p.enter() {
+		return ast.TypeSpec{Name: "inteiro"}
+	}
+	defer func() { p.depth-- }()
 	tok := p.peek()
 	switch tok.Kind {
 	case token.INTEIRO, token.REAL, token.CARACTERE, token.LOGICO:
@@ -186,6 +198,10 @@ func (p *parser) parseStmtList(stops map[token.Kind]bool) []ast.Stmt {
 }
 
 func (p *parser) parseStmt() ast.Stmt {
+	if !p.enter() {
+		return nil
+	}
+	defer func() { p.depth-- }()
 	switch p.peek().Kind {
 	case token.IDENT:
 		return p.parseIdentStmt()
@@ -399,7 +415,25 @@ func (p *parser) peekN(n int) token.Token {
 }
 
 func (p *parser) error(tok token.Token, msg string) {
+	if p.limited {
+		return
+	}
 	p.diags = append(p.diags, diag.Diagnostic{Code: diag.EParse, Pos: tok.Pos, Message: msg})
+}
+
+func (p *parser) enter() bool {
+	if p.limited {
+		return false
+	}
+	if p.depth == ast.MaxDepth {
+		pos := p.peek().Pos
+		p.diags = append(p.diags, diag.Diagnostic{Code: diag.EResource, Pos: pos, End: pos + 1, Message: "syntax nesting limit exceeded"})
+		p.limited = true
+		p.pos = len(p.tokens)
+		return false
+	}
+	p.depth++
+	return true
 }
 
 func stopSet(kinds ...token.Kind) map[token.Kind]bool {

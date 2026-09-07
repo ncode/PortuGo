@@ -25,6 +25,10 @@ func TestCommandContracts(t *testing.T) {
 	if err := os.WriteFile(path, []byte(src), 0600); err != nil {
 		t.Fatal(err)
 	}
+	oversized := filepath.Join(t.TempDir(), "oversized.alg")
+	if err := os.WriteFile(oversized, []byte(strings.Repeat(" ", (4<<20)+1)), 0600); err != nil {
+		t.Fatal(err)
+	}
 	for _, tt := range []struct {
 		name                  string
 		args                  []string
@@ -34,6 +38,7 @@ func TestCommandContracts(t *testing.T) {
 		{"runtime", []string{"run", path}, "", "before", ":4:12: R002:", 1},
 		{"budget", []string{"run", "--max-steps", "2", path}, "", "before", ":4:1: R006:", 1},
 		{"check", []string{"check", path}, "", "", "", 0},
+		{"source limit", []string{"check", oversized}, "", "", "oversized.alg:1:4194305: E900:", 1},
 		{"fmt", []string{"fmt", path}, "", "algoritmo \"partial\"\ninicio\n  escreva(\"before\")\n  escreval((1 / 0))\nfimalgoritmo\n", "", 0},
 		{"missing", []string{"run"}, "", "", "usage:", 2},
 		{"unknown flag", []string{"check", "--bogus"}, "", "", "flag provided", 2},

@@ -161,6 +161,19 @@ are checked for address-space overflow; reference-specific storage quotas remain
 pending. These are project safeguards, not measured VisuAlg limits. A safeguard
 hit in an accepted reference example remains a conformance failure.
 
+Source files and REPL submissions are capped at 4 MiB of original bytes,
+including a BOM or CRLF bytes. Decoding checks this before allocating the UTF-8
+result, including Windows-1252 expansion. Syntax nesting and AST traversal are
+limited to 256 levels. A root statement or declared type starts at level one;
+its nested statements, expressions, or element types add levels. Redundant
+parentheses also count during parsing. Long flat expression chains are checked
+after parsing because their resulting AST can still be deep. Analysis and
+printing check the same AST bound before traversal or output.
+
+Source, syntax, and AST limits report positioned `E900` diagnostics. Exact
+boundary inputs remain accepted. An oversized REPL submission ends the session
+with status 1; recovery from that limit remains part of the later REPL work.
+
 Internally, `sema.Analyze` supplies immutable resolved types, vector layouts, and
 declaration/use bindings. `interp.New(Options).Run(program, info)` requires that
 successful result for the same unchanged AST and returns positioned diagnostics.
@@ -205,9 +218,8 @@ Runtime fixture output is compared byte for byte, including decimal separators,
 whitespace, and newlines. Git preserves committed fixture bytes on every
 platform, including Windows. Lexer/parser fuzz tests use a 64 KiB generated-source
 profile and adversarial cases have failing subprocess watchdogs. This profile
-is a test bound, not an enforced language source or parsing-depth limit.
-The execution safeguards above are active; source and front-end traversal
-limits remain planned in group 4 of the conformance change.
+is the smaller generated-input test profile. The source, traversal, and
+execution safeguards above also apply to ordinary use.
 
 See [development checks](development.md) and the
 [quality baseline](quality-baseline.md) for commands and measured coverage.

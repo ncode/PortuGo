@@ -2,11 +2,14 @@ package parser
 
 import (
 	"bytes"
+	"io"
 	"strings"
 	"testing"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/lexer"
+	"github.com/ncode/portugol-go/internal/sema"
+	"github.com/ncode/portugol-go/internal/source"
 	"github.com/ncode/portugol-go/internal/testprocess"
 )
 
@@ -51,8 +54,18 @@ func FuzzParser(f *testing.F) {
 		if len(src) > testprocess.MaxSourceBytes {
 			t.Skip("outside 64 KiB fuzz profile")
 		}
-		_, toks, _ := lexer.Scan("fuzz.alg", src)
-		Parse(toks)
+		decoded, err := source.Decode([]byte(src))
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, toks, lexDiags := lexer.Scan("fuzz.alg", decoded)
+		prog, parseDiags := Parse(toks)
+		if len(lexDiags)+len(parseDiags) == 0 {
+			sema.Analyze(prog)
+			if err := ast.Fprint(io.Discard, prog); err != nil {
+				t.Fatal(err)
+			}
+		}
 	})
 }
 

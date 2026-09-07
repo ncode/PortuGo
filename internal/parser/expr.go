@@ -9,6 +9,10 @@ import (
 )
 
 func (p *parser) parseExpr(minPrec int) ast.Expr {
+	if !p.enter() {
+		return &ast.LiteralExpr{Kind: ast.IntLiteral}
+	}
+	defer func() { p.depth-- }()
 	left := p.parseUnary()
 	for {
 		op := p.peek()

@@ -39,3 +39,34 @@ func TestStructuralLimits(t *testing.T) {
 		})
 	}
 }
+
+func TestTypeDepthLimit(t *testing.T) {
+	for _, vectors := range []int{255, 256} {
+		src := "algoritmo \"type\"\nvar v: " + strings.Repeat("vetor[1..1] de ", vectors) + "inteiro\ninicio\nfimalgoritmo"
+		_, toks, ds := lexer.Scan("type.alg", src)
+		if len(ds) != 0 {
+			t.Fatal(ds)
+		}
+		p, ds := Parse(toks)
+		if vectors == 255 {
+			if len(ds) != 0 {
+				t.Fatalf("type boundary rejected: %v", ds)
+			}
+		} else if p != nil || len(ds) != 1 || ds[0].Code != diag.EResource {
+			t.Fatalf("unbounded type: %v", ds)
+		}
+	}
+}
+
+func TestLimitKeepsEarlierDiagnostics(t *testing.T) {
+	for _, expr := range []string{strings.Repeat("(", 300) + "1" + strings.Repeat(")", 300), strings.Repeat("1+", 300) + "1"} {
+		_, toks, ds := lexer.Scan("invalid.alg", "algoritmo\ninicio\nescreva("+expr+")\nfimalgoritmo")
+		if len(ds) != 0 {
+			t.Fatal(ds)
+		}
+		p, ds := Parse(toks)
+		if p != nil || len(ds) != 2 || ds[0].Code != diag.EParse || ds[1].Code != diag.EResource {
+			t.Fatalf("lost error or skipped guard: %v", ds)
+		}
+	}
+}

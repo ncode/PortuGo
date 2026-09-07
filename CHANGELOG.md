@@ -13,6 +13,11 @@
 - Linked existing corpus-tooling tests and recorded feature dispositions to their
   specification requirements, with reviewed reasons for project-only evidence.
   Language recordings, bundled examples, and full acceptance remain incomplete.
+- Added 4 MiB source/submission limits and 256-level syntax/AST traversal limits
+  with positioned `E900` diagnostics. Windows-1252 decoding checks original
+  bytes before expansion; analysis and formatting reject deep trees before
+  traversal or output. Grammar, vocabulary, and comment compatibility remain
+  pending additional reference evidence.
 - Replaced the internal check/run APIs with immutable semantic information,
   interpreter options, injectable host/random sources, and positioned runtime
   diagnostics (`R001`–`R008`). Added call, expression, text, and formatting guards;

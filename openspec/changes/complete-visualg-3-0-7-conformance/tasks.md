@@ -84,7 +84,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 - [ ] 4.6 Make parser production boundaries newline-aware and enforce the reference program header, declaration region, body, terminators, and post-`fimalgoritmo` behavior.
 - [ ] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
 - [ ] 4.8 Add structural and newline synchronization that collects independent parser diagnostics without panics, duplicate errors, or infinite loops.
-- [ ] 4.9 Enforce source-size and syntax/AST-traversal limits from design decision 10 across source loading, parsing, analysis, and printing, reserving `E900`; cover flat expression chains and exact boundary/one-beyond cases before recursion or allocation.
+- [x] 4.9 Enforce source-size and syntax/AST-traversal limits from design decision 10 across source loading, parsing, analysis, and printing, reserving `E900`; cover flat expression chains and exact boundary/one-beyond cases before recursion or allocation.
 - [ ] 4.10 Extend canonical printing and round-trip tests to retain every comment exactly once with its anchor and suffix, comparing comment content/order as well as AST structure and idempotence.
 - [ ] 4.11 Expand lexer/parser fuzz and subprocess adversarial cases with newline, encoding, comment, literal, deep-nesting, truncation, and oversized inputs; assert controlled limit diagnostics and fail on watchdog expiration.
 - [ ] 4.12 Update `docs/language.md`, grammar examples, and `CHANGELOG.md` with spellings, newline rules, retained comments/suffixes, source/depth limits, and breaking rejections.

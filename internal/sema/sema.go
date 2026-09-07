@@ -18,6 +18,9 @@ func Analyze(prog *ast.Program) (*Info, []diag.Diagnostic) {
 		c.error(token.NoPos, diag.ETypeMismatch, "missing program")
 		return info, c.diags
 	}
+	if ds := ast.CheckLimits(prog); len(ds) != 0 {
+		return info, ds
+	}
 	c.declareBuiltins()
 	c.checkProgram(prog)
 	info.valid = !diag.HasErrors(c.diags)

@@ -9,6 +9,9 @@ import (
 
 // Fprint writes a deterministic source-like representation of prog.
 func Fprint(w io.Writer, prog *Program) error {
+	if ds := CheckLimits(prog); len(ds) != 0 {
+		return ds[0]
+	}
 	p := &printer{w: w}
 	p.line("algoritmo %s", strconv.Quote(prog.Name))
 	p.printDecls(prog.Globals)

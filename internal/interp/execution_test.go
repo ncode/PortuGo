@@ -119,7 +119,6 @@ func TestCallAndValueLimits(t *testing.T) {
 			code      diag.Code
 		}{
 			{"recursion", "algoritmo \"x\"\nprocedimento p()\ninicio\np()\nfimprocedimento\ninicio\np()\nfimalgoritmo", diag.RCall},
-			{"expression", "algoritmo \"x\"\ninicio\nescreva(" + strings.Repeat("1+", 300) + "1)\nfimalgoritmo", diag.RStorage},
 			{"text", "algoritmo \"x\"\nvar s: caractere\ninicio\ns <- \"a\"\nenquanto verdadeiro faca\ns <- s+s\nfimenquanto\nfimalgoritmo", diag.RStorage},
 			{"format", "algoritmo \"x\"\ninicio\nescreva(1:9223372036854775807)\nfimalgoritmo", diag.RStorage},
 		} {
@@ -248,4 +247,20 @@ func TestBuiltinCallBindingWithLocalName(t *testing.T) {
 	if len(ds) != 0 || out.String() != " 1 7" {
 		t.Fatalf("builtin binding changed: %v %q", ds, &out)
 	}
+}
+
+func TestDefensiveEvaluationDepth(t *testing.T) {
+	testprocess.Run(t, func() {
+		p, info := analyzed(t, "algoritmo \"cycle\"\ninicio\nescreva(1+1)\nfimalgoritmo")
+		expr := p.Body[0].(*ast.WriteStmt).Args[0].Expr.(*ast.BinaryExpr)
+		expr.Left = expr // Corrupted syntax must not bypass the runtime guard.
+		i := New(Options{MaxSteps: 10000})
+		if ds := i.Run(p, info); len(ds) != 1 || ds[0].Code != diag.RStorage {
+			t.Fatalf("missing evaluation guard: %v", ds)
+		}
+		p, info = analyzed(t, "algoritmo \"ok\"\ninicio\nescreva(1)\nfimalgoritmo")
+		if ds := i.Run(p, info); len(ds) != 0 {
+			t.Fatalf("failed traversal polluted next run: %v", ds)
+		}
+	})
 }
