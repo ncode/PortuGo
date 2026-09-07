@@ -1,0 +1,2 @@
+# Preserve fixture bytes, including intentional line endings and encodings.
+**/testdata/** -text

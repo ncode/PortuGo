@@ -47,6 +47,10 @@ files fail. To intentionally regenerate those fixtures, run
 errors report a repository-relative path, the first differing byte, lengths,
 and quoted context without normalizing whitespace or encoding.
 
+`.gitattributes` disables Git text conversion for every `testdata` directory.
+This preserves committed fixture bytes on checkout and staging, including LF,
+CRLF, and Windows-1252 data, even when `core.autocrlf=true` on Windows.
+
 The oracle gate is a visible placeholder until group 2 installs the corpus and
 validator. It then runs evidence validation, which allows recorded probes with
 pending implementations. Groups 3–16 will additionally require incremental
