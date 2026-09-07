@@ -54,7 +54,7 @@ type generatedFile struct {
 }
 
 // observation also defines the state/host adapter boundary used by group 3.
-// Subprocess replay cannot claim verification of these two channels yet.
+// Subprocess replay uses the deterministic execution adapter for these channels.
 type observation struct {
 	ExitCode    int             `json:"exitCode"`
 	Stdout      artifact        `json:"stdout"`
@@ -79,6 +79,7 @@ type probe struct {
 	Input          artifact        `json:"input"`
 	Files          []generatedFile `json:"files,omitempty"`
 	TimeoutMS      int             `json:"timeoutMS"`
+	MaxSteps       uint64          `json:"maxSteps,omitempty"`
 	Evidence       evidence        `json:"evidence"`
 	Implementation implementation  `json:"implementation"`
 }

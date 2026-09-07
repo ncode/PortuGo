@@ -46,7 +46,8 @@ func checkSource(t *testing.T, src string) []diag.Diagnostic {
 	if len(parseDiags) > 0 {
 		t.Fatalf("parser diagnostics: %v", parseDiags)
 	}
-	return Check(prog)
+	_, diags := Analyze(prog)
+	return diags
 }
 
 func TestExpArguments(t *testing.T) {

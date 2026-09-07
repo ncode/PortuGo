@@ -40,12 +40,13 @@ func TestRunFixtures(t *testing.T) {
 			if len(parseDiags) > 0 {
 				t.Fatalf("parser diagnostics: %v", parseDiags)
 			}
-			if semaDiags := sema.Check(prog); len(semaDiags) > 0 {
+			info, semaDiags := sema.Analyze(prog)
+			if len(semaDiags) > 0 {
 				t.Fatalf("sema diagnostics: %v", semaDiags)
 			}
 			in := readOptional(t, strings.TrimSuffix(path, ".alg")+".in")
 			var out bytes.Buffer
-			if err := interp.New(strings.NewReader(in), &out).Run(prog); err != nil {
+			if err := interp.New(interp.Options{Input: strings.NewReader(in), Output: &out}).Run(prog, info); err != nil {
 				t.Fatal(err)
 			}
 			if err := golden.Compare(".", strings.TrimSuffix(path, ".alg")+".out", out.Bytes(), *updateGolden); err != nil {

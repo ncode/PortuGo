@@ -10,12 +10,18 @@ import (
 	"github.com/ncode/portugol-go/internal/token"
 )
 
-// Check validates names, types, calls, loop control, and returns.
-func Check(prog *ast.Program) []diag.Diagnostic {
-	c := &checker{scope: newScope(nil)}
+// Analyze resolves names, types, layouts, calls, loop control, and returns.
+func Analyze(prog *ast.Program) (*Info, []diag.Diagnostic) {
+	info := &Info{program: prog, types: make(map[ast.Expr]runtime.Type), bindings: make(map[token.Pos]Binding), names: make(map[token.Pos]string)}
+	c := &checker{scope: newScope(nil), info: info}
+	if prog == nil {
+		c.error(token.NoPos, diag.ETypeMismatch, "missing program")
+		return info, c.diags
+	}
 	c.declareBuiltins()
 	c.checkProgram(prog)
-	return c.diags
+	info.valid = !diag.HasErrors(c.diags)
+	return info, diag.Ordered(c.diags)
 }
 
 type symbolKind int
@@ -34,6 +40,7 @@ type paramSig struct {
 }
 
 type symbol struct {
+	pos    token.Pos
 	name   string
 	kind   symbolKind
 	typ    runtime.Type
@@ -46,6 +53,7 @@ type scope struct {
 }
 
 type checker struct {
+	info       *Info
 	scope      *scope
 	diags      []diag.Diagnostic
 	loopDepth  int
@@ -92,7 +100,9 @@ func (c *checker) declareVars(decl ast.VarDecl) {
 	c.validateType(decl.Type, typ)
 	for _, name := range decl.Names {
 		key := canon(name.Text)
-		if !c.scope.declare(symbol{name: key, kind: varSym, typ: typ}) {
+		sym := symbol{pos: name.Pos, name: key, kind: varSym, typ: typ}
+		c.recordBinding(name, sym)
+		if !c.scope.declare(sym) {
 			c.error(name.Pos, diag.ERedeclared, "redeclared identifier %q", name.Text)
 		}
 	}
@@ -101,7 +111,7 @@ func (c *checker) declareVars(decl ast.VarDecl) {
 func (c *checker) declareSub(sub ast.Subprogram) {
 	nameTok := sub.NameToken()
 	key := canon(nameTok.Text)
-	sym := symbol{name: key}
+	sym := symbol{pos: nameTok.Pos, name: key}
 	switch d := sub.(type) {
 	case *ast.ProcedureDecl:
 		sym.kind = procSym
@@ -113,6 +123,7 @@ func (c *checker) declareSub(sub ast.Subprogram) {
 		sym.params = paramsFromAST(d.Params)
 		c.validateType(d.Return, sym.typ)
 	}
+	c.recordBinding(nameTok, sym)
 	if !c.scope.declare(sym) {
 		c.error(nameTok.Pos, diag.ERedeclared, "redeclared identifier %q", nameTok.Text)
 	}
@@ -161,7 +172,9 @@ func (c *checker) declareParams(params []ast.Param) {
 	for _, p := range params {
 		typ := runtime.TypeFromSpec(p.Type)
 		c.validateType(p.Type, typ)
-		if !c.scope.declare(symbol{name: canon(p.Name.Text), kind: varSym, typ: typ}) {
+		sym := symbol{pos: p.Name.Pos, name: canon(p.Name.Text), kind: varSym, typ: typ}
+		c.recordBinding(p.Name, sym)
+		if !c.scope.declare(sym) {
 			c.error(p.Name.Pos, diag.ERedeclared, "redeclared parameter %q", p.Name.Text)
 		}
 	}
@@ -172,6 +185,10 @@ func (c *checker) validateType(spec ast.TypeSpec, typ runtime.Type) {
 		c.error(spec.At, diag.ETypeMismatch, "invalid type")
 	}
 	if typ.Kind == runtime.VectorType {
+		if _, err := typ.Slots(); err != nil {
+			c.error(spec.At, diag.ETypeMismatch, "%s", err)
+			return
+		}
 		for _, r := range spec.Ranges {
 			if r.High < r.Low {
 				c.error(r.At, diag.ETypeMismatch, "vector upper bound is smaller than lower bound")
@@ -219,7 +236,7 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		c.withLoop(func() { c.checkStmts(s.Body) })
 		c.requireBool(s.Cond)
 	case *ast.ForStmt:
-		sym, ok := c.scope.lookup(canon(s.Name.Text))
+		sym, ok := c.lookup(s.Name)
 		if !ok || sym.kind != varSym {
 			c.error(s.Name.Pos, diag.EUndeclared, "undeclared loop variable %q", s.Name.Text)
 		} else if sym.typ.Kind != runtime.IntegerType {
@@ -266,7 +283,8 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 	}
 }
 
-func (c *checker) expr(expr ast.Expr) runtime.Type {
+func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
+	defer func() { c.info.types[expr] = typ }()
 	switch e := expr.(type) {
 	case *ast.LiteralExpr:
 		switch e.Kind {
@@ -280,7 +298,7 @@ func (c *checker) expr(expr ast.Expr) runtime.Type {
 			return runtime.Type{Kind: runtime.BoolType}
 		}
 	case *ast.IdentExpr:
-		sym, ok := c.scope.lookup(canon(e.Name.Text))
+		sym, ok := c.lookup(e.Name)
 		if !ok {
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}
@@ -381,15 +399,17 @@ func (c *checker) numericBinary(pos token.Pos, left, right runtime.Type) runtime
 	return runtime.Type{Kind: runtime.InvalidType}
 }
 
-func (c *checker) checkCall(call *ast.CallExpr, asStmt bool) runtime.Type {
+func (c *checker) checkCall(call *ast.CallExpr, asStmt bool) (typ runtime.Type) {
+	defer func() { c.info.types[call] = typ }()
 	name := canon(call.Name.Text)
 	if ret, ok := c.builtinCallType(name, call); ok {
+		c.recordBinding(call.Name, symbol{name: name, kind: builtinSym, typ: ret})
 		if asStmt && ret.Kind != runtime.VoidType {
 			return ret
 		}
 		return ret
 	}
-	sym, ok := c.scope.lookup(name)
+	sym, ok := c.lookup(call.Name)
 	if !ok {
 		c.error(call.Name.Pos, diag.EUndeclared, "undeclared callable %q", call.Name.Text)
 		return runtime.Type{Kind: runtime.InvalidType}
@@ -425,7 +445,7 @@ func (c *checker) checkArgs(call *ast.CallExpr, params []paramSig) {
 func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 	switch e := expr.(type) {
 	case *ast.IdentExpr:
-		sym, ok := c.scope.lookup(canon(e.Name.Text))
+		sym, ok := c.lookup(e.Name)
 		if !ok {
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}, false
@@ -434,6 +454,7 @@ func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 			c.error(e.Name.Pos, diag.ETypeMismatch, "%q is not assignable", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}, false
 		}
+		c.info.types[expr] = sym.typ
 		return sym.typ, true
 	case *ast.IndexExpr:
 		return c.expr(e), true

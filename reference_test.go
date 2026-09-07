@@ -46,7 +46,7 @@ func TestRecordedWindowsProbes(t *testing.T) {
 				if len(lexDiags)+len(parseDiags) != 0 {
 					t.Fatalf("unexpected diagnostics: %v %v", lexDiags, parseDiags)
 				}
-				diags := sema.Check(prog)
+				info, diags := sema.Analyze(prog)
 				var code diag.Code
 				var line int
 				count := 1
@@ -84,7 +84,7 @@ func TestRecordedWindowsProbes(t *testing.T) {
 				// The portable CLI writes LF; no other program-output bytes change.
 				want = strings.ReplaceAll(want, "\r\n", "\n")
 				var out bytes.Buffer
-				if err := interp.New(strings.NewReader(""), &out).Run(prog); err != nil {
+				if err := interp.New(interp.Options{Output: &out}).Run(prog, info); err != nil {
 					t.Fatal(err)
 				}
 				if out.String() != want {

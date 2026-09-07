@@ -13,6 +13,14 @@
 - Linked existing corpus-tooling tests and recorded feature dispositions to their
   specification requirements, with reviewed reasons for project-only evidence.
   Language recordings, bundled examples, and full acceptance remain incomplete.
+- Replaced the internal check/run APIs with immutable semantic information,
+  interpreter options, injectable host/random sources, and positioned runtime
+  diagnostics (`R001`–`R008`). Added call, expression, text, and formatting guards;
+  `run` and `repl` accept `--max-steps`. CLI usage errors exit 2, handled failures
+  exit 1, and preceding language output is preserved. REPL input is shared with
+  `leia`. Added finite corpus budgets and deterministic state/host observations.
+  Fixed overflowing substring lengths and large valid output widths. These
+  project safeguards do not establish additional reference compatibility.
 - Preserve conformance history for pending probes, inventory entries, linked
   tasks, and prior retirements. Removed IDs require reviewed dispositions;
   replacements may identify an active probe, inventory entry, or task.

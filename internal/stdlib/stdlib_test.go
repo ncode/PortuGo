@@ -26,7 +26,7 @@ func TestExp(t *testing.T) {
 		{"bad exponent", []runtime.Value{integer, text}, 0, true},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			got, found, err := New().Call("exp", tt.args)
+			got, found, err := New(nil).Call("exp", tt.args)
 			if !found || (err != nil) != tt.wantErr {
 				t.Fatalf("found = %v, error = %v, want error %v", found, err, tt.wantErr)
 			}

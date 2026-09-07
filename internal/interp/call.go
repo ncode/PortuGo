@@ -1,25 +1,33 @@
 package interp
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
-	"github.com/ncode/portugol-go/internal/stdlib"
 )
 
-func (i *Interpreter) callFunction(call *ast.CallExpr) (runtime.Value, error) {
-	name := canon(call.Name.Text)
-	if stdlib.IsBuiltin(name) {
+func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err error) {
+	defer func() { err = failure(call.Start(), diag.RCall, err) }()
+	b, ok := i.info.Binding(call.Name)
+	if !ok {
+		return value, failure(call.Start(), diag.RType, fmt.Errorf("missing call binding"))
+	}
+	if b.Builtin {
 		args, err := i.evalArgs(call.Args)
 		if err != nil {
 			return runtime.Value{}, err
 		}
-		if v, ok, err := i.lib.Call(name, args); ok {
-			return v, err
+		if v, ok, err := i.lib.Call(b.Name, args); ok {
+			if errors.Is(err, runtime.ErrTextSize) {
+				return v, failure(call.Start(), diag.RStorage, err)
+			}
+			return v, failure(call.Start(), diag.RBuiltin, err)
 		}
 	}
-	sub, ok := i.subs[name]
+	sub, ok := i.subs[b.ID]
 	if !ok {
 		return runtime.Value{}, fmt.Errorf("undefined function %q", call.Name.Text)
 	}
@@ -30,9 +38,20 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (runtime.Value, error) {
 	return i.callUserFunction(fn, call.Args)
 }
 
-func (i *Interpreter) callProcedure(call *ast.CallExpr) error {
-	name := canon(call.Name.Text)
-	sub, ok := i.subs[name]
+func (i *Interpreter) callProcedure(call *ast.CallExpr) (err error) {
+	if err := i.charge(call.Start()); err != nil {
+		return err
+	}
+	defer func() { err = failure(call.Start(), diag.RCall, err) }()
+	b, ok := i.info.Binding(call.Name)
+	if !ok {
+		return failure(call.Start(), diag.RType, fmt.Errorf("missing call binding"))
+	}
+	if b.Builtin {
+		_, err := i.callFunction(call)
+		return err
+	}
+	sub, ok := i.subs[b.ID]
 	if !ok {
 		return fmt.Errorf("undefined procedure %q", call.Name.Text)
 	}
@@ -40,44 +59,59 @@ func (i *Interpreter) callProcedure(call *ast.CallExpr) error {
 	if !ok {
 		return fmt.Errorf("%q is not a procedure", call.Name.Text)
 	}
-	_, err := i.callSub(proc.Params, proc.Locals, proc.Body, runtime.Type{Kind: runtime.VoidType}, call.Args)
+	_, err = i.callSub(proc.Params, proc.Locals, proc.Body, runtime.Type{Kind: runtime.VoidType}, call.Args)
 	return err
 }
 
 func (i *Interpreter) callUserFunction(fn *ast.FunctionDecl, args []ast.Expr) (runtime.Value, error) {
-	retType := runtime.TypeFromSpec(fn.Return)
-	return i.callSub(fn.Params, fn.Locals, fn.Body, retType, args)
+	b, ok := i.info.Binding(fn.Name)
+	if !ok {
+		return runtime.Value{}, failure(fn.Start(), diag.RType, fmt.Errorf("missing return type"))
+	}
+	return i.callSub(fn.Params, fn.Locals, fn.Body, b.Type, args)
 }
 
 func (i *Interpreter) callSub(params []ast.Param, locals []ast.VarDecl, body []ast.Stmt, retType runtime.Type, args []ast.Expr) (runtime.Value, error) {
+	if i.calls == maxCalls {
+		return runtime.Value{}, fmt.Errorf("active call limit exceeded")
+	}
 	if len(args) != len(params) {
 		return runtime.Value{}, fmt.Errorf("expected %d arguments, got %d", len(params), len(args))
 	}
 	outer := i.env
-	callEnv := newEnv(outer)
-	i.env = callEnv
-	defer func() { i.env = outer }()
+	callEnv := newEnv(i.global)
 	for idx, param := range params {
-		typ := runtime.TypeFromSpec(param.Type)
+		b, ok := i.info.Binding(param.Name)
+		if !ok {
+			return runtime.Value{}, failure(param.Name.Pos, diag.RType, fmt.Errorf("missing parameter layout"))
+		}
+		typ := b.Type
 		if param.ByRef {
-			cell, err := i.lvalueIn(outer, args[idx])
+			cell, err := i.lvalue(args[idx])
 			if err != nil {
 				return runtime.Value{}, err
 			}
-			callEnv.bind(param.Name.Text, cell)
+			callEnv.bind(b.ID, cell)
 			continue
 		}
-		v, err := i.evalIn(outer, args[idx])
+		v, err := i.eval(args[idx])
 		if err != nil {
 			return runtime.Value{}, err
 		}
-		cell := callEnv.define(param.Name.Text, typ)
+		cell := callEnv.define(b.ID, typ)
 		if err := assign(cell, v); err != nil {
 			return runtime.Value{}, err
 		}
 	}
+	i.env = callEnv
+	depth := i.depth
+	i.depth = 0
+	i.calls++
+	defer func() { i.env = outer; i.depth = depth; i.calls-- }()
 	for _, decl := range locals {
-		i.defineVars(decl)
+		if err := i.defineVars(decl); err != nil {
+			return runtime.Value{}, err
+		}
 	}
 	ctrl, err := i.execStmts(body)
 	if err != nil {
@@ -105,18 +139,4 @@ func (i *Interpreter) evalArgs(args []ast.Expr) ([]runtime.Value, error) {
 		values[idx] = v
 	}
 	return values, nil
-}
-
-func (i *Interpreter) evalIn(e *env, expr ast.Expr) (runtime.Value, error) {
-	outer := i.env
-	i.env = e
-	defer func() { i.env = outer }()
-	return i.eval(expr)
-}
-
-func (i *Interpreter) lvalueIn(e *env, expr ast.Expr) (*runtime.Cell, error) {
-	outer := i.env
-	i.env = e
-	defer func() { i.env = outer }()
-	return i.lvalue(expr)
 }

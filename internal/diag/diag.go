@@ -3,6 +3,7 @@ package diag
 import (
 	"fmt"
 	"io"
+	"slices"
 
 	"github.com/ncode/portugol-go/internal/token"
 )
@@ -23,13 +24,54 @@ const (
 	ECall         Code = "E004"
 	EReturn       Code = "E005"
 	EBreak        Code = "E006"
+	EResource     Code = "E900"
+
+	// Runtime diagnostic categories.
+	RType       Code = "R001"
+	RArithmetic Code = "R002"
+	RStorage    Code = "R003"
+	RInput      Code = "R004"
+	RCall       Code = "R005"
+	RLoop       Code = "R006"
+	RBuiltin    Code = "R007"
+	RHost       Code = "R008"
+)
+
+// Severity describes whether a diagnostic prevents execution.
+type Severity uint8
+
+const (
+	Error Severity = iota
+	Warning
+	Note
 )
 
 // Diagnostic describes a user-facing problem.
 type Diagnostic struct {
-	Code    Code
-	Pos     token.Pos
-	Message string
+	Code     Code
+	Pos      token.Pos
+	Message  string
+	Severity Severity
+	End      token.Pos // Exclusive end; zero means no recorded span.
+	Cause    error     // Retained for inspection, never appended to rendered output.
+}
+
+// Unwrap exposes the optional underlying cause.
+func (d Diagnostic) Unwrap() error { return d.Cause }
+
+// Ordered returns a stable source-ordered copy without modifying its input.
+func Ordered(diags []Diagnostic) []Diagnostic {
+	out := slices.Clone(diags)
+	slices.SortStableFunc(out, func(a, b Diagnostic) int {
+		if a.Pos < b.Pos {
+			return -1
+		}
+		if a.Pos > b.Pos {
+			return 1
+		}
+		return 0
+	})
+	return out
 }
 
 // Error implements error for convenient test output.
@@ -42,7 +84,7 @@ func (d Diagnostic) Error() string {
 
 // Render writes diagnostics with source positions.
 func Render(w io.Writer, file *token.File, diags []Diagnostic) {
-	for _, d := range diags {
+	for _, d := range Ordered(diags) {
 		pos := token.Position{}
 		if file != nil {
 			pos = file.Position(d.Pos)
@@ -55,7 +97,12 @@ func Render(w io.Writer, file *token.File, diags []Diagnostic) {
 	}
 }
 
-// HasErrors reports whether diagnostics contains any entries.
+// HasErrors reports whether diagnostics contains an error.
 func HasErrors(diags []Diagnostic) bool {
-	return len(diags) > 0
+	for _, d := range diags {
+		if d.Severity == Error {
+			return true
+		}
+	}
+	return false
 }

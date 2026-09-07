@@ -22,6 +22,7 @@ func TestRunExitStatus(t *testing.T) {
 		exit               int
 	}{
 		{"valid", "", "ok\n", 0},
+		{"runtime_error", "R002", "before", 1},
 		{"lexer", "L001", "", 1},
 		{"parser", "P001", "", 1},
 		{"undeclared", "E002", "", 1},

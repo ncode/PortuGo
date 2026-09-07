@@ -59,18 +59,18 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
 ## 3. Semantic Handoff, Interpreter Options, Diagnostics, and CLI Statuses
 
-- [ ] 3.1 Add failing tests for `sema.Analyze` facts for existing syntax, interpreter options, fake host/random injection, `R001`-`R008`, runtime positions, call/value/step limits, and CLI exit statuses 0, 1, and 2.
-- [ ] 3.2 Extend diagnostics with stable severity, spans, optional wrapped causes, deterministic ordering, and the eight locked runtime codes without changing existing compile-time codes unintentionally.
-- [ ] 3.3 Implement immutable `sema.Info` for existing expression/designator types, vector layouts, and declaration/use bindings. Add conditional constant/record/type facts only in group 6 if accepted, and extended bounds/slot facts in group 7.
-- [ ] 3.4 Replace `sema.Check` with `sema.Analyze(*ast.Program) (*sema.Info, []diag.Diagnostic)` and migrate semantic tests to assert both diagnostics and resolved facts.
-- [ ] 3.5 Add `interp.Options`, `RandomSource`, typed `Host`, typed breakpoint/display values, deterministic fakes, and the documented default headless behavior.
-- [ ] 3.6 Replace interpreter construction with `interp.New(interp.Options)` and resolve input, output, working directory, host, and random defaults once per interpreter.
-- [ ] 3.7 Replace `Run(program) error` with `Run(program, info) []diag.Diagnostic`, position every existing runtime failure, and defensively reject missing or inconsistent semantic information.
-- [ ] 3.8 Migrate CLI, REPL, integration tests, and all other callers atomically to the semantic handoff and new interpreter boundary; remove the old execution paths.
-- [ ] 3.9 Refactor CLI dispatch to preserve language stdout, render diagnostics on stderr, use statuses 0/1/2, and expose `--max-steps` on `run` and `repl` with zero meaning no execution budget.
-- [ ] 3.10 Add subprocess golden tests for `run`, `check`, `fmt`, and invalid usage, including output produced before a runtime failure.
-- [ ] 3.11 Implement the shared per-run step budget, active-call and evaluation-depth guards, and checked text/format allocation limits from design decision 10. Cover empty loops, recursion, value growth, boundary side effects, and cleanup; enable budgeted corpus runs with state/host observation adapters and bounded I/O fakes.
-- [ ] 3.12 Update `docs/language.md` with runtime diagnostics, safeguard defaults, the optional execution budget, and exit statuses; record the breaking internal boundary and project-specific limits in `CHANGELOG.md`.
+- [x] 3.1 Add failing tests for `sema.Analyze` facts for existing syntax, interpreter options, fake host/random injection, `R001`-`R008`, runtime positions, call/value/step limits, and CLI exit statuses 0, 1, and 2.
+- [x] 3.2 Extend diagnostics with stable severity, spans, optional wrapped causes, deterministic ordering, and the eight locked runtime codes without changing existing compile-time codes unintentionally.
+- [x] 3.3 Implement immutable `sema.Info` for existing expression/designator types, vector layouts, and declaration/use bindings. Add conditional constant/record/type facts only in group 6 if accepted, and extended bounds/slot facts in group 7.
+- [x] 3.4 Replace `sema.Check` with `sema.Analyze(*ast.Program) (*sema.Info, []diag.Diagnostic)` and migrate semantic tests to assert both diagnostics and resolved facts.
+- [x] 3.5 Add `interp.Options`, `RandomSource`, typed `Host`, typed breakpoint/display values, deterministic fakes, and the documented default headless behavior.
+- [x] 3.6 Replace interpreter construction with `interp.New(interp.Options)` and resolve input, output, working directory, host, and random defaults once per interpreter.
+- [x] 3.7 Replace `Run(program) error` with `Run(program, info) []diag.Diagnostic`, position every existing runtime failure, and defensively reject missing or inconsistent semantic information.
+- [x] 3.8 Migrate CLI, REPL, integration tests, and all other callers atomically to the semantic handoff and new interpreter boundary; remove the old execution paths.
+- [x] 3.9 Refactor CLI dispatch to preserve language stdout, render diagnostics on stderr, use statuses 0/1/2, and expose `--max-steps` on `run` and `repl` with zero meaning no execution budget.
+- [x] 3.10 Add subprocess golden tests for `run`, `check`, `fmt`, and invalid usage, including output produced before a runtime failure.
+- [x] 3.11 Implement the shared per-run step budget, active-call and evaluation-depth guards, and checked text/format allocation limits from design decision 10. Cover empty loops, recursion, value growth, boundary side effects, and cleanup; enable budgeted corpus runs with state/host observation adapters and bounded I/O fakes.
+- [x] 3.12 Update `docs/language.md` with runtime diagnostics, safeguard defaults, the optional execution budget, and exit statuses; record the breaking internal boundary and project-specific limits in `CHANGELOG.md`.
 - [ ] 3.13 Run focused sema/interpreter/diagnostic/CLI/limit tests and then the full build, lint, ordinary, race, incremental corpus, and strict OpenSpec suites.
 - [ ] 3.14 Mark every completed 3.x task immediately, commit the focused migration, push the next stacked branch, and open its draft PR before group 4.
 

@@ -3,33 +3,27 @@ package stdlib
 import (
 	"fmt"
 	"math"
-	"math/rand"
 	"strings"
-	"time"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/ncode/portugol-go/internal/runtime"
 )
 
 // Library stores stateful built-ins such as aleatorio.
 type Library struct {
-	rng *rand.Rand
+	rng RandomSource
 }
 
-var builtinNames = map[string]bool{
-	"abs": true, "raizq": true, "exp": true, "log": true, "logn": true, "pi": true,
-	"sen": true, "cos": true, "tan": true, "int": true, "frac": true, "aleatorio": true,
-	"copia": true, "maiusc": true, "minusc": true, "asc": true, "carac": true,
-	"compr": true, "pos": true,
-}
-
-// IsBuiltin reports whether name is a standard function.
-func IsBuiltin(name string) bool {
-	return builtinNames[name]
+// RandomSource is the randomness consumed by aleatorio.
+type RandomSource interface {
+	Float64() float64
+	Uint64N(uint64) uint64
 }
 
 // New creates a standard library instance.
-func New() *Library {
-	return &Library{rng: rand.New(rand.NewSource(time.Now().UnixNano()))}
+func New(random RandomSource) *Library {
+	return &Library{rng: random}
 }
 
 // Call invokes a built-in function by canonical lowercase name.
@@ -62,9 +56,9 @@ func (l *Library) Call(name string, args []runtime.Value) (runtime.Value, bool, 
 	case "copia":
 		return copia(args)
 	case "maiusc":
-		return string1(args, strings.ToUpper)
+		return string1(args, unicode.ToUpper)
 	case "minusc":
-		return string1(args, strings.ToLower)
+		return string1(args, unicode.ToLower)
 	case "asc":
 		return asc(args)
 	case "carac":
@@ -171,7 +165,7 @@ func (l *Library) random(args []runtime.Value) (runtime.Value, bool, error) {
 		if n <= 0 {
 			return runtime.Value{}, true, fmt.Errorf("aleatorio upper bound must be positive")
 		}
-		return runtime.Value{Kind: runtime.IntegerValue, Int: l.rng.Int63n(n)}, true, nil
+		return runtime.Value{Kind: runtime.IntegerValue, Int: int64(l.rng.Uint64N(uint64(n)))}, true, nil
 	case 2:
 		lo, err := asInt(args[0])
 		if err != nil {
@@ -184,7 +178,11 @@ func (l *Library) random(args []runtime.Value) (runtime.Value, bool, error) {
 		if hi < lo {
 			lo, hi = hi, lo
 		}
-		return runtime.Value{Kind: runtime.IntegerValue, Int: lo + l.rng.Int63n(hi-lo+1)}, true, nil
+		width := uint64(hi) - uint64(lo) + 1
+		if width == 0 {
+			return runtime.Value{}, true, fmt.Errorf("aleatorio range exceeds representable draw size")
+		}
+		return runtime.Value{Kind: runtime.IntegerValue, Int: int64(uint64(lo) + l.rng.Uint64N(width))}, true, nil
 	default:
 		return runtime.Value{}, true, fmt.Errorf("aleatorio expects 0 to 2 arguments")
 	}
@@ -195,26 +193,28 @@ func copia(args []runtime.Value) (runtime.Value, bool, error) {
 		return runtime.Value{}, true, fmt.Errorf("copia expects 3 arguments")
 	}
 	s := []rune(args[0].Str)
-	start := args[1].Int - 1
+	start := max(int64(1), args[1].Int) - 1
 	n := args[2].Int
-	if start < 0 {
-		start = 0
-	}
 	if n < 0 || start >= int64(len(s)) {
 		return runtime.Value{Kind: runtime.StringValue}, true, nil
 	}
-	end := start + n
-	if end > int64(len(s)) {
-		end = int64(len(s))
-	}
+	end := start + min(n, int64(len(s))-start)
 	return runtime.Value{Kind: runtime.StringValue, Str: string(s[int(start):int(end)])}, true, nil
 }
 
-func string1(args []runtime.Value, fn func(string) string) (runtime.Value, bool, error) {
+func string1(args []runtime.Value, fn func(rune) rune) (runtime.Value, bool, error) {
 	if len(args) != 1 {
 		return runtime.Value{}, true, fmt.Errorf("function expects 1 argument")
 	}
-	return runtime.Value{Kind: runtime.StringValue, Str: fn(args[0].Str)}, true, nil
+	size := 0
+	for _, r := range args[0].Str {
+		n := utf8.RuneLen(fn(r))
+		if size > runtime.MaxTextBytes-n {
+			return runtime.Value{}, true, runtime.ErrTextSize
+		}
+		size += n
+	}
+	return runtime.Value{Kind: runtime.StringValue, Str: strings.Map(fn, args[0].Str)}, true, nil
 }
 
 func asc(args []runtime.Value) (runtime.Value, bool, error) {

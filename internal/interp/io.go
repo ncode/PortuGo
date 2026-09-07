@@ -2,12 +2,17 @@ package interp
 
 import (
 	"fmt"
+	"io"
 	"math"
 	"strconv"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/portugol-go/internal/token"
 )
 
 func (i *Interpreter) execRead(s *ast.ReadStmt) error {
@@ -16,21 +21,42 @@ func (i *Interpreter) execRead(s *ast.ReadStmt) error {
 		if err != nil {
 			return err
 		}
-		if !i.in.Scan() {
-			if err := i.in.Err(); err != nil {
-				return err
-			}
-			return fmt.Errorf("not enough input for leia")
-		}
-		v, err := parseInput(i.in.Text(), cell.Type)
+		text, err := i.readToken(target.Start())
 		if err != nil {
 			return err
+		}
+		v, err := parseInput(text, cell.Type)
+		if err != nil {
+			return failure(target.Start(), diag.RInput, err)
 		}
 		if err := assign(cell, v); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+func (i *Interpreter) readToken(pos token.Pos) (string, error) {
+	var text strings.Builder
+	for {
+		r, _, err := i.in.ReadRune()
+		if err == io.EOF && text.Len() != 0 {
+			return text.String(), nil
+		}
+		if err != nil {
+			return "", diag.Diagnostic{Code: diag.RInput, Pos: pos, Message: "cannot read input token", Cause: err}
+		}
+		if unicode.IsSpace(r) {
+			if text.Len() != 0 {
+				return text.String(), nil
+			}
+			continue
+		}
+		if text.Len() > maxTextBytes-utf8.RuneLen(r) {
+			return "", failure(pos, diag.RStorage, fmt.Errorf("input token size limit exceeded"))
+		}
+		text.WriteRune(r)
+	}
 }
 
 func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
@@ -53,13 +79,66 @@ func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
 				return err
 			}
 		}
-		if _, err := fmt.Fprint(i.out, formatValue(v, int(width), int(decimals))); err != nil {
-			return err
+		if err := checkFormatSize(v, width, decimals); err != nil {
+			return failure(arg.Expr.Start(), diag.RStorage, err)
+		}
+		if _, err := io.WriteString(i.out, formatValue(v, int(max(0, width)), int(max(-1, decimals)))); err != nil {
+			return diag.Diagnostic{Code: diag.RHost, Pos: arg.Expr.Start(), Message: "cannot write output", Cause: err}
 		}
 	}
 	if s.Newline {
 		_, err := fmt.Fprintln(i.out)
-		return err
+		if err != nil {
+			return diag.Diagnostic{Code: diag.RHost, Pos: s.Start(), Message: "cannot write output", Cause: err}
+		}
+	}
+	return nil
+}
+
+func checkFormatSize(v runtime.Value, width, decimals int64) error {
+	if width > maxTextBytes {
+		return fmt.Errorf("formatted item size limit exceeded")
+	}
+	n := int64(0)
+	switch v.Kind {
+	case runtime.StringValue:
+		n = int64(len(v.Str))
+		if width > 0 {
+			n = width
+			count := int64(0)
+			for _, r := range v.Str {
+				if count == width {
+					break
+				}
+				n += int64(utf8.RuneLen(r) - 1)
+				count++
+			}
+		}
+	case runtime.IntegerValue:
+		n = int64(len(strconv.FormatInt(v.Int, 10)))
+		if width <= 0 {
+			n++
+		} else if decimals > 0 {
+			if decimals > maxTextBytes-n-1 {
+				return fmt.Errorf("formatted item size limit exceeded")
+			}
+			n += decimals + 1
+		}
+	case runtime.RealValue:
+		if width <= 0 {
+			n = int64(len(strconv.FormatFloat(v.Real, 'f', -1, 64))) + 1
+		} else {
+			n = int64(len(strconv.FormatFloat(v.Real, 'f', 0, 64)))
+			if decimals > 0 {
+				if decimals > maxTextBytes-n-1 {
+					return fmt.Errorf("formatted item size limit exceeded")
+				}
+				n += decimals + 1
+			}
+		}
+	}
+	if n > maxTextBytes {
+		return fmt.Errorf("formatted item size limit exceeded")
 	}
 	return nil
 }
@@ -119,7 +198,15 @@ func formatValue(v runtime.Value, width, decimals int) string {
 		s = strconv.FormatFloat(rounded, 'f', decimals, 64)
 	case runtime.StringValue:
 		if width > 0 {
-			return fmt.Sprintf("%-*.*s", width, width, v.Str)
+			count, end := 0, len(v.Str)
+			for offset := range v.Str {
+				if count == width {
+					end = offset
+					break
+				}
+				count++
+			}
+			return v.Str[:end] + strings.Repeat(" ", width-count)
 		}
 		return v.Str
 	case runtime.BoolValue:
@@ -133,7 +220,7 @@ func formatValue(v runtime.Value, width, decimals int) string {
 		s = "<invalido>"
 	}
 	if width > 0 && len(s) < width {
-		return fmt.Sprintf("%*s", width, s)
+		return strings.Repeat(" ", width-len(s)) + s
 	}
 	return s
 }

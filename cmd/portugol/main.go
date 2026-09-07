@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -16,100 +17,85 @@ import (
 	"github.com/ncode/portugol-go/internal/token"
 )
 
-func main() {
-	if len(os.Args) < 2 {
+func main() { os.Exit(dispatch(os.Args[1:])) }
+
+func dispatch(args []string) int {
+	if len(args) == 0 {
 		usage()
-		os.Exit(2)
+		return 2
 	}
-	var err error
-	switch os.Args[1] {
-	case "run":
-		err = runCmd(os.Args[2:])
-	case "check":
-		err = checkCmd(os.Args[2:])
-	case "fmt":
-		err = fmtCmd(os.Args[2:])
-	case "repl":
-		err = repl.Run(os.Stdin, os.Stdout, os.Stderr)
+	command := args[0]
+	switch command {
+	case "run", "check", "fmt", "repl":
 	default:
 		usage()
-		os.Exit(2)
+		return 2
 	}
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+	fs := flag.NewFlagSet(command, flag.ContinueOnError)
+	fs.SetOutput(os.Stderr)
+	var steps uint64
+	if command == "run" || command == "repl" {
+		fs.Uint64Var(&steps, "max-steps", 0, "maximum execution steps (0 is unlimited)")
 	}
-}
-
-func usage() {
-	fmt.Fprintln(os.Stderr, "usage: portugol <run|check|fmt|repl> [file.alg]")
-}
-
-func runCmd(args []string) error {
-	fs := flag.NewFlagSet("run", flag.ContinueOnError)
-	if err := fs.Parse(args); err != nil {
-		return err
+	if err := fs.Parse(args[1:]); err != nil {
+		if errors.Is(err, flag.ErrHelp) {
+			return 0
+		}
+		return 2
 	}
-	if fs.NArg() != 1 {
-		return fmt.Errorf("usage: portugol run file.alg")
+	wantArgs := 1
+	if command == "repl" {
+		wantArgs = 0
 	}
-	_, prog, ok, err := checkedProgram(fs.Arg(0))
-	if err != nil {
-		return err
+	if fs.NArg() != wantArgs {
+		usage()
+		return 2
 	}
-	if !ok {
-		return fmt.Errorf("check failed")
-	}
-	return interp.New(os.Stdin, os.Stdout).Run(prog)
-}
-
-func checkCmd(args []string) error {
-	fs := flag.NewFlagSet("check", flag.ContinueOnError)
-	if err := fs.Parse(args); err != nil {
-		return err
-	}
-	if fs.NArg() != 1 {
-		return fmt.Errorf("usage: portugol check file.alg")
-	}
-	_, _, ok, err := checkedProgram(fs.Arg(0))
-	if err != nil {
-		return err
-	}
-	if !ok {
-		return fmt.Errorf("check failed")
-	}
-	return nil
-}
-
-func fmtCmd(args []string) error {
-	fs := flag.NewFlagSet("fmt", flag.ContinueOnError)
-	if err := fs.Parse(args); err != nil {
-		return err
-	}
-	if fs.NArg() != 1 {
-		return fmt.Errorf("usage: portugol fmt file.alg")
+	options := interp.Options{Input: os.Stdin, Output: os.Stdout, MaxSteps: steps}
+	if command == "repl" {
+		ok, err := repl.Run(options, os.Stderr)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return 1
+		}
+		if !ok {
+			return 1
+		}
+		return 0
 	}
 	file, prog, ok, err := parsedProgram(fs.Arg(0))
 	if err != nil {
-		return err
+		fmt.Fprintln(os.Stderr, err)
+		return 1
 	}
 	if !ok {
-		return fmt.Errorf("parse failed for %s", file.Name)
+		return 1
 	}
-	return ast.Fprint(os.Stdout, prog)
+	if command == "fmt" {
+		if err := ast.Fprint(os.Stdout, prog); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return 1
+		}
+		return 0
+	}
+	info, ds := sema.Analyze(prog)
+	diag.Render(os.Stderr, file, ds)
+	if diag.HasErrors(ds) {
+		return 1
+	}
+	if command == "check" {
+		return 0
+	}
+	ds = interp.New(options).Run(prog, info)
+	diag.Render(os.Stderr, file, ds)
+	if diag.HasErrors(ds) {
+		return 1
+	}
+	return 0
 }
 
-func checkedProgram(path string) (*token.File, *ast.Program, bool, error) {
-	file, prog, ok, err := parsedProgram(path)
-	if err != nil || !ok {
-		return file, prog, ok, err
-	}
-	diags := sema.Check(prog)
-	if len(diags) > 0 {
-		diag.Render(os.Stderr, file, diags)
-		return file, prog, false, nil
-	}
-	return file, prog, true, nil
+func usage() {
+	fmt.Fprintln(os.Stderr, "usage: portugol <run|check|fmt> [options] file.alg | portugol repl [--max-steps N]")
 }
 
 func parsedProgram(path string) (*token.File, *ast.Program, bool, error) {
@@ -118,12 +104,12 @@ func parsedProgram(path string) (*token.File, *ast.Program, bool, error) {
 		return nil, nil, false, err
 	}
 	file, toks, lexDiags := lexer.Scan(path, src)
-	if len(lexDiags) > 0 {
+	if diag.HasErrors(lexDiags) {
 		diag.Render(os.Stderr, file, lexDiags)
 		return file, nil, false, nil
 	}
 	prog, parseDiags := parser.Parse(toks)
-	if len(parseDiags) > 0 {
+	if diag.HasErrors(parseDiags) {
 		diag.Render(os.Stderr, file, parseDiags)
 		return file, prog, false, nil
 	}

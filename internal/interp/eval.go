@@ -6,22 +6,47 @@ import (
 	"strings"
 
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
 	"github.com/ncode/portugol-go/internal/token"
 )
 
-func (i *Interpreter) eval(expr ast.Expr) (runtime.Value, error) {
+func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
+	if expr == nil {
+		return value, failure(token.NoPos, diag.RType, fmt.Errorf("missing expression"))
+	}
+	if err := i.charge(expr.Start()); err != nil {
+		return value, err
+	}
+	typ, ok := i.info.TypeOf(expr)
+	if !ok {
+		return value, failure(expr.Start(), diag.RType, fmt.Errorf("missing expression type"))
+	}
+	if i.depth == maxDepth {
+		return value, failure(expr.Start(), diag.RStorage, fmt.Errorf("expression depth limit exceeded"))
+	}
+	i.depth++
+	defer func() {
+		i.depth--
+		err = failure(expr.Start(), diag.RType, err)
+		if err == nil && !typ.Equal(value.Type()) {
+			err = failure(expr.Start(), diag.RType, fmt.Errorf("inconsistent expression value"))
+		}
+	}()
 	switch e := expr.(type) {
 	case *ast.LiteralExpr:
+		if len(e.Str) > maxTextBytes {
+			return value, failure(e.At, diag.RStorage, fmt.Errorf("text size limit exceeded"))
+		}
 		return literalValue(e), nil
 	case *ast.IdentExpr:
-		cell, err := lookupCell(i.env, e.Name.Text)
+		cell, err := i.lookupCell(e.Name)
 		if err != nil {
 			return runtime.Value{}, err
 		}
 		return cell.Value, nil
 	case *ast.IndexExpr:
-		cell, err := i.lvalue(e)
+		cell, err := i.location(e)
 		if err != nil {
 			return runtime.Value{}, err
 		}
@@ -73,7 +98,8 @@ func (i *Interpreter) evalUnary(e *ast.UnaryExpr) (runtime.Value, error) {
 	return runtime.Value{}, fmt.Errorf("invalid unary operator %s", e.Op.Text)
 }
 
-func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (runtime.Value, error) {
+func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err error) {
+	defer func() { err = failure(e.Op.Pos, diag.RArithmetic, err) }()
 	left, err := i.eval(e.Left)
 	if err != nil {
 		return runtime.Value{}, err
@@ -85,6 +111,9 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (runtime.Value, error) {
 	switch e.Op.Kind {
 	case token.ADD:
 		if left.Kind == runtime.StringValue && right.Kind == runtime.StringValue {
+			if len(left.Str) > maxTextBytes-len(right.Str) {
+				return value, failure(e.Op.Pos, diag.RStorage, fmt.Errorf("text size limit exceeded"))
+			}
 			return runtime.Value{Kind: runtime.StringValue, Str: left.Str + right.Str}, nil
 		}
 		return numeric(left, right, func(a, b int64) runtime.Value {
@@ -154,10 +183,21 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (runtime.Value, error) {
 	return runtime.Value{}, fmt.Errorf("unsupported operator %s", e.Op.Text)
 }
 
-func (i *Interpreter) lvalue(expr ast.Expr) (*runtime.Cell, error) {
+func (i *Interpreter) lvalue(expr ast.Expr) (cell *runtime.Cell, err error) {
+	if err := i.charge(expr.Start()); err != nil {
+		return nil, err
+	}
+	return i.location(expr)
+}
+
+func (i *Interpreter) location(expr ast.Expr) (cell *runtime.Cell, err error) {
+	if _, ok := i.info.TypeOf(expr); !ok {
+		return nil, failure(expr.Start(), diag.RType, fmt.Errorf("missing designator type"))
+	}
+	defer func() { err = failure(expr.Start(), diag.RStorage, err) }()
 	switch e := expr.(type) {
 	case *ast.IdentExpr:
-		return lookupCell(i.env, e.Name.Text)
+		return i.lookupCell(e.Name)
 	case *ast.IndexExpr:
 		base, err := i.eval(e.X)
 		if err != nil {

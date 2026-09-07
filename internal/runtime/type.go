@@ -2,7 +2,9 @@ package runtime
 
 import (
 	"fmt"
+	"slices"
 	"strings"
+	"unsafe"
 
 	"github.com/ncode/portugol-go/internal/ast"
 )
@@ -31,6 +33,40 @@ type Type struct {
 	Kind   TypeKind
 	Elem   *Type
 	Ranges []Range
+}
+
+// Clone returns an independent copy of the type and its layout.
+func (t Type) Clone() Type {
+	t.Ranges = slices.Clone(t.Ranges)
+	if t.Elem != nil {
+		elem := t.Elem.Clone()
+		t.Elem = &elem
+	}
+	return t
+}
+
+// Slots returns the checked number of scalar storage slots in this type.
+// Reference-specific storage quotas are separate from representability.
+func (t Type) Slots() (int, error) {
+	if t.Kind != VectorType {
+		return 1, nil
+	}
+	if t.Elem == nil || len(t.Ranges) == 0 {
+		return 0, fmt.Errorf("invalid vector layout")
+	}
+	n, err := t.Elem.Slots()
+	if err != nil {
+		return 0, err
+	}
+	limit := uint64(^uint(0)>>1) / uint64(unsafe.Sizeof(Cell{}))
+	for _, r := range t.Ranges {
+		width := uint64(r.High) - uint64(r.Low) + 1
+		if r.High < r.Low || width == 0 || width > limit/uint64(n) {
+			return 0, fmt.Errorf("vector layout exceeds addressable storage")
+		}
+		n *= int(width)
+	}
+	return n, nil
 }
 
 // TypeFromSpec converts a parsed type into a runtime type.

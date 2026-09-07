@@ -36,6 +36,9 @@ func loadManifest(root, name string) (manifest, error) {
 }
 
 func run(args []string, out, stderr io.Writer) (status int) {
+	if len(args) > 0 && args[0] == "execute" {
+		return executeProbe(args[1:], os.Stdin, out, stderr)
+	}
 	if len(args) == 0 {
 		_, _ = fmt.Fprintln(stderr, "usage: conformance validate|stage|capture [options]")
 		return 2
@@ -135,6 +138,14 @@ func run(args []string, out, stderr io.Writer) (status int) {
 		return fail(err)
 	}
 	executable := *candidate
+	needsObserver := false
+	for _, p := range m.Probes {
+		needsObserver = needsObserver || p.Implementation.Expected.State != nil || p.Implementation.Expected.HostTrace != nil
+	}
+	if executable != "" && needsObserver {
+		return fail(fmt.Errorf("state/host observations require the default current-checkout candidate"))
+	}
+	observer := ""
 	if executable == "" {
 		dir, err := os.MkdirTemp("", "portugol-candidate-")
 		if err != nil {
@@ -153,6 +164,14 @@ func run(args []string, out, stderr io.Writer) (status int) {
 		if err := cmd.Run(); err != nil {
 			return fail(fmt.Errorf("build candidate: %w", err))
 		}
+		if needsObserver {
+			observer = filepath.Join(dir, "observations.exe")
+			cmd := exec.CommandContext(ctx, "go", "build", "-o", observer, "./scripts/conformance")
+			cmd.Dir, cmd.Stdout, cmd.Stderr = rootPath, stderr, stderr
+			if err := cmd.Run(); err != nil {
+				return fail(fmt.Errorf("build observation adapter: %w", err))
+			}
+		}
 	} else {
 		executable, err = filepath.Abs(executable)
 		if err != nil {
@@ -163,7 +182,7 @@ func run(args []string, out, stderr io.Writer) (status int) {
 	for _, p := range m.Probes {
 		r := replayResult{ID: p.ID, State: p.Implementation.State}
 		if p.Evidence.State == "recorded" && p.Implementation.State != "not-applicable" {
-			if err := replayProbe(rootPath, p, executable, nil); err != nil {
+			if err := replayProbe(rootPath, p, executable, nil, observer); err != nil {
 				r.Error = err.Error()
 			}
 		}

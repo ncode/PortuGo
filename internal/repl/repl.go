@@ -14,28 +14,41 @@ import (
 )
 
 // Run starts a small complete-program REPL. Submit an empty line to run.
-func Run(in io.Reader, out, errout io.Writer) error {
-	scanner := bufio.NewScanner(in)
+func Run(options interp.Options, errout io.Writer) (bool, error) {
+	if options.Input == nil {
+		options.Input = strings.NewReader("")
+	}
+	if options.Output == nil {
+		options.Output = io.Discard
+	}
+	reader := bufio.NewReader(options.Input)
+	options.Input = reader
+	i := interp.New(options)
+	out := options.Output
+	ok := true
 	var lines []string
 	if _, err := fmt.Fprintln(out, "Portugol REPL. Enter a complete program, blank line runs it, :sair exits."); err != nil {
-		return err
+		return false, err
 	}
 	for {
 		if len(lines) == 0 {
 			if _, err := fmt.Fprint(out, "portugol> "); err != nil {
-				return err
+				return false, err
 			}
 		} else {
 			if _, err := fmt.Fprint(out, "... "); err != nil {
-				return err
+				return false, err
 			}
 		}
-		if !scanner.Scan() {
-			return scanner.Err()
+		line, err := readLine(reader)
+		if err == io.EOF {
+			return ok, nil
 		}
-		line := scanner.Text()
+		if err != nil {
+			return false, err
+		}
 		if strings.TrimSpace(line) == ":sair" {
-			return nil
+			return ok, nil
 		}
 		if strings.TrimSpace(line) != "" {
 			lines = append(lines, line)
@@ -44,27 +57,47 @@ func Run(in io.Reader, out, errout io.Writer) error {
 		if len(lines) == 0 {
 			continue
 		}
-		runSource(strings.Join(lines, "\n"), out, errout)
+		if !runSource(strings.Join(lines, "\n"), i, errout) {
+			ok = false
+		}
 		lines = lines[:0]
 	}
 }
 
-func runSource(src string, out, errout io.Writer) {
+func runSource(src string, i *interp.Interpreter, errout io.Writer) bool {
 	file, toks, lexDiags := lexer.Scan("<repl>", src)
 	if len(lexDiags) > 0 {
 		diag.Render(errout, file, lexDiags)
-		return
+		return false
 	}
 	prog, parseDiags := parser.Parse(toks)
 	if len(parseDiags) > 0 {
 		diag.Render(errout, file, parseDiags)
-		return
+		return false
 	}
-	if semaDiags := sema.Check(prog); len(semaDiags) > 0 {
+	info, semaDiags := sema.Analyze(prog)
+	if diag.HasErrors(semaDiags) {
 		diag.Render(errout, file, semaDiags)
-		return
+		return false
 	}
-	if err := interp.New(strings.NewReader(""), out).Run(prog); err != nil {
-		_, _ = fmt.Fprintln(errout, err)
+	ds := i.Run(prog, info)
+	diag.Render(errout, file, ds)
+	return !diag.HasErrors(ds)
+}
+
+func readLine(reader *bufio.Reader) (string, error) {
+	var line strings.Builder
+	for {
+		part, more, err := reader.ReadLine()
+		if err != nil {
+			return "", err
+		}
+		if len(part) > 16<<20-line.Len() {
+			return "", diag.Diagnostic{Code: diag.RStorage, Message: "input line size limit exceeded"}
+		}
+		line.Write(part)
+		if !more {
+			return line.String(), nil
+		}
 	}
 }

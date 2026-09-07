@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
 )
 
@@ -17,7 +18,11 @@ func (i *Interpreter) execStmts(stmts []ast.Stmt) (control, error) {
 	return control{}, nil
 }
 
-func (i *Interpreter) execStmt(stmt ast.Stmt) (control, error) {
+func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
+	if err := i.charge(stmt.Start()); err != nil {
+		return ctrl, err
+	}
+	defer func() { err = failure(stmt.Start(), diag.RType, err) }()
 	switch s := stmt.(type) {
 	case *ast.AssignStmt:
 		cell, err := i.lvalue(s.Target)
@@ -63,6 +68,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (control, error) {
 		return i.execStmts(s.Default)
 	case *ast.WhileStmt:
 		for {
+			if err := i.charge(s.Start()); err != nil {
+				return control{}, err
+			}
 			cond, err := i.evalBool(s.Cond)
 			if err != nil {
 				return control{}, err
@@ -83,6 +91,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (control, error) {
 		}
 	case *ast.RepeatStmt:
 		for {
+			if err := i.charge(s.Start()); err != nil {
+				return control{}, err
+			}
 			ctrl, err := i.execStmts(s.Body)
 			if err != nil {
 				return control{}, err
@@ -120,8 +131,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (control, error) {
 	}
 }
 
-func (i *Interpreter) execFor(s *ast.ForStmt) (control, error) {
-	cell, err := lookupCell(i.env, s.Name.Text)
+func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
+	defer func() { err = failure(s.Start(), diag.RLoop, err) }()
+	cell, err := i.lookupCell(s.Name)
 	if err != nil {
 		return control{}, err
 	}
@@ -145,6 +157,9 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (control, error) {
 	}
 	final := from
 	for cur := from; (step > 0 && cur <= to) || (step < 0 && cur >= to); cur += step {
+		if err := i.charge(s.Start()); err != nil {
+			return control{}, err
+		}
 		if err := assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: cur}); err != nil {
 			return control{}, err
 		}

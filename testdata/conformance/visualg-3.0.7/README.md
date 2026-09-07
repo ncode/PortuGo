@@ -17,13 +17,22 @@ go run ./scripts/conformance validate --mode implementation-acceptance --base or
 
 `validate` verifies metadata and hashes, builds the CLI from the current checkout,
 and replays recorded probes in isolated temporary working directories. Use
-`--candidate` to supply an already built executable. Each probe has a 1–30,000 ms
-deadline; source is limited to 64 KiB, each captured output stream to 1 MiB, and
+`--candidate` to supply an already built executable for CLI-only observations.
+Each probe has a 1–30,000 ms deadline and a finite `maxSteps` budget (10,000 when
+omitted or zero); source is limited to 64 KiB, each captured output stream to 1 MiB, and
 each evidence file to 16 MiB. A deadline or output limit is a failed observation.
 Pending results, including mismatches, remain visible in the JSON report.
 Verified mismatches fail every phase. Acceptance rejects all pending behavior.
-State and host-event observations need the group 3 adapter; the CLI runner
-reports them as unsupported rather than claiming they match.
+State and host-event observations use the current checkout's deterministic
+execution adapter in a subprocess, with the same runtime guards. The adapter
+uses a fixed PCG seed, a clock starting at the Unix epoch, and recorded,
+nonblocking host operations. State JSON maps canonical global names to scalar
+values or vector objects with `bounds` and flattened `values`. Host JSON is an
+ordered array of typed operation records; no language host commands are yet
+implemented, so current program traces are empty. Each channel is byte-compared
+with its hashed expected artifact. Observation files are capped at 1 MiB.
+State/host probes require the default current-checkout candidate so an unrelated
+external executable cannot be credited with the adapter's observations.
 
 Every validation requires either `--base` or `--previous` for history checks.
 `--base` checks an earlier Git manifest for removed probes, inventory entries,

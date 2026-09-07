@@ -45,10 +45,11 @@ func (b *boundedOutput) Write(p []byte) (int, error) {
 	return b.buffer.Write(p)
 }
 
-func replayProbe(root string, p probe, executable string, prefix []string) (runErr error) {
+func replayProbe(root string, p probe, executable string, prefix []string, observer string) (runErr error) {
 	want := p.Implementation.Expected
-	if want.State != nil || want.HostTrace != nil {
-		return fmt.Errorf("state/host observation adapter requires group 3")
+	observe := want.State != nil || want.HostTrace != nil
+	if observe && observer == "" {
+		return fmt.Errorf("missing state/host observation adapter")
 	}
 	if p.TimeoutMS < 1 || p.TimeoutMS > 30000 {
 		return fmt.Errorf("invalid replay budget")
@@ -73,7 +74,7 @@ func replayProbe(root string, p probe, executable string, prefix []string) (runE
 		return err
 	}
 	for _, file := range p.Files {
-		if file.Path == "source.alg" {
+		if file.Path == "source.alg" || observe && (file.Path == "state.json" || file.Path == "host.json") {
 			return fmt.Errorf("input file conflicts with probe source")
 		}
 		data, err := readArtifact(root, file.Content)
@@ -94,7 +95,19 @@ func replayProbe(root string, p probe, executable string, prefix []string) (runE
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(p.TimeoutMS)*time.Millisecond)
 	defer cancel()
 	stdout, stderr := &boundedOutput{cancel: cancel}, &boundedOutput{cancel: cancel}
-	args := append(append([]string(nil), prefix...), "run", "source.alg")
+	steps := p.MaxSteps
+	if steps == 0 {
+		steps = 10000
+	}
+	command := "run"
+	if observe {
+		command, executable = "execute", observer
+	}
+	args := append(append([]string(nil), prefix...), command, "--max-steps", strconv.FormatUint(steps, 10))
+	if observe {
+		args = append(args, "--state", "state.json", "--host-trace", "host.json")
+	}
+	args = append(args, "source.alg")
 	cmd := exec.CommandContext(ctx, executable, args...)
 	cmd.Dir, cmd.Stdin, cmd.Stdout, cmd.Stderr = dir, bytes.NewReader(input), stdout, stderr
 	cmd.WaitDelay = time.Second
@@ -125,6 +138,22 @@ func replayProbe(root string, p probe, executable string, prefix []string) (runE
 	}
 	if err := compareDiagnostics(stderr.buffer.String(), want.Diagnostics); err != nil {
 		return err
+	}
+	for name, artifact := range map[string]*artifact{"state.json": want.State, "host.json": want.HostTrace} {
+		if artifact == nil {
+			continue
+		}
+		actual, err := readFile(dir, name)
+		if err != nil {
+			return fmt.Errorf("missing %s observation", name)
+		}
+		expected, err := readArtifact(root, *artifact)
+		if err != nil {
+			return err
+		}
+		if !bytes.Equal(actual, expected) {
+			return fmt.Errorf("%s observation mismatch", name)
+		}
 	}
 	for _, file := range want.Generated {
 		actual, err := readFile(dir, file.Path)

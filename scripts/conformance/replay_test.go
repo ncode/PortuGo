@@ -9,7 +9,7 @@ import (
 )
 
 func TestReplayChild(t *testing.T) {
-	if len(os.Args) < 3 || os.Args[len(os.Args)-2] != "run" {
+	if len(os.Args) < 5 || os.Args[len(os.Args)-4] != "run" {
 		return
 	}
 	src, err := os.ReadFile(os.Args[len(os.Args)-1])
@@ -73,7 +73,7 @@ func TestReplay(t *testing.T) {
 				p.Files = []generatedFile{{Path: "input.dat", Content: a}}
 				p.Implementation.Expected.Generated = []generatedFile{{Path: "result.dat", Content: a}}
 			}
-			err := replayProbe(root, p, executable, []string{"-test.run=^TestReplayChild$", "--"})
+			err := replayProbe(root, p, executable, []string{"-test.run=^TestReplayChild$", "--"}, "")
 			if tt.want == "" && err != nil {
 				t.Fatal(err)
 			}
@@ -89,7 +89,7 @@ func TestReplayDoesNotHideUnsupportedObservation(t *testing.T) {
 	root, m := testManifest(t)
 	p := m.Probes[0]
 	p.Implementation.Expected.State = &p.Evidence.Normalized
-	if err := replayProbe(root, p, "unused", nil); err == nil || !strings.Contains(err.Error(), "observation adapter") {
+	if err := replayProbe(root, p, "unused", nil, ""); err == nil || !strings.Contains(err.Error(), "observation adapter") {
 		t.Fatalf("error = %v", err)
 	}
 }

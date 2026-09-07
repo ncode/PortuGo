@@ -119,7 +119,55 @@ String built-ins: `copia`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, and
 `aleatorio()` returns a real in `[0, 1)`. `aleatorio(n)` returns an integer in
 `[0, n)`. `aleatorio(a, b)` returns an integer in the inclusive range `[a, b]`.
 The generator uses Go's standard pseudo-random source; VisuAlg's exact RNG is
-not emulated.
+not emulated. Each interpreter has its own source. The inclusive interval
+covering every signed 64-bit integer is rejected with `R007` because its draw
+size cannot be represented by the random-source interface.
+
+## Execution diagnostics and safeguards
+
+`run`, `check`, `fmt`, and `repl` use exit status 0 for success, 1 for source,
+execution, or operational failures, and 2 for invalid command usage. Diagnostics
+go to stderr with the source filename, line, column, and a stable code. Runtime
+failure preserves preceding stdout. `check` and `fmt` never execute the program.
+REPL submissions share one buffered input stream with `leia`; a failed
+submission does not prevent a later submission, but the session exits 1 if any
+submission failed. A blank line still submits a program in the current REPL.
+
+| Runtime code | Category |
+| --- | --- |
+| R001 | Type or coercion; missing semantic information |
+| R002 | Arithmetic |
+| R003 | Storage/indexing; text size or expression depth |
+| R004 | Input |
+| R005 | Call/return; active call depth |
+| R006 | Loop state; execution budget |
+| R007 | Built-in function failure |
+| R008 | Host or output I/O |
+
+`run --max-steps N file.alg` and `repl --max-steps N` allow a nonnegative work
+budget. Zero, the default, is unlimited. A step is charged before each statement,
+expression/designator evaluation, and loop iteration, even with an empty body.
+Calls share the run's counter; each REPL submission starts a fresh counter.
+The next operation stops before its side effects when the budget is exhausted.
+This work budget cannot interrupt a blocking reader or host operation.
+For example, `portugol run --max-steps 20 examples/execution_budget.alg`
+stops the sample loop early; omitting the flag lets it finish.
+
+Regardless of that budget, execution permits at most 256 active language calls,
+256 expression-evaluation levels within one call frame, and 16 MiB in one text
+value, input token/line, or formatted item. Concatenation, case conversion, and
+width/precision expansion check sizes before creating the result. Vector layouts
+are checked for address-space overflow; reference-specific storage quotas remain
+pending. These are project safeguards, not measured VisuAlg limits. A safeguard
+hit in an accepted reference example remains a conformance failure.
+
+Internally, `sema.Analyze` supplies immutable resolved types, vector layouts, and
+declaration/use bindings. `interp.New(Options).Run(program, info)` requires that
+successful result for the same unchanged AST and returns positioned diagnostics.
+Nil input/output mean empty input and discarded output; the working directory
+resolves at construction. Hosts and randomness can be injected. The default
+headless host uses real time and silent, nonblocking UI operations. Display
+options and language host commands await reference recordings.
 
 ## Out Of Scope
 
@@ -157,8 +205,9 @@ Runtime fixture output is compared byte for byte, including decimal separators,
 whitespace, and newlines. Git preserves committed fixture bytes on every
 platform, including Windows. Lexer/parser fuzz tests use a 64 KiB generated-source
 profile and adversarial cases have failing subprocess watchdogs. This profile
-is a test bound, not an enforced language source or nesting limit. Production
-resource guards are planned in groups 3 and 4 of the conformance change.
+is a test bound, not an enforced language source or parsing-depth limit.
+The execution safeguards above are active; source and front-end traversal
+limits remain planned in group 4 of the conformance change.
 
 See [development checks](development.md) and the
 [quality baseline](quality-baseline.md) for commands and measured coverage.

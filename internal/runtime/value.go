@@ -91,11 +91,11 @@ func Clone(v Value) Value {
 		return v
 	}
 	vec := &Vector{
-		Type:     v.Vec.Type,
+		Type:     v.Vec.Type.Clone(),
 		Elements: make([]Cell, len(v.Vec.Elements)),
 	}
 	for i, cell := range v.Vec.Elements {
-		vec.Elements[i] = Cell{Type: cell.Type, Value: Clone(cell.Value)}
+		vec.Elements[i] = Cell{Type: cell.Type.Clone(), Value: Clone(cell.Value)}
 	}
 	return Value{Kind: VectorValue, Vec: vec}
 }
