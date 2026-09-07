@@ -29,16 +29,17 @@ type inventoryItem struct {
 }
 
 type evidence struct {
-	State         string    `json:"state"`
-	Accepted      *bool     `json:"accepted,omitempty"`
-	CapturedAt    string    `json:"capturedAt,omitempty"`
-	Raw           artifact  `json:"raw"`
-	Normalized    artifact  `json:"normalized"`
-	Normalizer    string    `json:"normalizer"`
-	GUIOnly       bool      `json:"guiOnly,omitempty"`
-	Screenshot    *artifact `json:"screenshot,omitempty"`
-	Transcription *artifact `json:"transcription,omitempty"`
-	Review        *review   `json:"review,omitempty"`
+	State         string          `json:"state"`
+	Accepted      *bool           `json:"accepted,omitempty"`
+	CapturedAt    string          `json:"capturedAt,omitempty"`
+	Raw           artifact        `json:"raw"`
+	Normalized    artifact        `json:"normalized"`
+	Normalizer    string          `json:"normalizer"`
+	GUIOnly       bool            `json:"guiOnly,omitempty"`
+	Screenshot    *artifact       `json:"screenshot,omitempty"`
+	Transcription *artifact       `json:"transcription,omitempty"`
+	Review        *review         `json:"review,omitempty"`
+	Generated     []generatedFile `json:"generated,omitempty"`
 }
 
 type diagnostic struct {

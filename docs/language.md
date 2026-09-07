@@ -126,6 +126,11 @@ does not print preceding statements before reporting a statically known error.
 The active OpenSpec change tracks the remaining work; these selected observations
 are not a claim of full reference conformance.
 
+The [reference corpus progress](reference-corpus-progress.md) tracks the broader
+recording work. New observations confirm particular constant, named-type and
+record forms in the reference application; those forms remain pending in this
+implementation.
+
 Runtime fixture output is compared byte for byte, including decimal separators,
 whitespace, and newlines. Git preserves committed fixture bytes on every
 platform, including Windows. Lexer/parser fuzz tests use a 64 KiB generated-source

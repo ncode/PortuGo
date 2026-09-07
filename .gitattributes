@@ -1,2 +1,4 @@
 # Preserve fixture bytes, including intentional line endings and encodings.
 **/testdata/** -text
+# Recorded probe whitespace is evidence, including CRLF and final blank lines.
+testdata/conformance/visualg-3.0.7/probes/** -whitespace

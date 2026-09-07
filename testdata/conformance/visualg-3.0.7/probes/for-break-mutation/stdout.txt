@@ -1,0 +1,6 @@
+BEGIN:for-break-mutation
+LOW=[ -100]
+DOWNHIGH=[ 1]
+DOWNLOW=[ -100]
+EMPTYDOWN=[ 1]
+END:for-break-mutation

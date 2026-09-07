@@ -1,0 +1,6 @@
+Início da execução
+BEGIN:named-type
+ 3
+END:named-type
+
+Fim da execução.

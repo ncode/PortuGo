@@ -1,0 +1,7 @@
+Início da execução
+BEGIN:logical-evaluation
+E= 1
+OU= 1
+END:logical-evaluation
+
+Fim da execução.

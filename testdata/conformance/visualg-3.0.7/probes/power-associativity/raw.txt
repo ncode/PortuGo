@@ -1,0 +1,6 @@
+Início da execução
+BEGIN:power-associativity
+ 64
+END:power-associativity
+
+Fim da execução.

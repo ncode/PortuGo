@@ -51,6 +51,12 @@ func TestManifestValidation(t *testing.T) {
 		mutate           func(*testing.T, string, *manifest)
 	}{
 		{name: "recorded pending evidence", mode: "evidence"},
+		{name: "pending project safeguard", mode: "evidence", mutate: func(t *testing.T, root string, m *manifest) {
+			writeArtifact(t, root, "review.md", "Project safeguard: no reference behavior. Implementation belongs to group 10.\n")
+			m.Probes[0].Evidence.State = "not-applicable"
+			m.Probes[0].Evidence.Review = &review{Reason: "Project-specific safeguard with future implementation", Link: "review.md"}
+			m.Probes[0].Source, m.Probes[0].Input = artifact{}, artifact{}
+		}},
 		{name: "pending acceptance", mode: "implementation-acceptance", want: "pending implementation"},
 		{name: "missing provenance", mode: "evidence", want: "reference provenance", mutate: func(_ *testing.T, _ string, m *manifest) { m.Reference.ExecutableSHA256 = "" }},
 		{name: "invalid date", mode: "evidence", want: "reference provenance", mutate: func(_ *testing.T, _ string, m *manifest) { m.Reference.AcquiredDate = "yesterday" }},
@@ -58,6 +64,18 @@ func TestManifestValidation(t *testing.T) {
 			writeArtifact(t, root, "probes/output/source.alg", "changed")
 		}},
 		{name: "missing evidence", mode: "evidence", want: "unrecorded evidence", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].Evidence.State = "unrecorded" }},
+		{name: "generated reference corruption", mode: "evidence", want: "hash mismatch", mutate: func(t *testing.T, root string, m *manifest) {
+			a := writeArtifact(t, root, "generated.dat", "reference bytes")
+			m.Probes[0].Evidence.Generated = []generatedFile{{Path: "result.dat", Content: a}}
+			m.Probes[0].Implementation.Expected.Generated = []generatedFile{{Path: "result.dat", Content: a}}
+			writeArtifact(t, root, "generated.dat", "changed bytes")
+		}},
+		{name: "candidate replaces generated reference", mode: "evidence", want: "generated reference", mutate: func(t *testing.T, root string, m *manifest) {
+			a := writeArtifact(t, root, "generated.dat", "reference bytes")
+			b := writeArtifact(t, root, "candidate.dat", "candidate bytes")
+			m.Probes[0].Evidence.Generated = []generatedFile{{Path: "result.dat", Content: a}}
+			m.Probes[0].Implementation.Expected.Generated = []generatedFile{{Path: "result.dat", Content: b}}
+		}},
 		{name: "missing disposition", mode: "evidence", want: "acceptance", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].Evidence.Accepted = nil }},
 		{name: "bad normalization", mode: "evidence", want: "normalized evidence", mutate: func(t *testing.T, root string, m *manifest) {
 			m.Probes[0].Evidence.Normalized = writeArtifact(t, root, "probes/output/output.txt", "1\n")
@@ -127,9 +145,10 @@ func TestManifestPreservesVerifiedHistory(t *testing.T) {
 func TestManifestRejectsSymlink(t *testing.T) {
 	t.Parallel()
 	root, m := testManifest(t)
-	target := writeArtifact(t, t.TempDir(), "source.alg", "outside")
+	outside := t.TempDir()
+	target := writeArtifact(t, outside, "source.alg", "outside")
 	// Windows does not normally grant unprivileged symlink creation.
-	if err := os.Symlink(filepath.Join(t.TempDir(), target.Path), filepath.Join(root, "link")); err != nil {
+	if err := os.Symlink(filepath.Join(outside, target.Path), filepath.Join(root, "link")); err != nil {
 		t.Skip(err)
 	}
 	m.Probes[0].Source.Path = "link"

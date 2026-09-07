@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added reference-corpus validation, bounded CLI replay, and a private staging
+  and capture workflow. The initial corpus includes an inventory of requirements
+  and bundled examples, earlier observations, and fresh declaration probes.
+  Evidence collection and complete conformance remain unfinished.
 - Fixed the Windows-recorded VisuAlg gaps: failed `run` validation now exits 1;
   `exp` takes two numeric arguments; power is left-associative and binds below
   unary minus; `para` exposes the recorded exit values, including empty and

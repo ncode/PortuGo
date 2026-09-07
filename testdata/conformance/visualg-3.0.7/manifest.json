@@ -1,0 +1,1862 @@
+{
+  "version": 1,
+  "recorderVersion": "manual-v1",
+  "normalizerVersion": "panel-v1",
+  "reference": {
+    "version": "3.0.7.0",
+    "acquiredDate": "2026-09-07",
+    "sourceURL": "https://sourceforge.net/projects/visualg30/files/visualg3.0.7.rar/download",
+    "archiveSHA256": "45b8c4787b9af2077aecacf19d4e81b05718d9c2f9f2e6565cef2e6f9ae6c33f",
+    "executableSHA256": "7b297fb338e2ca7004ed55b42aef215c17a1a1d44b27cff50b6dc9be6dd3becf",
+    "os": "Windows amd64",
+    "culture": "en-US",
+    "product": "VisuAlg"
+  },
+  "tasksPath": "openspec/changes/complete-visualg-3-0-7-conformance/tasks.md",
+  "inventorySources": [
+    "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md",
+    "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md",
+    "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md",
+    "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md",
+    "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md",
+    "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md",
+    "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md",
+    "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md"
+  ],
+  "inventory": [
+    {
+      "id": "observation.output-format",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/observations.json",
+      "probes": [
+        "output-format"
+      ]
+    },
+    {
+      "id": "observation.exp-two",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/observations.json",
+      "probes": [
+        "exp-two"
+      ]
+    },
+    {
+      "id": "observation.exp-one",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/observations.json",
+      "probes": [
+        "exp-one"
+      ]
+    },
+    {
+      "id": "observation.power-associativity",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/observations.json",
+      "probes": [
+        "power-associativity"
+      ]
+    },
+    {
+      "id": "observation.unary-power",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/observations.json",
+      "probes": [
+        "unary-power"
+      ]
+    },
+    {
+      "id": "observation.exact-division-integer",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/observations.json",
+      "probes": [
+        "exact-division-integer"
+      ]
+    },
+    {
+      "id": "observation.logical-evaluation",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/observations.json",
+      "probes": [
+        "logical-evaluation"
+      ]
+    },
+    {
+      "id": "observation.for-mutation",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/observations.json",
+      "probes": [
+        "for-mutation"
+      ]
+    },
+    {
+      "id": "observation.output-edges",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/followup-observations.json",
+      "probes": [
+        "output-edges"
+      ]
+    },
+    {
+      "id": "observation.output-rounding",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/followup-observations.json",
+      "probes": [
+        "output-rounding"
+      ]
+    },
+    {
+      "id": "observation.output-rounding-valid",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/followup-observations.json",
+      "probes": [
+        "output-rounding-valid"
+      ]
+    },
+    {
+      "id": "observation.for-edges",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/followup-observations.json",
+      "probes": [
+        "for-edges"
+      ]
+    },
+    {
+      "id": "observation.for-termination",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/followup-observations.json",
+      "probes": [
+        "for-termination"
+      ]
+    },
+    {
+      "id": "observation.for-break-mutation",
+      "kind": "assumption",
+      "link": "docs/validation/visualg-2026-09-07/followup-observations.json",
+      "probes": [
+        "for-break-mutation"
+      ]
+    },
+    {
+      "id": "requirement.reference-release-authority",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference release authority",
+      "probes": []
+    },
+    {
+      "id": "requirement.reference-provenance-manifest",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference provenance manifest",
+      "probes": []
+    },
+    {
+      "id": "requirement.interactive-oracle-recording",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Interactive oracle recording",
+      "probes": []
+    },
+    {
+      "id": "requirement.complete-oracle-evidence",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Complete oracle evidence",
+      "probes": []
+    },
+    {
+      "id": "requirement.requirement-traceability",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Requirement traceability",
+      "probes": []
+    },
+    {
+      "id": "requirement.progressive-conformance-gates",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Progressive conformance gates",
+      "probes": []
+    },
+    {
+      "id": "requirement.recorded-feature-dispositions",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Recorded feature dispositions",
+      "probes": []
+    },
+    {
+      "id": "requirement.bundled-example-acceptance",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Bundled example acceptance",
+      "probes": []
+    },
+    {
+      "id": "requirement.conformance-release-gate",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Conformance release gate",
+      "probes": []
+    },
+    {
+      "id": "requirement.operator-vocabulary-and-precedence",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Operator vocabulary and precedence",
+      "probes": [
+        "power-associativity",
+        "unary-power"
+      ]
+    },
+    {
+      "id": "requirement.numeric-evaluation-and-coercion",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Numeric evaluation and coercion",
+      "probes": [
+        "exact-division-integer"
+      ]
+    },
+    {
+      "id": "requirement.logical-evaluation",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Logical evaluation",
+      "probes": [
+        "logical-evaluation"
+      ]
+    },
+    {
+      "id": "requirement.boolean-numeric-and-string-comparison",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Boolean, numeric, and string comparison",
+      "probes": []
+    },
+    {
+      "id": "requirement.deterministic-expression-order",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Deterministic expression order",
+      "probes": []
+    },
+    {
+      "id": "requirement.choice-matching-and-ranges",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Choice matching and ranges",
+      "probes": []
+    },
+    {
+      "id": "requirement.loop-semantics",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Loop semantics",
+      "probes": [
+        "for-mutation",
+        "for-edges",
+        "for-termination",
+        "for-break-mutation"
+      ]
+    },
+    {
+      "id": "requirement.interruption-and-return-propagation",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Interruption and return propagation",
+      "probes": []
+    },
+    {
+      "id": "requirement.i-o-statement-validation",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: I/O statement validation",
+      "probes": []
+    },
+    {
+      "id": "requirement.source-decoding",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Source decoding",
+      "probes": []
+    },
+    {
+      "id": "requirement.physical-newline-tokens",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Physical newline tokens",
+      "probes": []
+    },
+    {
+      "id": "requirement.strict-identifiers-and-case-handling",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Strict identifiers and case handling",
+      "probes": []
+    },
+    {
+      "id": "requirement.complete-keyword-vocabulary",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Complete keyword vocabulary",
+      "probes": []
+    },
+    {
+      "id": "requirement.comments-and-literals",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Comments and literals",
+      "probes": []
+    },
+    {
+      "id": "requirement.complete-program-grammar",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Complete program grammar",
+      "probes": []
+    },
+    {
+      "id": "requirement.ordered-and-positioned-syntax",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Ordered and positioned syntax",
+      "probes": []
+    },
+    {
+      "id": "requirement.recoverable-parsing",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Recoverable parsing",
+      "probes": []
+    },
+    {
+      "id": "requirement.canonical-source-printing",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Canonical source printing",
+      "probes": []
+    },
+    {
+      "id": "requirement.subprogram-declaration-forms",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Subprogram declaration forms",
+      "probes": []
+    },
+    {
+      "id": "requirement.call-syntax-and-context",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Call syntax and context",
+      "probes": []
+    },
+    {
+      "id": "requirement.value-parameters",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Value parameters",
+      "probes": []
+    },
+    {
+      "id": "requirement.reference-parameters",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Reference parameters",
+      "probes": []
+    },
+    {
+      "id": "requirement.lexical-scope-and-bindings",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Lexical scope and bindings",
+      "probes": []
+    },
+    {
+      "id": "requirement.declaration-visibility-and-recursion",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Declaration visibility and recursion",
+      "probes": []
+    },
+    {
+      "id": "requirement.function-return-behavior",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Function return behavior",
+      "probes": []
+    },
+    {
+      "id": "requirement.call-frame-safety",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Call-frame safety",
+      "probes": []
+    },
+    {
+      "id": "requirement.declaration-feature-scope",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Declaration feature scope",
+      "probes": []
+    },
+    {
+      "id": "requirement.ordered-declaration-sections",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Ordered declaration sections",
+      "probes": []
+    },
+    {
+      "id": "requirement.constants-and-declaration-expressions",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Constants and declaration expressions",
+      "probes": [
+        "constant-declaration",
+        "constant-var"
+      ]
+    },
+    {
+      "id": "requirement.named-types-and-aliases",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Named types and aliases",
+      "probes": [
+        "named-type"
+      ]
+    },
+    {
+      "id": "requirement.record-types-and-fields",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Record types and fields",
+      "probes": [
+        "record-field"
+      ]
+    },
+    {
+      "id": "requirement.vector-types-and-declared-bounds",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Vector types and declared bounds",
+      "probes": []
+    },
+    {
+      "id": "requirement.five-hundred-slot-storage-limit",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Five-hundred-slot storage limit",
+      "probes": []
+    },
+    {
+      "id": "requirement.zero-initialization",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Zero initialization",
+      "probes": []
+    },
+    {
+      "id": "requirement.assignment-compatibility-and-coercion",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Assignment compatibility and coercion",
+      "probes": []
+    },
+    {
+      "id": "requirement.aggregate-copy-and-reference-semantics",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Aggregate copy and reference semantics",
+      "probes": []
+    },
+    {
+      "id": "requirement.defensive-storage-access",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Defensive storage access",
+      "probes": []
+    },
+    {
+      "id": "requirement.console-input-consumption",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Console input consumption",
+      "probes": []
+    },
+    {
+      "id": "requirement.input-value-conversion",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Input value conversion",
+      "probes": []
+    },
+    {
+      "id": "requirement.exact-output-rendering",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Exact output rendering",
+      "probes": [
+        "output-format",
+        "output-edges"
+      ]
+    },
+    {
+      "id": "requirement.width-and-precision-formatting",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Width and precision formatting",
+      "probes": [
+        "output-rounding",
+        "output-rounding-valid"
+      ]
+    },
+    {
+      "id": "requirement.cp1252-file-and-stream-behavior",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: CP1252 file and stream behavior",
+      "probes": []
+    },
+    {
+      "id": "requirement.arquivo-input-lifecycle",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Arquivo input lifecycle",
+      "probes": []
+    },
+    {
+      "id": "requirement.random-input-mode",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Random-input mode",
+      "probes": []
+    },
+    {
+      "id": "requirement.echo-timer-and-chronometer-commands",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Echo, timer, and chronometer commands",
+      "probes": []
+    },
+    {
+      "id": "requirement.host-backed-ui-commands",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Host-backed UI commands",
+      "probes": []
+    },
+    {
+      "id": "requirement.environment-failure-diagnostics",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Environment failure diagnostics",
+      "probes": []
+    },
+    {
+      "id": "requirement.authoritative-built-in-catalog",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Authoritative built-in catalog",
+      "probes": []
+    },
+    {
+      "id": "requirement.numeric-built-ins",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Numeric built-ins",
+      "probes": [
+        "exp-one",
+        "exp-two"
+      ]
+    },
+    {
+      "id": "requirement.text-built-ins",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Text built-ins",
+      "probes": []
+    },
+    {
+      "id": "requirement.character-code-built-ins",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Character-code built-ins",
+      "probes": []
+    },
+    {
+      "id": "requirement.numeric-and-character-conversion-built-ins",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Numeric and character conversion built-ins",
+      "probes": []
+    },
+    {
+      "id": "requirement.random-built-ins",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Random built-ins",
+      "probes": []
+    },
+    {
+      "id": "requirement.built-in-failure-contract",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Built-in failure contract",
+      "probes": []
+    },
+    {
+      "id": "requirement.stable-compile-time-diagnostics",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable compile-time diagnostics",
+      "probes": []
+    },
+    {
+      "id": "requirement.stable-runtime-diagnostics",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable runtime diagnostics",
+      "probes": []
+    },
+    {
+      "id": "requirement.no-user-input-panics",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: No user-input panics",
+      "probes": []
+    },
+    {
+      "id": "requirement.resource-limits-and-bounded-execution",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Resource limits and bounded execution",
+      "probes": []
+    },
+    {
+      "id": "requirement.cli-command-behavior",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: CLI command behavior",
+      "probes": []
+    },
+    {
+      "id": "requirement.cli-exit-statuses",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: CLI exit statuses",
+      "probes": []
+    },
+    {
+      "id": "requirement.formatter-contract",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Formatter contract",
+      "probes": []
+    },
+    {
+      "id": "requirement.shared-repl-input",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Shared REPL input",
+      "probes": []
+    },
+    {
+      "id": "requirement.automatic-repl-submission",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Automatic REPL submission",
+      "probes": []
+    },
+    {
+      "id": "requirement.repl-recovery",
+      "kind": "requirement",
+      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: REPL recovery",
+      "probes": []
+    },
+    {
+      "id": "example.6c81c979714d",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.3b4c69f65b60",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.c6443beee11c",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.215411a6ad9a",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.b1c9cc780302",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.c2c3c37e29ae",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.fa172f3f5f70",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.c47bf27802a4",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.86701928f296",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.460092b86448",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.da71c1ad0344",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.b3549ab1faa5",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.50f837d55875",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.8c99b59ea498",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.1b91f44b66c2",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.b8d8516450ea",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.32d43fcfece0",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.5a4e512c0d2c",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.3e681c3740b6",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.acf5d46a3a6a",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.0d33ed8315bc",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.f322405e9d84",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.b233b8edad6d",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.80addd4fac6d",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.9ebac87530a8",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.a942295b3cc1",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.fb5b43336226",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.8b2d8c702924",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.756aaafb6f17",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.116164dd09bb",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.f251f2cd0c22",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.9d47ee7cb251",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.ce6fa8f9a2a3",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.24919c4a2e4c",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.eedf876719f1",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.43742446e585",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.c1a2be69b9ce",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.2ecb6b470914",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.19f3ab9f0764",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.a5945bc9ee4d",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.f4fa0c514cf7",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.0cef94aa6573",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.82d1c4dba544",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.a0f076498451",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.7afef248aa17",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.8a30556ea4fc",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.ef0a1355d503",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.9ddfb3dd3ea1",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.d7146725d637",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.54f1e50d1c02",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.1dfa641f1d7a",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.dc0f54ded747",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.c0633dc8add4",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.6fca58cfe4ac",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.4fdb89658892",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.08dbc8f0cc9e",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.183b40a8f657",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.991ec2bd1566",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.ffd86884c181",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.51b9ad3b51c5",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.7f44aa03fcc5",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.f8eb1bdcb2cd",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.467736cf246b",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.49eb7f47065e",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.3dfa4989625a",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.a2fd5d8d6435",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.069318ac942f",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.3a5ff4924627",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.61a67cb1f566",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.6f7f325a3d14",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.c9455d0abe8e",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.a3ab1c0f85e6",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    },
+    {
+      "id": "example.8576df453f1f",
+      "kind": "example",
+      "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
+      "probes": []
+    }
+  ],
+  "probes": [
+    {
+      "id": "output-format",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.1",
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/output-format/source.alg",
+        "sha256": "c5f32b93d20f950bc26b3113c5dc8ec19cc46d167b2798c76dca24902f049359"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T16:09:14.7279097Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-format/raw.txt",
+          "sha256": "b1a57dd94ee8c3406da3114b100ad2712f241f43f730f88e9ecbfb1c727b8bea"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-format/stdout.txt",
+          "sha256": "43561b671c2fc6b50b65ae55e465d93f9fd4993c7dcb95786727c453560aa996"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/output-format/stdout.txt",
+            "sha256": "43561b671c2fc6b50b65ae55e465d93f9fd4993c7dcb95786727c453560aa996"
+          }
+        }
+      }
+    },
+    {
+      "id": "exp-two",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.1",
+        "11.6",
+        "3.9"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/exp-two/source.alg",
+        "sha256": "7746e6deb2b9f9d79d9dde7a04f90fcd7ddb9d8e9b2dd79d220962ceaef139ec"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T16:10:09.6519177Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-two/raw.txt",
+          "sha256": "b3ed838bb35f19478ac790d2aec3b2bbe78b5eba02d342d3e213bfd47a709f23"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-two/stdout.txt",
+          "sha256": "6d6523c48e8893791ef028474993d6d6796848f10f2e038c364668e6bd086c28"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/exp-two/stdout.txt",
+            "sha256": "6d6523c48e8893791ef028474993d6d6796848f10f2e038c364668e6bd086c28"
+          }
+        }
+      }
+    },
+    {
+      "id": "exp-one",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.1",
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/exp-one/source.alg",
+        "sha256": "8a2299ec299ad479fa426dc11b2cc35f0d5e14ee403aea78e78da4e2f11239f4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "unrecorded",
+        "accepted": false,
+        "capturedAt": "2026-09-07T16:10:53.5517986Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-one/raw.txt",
+          "sha256": "71e31c4273c494303af60e2e912311d3cbb85eedc42a30042aaea03d1717aefe"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-one/raw.txt",
+          "sha256": "71e31c4273c494303af60e2e912311d3cbb85eedc42a30042aaea03d1717aefe"
+        },
+        "normalizer": "text-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E004",
+              "line": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "power-associativity",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.1",
+        "8.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/power-associativity/source.alg",
+        "sha256": "4304a2de1ee67cd73bf3c58dccd9494deaf54057115b477f597d3ca5b662af5f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T16:14:25.5120611Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-associativity/raw.txt",
+          "sha256": "7828d526e5cf10abe78f1c9b9fa9dbff760cd4e5df99ac1fd197b7dc66b8bb49"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-associativity/stdout.txt",
+          "sha256": "1ace8362914cf5c1e4ffb61dc3687bef3d4c97c00c26712f01f2ad5789a657b5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/power-associativity/stdout.txt",
+            "sha256": "1ace8362914cf5c1e4ffb61dc3687bef3d4c97c00c26712f01f2ad5789a657b5"
+          }
+        }
+      }
+    },
+    {
+      "id": "unary-power",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.1",
+        "8.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/unary-power/source.alg",
+        "sha256": "617d9d8fb8d8db309aa5c2d1a10cc04089dd183c83c1afd0bfd5803c64c27dba"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T16:12:04.3154700Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/unary-power/raw.txt",
+          "sha256": "24a47c40992b234da370345cc831c9c5627c9a0bcfc46c834c2e4ec943b55176"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/unary-power/stdout.txt",
+          "sha256": "bf14643d55e57dcc831539f4920d05fa71fdf0133ce024781334e576075a570e"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/unary-power/stdout.txt",
+            "sha256": "bf14643d55e57dcc831539f4920d05fa71fdf0133ce024781334e576075a570e"
+          }
+        }
+      }
+    },
+    {
+      "id": "exact-division-integer",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.1",
+        "8.3",
+        "3.9"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/exact-division-integer/source.alg",
+        "sha256": "3434c57fdd2023ce459e1aa0ce1203fe58be76337defcce30c735adef5ce9d3e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "unrecorded",
+        "accepted": false,
+        "capturedAt": "2026-09-07T16:12:34.1129767Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exact-division-integer/raw.txt",
+          "sha256": "71e31c4273c494303af60e2e912311d3cbb85eedc42a30042aaea03d1717aefe"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exact-division-integer/raw.txt",
+          "sha256": "71e31c4273c494303af60e2e912311d3cbb85eedc42a30042aaea03d1717aefe"
+        },
+        "normalizer": "text-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "logical-evaluation",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.1",
+        "8.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-evaluation/source.alg",
+        "sha256": "71ce5c732a97ce726be5f0e020a778e9b1a63d34c2dda6caca4fdabc0701c8a0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T16:13:05.2831276Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-evaluation/raw.txt",
+          "sha256": "a86d5b8ac01db7ca80a35a9e81da732124f651e46382d194c7bbcb1e6271b978"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-evaluation/stdout.txt",
+          "sha256": "0d300d5293902ef2d54ee307c2391e41104e6bbcaea1b02b7fe2d22339471d2e"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/logical-evaluation/stdout.txt",
+            "sha256": "0d300d5293902ef2d54ee307c2391e41104e6bbcaea1b02b7fe2d22339471d2e"
+          }
+        }
+      }
+    },
+    {
+      "id": "for-mutation",
+      "ownerGroup": 9,
+      "tasks": [
+        "9.1",
+        "9.8"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/for-mutation/source.alg",
+        "sha256": "6c303112832379b8c4a21d6fe1cfc4a7f009bef9f6c3df720ac675968f8b5b6b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T16:13:35.3527499Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/for-mutation/raw.txt",
+          "sha256": "3aef09435cb67022404814a0bddb4c7c31442fda5b0406abfb432cd97b17ac70"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/for-mutation/stdout.txt",
+          "sha256": "59c598e7a23403dc5d39093c431b4b489a4bb9a3a1db56c3e462058ae7856051"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/for-mutation/stdout.txt",
+            "sha256": "59c598e7a23403dc5d39093c431b4b489a4bb9a3a1db56c3e462058ae7856051"
+          }
+        }
+      }
+    },
+    {
+      "id": "output-edges",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5",
+        "10.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/output-edges/source.alg",
+        "sha256": "9fd1ca069a97720d339f27a0f14ada5e1b43aace51362ab323e777f18db4b762"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T16:31:51.4859631Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-edges/raw.txt",
+          "sha256": "a666a4ffc355b5e3a289ac1e0c4e11ad0a34beedb88341abd5f8bb1a43efc5db"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-edges/stdout.txt",
+          "sha256": "dba769a73061581634b2b39e2b67be465600c9737db4a57c8ce56b9f8f77c307"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/output-edges/stdout.txt",
+            "sha256": "dba769a73061581634b2b39e2b67be465600c9737db4a57c8ce56b9f8f77c307"
+          }
+        }
+      }
+    },
+    {
+      "id": "output-rounding",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5",
+        "10.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding/source.alg",
+        "sha256": "70fb4e2d202887052640253e3c184dd3e46cd48352cf0bc298053c1f74387bc8"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "unrecorded",
+        "accepted": false,
+        "capturedAt": "2026-09-07T16:33:20.8846649Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding/raw.txt",
+          "sha256": "7e9b118313511c00259244c531e710fb637d43b09a8ce431d894c16341e519b8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding/raw.txt",
+          "sha256": "7e9b118313511c00259244c531e710fb637d43b09a8ce431d894c16341e519b8"
+        },
+        "normalizer": "text-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 5
+            },
+            {
+              "code": "E001",
+              "line": 5
+            },
+            {
+              "code": "E001",
+              "line": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "output-rounding-valid",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5",
+        "10.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding-valid/source.alg",
+        "sha256": "c2f37aa4d64f1f4eaf07e5d7805dd9ca2ec9a10c99bdd0b0f0773d240d728078"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T16:35:27.4843424Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding-valid/raw.txt",
+          "sha256": "7a16c0eea251a94a657e5f7387ad03fa594030602bb5057afcf5041f0469b8f2"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding-valid/stdout.txt",
+          "sha256": "85220268f16fbd017775ed85c60b259854d6888c92178f982da204fd6e488c72"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding-valid/stdout.txt",
+            "sha256": "85220268f16fbd017775ed85c60b259854d6888c92178f982da204fd6e488c72"
+          }
+        }
+      }
+    },
+    {
+      "id": "for-edges",
+      "ownerGroup": 9,
+      "tasks": [
+        "9.8"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/for-edges/source.alg",
+        "sha256": "c08bf7d7467933fa44800308b2ef71a63d3c061da3b18f62ef5707b9f67031a8"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T16:32:31.2391229Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/for-edges/raw.txt",
+          "sha256": "a8bcfdc17f9fd7365bd867a913d782b877e4eee70c9200a1b16b9aed7e875c7e"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/for-edges/stdout.txt",
+          "sha256": "29af7ce3e23d8d2859598114bee909e41490dc7587ed673a0cf05479af8744ba"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/for-edges/stdout.txt",
+            "sha256": "29af7ce3e23d8d2859598114bee909e41490dc7587ed673a0cf05479af8744ba"
+          }
+        }
+      }
+    },
+    {
+      "id": "for-termination",
+      "ownerGroup": 9,
+      "tasks": [
+        "9.8"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/for-termination/source.alg",
+        "sha256": "1f93914924cac8b09fdfa3546f16ca402e59f3ba703860d15d6dd8bd14e0c06d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T16:34:06.1455147Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/for-termination/raw.txt",
+          "sha256": "27fba60064b9d66760fa7b1e6b10e149ffcb8459bb09fdb5e79ba363cda7d5e6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/for-termination/stdout.txt",
+          "sha256": "b255b3eedf681e9d9b4881d9d42c967f525061c2298cff76b97fac13d6695e24"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/for-termination/stdout.txt",
+            "sha256": "b255b3eedf681e9d9b4881d9d42c967f525061c2298cff76b97fac13d6695e24"
+          }
+        }
+      }
+    },
+    {
+      "id": "for-break-mutation",
+      "ownerGroup": 9,
+      "tasks": [
+        "9.8"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/for-break-mutation/source.alg",
+        "sha256": "4e96b55d7921643f67c854809932c46079d9e594c0e90fab1ab6c65f905c8221"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T16:36:24.6792994Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/for-break-mutation/raw.txt",
+          "sha256": "1b51b1ec5ef77fe9156d1161c7eca470728ee35c77c3a5da3bd5ef85f5f336a2"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/for-break-mutation/stdout.txt",
+          "sha256": "04507808d6c88d2ef8b30f0bb5b0cbbcd077465716756bbdf53074883c169288"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "reference_test.go#TestRecordedWindowsProbes"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/for-break-mutation/stdout.txt",
+            "sha256": "04507808d6c88d2ef8b30f0bb5b0cbbcd077465716756bbdf53074883c169288"
+          }
+        }
+      }
+    },
+    {
+      "id": "constant-declaration",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-declaration/source.alg",
+        "sha256": "b85edd4a7d4c081b768d23817fff7e15479623a49ee6fe2ee1ce5d47100ba8d6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-07T17:31:06.5942854Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-declaration/error.json",
+          "sha256": "71f1856402326d6f7cfa2c665d39f125bb8b26a2e54a0eb7998265380f0d315d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-declaration/error.json",
+          "sha256": "71f1856402326d6f7cfa2c665d39f125bb8b26a2e54a0eb7998265380f0d315d"
+        },
+        "normalizer": "bytes-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-declaration/screenshot.png",
+          "sha256": "f0c55cbbd8414f4e07d4bac0d707965a6de9f78067fefa74f858af5d987ac616"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-declaration/transcription.txt",
+          "sha256": "044b11a3f6ee46d10888dba8220949e076d2d74cac57e266e29ddc061d284274"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "constant-var",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-var/source.alg",
+        "sha256": "d02267dee26f26e52641b34a26173175cb46d63ec535deca765ab3eefe67cbfa"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T17:34:26.2981610Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-var/raw.txt",
+          "sha256": "fae9b063c32a1c4723d0f1b8f849d5331fc51e573e5b84ee6357c7c77428976a"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-var/stdout.txt",
+          "sha256": "d8771d0e1c4c02cd28a32229b41dd354d10480575dbd091d77cdfe6c97487a5a"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-var/stdout.txt",
+            "sha256": "d8771d0e1c4c02cd28a32229b41dd354d10480575dbd091d77cdfe6c97487a5a"
+          }
+        }
+      }
+    },
+    {
+      "id": "named-type",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/named-type/source.alg",
+        "sha256": "55f04fd59c5c9234bf2209bbee7ef5b6b9ed4bdcb28603794e97398569178784"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T17:34:56.3185207Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/named-type/raw.txt",
+          "sha256": "7d9c0b13e7dfbc7075d0f1e35a28f87274bde9af34ed4c867473a018841a43a4"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/named-type/stdout.txt",
+          "sha256": "c42499da1ef538522313bfb4f5dd4c385822d9b5a23ba5a935956d4cb4321326"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/named-type/stdout.txt",
+            "sha256": "c42499da1ef538522313bfb4f5dd4c385822d9b5a23ba5a935956d4cb4321326"
+          }
+        }
+      }
+    },
+    {
+      "id": "record-field",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/record-field/source.alg",
+        "sha256": "b7466fa0faba2094d998959d990b5c83d8746403d143cb8779894fd2eaeb8008"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-07T17:35:26.3662753Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/record-field/raw.txt",
+          "sha256": "8eed7be6be20f12e00d88c7520c0b25682b9f6ee1ace54bf5a83e30fe39a13db"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/record-field/stdout.txt",
+          "sha256": "d711c9f03459b0814b8a292c771dd91b7905046408c3e27ee403c56cc56480ca"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/record-field/stdout.txt",
+            "sha256": "d711c9f03459b0814b8a292c771dd91b7905046408c3e27ee403c56cc56480ca"
+          }
+        }
+      }
+    }
+  ]
+}

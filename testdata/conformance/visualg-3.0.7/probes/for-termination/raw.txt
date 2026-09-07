@@ -1,0 +1,10 @@
+Início da execução
+BEGIN:for-termination
+D 5D 3D 1;FINAL= -1
+S 1S 3S 5;FINAL= 6
+T 1T 4T 7;FINAL= 7
+U 3U 2U 1;FINAL= 0
+B 1;FINAL= 1
+END:for-termination
+
+Fim da execução.
