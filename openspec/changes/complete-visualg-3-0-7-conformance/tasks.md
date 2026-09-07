@@ -72,7 +72,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 - [x] 3.11 Implement the shared per-run step budget, active-call and evaluation-depth guards, and checked text/format allocation limits from design decision 10. Cover empty loops, recursion, value growth, boundary side effects, and cleanup; enable budgeted corpus runs with state/host observation adapters and bounded I/O fakes.
 - [x] 3.12 Update `docs/language.md` with runtime diagnostics, safeguard defaults, the optional execution budget, and exit statuses; record the breaking internal boundary and project-specific limits in `CHANGELOG.md`.
 - [ ] 3.13 Run focused sema/interpreter/diagnostic/CLI/limit tests and then the full build, lint, ordinary, race, incremental corpus, and strict OpenSpec suites.
-- [ ] 3.14 Mark every completed 3.x task immediately, commit the focused migration, push the next stacked branch, and open its draft PR before group 4.
+- [x] 3.14 Mark every completed 3.x task immediately, commit the focused migration, push the next stacked branch, and open its draft PR before group 4.
 
 ## 4. Newline-Aware Lexing, Strict Grammar, Recovery, and Printing
 
