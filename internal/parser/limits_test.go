@@ -1,13 +1,61 @@
 package parser
 
 import (
+	"bytes"
+	"reflect"
 	"strings"
 	"testing"
 
+	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/lexer"
 	"github.com/ncode/portugol-go/internal/testprocess"
 )
+
+func TestFormatDepthRoundTrip(t *testing.T) {
+	parse := func(src string) *ast.Program {
+		t.Helper()
+		_, toks, ds := lexer.Scan("format.alg", src)
+		if len(ds) != 0 {
+			t.Fatal(ds)
+		}
+		// Source positions change with formatting; the syntax tree must not.
+		for i := range toks {
+			toks[i].Pos = 0
+		}
+		prog, ds := Parse(toks)
+		if len(ds) != 0 {
+			t.Fatal(ds)
+		}
+		return prog
+	}
+	for _, expr := range []string{
+		strings.Repeat("1+", 254) + "1",
+		strings.Repeat("-", 254) + "1",
+		strings.Repeat("nao ", 254) + "verdadeiro",
+		"1 - (2 - 3) + 4 * (5 + 6)",
+		"(2 ^ 3) ^ 2 + 2 ^ (3 ^ 2)",
+		"-2 ^ 2 + -(2 ^ 2)",
+		"nao (verdadeiro e falso) ou (falso xou verdadeiro)",
+		"(nao 1) ^ 2 + - nao 3",
+	} {
+		prog := parse("algoritmo \"format\"\ninicio\nescreval(" + expr + ")\nfimalgoritmo\n")
+		var first, second bytes.Buffer
+		if err := ast.Fprint(&first, prog); err != nil {
+			t.Fatal(err)
+		}
+		reparsed := parse(first.String())
+		if !reflect.DeepEqual(prog, reparsed) {
+			t.Fatalf("formatting changed expression %q", expr)
+		}
+		if err := ast.Fprint(&second, reparsed); err != nil {
+			t.Fatal(err)
+		}
+		if first.String() != second.String() {
+			t.Fatalf("formatting is not idempotent for %q", expr)
+		}
+	}
+}
 
 func TestStructuralLimits(t *testing.T) {
 	for _, tt := range []struct {

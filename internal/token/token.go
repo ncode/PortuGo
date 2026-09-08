@@ -167,3 +167,37 @@ func (k Kind) String() string {
 	}
 	return "token(" + strconv.Itoa(int(k)) + ")"
 }
+
+// BinaryPrecedence returns the binding strength of a binary operator, or -1.
+func (k Kind) BinaryPrecedence() int {
+	switch k {
+	case OU:
+		return 1
+	case XOU:
+		return 2
+	case E:
+		return 3
+	case EQL, NEQ, LSS, GTR, LEQ, GEQ:
+		return 4
+	case ADD, SUB:
+		return 5
+	case MUL, QUO, IDIV, REM, MOD:
+		return 6
+	case POW:
+		return 8
+	default:
+		return -1
+	}
+}
+
+// UnaryPrecedence returns the binding strength of a unary operator, or -1.
+func (k Kind) UnaryPrecedence() int {
+	switch k {
+	case NAO:
+		return 7
+	case SUB:
+		return 9 // VisuAlg binds unary minus more tightly than power.
+	default:
+		return -1
+	}
+}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"errors"
 	"flag"
 	"fmt"
@@ -72,7 +73,26 @@ func dispatch(args []string) int {
 		return 1
 	}
 	if command == "fmt" {
-		if err := ast.Fprint(os.Stdout, prog); err != nil {
+		var output formatBuffer
+		if err := ast.Fprint(&output, prog); err != nil {
+			var d diag.Diagnostic
+			if errors.As(err, &d) {
+				d.Pos = prog.At
+				diag.Render(os.Stderr, file, []diag.Diagnostic{d})
+			} else {
+				fmt.Fprintln(os.Stderr, err)
+			}
+			return 1
+		}
+		// Formatting can add syntax nesting; validate before emitting any bytes.
+		formattedFile, toks, ds := lexer.Scan(file.Name, output.data.String())
+		_, parseDiags := parser.Parse(toks)
+		ds = append(ds, parseDiags...)
+		if diag.HasErrors(ds) {
+			diag.Render(os.Stderr, formattedFile, ds)
+			return 1
+		}
+		if _, err := output.data.WriteTo(os.Stdout); err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			return 1
 		}
@@ -92,6 +112,15 @@ func dispatch(args []string) int {
 		return 1
 	}
 	return 0
+}
+
+type formatBuffer struct{ data bytes.Buffer }
+
+func (b *formatBuffer) Write(p []byte) (int, error) {
+	if len(p) > source.MaxBytes-b.data.Len() {
+		return 0, diag.Diagnostic{Code: diag.EResource, Message: "formatted source size limit exceeded"}
+	}
+	return b.data.Write(p)
 }
 
 func usage() {

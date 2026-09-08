@@ -174,6 +174,11 @@ Source, syntax, and AST limits report positioned `E900` diagnostics. Exact
 boundary inputs remain accepted. An oversized REPL submission ends the session
 with status 1; recovery from that limit remains part of the later REPL work.
 
+Formatting omits unnecessary operator parentheses while preserving precedence
+and association. The CLI checks the complete formatted source against the same
+byte and syntax limits before writing stdout. If formatting expands an accepted
+input beyond a limit, `fmt` reports `E900`, exits 1, and writes no source output.
+
 Internally, `sema.Analyze` supplies immutable resolved types, vector layouts, and
 declaration/use bindings. `interp.New(Options).Run(program, info)` requires that
 successful result for the same unchanged AST and returns positioned diagnostics.

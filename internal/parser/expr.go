@@ -16,7 +16,7 @@ func (p *parser) parseExpr(minPrec int) ast.Expr {
 	left := p.parseUnary()
 	for {
 		op := p.peek()
-		prec := precedence(op.Kind)
+		prec := op.Kind.BinaryPrecedence()
 		if prec < minPrec {
 			return left
 		}
@@ -29,11 +29,7 @@ func (p *parser) parseExpr(minPrec int) ast.Expr {
 func (p *parser) parseUnary() ast.Expr {
 	if p.peek().Kind == token.SUB || p.peek().Kind == token.NAO {
 		op := p.advance()
-		prec := 7
-		if op.Kind == token.SUB {
-			prec = 9 // VisuAlg binds unary minus more tightly than power.
-		}
-		return &ast.UnaryExpr{Op: op, X: p.parseExpr(prec)}
+		return &ast.UnaryExpr{Op: op, X: p.parseExpr(op.Kind.UnaryPrecedence())}
 	}
 	return p.parsePrimary()
 }
@@ -92,25 +88,4 @@ func (p *parser) parseCall() *ast.CallExpr {
 		p.expect(token.RPAREN, "expected ')'")
 	}
 	return call
-}
-
-func precedence(kind token.Kind) int {
-	switch kind {
-	case token.OU:
-		return 1
-	case token.XOU:
-		return 2
-	case token.E:
-		return 3
-	case token.EQL, token.NEQ, token.LSS, token.GTR, token.LEQ, token.GEQ:
-		return 4
-	case token.ADD, token.SUB:
-		return 5
-	case token.MUL, token.QUO, token.IDIV, token.REM, token.MOD:
-		return 6
-	case token.POW:
-		return 8
-	default:
-		return -1
-	}
 }

@@ -15,10 +15,10 @@ import (
 
 func TestPowerPrecedence(t *testing.T) {
 	for _, tt := range []struct{ source, printed string }{
-		{"2^3^2", "((2 ^ 3) ^ 2)"},
-		{"-2^2", "((- 2) ^ 2)"},
-		{"2^(3^2)", "(2 ^ (3 ^ 2))"},
-		{"-(2^2)", "(- (2 ^ 2))"},
+		{"2^3^2", "2 ^ 3 ^ 2"},
+		{"-2^2", "- 2 ^ 2"},
+		{"2^(3^2)", "2 ^ (3 ^ 2)"},
+		{"-(2^2)", "- (2 ^ 2)"},
 	} {
 		t.Run(tt.source, func(t *testing.T) {
 			_, toks, lexDiags := lexer.Scan("power.alg", "algoritmo \"power\"\ninicio\nescreval("+tt.source+")\nfimalgoritmo")

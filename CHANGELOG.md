@@ -13,6 +13,9 @@
 - Linked existing corpus-tooling tests and recorded feature dispositions to their
   specification requirements, with reviewed reasons for project-only evidence.
   Language recordings, bundled examples, and full acceptance remain incomplete.
+- Fixed formatting of deep expressions by omitting unnecessary parentheses.
+  The CLI rejects formatted output that exceeds source or syntax limits before
+  writing any source bytes, so successful output can be parsed again.
 - Added 4 MiB source/submission limits and 256-level syntax/AST traversal limits
   with positioned `E900` diagnostics. Windows-1252 decoding checks original
   bytes before expansion; analysis and formatting reject deep trees before

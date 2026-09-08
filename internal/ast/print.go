@@ -240,9 +240,10 @@ func exprString(expr Expr) string {
 		}
 		return exprString(e.X) + "[" + strings.Join(indices, ", ") + "]"
 	case *UnaryExpr:
-		return "(" + e.Op.Text + " " + exprString(e.X) + ")"
+		return e.Op.Text + " " + operandString(e.X, e.Op.Kind.UnaryPrecedence())
 	case *BinaryExpr:
-		return "(" + exprString(e.Left) + " " + e.Op.Text + " " + exprString(e.Right) + ")"
+		prec := e.Op.Kind.BinaryPrecedence()
+		return operandString(e.Left, prec) + " " + e.Op.Text + " " + operandString(e.Right, prec+1)
 	case *CallExpr:
 		args := make([]string, len(e.Args))
 		for i, arg := range e.Args {
@@ -251,4 +252,19 @@ func exprString(expr Expr) string {
 		return e.Name.Text + "(" + strings.Join(args, ", ") + ")"
 	}
 	return "<expr>"
+}
+
+func operandString(expr Expr, minPrec int) string {
+	out := exprString(expr)
+	prec := minPrec
+	switch e := expr.(type) {
+	case *UnaryExpr:
+		prec = e.Op.Kind.UnaryPrecedence()
+	case *BinaryExpr:
+		prec = e.Op.Kind.BinaryPrecedence()
+	}
+	if prec < minPrec {
+		return "(" + out + ")"
+	}
+	return out
 }
