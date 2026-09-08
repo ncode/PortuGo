@@ -26,7 +26,8 @@ State and host-event observations need the group 3 adapter; the CLI runner
 reports them as unsupported rather than claiming they match.
 
 Every validation requires either `--base` or `--previous` for history checks.
-`--base` checks an earlier Git manifest for removed verified probes or downgrades;
+`--base` checks an earlier Git manifest for removed probes, inventory entries,
+linked tasks, retirement records, and verified-to-pending downgrades;
 use the PR's base commit or parent branch for stacked work instead of `origin/main`.
 `--previous` accepts a repository-relative manifest file instead. A missing
 manifest in the initial base is allowed; invalid refs and other Git failures are
@@ -106,7 +107,11 @@ hashes are lowercase SHA-256 of the exact published bytes.
 - Reviewed exceptions and downgrades carry a reason and an existing review link.
   Project-specific safeguards may have reference non-applicability while their
   implementation is pending; verification still requires actual project tests.
-  Retired IDs retain a reviewed disposition and optional replacement probe.
+  Probe, inventory, and task IDs share a unique namespace. Removing a probe or
+  inventory entry, or a task linked by an earlier probe, requires a reviewed
+  `retired` disposition regardless of implementation state. A replacement may
+  name an active probe, inventory entry, or task. Retirement records must remain
+  in later manifests, and retired IDs cannot also be active or reused.
 
 The three earlier rejection probes include their original GUI screenshots and
 explicitly labeled manual transcriptions. For those probes, `raw`, `normalized`

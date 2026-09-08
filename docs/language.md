@@ -131,8 +131,10 @@ recording work. New observations confirm particular constant, named-type and
 record forms in the reference application; those forms remain pending in this
 implementation. Corpus validation requires expected acceptance/rejection and
 generated files to agree with the reference, and an explicit history base to
-detect unreviewed regressions in coverage. Recording verifies input-only file
-hashes before accepting a capture.
+detect unreviewed regressions in coverage. Removing a probe, inventory entry,
+or linked task requires a reviewed retirement, even for pending behavior.
+Retirement records remain in later manifests; retired IDs cannot be reused.
+Recording verifies input-only file hashes before accepting a capture.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.
 

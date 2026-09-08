@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Preserve conformance history for pending probes, inventory entries, linked
+  tasks, and prior retirements. Removed IDs require reviewed dispositions;
+  replacements may identify an active probe, inventory entry, or task.
 - Made corpus traceability discover every specification in the change's spec tree.
   Added retained GUI error evidence and labeled transcriptions for the three
   earlier rejection probes; the broader evidence inventory remains incomplete.

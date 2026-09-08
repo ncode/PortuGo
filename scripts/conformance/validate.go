@@ -31,6 +31,10 @@ func validate(root string, m manifest, mode string, previous *manifest) error {
 	add(checkProhibited(root, r))
 	tasks, completed, err := taskStates(root, m.TasksPath)
 	add(err)
+	active := make(map[string]string)
+	for id := range tasks {
+		active[id] = "task"
+	}
 	probes := make(map[string]probe)
 	for _, p := range m.Probes {
 		if p.ID == "" {
@@ -40,6 +44,10 @@ func validate(root string, m manifest, mode string, previous *manifest) error {
 			add(fmt.Errorf("duplicate probe %s", p.ID))
 		}
 		probes[p.ID] = p
+		if active[p.ID] != "" {
+			add(fmt.Errorf("duplicate manifest ID %s", p.ID))
+		}
+		active[p.ID] = "probe"
 		if err := validateProbe(root, p, mode, tasks, completed); err != nil {
 			add(fmt.Errorf("%s: %w", p.ID, err))
 		}
@@ -48,32 +56,51 @@ func validate(root string, m manifest, mode string, previous *manifest) error {
 		add(fmt.Errorf("empty probe inventory"))
 	}
 	add(validateInventory(root, m, probes))
+	for _, item := range m.Inventory {
+		if active[item.ID] != "" {
+			add(fmt.Errorf("duplicate manifest ID %s", item.ID))
+		}
+		active[item.ID] = "inventory item"
+	}
 	retired := make(map[string]bool)
 	for _, d := range m.Retired {
 		if d.ID == "" || retired[d.ID] {
 			add(fmt.Errorf("invalid retired ID %q", d.ID))
 		}
+		if active[d.ID] != "" {
+			add(fmt.Errorf("retired ID %s is still active", d.ID))
+		}
 		add(checkReview(root, &d.Review))
 		retired[d.ID] = true
-		if d.Replacement != "" {
-			if _, ok := probes[d.Replacement]; !ok {
-				add(fmt.Errorf("missing replacement %s", d.Replacement))
-			}
+		if d.Replacement != "" && active[d.Replacement] == "" {
+			add(fmt.Errorf("missing replacement %s", d.Replacement))
 		}
 	}
 	if previous != nil {
 		for _, old := range previous.Probes {
-			if old.Implementation.State != "verified" {
-				continue
-			}
 			p, exists := probes[old.ID]
 			if !exists && !retired[old.ID] {
-				add(fmt.Errorf("removed verified probe %s without reviewed disposition", old.ID))
+				add(fmt.Errorf("removed %s probe %s without reviewed disposition", old.Implementation.State, old.ID))
 			}
-			if exists && p.Implementation.State != "verified" {
+			for _, task := range old.Tasks {
+				if _, exists := tasks[task]; !exists && !retired[task] {
+					add(fmt.Errorf("removed linked task %s without reviewed disposition", task))
+				}
+			}
+			if exists && old.Implementation.State == "verified" && p.Implementation.State != "verified" {
 				if err := checkReview(root, p.Implementation.Review); err != nil {
 					add(fmt.Errorf("unreviewed downgrade of %s: %w", old.ID, err))
 				}
+			}
+		}
+		for _, old := range previous.Inventory {
+			if active[old.ID] != "inventory item" && !retired[old.ID] {
+				add(fmt.Errorf("removed inventory item %s without reviewed disposition", old.ID))
+			}
+		}
+		for _, old := range previous.Retired {
+			if !retired[old.ID] {
+				add(fmt.Errorf("removed retired disposition %s", old.ID))
 			}
 		}
 	}

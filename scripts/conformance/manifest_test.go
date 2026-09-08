@@ -150,6 +150,82 @@ func TestManifestPreservesVerifiedHistory(t *testing.T) {
 	}
 }
 
+func TestManifestPreservesRetiredHistory(t *testing.T) {
+	t.Parallel()
+	for _, mode := range []string{"evidence", "incremental", "implementation-acceptance"} {
+		for _, kind := range []string{"pending probe", "verified probe", "inventory item", "linked task", "prior disposition"} {
+			for _, reviewed := range []bool{false, true} {
+				t.Run(fmt.Sprintf("%s/%s/reviewed=%t", mode, kind, reviewed), func(t *testing.T) {
+					t.Parallel()
+					root, m := testManifest(t)
+					m.Probes[0].Implementation.State = "verified"
+					m.Probes[0].Implementation.Tests = []string{"output_test.go#TestOutput"}
+					previous := m
+					previous.Probes = append([]probe(nil), m.Probes...)
+					previous.Inventory = append([]inventoryItem(nil), m.Inventory...)
+					writeArtifact(t, root, "review.md", "Reviewed replacement preserves the recorded output obligation.\n")
+					d := disposition{Review: review{Reason: "Reviewed scope correction", Link: "review.md"}}
+					switch kind {
+					case "pending probe", "verified probe":
+						d.ID, d.Replacement = "output", "replacement-output"
+						m.Probes[0].ID = d.Replacement
+						m.Inventory[0].Probes = []string{d.Replacement}
+						if kind == "pending probe" {
+							previous.Probes[0].Implementation.State = "pending"
+						}
+					case "inventory item":
+						d.ID, d.Replacement = "requirement.output", "requirement.replacement-output"
+						m.Inventory[0].ID = d.Replacement
+					case "linked task":
+						d.ID, d.Replacement = "10.1", "10.2"
+						writeArtifact(t, root, "tasks.md", "- [ ] 2.1 Record output\n- [ ] 10.2 Implement output\n")
+						m.Probes[0].Tasks = []string{d.Replacement}
+					case "prior disposition":
+						d.ID, d.Replacement = "retired-output", "output"
+						previous.Retired = []disposition{d}
+					}
+					if reviewed {
+						m.Retired = []disposition{d}
+					}
+					err := validate(root, m, mode, &previous)
+					if reviewed && err != nil {
+						t.Fatal(err)
+					}
+					if !reviewed && (err == nil || !strings.Contains(err.Error(), d.ID)) {
+						t.Fatalf("error = %v, want missing disposition for %s", err, d.ID)
+					}
+				})
+			}
+		}
+	}
+}
+
+func TestManifestRetirementIDs(t *testing.T) {
+	t.Parallel()
+	for _, kind := range []string{"probe", "inventory", "task", "ambiguous ID"} {
+		t.Run(kind, func(t *testing.T) {
+			t.Parallel()
+			root, m := testManifest(t)
+			writeArtifact(t, root, "review.md", "Reviewed retirement.\n")
+			id := "output"
+			switch kind {
+			case "inventory":
+				id = "requirement.output"
+			case "task":
+				id = "10.1"
+			case "ambiguous ID":
+				m.Inventory[0].ID = id
+			}
+			if kind != "ambiguous ID" {
+				m.Retired = []disposition{{ID: id, Review: review{Reason: "Retired", Link: "review.md"}}}
+			}
+			if err := validate(root, m, "evidence", nil); err == nil || !strings.Contains(err.Error(), id) {
+				t.Fatalf("error = %v, want conflicting ID %s", err, id)
+			}
+		})
+	}
+}
+
 func TestManifestReferenceDisposition(t *testing.T) {
 	t.Parallel()
 	for _, tt := range []struct {
