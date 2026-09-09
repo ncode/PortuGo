@@ -1,0 +1,4 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 5
+Message: Esperava uma expressão do tipo INTEIRO.
+Column: not established.

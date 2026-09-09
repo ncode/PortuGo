@@ -113,7 +113,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   and integer operators after a reference type change remain pending.
 - [x] 5.5 Evaluate all call arguments exactly once in the oracle-confirmed order and capture reference designators before entering the callee.
 - [x] 5.6 Replace caller-derived lookup with fixed lexical bindings so globals, parameters, locals, and allowed shadowing never depend on dynamic call order.
-- [ ] 5.7 Implement oracle-confirmed declaration visibility, direct recursion, mutual recursion, and independent recursive call frames.
+- [x] 5.7 Implement oracle-confirmed declaration visibility, direct recursion, mutual recursion, and independent recursive call frames.
 - [ ] 5.8 Add call-frame and alias regressions for accepted scalar/vector designators already representable at this stage, including early failure, call-depth exhaustion, and no partial call setup; field cases belong to group 6 only if confirmed.
 - [x] 5.9 Extend canonical printing and examples for all accepted bare and parenthesized call forms.
 - [ ] 5.10 Update `docs/language.md` and `CHANGELOG.md` with declaration, call, parameter, evaluation-order, scope, and recursion compatibility.
@@ -175,10 +175,10 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 9.1 Add failing oracle regressions for conditional and infinite repeat forms, `fimrepita`, inclusive case ranges and invalid overlaps, nested return/break propagation, zero/negative steps, bound evaluation timing, loop-variable mutation, and integer-boundary iteration.
 - [ ] 9.2 Add explicit optional repeat conditions, ranged case labels, and optional return expressions to the AST and canonical printer.
 - [ ] 9.3 Parse every accepted repeat terminator, range-label syntax, return form, and `para` form with newline-aware recovery.
-- [ ] 9.4 Validate repeat conditions, constant range endpoints, label type/overlap rules, return contexts/types/path completeness, break contexts, and integer loop control.
+- [ ] 9.4 Validate repeat conditions, constant range endpoints, label type/overlap rules, return contexts/types and recorded fallthrough behavior, break contexts, and integer loop control.
 - [ ] 9.5 Implement conditional and confirmed infinite repeats with a budget charge on every iteration, including empty bodies; test that finite-budget runs stop with `R006` while unbudgeted loop semantics remain unchanged.
 - [ ] 9.6 Implement inclusive range matching, first-arm selection, and no fall-through while evaluating the selector once.
-- [ ] 9.7 Propagate return and break control through nested conditions, choices, and repeats to the exact call or innermost-loop boundary.
+- [ ] 9.7 Apply recorded result updates without exiting nested conditions, choices, or loops; propagate break control to the exact innermost-loop boundary.
 - [ ] 9.8 Implement `para` bound/step evaluation timing, negative and zero-step behavior, mutation rules, and overflow-safe termination at integer limits.
 - [ ] 9.9 Return `R005` or `R006` for runtime-only invalid return/loop state with positions and no panic.
 - [ ] 9.10 Add parser goldens, semantic diagnostic tables, runtime `.out`/`.err` fixtures, and examples for ranges, repeat variants, and descending boundary-safe loops.

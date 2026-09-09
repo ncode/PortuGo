@@ -194,7 +194,7 @@ fimfuncao
 ```
 
 - Default pass-by-value. `var` parameter = pass-by-reference.
-- Functions must `retorne` on every path. Sema enforces this.
+- `retorne` sets the function result and continues execution; `fimfuncao` ends the call. Paths without `retorne` are accepted. Recorded result initialization and reuse rules are defined in `docs/language.md`.
 - Recursion is allowed.
 - Forward declarations are not part of the language; declarations must precede use, but the parser collects all top-level declarations first so order within a file does not matter.
 

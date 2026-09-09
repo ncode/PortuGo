@@ -94,15 +94,19 @@ Subexpressions, designator indices, statement expressions, and format expression
 - **THEN** normal nonempty completion exposes the smaller of the next iteration value and terminal bound, an empty loop exposes its initial bound, and interruption exposes the smaller of the body value and terminal bound, including the recorded descending cases
 
 ### Requirement: Interruption and return propagation
-`interrompa` and `retorne` SHALL be valid only in the oracle-confirmed contexts and SHALL propagate through nested blocks to the correct loop or call boundary. They SHALL not be swallowed by `escolha`, conditional, or repeat bodies, and a misplaced command SHALL be rejected before execution when statically knowable.
+`interrompa` and `retorne` SHALL be valid only in the oracle-confirmed contexts.
+`interrompa` SHALL propagate through nested blocks to the correct loop boundary.
+`retorne` SHALL update the active function's result without leaving a conditional,
+choice, loop, or function body. A misplaced command SHALL be rejected before
+execution when statically knowable.
 
 #### Scenario: Interrupt the innermost loop
 - **WHEN** `interrompa` executes inside nested loops
 - **THEN** only the oracle-designated loop ends and execution resumes at the correct following statement
 
-#### Scenario: Return through nested control flow
+#### Scenario: Set a result inside nested control flow
 - **WHEN** `retorne` executes in a valid nested branch within a subprogram
-- **THEN** the call completes immediately with the reference-compatible return behavior
+- **THEN** the active function's result changes and execution continues through the remaining statements and loop iterations until an actual loop or function boundary is reached
 
 ### Requirement: I/O statement validation
 `leia`, `escreva`, and `escreval` syntax, arity, designator requirements, format fields, and expression types SHALL be validated according to VisuAlg 3.0.7 before execution wherever possible. Invalid read destinations and invalid width or precision forms SHALL not be deferred into unpositioned runtime failures.

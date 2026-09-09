@@ -30,6 +30,8 @@ type Interpreter struct {
 	initErr      error
 	steps        uint64
 	depth, calls int
+	result       *runtime.Cell
+	results      []runtime.Value
 }
 
 // New resolves defaults once and owns the buffered input for subsequent runs.
@@ -64,6 +66,8 @@ func New(options Options) *Interpreter {
 func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) []diag.Diagnostic {
 	i.program = nil
 	i.global = nil
+	i.result = nil
+	i.results = nil
 	pos := token.NoPos
 	if prog != nil {
 		pos = prog.At
@@ -100,9 +104,7 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) []diag.Diagnostic 
 	case noControl:
 		return nil
 	case breakControl:
-		return diagnostics(fmt.Errorf("interrompa outside loop"), pos, diag.RLoop)
-	case returnControl:
-		return diagnostics(fmt.Errorf("retorne outside function"), pos, diag.RCall)
+		return diagnostics(fmt.Errorf("interrompa outside loop"), ctrl.at, diag.RLoop)
 	default:
 		return nil
 	}
@@ -147,10 +149,9 @@ type controlKind int
 const (
 	noControl controlKind = iota
 	breakControl
-	returnControl
 )
 
 type control struct {
-	kind  controlKind
-	value runtime.Value
+	kind controlKind
+	at   token.Pos
 }

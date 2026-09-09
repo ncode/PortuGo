@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Make `retorne` update the active function result while execution continues to
+  `fimfuncao`. Accept fallthrough paths, retain same-type results at each call
+  depth, and preserve independent recursive frames. Match return-type and
+  function-name assignment diagnostics; accept the recorded colonless `caso`
+  label. Add 45 reviewed observations and verify 40 additional cases. Bare-return
+  diagnostics and nested-write formatting remain pending; cross-type fallthrough
+  uses a documented fresh-zero guard.
 - Separate callable and variable names while preserving recorded function and
   procedure priority. Reject assignments beginning with a procedure name and
   report duplicate callables at the second declaration without secondary body

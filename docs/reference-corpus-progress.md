@@ -56,8 +56,9 @@ probes: 41 accepted and 20 rejected. A focused comment follow-up adds another 24
 (15 accepted, 9 rejected). A call follow-up adds 11 more usable observations
 (4 accepted, 7 rejected). The argument follow-ups add 35 observations
 (28 accepted, 7 rejected). The naming follow-ups add 15 observations
-(7 accepted, 8 rejected). The corpus now contains 164 reference probes
-(113 verified, 51 pending implementation), plus the five project-tooling entries.
+(7 accepted, 8 rejected). The return follow-ups add 45 observations
+(36 accepted, 9 rejected). The corpus now contains 209 reference probes
+(153 verified, 56 pending implementation), plus the five project-tooling entries.
 The missing mappings at the corpus layer cover 44 requirements and all 73 bundled
 examples. The stable storage requirement ID is retained while its linked heading
 and text now reflect the recorded acceptance beyond the former 500-slot claim.
@@ -144,3 +145,31 @@ Local build, formatting, vet, static analysis, lint, ordinary/race tests, both
 30-second fuzz checks, strict OpenSpec validation, and all 113 verified CLI cases
 pass. Native Windows build, vet, 549 tests, both 30-second fuzz checks, and all
 113 verified CLI cases pass on the same production source and manifest.
+
+The return slice verifies 33 accepted programs and seven rejection diagnostics.
+`retorne` updates the active result while statements and finite loop iterations
+continue; the function terminator ends the call. Completed calls retain
+same-type results at each depth, including across different names and frame
+sizes. Recursive results, parameters, and locals remain independent. Argument
+expressions run before the callee selects its retained result. Error guards
+cover failures after a result assignment, skipped parameter copy-back, and reuse
+of the interpreter for a new program. The recorded colonless `caso` form is
+accepted and formatting preserves execution.
+
+Nine GUI rejection diagnostics were individually reviewed and manually
+transcribed. An unfinished infinite-loop observation and six cross-type
+fallthrough captures were excluded. The latter expose internal storage; their
+raw output and images remain private. Cross-type fallthrough uses a documented
+fresh-zero project guard rather than claiming reference equivalence.
+
+Bare-return diagnostics and nested-write formatting remain pending, including
+the new observations that depend on them. New mappings for function results,
+call-frame safety, and nested result updates leave 37 requirements and all
+73 bundled examples unmapped. The evidence gate remains enabled.
+
+Local build, formatting, vet, staticcheck, lint, ordinary/race tests, both
+30-second fuzz checks, strict OpenSpec validation, and all 153 verified CLI
+replays pass. Native Windows build, vet, 634 tests, both 30-second fuzz checks,
+and all 153 verified CLI replays pass on the same production source and manifest.
+The native snapshot also confirms removal of the obsolete return-path checker.
+The evidence gate reports the 110 missing mappings and no other failures.

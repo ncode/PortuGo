@@ -162,8 +162,38 @@ failed call setup does not copy partially prepared parameters back.
 
 Recorded procedure argument-count and type errors point to the declaration
 line; function argument-count errors point to the call. Empty-argument edge
-cases, integer operators after numeric reference conversion, and broader return
-behavior remain under validation.
+cases and integer operators after numeric reference conversion remain under
+validation.
+
+## Function Results
+
+`retorne <expression>` updates the active function's result and execution
+continues. It does not leave an `se`, `escolha`, `enquanto`, `repita`, or `para`
+body. Later statements run and a later `retorne` replaces the earlier result.
+`fimfuncao` ends the call and supplies the result; successful completion then
+copies `var` parameters back, including changes made after `retorne`. See the
+[function-result example](../examples/function_results.alg).
+The recorded choice body also accepts a `caso` label without a trailing colon;
+formatting emits the colon consistently.
+
+Functions may reach their end without executing `retorne`. A result that has
+never been assigned starts at the scalar zero value: `0`, empty text, or
+`falso`. Active recursive calls have independent results, parameters, and locals.
+Completed calls at the same call depth retain the previous result when the
+result type matches, even across different function names and frame sizes.
+Procedure calls do not replace that retained result. Starting a new program
+clears it. Argument expressions run before the callee selects its retained
+result, so a function call inside an argument can replace that result.
+Cross-type fallthrough uses a fresh typed zero as a project guard;
+the reference exposes internal storage in these cases, so this behavior is not
+claimed as reference-equivalent and those captures are not published.
+
+Return expressions accept integer-to-real widening, but an integer function
+rejects real expressions with `E001`, including `2.0`. Numeric argument narrowing
+does not apply to returns. Valued returns in procedures or the main body receive
+`E005`. Assigning to a function name without a variable of that name receives
+`E002`; it does not assign the result. Bare-return diagnostics and output
+formatting when function bodies write during an outer write remain pending.
 
 ## I/O
 

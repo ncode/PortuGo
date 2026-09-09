@@ -1,0 +1,4 @@
+Início da execução
+RESULT|RESULT
+
+Fim da execução.

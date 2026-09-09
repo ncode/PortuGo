@@ -1,0 +1,4 @@
+Início da execução
+ 42
+
+Fim da execução.

@@ -70,3 +70,55 @@ func TestIntegerArgumentRange(t *testing.T) {
 		})
 	}
 }
+
+func TestFunctionTailFailureAndReuse(t *testing.T) {
+	p, info := analyzed(t, `algoritmo "returns"
+var
+  n: inteiro
+funcao F(var x: inteiro): inteiro
+inicio
+  retorne x
+  x <- 9
+  escreval(1 \ 0)
+fimfuncao
+inicio
+  n <- 7
+  escreval(F(n))
+fimalgoritmo`)
+	var out bytes.Buffer
+	i := New(Options{Output: &out})
+	ds := i.Run(p, info)
+	if len(ds) != 1 || ds[0].Code != diag.RArithmetic || out.Len() != 0 {
+		t.Fatalf("tail failure: diagnostics %v, output %q", ds, &out)
+	}
+	if got := i.State()["n"]; got.Int != 7 || i.calls != 0 || i.env != i.global {
+		t.Fatalf("failed body changed caller: value %+v, calls %d", got, i.calls)
+	}
+	p, info = analyzed(t, "algoritmo \"reuse\"\nfuncao F: inteiro\ninicio\nfimfuncao\ninicio\nescreval(F())\nfimalgoritmo")
+	if ds := i.Run(p, info); len(ds) != 0 || out.String() != " 0\n" {
+		t.Fatalf("failed call polluted next run: %v %q", ds, &out)
+	}
+}
+
+func TestCrossTypeFallthroughUsesTypedZero(t *testing.T) {
+	p, info := analyzed(t, `algoritmo "returns"
+var
+  a: inteiro
+  b: real
+funcao F: inteiro
+inicio
+  retorne 9
+fimfuncao
+funcao G: real
+inicio
+fimfuncao
+inicio
+  a <- F()
+  b <- G()
+  escreval(a, b)
+fimalgoritmo`)
+	var out bytes.Buffer
+	if ds := New(Options{Output: &out}).Run(p, info); len(ds) != 0 || out.String() != " 9 0\n" {
+		t.Fatalf("cross-type fallthrough: %v, %q", ds, &out)
+	}
+}

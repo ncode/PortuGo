@@ -85,9 +85,6 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 			if ctrl.kind == breakControl {
 				return control{}, nil
 			}
-			if ctrl.kind != noControl {
-				return ctrl, nil
-			}
 		}
 	case *ast.RepeatStmt:
 		for {
@@ -101,9 +98,6 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 			if ctrl.kind == breakControl {
 				return control{}, nil
 			}
-			if ctrl.kind != noControl {
-				return ctrl, nil
-			}
 			cond, err := i.evalBool(s.Cond)
 			if err != nil {
 				return control{}, err
@@ -115,13 +109,16 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 	case *ast.ForStmt:
 		return i.execFor(s)
 	case *ast.BreakStmt:
-		return control{kind: breakControl}, nil
+		return control{kind: breakControl, at: s.Start()}, nil
 	case *ast.ReturnStmt:
+		if i.result == nil {
+			return control{}, failure(s.Start(), diag.RCall, fmt.Errorf("retorne outside function"))
+		}
 		v, err := i.eval(s.Value)
 		if err != nil {
 			return control{}, err
 		}
-		return control{kind: returnControl, value: v}, nil
+		return control{}, failure(s.Start(), diag.RCall, assign(i.result, v))
 	case *ast.ReadStmt:
 		return control{}, i.execRead(s)
 	case *ast.WriteStmt:
@@ -170,9 +167,6 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 		if ctrl.kind == breakControl {
 			final = min(cell.Value.Int, to)
 			break
-		}
-		if ctrl.kind != noControl {
-			return ctrl, nil
 		}
 		// VisuAlg caps the exposed exit value at the terminal bound, even
 		// for descending loops. Body assignments do not change progression.

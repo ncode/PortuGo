@@ -18,7 +18,7 @@ fimalgoritmo`)
 	}
 }
 
-func TestFunctionMustReturn(t *testing.T) {
+func TestFunctionMayFallThrough(t *testing.T) {
 	diags := checkSource(t, `algoritmo "x"
 
 funcao f(n: inteiro): inteiro
@@ -31,8 +31,8 @@ fimfuncao
 inicio
   escreval(f(1))
 fimalgoritmo`)
-	if len(diags) == 0 || diags[0].Code != diag.EReturn {
-		t.Fatalf("got diagnostics %#v, want %s", diags, diag.EReturn)
+	if len(diags) != 0 {
+		t.Fatalf("fallthrough function rejected: %v", diags)
 	}
 }
 

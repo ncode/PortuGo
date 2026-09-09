@@ -172,9 +172,6 @@ func (c *checker) checkSub(sub ast.Subprogram) {
 			c.declareVars(decl)
 		}
 		c.checkStmts(d.Body)
-		if !allPathsReturn(d.Body) {
-			c.error(d.Name.Pos, diag.EReturn, "function %q may exit without retorne", d.Name.Text)
-		}
 	}
 }
 
@@ -477,7 +474,7 @@ func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 	switch e := expr.(type) {
 	case *ast.IdentExpr:
 		sym, ok := c.lookup(e.Name)
-		if !ok {
+		if !ok || sym.kind == funcSym {
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}, false
 		}

@@ -118,9 +118,25 @@ func (i *Interpreter) callSub(params []ast.Param, locals []ast.VarDecl, body []a
 	}
 	i.env = callEnv
 	depth := i.depth
+	callDepth := i.calls
+	outerResult := i.result
+	i.result = nil
+	result := runtime.Cell{Type: retType, Value: runtime.Zero(retType)}
+	if retType.Kind != runtime.VoidType {
+		for len(i.results) <= callDepth {
+			i.results = append(i.results, runtime.Value{})
+		}
+		// Completed calls reuse the result at this depth, even across function
+		// names. Cross-type fallthrough gets a fresh typed zero: the reference's
+		// uninitialized cross-type storage is not a stable language value.
+		if previous := i.results[callDepth]; retType.Equal(previous.Type()) {
+			result.Value = runtime.Clone(previous)
+		}
+		i.result = &result
+	}
 	i.depth = 0
 	i.calls++
-	defer func() { i.env = outer; i.depth = depth; i.calls-- }()
+	defer func() { i.env = outer; i.depth = depth; i.result = outerResult; i.calls-- }()
 	for _, decl := range locals {
 		if err := i.defineVars(decl); err != nil {
 			return runtime.Value{}, err
@@ -130,26 +146,18 @@ func (i *Interpreter) callSub(params []ast.Param, locals []ast.VarDecl, body []a
 	if err != nil {
 		return runtime.Value{}, err
 	}
-	value := runtime.Value{Kind: runtime.VoidValue}
-	if retType.Kind == runtime.VoidType {
-		if ctrl.kind == returnControl {
-			return runtime.Value{}, fmt.Errorf("procedure returned a value")
-		}
-	} else {
-		if ctrl.kind != returnControl {
-			return runtime.Value{}, fmt.Errorf("function did not return")
-		}
-		value, err = runtime.ConvertForAssign(retType, ctrl.value)
-		if err != nil {
-			return runtime.Value{}, err
-		}
+	if ctrl.kind == breakControl {
+		return runtime.Value{}, failure(ctrl.at, diag.RLoop, fmt.Errorf("interrompa outside loop"))
+	}
+	if retType.Kind != runtime.VoidType {
+		i.results[callDepth] = runtime.Clone(result.Value)
 	}
 	// The reference copies parameters back in declaration order, including their
 	// numeric types. Repeated destinations therefore receive the last value.
 	for _, ref := range references {
 		*ref.caller = runtime.Cell{Type: ref.parameter.Type.Clone(), Value: runtime.Clone(ref.parameter.Value)}
 	}
-	return value, nil
+	return result.Value, nil
 }
 
 func (i *Interpreter) evalArgs(args []ast.Expr) ([]runtime.Value, error) {

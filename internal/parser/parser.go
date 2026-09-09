@@ -273,7 +273,7 @@ func (p *parser) parseSwitch() ast.Stmt {
 			for p.match(token.COMMA) {
 				values = append(values, p.parseExpr(0))
 			}
-			p.expect(token.COLON, "expected ':' after caso")
+			p.match(token.COLON)
 			body := p.parseStmtList(stopSet(token.CASO, token.OUTROCASO, token.FIMESCOLHA))
 			sw.Cases = append(sw.Cases, ast.CaseClause{At: cstart.Pos, Values: values, Body: body})
 		case token.OUTROCASO:
