@@ -112,6 +112,28 @@ applies to descending loops: `5 ate 1 passo -2` visits 5, 3, 1 and leaves -1;
 `1 ate 6 passo 2` visits 1, 3, 5 and leaves 6. These unusual exit rules follow
 the recorded program output; the reference GUI memory grid can disagree.
 
+## Subprogram Calls
+
+Parameterless procedure and function declarations may omit the empty `()`.
+Procedures can be invoked as `P` or `P()`. Functions can be used as `F` or
+`F()` in expressions. Formatting emits parentheses on declarations and
+procedure calls, and retains the accepted bare spelling of function values.
+See [the parameterless-call example](../examples/parameterless_calls.alg).
+
+Each function occurrence executes a call: a recorded counter function used
+twice produces successive values. Function names take priority in expressions,
+even over a local variable or parameter with the same spelling. Assignments
+still target the declared variable. This unusual priority is recorded for bare
+and parenthesized functions; procedure-name collisions remain pending.
+
+Variables cannot be called, procedures cannot produce values, and user functions
+cannot be invoked as statements. Bare functions that require arguments receive
+`E004`. Function results are not writable reference-argument storage; the CLI
+rejects them statically. Reference probes for temporary reference arguments
+caused application faults and remain inconclusive, so this guard is not claimed
+as a matching reference rejection. Broader argument, visibility, and return
+behavior remains under validation.
+
 ## I/O
 
 `leia` consumes one whitespace-delimited token per destination. Real input may

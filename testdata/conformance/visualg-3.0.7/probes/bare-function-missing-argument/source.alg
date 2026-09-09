@@ -1,0 +1,8 @@
+algoritmo "calls"
+funcao F(x: inteiro): inteiro
+inicio
+retorne x
+fimfuncao
+inicio
+escreval(F)
+fimalgoritmo

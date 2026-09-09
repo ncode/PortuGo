@@ -40,6 +40,9 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 		}
 		return literalValue(e), nil
 	case *ast.IdentExpr:
+		if binding, ok := i.info.Binding(e.Name); ok && i.subs[binding.ID] != nil {
+			return i.callFunction(&ast.CallExpr{Name: e.Name})
+		}
 		cell, err := i.lookupCell(e.Name)
 		if err != nil {
 			return runtime.Value{}, err

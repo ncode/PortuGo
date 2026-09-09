@@ -102,15 +102,19 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 - [ ] 5.1 Add failing parser, semantic, and runtime cases for parameterless declarations, optional parentheses, bare procedure calls, invalid call contexts, exact `var` typing, argument evaluation order, global lexical scope, shadowing, and recursion visibility.
 - [ ] 5.2 Parse every oracle-confirmed procedure/function declaration and call form while retaining enough syntax information for canonical printing.
 - [ ] 5.3 Resolve call statements versus expression calls and ordinary designators according to the recorded ambiguity rules.
+
+  Parameterless declarations, bare calls, and function-name priority over local
+  variables and parameters now match the recorded cases. Procedure-name
+  collisions and declaration-line error positions remain pending.
 - [ ] 5.4 Implement parameter grouping, arity, value-parameter coercion, and exact reference-parameter type and assignability validation in semantic analysis.
 - [ ] 5.5 Evaluate all call arguments exactly once in the oracle-confirmed order and capture reference designators before entering the callee.
 - [ ] 5.6 Replace caller-derived lookup with fixed lexical bindings so globals, parameters, locals, and allowed shadowing never depend on dynamic call order.
 - [ ] 5.7 Implement oracle-confirmed declaration visibility, direct recursion, mutual recursion, and independent recursive call frames.
 - [ ] 5.8 Add call-frame and alias regressions for accepted scalar/vector designators already representable at this stage, including early failure, call-depth exhaustion, and no partial call setup; field cases belong to group 6 only if confirmed.
-- [ ] 5.9 Extend canonical printing and examples for all accepted bare and parenthesized call forms.
+- [x] 5.9 Extend canonical printing and examples for all accepted bare and parenthesized call forms.
 - [ ] 5.10 Update `docs/language.md` and `CHANGELOG.md` with declaration, call, parameter, evaluation-order, scope, and recursion compatibility.
-- [ ] 5.11 Run focused parser/sema/interpreter call tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
-- [ ] 5.12 Mark every completed 5.x task immediately, commit the focused call changes, push the next stacked branch, and open its draft PR before group 6.
+- [x] 5.11 Run focused parser/sema/interpreter call tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+- [x] 5.12 Mark every completed 5.x task immediately, commit the focused call changes, push the next stacked branch, and open its draft PR before group 6.
 
 ## 6. Confirmed Declarations and Aggregate Semantics
 

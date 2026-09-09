@@ -53,8 +53,9 @@ or relaxing the evidence gate.
 
 The [September 9 batch](reference-observations-2026-09-09.md) adds 61 recorded
 probes: 41 accepted and 20 rejected. A focused comment follow-up adds another 24
-(15 accepted, 9 rejected). The corpus now contains 103 reference probes
-(50 verified, 53 pending implementation), plus the five project-tooling entries.
+(15 accepted, 9 rejected). A call follow-up adds 11 more usable observations
+(4 accepted, 7 rejected). The corpus now contains 114 reference probes
+(64 verified, 50 pending implementation), plus the five project-tooling entries.
 The missing mappings at the corpus layer cover 44 requirements and all 73 bundled
 examples. The stable storage requirement ID is retained while its linked heading
 and text now reflect the recorded acceptance beyond the former 500-slot claim.
@@ -87,3 +88,17 @@ Local build, formatting, vet, static analysis, lint, ordinary/race tests, both
 30-second fuzz runs, and strict OpenSpec validation pass. Native Windows build,
 vet, ordinary tests, both 30-second fuzz runs, and all 50 verified CLI reference
 cases pass. The full evidence gate still reports only the 116 missing mappings.
+
+The parameterless-call slice verifies eight accepted programs and six rejected
+call contexts. This includes the reference's function-name priority over local
+variables and parameters, and unchanged execution after formatting. Three
+temporary-reference-argument probes caused internal application faults and were
+excluded from language acceptance/rejection evidence. Fresh processes isolate
+each follow-up probe. The declaration-line error positions in
+`bare-procedure-missing-argument` and `procedure-name-priority` remain pending.
+The new scope observation leaves 42 requirements and 73 examples unmapped.
+
+Local build, formatting, vet, static analysis, lint, ordinary/race tests, both
+30-second fuzz runs, and strict OpenSpec validation pass for the call slice.
+Native Windows build, vet, ordinary tests, both 30-second fuzz runs, and all
+64 verified CLI reference cases pass on the same production source and manifest.

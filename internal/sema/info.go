@@ -66,3 +66,15 @@ func (c *checker) lookup(name token.Token) (symbol, bool) {
 	}
 	return sym, ok
 }
+
+// Function names take priority over variables in value expressions.
+func (c *checker) lookupValue(name token.Token) (symbol, bool) {
+	key := canon(name.Text)
+	for scope := c.scope; scope != nil; scope = scope.parent {
+		if sym, ok := scope.syms[key]; ok && sym.kind == funcSym {
+			c.recordBinding(name, sym)
+			return sym, true
+		}
+	}
+	return c.lookup(name)
+}

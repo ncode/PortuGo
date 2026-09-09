@@ -53,3 +53,25 @@ all source and artifact hashes describe the published bytes.
 | After a complete statement | Braces ignore the remaining line, including another statement. A single slash/star or `/* ... */` is rejected there. | `brace-inline-trailing-statement`, `closing-brace-inline`, `single-slash-inline`, `single-star-inline`, `c-inline-without-statement`, `c-comment-after-statement` |
 | Quoted delimiters | `/`, `/*`, `*/`, `{`, and `}` remain literal. `//` truncates the line even inside a quoted value and produces an error. | `string-single-slash`, `string-c-opening`, `string-c-closing`, `string-brace-opening`, `string-brace-closing`, `string-brace-content`, `string-double-slash`, `string-comment-after-content`, `comment-symbols-in-string` |
 | Incomplete expressions | `escreval(1 { note } + 2)` reports a missing `)`, while `escreval(1{ note })` completes with no program output. A C-like opener within the tested expression reports an undeclared `NOTE`. These exact observations remain pending implementation and do not establish a general recovery rule. | `brace-comment-in-expression`, `brace-inline-math`, `c-comment-in-expression` |
+
+## Isolated call follow-up
+
+Fourteen call and name-resolution probes were run with a fresh reference
+process for each program. Eleven supply usable evidence: four accepted programs
+and seven visible language rejections. Three temporary-reference-argument cases
+caused internal application faults and remain inconclusive; their raw captures
+are not published or treated as language rejection evidence.
+
+| Context | Recorded result | Probe IDs |
+| --- | --- | --- |
+| Repeated bare calls | Two occurrences of a counter function execute independently and print successive values. | `bare-function-side-effects` |
+| Function names and variables | Bare and parenthesized function values take priority over a colliding local variable. Bare function values also take priority over a colliding parameter; assignments to the local variable remain accepted. | `local-variable-shadows-function`, `function-name-priority`, `function-name-priority-over-parameter` |
+| Missing function arguments | A bare function that needs arguments is rejected at its use, including when a local variable has the same name. | `bare-function-missing-argument`, `function-name-priority-with-arguments` |
+| Invalid call context | A variable alone or followed by `()` is rejected. A procedure used as a value is rejected. The bare-variable diagnostic has a visible line number but no message text. | `bare-variable-statement`, `variable-call-statement`, `procedure-value-expression` |
+| Procedure errors | A bare call missing required arguments and a procedure name colliding with a local variable are rejected with line 2 reported in these programs. Those error positions remain pending implementation. | `bare-procedure-missing-argument`, `procedure-name-priority` |
+
+The declaration and call observations already recorded earlier are now verified
+alongside these focused cases where implementation is marked verified. Expected
+call-context errors use the project's `E004` category; GUI line numbers remain
+unchanged. Each published rejection screenshot was inspected individually, and
+all artifact hashes describe the unchanged published bytes.

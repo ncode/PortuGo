@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Accept parameterless declarations without parentheses, bare procedure calls,
+  and bare function values. Match recorded function-name priority over local
+  variables and parameters. Reject function results as reference storage and
+  retain call-depth safeguards. Add 11 reviewed observations and verify 14
+  additional call cases; broader procedure diagnostics remain pending.
 - Match recorded comment lines: brace prefixes and slash/star prefixes at the
   start of a line stop at that line's end, without opening multiline blocks.
   Preserve arithmetic operators and quoted delimiters; reject `//` inside a

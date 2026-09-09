@@ -119,6 +119,7 @@ func TestCallAndValueLimits(t *testing.T) {
 			code      diag.Code
 		}{
 			{"recursion", "algoritmo \"x\"\nprocedimento p()\ninicio\np()\nfimprocedimento\ninicio\np()\nfimalgoritmo", diag.RCall},
+			{"bare function recursion", "algoritmo \"x\"\nfuncao f: inteiro\ninicio\nretorne f\nfimfuncao\ninicio\nescreval(f)\nfimalgoritmo", diag.RCall},
 			{"text", "algoritmo \"x\"\nvar s: caractere\ninicio\ns <- \"a\"\nenquanto verdadeiro faca\ns <- s+s\nfimenquanto\nfimalgoritmo", diag.RStorage},
 			{"format", "algoritmo \"x\"\ninicio\nescreva(1:9223372036854775807)\nfimalgoritmo", diag.RStorage},
 		} {

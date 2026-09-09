@@ -301,10 +301,14 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 			return runtime.Type{Kind: runtime.BoolType}
 		}
 	case *ast.IdentExpr:
-		sym, ok := c.lookup(e.Name)
+		sym, ok := c.lookupValue(e.Name)
 		if !ok {
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}
+		}
+		if sym.kind == funcSym {
+			c.checkArgs(&ast.CallExpr{Name: e.Name}, sym.params)
+			return sym.typ
 		}
 		if sym.kind != varSym {
 			c.error(e.Name.Pos, diag.ETypeMismatch, "%q is not a variable", e.Name.Text)
@@ -413,6 +417,9 @@ func (c *checker) checkCall(call *ast.CallExpr, asStmt bool) (typ runtime.Type) 
 		return ret
 	}
 	sym, ok := c.lookup(call.Name)
+	if !asStmt {
+		sym, ok = c.lookupValue(call.Name)
+	}
 	if !ok {
 		c.error(call.Name.Pos, diag.EUndeclared, "undeclared callable %q", call.Name.Text)
 		return runtime.Type{Kind: runtime.InvalidType}
@@ -439,7 +446,7 @@ func (c *checker) checkArgs(call *ast.CallExpr, params []paramSig) {
 		if !runtime.Assignable(params[i].typ, t) {
 			c.error(arg.Start(), diag.ETypeMismatch, "argument %d: cannot use %s as %s", i+1, t, params[i].typ)
 		}
-		if params[i].byRef && !isWritableExpr(arg) {
+		if params[i].byRef && !c.isWritableExpr(arg) {
 			c.error(arg.Start(), diag.ECall, "argument %d must be assignable for var parameter", i+1)
 		}
 	}
@@ -497,10 +504,13 @@ func isNumeric(t runtime.Type) bool {
 	return t.Kind == runtime.IntegerType || t.Kind == runtime.RealType
 }
 
-func isWritableExpr(expr ast.Expr) bool {
-	switch expr.(type) {
-	case *ast.IdentExpr, *ast.IndexExpr:
-		return true
+func (c *checker) isWritableExpr(expr ast.Expr) bool {
+	switch e := expr.(type) {
+	case *ast.IdentExpr:
+		sym, ok := c.lookupValue(e.Name)
+		return ok && sym.kind == varSym
+	case *ast.IndexExpr:
+		return c.isWritableExpr(e.X)
 	default:
 		return false
 	}

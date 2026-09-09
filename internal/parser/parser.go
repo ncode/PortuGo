@@ -158,7 +158,9 @@ func (p *parser) parseFunction() *ast.FunctionDecl {
 }
 
 func (p *parser) parseParamList() []ast.Param {
-	p.expect(token.LPAREN, "expected '('")
+	if !p.match(token.LPAREN) {
+		return nil
+	}
 	if p.match(token.RPAREN) {
 		return nil
 	}
@@ -235,6 +237,9 @@ func (p *parser) parseIdentStmt() ast.Stmt {
 	if p.peekN(1).Kind == token.LPAREN {
 		call := p.parseCall()
 		return &ast.CallStmt{Call: call}
+	}
+	if p.peekN(1).Kind != token.ASSIGN && p.peekN(1).Kind != token.LBRACK {
+		return &ast.CallStmt{Call: &ast.CallExpr{Name: p.advance()}}
 	}
 	target := p.parseDesignator()
 	at := target.Start()

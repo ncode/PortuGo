@@ -1,0 +1,4 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 5
+Message: [No diagnostic message text is displayed.]
+Column: not established.

@@ -18,6 +18,9 @@ The language SHALL accept every oracle-confirmed procedure and function declarat
 ### Requirement: Call syntax and context
 Procedures and functions SHALL support the oracle-confirmed parenthesized and bare call forms. A call form SHALL be accepted only in the statement or expression contexts where VisuAlg 3.0.7 accepts that callable kind, and ambiguity with a variable or designator SHALL be resolved according to reference evidence.
 
+Recorded function names SHALL take priority over colliding local variables or
+parameters in bare value expressions and parenthesized function calls.
+
 #### Scenario: Invoke a bare procedure call
 - **WHEN** a declared procedure is invoked without parentheses in a reference-accepted statement form
 - **THEN** it executes once with the same behavior as the corresponding accepted parenthesized form
@@ -25,6 +28,10 @@ Procedures and functions SHALL support the oracle-confirmed parenthesized and ba
 #### Scenario: Use a procedure as a value
 - **WHEN** a procedure call appears where a value is required and the reference rejects it
 - **THEN** analysis emits a positioned call diagnostic
+
+#### Scenario: Read a colliding function name
+- **WHEN** a function value is read where a local variable or parameter has the same case-insensitive name
+- **THEN** the function executes and supplies its result, as in the recorded name-priority probes
 
 ### Requirement: Value parameters
 Value parameters SHALL accept exactly the argument types and implicit conversions accepted by VisuAlg 3.0.7. Each argument expression SHALL be evaluated once in reference order before the body observes its parameter, and later mutation of a value parameter SHALL follow the scalar or aggregate copy rules.
