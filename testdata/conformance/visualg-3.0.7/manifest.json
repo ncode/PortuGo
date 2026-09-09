@@ -252,7 +252,38 @@
         "integer-assignment-wrap",
         "integer-function-wrap",
         "integer-divide-real",
-        "integer-modulo-real"
+        "integer-modulo-real",
+        "modulo-negative-right",
+        "modulo-negative-both",
+        "modulo-negative-eight",
+        "modulo-negative-variable",
+        "modulo-small-left",
+        "modulo-percent-negative",
+        "divide-real-left",
+        "divide-real-right",
+        "divide-real-both",
+        "modulo-real-right",
+        "modulo-real-both",
+        "divide-integral-real-left",
+        "divide-integral-real-right",
+        "divide-left-result-type",
+        "divide-right-result-type",
+        "divide-real-zero",
+        "modulo-integral-real-right",
+        "modulo-real-result-type",
+        "modulo-negative-real-left",
+        "modulo-zero-divisor",
+        "modulo-large-real-left",
+        "divide-string-left",
+        "divide-string-right",
+        "divide-logical-left",
+        "divide-logical-right",
+        "modulo-logical-left",
+        "modulo-logical-right",
+        "divide-real-negative-right",
+        "modulo-unit-divisor",
+        "modulo-real-wrap-zero",
+        "operator-evaluation-order"
       ]
     },
     {
@@ -24598,14 +24629,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-signs/stdout.txt",
             "sha256": "2585425a37276ca3c1319482d5792eb8071c9d48536444db1abc402d4d2b0776"
           }
-        }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
       }
     },
     {
@@ -24638,14 +24672,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-overflow/stdout.txt",
             "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
           }
-        }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
       }
     },
     {
@@ -24807,14 +24844,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/integer-divide-real/stdout.txt",
             "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
           }
-        }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
       }
     },
     {
@@ -24847,14 +24887,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-real/stdout.txt",
             "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
           }
-        }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
       }
     },
     {
@@ -25155,6 +25198,1354 @@
         },
         "tests": [
           "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "modulo-negative-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-right/source.alg",
+        "sha256": "bdedf5d73acdf8c67d747e7df3c711200dc08b521abcb90203d7eb151d78b9ba"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:47:10.2820866Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-right/raw.txt",
+          "sha256": "02104a2ce6317a349f9d71f4677058aa50b9042d24ef0fb445529ff1bb68b9a6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-right/stdout.txt",
+          "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-right/stdout.txt",
+            "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-negative-both",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-both/source.alg",
+        "sha256": "73a25d276cb9de0520a3185d7a989d9beb69513c0f74d8e6d515a0bfd8c55c2c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:47:20.4689518Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-both/raw.txt",
+          "sha256": "02104a2ce6317a349f9d71f4677058aa50b9042d24ef0fb445529ff1bb68b9a6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-both/stdout.txt",
+          "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-both/stdout.txt",
+            "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-negative-eight",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-eight/source.alg",
+        "sha256": "39bcbf1bcd5ebf8ea6acf17c495a0330974118cb132c4b44ea59c5c4bd799ae4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:47:30.7494846Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-eight/raw.txt",
+          "sha256": "02104a2ce6317a349f9d71f4677058aa50b9042d24ef0fb445529ff1bb68b9a6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-eight/stdout.txt",
+          "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-eight/stdout.txt",
+            "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-negative-variable",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-variable/source.alg",
+        "sha256": "559f98de70eb3e54da2704480ecc1b6fb9dd8053651d22ff82591e732cd3ac4a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:47:40.9338374Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-variable/raw.txt",
+          "sha256": "6aedd1b380f3d53bfc5f33c153ea59e67bde8f0e8ed2a1dc8f85c376978efb28"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-variable/stdout.txt",
+          "sha256": "f1d014a0a04e06db7cb37b0f83eb67004a31e01bfd01d54a5c9aef183c268ed9"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-variable/stdout.txt",
+            "sha256": "f1d014a0a04e06db7cb37b0f83eb67004a31e01bfd01d54a5c9aef183c268ed9"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-small-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-small-left/source.alg",
+        "sha256": "cfa04c99e51376c095a1b4daa8ce4672ff08b9432d03a5bb840ba35cccd70019"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:47:51.1744740Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-small-left/raw.txt",
+          "sha256": "1fa2c5ad329e9670af989d44b0538ff6e0aea77d4f320ca3be35d0f8710ba1c3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-small-left/stdout.txt",
+          "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-small-left/stdout.txt",
+            "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-percent-negative",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-percent-negative/source.alg",
+        "sha256": "61c1a82ed9a507799094c1e273122e93533b18520f6d50df4cd1828bcfaefd31"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:48:01.2997953Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-percent-negative/raw.txt",
+          "sha256": "02104a2ce6317a349f9d71f4677058aa50b9042d24ef0fb445529ff1bb68b9a6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-percent-negative/stdout.txt",
+          "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-percent-negative/stdout.txt",
+            "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "divide-real-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-left/source.alg",
+        "sha256": "e15bf0aed9e1abd2cf402794d2d3a1961bc2510849f0ff440e0292a069c92fab"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:48:11.4397015Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-left/raw.txt",
+          "sha256": "1fa2c5ad329e9670af989d44b0538ff6e0aea77d4f320ca3be35d0f8710ba1c3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-left/stdout.txt",
+          "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-left/stdout.txt",
+            "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "divide-real-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-right/source.alg",
+        "sha256": "0479f3238850549d7844b0b13ab4e40eca162f9d62169f9374fe5e367f31abcf"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:48:21.7695503Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-right/raw.txt",
+          "sha256": "6d74af8c9a7635d7cb43e6b85802f08140958531ff9e1e6bf06650ac8eab3e67"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-right/stdout.txt",
+          "sha256": "eb17700d9fd20deeb1c8f2b9a770ce7ab09ba51af1a1e1d68d88c748cd10db43"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-right/stdout.txt",
+            "sha256": "eb17700d9fd20deeb1c8f2b9a770ce7ab09ba51af1a1e1d68d88c748cd10db43"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "divide-real-both",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-both/source.alg",
+        "sha256": "3f748f6efe9337da4a45473295e0228a823b83adb4b87035c7f10431464b2b71"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:48:31.9417535Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-both/raw.txt",
+          "sha256": "6d74af8c9a7635d7cb43e6b85802f08140958531ff9e1e6bf06650ac8eab3e67"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-both/stdout.txt",
+          "sha256": "eb17700d9fd20deeb1c8f2b9a770ce7ab09ba51af1a1e1d68d88c748cd10db43"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-both/stdout.txt",
+            "sha256": "eb17700d9fd20deeb1c8f2b9a770ce7ab09ba51af1a1e1d68d88c748cd10db43"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-real-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-right/source.alg",
+        "sha256": "7d44c5571e444df3e044bbadcbfa2f059d953e89fd09cd15a0144c93d0bc8ce2"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:48:42.1400847Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-right/raw.txt",
+          "sha256": "02104a2ce6317a349f9d71f4677058aa50b9042d24ef0fb445529ff1bb68b9a6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-right/stdout.txt",
+          "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-right/stdout.txt",
+            "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-real-both",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-both/source.alg",
+        "sha256": "9d96c98ed0a3e05a252b16db39ddc0aaf3fc0b30b0c8cb7ffd8e0b29f896bbbf"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:48:52.3231347Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-both/raw.txt",
+          "sha256": "02104a2ce6317a349f9d71f4677058aa50b9042d24ef0fb445529ff1bb68b9a6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-both/stdout.txt",
+          "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-both/stdout.txt",
+            "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "divide-integral-real-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-integral-real-left/source.alg",
+        "sha256": "afb1756efa4a8efc44724ffa1b631e2f4e86c211c20d8baab1838501e353faaf"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:56:32.2931792Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-integral-real-left/raw.txt",
+          "sha256": "afe1d6988bf8073007768b22becd59372fa49baf4abf5a75f1a2d0db22116cc6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-integral-real-left/stdout.txt",
+          "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/divide-integral-real-left/stdout.txt",
+            "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "divide-integral-real-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-integral-real-right/source.alg",
+        "sha256": "e1be5fef0f49e6f31b34a20881c90dc06f9cc79418dfe8e407548e4f0f34b637"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:56:42.4746995Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-integral-real-right/raw.txt",
+          "sha256": "afe1d6988bf8073007768b22becd59372fa49baf4abf5a75f1a2d0db22116cc6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-integral-real-right/stdout.txt",
+          "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/divide-integral-real-right/stdout.txt",
+            "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "divide-left-result-type",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-left-result-type/source.alg",
+        "sha256": "4b557e3175a91f92bbd3d3f40fbf42b591030f811d801fd5562d8e3917fb5793"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:56:52.7165853Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-left-result-type/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-left-result-type/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/divide-left-result-type/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "divide-right-result-type",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-right-result-type/source.alg",
+        "sha256": "82e4225ab0a22101e9bfa32f924c7e0121cc316424fa06dc3fe0db09d041eac7"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:57:02.9472182Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-right-result-type/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-right-result-type/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-right-result-type/screenshot.png",
+          "sha256": "38395581c6d125c527d7778308f31b67b75b84d76faa1b7f9340713b0ce2bd3c"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-right-result-type/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "division_remainder_test.go#TestDivisionResultDiagnostic"
+        ]
+      }
+    },
+    {
+      "id": "divide-real-zero",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-zero/source.alg",
+        "sha256": "5c598aae932fab294e9587f06ef9feeaf85538e8321e438a0d2050b978645ec3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:57:13.2686082Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-zero/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-zero/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-zero/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-integral-real-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-integral-real-right/source.alg",
+        "sha256": "5a8e5ee6b49e731cb30ecfde9044670ac28df1fb20ae8db80693669577c0488f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:57:23.3903243Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-integral-real-right/raw.txt",
+          "sha256": "02104a2ce6317a349f9d71f4677058aa50b9042d24ef0fb445529ff1bb68b9a6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-integral-real-right/stdout.txt",
+          "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-integral-real-right/stdout.txt",
+            "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-real-result-type",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-result-type/source.alg",
+        "sha256": "9692abb3b34d360a2cd3d4c79c1ca557640778d0bbf51fd0daf8f5227b65e6fc"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:57:33.5270456Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-result-type/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-result-type/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-result-type/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-negative-real-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-real-left/source.alg",
+        "sha256": "0f1c593772e4585d966caddf2315aad70ea79d2c0432f7f10b66aa611390c3f1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:57:43.9426554Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-real-left/raw.txt",
+          "sha256": "02104a2ce6317a349f9d71f4677058aa50b9042d24ef0fb445529ff1bb68b9a6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-real-left/stdout.txt",
+          "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-negative-real-left/stdout.txt",
+            "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-zero-divisor",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-zero-divisor/source.alg",
+        "sha256": "81d7170bf30902b692a53948160593ef6a6d2f1c60e36c66a8fcfc399bf8782c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:57:54.1458594Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-zero-divisor/raw.txt",
+          "sha256": "02104a2ce6317a349f9d71f4677058aa50b9042d24ef0fb445529ff1bb68b9a6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-zero-divisor/stdout.txt",
+          "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-zero-divisor/stdout.txt",
+            "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-large-real-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-large-real-left/source.alg",
+        "sha256": "0d98216d89b1d87d3cb1770f27b8be626abf7c91a10406cff32c7c15c171b3fc"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:58:04.2468602Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-large-real-left/raw.txt",
+          "sha256": "1a677fab2681b74ebf98c4719c97e2b33c487d74ac2574aa8cf8e1e5cacd4a31"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-large-real-left/stdout.txt",
+          "sha256": "43ea02de975dd302d8533514bc63e94192dcbb8345e13bbf0bcb7da62b4a50e8"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-large-real-left/stdout.txt",
+            "sha256": "43ea02de975dd302d8533514bc63e94192dcbb8345e13bbf0bcb7da62b4a50e8"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "divide-string-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-string-left/source.alg",
+        "sha256": "6c2918c33902259a5adf9cd3a726623e054359c36765be4d275c8a343d59dcc2"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:04:08.6468003Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-string-left/raw.txt",
+          "sha256": "afe1d6988bf8073007768b22becd59372fa49baf4abf5a75f1a2d0db22116cc6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-string-left/stdout.txt",
+          "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/divide-string-left/stdout.txt",
+            "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "divide-string-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-string-right/source.alg",
+        "sha256": "0ca7c1c72668f4f65ffb39bae3c52470ab101518cd3f5762b2b74da5d6e713dd"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:04:18.8753336Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-string-right/raw.txt",
+          "sha256": "babb57c396a289467a6b5b4dae4950c1dd3e14af53cc7956884229a8098b37cf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-string-right/stdout.txt",
+          "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/divide-string-right/stdout.txt",
+            "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "divide-logical-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-logical-left/source.alg",
+        "sha256": "f31cffc6854a703067f3e567bc87a0858a317ed771d24f1e5461da8cd245fdde"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:04:29.1498983Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-logical-left/raw.txt",
+          "sha256": "afe1d6988bf8073007768b22becd59372fa49baf4abf5a75f1a2d0db22116cc6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-logical-left/stdout.txt",
+          "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/divide-logical-left/stdout.txt",
+            "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "divide-logical-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-logical-right/source.alg",
+        "sha256": "0179a4027b2278e467541c920fc42c3c7f58b993b0c24afb9ceafbbccde1fcb0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:04:39.3928504Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-logical-right/raw.txt",
+          "sha256": "f01fd89b93f56ce6101252de33a82f077fd488885a3bd3c746864fe85837db48"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-logical-right/stdout.txt",
+          "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/divide-logical-right/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-logical-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-logical-left/source.alg",
+        "sha256": "f32f9b804c367a3ba9650e9f4ca3fca399b744a4bc8ce5ce0499ea3926b40cc6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:05:09.8468293Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-logical-left/raw.txt",
+          "sha256": "afe1d6988bf8073007768b22becd59372fa49baf4abf5a75f1a2d0db22116cc6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-logical-left/stdout.txt",
+          "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-logical-left/stdout.txt",
+            "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-logical-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-logical-right/source.alg",
+        "sha256": "71fab702616e4ff30ef109cbea31b2fc088fccc854049c7f3f0358f099945b3e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:05:20.1151382Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-logical-right/raw.txt",
+          "sha256": "f01fd89b93f56ce6101252de33a82f077fd488885a3bd3c746864fe85837db48"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-logical-right/stdout.txt",
+          "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-logical-right/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "divide-real-negative-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-negative-right/source.alg",
+        "sha256": "1a1aaeb138a2327faf0f83db2235e7026882fcebafb3b3680d987fa715825393"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:05:40.5492053Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-negative-right/raw.txt",
+          "sha256": "1a677fab2681b74ebf98c4719c97e2b33c487d74ac2574aa8cf8e1e5cacd4a31"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-negative-right/stdout.txt",
+          "sha256": "43ea02de975dd302d8533514bc63e94192dcbb8345e13bbf0bcb7da62b4a50e8"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/divide-real-negative-right/stdout.txt",
+            "sha256": "43ea02de975dd302d8533514bc63e94192dcbb8345e13bbf0bcb7da62b4a50e8"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-unit-divisor",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-unit-divisor/source.alg",
+        "sha256": "9d4d3378d47db335b4784fb5c8428334bd12c99a45c2a4fbe8d6d69662abd6b0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:05:50.7424348Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-unit-divisor/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-unit-divisor/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-unit-divisor/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "modulo-real-wrap-zero",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-wrap-zero/source.alg",
+        "sha256": "a94043a96d9e28ae17d2a6af34779d6daae279cb60f08409ba84cf0f76c17722"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:06:00.9718205Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-wrap-zero/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-wrap-zero/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/modulo-real-wrap-zero/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "operator-evaluation-order",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/operator-evaluation-order/source.alg",
+        "sha256": "c66eebfad0c7713d1711b7a6a3c8c4230d37339b9bdc0f423db69b22d7fe631f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:06:21.3332844Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/operator-evaluation-order/raw.txt",
+          "sha256": "a4d7b7dd0dd26612d94d61a4d51f129939ec589ef4962b56d63ccaa9ab15608c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/operator-evaluation-order/stdout.txt",
+          "sha256": "f579f1ecdc322a59e44574edb26c2fed4ecd92955930d5f8cc6ee3edddd6ae08"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/operator-evaluation-order/stdout.txt",
+            "sha256": "f579f1ecdc322a59e44574edb26c2fed4ecd92955930d5f8cc6ee3edddd6ae08"
+          }
+        },
+        "tests": [
+          "division_remainder_test.go#TestRecordedDivisionRemainder"
         ]
       }
     }

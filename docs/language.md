@@ -92,8 +92,8 @@ Integer addition, subtraction, multiplication, and negation wrap to signed
 `2147483647 + 1` gives `-2147483648`, and negating that minimum gives the same
 minimum. Mixing a real operand into addition, subtraction, or multiplication
 uses real arithmetic. Division of the signed minimum by `-1` receives positioned
-`R002` as a project guard. The recorded non-integer division, remainder, and
-real-to-integer assignment diagnostic behavior remains pending conformance work.
+`R002` as a project guard. The recorded real-to-integer assignment diagnostic
+behavior remains pending conformance work.
 
 ## Vectors
 
@@ -157,8 +157,24 @@ remaining syntax-recovery behavior are still pending.
 ## Expressions
 
 Arithmetic operators are `+`, `-`, `*`, `/`, `\`, `%`, `MOD`, and `^`.
-The `/` operator always returns `real`; `\` truncates integer division toward
-zero. Integer operands are promoted to real where needed.
+The `/` operator always returns `real`. With two integer operands, `\` truncates
+division toward zero. For other scalar pairs, the recorded reference returns
+the right operand unchanged, including its type: `8.5 \ 3` gives integer `3`,
+`7 \ 2.5` gives real `2.5`, and `"7" \ 2` gives integer `2`. Both operands are
+evaluated once, left to right, even when the result is just the right operand.
+
+For numeric operands, `%` and `MOD` return an integer. A positive integer divisor
+produces the remainder after the left operand is truncated and narrowed to
+signed 32-bit, using the same conversion as `int`. Zero, negative, and real
+divisors produce `-1`, including integral real divisors such as `2.0`. A numeric
+or logical pair containing a logical operand returns the right operand unchanged.
+Thus `(-7.5) MOD 2` gives `-1`, `7 MOD 0` gives `-1`, and `7 MOD verdadeiro`
+gives `verdadeiro`. Text operands for remainder remain rejected with `E001` as a
+project guard; their reference application failures are not language diagnostics.
+
+Integer division by zero and real-to-integer remainder conversions outside the
+supported finite conversion range receive positioned `R002` project guards.
+The pass-through rule still applies to `7.5 \ 0`, which produces integer zero.
 
 Power is left-associative: `2^3^2` means `(2^3)^2` and produces 64.
 Unary minus binds more tightly than power: `-2^2` produces 4. Use `-(2^2)`

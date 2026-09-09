@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Match recorded division and remainder operand types, signed conversion,
+  divisor handling, and left-to-right evaluation. Preserve positioned guards
+  for unsupported conversions and integer division failures.
+
 - Match recorded signed 32-bit wrapping in integer addition, subtraction,
   multiplication, negation, `abs`, and `int`, including assignments and function
   returns. Guard unsupported integer conversions and division overflow with

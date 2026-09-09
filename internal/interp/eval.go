@@ -136,10 +136,10 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 		}
 		return runtime.Value{Kind: runtime.RealValue, Real: a / b}, nil
 	case token.IDIV:
-		a, b, err := ints(left, right)
-		if err != nil {
-			return runtime.Value{}, err
+		if left.Kind != runtime.IntegerValue || right.Kind != runtime.IntegerValue {
+			return right, nil
 		}
+		a, b := left.Int, right.Int
 		if b == 0 {
 			return runtime.Value{}, fmt.Errorf("division by zero")
 		}
@@ -148,14 +148,24 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 		}
 		return runtime.Value{Kind: runtime.IntegerValue, Int: a / b}, nil
 	case token.REM, token.MOD:
-		a, b, err := ints(left, right)
-		if err != nil {
+		if left.Kind == runtime.BoolValue || right.Kind == runtime.BoolValue {
+			return right, nil
+		}
+		if _, _, err := floats(left, right); err != nil {
 			return runtime.Value{}, err
 		}
-		if b == 0 {
-			return runtime.Value{}, fmt.Errorf("modulo by zero")
+		if right.Kind != runtime.IntegerValue || right.Int <= 0 {
+			return runtime.Value{Kind: runtime.IntegerValue, Int: -1}, nil
 		}
-		return runtime.Value{Kind: runtime.IntegerValue, Int: a % b}, nil
+		a := int64(int32(left.Int))
+		if left.Kind == runtime.RealValue {
+			converted, _, err := i.lib.Call("int", []runtime.Value{left})
+			if err != nil {
+				return runtime.Value{}, err
+			}
+			a = converted.Int
+		}
+		return runtime.Value{Kind: runtime.IntegerValue, Int: a % right.Int}, nil
 	case token.POW:
 		a, b, err := floats(left, right)
 		if err != nil {
@@ -249,13 +259,6 @@ func numeric(left, right runtime.Value, intFn func(int64, int64) int64, realFn f
 		return runtime.Value{}, err
 	}
 	return runtime.Value{Kind: runtime.RealValue, Real: realFn(a, b)}, nil
-}
-
-func ints(left, right runtime.Value) (int64, int64, error) {
-	if left.Kind != runtime.IntegerValue || right.Kind != runtime.IntegerValue {
-		return 0, 0, fmt.Errorf("expected inteiro operands")
-	}
-	return left.Int, right.Int, nil
 }
 
 func floats(left, right runtime.Value) (float64, float64, error) {

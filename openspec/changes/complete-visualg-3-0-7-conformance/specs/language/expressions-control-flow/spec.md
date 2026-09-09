@@ -20,7 +20,9 @@ The language SHALL implement the complete VisuAlg 3.0.7 unary, arithmetic, relat
 - **THEN** they produce real values 64 and 4 respectively, reflecting left-associative power and tighter unary minus
 
 ### Requirement: Numeric evaluation and coercion
-Integer addition, subtraction, multiplication, and negation SHALL preserve the recorded signed 32-bit wrapping. Real operands SHALL retain real arithmetic and real result types.
+Integer addition, subtraction, multiplication, and negation SHALL preserve the recorded signed 32-bit wrapping. Addition, subtraction, and multiplication with real operands SHALL retain real arithmetic and real result types.
+
+The `\` operator SHALL truncate division toward zero for two integer operands and SHALL return the right operand with its original type for other scalar pairs. Numeric remainder SHALL truncate and narrow the dividend as `int` does, compute the remainder for a positive integer divisor, and return integer `-1` for zero, negative, or real divisors. Numeric or logical remainder pairs containing a logical operand SHALL return the right operand unchanged. Both operands SHALL be evaluated exactly once, left to right.
 
 Arithmetic SHALL use the reference operand compatibility, promotion, result type, rounding, truncation, division, modulo, exponentiation, unary sign, and overflow behavior. Statically invalid combinations SHALL be semantic diagnostics; runtime-only failures SHALL return positioned arithmetic diagnostics and SHALL never surface a Go panic, infinity, NaN, or wraparound unless the oracle explicitly produces the corresponding observable value.
 
@@ -28,9 +30,17 @@ Arithmetic SHALL use the reference operand compatibility, promotion, result type
 - **WHEN** a numeric operator receives an integer and a real in a combination accepted by the reference
 - **THEN** the value and result type match the oracle-confirmed coercion rule
 
-#### Scenario: Divide by zero
-- **WHEN** a division or modulo denominator evaluates to zero
-- **THEN** execution returns the reference-compatible positioned arithmetic diagnostic without panicking
+#### Scenario: Divide two integers by zero
+- **WHEN** both operands of `\` are integers and the denominator is zero
+- **THEN** execution returns a positioned `R002` project diagnostic without reproducing the reference application's unpositioned failure
+
+#### Scenario: Use a zero remainder divisor
+- **WHEN** numeric operands use `%` or `MOD` with a zero divisor
+- **THEN** the result is integer `-1`
+
+#### Scenario: Preserve the right operand of mixed division
+- **WHEN** the recorded expressions `8.5 \ 3`, `7 \ 2.5`, and `7.5 \ 0` are evaluated
+- **THEN** they produce integer `3`, real `2.5`, and integer `0`, respectively, after evaluating both operands
 
 #### Scenario: Overflow an integer operation
 - **WHEN** an integer operation exceeds the reference integer domain

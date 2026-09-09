@@ -392,11 +392,19 @@ func (c *checker) binary(e *ast.BinaryExpr) runtime.Type {
 			return runtime.Type{Kind: runtime.RealType}
 		}
 		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires numeric operands", e.Op.Text)
-	case token.IDIV, token.REM, token.MOD:
-		if left.Kind == runtime.IntegerType && right.Kind == runtime.IntegerType {
-			return runtime.Type{Kind: runtime.IntegerType}
+	case token.IDIV:
+		if isScalar(left) && isScalar(right) {
+			return right
 		}
-		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires inteiro operands", e.Op.Text)
+		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires scalar operands", e.Op.Text)
+	case token.REM, token.MOD:
+		if isScalar(left) && isScalar(right) && left.Kind != runtime.StringType && right.Kind != runtime.StringType {
+			if isNumeric(left) && isNumeric(right) {
+				return runtime.Type{Kind: runtime.IntegerType}
+			}
+			return right
+		}
+		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires numeric or logico operands", e.Op.Text)
 	case token.EQL, token.NEQ:
 		if runtime.Assignable(left, right) || runtime.Assignable(right, left) {
 			return runtime.Type{Kind: runtime.BoolType}
@@ -533,6 +541,10 @@ func canon(name string) string {
 
 func isNumeric(t runtime.Type) bool {
 	return t.Kind == runtime.IntegerType || t.Kind == runtime.RealType
+}
+
+func isScalar(t runtime.Type) bool {
+	return isNumeric(t) || t.Kind == runtime.StringType || t.Kind == runtime.BoolType
 }
 
 func (c *checker) isWritableExpr(expr ast.Expr) bool {
