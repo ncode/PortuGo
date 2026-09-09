@@ -187,7 +187,7 @@ Alternative considered: claim termination for every source or rely only on a pro
 
 - [Interactive Windows evidence is slow or unavailable] → Keep unresolved probes explicitly blocking, prioritize reduced probe batches early, and never substitute undocumented assumptions.
 - [Oracle evidence changes a foundational grammar or type assumption] → Finish the recorder/spec-correction group before dependent implementation and keep later PRs stacked so they can be rebased in order.
-- [The 500-slot rule has context-dependent accounting] → Record exact boundary probes for scalars, records, vectors, globals, locals, and recursion; keep accounting policy separate from overflow-safe arithmetic.
+- [The documented 500-slot rule contradicts the current executable] → Recorded vectors with up to 5001 elements are accepted. Continue probing scalars, records, vectors, globals, locals, and recursion without inventing an upper limit; keep reference restrictions separate from project resource guards and overflow-safe arithmetic.
 - [A broad `Host` interface makes simple hosts cumbersome] → Provide a complete default headless implementation and small reusable recording fake; add methods only for oracle-confirmed operations.
 - [Dynamic conversion result types complicate analysis] → Limit union-like semantic types to catalog operations proven to need them and require explicit narrowing at ordinary language boundaries.
 - [Exact output and CP1252 behavior is platform-sensitive] → Compare byte fixtures, centralize encoding and newline conversion, and run Windows, macOS, and Linux jobs.

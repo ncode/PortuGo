@@ -3,6 +3,13 @@
 This implementation targets the VisuAlg 3.x dialect used by Apoio Informática.
 Other Portugol dialects are intentionally out of scope for v1.
 
+The [September 9 reference observations](reference-observations-2026-09-09.md)
+record further compatibility gaps in syntax, literals, declarations, and calls.
+Their implementation remains pending unless a corpus entry is explicitly
+verified. The reference accepts vectors larger than 500 elements; the draft
+500-slot compatibility restriction has therefore been withdrawn. The recordings
+do not establish the upper storage limit in every declaration context.
+
 ## Program Structure
 
 A complete program has the shape:

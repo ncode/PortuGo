@@ -1,0 +1,4 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 3
+Message: Esperava encontrar ')'.
+Column: not established.

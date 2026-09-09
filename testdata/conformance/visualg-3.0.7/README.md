@@ -57,6 +57,17 @@ paths. A GUI-only result needs both `screenshot.png` and `transcription.txt`.
 Record acceptance/rejection and the actual capture time; an interrupted or stale
 run is not evidence.
 
+The September 9 syntax batch supplied the exact CP1252-decoded source through
+the application's editor control, verified the editor readback and source hash,
+then checked fresh observation timestamps and the executable hash. This method
+records language behavior; it does not establish file-open decoding behavior.
+The 20 new GUI rejection screenshots were individually inspected for private
+information and preserved without image edits. Their PNG metadata contains only
+image format, color, resolution, and pixel data. The accompanying transcriptions
+are labeled manual; partial output panels are retained separately and do not
+stand in for the rejection diagnostic. Connection details, raw window/control
+inventories, bootstrap captures, and inconclusive runs remain private.
+
 ```powershell
 go run ./scripts/conformance capture --staging C:\Temp\visualg-output-format --accepted true --captured-at 2026-09-07T12:00:00Z --normalizer panel-v1
 ```

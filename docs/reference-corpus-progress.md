@@ -6,7 +6,7 @@ the remaining reduced recordings are pending. The original compatibility
 checklist and audit referenced by the plan have not been located in the checkout.
 Their inventories must be reconciled before this group can close.
 
-The initial manifest contains 18 reduced probes:
+The initial manifest contained 18 reduced probes:
 
 - Eleven accepted observations from the earlier Windows validation have complete
   source, raw output and normalized output artifacts, with existing replay tests.
@@ -24,8 +24,9 @@ The initial manifest contains 18 reduced probes:
 | `record-field` | A `registro` type, record variable, field assignment and field read execute and print 3. | 6.5 |
 
 These observations establish the demonstrated syntax, not the complete semantics
-of constants, aliases or records. Empty sections, copying, reference aliasing,
-layout, limits, errors and other interactions still need their own observations.
+of constants, aliases or records. The newer batch below covers additional empty
+sections, copying, reference coercion, bounds, and literal forms; layout, limits,
+errors and other interactions still require broader coverage.
 The rejected constant form does not justify removing constant support: the next
 probe demonstrates an accepted form.
 
@@ -38,8 +39,8 @@ claim of complete VisuAlg compatibility.
 The tooling review corrections now enforce reference acceptance/rejection,
 unique generated-file coverage, mandatory history comparison in validation and
 CI, and auxiliary input integrity during capture. These corrections do not fill
-the outstanding inventory mappings; group 2 remains in progress. All 18 currently
-registered probes have evidence; additional required probes still need to be
+the outstanding inventory mappings; group 2 remains in progress. All registered
+reference probes have evidence; additional required probes still need to be
 prepared and recorded. Inventory validation discovers the entire change's spec
 tree independently of the manifest's source list.
 
@@ -48,5 +49,11 @@ existing provenance, recording, normalization, traceability, and phase-validatio
 tests with explicit reference non-applicability reasons. Existing recorded
 observations also now trace reference authority and feature dispositions. These
 close seven missing requirement mappings without adding language observations
-or relaxing the evidence gate. The remaining missing mappings cover 56
-requirements and all 73 bundled examples.
+or relaxing the evidence gate.
+
+The [September 9 batch](reference-observations-2026-09-09.md) adds 61 recorded
+probes: 41 accepted and 20 rejected. The corpus now contains 79 reference probes
+(14 verified, 65 pending implementation), plus the five project-tooling entries.
+The missing mappings at this layer cover 44 requirements and all 73 bundled
+examples. The stable storage requirement ID is retained while its linked heading
+and text now reflect the recorded acceptance beyond the former 500-slot claim.

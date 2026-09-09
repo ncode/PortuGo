@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Added 61 recorded syntax, literal, declaration, call, and vector probes with
+  exact source/output hashes and reviewed GUI rejection evidence. Implementation
+  remains pending. Corrected the draft storage specification after the reference
+  accepted vectors with 501, 5000, and 5001 elements.
 - Linked existing corpus-tooling tests and recorded feature dispositions to their
   specification requirements, with reviewed reasons for project-only evidence.
   Language recordings, bundled examples, and full acceptance remain incomplete.

@@ -70,16 +70,16 @@ The language SHALL support every oracle-confirmed vector syntax, including multi
 - **WHEN** a vector bound is unresolved, has an invalid type or order, or overflows during size calculation
 - **THEN** a positioned semantic diagnostic is returned and no backing storage is allocated
 
-### Requirement: Five-hundred-slot storage limit
-The implementation SHALL reproduce VisuAlg 3.0.7's 500-slot storage limit using the same oracle-recorded accounting unit, declaration scope, record treatment, vector multiplication, and boundary behavior. Slot totals SHALL be computed with overflow-safe arithmetic before allocation, and a program at the limit SHALL remain distinct from a program one slot beyond it.
+### Requirement: Reference-confirmed storage limits
+The implementation SHALL reproduce storage restrictions established by VisuAlg 3.0.7 recordings, including their accounting unit, declaration scope, record treatment, and vector multiplication. It SHALL NOT reject a program solely for exceeding the previously assumed 500-slot limit: recorded vectors with 500, 501, 5000, and 5001 elements are accepted. These observations do not establish the upper limit or accounting rules for every declaration context. Slot totals SHALL be computed with overflow-safe arithmetic before allocation; independent project resource guards SHALL be identified as such.
 
-#### Scenario: Allocate exactly the reference limit
-- **WHEN** declarations consume exactly 500 slots under the recorded accounting rules
-- **THEN** analysis and allocation succeed if and only if the reference accepts the equivalent program
+#### Scenario: Preserve recorded accepted sizes
+- **WHEN** a vector uses one of the recorded accepted sizes of 500, 501, 5000, or 5001 elements
+- **THEN** analysis and allocation succeed and the recorded final element can be assigned and read
 
-#### Scenario: Exceed the reference limit
-- **WHEN** declarations consume 501 slots or a dimension product overflows
-- **THEN** the implementation emits the positioned storage diagnostic and performs no oversized allocation
+#### Scenario: Reject unsafe or confirmed excessive storage
+- **WHEN** a dimension product overflows, exceeds a documented project resource guard, or violates a separately recorded reference restriction
+- **THEN** the implementation emits a positioned storage diagnostic before allocation and identifies the applicable restriction
 
 ### Requirement: Zero initialization
 Every variable, record field, and vector element SHALL begin with the oracle-confirmed zero value of its resolved type. Reading a valid, unassigned storage location SHALL return that value rather than an uninitialized-memory error.
