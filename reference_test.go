@@ -52,7 +52,7 @@ func TestRecordedWindowsProbes(t *testing.T) {
 				count := 1
 				switch probe.ID {
 				case "exp-one":
-					code, line = diag.ECall, 4
+					code, line = diag.EParse, 4
 				case "exact-division-integer":
 					code, line = diag.ETypeMismatch, 6
 				case "output-rounding":

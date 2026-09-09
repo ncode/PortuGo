@@ -385,7 +385,8 @@ leading space; field widths on logical values are rejected.
 
 Numeric built-ins include `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`,
 `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`,
-`sen`, `tan`, `randi`, and the current legacy `frac` and `aleatorio` forms.
+`sen`, `tan`, `randi`, and the current legacy `aleatorio` forms. The reference
+rejects `frac` as an undeclared name (`E002`).
 
 `arccos`, `arcsen`, `arctan`, `cotan`, `grauprad`, and `radpgrau` return real
 values. Trigonometric results and arguments use radians; `grauprad` converts
@@ -394,26 +395,47 @@ parentheses supply zero. `quad(x)` squares its argument, retaining integer or
 real type and signed 32-bit wrapping for integers. `quad()` and text or logical
 arguments to `quad` produce no value.
 
-These seven functions accept at most one argument. Extra arguments receive
-`P001`. The six real functions reject text and logical arguments with `P001`
-and propagate a no-value argument. Out-of-domain `arccos` and `arcsen`, and
+These seven functions accept at most one numeric argument. Extra arguments
+receive `P001`, except that an already absent argument to the six real functions
+propagates no value before later arguments are considered. The six real
+functions reject text and logical arguments with `P001`. Out-of-domain `arccos` and `arcsen`, and
 zero-argument or zero-valued `cotan`, produce no value at runtime; output handles
 that result as described for `numpcarac` below. This runtime absence is allowed
 even when the expression's static result type is real.
 
 `pi` is written without parentheses and uses the recorded real precision:
-default output is `3.14159265358979`. `pi()` receives `P001`. Remaining legacy
-numeric arity, logarithm, and rejected-name corrections are still pending.
+default output is `3.14159265358979`. `pi()` receives `P001`; the numeric
+functions require parentheses.
 
 `exp(base, exponent)` takes two numeric arguments and returns real-valued
-exponentiation. The one-argument natural-exponential form is not supported.
+exponentiation. A lone numeric argument or extra numeric arguments receive
+`P001`. `exp()` produces no value. Arguments are evaluated left to right;
+the first text, logical, or absent value ends the call without evaluating
+later arguments, including any extra arguments. Invalid numeric domains and
+nonfinite results receive positioned `R007`.
+
+`log(x)` is base ten and `logn(x)` is the natural logarithm; both take one
+numeric argument. Empty parentheses supply zero, which receives `R007`, as
+do negative inputs. `raizq`, `sen`, `cos`, and `tan` also supply zero for empty
+parentheses. Text and logical inputs to `raizq` produce no value; those inputs
+to logarithms or trigonometric functions receive `P001`. A negative square-root
+input receives positioned `R007` as a project guard for the reference's
+unpositioned application fault.
 
 For integer arguments, `abs` retains signed 32-bit wrapping, so the absolute
 value of `-2147483647 - 1` remains `-2147483648`. Real arguments use real
-absolute value. `int(x)` truncates toward zero and narrows the result to
+absolute value. `abs()` produces no value. `int()` returns integer zero.
+Text, logical, or absent arguments to either function produce no value.
+`abs` rejects extra arguments before conversion; `int` stops on a text,
+logical, or absent first argument before considering later arguments.
+`int(x)` truncates toward zero and narrows the result to
 signed 32-bit: `int(2147483648.0)` is `-2147483648`, and
 `int(4294967296.0)` is zero. Non-finite arguments and values outside the signed
 64-bit intermediate conversion range receive positioned `R007` as project guards.
+
+An absent numeric argument propagates through a containing numeric call and
+skips later arguments. Output handles the result as described for `numpcarac`.
+The full numeric domain matrix and catalog consolidation remain pending.
 
 String built-ins: `copia`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, and
 `pos`. String positions are 1-indexed.

@@ -20,11 +20,15 @@ The project SHALL maintain one authoritative catalog of every VisuAlg 3.0.7 buil
 - **THEN** it receives the same signature and behavior as the catalog's canonical built-in
 
 ### Requirement: Numeric built-ins
-The recorded `arccos`, `arcsen`, `arctan`, `cotan`, `grauprad`, and `radpgrau` functions SHALL accept zero or one argument, use zero when omitted, return real values, and preserve the recorded trigonometric and angle-conversion units. Text and logical arguments and extra arguments SHALL receive `P001`; a no-value argument SHALL propagate no value. Out-of-domain inverse cosine/sine and cotangent of zero SHALL produce no value. Runtime no-value results SHALL be permitted even for statically real expressions.
+The recorded `arccos`, `arcsen`, `arctan`, `cotan`, `grauprad`, and `radpgrau` functions SHALL accept zero or one numeric argument, use zero when omitted, return real values, and preserve the recorded trigonometric and angle-conversion units. Text and logical arguments and extra numeric arguments SHALL receive `P001`; an already absent argument SHALL propagate no value before later arguments are considered. Out-of-domain inverse cosine/sine and cotangent of zero SHALL produce no value. Runtime no-value results SHALL be permitted even for statically real expressions.
 
 `quad` SHALL preserve numeric argument type, square integers with signed 32-bit wrapping, and produce no value for absent, text, or logical arguments. The constant `pi` SHALL accept its bare form and reject parentheses with `P001`, preserving the recorded default real output.
 
 For integer input, `abs` SHALL preserve the recorded signed 32-bit result, including the signed minimum. `int` SHALL truncate numeric input toward zero and narrow the result to signed 32-bit; unsupported non-finite or intermediate conversion values SHALL receive the positioned built-in failure guard.
+
+`log` SHALL use base ten and `logn` SHALL use the natural logarithm with one numeric argument. Empty logarithm calls and nonpositive inputs SHALL receive positioned `R007`. Empty `raizq`, `sen`, `cos`, and `tan` calls SHALL supply zero. Empty `abs` and `exp` calls SHALL produce no value, while `int()` SHALL produce integer zero. The rejected legacy name `frac` SHALL receive `E002`.
+
+`exp` SHALL evaluate numeric arguments left to right and return real exponentiation. A text, logical, or absent argument SHALL produce no value and skip later arguments, including excess arguments. Invalid numeric arity SHALL receive `P001`; invalid numeric domains and nonfinite results SHALL receive positioned `R007`. `int` SHALL likewise stop before later arguments on text, logical, or absent input. `abs`, `quad`, and `numpcarac` SHALL reject extra arguments before converting text input.
 
 The catalog SHALL implement the full oracle-confirmed numeric set with the reference arity, accepted numeric types, result types, angle units, rounding or truncation, constants, domains, and exceptional behavior. The candidate inventory SHALL explicitly include `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, and the existing `frac`, plus any additional discovered functions and aliases. Every candidate SHALL receive a recorded disposition; accepted names SHALL be implemented as distinct operations where their semantics differ, and rejected legacy names SHALL receive rejection coverage.
 
@@ -39,6 +43,10 @@ The catalog SHALL implement the full oracle-confirmed numeric set with the refer
 #### Scenario: Validate exponentiation arity
 - **WHEN** the numeric catalog is qualified against the reference inventory
 - **THEN** the recorded acceptance and result of `exp(base, expoente)` are checked explicitly, and a one-argument implementation cannot satisfy that probe
+
+#### Scenario: Skip arguments after an absent numeric result
+- **WHEN** a numeric call encounters an absent argument, or `exp` encounters text or logical input
+- **THEN** the call produces no value and later arguments do not execute their side effects or failures
 
 ### Requirement: Text built-ins
 The catalog SHALL implement the full oracle-confirmed text set, including `copia`, `maiusc`, `minusc`, `compr`, and `pos`, using the reference's 1-based positions, substring bounds, not-found value, case conversion, accented-character behavior, empty-string behavior, and result types.

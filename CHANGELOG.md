@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Correct numeric empty calls, logarithm signatures and domains, and argument
+  evaluation when a call produces no value. Reject unsupported `frac` calls
+  and report invalid exponentiation domains at the call site.
+
 - Add recorded inverse trigonometric functions, cotangent, angle conversions,
   and `quad`, including optional arguments, result types, and no-value domains.
   Support bare `pi` and reject its parenthesized call form.

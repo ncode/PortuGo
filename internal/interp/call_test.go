@@ -43,14 +43,15 @@ func TestIntegerArgumentRange(t *testing.T) {
 	for _, tt := range []struct {
 		argument string
 		output   string
+		code     diag.Code
 	}{
-		{"-9223372036854775808.0", " -9223372036854775808\n"},
-		{"9223372036854774784.0", " 9223372036854774784\n"},
-		{"9223372036854775808.0", ""},
-		{"-9223372036854777856.0", ""},
-		{"exp(10, 1000)", ""},
-		{"-exp(10, 1000)", ""},
-		{"raizq(-1)", ""},
+		{"-9223372036854775808.0", " -9223372036854775808\n", ""},
+		{"9223372036854774784.0", " 9223372036854774784\n", ""},
+		{"9223372036854775808.0", "", diag.RCall},
+		{"-9223372036854777856.0", "", diag.RCall},
+		{"exp(10, 1000)", "", diag.RBuiltin},
+		{"-exp(10, 1000)", "", diag.RBuiltin},
+		{"raizq(-1)", "", diag.RBuiltin},
 	} {
 		t.Run(tt.argument, func(t *testing.T) {
 			src := fmt.Sprintf("algoritmo \"arguments\"\nprocedimento P(x: inteiro)\ninicio\nescreval(x)\nfimprocedimento\ninicio\nP(%s)\nfimalgoritmo", tt.argument)
@@ -58,7 +59,7 @@ func TestIntegerArgumentRange(t *testing.T) {
 			var out bytes.Buffer
 			ds := New(Options{Output: &out}).Run(p, info)
 			if tt.output == "" {
-				if len(ds) != 1 || ds[0].Code != diag.RCall {
+				if len(ds) != 1 || ds[0].Code != tt.code {
 					t.Fatalf("out-of-range argument accepted: %v", ds)
 				}
 			} else if len(ds) != 0 {

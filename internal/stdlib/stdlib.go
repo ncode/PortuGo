@@ -32,21 +32,21 @@ func (l *Library) Call(name string, args []runtime.Value) (runtime.Value, bool, 
 	case "abs":
 		return abs(args)
 	case "raizq":
-		return real1(args, math.Sqrt)
+		return squareRoot(args)
 	case "exp":
 		return exp(args)
 	case "log":
-		return real1(args, math.Log)
+		return checkedNumeric1(args, math.Log10)
 	case "logn":
-		return logn(args)
+		return checkedNumeric1(args, math.Log)
 	case "pi":
 		return runtime.Value{Kind: runtime.RealValue, Real: math.Pi}, true, nil
 	case "sen":
-		return real1(args, math.Sin)
+		return numeric1(args, math.Sin)
 	case "cos":
-		return real1(args, math.Cos)
+		return numeric1(args, math.Cos)
 	case "tan":
-		return real1(args, math.Tan)
+		return numeric1(args, math.Tan)
 	case "arccos":
 		return numeric1(args, math.Acos)
 	case "arcsen":
@@ -63,8 +63,6 @@ func (l *Library) Call(name string, args []runtime.Value) (runtime.Value, bool, 
 		return square(args)
 	case "int":
 		return intval(args)
-	case "frac":
-		return frac(args)
 	case "aleatorio":
 		return l.random(args)
 	case "randi":
@@ -112,8 +110,11 @@ func numpcarac(args []runtime.Value) (runtime.Value, bool, error) {
 }
 
 func abs(args []runtime.Value) (runtime.Value, bool, error) {
-	if len(args) != 1 {
-		return runtime.Value{}, true, fmt.Errorf("abs expects 1 argument")
+	if len(args) > 1 {
+		return runtime.Value{}, true, fmt.Errorf("abs expects zero or one argument")
+	}
+	if len(args) == 0 {
+		return runtime.Value{Kind: runtime.VoidValue}, true, nil
 	}
 	switch args[0].Kind {
 	case runtime.IntegerValue:
@@ -124,6 +125,8 @@ func abs(args []runtime.Value) (runtime.Value, bool, error) {
 		return runtime.Value{Kind: runtime.IntegerValue, Int: int64(int32(v))}, true, nil
 	case runtime.RealValue:
 		return runtime.Value{Kind: runtime.RealValue, Real: math.Abs(args[0].Real)}, true, nil
+	case runtime.StringValue, runtime.BoolValue, runtime.VoidValue:
+		return runtime.Value{Kind: runtime.VoidValue}, true, nil
 	default:
 		return runtime.Value{}, true, fmt.Errorf("abs expects numeric argument")
 	}
@@ -141,6 +144,14 @@ func real1(args []runtime.Value, fn func(float64) float64) (runtime.Value, bool,
 }
 
 func exp(args []runtime.Value) (runtime.Value, bool, error) {
+	if len(args) == 0 {
+		return runtime.Value{Kind: runtime.VoidValue}, true, nil
+	}
+	for _, arg := range args[:min(len(args), 2)] {
+		if arg.Kind == runtime.StringValue || arg.Kind == runtime.BoolValue || arg.Kind == runtime.VoidValue {
+			return runtime.Value{Kind: runtime.VoidValue}, true, nil
+		}
+	}
 	if len(args) != 2 {
 		return runtime.Value{}, true, fmt.Errorf("exp expects 2 arguments")
 	}
@@ -152,25 +163,20 @@ func exp(args []runtime.Value) (runtime.Value, bool, error) {
 	if err != nil {
 		return runtime.Value{}, true, err
 	}
-	return runtime.Value{Kind: runtime.RealValue, Real: math.Pow(base, exponent)}, true, nil
-}
-
-func logn(args []runtime.Value) (runtime.Value, bool, error) {
-	if len(args) != 2 {
-		return runtime.Value{}, true, fmt.Errorf("logn expects 2 arguments")
+	result := math.Pow(base, exponent)
+	if math.IsNaN(result) || math.IsInf(result, 0) {
+		return runtime.Value{}, true, fmt.Errorf("invalid exp domain")
 	}
-	x, err := asFloat(args[0])
-	if err != nil {
-		return runtime.Value{}, true, err
-	}
-	base, err := asFloat(args[1])
-	if err != nil {
-		return runtime.Value{}, true, err
-	}
-	return runtime.Value{Kind: runtime.RealValue, Real: math.Log(x) / math.Log(base)}, true, nil
+	return runtime.Value{Kind: runtime.RealValue, Real: result}, true, nil
 }
 
 func intval(args []runtime.Value) (runtime.Value, bool, error) {
+	if len(args) == 0 {
+		return runtime.Value{Kind: runtime.IntegerValue}, true, nil
+	}
+	if args[0].Kind == runtime.StringValue || args[0].Kind == runtime.BoolValue || args[0].Kind == runtime.VoidValue {
+		return runtime.Value{Kind: runtime.VoidValue}, true, nil
+	}
 	if len(args) != 1 {
 		return runtime.Value{}, true, fmt.Errorf("int expects 1 argument")
 	}
@@ -182,17 +188,6 @@ func intval(args []runtime.Value) (runtime.Value, bool, error) {
 		return runtime.Value{}, true, fmt.Errorf("int argument exceeds the conversion range")
 	}
 	return runtime.Value{Kind: runtime.IntegerValue, Int: int64(int32(int64(x)))}, true, nil
-}
-
-func frac(args []runtime.Value) (runtime.Value, bool, error) {
-	if len(args) != 1 {
-		return runtime.Value{}, true, fmt.Errorf("frac expects 1 argument")
-	}
-	x, err := asFloat(args[0])
-	if err != nil {
-		return runtime.Value{}, true, err
-	}
-	return runtime.Value{Kind: runtime.RealValue, Real: x - float64(int64(x))}, true, nil
 }
 
 func (l *Library) random(args []runtime.Value) (runtime.Value, bool, error) {

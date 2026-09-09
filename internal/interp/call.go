@@ -17,9 +17,16 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 		return value, failure(call.Start(), diag.RType, fmt.Errorf("missing call binding"))
 	}
 	if b.Builtin {
-		args, err := i.evalArgs(call.Args)
-		if err != nil {
-			return runtime.Value{}, err
+		args := make([]runtime.Value, len(call.Args))
+		for idx, arg := range call.Args {
+			v, err := i.eval(arg)
+			if err != nil {
+				return runtime.Value{}, err
+			}
+			if v.Kind == runtime.VoidValue || (b.Name == "exp" || b.Name == "int") && (v.Kind == runtime.StringValue || v.Kind == runtime.BoolValue) {
+				return runtime.Value{Kind: runtime.VoidValue}, nil
+			}
+			args[idx] = v
 		}
 		if v, ok, err := i.lib.Call(b.Name, args); ok {
 			if errors.Is(err, runtime.ErrTextSize) {
@@ -158,16 +165,4 @@ func (i *Interpreter) callSub(params []ast.Param, locals []ast.VarDecl, body []a
 		*ref.caller = runtime.Cell{Type: ref.parameter.Type.Clone(), Value: runtime.Clone(ref.parameter.Value)}
 	}
 	return result.Value, nil
-}
-
-func (i *Interpreter) evalArgs(args []ast.Expr) ([]runtime.Value, error) {
-	values := make([]runtime.Value, len(args))
-	for idx, arg := range args {
-		v, err := i.eval(arg)
-		if err != nil {
-			return nil, err
-		}
-		values[idx] = v
-	}
-	return values, nil
 }

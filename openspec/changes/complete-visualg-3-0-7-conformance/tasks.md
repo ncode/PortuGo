@@ -224,8 +224,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
   The seven missing numeric functions and bare `pi` now match recorded values,
   result types, optional arguments, no-value results, and syntax rejections.
-  Recordings identify remaining legacy arity, logarithm, and rejected-name
-  corrections; those and the unified descriptor registry remain pending.
+  Recorded legacy empty calls, logarithm signatures and domains, rejected
+  `frac` calls, and no-value argument order are now covered as well. The full
+  numeric domain matrix and unified descriptor registry remain pending.
 - [ ] 11.6 Add explicit numeric domain, finite-value, integer-overflow, precision-tolerance, and positioned `R007` behavior matching the oracle table.
 - [ ] 11.7 Add a generated or table-driven catalog report that proves semantic and runtime coverage for every descriptor without making generated source authoritative.
 - [ ] 11.8 Add semantic signature tests, runtime value/error tables, integration fixtures, and a numeric built-ins example.

@@ -8,7 +8,7 @@ import (
 
 func (c *checker) declareBuiltins() {
 	for _, name := range []string{
-		"abs", "raizq", "exp", "log", "logn", "pi", "sen", "cos", "tan", "int", "frac",
+		"abs", "raizq", "exp", "log", "logn", "pi", "sen", "cos", "tan", "int",
 		"aleatorio", "copia", "maiusc", "minusc", "asc", "carac", "compr", "pos", "numpcarac", "randi",
 		"arccos", "arcsen", "arctan", "cotan", "grauprad", "radpgrau", "quad",
 	} {
@@ -21,62 +21,58 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 	case "pi":
 		c.requireArity(call, 0, 0)
 		return runtime.Type{Kind: runtime.RealType}, true
-	case "abs":
-		if c.requireArity(call, 1, 1) {
-			t := c.expr(call.Args[0])
-			if isNumeric(t) {
+	case "abs", "raizq", "log", "logn", "sen", "cos", "tan", "int",
+		"arccos", "arcsen", "arctan", "cotan", "grauprad", "radpgrau", "quad":
+		result := runtime.Type{Kind: runtime.RealType}
+		if name == "int" {
+			result.Kind = runtime.IntegerType
+		}
+		if len(call.Args) == 0 {
+			if name == "abs" || name == "quad" {
+				result.Kind = runtime.VoidType
+			}
+			return result, true
+		}
+		if len(call.Args) > 1 && (name == "abs" || name == "quad" || name == "raizq") {
+			c.error(call.Name.Pos, diag.EParse, "expected ')' after numeric argument")
+			return result, true
+		}
+		t := c.expr(call.Args[0])
+		switch t.Kind {
+		case runtime.IntegerType, runtime.RealType:
+			if name == "abs" || name == "quad" {
 				return t, true
 			}
-			c.error(call.Args[0].Start(), diag.ETypeMismatch, "abs requires numeric argument")
-		}
-		return runtime.Type{Kind: runtime.InvalidType}, true
-	case "raizq", "log", "sen", "cos", "tan", "frac":
-		c.checkBuiltinArgs(call, runtime.Type{Kind: runtime.RealType})
-		return runtime.Type{Kind: runtime.RealType}, true
-	case "arccos", "arcsen", "arctan", "cotan", "grauprad", "radpgrau", "quad":
-		if len(call.Args) > 1 {
-			c.error(call.Name.Pos, diag.EParse, "expected ')' after numeric argument")
-		} else if len(call.Args) == 0 {
-			if name == "quad" {
+		case runtime.VoidType:
+			return t, true
+		case runtime.StringType, runtime.BoolType:
+			if name == "abs" || name == "quad" || name == "int" || name == "raizq" {
 				return runtime.Type{Kind: runtime.VoidType}, true
 			}
-		} else {
-			t := c.expr(call.Args[0])
-			switch t.Kind {
-			case runtime.IntegerType, runtime.RealType:
-				if name == "quad" {
-					return t, true
-				}
-			case runtime.VoidType:
-				return t, true
-			case runtime.StringType, runtime.BoolType:
-				if name == "quad" {
-					return runtime.Type{Kind: runtime.VoidType}, true
-				}
-				c.error(call.Args[0].Start(), diag.EParse, "expected numeric expression")
+			c.error(call.Args[0].Start(), diag.EParse, "expected numeric expression")
+		case runtime.VectorType:
+			c.error(call.Args[0].Start(), diag.EParse, "expected '[' after vector")
+		}
+		if len(call.Args) > 1 {
+			c.error(call.Name.Pos, diag.EParse, "expected ')' after numeric argument")
+		}
+		return result, true
+	case "exp":
+		if len(call.Args) == 0 {
+			return runtime.Type{Kind: runtime.VoidType}, true
+		}
+		for _, arg := range call.Args[:min(len(call.Args), 2)] {
+			switch c.expr(arg).Kind {
+			case runtime.VoidType, runtime.StringType, runtime.BoolType:
+				return runtime.Type{Kind: runtime.VoidType}, true
 			case runtime.VectorType:
-				c.error(call.Args[0].Start(), diag.EParse, "expected '[' after vector")
+				c.error(arg.Start(), diag.EParse, "expected '[' after vector")
 			}
+		}
+		if len(call.Args) != 2 {
+			c.error(call.Name.Pos, diag.EParse, "expected ')' after numeric argument")
 		}
 		return runtime.Type{Kind: runtime.RealType}, true
-	case "exp", "logn":
-		if c.requireArity(call, 2, 2) {
-			for _, arg := range call.Args {
-				t := c.expr(arg)
-				if !isNumeric(t) {
-					c.error(arg.Start(), diag.ETypeMismatch, "%q requires numeric arguments", call.Name.Text)
-				}
-			}
-		}
-		return runtime.Type{Kind: runtime.RealType}, true
-	case "int":
-		if c.requireArity(call, 1, 1) {
-			t := c.expr(call.Args[0])
-			if !isNumeric(t) {
-				c.error(call.Args[0].Start(), diag.ETypeMismatch, "int requires numeric argument")
-			}
-		}
-		return runtime.Type{Kind: runtime.IntegerType}, true
 	case "numpcarac":
 		if len(call.Args) > 1 {
 			c.error(call.Name.Pos, diag.EParse, "expected ')' after conversion argument")
@@ -150,16 +146,6 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 	default:
 		return runtime.Type{}, false
 	}
-}
-
-func (c *checker) checkBuiltinArgs(call *ast.CallExpr, ret runtime.Type) {
-	if c.requireArity(call, 1, 1) {
-		t := c.expr(call.Args[0])
-		if !isNumeric(t) {
-			c.error(call.Args[0].Start(), diag.ETypeMismatch, "%q requires numeric argument", call.Name.Text)
-		}
-	}
-	_ = ret
 }
 
 func (c *checker) requireArity(call *ast.CallExpr, min, max int) bool {

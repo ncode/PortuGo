@@ -205,9 +205,9 @@ fimfuncao
 
 ### 6.7 Built-in functions (initial set)
 
-Numeric: `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, `randi`; legacy `frac` and `aleatorio` corrections remain pending.
+Numeric: `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, `randi`; legacy `aleatorio` corrections remain pending. `frac` is rejected as undeclared.
 `pi` is written without parentheses. The new inverse-trigonometric and angle-conversion calls, `cotan`, and `quad` follow the recorded optional-argument and no-value rules in `docs/language.md`.
-`exp(base, exponent)` takes two numeric arguments and returns real-valued power.
+`exp(base, exponent)` takes two numeric arguments and returns real-valued power. `log` is base ten and `logn` is the one-argument natural logarithm. Empty calls, no-value propagation, argument order, and domain failures follow `docs/language.md`.
 String: `copia(s, p, n)`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, `pos`
 Conversion: implicit `inteiro` → `real`; explicit elsewhere via built-ins (`int`, etc.)
 `numpcarac(x)` converts a number to text with 15 significant digits; `numpcarac()` returns `"0"`. Its recorded no-value behavior for nonnumeric input is documented in `docs/language.md`.

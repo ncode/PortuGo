@@ -10,7 +10,7 @@ import (
 func numeric1(args []runtime.Value, fn func(float64) float64) (runtime.Value, bool, error) {
 	if len(args) == 0 {
 		args = []runtime.Value{{Kind: runtime.IntegerValue}}
-	} else if len(args) == 1 && args[0].Kind == runtime.VoidValue {
+	} else if args[0].Kind == runtime.VoidValue {
 		return args[0], true, nil
 	}
 	v, ok, err := real1(args, fn)
@@ -18,6 +18,21 @@ func numeric1(args []runtime.Value, fn func(float64) float64) (runtime.Value, bo
 		v = runtime.Value{Kind: runtime.VoidValue}
 	}
 	return v, ok, err
+}
+
+func checkedNumeric1(args []runtime.Value, fn func(float64) float64) (runtime.Value, bool, error) {
+	v, ok, err := numeric1(args, fn)
+	if err == nil && v.Kind == runtime.VoidValue && (len(args) == 0 || args[0].Kind != runtime.VoidValue) {
+		err = fmt.Errorf("invalid numeric function domain")
+	}
+	return v, ok, err
+}
+
+func squareRoot(args []runtime.Value) (runtime.Value, bool, error) {
+	if len(args) == 1 && (args[0].Kind == runtime.StringValue || args[0].Kind == runtime.BoolValue) {
+		return runtime.Value{Kind: runtime.VoidValue}, true, nil
+	}
+	return checkedNumeric1(args, math.Sqrt)
 }
 
 func square(args []runtime.Value) (runtime.Value, bool, error) {

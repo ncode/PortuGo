@@ -27,7 +27,7 @@ func TestRunExitStatus(t *testing.T) {
 		{"lexer", "L001", "", 1},
 		{"parser", "P001", "", 1},
 		{"undeclared", "E002", "", 1},
-		{"exp_one", "E004", "", 1},
+		{"exp_one", "P001", "", 1},
 		{"division_integer", "E001", "", 1},
 		{"formatted_boolean", "E001", "", 1},
 	} {

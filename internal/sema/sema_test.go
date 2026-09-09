@@ -57,11 +57,11 @@ func TestExpArguments(t *testing.T) {
 	}{
 		{"exp(2, 3)", ""},
 		{"exp(2.0, 0.5)", ""},
-		{"exp()", diag.ECall},
-		{"exp(2)", diag.ECall},
-		{"exp(2, 3, 4)", diag.ECall},
-		{`exp("2", 3)`, diag.ETypeMismatch},
-		{"exp(2, verdadeiro)", diag.ETypeMismatch},
+		{"exp()", ""},
+		{"exp(2)", diag.EParse},
+		{"exp(2, 3, 4)", diag.EParse},
+		{`exp("2", 3)`, ""},
+		{"exp(2, verdadeiro)", ""},
 	} {
 		t.Run(tt.expr, func(t *testing.T) {
 			diags := checkSource(t, "algoritmo \"exp\"\ninicio\nescreval("+tt.expr+")\nfimalgoritmo")
