@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/lexer"
 	"github.com/ncode/portugol-go/internal/sema"
 	"github.com/ncode/portugol-go/internal/source"
@@ -34,6 +35,32 @@ func TestPowerPrecedence(t *testing.T) {
 				t.Fatalf("want expression %s in:\n%s", tt.printed, &out)
 			}
 		})
+	}
+}
+
+func TestVectorBoundRecovery(t *testing.T) {
+	file, tokens, ds := lexer.Scan("bounds.alg", `algoritmo "bounds"
+var
+  v: vetor[1+1..3] de inteiro
+  w: vetor[0..+2] de inteiro
+  n: inteiro
+inicio
+  escreval(n)
+fimalgoritmo`)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	prog, ds := Parse(tokens)
+	if len(ds) != 2 {
+		t.Fatalf("diagnostics = %v, want two independent bound errors", ds)
+	}
+	for n, d := range ds {
+		if d.Code != diag.EParse || file.Position(d.Pos).Line != n+3 {
+			t.Fatalf("diagnostic %v, want P001 on line %d", d, n+3)
+		}
+	}
+	if prog == nil || len(prog.Globals) != 3 || len(prog.Body) != 1 {
+		t.Fatalf("bound recovery lost following declarations or body: %+v", prog)
 	}
 }
 

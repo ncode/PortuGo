@@ -12,7 +12,7 @@ This file is the contract between the codebase and any coding agent (Claude Code
 
 **In scope (v1):**
 - Source files: `.alg`, UTF-8 (also accept Windows-1252 — VisuAlg's native encoding — and transcode on read)
-- Full language: types, expressions, control flow, procedures/functions, vectors (1-D and N-D), pass-by-reference (`var` parameters)
+- Full language: types, expressions, control flow, procedures/functions, vectors (one or two dimensions), pass-by-reference (`var` parameters)
 - Standard library: numeric, string, conversion, random
 - CLI: `run`, `check`, `fmt`, `repl`
 - Diagnostics with stable error codes and source positions
@@ -213,7 +213,7 @@ VisuAlg strings are **1-indexed** in `copia` and `pos`. Don't make it 0-indexed 
 
 These cost time when wrong. Each must have a regression test.
 
-1. **1-based vector indexing.** Bounds are declared (`vetor[1..10]`); store an offset, do not assume 0 or 1.
+1. **Declared vector indexing.** Bounds may start at zero or a positive integer; store an offset, do not assume 0 or 1. Vectors have at most two dimensions. An omitted second index selects that dimension's lower bound. Whole-vector assignment is rejected.
 2. **Integer vs real division.** `/` always produces `real`. `\` is integer truncation toward zero. Mixing integer and real operands in `+ - *` promotes to real.
 3. **Short-circuit `e` / `ou`.** VisuAlg historically does **not** short-circuit. Decide once, document, test both branches always evaluate. This is a common source of student bugs and we should not silently change it.
 4. **Case-insensitivity.** `Soma`, `soma`, `SOMA` all refer to the same identifier. Canonicalize at the symbol-table boundary. Keywords likewise.

@@ -57,8 +57,9 @@ probes: 41 accepted and 20 rejected. A focused comment follow-up adds another 24
 (4 accepted, 7 rejected). The argument follow-ups add 35 observations
 (28 accepted, 7 rejected). The naming follow-ups add 15 observations
 (7 accepted, 8 rejected). The return follow-ups add 45 observations
-(36 accepted, 9 rejected). The corpus now contains 209 reference probes
-(165 verified, 44 pending implementation), plus the five project-tooling entries.
+(36 accepted, 9 rejected). The vector follow-ups add 26 observations
+(10 accepted, 16 rejected). The corpus now contains 235 reference probes
+(199 verified, 36 pending implementation), plus the five project-tooling entries.
 The missing mappings at the corpus layer cover 44 requirements and all 73 bundled
 examples. The stable storage requirement ID is retained while its linked heading
 and text now reflect the recorded acceptance beyond the former 500-slot claim.
@@ -190,3 +191,28 @@ Local build, formatting, vet, staticcheck, lint, ordinary/race tests, both
 30-second fuzz checks, strict OpenSpec validation, and all 165 verified CLI
 replays pass. Native Windows build, vet, 660 tests, both 30-second fuzz checks,
 and all 165 CLI replays pass with the same regression source and manifest.
+
+The vector slice verifies 34 cases, including eight earlier observations and
+26 new recordings. One- and two-dimensional vectors retain zero and positive
+non-one bounds; an omitted second index selects that dimension's lower bound.
+Recorded unsigned literal bounds are accepted, while signed, fractional,
+parenthesized, arithmetic, reversed, and third-dimension declarations are
+rejected. Whole-vector assignment is rejected. Regression tests cover accepted
+500/501/5000/5001-element vectors, zero initialization, extra indices, and runtime
+bounds failures with their preceding output. Accepted programs retain their
+output after formatting, and the example combines recorded dimension and
+index forms.
+
+Sixteen new GUI diagnostics were individually inspected and manually transcribed.
+Only reviewed synthetic programs, output, and language diagnostics are retained;
+raw operational inventories remain private. New zero-initialization and storage
+access mappings leave 35 requirements and all 73 bundled examples unmapped.
+Constant bounds, aggregate parameters, and corrupted-layout defenses remain
+pending; this slice completes only task 7.9.
+
+Local build, formatting, vet, staticcheck, lint, ordinary/race tests, both
+30-second fuzz checks, strict specification validation, and all 199 verified CLI
+replays pass. Native Windows build, vet, 732 tests, both 30-second fuzz checks,
+and all 199 CLI replays pass. All 112 transported branch files match the local
+snapshot before this validation note. The evidence gate reports the 108 missing
+mappings and no other errors.

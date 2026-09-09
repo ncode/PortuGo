@@ -86,14 +86,21 @@ func (p *parser) parseType() ast.TypeSpec {
 		p.expect(token.LBRACK, "expected '[' after vetor")
 		var ranges []ast.Range
 		for {
-			at := p.peek().Pos
+			at := p.peek()
+			errors := len(p.diags)
 			low := p.parseBoundInt()
 			p.expect(token.DOTDOT, "expected '..' in vector bound")
 			high := p.parseBoundInt()
-			ranges = append(ranges, ast.Range{At: at, Low: low, High: high})
+			if len(p.diags) == errors && high < low {
+				p.error(at, "vector upper bound is smaller than lower bound")
+			}
+			ranges = append(ranges, ast.Range{At: at.Pos, Low: low, High: high})
 			if !p.match(token.COMMA) {
 				break
 			}
+		}
+		if len(ranges) > 2 {
+			p.error(tok, "vector declarations support at most two dimensions")
 		}
 		p.expect(token.RBRACK, "expected ']' after vector bounds")
 		p.expect(token.DE, "expected de after vector bounds")
@@ -107,17 +114,25 @@ func (p *parser) parseType() ast.TypeSpec {
 }
 
 func (p *parser) parseBoundInt() int64 {
-	neg := p.match(token.SUB)
-	tok := p.expect(token.NUMBER, "expected integer bound")
-	v, err := strconv.ParseInt(tok.Text, 10, 64)
-	if err != nil {
-		p.error(tok, "expected integer bound")
-		return 0
+	tok := p.peek()
+	if tok.Kind == token.NUMBER {
+		p.advance()
 	}
-	if neg {
-		return -v
+	v, err := strconv.ParseUint(tok.Text, 10, 63)
+	if tok.Kind == token.NUMBER && err == nil {
+		switch p.peek().Kind {
+		case token.DOTDOT, token.COMMA, token.RBRACK:
+			return int64(v)
+		}
 	}
-	return v
+	p.error(tok, "expected unsigned integer bound")
+	for {
+		switch p.peek().Kind {
+		case token.DOTDOT, token.COMMA, token.RBRACK, token.DE, token.INICIO, token.EOF:
+			return 0
+		}
+		p.advance()
+	}
 }
 
 func (p *parser) parseSubprogram() ast.Subprogram {

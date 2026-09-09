@@ -218,6 +218,10 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			return
 		}
 		dst, ok := c.writable(s.Target)
+		if ok && dst.Kind == runtime.VectorType {
+			c.error(s.Target.Start(), diag.ETypeMismatch, "vector assignment requires an indexed target")
+			return
+		}
 		src := c.expr(s.Value)
 		if ok && !runtime.Assignable(dst, src) {
 			c.error(s.Value.Start(), diag.ETypeMismatch, "cannot assign %s to %s", src, dst)
@@ -332,7 +336,8 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 			c.error(e.Start(), diag.ETypeMismatch, "cannot index %s", base)
 			return runtime.Type{Kind: runtime.InvalidType}
 		}
-		if len(e.Indices) != len(base.Ranges) {
+		omittedColumn := len(e.Indices) == 1 && len(base.Ranges) == 2
+		if len(e.Indices) != len(base.Ranges) && !omittedColumn {
 			c.error(e.Start(), diag.ETypeMismatch, "expected %d indices, got %d", len(base.Ranges), len(e.Indices))
 		}
 		return *base.Elem

@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Match recorded vector declaration and indexing rules: accept one or two
+  dimensions and unsigned literal bounds; reject signed, fractional, expression,
+  reversed, and third-dimension forms. Default an omitted second index to that
+  dimension's lower bound and reject whole-vector assignment. Add 26 reviewed
+  observations and regressions for 34 vector cases, including accepted sizes
+  beyond 500 elements and positioned bounds failures with preceding output.
 - Verify 12 existing frontend observations with permanent execution, formatting,
   and positioned-diagnostic regressions: empty declarations, ignored suffixes,
   underscores, mixed-case identifiers, exponent and decimal literals, and

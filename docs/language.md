@@ -39,7 +39,7 @@ that suffix; preserving its text remains pending.
 - `real`: floating point number
 - `caractere`: string
 - `logico`: boolean
-- `vetor[a..b] de T`: one or more declared bounds with checked indexing
+- `vetor[a..b] de T`: one or two declared dimensions with checked indexing
 
 Variables are initialized to the zero value of their type.
 
@@ -52,6 +52,30 @@ Recorded real literals accept exponent notation such as `1e2` and a trailing
 decimal point such as `5.`. A leading decimal point, as in `.5`, is rejected with
 `L001` on its source line. A quoted string reaching a newline without its closing
 quote is also rejected with `L001`.
+
+## Vectors
+
+Recorded vector declarations accept one or two dimensions. Literal bounds are
+unsigned integers with the upper bound at least as large as the lower bound;
+`0..0`, `0..2`, and `2..4` are accepted. Signed forms (including `-0` and `+1`),
+fractional literals, parentheses, arithmetic bound expressions, reversed ranges,
+and a third dimension receive `P001` on the declaration line. Named constants
+in bounds remain pending implementation and are not excluded by these literal
+syntax rules.
+
+Each index uses its dimension's declared bounds. A two-dimensional vector
+access with one index selects the second dimension's lower bound: for
+`vetor[2..3,4..5]`, `v[2]` and `v[2,4]` select the same element. Explicit second
+indices do not change this default. An extra index receives `E001` before
+execution. An out-of-bounds index receives `R003` at the indexing expression;
+preceding program output is retained. Integer elements begin at zero.
+
+Whole-vector assignment, including self-assignment and assignment to a scalar,
+is rejected with `E001`. Element assignment remains supported. Recorded vectors
+with 500, 501, 5000, and 5001 elements execute successfully; these observations
+do not establish a universal storage maximum. See the
+[vector example](../examples/vector_bounds.alg). Aggregate parameter behavior
+and defensive handling of corrupted internal layouts remain under validation.
 
 ## String Literals
 

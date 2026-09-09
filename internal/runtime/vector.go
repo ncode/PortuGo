@@ -34,6 +34,9 @@ func (v *Vector) Cell(indices []int64) (*Cell, error) {
 	if v == nil {
 		return nil, fmt.Errorf("nil vector")
 	}
+	if len(indices) == 1 && len(v.Type.Ranges) == 2 {
+		indices = []int64{indices[0], v.Type.Ranges[1].Low}
+	}
 	if len(indices) != len(v.Type.Ranges) {
 		return nil, fmt.Errorf("expected %d indices, got %d", len(v.Type.Ranges), len(indices))
 	}

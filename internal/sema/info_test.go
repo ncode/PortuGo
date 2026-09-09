@@ -12,14 +12,14 @@ import (
 
 func TestAnalyzeFacts(t *testing.T) {
 	p := parseInfoProgram(t, `algoritmo "facts"
-var v: vetor[-1..1, 2..3] de inteiro
+var v: vetor[0..2, 2..3] de inteiro
 procedimento p(v: inteiro)
 inicio
   escreval(v)
 fimprocedimento
 inicio
-  v[-1,2] <- 7
-  p(v[-1,2])
+  v[0,2] <- 7
+  p(v[0,2])
 fimalgoritmo`)
 	info, ds := Analyze(p)
 	if diag.HasErrors(ds) || !info.ValidFor(p) || info.ValidFor(&ast.Program{}) {
@@ -33,7 +33,7 @@ fimalgoritmo`)
 	b.Type.Ranges[0].Low = 99
 	b.Type.Elem.Kind = runtime.StringType
 	copy, _ := info.Binding(decl)
-	if copy.Type.Ranges[0].Low != -1 || copy.Type.Elem.Kind != runtime.IntegerType {
+	if copy.Type.Ranges[0].Low != 0 || copy.Type.Elem.Kind != runtime.IntegerType {
 		t.Fatal("caller mutated semantic facts")
 	}
 	assign := p.Body[0].(*ast.AssignStmt)

@@ -60,15 +60,23 @@ The language SHALL support oracle-confirmed record declarations, nested records,
 - **THEN** analysis reports a diagnostic at that field selection and execution is not attempted
 
 ### Requirement: Vector types and declared bounds
-The language SHALL support every oracle-confirmed vector syntax, including multiple dimensions and bounds expressed with valid declaration-time expressions. Each dimension SHALL retain its declared lower and upper bounds, including non-one and negative bounds when accepted, and indexing SHALL use those bounds rather than Go slice indices.
+The language SHALL support the recorded one- and two-dimensional vector declarations and reject a third dimension. Literal bounds SHALL be unsigned integers in nondecreasing order, including zero and positive non-one lower bounds. Signed, fractional, parenthesized, and arithmetic literal-bound forms rejected by the reference SHALL receive positioned syntax diagnostics. Independently accepted named-constant bounds remain required. Each dimension SHALL retain its declared lower and upper bounds, and indexing SHALL use those bounds rather than Go slice indices.
 
 #### Scenario: Index a multidimensional vector
 - **WHEN** a vector has multiple resolved dimensions and every supplied index is within its declared dimension
 - **THEN** the selected element corresponds to the reference row and dimension ordering
 
+#### Scenario: Omit a second index
+- **WHEN** a two-dimensional vector is accessed with one index
+- **THEN** the second index is its declared lower bound, independent of prior explicit index values
+
+#### Scenario: Reject a third dimension
+- **WHEN** a vector declaration specifies three dimensions
+- **THEN** parsing returns a positioned syntax diagnostic and execution is not attempted
+
 #### Scenario: Reject an invalid dimension
 - **WHEN** a vector bound is unresolved, has an invalid type or order, or overflows during size calculation
-- **THEN** a positioned semantic diagnostic is returned and no backing storage is allocated
+- **THEN** a positioned syntax or semantic diagnostic is returned at the corresponding analysis stage and no backing storage is allocated
 
 ### Requirement: Reference-confirmed storage limits
 The implementation SHALL reproduce storage restrictions established by VisuAlg 3.0.7 recordings, including their accounting unit, declaration scope, record treatment, and vector multiplication. It SHALL NOT reject a program solely for exceeding the previously assumed 500-slot limit: recorded vectors with 500, 501, 5000, and 5001 elements are accepted. These observations do not establish the upper limit or accounting rules for every declaration context. Slot totals SHALL be computed with overflow-safe arithmetic before allocation; independent project resource guards SHALL be identified as such.
@@ -100,7 +108,11 @@ Assignment SHALL require the exact reference-compatible source and destination t
 - **THEN** analysis emits a positioned type diagnostic and no partial assignment occurs
 
 ### Requirement: Aggregate copy and reference semantics
-Value assignment and value parameters SHALL copy records and vectors to the depth observed in VisuAlg 3.0.7, while `var` parameters and other oracle-confirmed aliases SHALL refer to the original storage. Nested aggregates SHALL follow the same rules without accidental sharing or accidental copying.
+Whole-vector assignment, including self-assignment and assignment to a scalar, SHALL be rejected as recorded. Element assignment remains supported. Record assignment and aggregate parameters SHALL be supported only in independently accepted forms, with copying, conversion, visibility, and copy-back matching their recordings. Nested aggregates SHALL follow the same confirmed rules without accidental sharing or copying; scalar parameter behavior SHALL NOT establish unrecorded aggregate alias behavior.
+
+#### Scenario: Reject whole-vector assignment
+- **WHEN** an assignment uses a whole vector as its destination or assigns a whole vector to a scalar
+- **THEN** analysis returns a positioned type diagnostic and no partial assignment occurs
 
 #### Scenario: Mutate a value copy
 - **WHEN** a subprogram mutates a field or element received through a value parameter
