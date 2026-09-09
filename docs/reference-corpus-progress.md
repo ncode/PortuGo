@@ -58,7 +58,7 @@ probes: 41 accepted and 20 rejected. A focused comment follow-up adds another 24
 (28 accepted, 7 rejected). The naming follow-ups add 15 observations
 (7 accepted, 8 rejected). The return follow-ups add 45 observations
 (36 accepted, 9 rejected). The corpus now contains 209 reference probes
-(153 verified, 56 pending implementation), plus the five project-tooling entries.
+(165 verified, 44 pending implementation), plus the five project-tooling entries.
 The missing mappings at the corpus layer cover 44 requirements and all 73 bundled
 examples. The stable storage requirement ID is retained while its linked heading
 and text now reflect the recorded acceptance beyond the former 500-slot claim.
@@ -173,3 +173,20 @@ replays pass. Native Windows build, vet, 634 tests, both 30-second fuzz checks,
 and all 153 verified CLI replays pass on the same production source and manifest.
 The native snapshot also confirms removal of the obsolete return-path checker.
 The evidence gate reports the 110 missing mappings and no other failures.
+
+The frontend regression slice verifies 12 previously recorded observations:
+eight accepted programs and four positioned rejections. Permanent tests cover
+empty `var` sections, ignored post-termination words and statements, underscore
+and mixed-case identifiers, exponent and decimal-point forms, unterminated
+strings, and invalid inline slash/star usage. Accepted programs preserve their
+output after canonical formatting. This establishes the recorded execution
+behavior; comment and suffix text retention remain pending.
+
+No recordings or production behavior changed in this slice. The corpus contains
+165 verified reference cases and 44 pending cases. The missing mapping count
+remains 110, and no broader frontend task is marked complete by this subset.
+
+Local build, formatting, vet, staticcheck, lint, ordinary/race tests, both
+30-second fuzz checks, strict OpenSpec validation, and all 165 verified CLI
+replays pass. Native Windows build, vet, 660 tests, both 30-second fuzz checks,
+and all 165 CLI replays pass with the same regression source and manifest.

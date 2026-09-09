@@ -28,8 +28,10 @@ inicio
 fimalgoritmo
 ```
 
-The `var` block may be omitted. Top-level `procedimento` and `funcao`
-declarations must appear before `inicio`.
+The `var` block may be omitted or left empty. Top-level `procedimento` and
+`funcao` declarations must appear before `inicio`. Recorded words and statements
+after `fimalgoritmo` are ignored during execution. Formatting currently discards
+that suffix; preserving its text remains pending.
 
 ## Types
 
@@ -40,6 +42,16 @@ declarations must appear before `inicio`.
 - `vetor[a..b] de T`: one or more declared bounds with checked indexing
 
 Variables are initialized to the zero value of their type.
+
+Recorded identifiers accept leading and internal underscores. Identifier
+matching ignores case: a declaration named `SoMa` can be assigned through `soma`
+and read through `SOMA`. Broader identifier character rules remain under
+validation.
+
+Recorded real literals accept exponent notation such as `1e2` and a trailing
+decimal point such as `5.`. A leading decimal point, as in `.5`, is rejected with
+`L001` on its source line. A quoted string reaching a newline without its closing
+quote is also rejected with `L001`.
 
 ## String Literals
 
@@ -63,7 +75,7 @@ Statements on subsequent lines still execute. After a complete statement,
 `/` and `*` retain their operator meaning; `/*` is not an inline comment there.
 See [the comment example](../examples/comment_lines.alg).
 
-Twenty-nine recorded cases cover these forms, quoted delimiters, and formatting
+Thirty-one recorded cases cover these forms, quoted delimiters, and formatting
 without changing execution. Comments are currently discarded when formatting.
 The reference's handling of comments within incomplete expressions and the
 remaining syntax-recovery behavior are still pending.

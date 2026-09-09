@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Verify 12 existing frontend observations with permanent execution, formatting,
+  and positioned-diagnostic regressions: empty declarations, ignored suffixes,
+  underscores, mixed-case identifiers, exponent and decimal literals, and
+  malformed inline operators. Comment/suffix retention and broader grammar
+  rules remain pending.
 - Make `retorne` update the active function result while execution continues to
   `fimfuncao`. Accept fallthrough paths, retain same-type results at each call
   depth, and preserve independent recursive frames. Match return-type and
