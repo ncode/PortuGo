@@ -120,7 +120,7 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
 - [ ] 6.4 Implement named types/aliases and identity/compatibility rules only if confirmed, including bounded unknown-type/cycle handling; otherwise add rejection fixtures and omit named-type machinery.
 - [ ] 6.5 Implement record syntax and layouts in `sema.Info` only if confirmed, including field order, duplicates, and depth/size guards; otherwise add rejection fixtures and omit record layout machinery.
 - [ ] 6.6 Add field designators through AST, parser, printer, sema, and runtime only for confirmed record support; otherwise pin field-syntax rejection and remove positive field obligations from dependent tasks/specs.
-- [ ] 6.7 Accept only oracle-confirmed assignment aliases and normalize them to the assignment AST without losing source positions.
+- [x] 6.7 Accept only oracle-confirmed assignment aliases and normalize them to the assignment AST without losing source positions.
 - [ ] 6.8 Implement zero initialization and copying only for accepted scalar/aggregate operations, with the depth and allocation guards applied before nested copies.
 - [ ] 6.9 Implement location-based `var` aliases for accepted scalar/vector designators and, if confirmed, fields; reproduce rejection of unsupported aggregate parameter forms.
 - [ ] 6.10 Add parser goldens, diagnostic tables, runtime fixtures, comment-preserving round trips, and an example combining only confirmed declarations and copy/reference forms.

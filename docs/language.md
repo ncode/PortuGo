@@ -71,7 +71,7 @@ are evaluated to match VisuAlg behavior.
 
 Supported statements:
 
-- Assignment with `<-`
+- Assignment with `<-` or `:=`; formatting uses the canonical `<-` spelling
 - `leia`, `escreva`, and `escreval`
 - `se ... entao ... senao ... fimse`
 - `escolha ... caso ... outrocaso ... fimescolha`

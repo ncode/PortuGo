@@ -53,7 +53,7 @@ or relaxing the evidence gate.
 
 The [September 9 batch](reference-observations-2026-09-09.md) adds 61 recorded
 probes: 41 accepted and 20 rejected. The corpus now contains 79 reference probes
-(20 verified, 59 pending implementation), plus the five project-tooling entries.
+(21 verified, 58 pending implementation), plus the five project-tooling entries.
 The missing mappings at the corpus layer cover 44 requirements and all 73 bundled
 examples. The stable storage requirement ID is retained while its linked heading
 and text now reflect the recorded acceptance beyond the former 500-slot claim.
@@ -70,3 +70,9 @@ Local build, formatting, vet, lint, ordinary/race tests, and 30-second lexer and
 parser fuzz runs pass. Native Windows build, vet, ordinary tests, both 30-second
 fuzz runs, and all 20 verified CLI reference replays pass. Raw environment logs
 remain outside the repository.
+
+The assignment slice also verifies `:=` through the existing assignment token,
+semantic checks, and runtime. Token spelling and positions are retained, while
+canonical formatting uses `<-`.
+Native Windows build, vet, ordinary tests, both 30-second fuzz checks, and all
+21 currently verified CLI reference cases pass for this slice.

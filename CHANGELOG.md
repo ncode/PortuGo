@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Accept the recorded `:=` assignment spelling through the existing assignment
+  token and AST. Token positions and source spelling are retained; formatting
+  consistently emits `<-`. The reference assignment probe is now verified.
 - Preserve backslashes literally in strings, including a final backslash, and
   reject backslash-escaped quotes as recorded by the reference. Formatting now
   preserves string values and program names without introducing Go escapes.

@@ -10,7 +10,7 @@ import (
 )
 
 func TestScanGolden(t *testing.T) {
-	src := "algoritmo \"x\"\ninicio\nx <- 1 + 2\nfimalgoritmo\n"
+	src := "algoritmo \"x\"\ninicio\nx <- 1 + 2\ny := 3\nfimalgoritmo\n"
 	file, toks, diags := Scan("test.alg", src)
 	if len(diags) > 0 {
 		t.Fatalf("diagnostics: %v", diags)
@@ -33,7 +33,10 @@ func TestScanGolden(t *testing.T) {
 		"NUMBER \"1\" @3:6",
 		"+ \"+\" @3:8",
 		"NUMBER \"2\" @3:10",
-		"fimalgoritmo \"fimalgoritmo\" @4:1",
+		"IDENT \"y\" @4:1",
+		"<- \":=\" @4:3",
+		"NUMBER \"3\" @4:6",
+		"fimalgoritmo \"fimalgoritmo\" @5:1",
 	}, "\n")
 	if got != want {
 		t.Fatalf("tokens mismatch\nwant:\n%s\n\ngot:\n%s", want, got)

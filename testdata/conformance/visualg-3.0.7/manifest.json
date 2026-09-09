@@ -4468,14 +4468,18 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/assignment-colon-equals/stdout.txt",
             "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
           }
-        }
+        },
+        "tests": [
+          "integration_test.go#TestRunFixtures",
+          "internal/lexer/lexer_test.go#TestScanGolden"
+        ]
       }
     },
     {

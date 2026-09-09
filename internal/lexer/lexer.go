@@ -168,6 +168,10 @@ func (s *scanner) scanSymbol(start int, r rune) {
 	case ',':
 		s.emit(token.COMMA, ",", token.Pos(start))
 	case ':':
+		if s.match('=') {
+			s.emit(token.ASSIGN, ":=", token.Pos(start))
+			return
+		}
 		s.emit(token.COLON, ":", token.Pos(start))
 	case ';':
 		s.emit(token.SEMI, ";", token.Pos(start))
