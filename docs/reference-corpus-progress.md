@@ -1,8 +1,9 @@
 # Reference corpus progress
 
 OpenSpec group 2 is in progress. The corpus currently inventories 73 requirements
-and 73 bundled example filenames, sizes and hashes. Example classifications and
-the remaining reduced recordings are pending. The original compatibility
+and 73 bundled example filenames, sizes and hashes. The first eleven examples
+now have recorded classifications; the remaining example and reduced recordings
+are pending. The original compatibility
 checklist and audit referenced by the plan have not been located in the checkout.
 Their inventories must be reconciled before this group can close.
 
@@ -58,8 +59,9 @@ probes: 41 accepted and 20 rejected. A focused comment follow-up adds another 24
 (28 accepted, 7 rejected). The naming follow-ups add 15 observations
 (7 accepted, 8 rejected). The return follow-ups add 45 observations
 (36 accepted, 9 rejected). The vector follow-ups add 26 observations
-(10 accepted, 16 rejected). The corpus now contains 235 reference probes
-(199 verified, 36 pending implementation), plus the five project-tooling entries.
+(10 accepted, 16 rejected). The first bundled-example sweep adds eleven recorded
+programs (8 accepted, 3 unusable). The corpus now contains 246 reference probes
+(205 verified, 41 pending implementation), plus the five project-tooling entries.
 The missing mappings at the corpus layer cover 44 requirements and all 73 bundled
 examples. The stable storage requirement ID is retained while its linked heading
 and text now reflect the recorded acceptance beyond the former 500-slot claim.
@@ -278,3 +280,19 @@ replays pass. Native Windows build, vet, 777 tests, both fuzz checks, and all 19
 CLI replays pass with all 11 transported files matching locally before these
 validation notes. The evidence gate reports the same 106 missing mappings and
 no other failures.
+
+The first bundled-example slice records eleven original sources against their
+catalog hashes: eight accepted programs and three unusable files with reviewed
+GUI diagnostics. Six accepted programs have byte-exact original/formatted
+regressions. The new catalog check rejects stale IDs, source hash/size changes,
+false classifications, and unreviewed exclusions. Its regression test is linked
+from the existing project traceability entry.
+
+Local build, formatting, vet, staticcheck, lint, ordinary/race tests, both
+30-second fuzz checks, strict specification validation, and all 205 verified CLI
+replays pass. Native Windows build, vet, 803 tests, both fuzz checks, and all 205
+CLI replays pass. The final trace-link metadata also passes a fresh native
+test/replay run, with all 46 transported files matching before this validation
+note. The evidence gate reports 94 missing mappings (32 requirements and 62
+examples), with no other errors. The full inventory and example tasks remain
+in progress.

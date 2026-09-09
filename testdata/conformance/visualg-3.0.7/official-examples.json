@@ -319,7 +319,7 @@
     "disposition": "unusable",
     "review": {
       "reason": "The bundled program is rejected at fimrepita on line 16.",
-      "link": "docs/conformance-evidence-baseline.md#Bundled rejections"
+      "link": "docs/bundled-examples-progress.md"
     }
   },
   {
@@ -541,7 +541,7 @@
     "disposition": "unusable",
     "review": {
       "reason": "The bundled function collection is rejected for an invalid function name on line 34.",
-      "link": "docs/conformance-evidence-baseline.md#Bundled rejections"
+      "link": "docs/bundled-examples-progress.md"
     }
   },
   {
@@ -559,7 +559,7 @@
     "disposition": "unusable",
     "review": {
       "reason": "The bundled program uses an unrecognized ATÉ_QUE identifier on line 23.",
-      "link": "docs/conformance-evidence-baseline.md#Bundled rejections"
+      "link": "docs/bundled-examples-progress.md"
     }
   }
 ]

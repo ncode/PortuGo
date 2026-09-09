@@ -15,6 +15,12 @@ verified. The reference accepts vectors larger than 500 elements; the draft
 500-slot compatibility restriction has therefore been withdrawn. The recordings
 do not establish the upper storage limit in every declaration context.
 
+The [bundled example sweep](bundled-examples-progress.md) verifies six original
+programs against reference output, including formatting and execution. Other
+accepted examples still expose missing features, and three supplied files have
+recorded reference errors. Bundled-file presence alone does not establish that
+its syntax is accepted by this release.
+
 ## Program Structure
 
 A complete program has the shape:

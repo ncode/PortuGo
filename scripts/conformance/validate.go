@@ -56,6 +56,7 @@ func validate(root string, m manifest, mode string, previous *manifest) error {
 		add(fmt.Errorf("empty probe inventory"))
 	}
 	add(validateInventory(root, m, probes))
+	add(validateExampleCatalogs(root, m.Inventory, probes))
 	for _, item := range m.Inventory {
 		if active[item.ID] != "" {
 			add(fmt.Errorf("duplicate manifest ID %s", item.ID))

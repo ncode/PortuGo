@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Record eleven hash-verified bundled examples: eight accepted by the reference
+  and three rejected as supplied. Add byte-exact original/formatted regressions
+  for six matching programs. Validate catalog IDs, source hashes and sizes,
+  acceptance classifications, and exclusion reviews against the recorded probes.
+  Retain the remaining implementation gaps.
 - Recover after oversized REPL submissions: report `E900` once, discard the
   rejected input with bounded reads, and resume at the next program header.
   Preserve subsequent `leia` input and the session's failure status. Add exact

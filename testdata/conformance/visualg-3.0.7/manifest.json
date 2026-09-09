@@ -202,7 +202,18 @@
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Bundled example acceptance",
       "probes": [
-        "bundled-4fdb89658892"
+        "bundled-4fdb89658892",
+        "bundled-6c81c979714d",
+        "bundled-b8d8516450ea",
+        "bundled-f4fa0c514cf7",
+        "bundled-6fca58cfe4ac",
+        "bundled-183b40a8f657",
+        "bundled-a2fd5d8d6435",
+        "bundled-069318ac942f",
+        "bundled-6f7f325a3d14",
+        "bundled-c9455d0abe8e",
+        "bundled-a3ab1c0f85e6",
+        "bundled-8576df453f1f"
       ]
     },
     {
@@ -1594,7 +1605,9 @@
       "ownerGroup": 2,
       "tasks": [
         "2.1",
-        "2.5"
+        "2.2",
+        "2.5",
+        "17.2"
       ],
       "timeoutMS": 1000,
       "evidence": {
@@ -1611,7 +1624,8 @@
           "scripts/conformance/manifest_test.go#TestManifestPreservesVerifiedHistory",
           "scripts/conformance/manifest_test.go#TestManifestPreservesRetiredHistory",
           "scripts/conformance/manifest_test.go#TestManifestRetirementIDs",
-          "scripts/conformance/main_test.go#TestCommandHistoryValidation"
+          "scripts/conformance/main_test.go#TestCommandHistoryValidation",
+          "scripts/conformance/examples_test.go#TestManifestExampleCatalog"
         ]
       }
     },
@@ -5384,14 +5398,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-069318ac942f/stdout.txt",
             "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -6554,14 +6571,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-6c81c979714d/stdout.txt",
             "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -6595,14 +6615,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-6f7f325a3d14/stdout.txt",
             "sha256": "219c6817deea28784a2d04cbe3d80dc12ad00c3ff046c230db71594873170e63"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -6636,14 +6659,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-6fca58cfe4ac/stdout.txt",
             "sha256": "87c07b5a11ace08457587853d620de15b3776c6d6b855d9f1e081dc85d0d092c"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -7257,14 +7283,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-a2fd5d8d6435/stdout.txt",
             "sha256": "f82f806baa6fc82816d580771a3ff19d4732590e751bb9a54da150a5922d7b06"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -7298,14 +7327,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-a3ab1c0f85e6/stdout.txt",
             "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
