@@ -101,11 +101,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
 - [ ] 5.1 Add failing parser, semantic, and runtime cases for parameterless declarations, optional parentheses, bare procedure calls, invalid call contexts, recorded `var` conversions and copy-back, argument evaluation order, global lexical scope, shadowing, and recursion visibility.
 - [ ] 5.2 Parse every oracle-confirmed procedure/function declaration and call form while retaining enough syntax information for canonical printing.
-- [ ] 5.3 Resolve call statements versus expression calls and ordinary designators according to the recorded ambiguity rules.
+- [x] 5.3 Resolve call statements versus expression calls and ordinary designators according to the recorded ambiguity rules.
 
-  Parameterless declarations, bare calls, and function-name priority over local
-  variables and parameters now match the recorded cases. Procedure-name
-  collisions and declaration-line error positions remain pending.
+  Parameterless declarations, bare calls, callable-name priority, separate
+  variable/callable namespaces, and declaration-line errors now match the
+  recorded cases. Empty-argument execution edge cases remain under 5.4.
 - [ ] 5.4 Implement parameter grouping, arity, value-parameter coercion, and oracle-confirmed reference-parameter conversion, copy-back, and assignability validation.
 
   Recorded numeric conversions and scalar copy-in/copy-out now match, including

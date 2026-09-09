@@ -18,6 +18,10 @@ func TestRecordedParameterlessCalls(t *testing.T) {
 		"function-no-parentheses", "function-bare-call",
 		"bare-function-side-effects", "local-variable-shadows-function",
 		"function-name-priority", "function-name-priority-over-parameter",
+		"procedure-local-name-value", "procedure-local-name-parenthesized",
+		"procedure-local-name-bare", "procedure-parameter-name-value",
+		"global-variable-function-name",
+		"global-procedure-variable-read", "global-procedure-variable-call",
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)
@@ -45,19 +49,36 @@ func TestRecordedCallRejections(t *testing.T) {
 		{"variable-call-statement", 5},
 		{"procedure-value-expression", 7},
 		{"function-name-priority-with-arguments", 11},
+		{"procedure-name-priority", 2},
+		{"procedure-local-name-assignment", 2},
+		{"procedure-parameter-name-assignment", 2},
+		{"global-variable-procedure-name", 4},
+		{"procedure-vector-name-assignment", 2},
 	} {
 		t.Run(tt.id, func(t *testing.T) {
 			path := filepath.Join("testdata/conformance/visualg-3.0.7/probes", tt.id, "source.alg")
-			checkCallDiagnostic(t, path, tt.line)
+			checkSemanticDiagnostic(t, path, diag.ECall, tt.line)
 		})
 	}
 }
 
 func TestBareFunctionIsNotReferenceStorage(t *testing.T) {
-	checkCallDiagnostic(t, "testdata/check/bare_function_reference.alg", 11)
+	checkSemanticDiagnostic(t, "testdata/check/bare_function_reference.alg", diag.ECall, 11)
 }
 
-func checkCallDiagnostic(t *testing.T, path string, line int) {
+func TestRecordedDuplicateCallables(t *testing.T) {
+	for _, id := range []string{
+		"function-procedure-same-name", "procedure-function-same-name",
+		"duplicate-function-name", "duplicate-procedure-name",
+	} {
+		t.Run(id, func(t *testing.T) {
+			path := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id, "source.alg")
+			checkSemanticDiagnostic(t, path, diag.ERedeclared, 6)
+		})
+	}
+}
+
+func checkSemanticDiagnostic(t *testing.T, path string, code diag.Code, line int) {
 	t.Helper()
 	src, err := source.ReadFile(path)
 	if err != nil {
@@ -72,7 +93,7 @@ func checkCallDiagnostic(t *testing.T, path string, line int) {
 		t.Fatal(ds)
 	}
 	_, ds = sema.Analyze(prog)
-	if len(ds) != 1 || ds[0].Code != diag.ECall || file.Position(ds[0].Pos).Line != line {
-		t.Fatalf("diagnostics = %v, want E004 on line %d", ds, line)
+	if len(ds) != 1 || ds[0].Code != code || file.Position(ds[0].Pos).Line != line {
+		t.Fatalf("diagnostics = %v, want %s on line %d", ds, code, line)
 	}
 }

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Separate callable and variable names while preserving recorded function and
+  procedure priority. Reject assignments beginning with a procedure name and
+  report duplicate callables at the second declaration without secondary body
+  errors. Add 15 reviewed observations and verify 16 additional name-resolution
+  cases, including global collisions and indexed assignment targets.
 - Match recorded numeric argument conversions and scalar `var` copy-in/copy-out,
   including ordered copy-back, nested calls, and caller type changes. Preserve
   lexical scope and argument order; report procedure argument errors at their

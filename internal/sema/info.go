@@ -60,21 +60,36 @@ func (c *checker) recordBinding(name token.Token, sym symbol) {
 }
 
 func (c *checker) lookup(name token.Token) (symbol, bool) {
-	sym, ok := c.scope.lookup(canon(name.Text))
+	key := canon(name.Text)
+	sym, ok := c.scope.lookup(key)
+	if !ok {
+		sym, ok = c.subs[key]
+	}
 	if ok {
 		c.recordBinding(name, sym)
 	}
 	return sym, ok
 }
 
-// Function names take priority over variables in value expressions.
-func (c *checker) lookupValue(name token.Token) (symbol, bool) {
-	key := canon(name.Text)
-	for scope := c.scope; scope != nil; scope = scope.parent {
-		if sym, ok := scope.syms[key]; ok && sym.kind == funcSym {
-			c.recordBinding(name, sym)
-			return sym, true
-		}
+// Callables take priority in the corresponding statement or value context.
+func (c *checker) lookupCallable(name token.Token, kind symbolKind) (symbol, bool) {
+	if sym, ok := c.subs[canon(name.Text)]; ok && sym.kind == kind {
+		c.recordBinding(name, sym)
+		return sym, true
 	}
 	return c.lookup(name)
+}
+
+// Procedure names win at the start of a statement even when a variable with
+// that name exists. Other designator contexts still resolve variables normally.
+func (c *checker) assignmentProcedure(expr ast.Expr) (symbol, bool) {
+	switch e := expr.(type) {
+	case *ast.IdentExpr:
+		sym, ok := c.subs[canon(e.Name.Text)]
+		return sym, ok && sym.kind == procSym
+	case *ast.IndexExpr:
+		return c.assignmentProcedure(e.X)
+	default:
+		return symbol{}, false
+	}
 }

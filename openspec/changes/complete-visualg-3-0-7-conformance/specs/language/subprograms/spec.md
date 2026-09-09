@@ -20,6 +20,11 @@ Procedures and functions SHALL support the oracle-confirmed parenthesized and ba
 
 Recorded function names SHALL take priority over colliding local variables or
 parameters in bare value expressions and parenthesized function calls.
+Global variables MAY share a callable name. Procedures and functions SHALL
+share their own namespace and reject duplicate callable names at the second
+declaration before resolving bodies. Procedure names SHALL take priority in
+call statements and at the start of an assignment, including indexed targets;
+colliding variables SHALL remain readable in ordinary value expressions.
 
 #### Scenario: Invoke a bare procedure call
 - **WHEN** a declared procedure is invoked without parentheses in a reference-accepted statement form
@@ -32,6 +37,14 @@ parameters in bare value expressions and parenthesized function calls.
 #### Scenario: Read a colliding function name
 - **WHEN** a function value is read where a local variable or parameter has the same case-insensitive name
 - **THEN** the function executes and supplies its result, as in the recorded name-priority probes
+
+#### Scenario: Assign to a name shared with a procedure
+- **WHEN** an assignment starts with a declared procedure name that also names a variable or parameter
+- **THEN** analysis reports the recorded call diagnostic at the procedure declaration rather than assigning to the variable
+
+#### Scenario: Declare two callables with one name
+- **WHEN** a procedure or function reuses a callable name in either declaration order
+- **THEN** analysis reports `E003` at the second declaration without secondary call-context errors from the ambiguous bodies
 
 ### Requirement: Value parameters
 Value parameters SHALL accept exactly the argument types and implicit conversions accepted by VisuAlg 3.0.7. Each argument expression SHALL be evaluated once in reference order before the body observes its parameter, and later mutation of a value parameter SHALL follow the scalar or aggregate copy rules.

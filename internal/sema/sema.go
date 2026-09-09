@@ -13,7 +13,7 @@ import (
 // Analyze resolves names, types, layouts, calls, loop control, and returns.
 func Analyze(prog *ast.Program) (*Info, []diag.Diagnostic) {
 	info := &Info{program: prog, types: make(map[ast.Expr]runtime.Type), bindings: make(map[token.Pos]Binding), names: make(map[token.Pos]string)}
-	c := &checker{scope: newScope(nil), info: info}
+	c := &checker{scope: newScope(nil), subs: make(map[string]symbol), info: info}
 	if prog == nil {
 		c.error(token.NoPos, diag.ETypeMismatch, "missing program")
 		return info, c.diags
@@ -58,6 +58,7 @@ type scope struct {
 type checker struct {
 	info       *Info
 	scope      *scope
+	subs       map[string]symbol
 	diags      []diag.Diagnostic
 	loopDepth  int
 	returnType runtime.Type
@@ -91,6 +92,9 @@ func (c *checker) checkProgram(prog *ast.Program) {
 	}
 	for _, sub := range prog.Subs {
 		c.declareSub(sub)
+	}
+	if diag.HasErrors(c.diags) {
+		return
 	}
 	for _, sub := range prog.Subs {
 		c.checkSub(sub)
@@ -127,9 +131,12 @@ func (c *checker) declareSub(sub ast.Subprogram) {
 		c.validateType(d.Return, sym.typ)
 	}
 	c.recordBinding(nameTok, sym)
-	if !c.scope.declare(sym) {
+	previous, reserved := c.scope.syms[key]
+	if _, exists := c.subs[key]; exists || reserved && previous.kind == builtinSym {
 		c.error(nameTok.Pos, diag.ERedeclared, "redeclared identifier %q", nameTok.Text)
+		return
 	}
+	c.subs[key] = sym
 }
 
 func paramsFromAST(params []ast.Param) []paramSig {
@@ -209,6 +216,10 @@ func (c *checker) checkStmts(stmts []ast.Stmt) {
 func (c *checker) checkStmt(stmt ast.Stmt) {
 	switch s := stmt.(type) {
 	case *ast.AssignStmt:
+		if sym, ok := c.assignmentProcedure(s.Target); ok {
+			c.error(sym.pos, diag.ECall, "%q is a procedure in statement context", sym.name)
+			return
+		}
 		dst, ok := c.writable(s.Target)
 		src := c.expr(s.Value)
 		if ok && !runtime.Assignable(dst, src) {
@@ -301,7 +312,7 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 			return runtime.Type{Kind: runtime.BoolType}
 		}
 	case *ast.IdentExpr:
-		sym, ok := c.lookupValue(e.Name)
+		sym, ok := c.lookupCallable(e.Name, funcSym)
 		if !ok {
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}
@@ -416,10 +427,11 @@ func (c *checker) checkCall(call *ast.CallExpr, asStmt bool) (typ runtime.Type) 
 		}
 		return ret
 	}
-	sym, ok := c.lookup(call.Name)
-	if !asStmt {
-		sym, ok = c.lookupValue(call.Name)
+	kind := funcSym
+	if asStmt {
+		kind = procSym
 	}
+	sym, ok := c.lookupCallable(call.Name, kind)
 	if !ok {
 		c.error(call.Name.Pos, diag.EUndeclared, "undeclared callable %q", call.Name.Text)
 		return runtime.Type{Kind: runtime.InvalidType}
@@ -516,7 +528,7 @@ func isNumeric(t runtime.Type) bool {
 func (c *checker) isWritableExpr(expr ast.Expr) bool {
 	switch e := expr.(type) {
 	case *ast.IdentExpr:
-		sym, ok := c.lookupValue(e.Name)
+		sym, ok := c.lookupCallable(e.Name, funcSym)
 		return ok && sym.kind == varSym
 	case *ast.IndexExpr:
 		return c.isWritableExpr(e.X)

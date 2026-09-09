@@ -123,8 +123,15 @@ See [the parameterless-call example](../examples/parameterless_calls.alg).
 Each function occurrence executes a call: a recorded counter function used
 twice produces successive values. Function names take priority in expressions,
 even over a local variable or parameter with the same spelling. Assignments
-still target the declared variable. This unusual priority is recorded for bare
-and parenthesized functions; procedure-name collisions remain pending.
+still target the declared variable. Global variables may also share a function
+or procedure name. Functions and procedures share a separate namespace: duplicate
+callable names are rejected with `E003` at the second declaration, before bodies
+are analyzed. See the [name-priority example](../examples/call_name_priority.alg).
+
+Procedure names take priority in bare and parenthesized call statements, even
+over a local variable or parameter. An assignment starting with a procedure
+name, including an indexed assignment, is rejected with `E004` at the procedure
+declaration. Reading a colliding variable as a value still reads that variable.
 
 Variables cannot be called, procedures cannot produce values, and user functions
 cannot be invoked as statements. Bare functions that require arguments receive
@@ -155,8 +162,8 @@ failed call setup does not copy partially prepared parameters back.
 
 Recorded procedure argument-count and type errors point to the declaration
 line; function argument-count errors point to the call. Empty-argument edge
-cases, procedure-name collisions, integer operators after numeric reference
-conversion, and broader return behavior remain under validation.
+cases, integer operators after numeric reference conversion, and broader return
+behavior remain under validation.
 
 ## I/O
 

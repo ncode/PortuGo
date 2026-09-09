@@ -456,7 +456,22 @@
         "procedure-missing-tail-argument",
         "procedure-empty-two-arguments",
         "function-empty-arguments-continuation",
-        "function-missing-tail-argument"
+        "function-missing-tail-argument",
+        "procedure-local-name-assignment",
+        "procedure-local-name-value",
+        "procedure-local-name-parenthesized",
+        "procedure-local-name-bare",
+        "procedure-parameter-name-value",
+        "procedure-parameter-name-assignment",
+        "global-variable-function-name",
+        "global-variable-procedure-name",
+        "global-procedure-variable-read",
+        "global-procedure-variable-call",
+        "procedure-vector-name-assignment",
+        "function-procedure-same-name",
+        "procedure-function-same-name",
+        "duplicate-function-name",
+        "duplicate-procedure-name"
       ]
     },
     {
@@ -11152,7 +11167,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -11165,7 +11180,10 @@
               "line": 2
             }
           ]
-        }
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedCallRejections"
+        ]
       }
     },
     {
@@ -12735,6 +12753,771 @@
         },
         "tests": [
           "call_arguments_test.go#TestRecordedArgumentRejections"
+        ]
+      }
+    },
+    {
+      "id": "procedure-local-name-assignment",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-assignment/source.alg",
+        "sha256": "ad675aae3bdd3afddbc54684bac92fb94de640eaece27e28ad12931fe54970d6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T11:07:28.7519710Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-assignment/transcription.txt",
+          "sha256": "a5a9f9e4f8b3f872f832e22f988842271d1b038a1c13cde8511e36a1f581926a"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-assignment/transcription.txt",
+          "sha256": "a5a9f9e4f8b3f872f832e22f988842271d1b038a1c13cde8511e36a1f581926a"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-assignment/screenshot.png",
+          "sha256": "48c5ce7ee7ffe012b13f4122beb5fcb5a5d8ef5423cb058867a604e21463eb2f"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-assignment/transcription.txt",
+          "sha256": "a5a9f9e4f8b3f872f832e22f988842271d1b038a1c13cde8511e36a1f581926a"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E004",
+              "line": 2
+            }
+          ]
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedCallRejections"
+        ]
+      }
+    },
+    {
+      "id": "procedure-local-name-value",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-value/source.alg",
+        "sha256": "dc6cae8e7e2e41c9bb892bcf71ff1c19a2b7124b8d1ad0fc83d20867d7c6bfa6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T11:07:38.0668208Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-value/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-value/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-value/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedParameterlessCalls"
+        ]
+      }
+    },
+    {
+      "id": "procedure-local-name-parenthesized",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-parenthesized/source.alg",
+        "sha256": "0441b80e361f750a1f37bbce76adf52384200c06adb70d8ee2113676768cdc72"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T11:07:47.2545623Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-parenthesized/raw.txt",
+          "sha256": "42f99828732c38a8df307d27ef2cb7e26b64d067687396f1bb10ed560530030c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-parenthesized/stdout.txt",
+          "sha256": "852a478ece1b66d04d107ae488dd476a5a43b317f62729e25152e4bfba096cac"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-parenthesized/stdout.txt",
+            "sha256": "852a478ece1b66d04d107ae488dd476a5a43b317f62729e25152e4bfba096cac"
+          }
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedParameterlessCalls"
+        ]
+      }
+    },
+    {
+      "id": "procedure-local-name-bare",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-bare/source.alg",
+        "sha256": "1f80693f109798653b79e76b6c0a09514b356ad9d25e6dabc71245ffd48fc09b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T11:07:56.4202738Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-bare/raw.txt",
+          "sha256": "42f99828732c38a8df307d27ef2cb7e26b64d067687396f1bb10ed560530030c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-bare/stdout.txt",
+          "sha256": "852a478ece1b66d04d107ae488dd476a5a43b317f62729e25152e4bfba096cac"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/procedure-local-name-bare/stdout.txt",
+            "sha256": "852a478ece1b66d04d107ae488dd476a5a43b317f62729e25152e4bfba096cac"
+          }
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedParameterlessCalls"
+        ]
+      }
+    },
+    {
+      "id": "procedure-parameter-name-value",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/procedure-parameter-name-value/source.alg",
+        "sha256": "922f11a0673f8e67bc07a40ea305dca4dff7d23ad6f27a58bd3c0dddd22c731d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T11:08:05.5021488Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-parameter-name-value/raw.txt",
+          "sha256": "eac7495eaca2f41ec8e942cb939df9ca2c77b1a61330565d4e2ac33c5e33cc02"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-parameter-name-value/stdout.txt",
+          "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/procedure-parameter-name-value/stdout.txt",
+            "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
+          }
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedParameterlessCalls"
+        ]
+      }
+    },
+    {
+      "id": "procedure-parameter-name-assignment",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/procedure-parameter-name-assignment/source.alg",
+        "sha256": "5797f3673d2e20b348d9b5ada69c3c79bf47a2b93e8029b5516dc3eb41f03325"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T11:08:14.6902249Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-parameter-name-assignment/transcription.txt",
+          "sha256": "a5a9f9e4f8b3f872f832e22f988842271d1b038a1c13cde8511e36a1f581926a"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-parameter-name-assignment/transcription.txt",
+          "sha256": "a5a9f9e4f8b3f872f832e22f988842271d1b038a1c13cde8511e36a1f581926a"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-parameter-name-assignment/screenshot.png",
+          "sha256": "9455edb4a340efb8373ff5af6ed330dfec264fc93f95729b60d4c411c473a9f6"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-parameter-name-assignment/transcription.txt",
+          "sha256": "a5a9f9e4f8b3f872f832e22f988842271d1b038a1c13cde8511e36a1f581926a"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E004",
+              "line": 2
+            }
+          ]
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedCallRejections"
+        ]
+      }
+    },
+    {
+      "id": "global-variable-function-name",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/global-variable-function-name/source.alg",
+        "sha256": "864a75906b4260b01169e62f3c6f8ee63727cb644c432f10cb5aae7faaeacf6d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T11:09:18.8953211Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/global-variable-function-name/raw.txt",
+          "sha256": "c5f09e716a51e4930d70393be03fdbd877b3943e335b7dfea808eb6122425b13"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/global-variable-function-name/stdout.txt",
+          "sha256": "a368a3a5d5b250fdac2ebba6f075d6bd887213e0b853a03786d6aa3804836cc1"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/global-variable-function-name/stdout.txt",
+            "sha256": "a368a3a5d5b250fdac2ebba6f075d6bd887213e0b853a03786d6aa3804836cc1"
+          }
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedParameterlessCalls"
+        ]
+      }
+    },
+    {
+      "id": "global-variable-procedure-name",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/global-variable-procedure-name/source.alg",
+        "sha256": "983c0f41fa4a7b4e83efb61956c8839e1338bee1ab0e71c5233c77d77300e0a0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T11:09:28.0511808Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/global-variable-procedure-name/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/global-variable-procedure-name/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/global-variable-procedure-name/screenshot.png",
+          "sha256": "098225c6e994b60c8d05e5d0e36fc1130bfb5858c80f5121386af6f4a02eb3e5"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/global-variable-procedure-name/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E004",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedCallRejections"
+        ]
+      }
+    },
+    {
+      "id": "global-procedure-variable-read",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/global-procedure-variable-read/source.alg",
+        "sha256": "75eac62c6ba89eaa042cff042466f0893f06ce77bc20376847c27d54998707dc"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T11:13:03.2036908Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/global-procedure-variable-read/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/global-procedure-variable-read/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/global-procedure-variable-read/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedParameterlessCalls"
+        ]
+      }
+    },
+    {
+      "id": "global-procedure-variable-call",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/global-procedure-variable-call/source.alg",
+        "sha256": "a514f736bb1962330423653bef2ad5bf3a147644669b882c65d613cdb988db81"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T11:13:12.4730163Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/global-procedure-variable-call/raw.txt",
+          "sha256": "42f99828732c38a8df307d27ef2cb7e26b64d067687396f1bb10ed560530030c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/global-procedure-variable-call/stdout.txt",
+          "sha256": "852a478ece1b66d04d107ae488dd476a5a43b317f62729e25152e4bfba096cac"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/global-procedure-variable-call/stdout.txt",
+            "sha256": "852a478ece1b66d04d107ae488dd476a5a43b317f62729e25152e4bfba096cac"
+          }
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedParameterlessCalls"
+        ]
+      }
+    },
+    {
+      "id": "procedure-vector-name-assignment",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/procedure-vector-name-assignment/source.alg",
+        "sha256": "f576e47a61bfc70073083314abf93fe0e6a46003babda82fa79e36e5bbb40d56"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T11:13:21.6942685Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-vector-name-assignment/transcription.txt",
+          "sha256": "a5a9f9e4f8b3f872f832e22f988842271d1b038a1c13cde8511e36a1f581926a"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-vector-name-assignment/transcription.txt",
+          "sha256": "a5a9f9e4f8b3f872f832e22f988842271d1b038a1c13cde8511e36a1f581926a"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-vector-name-assignment/screenshot.png",
+          "sha256": "eae1e4e9b7e6934d78f8e7806b9babe1035d42113e2f25a07559df6d02fdbeef"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-vector-name-assignment/transcription.txt",
+          "sha256": "a5a9f9e4f8b3f872f832e22f988842271d1b038a1c13cde8511e36a1f581926a"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E004",
+              "line": 2
+            }
+          ]
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedCallRejections"
+        ]
+      }
+    },
+    {
+      "id": "function-procedure-same-name",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/function-procedure-same-name/source.alg",
+        "sha256": "ce9236a238e521c62926893f3323207f8c47895959f83b13074de5120d44326c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T11:13:30.9546309Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/function-procedure-same-name/transcription.txt",
+          "sha256": "02e05827025a2d8a55e8d8cf47a850102e752e69ec597302dbff307bfcc8ab30"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/function-procedure-same-name/transcription.txt",
+          "sha256": "02e05827025a2d8a55e8d8cf47a850102e752e69ec597302dbff307bfcc8ab30"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/function-procedure-same-name/screenshot.png",
+          "sha256": "918a9818e4a75df1af655907cd1b0a87dd85422686aba9a7fa39517bfdf6eeea"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/function-procedure-same-name/transcription.txt",
+          "sha256": "02e05827025a2d8a55e8d8cf47a850102e752e69ec597302dbff307bfcc8ab30"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E003",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedDuplicateCallables"
+        ]
+      }
+    },
+    {
+      "id": "procedure-function-same-name",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/procedure-function-same-name/source.alg",
+        "sha256": "4e30e1187c7fb69460122cc798f36b61e1cc8e75a4157497f4b558587ca3c871"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T11:13:40.2100821Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-function-same-name/transcription.txt",
+          "sha256": "02e05827025a2d8a55e8d8cf47a850102e752e69ec597302dbff307bfcc8ab30"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-function-same-name/transcription.txt",
+          "sha256": "02e05827025a2d8a55e8d8cf47a850102e752e69ec597302dbff307bfcc8ab30"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-function-same-name/screenshot.png",
+          "sha256": "051da7a6b0aad9b3a143989da1acd5792b7a7e7d9f31e541e396871c84aad169"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/procedure-function-same-name/transcription.txt",
+          "sha256": "02e05827025a2d8a55e8d8cf47a850102e752e69ec597302dbff307bfcc8ab30"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E003",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedDuplicateCallables"
+        ]
+      }
+    },
+    {
+      "id": "duplicate-function-name",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/duplicate-function-name/source.alg",
+        "sha256": "9fa83952c22729d80da4b591983c38666f1e273715e7feb02a7ad3b3d8c619fe"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T11:13:49.3772304Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/duplicate-function-name/transcription.txt",
+          "sha256": "02e05827025a2d8a55e8d8cf47a850102e752e69ec597302dbff307bfcc8ab30"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/duplicate-function-name/transcription.txt",
+          "sha256": "02e05827025a2d8a55e8d8cf47a850102e752e69ec597302dbff307bfcc8ab30"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/duplicate-function-name/screenshot.png",
+          "sha256": "7893c6e17459ea77eaf0329e9444ae865498f1c5d6d0ca186f5b178914475713"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/duplicate-function-name/transcription.txt",
+          "sha256": "02e05827025a2d8a55e8d8cf47a850102e752e69ec597302dbff307bfcc8ab30"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E003",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedDuplicateCallables"
+        ]
+      }
+    },
+    {
+      "id": "duplicate-procedure-name",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/duplicate-procedure-name/source.alg",
+        "sha256": "1edfcf4419094af736018a6b6fa47816ba69832bb4fc092147916ca6e7426923"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T11:13:58.6020576Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/duplicate-procedure-name/transcription.txt",
+          "sha256": "02e05827025a2d8a55e8d8cf47a850102e752e69ec597302dbff307bfcc8ab30"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/duplicate-procedure-name/transcription.txt",
+          "sha256": "02e05827025a2d8a55e8d8cf47a850102e752e69ec597302dbff307bfcc8ab30"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/duplicate-procedure-name/screenshot.png",
+          "sha256": "f7493b2110b4e5ef1f9f4c05d189a59fae1ef326e00ecc256f3d2d810488c8d0"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/duplicate-procedure-name/transcription.txt",
+          "sha256": "02e05827025a2d8a55e8d8cf47a850102e752e69ec597302dbff307bfcc8ab30"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E003",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "parameterless_calls_test.go#TestRecordedDuplicateCallables"
         ]
       }
     }

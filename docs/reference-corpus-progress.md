@@ -55,8 +55,9 @@ The [September 9 batch](reference-observations-2026-09-09.md) adds 61 recorded
 probes: 41 accepted and 20 rejected. A focused comment follow-up adds another 24
 (15 accepted, 9 rejected). A call follow-up adds 11 more usable observations
 (4 accepted, 7 rejected). The argument follow-ups add 35 observations
-(28 accepted, 7 rejected). The corpus now contains 149 reference probes
-(97 verified, 52 pending implementation), plus the five project-tooling entries.
+(28 accepted, 7 rejected). The naming follow-ups add 15 observations
+(7 accepted, 8 rejected). The corpus now contains 164 reference probes
+(113 verified, 51 pending implementation), plus the five project-tooling entries.
 The missing mappings at the corpus layer cover 44 requirements and all 73 bundled
 examples. The stable storage requirement ID is retained while its linked heading
 and text now reflect the recorded acceptance beyond the former 500-slot claim.
@@ -124,3 +125,22 @@ Local build, formatting, vet, static analysis, lint, ordinary/race tests, both
 vet, ordinary tests, both 30-second fuzz checks, and all 97 verified CLI reference
 cases pass on the same production source and manifest. The evidence gate reports
 the 113 missing mappings and no other failures.
+
+The naming slice verifies seven accepted programs and nine rejections, including
+the earlier procedure-name collision. Variables and callables have separate
+namespaces; functions and procedures share a namespace. Calls follow the
+recorded contextual priority, and assignments beginning with procedure names
+report the declaration-line error for scalar and indexed targets. Duplicate
+callable declarations are rejected before ambiguous bodies produce additional
+diagnostics. Eight new GUI diagnostics were individually reviewed and their
+transcriptions are labeled manual.
+
+Empty-call repeat observations remain private while their early-termination
+behavior is investigated; this slice does not infer default arguments from
+those incomplete executions. Existing published empty-call observations remain
+pending. The missing inventory count is unchanged at 113.
+
+Local build, formatting, vet, static analysis, lint, ordinary/race tests, both
+30-second fuzz checks, strict OpenSpec validation, and all 113 verified CLI cases
+pass. Native Windows build, vet, 549 tests, both 30-second fuzz checks, and all
+113 verified CLI cases pass on the same production source and manifest.
