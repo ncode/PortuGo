@@ -49,6 +49,54 @@ These mappings verify enforcement by the tooling. They do not declare the
 inventory complete, satisfy missing checklist/audit inputs, or authorize a
 conformance release. Release acceptance and the example sweep remain pending.
 
+## CLI contracts
+
+`project.cli-contracts` links `TestCommandContracts` to the CLI command and exit
+status requirements. The subprocess table checks `run`, `check`, `fmt`, and
+`repl`, stdout/stderr separation, statuses 0/1/2, invalid arguments, source and
+formatting limits, retained output before failure, and execution budgets.
+These command-line interfaces do not exist in the reference editor.
+
+## Positioned diagnostics
+
+`project.positioned-diagnostics` covers diagnostic severity, stable codes,
+deterministic rendering, inspectable causes, runtime failure positions, and
+rejection of missing or stale semantic information. `TestDiagnosticContract`
+checks rendering and prevents underlying host error text from leaking into the
+stable message. `TestExecutionDiagnostics` exercises arithmetic, indexing,
+input, loop, built-in, and output failures; `TestRejectMissingOrStaleInfo` checks
+the semantic handoff. The parser recovery tests below check ordered syntax
+diagnostics. Reference message and language-behavior observations remain
+separate; these mappings cover the project's diagnostic API.
+
+## Execution limits
+
+`project.execution-limits` covers the explicit work budget, active-call limit,
+evaluation-depth limit, text and format allocation limits, and reuse after a
+failed run. Its tests are `TestStepBudgetAndReuse`, `TestCallAndValueLimits`,
+`TestDefensiveEvaluationDepth`, `TestFormattedItemBoundary`, and
+`TestBuiltinTextLimits`. These safeguards are project policies, not inferred
+reference limits. Recorded programs still fail acceptance if a configured
+limit prevents their required outcome.
+
+## Front-end recovery and limits
+
+`project.frontend-recovery-limits` covers retained statements between independent
+syntax errors, vector-bound recovery, source and syntax-depth limits, and
+controlled processing of the bounded adversarial test profile. It links
+`TestStatementLineRecovery`, `TestVectorBoundRecovery`, `TestStructuralLimits`,
+the lexer and parser `TestFuzzAdversarial` tests, and REPL `TestSubmissionLimit`.
+These tests qualify the project's collected diagnostics and resource policy;
+they do not claim that reference execution discovers errors at the same phase.
+
+The tooling requirement links now include these existing tests and the release
+phase validator. This closes eight missing trace links without exempting any
+language behavior or example. Forty recorded implementation differences and
+55 missing mappings remain: 19 requirements and 36 bundled examples. In-place
+formatting, comment preservation, source-byte mapping, and the remaining
+language and host behavior continue to require their own implementation and
+evidence. A linked requirement does not by itself mean its tasks are complete.
+
 ## Defensive vector storage
 
 `project.vector-storage` covers invalid or inconsistent Go storage objects,

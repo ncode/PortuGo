@@ -51,5 +51,5 @@ more than one diagnostic.
 The catalog has thirty accepted examples, seven unusable examples, and 36
 awaiting recorded classifications. Incomplete captures are excluded. These
 records do not complete the full example sweep, evidence inventory, or
-conformance release gate, which still has 63 missing mappings: 27 requirements
+conformance release gate, which still has 55 missing mappings: 19 requirements
 and 36 bundled examples.

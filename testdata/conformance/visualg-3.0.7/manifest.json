@@ -1374,7 +1374,8 @@
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable compile-time diagnostics",
       "probes": [
-        "project.frontend-recovery-limits"
+        "project.frontend-recovery-limits",
+        "project.positioned-diagnostics"
       ]
     },
     {
@@ -1382,7 +1383,8 @@
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable runtime diagnostics",
       "probes": [
-        "project.positioned-diagnostics"
+        "project.positioned-diagnostics",
+        "project.execution-limits"
       ]
     },
     {
@@ -1390,7 +1392,9 @@
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: No user-input panics",
       "probes": [
-        "project.frontend-recovery-limits"
+        "project.frontend-recovery-limits",
+        "project.execution-limits",
+        "project.cli-contracts"
       ]
     },
     {
@@ -1398,7 +1402,9 @@
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Resource limits and bounded execution",
       "probes": [
-        "project.frontend-recovery-limits"
+        "project.frontend-recovery-limits",
+        "project.execution-limits",
+        "project.cli-contracts"
       ]
     },
     {
@@ -9626,11 +9632,14 @@
         "state": "not-applicable",
         "review": {
           "reason": "Command dispatch, stream separation, exit statuses, and explicit work budgets are project interfaces absent from the reference editor.",
-          "link": "docs/conformance-evidence-baseline.md#Project tooling"
+          "link": "docs/conformance-project-evidence.md#CLI contracts"
         }
       },
       "implementation": {
-        "state": "pending"
+        "state": "verified",
+        "tests": [
+          "cmd/portugol/dispatch_test.go#TestCommandContracts"
+        ]
       }
     },
     {
@@ -9683,11 +9692,19 @@
         "state": "not-applicable",
         "review": {
           "reason": "Collected parser diagnostics, source and syntax-depth safeguards, and bounded adversarial processing are project contracts; reference error-discovery phases and accepted syntax remain separately required.",
-          "link": "docs/conformance-evidence-baseline.md#Project tooling"
+          "link": "docs/conformance-project-evidence.md#Front-end recovery and limits"
         }
       },
       "implementation": {
-        "state": "pending"
+        "state": "verified",
+        "tests": [
+          "internal/parser/recovery_test.go#TestStatementLineRecovery",
+          "internal/parser/parser_test.go#TestVectorBoundRecovery",
+          "internal/parser/limits_test.go#TestStructuralLimits",
+          "internal/parser/parser_test.go#TestFuzzAdversarial",
+          "internal/lexer/lexer_test.go#TestFuzzAdversarial",
+          "internal/repl/limits_test.go#TestSubmissionLimit"
+        ]
       }
     },
     {
@@ -9702,11 +9719,16 @@
         "state": "not-applicable",
         "review": {
           "reason": "Public diagnostic codes, severity, wrapped Go causes, rendering, and the semantic handoff are project API contracts; reference language diagnostics remain independently recorded.",
-          "link": "docs/conformance-evidence-baseline.md#Project tooling"
+          "link": "docs/conformance-project-evidence.md#Positioned diagnostics"
         }
       },
       "implementation": {
-        "state": "pending"
+        "state": "verified",
+        "tests": [
+          "internal/diag/diag_test.go#TestDiagnosticContract",
+          "internal/interp/execution_test.go#TestExecutionDiagnostics",
+          "internal/interp/execution_test.go#TestRejectMissingOrStaleInfo"
+        ]
       }
     },
     {
@@ -39637,6 +39659,31 @@
         },
         "tests": [
           "choice_ranges_test.go#TestRecordedChoiceRanges"
+        ]
+      }
+    },
+    {
+      "id": "project.execution-limits",
+      "ownerGroup": 3,
+      "tasks": [
+        "3.11"
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "Finite work budgets, Go call and evaluation depth, allocation safeguards, and interpreter cleanup are explicit project policies, not claimed reference limits.",
+          "link": "docs/conformance-project-evidence.md#Execution limits"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "internal/interp/execution_test.go#TestStepBudgetAndReuse",
+          "internal/interp/execution_test.go#TestCallAndValueLimits",
+          "internal/interp/execution_test.go#TestDefensiveEvaluationDepth",
+          "internal/interp/execution_test.go#TestFormattedItemBoundary",
+          "internal/interp/execution_test.go#TestBuiltinTextLimits"
         ]
       }
     }
