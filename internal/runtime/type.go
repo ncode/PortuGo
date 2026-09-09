@@ -22,10 +22,13 @@ const (
 	VoidType
 )
 
-// Range is one vector dimension bound.
+// Range is one vector dimension bound. Dynamic endpoints are unresolved
+// declaration expressions; concrete allocated vectors never retain these flags.
 type Range struct {
-	Low  int64
-	High int64
+	Low         int64
+	High        int64
+	LowDynamic  bool
+	HighDynamic bool
 }
 
 // Type describes a Portugol value type.
@@ -60,16 +63,22 @@ func (t Type) Slots() (int, error) {
 	}
 	limit := uint64(^uint(0)>>1) / uint64(unsafe.Sizeof(Cell{}))
 	for _, r := range t.Ranges {
+		if r.LowDynamic || r.HighDynamic {
+			return 0, fmt.Errorf("vector bounds require declaration initialization")
+		}
 		width := uint64(r.High) - uint64(r.Low) + 1
 		if r.High < r.Low || width == 0 || width > limit/uint64(n) {
 			return 0, fmt.Errorf("vector layout exceeds addressable storage")
 		}
 		n *= int(width)
+		if n > MaxVectorSlots {
+			return 0, ErrVectorSize
+		}
 	}
 	return n, nil
 }
 
-// TypeFromSpec converts a parsed type into a runtime type.
+// TypeFromSpec converts a parsed type, marking named bounds for initialization.
 func TypeFromSpec(spec ast.TypeSpec) Type {
 	switch strings.ToLower(spec.Name) {
 	case "inteiro":
@@ -87,7 +96,9 @@ func TypeFromSpec(spec ast.TypeSpec) Type {
 		}
 		ranges := make([]Range, len(spec.Ranges))
 		for i, r := range spec.Ranges {
-			ranges[i] = Range{Low: r.Low, High: r.High}
+			low, lowDynamic := boundFromSpec(r.Low)
+			high, highDynamic := boundFromSpec(r.High)
+			ranges[i] = Range{Low: low, High: high, LowDynamic: lowDynamic, HighDynamic: highDynamic}
 		}
 		return Type{Kind: VectorType, Elem: &elem, Ranges: ranges}
 	default:
@@ -95,20 +106,46 @@ func TypeFromSpec(spec ast.TypeSpec) Type {
 	}
 }
 
+func boundFromSpec(expr ast.Expr) (int64, bool) {
+	if lit, ok := expr.(*ast.LiteralExpr); ok && lit.Kind == ast.IntLiteral {
+		return lit.Int, false
+	}
+	return 0, true
+}
+
+// DynamicBounds reports whether any dimension needs declaration-time values.
+func (t Type) DynamicBounds() bool {
+	for _, r := range t.Ranges {
+		if r.LowDynamic || r.HighDynamic {
+			return true
+		}
+	}
+	return t.Elem != nil && t.Elem.DynamicBounds()
+}
+
 // Equal reports whether two types are identical.
 func (t Type) Equal(o Type) bool {
+	return t.equal(o, false)
+}
+
+func (t Type) equal(o Type, allowDynamic bool) bool {
 	if t.Kind != o.Kind || len(t.Ranges) != len(o.Ranges) {
 		return false
 	}
 	for i := range t.Ranges {
-		if t.Ranges[i] != o.Ranges[i] {
+		a, b := t.Ranges[i], o.Ranges[i]
+		if allowDynamic {
+			if !a.LowDynamic && !b.LowDynamic && a.Low != b.Low || !a.HighDynamic && !b.HighDynamic && a.High != b.High {
+				return false
+			}
+		} else if a != b {
 			return false
 		}
 	}
 	if t.Elem == nil || o.Elem == nil {
 		return t.Elem == nil && o.Elem == nil
 	}
-	return t.Elem.Equal(*o.Elem)
+	return t.Elem.equal(*o.Elem, allowDynamic)
 }
 
 // String returns a source-like type name.
@@ -125,7 +162,14 @@ func (t Type) String() string {
 	case VectorType:
 		parts := make([]string, len(t.Ranges))
 		for i, r := range t.Ranges {
-			parts[i] = fmt.Sprintf("%d..%d", r.Low, r.High)
+			low, high := fmt.Sprint(r.Low), fmt.Sprint(r.High)
+			if r.LowDynamic {
+				low = "?"
+			}
+			if r.HighDynamic {
+				high = "?"
+			}
+			parts[i] = low + ".." + high
 		}
 		elem := "invalido"
 		if t.Elem != nil {
@@ -139,9 +183,10 @@ func (t Type) String() string {
 	}
 }
 
-// Assignable reports whether a value of src can be assigned to dst.
+// Assignable reports whether src satisfies dst, deferring dynamic endpoints.
+// Runtime assignment uses concrete layouts, so it checks every endpoint.
 func Assignable(dst, src Type) bool {
-	if dst.Equal(src) {
+	if dst.equal(src, true) {
 		return true
 	}
 	return dst.Kind == RealType && src.Kind == IntegerType

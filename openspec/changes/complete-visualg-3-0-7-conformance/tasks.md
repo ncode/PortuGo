@@ -145,13 +145,13 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
 
 - [ ] 6.1 Add failing fixtures for the recorded declaration dispositions, including rejected constants/types/records/fields, and positive ordering, assignment, zero-value, copy, and reference cases only where accepted.
 - [ ] 6.2 Use ordered program/local declarations for the section kinds actually accepted by the reference, migrating visitors and preserving the group 4 comment anchors.
-- [ ] 6.3 Implement constant declarations and bounded declaration-time evaluation only if confirmed, including dependency/cycle and overflow diagnostics; otherwise add the recorded rejection fixtures.
+- [x] 6.3 Implement constant declarations and bounded declaration-time evaluation only if confirmed, including dependency/cycle and overflow diagnostics; otherwise add the recorded rejection fixtures.
 
   Thirty-two recordings now verify scalar declarations, earlier dependencies,
   local shadowing and per-call initialization from parameters/global variables,
   accepted built-ins, integer wrapping, and positioned rejections. Constants
   initialize in source order when their section is entered, not during static
-  analysis. Four accepted constant-bound recordings remain pending under 7.2;
+  analysis. The accepted constant-bound recordings are implemented under 7.2;
   aggregate-valued and no-value initializers remain unqualified.
 - [ ] 6.4 Implement named types/aliases and identity/compatibility rules only if confirmed, including bounded unknown-type/cycle handling; otherwise add rejection fixtures and omit named-type machinery.
 - [ ] 6.5 Implement record syntax and layouts in `sema.Info` only if confirmed, including field order, duplicates, and depth/size guards; otherwise add rejection fixtures and omit record layout machinery.
@@ -167,7 +167,15 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
 ## 7. Vector Bounds, Slot Accounting, Allocation, and Indexing
 
 - [ ] 7.1 Add failing boundary fixtures for accepted literal/constant/expression bounds, non-one lower bounds, dimension ordering, recorded accepted sizes including 500/501 and 5000/5001 slots, overflow, and indexing; include record accounting only if group 2 confirmed records.
-- [ ] 7.2 Store vector bound syntax as positioned expressions and resolve every dimension to immutable lower/upper bounds in `sema.Info`.
+- [x] 7.2 Store vector bound syntax as positioned expressions, bind named constants in `sema.Info`, and resolve each dimension to immutable per-initialization bounds before allocation without mutating shared semantic facts.
+
+  Eight accepted bound recordings and ten declaration rejections now match,
+  including negative constants, local parameter-derived layouts, different
+  sizes per call, and a later reversed-bound failure after prior output.
+  Literal or constant-bound syntax is retained through formatting. Inline
+  vector parameter/result types are rejected; named aggregate forms remain
+  unqualified. The per-aggregate allocation cap is documented separately as
+  a project safeguard and retains the recorded 5,001-slot acceptance.
 - [ ] 7.3 Implement oracle-recorded slot accounting for scalars, vectors, accepted declaration contexts, and records only if confirmed, with checked addition and multiplication.
 - [ ] 7.4 Reject invalid bounds, unresolved constants, reversed ranges, separately confirmed storage restrictions, and arithmetic overflow before runtime allocation with positioned syntax or semantic diagnostics; preserve recorded accepted sizes beyond 500 slots.
 - [ ] 7.5 Refactor vector storage to use resolved layouts, preserve all declared offsets, allocate only checked sizes, and initialize elements recursively.
@@ -176,7 +184,7 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
 - [ ] 7.8 Add property/table tests for flattening, bounds, slot totals, defensive corrupted layouts, and maximum-size allocations.
 - [x] 7.9 Extend canonical printer coverage and add an example using confirmed vector dimensions and non-one bounds; constants and records appear only if independently accepted.
 - [ ] 7.10 Update `docs/language.md` and `CHANGELOG.md` with bound expressions, dimension order, recorded storage restrictions, independent project guards, and defensive failure behavior.
-- [ ] 7.11 Run focused semantic/runtime vector tests and then the full build, lint, ordinary, race, malformed-size, and strict OpenSpec suites.
+- [x] 7.11 Run focused semantic/runtime vector tests and then the full build, lint, ordinary, race, malformed-size, and strict OpenSpec suites.
 - [ ] 7.12 Mark every completed 7.x task immediately, commit the focused vector changes, push the next stacked branch, and open its draft PR before group 8.
 
 ## 8. Expressions, Precedence, Coercion, Comparison, and Choice Matching

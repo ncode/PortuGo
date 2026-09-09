@@ -8,6 +8,7 @@ import (
 
 // Binding identifies a resolved declaration and its storage layout.
 // ID is the declaration's source position, shared by all of its uses.
+// Slots is zero when Type.DynamicBounds requires per-initialization resolution.
 type Binding struct {
 	ID      token.Pos
 	Name    string

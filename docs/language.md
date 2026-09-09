@@ -75,8 +75,7 @@ required empty `var` section. See the [constant example](../examples/constants.a
 
 Unknown or forward constant dependencies, including cycles, receive `P001`.
 Duplicate names or collisions with a variable in the same scope receive `E003`.
-Assignment to a constant receives `E002`. Named constants in vector bounds
-remain pending despite recorded acceptance; aggregate-valued initializers and
+Assignment to a constant receives `E002`. Aggregate-valued initializers and
 no-value initializer results remain unqualified. The CLI currently requires a
 scalar initializer type as a project guard. Existing expression-depth, step,
 and arithmetic guards apply during initialization; an initializer failure does
@@ -135,9 +134,20 @@ Recorded vector declarations accept one or two dimensions. Literal bounds are
 unsigned integers with the upper bound at least as large as the lower bound;
 `0..0`, `0..2`, and `2..4` are accepted. Signed forms (including `-0` and `+1`),
 fractional literals, parentheses, arithmetic bound expressions, reversed ranges,
-and a third dimension receive `P001` on the declaration line. Named constants
-in bounds remain pending implementation and are not excluded by these literal
-syntax rules.
+and a third dimension receive `P001` on the declaration line.
+
+A bound may instead name an earlier integer constant, ignoring case. Such a
+constant can contain arithmetic or be negative; `lo = -2` permits `lo..2`,
+although a signed literal directly in the brackets is rejected. A bound's
+syntax remains one literal or name: `1..n+1` is rejected. Real, text, and logical
+constants, variable names, and direct parameter names receive `P001`.
+
+Constant-based bounds resolve after constant initialization and before vector
+allocation. A local constant may capture a parameter, so different calls can
+allocate different layouts without changing shared semantic information.
+Each allocated vector retains its own concrete bounds. Reversed resolved bounds
+receive `P001` at the declaration; output from earlier successful calls remains
+visible. See the [constant-bound example](../examples/constant_bounds.alg).
 
 Each index uses its dimension's declared bounds. A two-dimensional vector
 access with one index selects the second dimension's lower bound: for
@@ -150,8 +160,9 @@ Whole-vector assignment, including self-assignment and assignment to a scalar,
 is rejected with `E001`. Element assignment remains supported. Recorded vectors
 with 500, 501, 5000, and 5001 elements execute successfully; these observations
 do not establish a universal storage maximum. See the
-[vector example](../examples/vector_bounds.alg). Aggregate parameter behavior
-and allocation accounting remain under validation.
+[vector example](../examples/vector_bounds.alg). Inline `vetor[...] de ...`
+types in procedure/function parameters and function results receive `P001`,
+as recorded. Named aggregate parameter forms remain under validation.
 
 Storage lookup checks layout metadata and the exact backing length before
 computing an offset. Invalid ranges, overflowing dimension products, and
@@ -601,9 +612,12 @@ stops the sample loop early; omitting the flag lets it finish.
 Regardless of that budget, execution permits at most 256 active language calls,
 256 expression-evaluation levels within one call frame, and 16 MiB in one text
 value, input token/line, or formatted item. Concatenation, case conversion, and
-width/precision expansion check sizes before creating the result. Vector layouts
-are checked for address-space overflow; reference-specific storage quotas remain
-pending. These are project safeguards, not measured VisuAlg limits. A safeguard
+width/precision expansion check sizes before creating the result. Each vector
+aggregate is capped at 1,048,576 scalar slots, including nested elements, with
+checked dimension products. Oversized literal layouts receive `E900` during
+analysis; constant-dependent layouts receive `R003` at declaration initialization,
+before allocation. Reference-specific storage quotas remain pending.
+These are project safeguards, not measured VisuAlg limits. A safeguard
 hit in an accepted reference example remains a conformance failure.
 
 Source files and REPL submissions are capped at 4 MiB of original bytes,

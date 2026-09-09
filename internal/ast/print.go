@@ -194,7 +194,7 @@ func typeString(t TypeSpec) string {
 	}
 	ranges := make([]string, len(t.Ranges))
 	for i, r := range t.Ranges {
-		ranges[i] = fmt.Sprintf("%d..%d", r.Low, r.High)
+		ranges[i] = exprString(r.Low) + ".." + exprString(r.High)
 	}
 	elem := "invalido"
 	if t.Elem != nil {

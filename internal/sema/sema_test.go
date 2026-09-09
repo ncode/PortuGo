@@ -18,6 +18,15 @@ fimalgoritmo`)
 	}
 }
 
+func TestLiteralVectorAllocationGuard(t *testing.T) {
+	for _, typ := range []string{"vetor[1..1048577] de inteiro", "vetor[1..1] de vetor[1..1048577] de inteiro"} {
+		ds := checkSource(t, "algoritmo \"allocation\"\nvar\nv: "+typ+"\ninicio\nfimalgoritmo")
+		if len(ds) != 1 || ds[0].Code != diag.EResource {
+			t.Fatalf("oversized literal layout: %v", ds)
+		}
+	}
+}
+
 func TestFunctionMayFallThrough(t *testing.T) {
 	diags := checkSource(t, `algoritmo "x"
 

@@ -64,7 +64,7 @@ The language SHALL support oracle-confirmed record declarations, nested records,
 - **THEN** analysis reports a diagnostic at that field selection and execution is not attempted
 
 ### Requirement: Vector types and declared bounds
-The language SHALL support the recorded one- and two-dimensional vector declarations and reject a third dimension. Literal bounds SHALL be unsigned integers in nondecreasing order, including zero and positive non-one lower bounds. Signed, fractional, parenthesized, and arithmetic literal-bound forms rejected by the reference SHALL receive positioned syntax diagnostics. Independently accepted named-constant bounds remain required. Each dimension SHALL retain its declared lower and upper bounds, and indexing SHALL use those bounds rather than Go slice indices.
+The language SHALL support the recorded one- and two-dimensional vector declarations and reject a third dimension. Literal bounds SHALL be unsigned integers in nondecreasing order, including zero and positive non-one lower bounds. Signed, fractional, parenthesized, and arithmetic literal-bound forms rejected by the reference SHALL receive positioned syntax diagnostics. Bounds may instead name an earlier integer constant, including a negative or computed value. Other constant types, variables, and direct parameter names SHALL be rejected. Constant-based bounds resolve after constant initialization and before allocation, including per-call local layouts. Each allocated dimension SHALL retain its concrete lower and upper bounds, and indexing SHALL use those bounds rather than Go slice indices. Shared semantic facts SHALL remain unchanged across calls and interpreter instances.
 
 #### Scenario: Index a multidimensional vector
 - **WHEN** a vector has multiple resolved dimensions and every supplied index is within its declared dimension
@@ -80,7 +80,7 @@ The language SHALL support the recorded one- and two-dimensional vector declarat
 
 #### Scenario: Reject an invalid dimension
 - **WHEN** a vector bound is unresolved, has an invalid type or order, or overflows during size calculation
-- **THEN** a positioned syntax or semantic diagnostic is returned at the corresponding analysis stage and no backing storage is allocated
+- **THEN** a positioned diagnostic is returned during analysis or declaration initialization as appropriate, no backing storage is allocated, and output from prior completed operations remains visible
 
 ### Requirement: Reference-confirmed storage limits
 The implementation SHALL reproduce storage restrictions established by VisuAlg 3.0.7 recordings, including their accounting unit, declaration scope, record treatment, and vector multiplication. It SHALL NOT reject a program solely for exceeding the previously assumed 500-slot limit: recorded vectors with 500, 501, 5000, and 5001 elements are accepted. These observations do not establish the upper limit or accounting rules for every declaration context. Slot totals SHALL be computed with overflow-safe arithmetic before allocation; independent project resource guards SHALL be identified as such.

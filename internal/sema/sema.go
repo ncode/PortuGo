@@ -1,6 +1,7 @@
 package sema
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -202,14 +203,28 @@ func (c *checker) validateType(spec ast.TypeSpec, typ runtime.Type) {
 		c.error(spec.At, diag.ETypeMismatch, "invalid type")
 	}
 	if typ.Kind == runtime.VectorType {
-		if _, err := typ.Slots(); err != nil {
-			c.error(spec.At, diag.ETypeMismatch, "%s", err)
+		for _, r := range spec.Ranges {
+			if !c.checkBound(r.Low, r.At) || !c.checkBound(r.High, r.At) {
+				return
+			}
+		}
+		if spec.Elem != nil && typ.Elem != nil {
+			before := len(c.diags)
+			c.validateType(*spec.Elem, *typ.Elem)
+			if len(c.diags) != before {
+				return
+			}
+		}
+		if typ.DynamicBounds() {
 			return
 		}
-		for _, r := range spec.Ranges {
-			if r.High < r.Low {
-				c.error(r.At, diag.ETypeMismatch, "vector upper bound is smaller than lower bound")
+		if _, err := typ.Slots(); err != nil {
+			code := diag.ETypeMismatch
+			if errors.Is(err, runtime.ErrVectorSize) {
+				code = diag.EResource
 			}
+			c.error(spec.At, code, "%s", err)
+			return
 		}
 	}
 }

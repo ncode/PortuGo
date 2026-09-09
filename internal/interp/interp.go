@@ -138,15 +138,20 @@ func (i *Interpreter) State() map[string]runtime.Value {
 }
 
 func (i *Interpreter) defineVars(decl ast.VarDecl) error {
+	typ, err := i.resolveType(decl.Type)
+	if err != nil {
+		return err
+	}
 	for _, name := range decl.Names {
 		b, ok := i.info.Binding(name)
 		if !ok {
 			return failure(name.Pos, diag.RType, fmt.Errorf("missing declaration layout"))
 		}
-		if slots, err := b.Type.Slots(); err != nil || slots != b.Slots {
+		slots, err := b.Type.Slots()
+		if !runtime.Assignable(b.Type, typ) || !b.Type.DynamicBounds() && (err != nil || slots != b.Slots) {
 			return failure(name.Pos, diag.RStorage, fmt.Errorf("inconsistent storage layout"))
 		}
-		i.env.define(b.ID, b.Type)
+		i.env.define(b.ID, typ)
 	}
 	return nil
 }

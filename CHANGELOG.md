@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Resolve integer constant vector bounds before allocation, including negative
+  bounds and per-call local layouts. Preserve prior output on a later invalid
+  declaration, reject recorded inline vector parameter/result types, and guard
+  individual aggregate allocations with a documented project slot limit.
+
 - Add global and local scalar constants with ordered initialization, current
   parameter/global values, immutable names, and preserved formatter output.
   Match recorded declaration errors, dependencies, built-ins, and overflow;

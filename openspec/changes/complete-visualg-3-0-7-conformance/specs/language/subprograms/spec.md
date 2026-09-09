@@ -5,7 +5,7 @@ Defines VisuAlg 3.0.7 procedure and function declarations, calls, parameters, sc
 ## ADDED Requirements
 
 ### Requirement: Subprogram declaration forms
-The language SHALL accept every oracle-confirmed procedure and function declaration form, including declarations with no parameters, optional empty parentheses where accepted, parameter groups, local declaration sections, and reference-compatible terminators. Forms rejected by the reference SHALL receive positioned diagnostics.
+The language SHALL accept every oracle-confirmed procedure and function declaration form, including declarations with no parameters, optional empty parentheses where accepted, parameter groups, local declaration sections, and reference-compatible terminators. Forms rejected by the reference SHALL receive positioned diagnostics. Inline `vetor[...] de ...` parameter and result types SHALL receive the recorded positioned syntax diagnostic; named aggregate forms require independent qualification.
 
 #### Scenario: Declare a parameterless procedure
 - **WHEN** a parameterless procedure omits or includes parentheses in a form accepted by VisuAlg 3.0.7

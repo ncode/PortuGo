@@ -89,6 +89,7 @@ func FuzzParser(f *testing.F) {
 		"algoritmo \"x\"\ninicio\nfimalgoritmo",
 		"algoritmo \"x\"\nvar\nx: inteiro\ninicio\nx <- 1\nfimalgoritmo",
 		"algoritmo \"x\"\nconst\nn = 1+2\nvar\ninicio\nescreval(n)\nfimalgoritmo",
+		"algoritmo \"x\"\nconst\nn = 1+2\nvar\nv: vetor[1..n] de inteiro\ninicio\nv[n] <- 7\nfimalgoritmo",
 		"algoritmo \"x\"\r\ninicio // end\r\nfimalgoritmo\r\n",
 		"algoritmo \"x\"\nvar\nv: vetor[-2..2,1..3] de real\ninicio\nfimalgoritmo",
 		"algoritmo \"x\"\ninicio\nescreval((1+2)^3)\nfimalgoritmo",

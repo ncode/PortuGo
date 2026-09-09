@@ -79,6 +79,14 @@ failed run. Its tests are `TestStepBudgetAndReuse`, `TestCallAndValueLimits`,
 reference limits. Recorded programs still fail acceptance if a configured
 limit prevents their required outcome.
 
+`project.vector-allocation` records the following independent safeguard.
+One vector aggregate is limited to 1,048,576 scalar slots as a project allocation
+guard, including nested element layouts. `TestVectorSlotLimit` checks the exact
+boundary and multiplication without allocating the large arrays;
+`TestLiteralVectorAllocationGuard` checks static rejection, and
+`TestConstantBoundAllocationGuard` checks rejection before dynamic allocation
+and successful interpreter reuse. This is not an inferred reference limit.
+
 ## Front-end recovery and limits
 
 `project.frontend-recovery-limits` covers retained statements between independent
@@ -91,8 +99,8 @@ they do not claim that reference execution discovers errors at the same phase.
 
 The tooling requirement links now include these existing tests and the release
 phase validator. This closes eight missing trace links without exempting any
-language behavior or example. Forty recorded implementation differences and
-55 missing mappings remain: 19 requirements and 36 bundled examples. In-place
+language behavior or example. The remaining counts are tracked in the
+manifest and [example progress](bundled-examples-progress.md). In-place
 formatting, comment preservation, source-byte mapping, and the remaining
 language and host behavior continue to require their own implementation and
 evidence. A linked requirement does not by itself mean its tasks are complete.

@@ -8,7 +8,7 @@ type Vector struct {
 	Elements []Cell
 }
 
-// NewVector creates a zero-filled vector for typ.
+// NewVector creates a zero-filled vector after the caller validates typ.Slots.
 func NewVector(typ Type) *Vector {
 	size := int64(1)
 	for _, r := range typ.Ranges {
@@ -42,6 +42,9 @@ func (v *Vector) Cell(indices []int64) (*Cell, error) {
 	}
 	size := uint64(1)
 	for _, r := range v.Type.Ranges {
+		if r.LowDynamic || r.HighDynamic {
+			return nil, fmt.Errorf("unresolved vector bounds")
+		}
 		width := uint64(r.High) - uint64(r.Low) + 1
 		if r.High < r.Low || width == 0 || width > uint64(len(v.Elements))/size {
 			return nil, fmt.Errorf("vector layout exceeds backing storage")

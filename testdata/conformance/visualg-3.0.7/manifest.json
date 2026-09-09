@@ -686,7 +686,10 @@
         "procedure-no-parentheses",
         "function-no-parentheses",
         "procedure-empty-arguments",
-        "procedure-extra-arguments"
+        "procedure-extra-arguments",
+        "vector-context-procedure-parameter",
+        "vector-context-function-parameter",
+        "vector-context-function-result"
       ]
     },
     {
@@ -948,7 +951,18 @@
         "vector-omitted-column-read",
         "vector-omitted-column-positive-bound",
         "vector-omitted-column-zero-bound",
-        "vector-omitted-column-after-explicit"
+        "vector-omitted-column-after-explicit",
+        "constant-bound-per-call",
+        "constant-bound-parameter-direct",
+        "constant-bound-global-variable",
+        "constant-bound-local-variable",
+        "constant-bound-case-insensitive",
+        "constant-bound-logical",
+        "constant-bound-reversed",
+        "constant-bound-local-reversed",
+        "constant-bound-vector-parameter",
+        "constant-bound-dimensions",
+        "constant-bound-size-5001"
       ]
     },
     {
@@ -1425,6 +1439,7 @@
       "probes": [
         "project.frontend-recovery-limits",
         "project.execution-limits",
+        "project.vector-allocation",
         "project.cli-contracts"
       ]
     },
@@ -1435,7 +1450,8 @@
       "probes": [
         "project.frontend-recovery-limits",
         "project.execution-limits",
-        "project.cli-contracts"
+        "project.cli-contracts",
+        "project.vector-allocation"
       ]
     },
     {
@@ -4879,14 +4895,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/constant-vector-bound/stdout.txt",
             "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
           }
-        }
+        },
+        "tests": [
+          "constant_bounds_test.go#TestRecordedConstantBounds"
+        ]
       }
     },
     {
@@ -40927,14 +40946,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-negative-bound/stdout.txt",
             "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
           }
-        }
+        },
+        "tests": [
+          "constant_bounds_test.go#TestRecordedConstantBounds"
+        ]
       }
     },
     {
@@ -41083,14 +41105,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-expression-bound/stdout.txt",
             "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
           }
-        }
+        },
+        "tests": [
+          "constant_bounds_test.go#TestRecordedConstantBounds"
+        ]
       }
     },
     {
@@ -41181,14 +41206,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-local-vector-bound/stdout.txt",
             "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
           }
-        }
+        },
+        "tests": [
+          "constant_bounds_test.go#TestRecordedConstantBounds"
+        ]
       }
     },
     {
@@ -41231,6 +41259,782 @@
         },
         "tests": [
           "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-bound-per-call",
+      "ownerGroup": 7,
+      "tasks": [
+        "7.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-per-call/source.alg",
+        "sha256": "ca5c93a70ea189fbbaab4713b623c7ad68197545af192c76c36ed784b19fb7a4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:48:10.1733015Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-per-call/raw.txt",
+          "sha256": "2a68434fbc3195579b0626f7360938807113e25e43c590474baf59c176d7263d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-per-call/stdout.txt",
+          "sha256": "c0d64493145ba89b400f76d8f6cbb34a4cb8584fe058baba3be0244217cc4757"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-per-call/stdout.txt",
+            "sha256": "c0d64493145ba89b400f76d8f6cbb34a4cb8584fe058baba3be0244217cc4757"
+          }
+        },
+        "tests": [
+          "constant_bounds_test.go#TestRecordedConstantBounds"
+        ]
+      }
+    },
+    {
+      "id": "constant-bound-parameter-direct",
+      "ownerGroup": 7,
+      "tasks": [
+        "7.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-parameter-direct/source.alg",
+        "sha256": "78c7e9fcaf5a53f4b239a620c65d47c8362a2cda16bbca6e67c72a28d01d89bc"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:48:20.4811689Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-parameter-direct/transcription.txt",
+          "sha256": "dd1d98c9ab5c651e5f747421343c15b13d09021ceb35e13f8dd88a623ff7ef70"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-parameter-direct/transcription.txt",
+          "sha256": "dd1d98c9ab5c651e5f747421343c15b13d09021ceb35e13f8dd88a623ff7ef70"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-parameter-direct/screenshot.png",
+          "sha256": "e027bfbb8a476d24193244fbe2801d70574fa7be9c1043c150be0c49326e9199"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-parameter-direct/transcription.txt",
+          "sha256": "dd1d98c9ab5c651e5f747421343c15b13d09021ceb35e13f8dd88a623ff7ef70"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "constant_bounds_test.go#TestVectorDeclarationDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-bound-global-variable",
+      "ownerGroup": 7,
+      "tasks": [
+        "7.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-global-variable/source.alg",
+        "sha256": "ee0e2cb860d65dac4a6f35b47d092b041da4096fad146ec9aa400dcf9b07e9c4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:48:30.8187237Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-global-variable/transcription.txt",
+          "sha256": "dd1d98c9ab5c651e5f747421343c15b13d09021ceb35e13f8dd88a623ff7ef70"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-global-variable/transcription.txt",
+          "sha256": "dd1d98c9ab5c651e5f747421343c15b13d09021ceb35e13f8dd88a623ff7ef70"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-global-variable/screenshot.png",
+          "sha256": "3e53a069bb6a7b834f29b20150ad822d3367bbe5b5a2c765aae8c3982048dc4a"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-global-variable/transcription.txt",
+          "sha256": "dd1d98c9ab5c651e5f747421343c15b13d09021ceb35e13f8dd88a623ff7ef70"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "constant_bounds_test.go#TestVectorDeclarationDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-bound-local-variable",
+      "ownerGroup": 7,
+      "tasks": [
+        "7.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-local-variable/source.alg",
+        "sha256": "844444f8794573171df69ac6c362860acbfa1d68029841621c45ce1d00b6ee69"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:48:40.9714659Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-local-variable/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-local-variable/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-local-variable/screenshot.png",
+          "sha256": "5efa079bba3ecdba8ac2f3cc8ca3ee37050a1b272d6b8fe74b8971810f7415ed"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-local-variable/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "constant_bounds_test.go#TestVectorDeclarationDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-bound-case-insensitive",
+      "ownerGroup": 7,
+      "tasks": [
+        "7.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-case-insensitive/source.alg",
+        "sha256": "a4ce1e88c1450661507c5b6c83e7fc106f7a4a9ace6b440e49f3b68d4616d5e8"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:48:51.1537532Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-case-insensitive/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-case-insensitive/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-case-insensitive/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "constant_bounds_test.go#TestRecordedConstantBounds"
+        ]
+      }
+    },
+    {
+      "id": "constant-bound-logical",
+      "ownerGroup": 7,
+      "tasks": [
+        "7.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-logical/source.alg",
+        "sha256": "2a8e9540c5b7e8361c3eb7671f9f7a1d64d850ff5c5a58820e337f0395d0f5fb"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:49:01.4016903Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-logical/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-logical/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-logical/screenshot.png",
+          "sha256": "64545ed07cd77d7943e901b4ab5449cfeb2d8ec1c68c8d0e04738e0e9d81cef2"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-logical/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "constant_bounds_test.go#TestVectorDeclarationDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-bound-reversed",
+      "ownerGroup": 7,
+      "tasks": [
+        "7.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-reversed/source.alg",
+        "sha256": "6eb83de8e9b6b93598b2832e532b5f90652f7dec53503e468306639843940965"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:49:11.5998156Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-reversed/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-reversed/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-reversed/screenshot.png",
+          "sha256": "64545ed07cd77d7943e901b4ab5449cfeb2d8ec1c68c8d0e04738e0e9d81cef2"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-reversed/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "constant_bounds_test.go#TestVectorDeclarationDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-bound-local-reversed",
+      "ownerGroup": 7,
+      "tasks": [
+        "7.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-local-reversed/source.alg",
+        "sha256": "1b416ca747484b60c2cd75db22fc15c9804d3f50f91f49488f31afc9239e8c61"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:49:21.8693965Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-local-reversed/transcription.txt",
+          "sha256": "5cfff129ed9a7efc99a05811e21560d2aae2638dd534ba00ef0ba037ae3e6f84"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-local-reversed/transcription.txt",
+          "sha256": "5cfff129ed9a7efc99a05811e21560d2aae2638dd534ba00ef0ba037ae3e6f84"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-local-reversed/screenshot.png",
+          "sha256": "be29afff326e0c1afa2f58d22860fa1e03a271c490a025ae23d4f14db36e9b9f"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-local-reversed/transcription.txt",
+          "sha256": "5cfff129ed9a7efc99a05811e21560d2aae2638dd534ba00ef0ba037ae3e6f84"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-local-reversed/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "constant_bounds_test.go#TestVectorDeclarationDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-bound-vector-parameter",
+      "ownerGroup": 7,
+      "tasks": [
+        "7.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-vector-parameter/source.alg",
+        "sha256": "278043c0820e655e1ae5e7cd9c2b3af2ee4b344e62748bfe0127c04a7a850a54"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:49:32.0677984Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-vector-parameter/transcription.txt",
+          "sha256": "75d91aa339956dd08ac0cb3499423dcca5d3d500c9362dcad584ea7effd094ed"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-vector-parameter/transcription.txt",
+          "sha256": "75d91aa339956dd08ac0cb3499423dcca5d3d500c9362dcad584ea7effd094ed"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-vector-parameter/screenshot.png",
+          "sha256": "f2b868c08df9785214f65357b2ab2c2684240f6486c0b614cc4c904cc2bb40e8"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-vector-parameter/transcription.txt",
+          "sha256": "75d91aa339956dd08ac0cb3499423dcca5d3d500c9362dcad584ea7effd094ed"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "constant_bounds_test.go#TestVectorDeclarationDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-bound-dimensions",
+      "ownerGroup": 7,
+      "tasks": [
+        "7.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-dimensions/source.alg",
+        "sha256": "b604fdd945d53b5c55f574b9991142516c33f99d30032ef103aaa37ae956dc02"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:49:42.2439952Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-dimensions/raw.txt",
+          "sha256": "e387bf1a6b89c05ff0296f7b3ca7f54318f65cf73ece5676e80d10a5832d0936"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-dimensions/stdout.txt",
+          "sha256": "65e015003a906892f82bc1a798fdb51bbfb48ba9dffcc2786cc9e9bd52fc8f71"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-dimensions/stdout.txt",
+            "sha256": "65e015003a906892f82bc1a798fdb51bbfb48ba9dffcc2786cc9e9bd52fc8f71"
+          }
+        },
+        "tests": [
+          "constant_bounds_test.go#TestRecordedConstantBounds"
+        ]
+      }
+    },
+    {
+      "id": "constant-bound-size-5001",
+      "ownerGroup": 7,
+      "tasks": [
+        "7.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-size-5001/source.alg",
+        "sha256": "622feaf5366165bc2d2d616d616e8ecdbb238a4a76c1c84af21eeb6bb4aba499"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:49:52.3938102Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-size-5001/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-size-5001/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-bound-size-5001/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "constant_bounds_test.go#TestRecordedConstantBounds"
+        ]
+      }
+    },
+    {
+      "id": "vector-context-procedure-parameter",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-procedure-parameter/source.alg",
+        "sha256": "9bed88100ac53b5eef47ff902d136c5a55988c7780551bf76784e0d27ae08966"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T22:02:44.9912681Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-procedure-parameter/transcription.txt",
+          "sha256": "5f66c0d4e77d3e529aebd75a40d0843c534318a28907264d052ff45fa3402086"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-procedure-parameter/transcription.txt",
+          "sha256": "5f66c0d4e77d3e529aebd75a40d0843c534318a28907264d052ff45fa3402086"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-procedure-parameter/screenshot.png",
+          "sha256": "8224e0ecffc8591c1e80e9e99eff6ccc7e4bf956d09c7189389f58a99678bb15"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-procedure-parameter/transcription.txt",
+          "sha256": "5f66c0d4e77d3e529aebd75a40d0843c534318a28907264d052ff45fa3402086"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 2
+            }
+          ]
+        },
+        "tests": [
+          "constant_bounds_test.go#TestVectorDeclarationDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "vector-context-function-parameter",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-function-parameter/source.alg",
+        "sha256": "e98c64a278fa057f1e4db1f21f716c3945412f7f00be05553b613f54084fd96d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T22:02:55.3112915Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-function-parameter/transcription.txt",
+          "sha256": "5f66c0d4e77d3e529aebd75a40d0843c534318a28907264d052ff45fa3402086"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-function-parameter/transcription.txt",
+          "sha256": "5f66c0d4e77d3e529aebd75a40d0843c534318a28907264d052ff45fa3402086"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-function-parameter/screenshot.png",
+          "sha256": "8224e0ecffc8591c1e80e9e99eff6ccc7e4bf956d09c7189389f58a99678bb15"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-function-parameter/transcription.txt",
+          "sha256": "5f66c0d4e77d3e529aebd75a40d0843c534318a28907264d052ff45fa3402086"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 2
+            }
+          ]
+        },
+        "tests": [
+          "constant_bounds_test.go#TestVectorDeclarationDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "vector-context-function-result",
+      "ownerGroup": 5,
+      "tasks": [
+        "5.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-function-result/source.alg",
+        "sha256": "090d8a07da9674db83547db8c341bb31d50dc0bb7f6adb1d5bb2b50bb79320ef"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T22:03:05.5354511Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-function-result/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-function-result/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-function-result/screenshot.png",
+          "sha256": "aaca218a8b30b2df91f351d09fa85d3774292074b7685da897dfb307d31c1d31"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/vector-context-function-result/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "constant_bounds_test.go#TestVectorDeclarationDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "project.vector-allocation",
+      "ownerGroup": 7,
+      "tasks": [
+        "7.4",
+        "7.8"
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "The per-aggregate scalar-slot cap bounds Go allocations as an explicit project safeguard; it does not claim a reference storage maximum or exempt any accepted source example.",
+          "link": "docs/conformance-project-evidence.md#Execution limits"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "internal/runtime/vector_test.go#TestVectorSlotLimit",
+          "internal/sema/sema_test.go#TestLiteralVectorAllocationGuard",
+          "internal/interp/bounds_test.go#TestConstantBoundAllocationGuard"
         ]
       }
     }

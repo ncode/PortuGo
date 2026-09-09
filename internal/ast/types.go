@@ -36,8 +36,8 @@ type TypeSpec struct {
 // Range is one vector dimension bound.
 type Range struct {
 	At   token.Pos
-	Low  int64
-	High int64
+	Low  Expr
+	High Expr
 }
 
 // Param is a procedure or function parameter.

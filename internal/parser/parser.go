@@ -124,10 +124,12 @@ func (p *parser) parseType() ast.TypeSpec {
 		for {
 			at := p.peek()
 			errors := len(p.diags)
-			low := p.parseBoundInt()
+			low := p.parseBound()
 			p.expect(token.DOTDOT, "expected '..' in vector bound")
-			high := p.parseBoundInt()
-			if len(p.diags) == errors && high < low {
+			high := p.parseBound()
+			lo, loLiteral := low.(*ast.LiteralExpr)
+			hi, hiLiteral := high.(*ast.LiteralExpr)
+			if len(p.diags) == errors && loLiteral && hiLiteral && hi.Int < lo.Int {
 				p.error(at, "vector upper bound is smaller than lower bound")
 			}
 			ranges = append(ranges, ast.Range{At: at.Pos, Low: low, High: high})
@@ -149,23 +151,26 @@ func (p *parser) parseType() ast.TypeSpec {
 	}
 }
 
-func (p *parser) parseBoundInt() int64 {
+func (p *parser) parseBound() ast.Expr {
 	tok := p.peek()
-	if tok.Kind == token.NUMBER {
+	if tok.Kind == token.NUMBER || tok.Kind == token.IDENT {
 		p.advance()
 	}
 	v, err := strconv.ParseUint(tok.Text, 10, 63)
-	if tok.Kind == token.NUMBER && err == nil {
+	if tok.Kind == token.IDENT || tok.Kind == token.NUMBER && err == nil {
 		switch p.peek().Kind {
 		case token.DOTDOT, token.COMMA, token.RBRACK:
-			return int64(v)
+			if tok.Kind == token.IDENT {
+				return &ast.IdentExpr{Name: tok}
+			}
+			return &ast.LiteralExpr{At: tok.Pos, Kind: ast.IntLiteral, Int: int64(v)}
 		}
 	}
-	p.error(tok, "expected unsigned integer bound")
+	p.error(tok, "expected unsigned integer literal or constant bound")
 	for {
 		switch p.peek().Kind {
 		case token.DOTDOT, token.COMMA, token.RBRACK, token.DE, token.INICIO, token.EOF:
-			return 0
+			return &ast.LiteralExpr{At: tok.Pos, Kind: ast.IntLiteral}
 		}
 		p.advance()
 	}
@@ -198,7 +203,7 @@ func (p *parser) parseFunction() *ast.FunctionDecl {
 	name := p.expect(token.IDENT, "expected function name")
 	params := p.parseParamList()
 	p.expect(token.COLON, "expected ':' before function return type")
-	ret := p.parseType()
+	ret := p.parseCallableType()
 	decl := &ast.FunctionDecl{At: start.Pos, Name: name, Params: params, Return: ret}
 	decl.Consts = p.parseConstBlock()
 	if p.peek().Kind == token.VAR {
@@ -226,7 +231,7 @@ func (p *parser) parseParamList() []ast.Param {
 			names = append(names, p.expect(token.IDENT, "expected parameter name"))
 		}
 		p.expect(token.COLON, "expected ':' after parameter name")
-		typ := p.parseType()
+		typ := p.parseCallableType()
 		for _, name := range names {
 			params = append(params, ast.Param{At: name.Pos, Name: name, Type: typ, ByRef: byRef})
 		}
@@ -236,6 +241,15 @@ func (p *parser) parseParamList() []ast.Param {
 	}
 	p.expect(token.RPAREN, "expected ')'")
 	return params
+}
+
+func (p *parser) parseCallableType() ast.TypeSpec {
+	before := len(p.diags)
+	typ := p.parseType()
+	if typ.Name == "vetor" && len(p.diags) == before {
+		p.error(token.Token{Pos: typ.At}, "inline vector parameter and result types are unsupported")
+	}
+	return typ
 }
 
 func (p *parser) parseStmtList(stops map[token.Kind]bool) []ast.Stmt {

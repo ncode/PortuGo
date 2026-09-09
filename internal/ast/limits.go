@@ -75,6 +75,10 @@ func (c *limitChecker) typ(t TypeSpec, depth int) {
 	if !c.enter(t.At, depth) {
 		return
 	}
+	for _, r := range t.Ranges {
+		c.expr(r.Low, depth+1)
+		c.expr(r.High, depth+1)
+	}
 	if t.Elem != nil {
 		c.typ(*t.Elem, depth+1)
 	}
