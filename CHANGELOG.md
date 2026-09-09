@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Preserve finite large-angle conversions, report real squaring overflow at
+  the call site, and match numeric-domain absence through nested calls and
+  exponentiation argument evaluation.
+
 - Correct numeric empty calls, logarithm signatures and domains, and argument
   evaluation when a call produces no value. Reject unsupported `frac` calls
   and report invalid exponentiation domains at the call site.

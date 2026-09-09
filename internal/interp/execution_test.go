@@ -55,6 +55,8 @@ func TestExecutionDiagnostics(t *testing.T) {
 		{"integer division overflow", "", "escreval((-2147483647 - 1) \\ (-1))", "\\", diag.RArithmetic, Options{}},
 		{"modulo conversion range", "", "escreval(100000000000000000000.0 mod 3)", "mod", diag.RArithmetic, Options{}},
 		{"square root domain", "", "escreval(raizq(-1))", "raizq", diag.RBuiltin, Options{}},
+		{"square overflow", "", "escreval(quad(1e200))", "quad", diag.RBuiltin, Options{}},
+		{"absent exponent tail", "", "escreval(exp(2, arccos(2), 1 / 0))", "/", diag.RArithmetic, Options{}},
 		{"output", "", "escreva(1)", "1)", diag.RHost, Options{Output: failingWriter{}}},
 		{"input echo", "var x: inteiro", "leia(x)", "x)", diag.RHost, Options{Input: strings.NewReader("7\n"), Output: failingWriter{}}},
 	} {

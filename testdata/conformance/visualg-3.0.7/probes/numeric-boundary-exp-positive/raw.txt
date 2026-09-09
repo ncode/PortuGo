@@ -1,0 +1,7 @@
+Início da execução
+ 0.25
+ 1
+ 1.4142135623731
+ 0.25
+
+Fim da execução.

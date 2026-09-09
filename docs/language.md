@@ -395,10 +395,17 @@ parentheses supply zero. `quad(x)` squares its argument, retaining integer or
 real type and signed 32-bit wrapping for integers. `quad()` and text or logical
 arguments to `quad` produce no value.
 
+Angle conversion keeps finite results for large inputs: `grauprad(1e308)`
+prints `1.74532925199433E306` and `radpgrau(1e306)` prints
+`5.72957795130823E307`. A nonfinite `radpgrau` result produces no value.
+Overflow in real `quad` receives positioned `R007` as a project guard for
+the reference's unpositioned application fault.
+
 These seven functions accept at most one numeric argument. Extra arguments
-receive `P001`, except that an already absent argument to the six real functions
+receive `P001`, except that a statically absent argument to the six real functions
 propagates no value before later arguments are considered. The six real
-functions reject text and logical arguments with `P001`. Out-of-domain `arccos` and `arcsen`, and
+functions reject text and logical arguments with `P001`. Out-of-domain `arccos`
+and `arcsen`, and
 zero-argument or zero-valued `cotan`, produce no value at runtime; output handles
 that result as described for `numpcarac` below. This runtime absence is allowed
 even when the expression's static result type is real.
@@ -409,10 +416,22 @@ functions require parentheses.
 
 `exp(base, exponent)` takes two numeric arguments and returns real-valued
 exponentiation. A lone numeric argument or extra numeric arguments receive
-`P001`. `exp()` produces no value. Arguments are evaluated left to right;
-the first text, logical, or absent value ends the call without evaluating
-later arguments, including any extra arguments. Invalid numeric domains and
-nonfinite results receive positioned `R007`.
+`P001`. `exp()` produces no value. Arguments are evaluated left to right.
+A text, logical, or absent base ends the call without evaluating later arguments.
+Text, logical, and generic no-value exponents also stop immediately.
+
+Absence caused by a numeric domain has a distinct rule: unary numeric calls
+preserve its origin, whereas `exp` and `numpcarac` turn it into generic absence.
+When the exponent has numeric-domain absence, `exp` evaluates at most one
+extra argument, then produces no value. Thus `exp(2, arccos(2), f(), g())`
+calls only `f`; `exp(2, exp(arccos(2)), f())` skips `f`.
+An error in that evaluated extra argument is preserved at its source position.
+
+Arity that depends on an absent numeric result is checked during execution:
+`exp(arccos(2))` produces no value, while `exp(arccos(0))` receives `P001`.
+Other invalid numeric domains and nonfinite results receive positioned `R007`.
+Recorded exponentiation includes negative bases with integral exponents,
+`exp(0, 0) = 1`, and underflow of `exp(10, -400)` to zero.
 
 `log(x)` is base ten and `logn(x)` is the natural logarithm; both take one
 numeric argument. Empty parentheses supply zero, which receives `R007`, as
@@ -433,8 +452,9 @@ signed 32-bit: `int(2147483648.0)` is `-2147483648`, and
 `int(4294967296.0)` is zero. Non-finite arguments and values outside the signed
 64-bit intermediate conversion range receive positioned `R007` as project guards.
 
-An absent numeric argument propagates through a containing numeric call and
-skips later arguments. Output handles the result as described for `numpcarac`.
+An absent numeric argument propagates through a containing numeric call,
+subject to the `exp` argument rules above. Output handles the result as
+described for `numpcarac`.
 The full numeric domain matrix and catalog consolidation remain pending.
 
 String built-ins: `copia`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, and

@@ -17,16 +17,32 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 		return value, failure(call.Start(), diag.RType, fmt.Errorf("missing call binding"))
 	}
 	if b.Builtin {
-		args := make([]runtime.Value, len(call.Args))
-		for idx, arg := range call.Args {
+		exprs := call.Args
+		if b.Name == "exp" {
+			exprs = exprs[:min(len(exprs), 2)]
+		}
+		args := make([]runtime.Value, len(exprs))
+		for idx, arg := range exprs {
 			v, err := i.eval(arg)
 			if err != nil {
 				return runtime.Value{}, err
 			}
 			if v.Kind == runtime.VoidValue || (b.Name == "exp" || b.Name == "int") && (v.Kind == runtime.StringValue || v.Kind == runtime.BoolValue) {
+				// An absent numeric exponent consumes one trailing expression.
+				if b.Name == "exp" && idx == 1 && v.NumericAbsence && len(call.Args) > 2 {
+					if _, err := i.eval(call.Args[2]); err != nil {
+						return runtime.Value{}, err
+					}
+				}
+				if v.Kind == runtime.VoidValue && b.Name != "exp" && b.Name != "numpcarac" {
+					return v, nil
+				}
 				return runtime.Value{Kind: runtime.VoidValue}, nil
 			}
 			args[idx] = v
+		}
+		if b.Name == "exp" && len(call.Args) != 0 && len(call.Args) != 2 {
+			return runtime.Value{}, failure(call.Start(), diag.EParse, fmt.Errorf("expected ')' after numeric argument"))
 		}
 		if v, ok, err := i.lib.Call(b.Name, args); ok {
 			if errors.Is(err, runtime.ErrTextSize) {

@@ -4,6 +4,7 @@ import (
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/portugol-go/internal/token"
 )
 
 func (c *checker) declareBuiltins() {
@@ -61,15 +62,22 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 		if len(call.Args) == 0 {
 			return runtime.Type{Kind: runtime.VoidType}, true
 		}
-		for _, arg := range call.Args[:min(len(call.Args), 2)] {
-			switch c.expr(arg).Kind {
+		possiblyAbsent := false
+		for index, arg := range call.Args[:min(len(call.Args), 2)] {
+			typ := c.expr(arg)
+			switch typ.Kind {
 			case runtime.VoidType, runtime.StringType, runtime.BoolType:
 				return runtime.Type{Kind: runtime.VoidType}, true
 			case runtime.VectorType:
 				c.error(arg.Start(), diag.EParse, "expected '[' after vector")
 			}
+			absent, numericAbsent := c.possibleAbsence(arg)
+			if index == 1 && numericAbsent && len(call.Args) > 2 {
+				c.expr(call.Args[2])
+			}
+			possiblyAbsent = possiblyAbsent || absent
 		}
-		if len(call.Args) != 2 {
+		if len(call.Args) != 2 && !possiblyAbsent {
 			c.error(call.Name.Pos, diag.EParse, "expected ')' after numeric argument")
 		}
 		return runtime.Type{Kind: runtime.RealType}, true
@@ -146,6 +154,53 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 	default:
 		return runtime.Type{}, false
 	}
+}
+
+// possibleAbsence distinguishes generic absence from a numeric domain result.
+func (c *checker) possibleAbsence(expr ast.Expr) (possible, numeric bool) {
+	if c.info.types[expr].Kind == runtime.VoidType {
+		return true, false
+	}
+	switch e := expr.(type) {
+	case *ast.UnaryExpr:
+		if e.Op.Kind == token.ADD {
+			return c.possibleAbsence(e.X)
+		}
+	case *ast.BinaryExpr:
+		switch e.Op.Kind {
+		case token.QUO, token.IDIV:
+			return c.possibleAbsence(e.Right)
+		case token.REM, token.MOD:
+			if c.info.types[e.Left].Kind == runtime.BoolType {
+				return c.possibleAbsence(e.Right)
+			}
+		case token.POW:
+			left, _ := c.possibleAbsence(e.Left)
+			right, _ := c.possibleAbsence(e.Right)
+			return left || right, false
+		}
+	}
+	call, ok := expr.(*ast.CallExpr)
+	if !ok {
+		return false, false
+	}
+	binding, ok := c.info.Binding(call.Name)
+	if !ok || !binding.Builtin {
+		return false, false
+	}
+	switch binding.Name {
+	case "arccos", "arcsen", "cotan", "radpgrau":
+		return true, true
+	}
+	for _, arg := range call.Args {
+		absent, numericAbsent := c.possibleAbsence(arg)
+		possible = possible || absent
+		numeric = numeric || numericAbsent
+	}
+	if binding.Name == "exp" || binding.Name == "numpcarac" {
+		numeric = false
+	}
+	return possible, numeric
 }
 
 func (c *checker) requireArity(call *ast.CallExpr, min, max int) bool {

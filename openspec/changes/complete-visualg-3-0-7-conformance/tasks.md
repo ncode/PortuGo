@@ -228,6 +228,11 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   `frac` calls, and no-value argument order are now covered as well. The full
   numeric domain matrix and unified descriptor registry remain pending.
 - [ ] 11.6 Add explicit numeric domain, finite-value, integer-overflow, precision-tolerance, and positioned `R007` behavior matching the oracle table.
+
+  Recorded numeric endpoints, logarithm and exponentiation domains, large
+  angle conversions, and absence origin/order now have regression coverage.
+  Unpositioned real-squaring faults use a documented project guard. Broader
+  domain qualification and the independent catalog remain pending.
 - [ ] 11.7 Add a generated or table-driven catalog report that proves semantic and runtime coverage for every descriptor without making generated source authoritative.
 - [ ] 11.8 Add semantic signature tests, runtime value/error tables, integration fixtures, and a numeric built-ins example.
 - [ ] 11.9 Update `docs/language.md` authoritative built-in catalog and `CHANGELOG.md` with corrected names, signatures, units, values, and errors.

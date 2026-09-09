@@ -62,6 +62,7 @@ func TestExpArguments(t *testing.T) {
 		{"exp(2, 3, 4)", diag.EParse},
 		{`exp("2", 3)`, ""},
 		{"exp(2, verdadeiro)", ""},
+		{"exp(arccos(2))", ""},
 	} {
 		t.Run(tt.expr, func(t *testing.T) {
 			diags := checkSource(t, "algoritmo \"exp\"\ninicio\nescreval("+tt.expr+")\nfimalgoritmo")

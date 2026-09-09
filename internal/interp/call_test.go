@@ -72,6 +72,28 @@ func TestIntegerArgumentRange(t *testing.T) {
 	}
 }
 
+func TestNumericAbsenceExpressionFacts(t *testing.T) {
+	for _, tt := range []struct {
+		name, call, want string
+	}{
+		{"unary plus", "exp(arccos(1), +arccos(2), marker())", "MARKER\n"},
+		{"division", "exp(arccos(1), 2 / arccos(2), marker())", "MARKER\n"},
+		{"integer division", "exp(arccos(1), 2 \\ arccos(2), marker())", "MARKER\n"},
+		{"logical remainder", "exp(arccos(1), verdadeiro mod arccos(2), marker())", "MARKER\n"},
+		{"power", "exp(arccos(1), 2 ^ arccos(2), marker())", ""},
+		{"short power", "exp(2 ^ arccos(2))", ""},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			src := fmt.Sprintf("algoritmo \"numeric absence\"\nfuncao marker: inteiro\ninicio\nescreval(\"MARKER\")\nretorne 2\nfimfuncao\ninicio\nescreval(%s)\nfimalgoritmo", tt.call)
+			p, info := analyzed(t, src)
+			var out bytes.Buffer
+			if ds := New(Options{Output: &out}).Run(p, info); len(ds) != 0 || out.String() != tt.want {
+				t.Fatalf("diagnostics %v, output %q, want %q", ds, &out, tt.want)
+			}
+		})
+	}
+}
+
 func TestFunctionTailFailureAndReuse(t *testing.T) {
 	p, info := analyzed(t, `algoritmo "returns"
 var

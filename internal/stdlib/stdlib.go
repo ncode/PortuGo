@@ -56,9 +56,9 @@ func (l *Library) Call(name string, args []runtime.Value) (runtime.Value, bool, 
 	case "cotan":
 		return numeric1(args, func(x float64) float64 { return 1 / math.Tan(x) })
 	case "grauprad":
-		return numeric1(args, func(x float64) float64 { return x * math.Pi / 180 })
+		return numeric1(args, func(x float64) float64 { return x * (math.Pi / 180) })
 	case "radpgrau":
-		return numeric1(args, func(x float64) float64 { return x * 180 / math.Pi })
+		return numeric1(args, func(x float64) float64 { return x * (180 / math.Pi) })
 	case "quad":
 		return square(args)
 	case "int":
@@ -125,7 +125,9 @@ func abs(args []runtime.Value) (runtime.Value, bool, error) {
 		return runtime.Value{Kind: runtime.IntegerValue, Int: int64(int32(v))}, true, nil
 	case runtime.RealValue:
 		return runtime.Value{Kind: runtime.RealValue, Real: math.Abs(args[0].Real)}, true, nil
-	case runtime.StringValue, runtime.BoolValue, runtime.VoidValue:
+	case runtime.VoidValue:
+		return args[0], true, nil
+	case runtime.StringValue, runtime.BoolValue:
 		return runtime.Value{Kind: runtime.VoidValue}, true, nil
 	default:
 		return runtime.Value{}, true, fmt.Errorf("abs expects numeric argument")
@@ -174,7 +176,10 @@ func intval(args []runtime.Value) (runtime.Value, bool, error) {
 	if len(args) == 0 {
 		return runtime.Value{Kind: runtime.IntegerValue}, true, nil
 	}
-	if args[0].Kind == runtime.StringValue || args[0].Kind == runtime.BoolValue || args[0].Kind == runtime.VoidValue {
+	if args[0].Kind == runtime.VoidValue {
+		return args[0], true, nil
+	}
+	if args[0].Kind == runtime.StringValue || args[0].Kind == runtime.BoolValue {
 		return runtime.Value{Kind: runtime.VoidValue}, true, nil
 	}
 	if len(args) != 1 {

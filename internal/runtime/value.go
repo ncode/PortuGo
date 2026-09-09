@@ -28,7 +28,9 @@ type Value struct {
 	Real float64
 	Str  string
 	Bool bool
-	Vec  *Vector
+	// NumericAbsence retains the domain origin of a VoidValue.
+	NumericAbsence bool
+	Vec            *Vector
 }
 
 // Zero returns the zero value for a type.

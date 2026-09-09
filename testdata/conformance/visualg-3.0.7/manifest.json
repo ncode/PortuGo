@@ -1104,7 +1104,58 @@
         "int-string-extra",
         "quad-string-extra",
         "numpcarac-string-extra",
-        "arctan-no-value-extra"
+        "arctan-no-value-extra",
+        "numeric-boundary-abs",
+        "numeric-boundary-arccos",
+        "numeric-boundary-arcsen",
+        "numeric-boundary-arctan",
+        "numeric-boundary-cos",
+        "numeric-boundary-cotan",
+        "numeric-boundary-grauprad",
+        "numeric-boundary-int",
+        "numeric-boundary-log",
+        "numeric-boundary-logn",
+        "numeric-boundary-quad",
+        "numeric-boundary-radpgrau",
+        "numeric-boundary-raizq",
+        "numeric-boundary-sen",
+        "numeric-boundary-tan",
+        "numeric-boundary-exp-positive",
+        "numeric-boundary-exp-negative-odd",
+        "numeric-boundary-exp-negative-even",
+        "numeric-boundary-exp-zero-positive",
+        "numeric-boundary-exp-zero-zero",
+        "numeric-boundary-exp-underflow",
+        "numeric-boundary-grauprad-large",
+        "numeric-boundary-radpgrau-large",
+        "numeric-boundary-abs-large",
+        "numeric-boundary-arctan-absent-extra",
+        "numeric-boundary-exp-absent-short",
+        "numeric-boundary-exp-absent-effect",
+        "numeric-boundary-log-zero",
+        "numeric-boundary-logn-zero",
+        "numeric-domain-radians-large",
+        "numeric-domain-degrees-negative-large",
+        "numeric-domain-exp-domain-short-absent",
+        "numeric-domain-exp-domain-short-numeric",
+        "numeric-domain-exp-domain-extra-absent",
+        "numeric-domain-exp-domain-extra-numeric",
+        "numeric-domain-exp-second-extra-absent",
+        "numeric-domain-exp-second-extra-numeric",
+        "numeric-domain-exp-nested-abs-absent",
+        "numeric-domain-exp-nested-arctan-absent",
+        "numeric-domain-exp-cotangent-absent",
+        "numeric-domain-exp-angle-absent",
+        "exp-absent-tail-conversion",
+        "exp-absent-tail-logical",
+        "exp-absent-tail-text",
+        "exp-absent-tail-twice",
+        "exp-absent-tail-nested-absence",
+        "numeric-absence-type-integer",
+        "numeric-absence-type-conversion",
+        "numeric-absence-type-exponentiation",
+        "numeric-absence-type-cotangent",
+        "numeric-absence-type-angle"
       ]
     },
     {
@@ -32244,6 +32295,2289 @@
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/arctan-no-value-extra/stdout.txt",
             "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-abs",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-abs/source.alg",
+        "sha256": "6cec65e83dd6034c35260ded91bf216710f801cd639dbf8c39bb7d7a91d87994"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:11:41.5314532Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-abs/raw.txt",
+          "sha256": "b25c5e54b65fea86a87ceaa9a06793ad15c4fedf23d0cc8ac333c4b213fcfb35"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-abs/stdout.txt",
+          "sha256": "6b35b3c4c298c878aadbbe58f1292f39dc0eae40fdd87e50abd354757c392cc3"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-abs/stdout.txt",
+            "sha256": "6b35b3c4c298c878aadbbe58f1292f39dc0eae40fdd87e50abd354757c392cc3"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-arccos",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arccos/source.alg",
+        "sha256": "7fe8b40a9de520955f09c9da2df99a8033fdc56259d4b078d7148b93d850230c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:11:51.8230542Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arccos/raw.txt",
+          "sha256": "9a2d5bd6c23e1955fa7a8a6c3cf1bff5ebd293dd520a8ee99c6b3a426a304241"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arccos/stdout.txt",
+          "sha256": "38622df40999555a1c263731cd87461656a8a070dda3ee6002c2289204ae02e4"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arccos/stdout.txt",
+            "sha256": "38622df40999555a1c263731cd87461656a8a070dda3ee6002c2289204ae02e4"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-arcsen",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arcsen/source.alg",
+        "sha256": "5d7640de6cc1de696058d53d4103483e7b75922f329202387ee11c32bc0322ae"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:12:02.0668139Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arcsen/raw.txt",
+          "sha256": "6a304c72ad21ff84ca6f82fe916cc2b8d3ee28150beffe635e26ad9dfdd970be"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arcsen/stdout.txt",
+          "sha256": "61f1f9ed091d48b9c6156eb1a2a227c0d6daf19eabc7a93027b94333207642d4"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arcsen/stdout.txt",
+            "sha256": "61f1f9ed091d48b9c6156eb1a2a227c0d6daf19eabc7a93027b94333207642d4"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-arctan",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arctan/source.alg",
+        "sha256": "a7b458b77cb536b01612b9c516f24e091d15b79d102464abfaa5939a56aef2b8"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:12:12.3157153Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arctan/raw.txt",
+          "sha256": "d69da64814bcb8a43ed8f21b79607dd0a4d73f5fa94b0a65a16ebcd38555c7f4"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arctan/stdout.txt",
+          "sha256": "fbaeb6d1acbc4b6b527a8a6a7d96c8242e17e979097ea09e40a66235a27ba61f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arctan/stdout.txt",
+            "sha256": "fbaeb6d1acbc4b6b527a8a6a7d96c8242e17e979097ea09e40a66235a27ba61f"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-cos",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-cos/source.alg",
+        "sha256": "cc57522dc9fe168f768bab7f591ec1d6289a077f1890a0ef093c0235c98d3726"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:12:22.4569539Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-cos/raw.txt",
+          "sha256": "b563861237bef3046ad9a3f526a63a81189c7e39b48e7d947649ac8afd3e75d1"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-cos/stdout.txt",
+          "sha256": "8cd57fb6482cadc8f4a1f7f9c4ee03c1fcf20beb9782ef0e0d52a20c300bc442"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-cos/stdout.txt",
+            "sha256": "8cd57fb6482cadc8f4a1f7f9c4ee03c1fcf20beb9782ef0e0d52a20c300bc442"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-cotan",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-cotan/source.alg",
+        "sha256": "47ee13eacda5fe917fc157250a129df5e53d3681275f5ef9d8b97e6c37accb43"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:12:32.5891933Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-cotan/raw.txt",
+          "sha256": "e97b86f5c4324f5b46bcc474ca18be7df966d9ae2985191f34fcb7b578c2037d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-cotan/stdout.txt",
+          "sha256": "3b1ca552fcbe4248a6126b57e02ff39764f5e3eb3cc25cd99a5e661a60e6af67"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-cotan/stdout.txt",
+            "sha256": "3b1ca552fcbe4248a6126b57e02ff39764f5e3eb3cc25cd99a5e661a60e6af67"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-grauprad",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-grauprad/source.alg",
+        "sha256": "f2da735408cdb1d2643259891d2f773d8de282540be6992e76848a8199fe192c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:12:42.7587114Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-grauprad/raw.txt",
+          "sha256": "8d9e1e92243f2103da196bebc9a714b8a520df6a2532fa2c63b0604767c60a29"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-grauprad/stdout.txt",
+          "sha256": "93760d070e6cf2b6d06b8374f8d4b7f7d363501de42497c0a7b54204416128f6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-grauprad/stdout.txt",
+            "sha256": "93760d070e6cf2b6d06b8374f8d4b7f7d363501de42497c0a7b54204416128f6"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-int",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-int/source.alg",
+        "sha256": "37dbbba05ff9f3e0e766abeeae88a4eff0800493878e6e18516872f9dd2fff2f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:12:52.9903780Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-int/raw.txt",
+          "sha256": "62edee5e0c53bdf6d6b7bfc009632b2aa25bf7de87b2613a0f245be4ea56720b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-int/stdout.txt",
+          "sha256": "9f7cd50b67a54ca49a3408b208506d89f805568d55d9b81cd56af4050fcc80aa"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-int/stdout.txt",
+            "sha256": "9f7cd50b67a54ca49a3408b208506d89f805568d55d9b81cd56af4050fcc80aa"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-log",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-log/source.alg",
+        "sha256": "5660241f898b1307c983d0c9fe6918826e59e9f58507ef29b0734ea9207d40e0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:13:03.1000475Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-log/raw.txt",
+          "sha256": "171d2aaf8e6eec078f525a08204a877c1c7726d389c9ee0bbd304e9ae8e5b92d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-log/stdout.txt",
+          "sha256": "b6fc5420e06ba9c28d3054b6c4e7bbb720c2b7863b97e8460ffc4b46fdf7c35d"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-log/stdout.txt",
+            "sha256": "b6fc5420e06ba9c28d3054b6c4e7bbb720c2b7863b97e8460ffc4b46fdf7c35d"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-logn",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-logn/source.alg",
+        "sha256": "e1d4decd5461dfa10feccf794906c1932697d7c47d9c73e25b30dbb36d728756"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:13:13.3137598Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-logn/raw.txt",
+          "sha256": "a637c64165071b924476dcf2685fed1e92fc310a02ce0cae5f0ba0bfe668ad8c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-logn/stdout.txt",
+          "sha256": "c041dd61d23aaa05b161d382309550384bce8d85ec6b5edf48513e2e40e51d23"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-logn/stdout.txt",
+            "sha256": "c041dd61d23aaa05b161d382309550384bce8d85ec6b5edf48513e2e40e51d23"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-quad",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-quad/source.alg",
+        "sha256": "1cea05deb01d03826319a468e1be15a958cc879125ab936da1cd6789cabbac9e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:13:23.5391417Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-quad/raw.txt",
+          "sha256": "752fa291559c8f1119098743aadd63e7ae008d251f8b41bf9e9c1b61e5599f97"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-quad/stdout.txt",
+          "sha256": "2d17691d9ab67692a20cce9d0868827ace5fd0313dbd11a497a602737e291360"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-quad/stdout.txt",
+            "sha256": "2d17691d9ab67692a20cce9d0868827ace5fd0313dbd11a497a602737e291360"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-radpgrau",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-radpgrau/source.alg",
+        "sha256": "92672f48069c517319ee31243491bcd463232174f5af0d8711a82c85ca9e0cb4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:13:33.7121228Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-radpgrau/raw.txt",
+          "sha256": "3b7b06ca6aaebebd6b0789a3b5e8f4d0822bbb53af37a1ab17d4817d9f03b820"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-radpgrau/stdout.txt",
+          "sha256": "2a2f2e3cc29e35d6968aba7aa9bff14c0748d7c9fc43b1c83e7df6e431df9344"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-radpgrau/stdout.txt",
+            "sha256": "2a2f2e3cc29e35d6968aba7aa9bff14c0748d7c9fc43b1c83e7df6e431df9344"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-raizq",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-raizq/source.alg",
+        "sha256": "a7f87c65a20e6e6966b1fecd26063441a09c4463397a6596acde03895c3341f3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:13:43.9136953Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-raizq/raw.txt",
+          "sha256": "668704754e6759a5d5774c5ea1f27f92f449ac33d571e1737fca27d25ffb440d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-raizq/stdout.txt",
+          "sha256": "4c682a98b33b9aa0924ec686617a59b3e1b62562ffadff3e9eb784b6742fadfe"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-raizq/stdout.txt",
+            "sha256": "4c682a98b33b9aa0924ec686617a59b3e1b62562ffadff3e9eb784b6742fadfe"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-sen",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-sen/source.alg",
+        "sha256": "49d31bd0ce42069565809d3af2f400151f82c5a0ceb24052cbdf64eab603692c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:13:54.0928714Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-sen/raw.txt",
+          "sha256": "7fea69470384775049a5a926b95011fbd70b04eb96027fbb8d21e6e1e73e8ba3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-sen/stdout.txt",
+          "sha256": "d9d5ddb2431c49662622228687ffd7fd818e61927a7f40854f1db672758009d9"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-sen/stdout.txt",
+            "sha256": "d9d5ddb2431c49662622228687ffd7fd818e61927a7f40854f1db672758009d9"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-tan",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-tan/source.alg",
+        "sha256": "b64c45c3aa7d03dd68be9807fc32017db6273926421d4c25d922ea83abbbc26e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:14:04.3036744Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-tan/raw.txt",
+          "sha256": "da5ffeae3383210c02bef18db2a039653ff7fe3274b89431367ed9bd289c3810"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-tan/stdout.txt",
+          "sha256": "20845976d6c804c6ec1db6e61875c2c7198c0580de26934bfd5c3e32f782e8eb"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-tan/stdout.txt",
+            "sha256": "20845976d6c804c6ec1db6e61875c2c7198c0580de26934bfd5c3e32f782e8eb"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-exp-positive",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-positive/source.alg",
+        "sha256": "f703a2ca428fd8bf92a68d09444bd078940bb6e581233af485f779b114098ef0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:14:14.5196130Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-positive/raw.txt",
+          "sha256": "d9cb46d8132f0951bc4232eed78251e8c2d0f6edd2d118e9a5d6433be36f65e9"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-positive/stdout.txt",
+          "sha256": "abfb83d7998bf19f59d01c6577e07fad9ff527df692fa3a2784cc0870421c2fc"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-positive/stdout.txt",
+            "sha256": "abfb83d7998bf19f59d01c6577e07fad9ff527df692fa3a2784cc0870421c2fc"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-exp-negative-odd",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-negative-odd/source.alg",
+        "sha256": "bea35bb55d52f5552ae9490fe7ae80296a3e5263240d1a9bfba2105f7ce5cec0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:14:24.6594759Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-negative-odd/raw.txt",
+          "sha256": "f22253a356743fcb5165350398fd9783726e7d76da0bbf9a68490da69ffc5494"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-negative-odd/stdout.txt",
+          "sha256": "f25198c68fc80a71eec1c9956c4fd18f6799cc2a8e52b46d0aa7f545f18a9365"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-negative-odd/stdout.txt",
+            "sha256": "f25198c68fc80a71eec1c9956c4fd18f6799cc2a8e52b46d0aa7f545f18a9365"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-exp-negative-even",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-negative-even/source.alg",
+        "sha256": "193ce39fa82532ebff55817a2fd0ff5dfd56a8d275249e913e8dbe3b3f6c2b8c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:14:34.8408895Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-negative-even/raw.txt",
+          "sha256": "53a3726f7f1d9461fa13431d9cad015224015f9713f45d97e7c6c8e5fc008f81"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-negative-even/stdout.txt",
+          "sha256": "b89cfdc48b6228ac0a65bc2cafc33c7d79884e6a4093d64d03e1f8799ff3650d"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-negative-even/stdout.txt",
+            "sha256": "b89cfdc48b6228ac0a65bc2cafc33c7d79884e6a4093d64d03e1f8799ff3650d"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-exp-zero-positive",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-zero-positive/source.alg",
+        "sha256": "a54821901671e8ba7a36812e4d878c28e05d727927f7984ef0cd3d45b5be3877"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:14:45.0491463Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-zero-positive/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-zero-positive/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-zero-positive/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-exp-zero-zero",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-zero-zero/source.alg",
+        "sha256": "7cb3919b8035d2ea296253972a7f866ffd57af0bdd793d20143852b71d3762f8"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:14:55.2695265Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-zero-zero/raw.txt",
+          "sha256": "7bbf158b3d1b467d429f1554aca07e75312dfa4989ca3905718d91e9ad15a683"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-zero-zero/stdout.txt",
+          "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-zero-zero/stdout.txt",
+            "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-exp-underflow",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-underflow/source.alg",
+        "sha256": "d9930450957539e013ff05fd353877618115b430b2ca5f6dc687badd08137d92"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:15:05.3392662Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-underflow/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-underflow/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-underflow/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-grauprad-large",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-grauprad-large/source.alg",
+        "sha256": "0e5cab7e94c91b0050d88e8ad41197437d9ed4d9e63610b98a9b986b6e3c63e7"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:15:25.7617249Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-grauprad-large/raw.txt",
+          "sha256": "b21cd01010e28cfdd9889e675d04e8b2b67b4999c885aec9c361eb31203de4f7"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-grauprad-large/stdout.txt",
+          "sha256": "ec921de39bbc7e1721ee2b06a268ecfbcfd45fac146380ba125f43ce6316e488"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-grauprad-large/stdout.txt",
+            "sha256": "ec921de39bbc7e1721ee2b06a268ecfbcfd45fac146380ba125f43ce6316e488"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-radpgrau-large",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-radpgrau-large/source.alg",
+        "sha256": "2e4e15bdc794e9514bee2004de1c08d2f328807f2a2f18a48778a2368b287f11"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:15:35.9643753Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-radpgrau-large/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-radpgrau-large/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-radpgrau-large/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-abs-large",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-abs-large/source.alg",
+        "sha256": "92344b4c7e2ba3d4dc5348a5b8266c4512b97f3cea5ca42679f4f4f9f0389f8a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:15:46.1004876Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-abs-large/raw.txt",
+          "sha256": "14e0e47194bedf970614e0d74a7ed9be9a57e13bf0036ec33329986bb9cdb23a"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-abs-large/stdout.txt",
+          "sha256": "019ec4273d642e0a938d6b127b3a1563d07d0b961d77e27e1681bb83169cc28a"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-abs-large/stdout.txt",
+            "sha256": "019ec4273d642e0a938d6b127b3a1563d07d0b961d77e27e1681bb83169cc28a"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-arctan-absent-extra",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arctan-absent-extra/source.alg",
+        "sha256": "fb3e09d7a5d6f9cf21e172d7637f118a51c1b9dfe7aeb3352877f141e2adba55"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T19:15:56.2734095Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arctan-absent-extra/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arctan-absent-extra/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arctan-absent-extra/screenshot.png",
+          "sha256": "0e14b4cfe7a56d2f2eb4b1ddd694b59908cc0ace1c1f22ccd5add1333293b768"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-arctan-absent-extra/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestNumericCallRuleDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-exp-absent-short",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-absent-short/source.alg",
+        "sha256": "ee962f897f3f1d00e574cb091375f590bf3c34dd0d0f35cf73b1574ed84e5582"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:16:06.4942429Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-absent-short/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-absent-short/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-absent-short/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-exp-absent-effect",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-absent-effect/source.alg",
+        "sha256": "658161dfd7dc1a1f94fb02a109651a73f2488261766f4d36363c23029115e7ef"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:16:16.6354290Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-absent-effect/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-absent-effect/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-exp-absent-effect/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-log-zero",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-log-zero/source.alg",
+        "sha256": "6c68ce7d8d83daea92aa17baa925bc8154fd9bbfab9e8cb5d01d0827f79b17e0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T19:16:26.7856224Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-log-zero/transcription.txt",
+          "sha256": "9344af95740869257c8c35432a2b625791d80e5528e76768f5a2941adcd9698f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-log-zero/transcription.txt",
+          "sha256": "9344af95740869257c8c35432a2b625791d80e5528e76768f5a2941adcd9698f"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-log-zero/screenshot.png",
+          "sha256": "d12409f686b59a524ab9e02fd8459e56f72e2dac9a7257fcbc4211ecbf12e5e6"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-log-zero/transcription.txt",
+          "sha256": "9344af95740869257c8c35432a2b625791d80e5528e76768f5a2941adcd9698f"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-log-zero/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R007",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestNumericCallRuleDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "numeric-boundary-logn-zero",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-logn-zero/source.alg",
+        "sha256": "24a81409bb9b11410ce5a62ee55e653dee8ed730dc442176a61b095be1181901"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T19:16:36.8954785Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-logn-zero/transcription.txt",
+          "sha256": "7cfef1608d4bc77f80ca8241f62d7b30a78ceb0f5f637dcd2e0d71a0849ba0ea"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-logn-zero/transcription.txt",
+          "sha256": "7cfef1608d4bc77f80ca8241f62d7b30a78ceb0f5f637dcd2e0d71a0849ba0ea"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-logn-zero/screenshot.png",
+          "sha256": "aed703d2fb01162c71af045e88679ba5d1876766df0157f00649b3b800ea273c"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-logn-zero/transcription.txt",
+          "sha256": "7cfef1608d4bc77f80ca8241f62d7b30a78ceb0f5f637dcd2e0d71a0849ba0ea"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-boundary-logn-zero/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R007",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestNumericCallRuleDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "numeric-domain-radians-large",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-radians-large/source.alg",
+        "sha256": "c9ad06d6117183b8b0d34275847d4d9f82266a356a8f8833ec50bcfd231b0df1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:22:08.7573059Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-radians-large/raw.txt",
+          "sha256": "46e8d883fc614a3ebd9bbedd8ad13a9c9cc1ae60cc58fed410989bd4bc9c92e5"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-radians-large/stdout.txt",
+          "sha256": "c5682f61e6180bf5a6e28fc5c41ac8d00a0dd0acf582fdc040f2274ed5c2621d"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-radians-large/stdout.txt",
+            "sha256": "c5682f61e6180bf5a6e28fc5c41ac8d00a0dd0acf582fdc040f2274ed5c2621d"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-domain-degrees-negative-large",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-degrees-negative-large/source.alg",
+        "sha256": "9e9c979ab2a8d459dba38abdefaadb63a4507037aff5f67a3431afe2c4fe859e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:22:19.0056953Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-degrees-negative-large/raw.txt",
+          "sha256": "c041ee2a17b907d23ef8a8adf7df3427f23c9549c6a6b8d90e8d26f1f1e9225d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-degrees-negative-large/stdout.txt",
+          "sha256": "9637585bce42082cb2947df2c6f7c8ce88fb835cf4c1b93d5438f027f1275ba7"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-degrees-negative-large/stdout.txt",
+            "sha256": "9637585bce42082cb2947df2c6f7c8ce88fb835cf4c1b93d5438f027f1275ba7"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-domain-exp-domain-short-absent",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-short-absent/source.alg",
+        "sha256": "2ac7ce08bf51415fb5120907e34f31a379e43db858833b7143a2ad32f621dca6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:22:29.2402830Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-short-absent/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-short-absent/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-short-absent/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-domain-exp-domain-short-numeric",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-short-numeric/source.alg",
+        "sha256": "049a026b6955a785dcb8737cf35737962c4687e63e46d899a4a9e558a953d326"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T19:22:39.4862494Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-short-numeric/transcription.txt",
+          "sha256": "f7f98a2259d93a403e0b1533d5bb2229a35a33c37da207bcb1eb4168b81a3065"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-short-numeric/transcription.txt",
+          "sha256": "f7f98a2259d93a403e0b1533d5bb2229a35a33c37da207bcb1eb4168b81a3065"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-short-numeric/screenshot.png",
+          "sha256": "b8b5443a8a6894a68410ec6dcfbbce28c1a89e440df0702e81316f0b215320a9"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-short-numeric/transcription.txt",
+          "sha256": "f7f98a2259d93a403e0b1533d5bb2229a35a33c37da207bcb1eb4168b81a3065"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestNumericCallRuleDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "numeric-domain-exp-domain-extra-absent",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-extra-absent/source.alg",
+        "sha256": "1da26577063af05fb74a9f7e2ee9d0fc33ce977c1588f83c0a2618a715009010"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:22:49.7737402Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-extra-absent/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-extra-absent/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-extra-absent/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-domain-exp-domain-extra-numeric",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-extra-numeric/source.alg",
+        "sha256": "59eb050957face9ec7677ad437ab487ed561eae8060f7e5902ad8ee9dde78aaf"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T19:22:59.9694270Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-extra-numeric/transcription.txt",
+          "sha256": "2aaf8d3fa1ec2ebd467146e0fb734610096819705dbb56a8d239aec67c09a42d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-extra-numeric/transcription.txt",
+          "sha256": "2aaf8d3fa1ec2ebd467146e0fb734610096819705dbb56a8d239aec67c09a42d"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-extra-numeric/screenshot.png",
+          "sha256": "acf74bcff71b96c50a87e6aad48baa717f9afc022d34c652cfbe15b0c2984ae0"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-domain-extra-numeric/transcription.txt",
+          "sha256": "2aaf8d3fa1ec2ebd467146e0fb734610096819705dbb56a8d239aec67c09a42d"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 11
+            }
+          ]
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestNumericCallRuleDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "numeric-domain-exp-second-extra-absent",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-second-extra-absent/source.alg",
+        "sha256": "079e6a6537ce1f40c9d2105c9a1eed029ff19320bf5a4e525d5197599cd7a289"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:23:10.2088390Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-second-extra-absent/raw.txt",
+          "sha256": "49093e06f1dc34d4af424abfdcf013201f9cb88e4541207f1178e1a8aa2b997f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-second-extra-absent/stdout.txt",
+          "sha256": "1ebbb18e0f1cbdb0efc7cf66de48bdc9c10fbeb87718f859e877458f9e7ce479"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-second-extra-absent/stdout.txt",
+            "sha256": "1ebbb18e0f1cbdb0efc7cf66de48bdc9c10fbeb87718f859e877458f9e7ce479"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-domain-exp-second-extra-numeric",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-second-extra-numeric/source.alg",
+        "sha256": "44a6f94de4c6dc503cffee03991ca9aa01d22c09b71b67831d9a0c789ce6eca9"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T19:23:20.4628601Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-second-extra-numeric/transcription.txt",
+          "sha256": "2aaf8d3fa1ec2ebd467146e0fb734610096819705dbb56a8d239aec67c09a42d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-second-extra-numeric/transcription.txt",
+          "sha256": "2aaf8d3fa1ec2ebd467146e0fb734610096819705dbb56a8d239aec67c09a42d"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-second-extra-numeric/screenshot.png",
+          "sha256": "13a3f9e02d0347d8bfe4643c2b0b06916cf06e5a1f28e5e15640946d6c940e35"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-second-extra-numeric/transcription.txt",
+          "sha256": "2aaf8d3fa1ec2ebd467146e0fb734610096819705dbb56a8d239aec67c09a42d"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 11
+            }
+          ]
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestNumericCallRuleDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "numeric-domain-exp-nested-abs-absent",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-nested-abs-absent/source.alg",
+        "sha256": "30dd908db92c3d108b64824b6df61e7e5fc53807fec99daf3da46006521a3c94"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:23:30.6193496Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-nested-abs-absent/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-nested-abs-absent/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-nested-abs-absent/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-domain-exp-nested-arctan-absent",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-nested-arctan-absent/source.alg",
+        "sha256": "3a1640c86db7f6d6306a3831be5f2a51f80ba0caf746d44d307be700189427aa"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:23:40.7565533Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-nested-arctan-absent/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-nested-arctan-absent/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-nested-arctan-absent/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-domain-exp-cotangent-absent",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-cotangent-absent/source.alg",
+        "sha256": "1ffc5a8728a3769b6bf17dfdb10c117dff4e00413b187fdf3ebc74b7d7b1a6d1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:23:50.8857393Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-cotangent-absent/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-cotangent-absent/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-cotangent-absent/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-domain-exp-angle-absent",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-angle-absent/source.alg",
+        "sha256": "555ca891b47321a032420749f8b81eb7afef85dc27e7eb3395f47b8ef4c73bc6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:24:01.0772653Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-angle-absent/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-angle-absent/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-domain-exp-angle-absent/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "exp-absent-tail-conversion",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-conversion/source.alg",
+        "sha256": "bbe3f56fc78c1ad70e9aad5a6e2ed6940b764bede7ee2043d95daa5c66ae6e00"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:26:00.5297907Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-conversion/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-conversion/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-conversion/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "exp-absent-tail-logical",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-logical/source.alg",
+        "sha256": "375bdce1a5b93f6c71c8459c4c41b35ecaaf5cb13fa8fcdd3536486dbe3f6f92"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:26:10.7467638Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-logical/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-logical/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-logical/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "exp-absent-tail-text",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-text/source.alg",
+        "sha256": "2028391aba0eb6bcedfbc00a43d5a658a6df8f760152eec5f286e239730c65e7"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:26:20.9895794Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-text/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-text/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-text/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "exp-absent-tail-twice",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-twice/source.alg",
+        "sha256": "fd51d3f6d30d345cc4a6fbd4b07872e0de7f4bbaf798bb091ba5f5a040f15766"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:26:41.4954979Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-twice/raw.txt",
+          "sha256": "49093e06f1dc34d4af424abfdcf013201f9cb88e4541207f1178e1a8aa2b997f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-twice/stdout.txt",
+          "sha256": "1ebbb18e0f1cbdb0efc7cf66de48bdc9c10fbeb87718f859e877458f9e7ce479"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-twice/stdout.txt",
+            "sha256": "1ebbb18e0f1cbdb0efc7cf66de48bdc9c10fbeb87718f859e877458f9e7ce479"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "exp-absent-tail-nested-absence",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-nested-absence/source.alg",
+        "sha256": "d17fa287a1e8ffa4c5aeab124bb9df413d3db1542d496467a0fb5904457b9f9d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:26:51.6213084Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-nested-absence/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-nested-absence/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/exp-absent-tail-nested-absence/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-absence-type-integer",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-integer/source.alg",
+        "sha256": "600b106db8dfa457a242a80d092dc3a6d57a7d9180e6228f2ce7a8cdd1a0f951"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:29:18.2858811Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-integer/raw.txt",
+          "sha256": "49093e06f1dc34d4af424abfdcf013201f9cb88e4541207f1178e1a8aa2b997f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-integer/stdout.txt",
+          "sha256": "1ebbb18e0f1cbdb0efc7cf66de48bdc9c10fbeb87718f859e877458f9e7ce479"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-integer/stdout.txt",
+            "sha256": "1ebbb18e0f1cbdb0efc7cf66de48bdc9c10fbeb87718f859e877458f9e7ce479"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-absence-type-conversion",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-conversion/source.alg",
+        "sha256": "2712df7cb851d5ffdbe8ce83266e3bc1878612d44f281f9c144668a01b92cc18"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:29:28.5385323Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-conversion/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-conversion/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-conversion/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-absence-type-exponentiation",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-exponentiation/source.alg",
+        "sha256": "3943e5f42068a9f2b3e8cd4728e21dbf2b2b822c4a14d874a2c5fbc39e5613e6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:29:38.7838848Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-exponentiation/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-exponentiation/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-exponentiation/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-absence-type-cotangent",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-cotangent/source.alg",
+        "sha256": "5125162a84fde253368046399dbadc5f79938a192b57e07bbc28bcfb0451c776"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:29:49.0074884Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-cotangent/raw.txt",
+          "sha256": "49093e06f1dc34d4af424abfdcf013201f9cb88e4541207f1178e1a8aa2b997f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-cotangent/stdout.txt",
+          "sha256": "1ebbb18e0f1cbdb0efc7cf66de48bdc9c10fbeb87718f859e877458f9e7ce479"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-cotangent/stdout.txt",
+            "sha256": "1ebbb18e0f1cbdb0efc7cf66de48bdc9c10fbeb87718f859e877458f9e7ce479"
+          }
+        },
+        "tests": [
+          "numeric_call_rules_test.go#TestRecordedNumericCallRules"
+        ]
+      }
+    },
+    {
+      "id": "numeric-absence-type-angle",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-angle/source.alg",
+        "sha256": "c704598269bd1f0cfd2650204bf5cf91d2899aee1652ef6c67ba3a5862f4ea3d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:29:59.1796312Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-angle/raw.txt",
+          "sha256": "49093e06f1dc34d4af424abfdcf013201f9cb88e4541207f1178e1a8aa2b997f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-angle/stdout.txt",
+          "sha256": "1ebbb18e0f1cbdb0efc7cf66de48bdc9c10fbeb87718f859e877458f9e7ce479"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/numeric-absence-type-angle/stdout.txt",
+            "sha256": "1ebbb18e0f1cbdb0efc7cf66de48bdc9c10fbeb87718f859e877458f9e7ce479"
           }
         },
         "tests": [

@@ -27,6 +27,26 @@ func TestRecordedNumericCallRules(t *testing.T) {
 		"exp-string-right-effect", "exp-logical-right-effect", "exp-string-one",
 		"exp-logical-one", "exp-no-value-one", "sqrt-no-value", "log-no-value", "logn-no-value",
 		"exp-string-extra", "int-string-extra", "arctan-no-value-extra",
+		"numeric-boundary-abs", "numeric-boundary-arccos", "numeric-boundary-arcsen",
+		"numeric-boundary-arctan", "numeric-boundary-cos", "numeric-boundary-cotan",
+		"numeric-boundary-grauprad", "numeric-boundary-int", "numeric-boundary-log",
+		"numeric-boundary-logn", "numeric-boundary-quad", "numeric-boundary-radpgrau",
+		"numeric-boundary-raizq", "numeric-boundary-sen", "numeric-boundary-tan",
+		"numeric-boundary-exp-positive", "numeric-boundary-exp-negative-odd",
+		"numeric-boundary-exp-negative-even", "numeric-boundary-exp-zero-positive",
+		"numeric-boundary-exp-zero-zero", "numeric-boundary-exp-underflow",
+		"numeric-boundary-grauprad-large", "numeric-boundary-radpgrau-large", "numeric-boundary-abs-large",
+		"numeric-boundary-exp-absent-short", "numeric-boundary-exp-absent-effect",
+		"numeric-domain-radians-large", "numeric-domain-degrees-negative-large",
+		"numeric-domain-exp-domain-short-absent", "numeric-domain-exp-domain-extra-absent",
+		"numeric-domain-exp-second-extra-absent", "numeric-domain-exp-nested-abs-absent",
+		"numeric-domain-exp-nested-arctan-absent", "numeric-domain-exp-cotangent-absent",
+		"numeric-domain-exp-angle-absent",
+		"exp-absent-tail-conversion", "exp-absent-tail-logical", "exp-absent-tail-text",
+		"exp-absent-tail-twice", "exp-absent-tail-nested-absence",
+		"numeric-absence-type-integer", "numeric-absence-type-conversion",
+		"numeric-absence-type-exponentiation", "numeric-absence-type-cotangent",
+		"numeric-absence-type-angle",
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)
@@ -47,25 +67,32 @@ func TestNumericCallRuleDiagnostics(t *testing.T) {
 	for _, tt := range []struct {
 		id   string
 		code diag.Code
+		line int
 	}{
-		{"legacy-log-empty", diag.RBuiltin},
-		{"legacy-logn-empty", diag.RBuiltin},
-		{"legacy-frac-value", diag.EUndeclared},
-		{"legacy-frac-empty", diag.EUndeclared},
-		{"abs-extra", diag.EParse},
-		{"int-extra", diag.EParse},
-		{"log-negative", diag.RBuiltin},
-		{"logn-extra", diag.EParse},
-		{"exp-one-argument", diag.EParse},
-		{"exp-negative-domain", diag.RBuiltin},
-		{"exp-overflow", diag.RBuiltin},
-		{"cos-string", diag.EParse},
-		{"cos-logical", diag.EParse},
-		{"arctan-bare", diag.EParse},
-		{"quad-bare", diag.EParse},
-		{"abs-string-extra", diag.EParse},
-		{"quad-string-extra", diag.EParse},
-		{"numpcarac-string-extra", diag.EParse},
+		{"legacy-log-empty", diag.RBuiltin, 3},
+		{"legacy-logn-empty", diag.RBuiltin, 3},
+		{"legacy-frac-value", diag.EUndeclared, 3},
+		{"legacy-frac-empty", diag.EUndeclared, 3},
+		{"abs-extra", diag.EParse, 3},
+		{"int-extra", diag.EParse, 3},
+		{"log-negative", diag.RBuiltin, 3},
+		{"logn-extra", diag.EParse, 3},
+		{"exp-one-argument", diag.EParse, 3},
+		{"exp-negative-domain", diag.RBuiltin, 3},
+		{"exp-overflow", diag.RBuiltin, 3},
+		{"cos-string", diag.EParse, 3},
+		{"cos-logical", diag.EParse, 3},
+		{"arctan-bare", diag.EParse, 3},
+		{"quad-bare", diag.EParse, 3},
+		{"abs-string-extra", diag.EParse, 3},
+		{"quad-string-extra", diag.EParse, 3},
+		{"numpcarac-string-extra", diag.EParse, 3},
+		{"numeric-boundary-arctan-absent-extra", diag.EParse, 3},
+		{"numeric-boundary-log-zero", diag.RBuiltin, 3},
+		{"numeric-boundary-logn-zero", diag.RBuiltin, 3},
+		{"numeric-domain-exp-domain-short-numeric", diag.EParse, 6},
+		{"numeric-domain-exp-domain-extra-numeric", diag.EParse, 11},
+		{"numeric-domain-exp-second-extra-numeric", diag.EParse, 11},
 	} {
 		t.Run(tt.id, func(t *testing.T) {
 			path := filepath.Join("testdata/conformance/visualg-3.0.7/probes", tt.id, "source.alg")
@@ -86,8 +113,8 @@ func TestNumericCallRuleDiagnostics(t *testing.T) {
 					}
 				}
 			}
-			if len(ds) != 1 || ds[0].Code != tt.code || file.Position(ds[0].Pos).Line != 3 {
-				t.Fatalf("diagnostics = %v, want %s on line 3", ds, tt.code)
+			if len(ds) != 1 || ds[0].Code != tt.code || file.Position(ds[0].Pos).Line != tt.line {
+				t.Fatalf("diagnostics = %v, want %s on line %d", ds, tt.code, tt.line)
 			}
 			if out.Len() != 0 {
 				t.Fatalf("output = %q, want empty", &out)
