@@ -54,8 +54,9 @@ or relaxing the evidence gate.
 The [September 9 batch](reference-observations-2026-09-09.md) adds 61 recorded
 probes: 41 accepted and 20 rejected. A focused comment follow-up adds another 24
 (15 accepted, 9 rejected). A call follow-up adds 11 more usable observations
-(4 accepted, 7 rejected). The corpus now contains 114 reference probes
-(64 verified, 50 pending implementation), plus the five project-tooling entries.
+(4 accepted, 7 rejected). The argument follow-ups add 35 observations
+(28 accepted, 7 rejected). The corpus now contains 149 reference probes
+(97 verified, 52 pending implementation), plus the five project-tooling entries.
 The missing mappings at the corpus layer cover 44 requirements and all 73 bundled
 examples. The stable storage requirement ID is retained while its linked heading
 and text now reflect the recorded acceptance beyond the former 500-slot claim.
@@ -102,3 +103,24 @@ Local build, formatting, vet, static analysis, lint, ordinary/race tests, both
 30-second fuzz runs, and strict OpenSpec validation pass for the call slice.
 Native Windows build, vet, ordinary tests, both 30-second fuzz runs, and all
 64 verified CLI reference cases pass on the same production source and manifest.
+
+The argument slice verifies 25 accepted programs, seven static call rejections,
+and one runtime type-change failure with its preceding output. Scalar `var`
+parameters use the recorded copy-in/copy-out behavior, including conversion,
+ordered copy-back to repeated destinations, and independent nested/recursive
+parameter storage. The new recordings also verify argument evaluation order,
+reference element capture, lexical globals, local shadowing, and mutual calls.
+Seven GUI diagnostics were individually reviewed and transcribed; raw window
+inventories and operational logs remain private. Guard tests cover failed setup,
+interpreter reuse, and out-of-range numeric arguments.
+
+The procedure declaration-line argument errors are now covered. Empty-argument
+edge cases, procedure-name collisions, integer operators after reference type
+changes, and broader return behavior remain pending. The new mappings leave
+40 requirements and all 73 bundled examples unmapped.
+
+Local build, formatting, vet, static analysis, lint, ordinary/race tests, both
+30-second fuzz checks, and strict OpenSpec validation pass. Native Windows build,
+vet, ordinary tests, both 30-second fuzz checks, and all 97 verified CLI reference
+cases pass on the same production source and manifest. The evidence gate reports
+the 113 missing mappings and no other failures.

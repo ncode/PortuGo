@@ -23,10 +23,6 @@ func (e *env) define(id token.Pos, typ runtime.Type) *runtime.Cell {
 	return cell
 }
 
-func (e *env) bind(id token.Pos, cell *runtime.Cell) {
-	e.cells[id] = cell
-}
-
 func (e *env) lookup(key token.Pos) (*runtime.Cell, bool) {
 	for cur := e; cur != nil; cur = cur.parent {
 		if cell, ok := cur.cells[key]; ok {

@@ -3,6 +3,7 @@ package interp
 import (
 	"errors"
 	"fmt"
+	"math"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
@@ -80,27 +81,39 @@ func (i *Interpreter) callSub(params []ast.Param, locals []ast.VarDecl, body []a
 	}
 	outer := i.env
 	callEnv := newEnv(i.global)
+	var references []struct{ caller, parameter *runtime.Cell }
 	for idx, param := range params {
 		b, ok := i.info.Binding(param.Name)
 		if !ok {
 			return runtime.Value{}, failure(param.Name.Pos, diag.RType, fmt.Errorf("missing parameter layout"))
 		}
 		typ := b.Type
+		var v runtime.Value
+		var caller *runtime.Cell
+		var err error
 		if param.ByRef {
-			cell, err := i.lvalue(args[idx])
-			if err != nil {
-				return runtime.Value{}, err
+			caller, err = i.lvalue(args[idx])
+			if err == nil {
+				v = caller.Value
 			}
-			callEnv.bind(b.ID, cell)
-			continue
+		} else {
+			v, err = i.eval(args[idx])
 		}
-		v, err := i.eval(args[idx])
 		if err != nil {
 			return runtime.Value{}, err
+		}
+		if typ.Kind == runtime.IntegerType && v.Kind == runtime.RealValue {
+			if math.IsNaN(v.Real) || v.Real < -0x1p63 || v.Real >= 0x1p63 {
+				return runtime.Value{}, fmt.Errorf("integer argument out of range")
+			}
+			v = runtime.Value{Kind: runtime.IntegerValue, Int: int64(v.Real)}
 		}
 		cell := callEnv.define(b.ID, typ)
 		if err := assign(cell, v); err != nil {
 			return runtime.Value{}, err
+		}
+		if caller != nil {
+			references = append(references, struct{ caller, parameter *runtime.Cell }{caller, cell})
 		}
 	}
 	i.env = callEnv
@@ -117,16 +130,26 @@ func (i *Interpreter) callSub(params []ast.Param, locals []ast.VarDecl, body []a
 	if err != nil {
 		return runtime.Value{}, err
 	}
+	value := runtime.Value{Kind: runtime.VoidValue}
 	if retType.Kind == runtime.VoidType {
 		if ctrl.kind == returnControl {
 			return runtime.Value{}, fmt.Errorf("procedure returned a value")
 		}
-		return runtime.Value{Kind: runtime.VoidValue}, nil
+	} else {
+		if ctrl.kind != returnControl {
+			return runtime.Value{}, fmt.Errorf("function did not return")
+		}
+		value, err = runtime.ConvertForAssign(retType, ctrl.value)
+		if err != nil {
+			return runtime.Value{}, err
+		}
 	}
-	if ctrl.kind != returnControl {
-		return runtime.Value{}, fmt.Errorf("function did not return")
+	// The reference copies parameters back in declaration order, including their
+	// numeric types. Repeated destinations therefore receive the last value.
+	for _, ref := range references {
+		*ref.caller = runtime.Cell{Type: ref.parameter.Type.Clone(), Value: runtime.Clone(ref.parameter.Value)}
 	}
-	return runtime.ConvertForAssign(retType, ctrl.value)
+	return value, nil
 }
 
 func (i *Interpreter) evalArgs(args []ast.Expr) ([]runtime.Value, error) {

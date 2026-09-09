@@ -307,7 +307,7 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 			return runtime.Type{Kind: runtime.InvalidType}
 		}
 		if sym.kind == funcSym {
-			c.checkArgs(&ast.CallExpr{Name: e.Name}, sym.params)
+			c.checkArgs(&ast.CallExpr{Name: e.Name}, sym)
 			return sym.typ
 		}
 		if sym.kind != varSym {
@@ -432,19 +432,28 @@ func (c *checker) checkCall(call *ast.CallExpr, asStmt bool) (typ runtime.Type) 
 		c.error(call.Name.Pos, diag.ECall, "%q is not a function", call.Name.Text)
 		return runtime.Type{Kind: runtime.InvalidType}
 	}
-	c.checkArgs(call, sym.params)
+	c.checkArgs(call, sym)
 	return sym.typ
 }
 
-func (c *checker) checkArgs(call *ast.CallExpr, params []paramSig) {
+func (c *checker) checkArgs(call *ast.CallExpr, sym symbol) {
+	params := sym.params
+	pos := call.Name.Pos
+	if sym.kind == procSym {
+		pos = sym.pos
+	}
 	if len(call.Args) != len(params) {
-		c.error(call.Name.Pos, diag.ECall, "%q expects %d arguments, got %d", call.Name.Text, len(params), len(call.Args))
+		c.error(pos, diag.ECall, "%q expects %d arguments, got %d", call.Name.Text, len(params), len(call.Args))
 		return
 	}
 	for i, arg := range call.Args {
 		t := c.expr(arg)
-		if !runtime.Assignable(params[i].typ, t) {
-			c.error(arg.Start(), diag.ETypeMismatch, "argument %d: cannot use %s as %s", i+1, t, params[i].typ)
+		if !runtime.Assignable(params[i].typ, t) && (!isNumeric(params[i].typ) || !isNumeric(t)) {
+			argPos := arg.Start()
+			if sym.kind == procSym {
+				argPos = sym.pos
+			}
+			c.error(argPos, diag.ETypeMismatch, "argument %d: cannot use %s as %s", i+1, t, params[i].typ)
 		}
 		if params[i].byRef && !c.isWritableExpr(arg) {
 			c.error(arg.Start(), diag.ECall, "argument %d must be assignable for var parameter", i+1)

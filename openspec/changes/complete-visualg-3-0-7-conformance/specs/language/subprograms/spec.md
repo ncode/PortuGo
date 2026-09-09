@@ -41,15 +41,24 @@ Value parameters SHALL accept exactly the argument types and implicit conversion
 - **THEN** each is evaluated once in the oracle-confirmed order before the subprogram body begins
 
 ### Requirement: Reference parameters
-A `var` parameter SHALL require an assignable designator with the exact reference-compatible type; implicit numeric conversion, a temporary value, a constant, or a call result SHALL not satisfy a reference parameter unless explicitly accepted by the oracle. Reads and writes through the parameter SHALL target the caller's selected storage for the duration of the call.
+A `var` parameter SHALL follow the oracle-confirmed designator capture,
+conversion, and copy-back rules. Recorded scalar parameters receive independent
+copies, with real-to-integer conversion truncating toward zero. Successful
+return SHALL copy parameter values and their numeric types back to the captured
+caller locations in parameter order. Temporaries, constants, and call results
+SHALL require explicit acceptance evidence before they become reference storage.
 
-#### Scenario: Pass a compatible field by reference
-- **WHEN** a record field designator has the exact required type and is passed to a `var` parameter
-- **THEN** assignments through the parameter update that field in the caller
+#### Scenario: Capture a vector element before later arguments
+- **WHEN** a vector element is passed to a scalar `var` parameter and a later argument changes the index variable
+- **THEN** copy-back updates the element selected before that later argument ran
 
-#### Scenario: Reject a convertible reference argument
-- **WHEN** an argument could be converted for a value parameter but does not have the exact type required by a `var` parameter
-- **THEN** analysis reports a positioned type diagnostic and no temporary alias is created
+#### Scenario: Convert a numeric reference argument
+- **WHEN** a real variable containing 3.5 is passed to an integer `var` parameter
+- **THEN** the parameter initially contains 3, the caller remains unchanged during the call, and successful return copies the integer value and type back
+
+#### Scenario: Pass the same location twice
+- **WHEN** two `var` parameters capture the same caller location
+- **THEN** each parameter retains its own value during execution and the last parameter's copy-back determines the caller's final value
 
 ### Requirement: Lexical scope and bindings
 Name lookup SHALL follow VisuAlg 3.0.7 lexical scope: parameters and locals SHALL shadow only names the reference allows them to shadow, global declarations SHALL remain visible in subprogram bodies according to declaration rules, and caller locals SHALL never become visible through dynamic scope. Bindings SHALL be case-insensitive and fixed by semantic analysis.

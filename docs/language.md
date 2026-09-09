@@ -131,8 +131,32 @@ cannot be invoked as statements. Bare functions that require arguments receive
 `E004`. Function results are not writable reference-argument storage; the CLI
 rejects them statically. Reference probes for temporary reference arguments
 caused application faults and remain inconclusive, so this guard is not claimed
-as a matching reference rejection. Broader argument, visibility, and return
-behavior remains under validation.
+as a matching reference rejection.
+
+Arguments are evaluated once from left to right; a reference argument's vector
+element is selected before later arguments execute. Calls use the callee's
+lexical globals, parameters, and locals, independent of the caller's locals.
+Recorded mutually recursive functions resolve later declarations.
+
+Numeric value and `var` parameters accept integers or reals. Passing a real to
+an integer parameter truncates toward zero. A `var` parameter receives its own
+converted copy: writes through it become visible to the caller on successful
+return. Direct writes to a global remain separate during the call. Copies return
+in parameter order, so the last parameter targeting the same location wins.
+Nested and recursive calls retain independent parameter copies. See the
+[argument example](../examples/call_arguments.alg).
+
+Copy-back also carries the parameter's numeric type. For example, passing a real
+variable to an integer `var` parameter leaves an integer value on return;
+assigning `2.5` to it then fails with `R001`, preserving earlier output. Passing
+an integer variable to a real `var` parameter can leave a fractional value.
+Out-of-range or non-finite integer arguments fail before the body executes;
+failed call setup does not copy partially prepared parameters back.
+
+Recorded procedure argument-count and type errors point to the declaration
+line; function argument-count errors point to the call. Empty-argument edge
+cases, procedure-name collisions, integer operators after numeric reference
+conversion, and broader return behavior remain under validation.
 
 ## I/O
 

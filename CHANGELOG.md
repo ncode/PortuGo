@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Match recorded numeric argument conversions and scalar `var` copy-in/copy-out,
+  including ordered copy-back, nested calls, and caller type changes. Preserve
+  lexical scope and argument order; report procedure argument errors at their
+  declaration lines. Add 35 reviewed observations and verify 33 additional call
+  cases. Empty-argument edge cases and broader return behavior remain pending.
 - Accept parameterless declarations without parentheses, bare procedure calls,
   and bare function values. Match recorded function-name priority over local
   variables and parameters. Reject function results as reference storage and

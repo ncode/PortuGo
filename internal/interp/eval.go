@@ -29,7 +29,9 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 	defer func() {
 		i.depth--
 		err = failure(expr.Start(), diag.RType, err)
-		if err == nil && !typ.Equal(value.Type()) {
+		// Numeric reference parameters can change a caller's runtime type.
+		actual := value.Type()
+		if err == nil && !runtime.Assignable(typ, actual) && !runtime.Assignable(actual, typ) {
 			err = failure(expr.Start(), diag.RType, fmt.Errorf("inconsistent expression value"))
 		}
 	}()
