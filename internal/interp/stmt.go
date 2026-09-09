@@ -2,6 +2,7 @@ package interp
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
@@ -50,17 +51,19 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		if err != nil {
 			return control{}, err
 		}
+		if x.Kind == runtime.RealValue {
+			x.Real = math.Trunc(x.Real)
+			if x.Real < math.MinInt32 || x.Real > math.MaxInt32 {
+				x = runtime.Value{Kind: runtime.VoidValue}
+			}
+		}
 		for _, cc := range s.Cases {
-			for _, expr := range cc.Values {
-				v, err := i.eval(expr)
+			for _, label := range cc.Labels {
+				match, err := i.matchesCase(x, label)
 				if err != nil {
 					return control{}, err
 				}
-				eq, err := equalValues(x, v)
-				if err != nil {
-					return control{}, err
-				}
-				if eq {
+				if match {
 					return i.execStmts(cc.Body)
 				}
 			}

@@ -64,6 +64,10 @@ func TestStructuralLimits(t *testing.T) {
 	}{
 		{"flat boundary", "escreva(" + strings.Repeat("1+", 254) + "1)", false},
 		{"flat excessive", "escreva(" + strings.Repeat("1+", 255) + "1)", true},
+		{"case lower boundary", "escolha 1\ncaso " + strings.Repeat("1+", 254) + "1 ate 5\nfimescolha", false},
+		{"case lower excessive", "escolha 1\ncaso " + strings.Repeat("1+", 255) + "1 ate 5\nfimescolha", true},
+		{"case upper boundary", "escolha 1\ncaso 1 ate " + strings.Repeat("1+", 254) + "1\nfimescolha", false},
+		{"case upper excessive", "escolha 1\ncaso 1 ate " + strings.Repeat("1+", 255) + "1\nfimescolha", true},
 		{"parentheses boundary", "escreva(" + strings.Repeat("(", 254) + "1" + strings.Repeat(")", 254) + ")", false},
 		{"parentheses excessive", "escreva(" + strings.Repeat("(", 255) + "1" + strings.Repeat(")", 255) + ")", true},
 		{"nested statements", strings.Repeat("se verdadeiro entao\n", 300) + strings.Repeat("fimse\n", 300), true},

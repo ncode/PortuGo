@@ -235,10 +235,17 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 	case *ast.SwitchStmt:
 		x := c.expr(s.X)
 		for _, cc := range s.Cases {
-			for _, v := range cc.Values {
-				t := c.expr(v)
-				if !runtime.Assignable(x, t) && !runtime.Assignable(t, x) {
-					c.error(v.Start(), diag.ETypeMismatch, "cannot compare %s with %s", x, t)
+			for _, label := range cc.Labels {
+				mismatch := false
+				for _, expr := range []ast.Expr{label.Low, label.High} {
+					if expr == nil {
+						continue
+					}
+					t := c.expr(expr)
+					if !mismatch && x.Kind != runtime.VoidType && t.Kind != runtime.VoidType && !runtime.Assignable(x, t) && !runtime.Assignable(t, x) {
+						c.error(expr.Start(), diag.ETypeMismatch, "cannot compare %s with %s", x, t)
+						mismatch = true
+					}
 				}
 			}
 			c.checkStmts(cc.Body)

@@ -37,10 +37,19 @@ type IfStmt struct {
 func (*IfStmt) stmtNode()          {}
 func (s *IfStmt) Start() token.Pos { return s.At }
 
+// CaseLabel is a single escolha value or an inclusive range when High is non-nil.
+type CaseLabel struct {
+	Low  Expr
+	High Expr
+}
+
+// Start returns the label's source position.
+func (l CaseLabel) Start() token.Pos { return l.Low.Start() }
+
 // CaseClause is one escolha branch.
 type CaseClause struct {
 	At     token.Pos
-	Values []Expr
+	Labels []CaseLabel
 	Body   []Stmt
 }
 

@@ -64,6 +64,25 @@ fimalgoritmo`)
 	}
 }
 
+func TestChoiceRangePrinting(t *testing.T) {
+	_, tokens, ds := lexer.Scan("choice.alg", "algoritmo \"ranges\"\ninicio\nescolha 2.5\ncaso 1+1 até 3, 5\nescreval(1)\nfimescolha\nfimalgoritmo\n")
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	prog, ds := Parse(tokens)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	var out bytes.Buffer
+	if err := ast.Fprint(&out, prog); err != nil {
+		t.Fatal(err)
+	}
+	want := "algoritmo \"ranges\"\ninicio\n  escolha 2.5\n    caso 1 + 1 ate 3, 5:\n      escreval(1)\n  fimescolha\nfimalgoritmo\n"
+	if out.String() != want {
+		t.Fatalf("formatted choice = %q, want %q", out.String(), want)
+	}
+}
+
 func FuzzParser(f *testing.F) {
 	for _, seed := range []string{
 		"",
@@ -73,6 +92,7 @@ func FuzzParser(f *testing.F) {
 		"algoritmo \"x\"\nvar\nv: vetor[-2..2,1..3] de real\ninicio\nfimalgoritmo",
 		"algoritmo \"x\"\ninicio\nescreval((1+2)^3)\nfimalgoritmo",
 		"algoritmo \"x\"\ninicio\nse entao senao fimse\nfimalgoritmo",
+		"algoritmo \"x\"\ninicio\nescolha 2\ncaso 1 ate 3, 5\nescreval(1)\nfimescolha\nfimalgoritmo",
 		"\xff\x00\"",
 	} {
 		f.Add(seed)

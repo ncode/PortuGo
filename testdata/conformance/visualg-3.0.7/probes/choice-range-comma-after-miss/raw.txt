@@ -1,0 +1,6 @@
+Início da execução
+EXTRA
+MATCH
+DONE
+
+Fim da execução.

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Add dynamic `ate` case ranges with inclusive numeric matching, first-match
+  selection, and positioned label diagnostics. Match numeric selector
+  truncation and recorded text-label casing, preserve ranges through
+  formatting, and verify the original bundled choice example.
+
 - Accept one optional semicolon at the end of a `var` or variable-declaration
   line, including local and vector declarations. Reject repeated or misplaced
   semicolons with a positioned diagnostic and verify the bundled mean example.

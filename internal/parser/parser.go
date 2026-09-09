@@ -306,13 +306,13 @@ func (p *parser) parseSwitch() ast.Stmt {
 		switch p.peek().Kind {
 		case token.CASO:
 			cstart := p.advance()
-			values := []ast.Expr{p.parseExpr(0)}
+			labels := []ast.CaseLabel{p.parseCaseLabel()}
 			for p.match(token.COMMA) {
-				values = append(values, p.parseExpr(0))
+				labels = append(labels, p.parseCaseLabel())
 			}
 			p.match(token.COLON)
 			body := p.parseStmtList(stopSet(token.CASO, token.OUTROCASO, token.FIMESCOLHA))
-			sw.Cases = append(sw.Cases, ast.CaseClause{At: cstart.Pos, Values: values, Body: body})
+			sw.Cases = append(sw.Cases, ast.CaseClause{At: cstart.Pos, Labels: labels, Body: body})
 		case token.OUTROCASO:
 			p.advance()
 			p.match(token.COLON)
@@ -324,6 +324,19 @@ func (p *parser) parseSwitch() ast.Stmt {
 	}
 	p.expect(token.FIMESCOLHA, "expected fimescolha")
 	return sw
+}
+
+func (p *parser) parseCaseLabel() ast.CaseLabel {
+	label := ast.CaseLabel{Low: p.parseExpr(0)}
+	if !p.atLineEnd() && p.peek().Kind == token.ATE {
+		at := p.advance()
+		if p.atLineEnd() {
+			p.error(at, "expected range upper bound")
+		} else {
+			label.High = p.parseExpr(0)
+		}
+	}
+	return label
 }
 
 func (p *parser) parseWhile() ast.Stmt {

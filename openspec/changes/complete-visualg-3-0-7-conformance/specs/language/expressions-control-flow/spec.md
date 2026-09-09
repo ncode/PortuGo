@@ -88,13 +88,25 @@ Subexpressions, designator indices, statement expressions, and format expression
 - **WHEN** a selector falls within an accepted inclusive case range
 - **THEN** exactly that case body executes and control continues after `fimescolha`
 
+#### Scenario: Truncate a numeric choice selector
+- **WHEN** the recorded numeric selector has a fractional part
+- **THEN** it is truncated toward zero once before comparisons, while single labels and range bounds retain their numeric values
+
 #### Scenario: Match no case label
 - **WHEN** no ordinary case value or range matches and `outrocaso` is present
 - **THEN** exactly the `outrocaso` body executes
 
-#### Scenario: Reject overlapping or invalid labels
-- **WHEN** case labels are duplicated, overlap, are non-constant, or use incompatible types in a way rejected by the reference
+#### Scenario: Match dynamic and overlapping labels
+- **WHEN** numeric label bounds are expressions, variables, or function calls, and accepted ranges overlap or repeat a prior value
+- **THEN** bounds are evaluated in source order and the first matching label selects its body without evaluating later labels
+
+#### Scenario: Reject incompatible label types
+- **WHEN** a case value or range bound has a type incompatible with the selector in a way rejected by the reference
 - **THEN** the implementation emits the traced positioned diagnostic
+
+#### Scenario: Match ordinary text labels
+- **WHEN** the recorded ASCII text selector is compared with a single text label
+- **THEN** the label is uppercased and compared with the unchanged selector, including labels computed by expressions
 
 ### Requirement: Loop semantics
 `enquanto`, `repita`, and `para` SHALL implement the complete oracle-confirmed VisuAlg 3.0.7 forms, including `repita ... ate`, any accepted `repita ... fimrepita` infinite form, default and explicit `para` steps, negative steps, bound and step evaluation timing, and loop-variable mutation behavior.

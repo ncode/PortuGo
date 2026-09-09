@@ -90,7 +90,10 @@ func (c *limitChecker) stmts(stmts []Stmt, depth int) {
 		case *SwitchStmt:
 			c.expr(s.X, next)
 			for _, cc := range s.Cases {
-				c.exprs(cc.Values, next)
+				for _, label := range cc.Labels {
+					c.expr(label.Low, next)
+					c.expr(label.High, next)
+				}
 				c.stmts(cc.Body, next)
 			}
 			c.stmts(s.Default, next)

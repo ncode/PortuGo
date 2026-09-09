@@ -115,9 +115,12 @@ func (p *printer) printStmt(stmt Stmt) {
 		p.line("escolha %s", exprString(s.X))
 		p.indent++
 		for _, cc := range s.Cases {
-			values := make([]string, len(cc.Values))
-			for i, v := range cc.Values {
-				values[i] = exprString(v)
+			values := make([]string, len(cc.Labels))
+			for i, label := range cc.Labels {
+				values[i] = exprString(label.Low)
+				if label.High != nil {
+					values[i] += " ate " + exprString(label.High)
+				}
 			}
 			p.line("caso %s:", strings.Join(values, ", "))
 			p.indent++

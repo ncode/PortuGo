@@ -229,6 +229,31 @@ Supported statements:
 
 `interrompa` outside a loop is a semantic error.
 
+`escolha` evaluates its selector once. Numeric selectors are truncated toward
+zero before matching; labels and range bounds retain their numeric values.
+Thus `escolha 2.5` matches `caso 2` and `caso 2 ate 2.4`, but not `caso 2.5`.
+Recorded selectors outside the signed 32-bit range do not match numeric labels.
+Numeric ranges include both endpoints, using `caso lower ate upper` or the
+accented `até` spelling. Bounds can be expressions, variables, or function
+calls. They run from left to right even when a numeric lower bound already
+excludes the selector. Descending ranges do not match.
+
+Comma-separated labels may mix single values and ranges. The first match
+executes its body and stops evaluating labels; duplicate or overlapping labels
+are accepted. There is no fall-through. `outrocaso` runs only if nothing matches.
+For the recorded ASCII text cases, single labels are uppercased and compared
+with the unchanged selector: `"B"` matches `caso "b"`, while `"b"` does not.
+Logical single labels use equality. Recorded text and logical ranges do not
+match. Incompatible label types produce a positioned `E001`.
+
+The range separator must follow its lower expression on the same physical
+line. A missing upper expression or the unsupported `1..5` spelling produces
+`P001`. A lower bound that produces no value does not match and skips its upper
+bound; an evaluated upper bound without a value produces `P001`. A reference
+case that skips malformed syntax in an unselected body, and a no-value selector
+combined with a function bound, remain pending control-flow conformance cases.
+See the [choice-range example](../examples/choice_ranges.alg).
+
 `para` evaluates its bounds and step once. The default step is 1; zero is
 rejected. Assignments to the loop variable are visible within the body but do
 not change the iteration sequence. An empty loop leaves the variable at its
