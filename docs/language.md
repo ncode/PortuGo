@@ -333,8 +333,14 @@ after parsing because their resulting AST can still be deep. Analysis and
 printing check the same AST bound before traversal or output.
 
 Source, syntax, and AST limits report positioned `E900` diagnostics. Exact
-boundary inputs remain accepted. An oversized REPL submission ends the session
-with status 1; recovery from that limit remains part of the later REPL work.
+boundary inputs remain accepted. An oversized REPL submission reports `E900`
+once and is discarded. The REPL then waits for a line whose first token is
+`algoritmo`, preserving that line and subsequent input for the next program.
+Header lookalikes in strings or comments do not restart entry. `:sair` and EOF
+still exit during recovery, and the session ultimately returns status 1 even
+when a later program succeeds. A transient program output failure likewise
+reports `R008` and permits another submission. Unusable prompt/input streams
+still end the session with an operational error.
 
 Formatting omits unnecessary operator parentheses while preserving precedence
 and association. The CLI checks the complete formatted source against the same

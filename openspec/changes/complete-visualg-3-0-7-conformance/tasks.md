@@ -276,7 +276,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 ## 16. REPL Input, Completion, Recovery, and Formatter Coverage
 
-- [ ] 16.1 Add failing transcript tests for shared program/input buffering, blank lines in incomplete programs, immediate `fimalgoritmo` submission, lookalikes in strings/comments, consecutive programs, `leia`, EOF, exit commands, and recovery after every diagnostic stage.
+- [x] 16.1 Add failing transcript tests for shared program/input buffering, blank lines in incomplete programs, immediate `fimalgoritmo` submission, lookalikes in strings/comments, consecutive programs, `leia`, EOF, exit commands, and recovery after every diagnostic stage.
 - [x] 16.2 Replace competing scanners with one buffered input abstraction shared by REPL prompting, source accumulation, and interpreter `leia` consumption.
 - [x] 16.3 Add a lexer/parser completeness result that distinguishes incomplete input from invalid complete input without string matching or swallowing diagnostics.
 - [x] 16.4 Preserve meaningful blank lines while incomplete, enforce the submission size cap during accumulation, handle EOF cleanly, and keep prompt/output/error ordering deterministic.
@@ -285,9 +285,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   incomplete program instead of silently discarding it. Transcript and CLI
   regressions cover EOF, source encoding, prior failures, and shared `leia`
   input. Blank lines are preserved and real terminator tokens now submit
-  immediately; source-size and host-failure recovery remain under 16.6.
+  immediately. Source-size and host-diagnostic recovery are also covered by 16.6.
 - [x] 16.5 Automatically analyze and run as soon as a real terminating `fimalgoritmo` completes the accumulated program, then reset only per-program state.
-- [ ] 16.6 Recover to a clean primary prompt after decoding, syntax, semantic, runtime, resource-limit, or host diagnostics; reset each submitted program's budget without consuming the next program's buffered input.
+- [x] 16.6 Recover to a clean primary prompt after decoding, syntax, semantic, runtime, resource-limit, or host diagnostics; reset each submitted program's budget without consuming the next program's buffered input.
 - [ ] 16.7 Verify `leia`, `arquivo`, random-input mode, echo, and environment commands consume only their intended shared input and leave the next REPL program intact.
 - [ ] 16.8 Complete formatter coverage for every confirmed AST form from groups 4–15, retaining the group 4 comments/anchors and ignored suffixes across declarations, calls, environment commands, and any accepted ranges/records.
 - [ ] 16.9 Add formatter standard-output, check, in-place, idempotence, malformed-no-overwrite, and parse-print-parse subprocess tests.

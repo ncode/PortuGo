@@ -17,12 +17,16 @@ import (
 )
 
 // Run starts a complete-program REPL. A program terminator or EOF submits input.
+// A nil errout discards diagnostics while preserving the session failure status.
 func Run(options interp.Options, errout io.Writer) (bool, error) {
 	if options.Input == nil {
 		options.Input = strings.NewReader("")
 	}
 	if options.Output == nil {
 		options.Output = io.Discard
+	}
+	if errout == nil {
+		errout = io.Discard
 	}
 	reader := bufio.NewReader(options.Input)
 	options.Input = reader
@@ -31,6 +35,7 @@ func Run(options interp.Options, errout io.Writer) (bool, error) {
 	ok := true
 	var lines []string
 	size := 0
+	recovering := false
 	if _, err := fmt.Fprintln(out, "Portugol REPL. Enter a complete program, fimalgoritmo runs it, :sair exits."); err != nil {
 		return false, err
 	}
@@ -54,25 +59,42 @@ func Run(options interp.Options, errout io.Writer) (bool, error) {
 			}
 			return ok, nil
 		}
-		if err != nil {
-			var d diag.Diagnostic
-			if errors.As(err, &d) && d.Code == diag.EResource {
-				return false, submissionLimit(len(lines)+1, source.MaxBytes-size+1)
-			}
-			return false, err
-		}
-		if strings.TrimSpace(line) == ":sair" {
+		if err == nil && strings.TrimSpace(line) == ":sair" {
 			return ok, nil
 		}
-		if len(lines) == 0 && strings.TrimSpace(line) == "" {
+		if err == nil && len(lines) == 0 && strings.TrimSpace(line) == "" {
 			continue
 		}
-		if len(line) > source.MaxBytes-size {
-			return false, submissionLimit(len(lines)+1, source.MaxBytes-size+1)
+		if err == nil && len(line) > source.MaxBytes-size {
+			err = diag.Diagnostic{Code: diag.EResource}
+		}
+		if err != nil {
+			var d diag.Diagnostic
+			if !errors.As(err, &d) || d.Code != diag.EResource {
+				return false, err
+			}
+			if !recovering {
+				if _, err := fmt.Fprintln(errout, submissionLimit(len(lines)+1, source.MaxBytes-size+1)); err != nil {
+					return false, err
+				}
+			}
+			ok, recovering = false, true
+			lines, size = nil, 0
+			if err := discardLine(reader, line); err != nil {
+				return false, err
+			}
+			continue
+		}
+		toks := submissionTokens(line)
+		if recovering {
+			if len(toks) == 0 || toks[0].Kind != token.ALGORITMO {
+				continue
+			}
+			recovering = false
 		}
 		lines = append(lines, line)
 		size += len(line)
-		if !submissionComplete(line) {
+		if !submissionComplete(toks) {
 			continue
 		}
 		valid, err := runSource(strings.Join(lines, ""), i, errout)
@@ -88,12 +110,16 @@ func Run(options interp.Options, errout io.Writer) (bool, error) {
 
 // Strings and comments end on each physical line. Scan each new line once for
 // framing; runSource still diagnoses the full decoded program, including errors.
-func submissionComplete(line string) bool {
+func submissionTokens(line string) []token.Token {
 	decoded, err := source.Decode([]byte(line))
 	if err != nil {
-		return false
+		return nil
 	}
 	_, toks, _ := lexer.Scan("<repl>", decoded)
+	return toks
+}
+
+func submissionComplete(toks []token.Token) bool {
 	for _, tok := range toks {
 		if tok.Kind == token.FIMALGORITMO {
 			return true
@@ -135,7 +161,7 @@ func readLine(reader *bufio.Reader, limit int) (string, error) {
 			return "", err
 		}
 		if len(part) > limit-line.Len() {
-			return "", diag.Diagnostic{Code: diag.EResource, Message: "source size limit exceeded"}
+			return string(part), diag.Diagnostic{Code: diag.EResource, Message: "source size limit exceeded"}
 		}
 		line.Write(part)
 		if err == io.EOF && line.Len() == 0 {
@@ -144,6 +170,24 @@ func readLine(reader *bufio.Reader, limit int) (string, error) {
 		if err != bufio.ErrBufferFull {
 			return line.String(), nil
 		}
+	}
+}
+
+// discardLine finishes only the rejected physical line, preserving buffered
+// bytes from subsequent lines. The error return from readLine retains its tail.
+func discardLine(reader *bufio.Reader, tail string) error {
+	if strings.HasSuffix(tail, "\n") {
+		return nil
+	}
+	for {
+		_, err := reader.ReadSlice('\n')
+		if err == bufio.ErrBufferFull {
+			continue
+		}
+		if err == io.EOF {
+			return nil
+		}
+		return err
 	}
 }
 

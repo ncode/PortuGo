@@ -64,6 +64,7 @@ fimalgoritmo
 func TestAutomaticSubmissionDiagnostics(t *testing.T) {
 	for _, tt := range []struct{ name, body, diagnostic string }{
 		{"lexical", "@", "L001"},
+		{"decoded invalid byte", "\x81", "L001"},
 		{"syntax", "+", "P001"},
 		{"semantic", "escreval(missing)", "E002"},
 		{"runtime", "escreval(1 / 0)", "R002"},

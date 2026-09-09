@@ -47,9 +47,8 @@ from being mistaken for a terminator. `TestCP1252TerminatorLookalike` verifies
 cancellation of that unfinished input; it does not claim acceptance of its
 identifier form as a reference language feature.
 
-Recovery after source-size exhaustion, host failures, and integration with
-future environment input modes remain pending. This slice does not close the
-full REPL or formatter group.
+Source-size and host-diagnostic recovery are covered below. Integration with
+future environment input modes and formatter retention remain pending.
 
 Local build, formatting, vet, staticcheck, lint, ordinary/race tests, both
 30-second fuzz checks, strict specification validation, and all 199 verified
@@ -57,3 +56,28 @@ reference CLI replays pass. Native Windows build, vet, 766 tests, both fuzz
 checks, and all 199 CLI replays pass. All 11 transported files match the local
 snapshot before the final validation notes. The evidence gate reports only
 106 missing mappings: 33 requirements and 73 bundled examples.
+
+## Limit and host recovery
+
+`TestSourceLimitRecovery` covers oversized first and continuation lines, a
+terminator crossing the cap, a short line exceeding the remaining allowance,
+long discarded lines, header lookalikes, EOF, and cancellation. The rejected
+submission produces one `E900`. Recovery discards the rest of its physical line
+with bounded reads and resumes at a line whose first token is `algoritmo`.
+The next program receives its `leia` input once, and the session retains a
+failure status. The CLI contract test checks exact prompts, output, diagnostic
+position, and exit status for this transition.
+
+`TestHostDiagnosticRecovery` verifies that a transient program output failure
+produces positioned `R008`, preserves earlier output, and permits a later
+submission. `TestNilDiagnosticWriter` verifies controlled lexical and source-limit
+failures when diagnostic output is discarded. Invalid decoded bytes also retain
+their lexical diagnostic and allow a fresh next program. Permanently unusable
+input or prompt streams remain operational failures that end the session.
+
+Local build, formatting, vet, staticcheck, lint, ordinary/race tests, both
+30-second fuzz checks, strict specification validation, and all 199 verified
+reference CLI replays pass for recovery. Native Windows build, vet, 777 tests,
+both fuzz checks, and all 199 CLI replays pass. All 11 transported files match
+the local snapshot before final validation prose. The evidence gate still
+reports only the 106 missing inventory mappings.

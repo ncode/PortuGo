@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Recover after oversized REPL submissions: report `E900` once, discard the
+  rejected input with bounded reads, and resume at the next program header.
+  Preserve subsequent `leia` input and the session's failure status. Add exact
+  CLI recovery coverage, transient output-failure tests, and nil diagnostic
+  writer handling without panics.
 - Run REPL programs immediately at a real `fimalgoritmo` token and preserve
   blank lines in unfinished source. Ignore terminator lookalikes in strings,
   comments, and longer identifiers. Keep shared input, diagnostic positions,

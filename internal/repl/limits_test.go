@@ -2,11 +2,9 @@ package repl
 
 import (
 	"bytes"
-	"errors"
 	"strings"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/interp"
 	"github.com/ncode/portugol-go/internal/source"
 )
@@ -22,9 +20,8 @@ func TestSubmissionLimit(t *testing.T) {
 				t.Fatalf("boundary rejected: %v, %q", err, &stderr)
 			}
 		} else {
-			var d diag.Diagnostic
-			if ok || !errors.As(err, &d) || d.Code != diag.EResource || !strings.Contains(err.Error(), "<repl>:") {
-				t.Fatalf("unbounded submission: %v", err)
+			if ok || err != nil || strings.Count(stderr.String(), ": E900:") != 1 || !strings.Contains(stderr.String(), "<repl>:") {
+				t.Fatalf("unbounded submission: %v, %q", err, &stderr)
 			}
 		}
 	}

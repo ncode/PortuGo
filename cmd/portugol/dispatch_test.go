@@ -53,6 +53,7 @@ func TestCommandContracts(t *testing.T) {
 		t.Fatal(err)
 	}
 	replBanner := "Portugol REPL. Enter a complete program, fimalgoritmo runs it, :sair exits.\nportugol> "
+	replOversized := strings.Repeat("x", (4<<20)+1) + "\nalgoritmo \"next\"\ninicio\nescreval(7)\nfimalgoritmo\n:sair\n"
 	for _, tt := range []struct {
 		name                  string
 		args                  []string
@@ -76,6 +77,7 @@ func TestCommandContracts(t *testing.T) {
 		{"repl read", []string{"repl", "--max-steps", "20"}, "algoritmo \"read\"\nvar x: inteiro\ninicio\nleia(x)\nescreval(x)\nfimalgoritmo\n\n42\n:sair\n", "", "", 0},
 		{"repl EOF", []string{"repl", "--max-steps", "20"}, string(replEOF), replBanner + "... ... ...  42\nportugol> ", "", 0},
 		{"repl automatic", []string{"repl", "--max-steps", "20"}, string(replAuto), replBanner + "... ... ... ... ...  42\nportugol> ... ... ...  7\nportugol> ", "", 0},
+		{"repl limit recovery", []string{"repl", "--max-steps", "20"}, replOversized, replBanner + "portugol> ... ... ...  7\nportugol> ", "<repl>:1:4194305: E900:", 1},
 		{"repl incomplete EOF", []string{"repl"}, "algoritmo \"unfinished\"\ninicio\n", replBanner + "... ... ", "<repl>:3:1: P001:", 1},
 	} {
 		t.Run(tt.name, func(t *testing.T) {

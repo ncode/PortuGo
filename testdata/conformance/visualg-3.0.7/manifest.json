@@ -9111,7 +9111,9 @@
       "id": "project.repl-submission",
       "ownerGroup": 16,
       "tasks": [
+        "16.1",
         "16.3",
+        "16.4",
         "16.5",
         "16.6"
       ],
@@ -9129,7 +9131,10 @@
           "internal/repl/submission_test.go#TestAutomaticSubmission",
           "internal/repl/submission_test.go#TestAutomaticSubmissionDiagnostics",
           "internal/repl/submission_test.go#TestCP1252TerminatorLookalike",
-          "cmd/portugol/dispatch_test.go#TestCommandContracts"
+          "cmd/portugol/dispatch_test.go#TestCommandContracts",
+          "internal/repl/recovery_test.go#TestSourceLimitRecovery",
+          "internal/repl/recovery_test.go#TestHostDiagnosticRecovery",
+          "internal/repl/recovery_test.go#TestNilDiagnosticWriter"
         ]
       }
     },

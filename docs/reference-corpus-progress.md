@@ -258,3 +258,23 @@ replays pass. Native Windows build, vet, 766 tests, both fuzz checks, and all 19
 CLI replays pass with all 11 transported files matching locally before these
 validation notes. The required-evidence gate reports the 106 missing mappings
 and no other errors.
+
+The REPL recovery slice adds bounded recovery after source-size failures and
+regressions for transient host output failures, invalid decoded bytes, and a
+missing diagnostic writer. Rejected oversized source reports one `E900` and is
+discarded through the next program header without losing its buffered input.
+Header lookalikes, a terminator crossing the remaining allowance, EOF, and
+cancellation are covered. Exact CLI output and exit status remain tested.
+
+Tasks 16.1 and 16.6 are complete. The existing project submission entry gains
+only additive task and test links; all reference evidence, expected outcomes,
+and inventory mappings remain intact. The required-evidence gate still has
+106 missing mappings. Environment input modes and formatter retention remain
+pending under the corresponding tasks.
+
+Local build, formatting, vet, staticcheck, lint, ordinary/race tests, both
+30-second fuzz checks, strict specification validation, and all 199 verified CLI
+replays pass. Native Windows build, vet, 777 tests, both fuzz checks, and all 199
+CLI replays pass with all 11 transported files matching locally before these
+validation notes. The evidence gate reports the same 106 missing mappings and
+no other failures.
