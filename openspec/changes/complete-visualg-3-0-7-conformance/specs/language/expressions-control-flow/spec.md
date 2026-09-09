@@ -20,6 +20,8 @@ The language SHALL implement the complete VisuAlg 3.0.7 unary, arithmetic, relat
 - **THEN** they produce real values 64 and 4 respectively, reflecting left-associative power and tighter unary minus
 
 ### Requirement: Numeric evaluation and coercion
+Integer addition, subtraction, multiplication, and negation SHALL preserve the recorded signed 32-bit wrapping. Real operands SHALL retain real arithmetic and real result types.
+
 Arithmetic SHALL use the reference operand compatibility, promotion, result type, rounding, truncation, division, modulo, exponentiation, unary sign, and overflow behavior. Statically invalid combinations SHALL be semantic diagnostics; runtime-only failures SHALL return positioned arithmetic diagnostics and SHALL never surface a Go panic, infinity, NaN, or wraparound unless the oracle explicitly produces the corresponding observable value.
 
 #### Scenario: Mix integer and real operands

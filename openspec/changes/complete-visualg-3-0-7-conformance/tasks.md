@@ -91,7 +91,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Digit-only literals now use integer type through `2147483647` and real type
   above it; real literal types survive formatter round trips. Default real
   output and numeric-to-text conversion share the recorded 15-digit profile.
-  Integer overflow and narrowing-assignment diagnostic timing remain pending.
+  Division/remainder rules and narrowing-assignment diagnostic timing remain pending.
 - [ ] 4.6 Make parser production boundaries newline-aware and enforce the reference program header, declaration region, body, terminators, and post-`fimalgoritmo` behavior.
 - [ ] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
 - [ ] 4.8 Add structural and newline synchronization that collects independent parser diagnostics without panics, duplicate errors, or infinite loops.
@@ -164,6 +164,10 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
 - [ ] 8.2 Rebuild precedence parsing and operator alias recognition from the committed oracle table, including parentheses and all unary forms.
 - [ ] 8.3 Resolve expression types and implicit coercions in `sema.Info` for every accepted numeric and logical operator combination.
 - [ ] 8.4 Implement overflow-safe integer arithmetic, real division, integer division, modulo, exponentiation, unary operations, and `R002` domain failures exactly as recorded.
+
+  Integer addition, subtraction, multiplication, and negation now reproduce
+  signed 32-bit wrapping. Integer division overflow has a positioned project
+  guard. Non-integer division, remainder, and remaining domain cases are pending.
 - [ ] 8.5 Implement logical operand evaluation order and short-circuit/eager behavior with side-effect tests that pin the oracle result.
 - [ ] 8.6 Implement numeric, logical, and character comparison compatibility, ordering, case/accent behavior, and positioned rejection of unsupported pairs.
 - [ ] 8.7 Guarantee one-time oracle-ordered evaluation for binary operands, indices, statement expressions, and ordinary case labels.

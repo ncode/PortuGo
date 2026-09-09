@@ -87,8 +87,13 @@ do not change the type. The minus sign is a separate unary operator, so
 The formatter retains a decimal point for integral real literals, preserving
 their type when the result is parsed again. A number outside the finite
 64-bit floating-point range receives positioned `P001` as a project guard.
-Recorded integer overflow and real-to-integer assignment diagnostic timing
-remain pending conformance work.
+Integer addition, subtraction, multiplication, and negation wrap to signed
+32-bit results, including inside assignments and function returns. For example,
+`2147483647 + 1` gives `-2147483648`, and negating that minimum gives the same
+minimum. Mixing a real operand into addition, subtraction, or multiplication
+uses real arithmetic. Division of the signed minimum by `-1` receives positioned
+`R002` as a project guard. The recorded non-integer division, remainder, and
+real-to-integer assignment diagnostic behavior remains pending conformance work.
 
 ## Vectors
 
@@ -356,6 +361,13 @@ Numeric built-ins: `abs`, `raizq`, `exp`, `log`, `logn`, `pi`, `sen`, `cos`,
 
 `exp(base, exponent)` takes two numeric arguments and returns real-valued
 exponentiation. The one-argument natural-exponential form is not supported.
+
+For integer arguments, `abs` retains signed 32-bit wrapping, so the absolute
+value of `-2147483647 - 1` remains `-2147483648`. Real arguments use real
+absolute value. `int(x)` truncates toward zero and narrows the result to
+signed 32-bit: `int(2147483648.0)` is `-2147483648`, and
+`int(4294967296.0)` is zero. Non-finite arguments and values outside the signed
+64-bit intermediate conversion range receive positioned `R007` as project guards.
 
 String built-ins: `copia`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, and
 `pos`. String positions are 1-indexed.

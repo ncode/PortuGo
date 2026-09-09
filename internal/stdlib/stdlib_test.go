@@ -36,6 +36,18 @@ func TestCopiaExtremeLength(t *testing.T) {
 	}
 }
 
+func TestIntRejectsUnsupportedRange(t *testing.T) {
+	for _, value := range []float64{
+		math.NaN(), math.Inf(1), math.Inf(-1), math.MaxFloat64,
+		math.Ldexp(1, 63), math.Nextafter(-math.Ldexp(1, 63), math.Inf(-1)),
+	} {
+		_, found, err := New(nil).Call("int", []runtime.Value{{Kind: runtime.RealValue, Real: value}})
+		if !found || err == nil {
+			t.Fatalf("value=%g found=%t error=%v, want a conversion error", value, found, err)
+		}
+	}
+}
+
 func TestExp(t *testing.T) {
 	integer := runtime.Value{Kind: runtime.IntegerValue, Int: 2}
 	real := runtime.Value{Kind: runtime.RealValue, Real: 3}

@@ -20,6 +20,8 @@ The project SHALL maintain one authoritative catalog of every VisuAlg 3.0.7 buil
 - **THEN** it receives the same signature and behavior as the catalog's canonical built-in
 
 ### Requirement: Numeric built-ins
+For integer input, `abs` SHALL preserve the recorded signed 32-bit result, including the signed minimum. `int` SHALL truncate numeric input toward zero and narrow the result to signed 32-bit; unsupported non-finite or intermediate conversion values SHALL receive the positioned built-in failure guard.
+
 The catalog SHALL implement the full oracle-confirmed numeric set with the reference arity, accepted numeric types, result types, angle units, rounding or truncation, constants, domains, and exceptional behavior. The candidate inventory SHALL explicitly include `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, and the existing `frac`, plus any additional discovered functions and aliases. Every candidate SHALL receive a recorded disposition; accepted names SHALL be implemented as distinct operations where their semantics differ, and rejected legacy names SHALL receive rejection coverage.
 
 #### Scenario: Evaluate numeric boundary cases

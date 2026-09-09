@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Match recorded signed 32-bit wrapping in integer addition, subtraction,
+  multiplication, negation, `abs`, and `int`, including assignments and function
+  returns. Guard unsupported integer conversions and division overflow with
+  positioned diagnostics; retain the remaining division and remainder cases.
+
 - Classify whole-number literals above the signed 32-bit limit as real values,
   preserve real literal types through formatting, and match the recorded
   15-significant-digit default output. Share numeric rendering with `numpcarac`,

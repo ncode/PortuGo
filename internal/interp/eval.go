@@ -91,7 +91,7 @@ func (i *Interpreter) evalUnary(e *ast.UnaryExpr) (runtime.Value, error) {
 	case token.SUB:
 		switch v.Kind {
 		case runtime.IntegerValue:
-			return runtime.Value{Kind: runtime.IntegerValue, Int: -v.Int}, nil
+			return runtime.Value{Kind: runtime.IntegerValue, Int: int64(-int32(v.Int))}, nil
 		case runtime.RealValue:
 			return runtime.Value{Kind: runtime.RealValue, Real: -v.Real}, nil
 		}
@@ -121,17 +121,11 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 			}
 			return runtime.Value{Kind: runtime.StringValue, Str: left.Str + right.Str}, nil
 		}
-		return numeric(left, right, func(a, b int64) runtime.Value {
-			return runtime.Value{Kind: runtime.IntegerValue, Int: a + b}
-		}, func(a, b float64) float64 { return a + b })
+		return numeric(left, right, func(a, b int64) int64 { return a + b }, func(a, b float64) float64 { return a + b })
 	case token.SUB:
-		return numeric(left, right, func(a, b int64) runtime.Value {
-			return runtime.Value{Kind: runtime.IntegerValue, Int: a - b}
-		}, func(a, b float64) float64 { return a - b })
+		return numeric(left, right, func(a, b int64) int64 { return a - b }, func(a, b float64) float64 { return a - b })
 	case token.MUL:
-		return numeric(left, right, func(a, b int64) runtime.Value {
-			return runtime.Value{Kind: runtime.IntegerValue, Int: a * b}
-		}, func(a, b float64) float64 { return a * b })
+		return numeric(left, right, func(a, b int64) int64 { return a * b }, func(a, b float64) float64 { return a * b })
 	case token.QUO:
 		a, b, err := floats(left, right)
 		if err != nil {
@@ -148,6 +142,9 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 		}
 		if b == 0 {
 			return runtime.Value{}, fmt.Errorf("division by zero")
+		}
+		if a == math.MinInt32 && b == -1 {
+			return runtime.Value{}, fmt.Errorf("integer division overflow")
 		}
 		return runtime.Value{Kind: runtime.IntegerValue, Int: a / b}, nil
 	case token.REM, token.MOD:
@@ -243,9 +240,9 @@ func (i *Interpreter) evalInt(expr ast.Expr) (int64, error) {
 	return v.Int, nil
 }
 
-func numeric(left, right runtime.Value, intFn func(int64, int64) runtime.Value, realFn func(float64, float64) float64) (runtime.Value, error) {
+func numeric(left, right runtime.Value, intFn func(int64, int64) int64, realFn func(float64, float64) float64) (runtime.Value, error) {
 	if left.Kind == runtime.IntegerValue && right.Kind == runtime.IntegerValue {
-		return intFn(left.Int, right.Int), nil
+		return runtime.Value{Kind: runtime.IntegerValue, Int: int64(int32(intFn(left.Int, right.Int)))}, nil
 	}
 	a, b, err := floats(left, right)
 	if err != nil {

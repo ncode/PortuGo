@@ -47,6 +47,8 @@ func TestExecutionDiagnostics(t *testing.T) {
 		{"builtin", "", "escreval(aleatorio(0))", "aleatorio", diag.RBuiltin, Options{}},
 		{"random source", "", "escreval(randi(7))", "randi", diag.RBuiltin, Options{Random: &scriptedRandom{bad: true}}},
 		{"text conversion", "", "escreval(numpcarac(10 ^ 400))", "numpcarac", diag.RBuiltin, Options{}},
+		{"integer conversion", "", "escreval(int(10 ^ 400))", "int", diag.RBuiltin, Options{}},
+		{"integer division overflow", "", "escreval((-2147483647 - 1) \\ (-1))", "\\", diag.RArithmetic, Options{}},
 		{"output", "", "escreva(1)", "1)", diag.RHost, Options{Output: failingWriter{}}},
 		{"input echo", "var x: inteiro", "leia(x)", "x)", diag.RHost, Options{Input: strings.NewReader("7\n"), Output: failingWriter{}}},
 	} {

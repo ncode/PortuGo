@@ -107,7 +107,7 @@ func abs(args []runtime.Value) (runtime.Value, bool, error) {
 		if v < 0 {
 			v = -v
 		}
-		return runtime.Value{Kind: runtime.IntegerValue, Int: v}, true, nil
+		return runtime.Value{Kind: runtime.IntegerValue, Int: int64(int32(v))}, true, nil
 	case runtime.RealValue:
 		return runtime.Value{Kind: runtime.RealValue, Real: math.Abs(args[0].Real)}, true, nil
 	default:
@@ -164,7 +164,10 @@ func intval(args []runtime.Value) (runtime.Value, bool, error) {
 	if err != nil {
 		return runtime.Value{}, true, err
 	}
-	return runtime.Value{Kind: runtime.IntegerValue, Int: int64(x)}, true, nil
+	if math.IsNaN(x) || math.IsInf(x, 0) || x < -0x1p63 || x >= 0x1p63 {
+		return runtime.Value{}, true, fmt.Errorf("int argument exceeds the conversion range")
+	}
+	return runtime.Value{Kind: runtime.IntegerValue, Int: int64(int32(int64(x)))}, true, nil
 }
 
 func frac(args []runtime.Value) (runtime.Value, bool, error) {

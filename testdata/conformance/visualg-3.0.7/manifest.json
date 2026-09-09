@@ -241,7 +241,18 @@
       "probes": [
         "exact-division-integer",
         "integer-overflow-add",
-        "integer-overflow-subtract"
+        "integer-overflow-subtract",
+        "integer-multiply-wrap",
+        "integer-multiply-zero",
+        "integer-negate-minimum",
+        "integer-divide-signs",
+        "integer-modulo-signs",
+        "integer-modulo-overflow",
+        "integer-real-sum",
+        "integer-assignment-wrap",
+        "integer-function-wrap",
+        "integer-divide-real",
+        "integer-modulo-real"
       ]
     },
     {
@@ -937,7 +948,14 @@
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Numeric built-ins",
       "probes": [
         "exp-one",
-        "exp-two"
+        "exp-two",
+        "integer-abs-minimum",
+        "integer-int-large",
+        "integer-int-fraction",
+        "int-random-bound",
+        "abs-random-bound",
+        "int-wrap-zero",
+        "int-truncation"
       ]
     },
     {
@@ -23978,14 +23996,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/integer-overflow-add/stdout.txt",
             "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
           }
-        }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
       }
     },
     {
@@ -24018,14 +24039,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/integer-overflow-subtract/stdout.txt",
             "sha256": "376e2c66d68a0d407c1afe5f1bfe3e54649c436d2cc8de5c50588490be6e36c8"
           }
-        }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
       }
     },
     {
@@ -24369,6 +24393,768 @@
         },
         "tests": [
           "numeric_literals_test.go#TestRecordedNumericLiterals"
+        ]
+      }
+    },
+    {
+      "id": "integer-multiply-wrap",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-multiply-wrap/source.alg",
+        "sha256": "d8a647f54930947717d8683fa66c17b2baa58783d2ea5fa8a6462ec947d3ba7f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:36:06.8774095Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-multiply-wrap/raw.txt",
+          "sha256": "1a677fab2681b74ebf98c4719c97e2b33c487d74ac2574aa8cf8e1e5cacd4a31"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-multiply-wrap/stdout.txt",
+          "sha256": "43ea02de975dd302d8533514bc63e94192dcbb8345e13bbf0bcb7da62b4a50e8"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-multiply-wrap/stdout.txt",
+            "sha256": "43ea02de975dd302d8533514bc63e94192dcbb8345e13bbf0bcb7da62b4a50e8"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "integer-multiply-zero",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-multiply-zero/source.alg",
+        "sha256": "cc9bef386532b98292ec2fa68d36f18f936c6fd85736301fb5ef1dc1be0362b3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:36:17.0898642Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-multiply-zero/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-multiply-zero/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-multiply-zero/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "integer-negate-minimum",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-negate-minimum/source.alg",
+        "sha256": "6ec16753d93f078cca7004ba2f20314460aa3dfd4d0a328df7c2f90d762a690e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:36:27.3185238Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-negate-minimum/raw.txt",
+          "sha256": "632b5d1046ce89625731716abe43bb9029c56629c89cd390d4c53413dc83e318"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-negate-minimum/stdout.txt",
+          "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-negate-minimum/stdout.txt",
+            "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "integer-divide-signs",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-divide-signs/source.alg",
+        "sha256": "ee603cae7a425b2b26857f342b5988e45f2da7e3f0cf696a11c65f385793a387"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:36:37.6483269Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-divide-signs/raw.txt",
+          "sha256": "302778bc731496c187098c0c534bf019ed2739801a24f7199304d2339b04a3dd"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-divide-signs/stdout.txt",
+          "sha256": "0e19a7807bb8460216d971188de7120bfc07a70fa239af9350667f906b2198e7"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-divide-signs/stdout.txt",
+            "sha256": "0e19a7807bb8460216d971188de7120bfc07a70fa239af9350667f906b2198e7"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "integer-modulo-signs",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-signs/source.alg",
+        "sha256": "18ba8fe95a365c04b8706a9f1c4cc151e4b4b90d385e88354015c0e914c2e95e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:36:47.7954719Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-signs/raw.txt",
+          "sha256": "25c384f4dca1f5e62c14fdc2c96bd1da2b7f0a0e0109976ce0dc1c9fd6c02047"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-signs/stdout.txt",
+          "sha256": "2585425a37276ca3c1319482d5792eb8071c9d48536444db1abc402d4d2b0776"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-signs/stdout.txt",
+            "sha256": "2585425a37276ca3c1319482d5792eb8071c9d48536444db1abc402d4d2b0776"
+          }
+        }
+      }
+    },
+    {
+      "id": "integer-modulo-overflow",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-overflow/source.alg",
+        "sha256": "fc97c34782b0e197cfd5bcd062976e9deca30dab6523a5331f86b6ad64254a0e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:37:08.2379082Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-overflow/raw.txt",
+          "sha256": "02104a2ce6317a349f9d71f4677058aa50b9042d24ef0fb445529ff1bb68b9a6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-overflow/stdout.txt",
+          "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-overflow/stdout.txt",
+            "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+          }
+        }
+      }
+    },
+    {
+      "id": "integer-real-sum",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-real-sum/source.alg",
+        "sha256": "241504c9431e6e57f328a567511dac60d671999936b192f133c0adaf71d5f42f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:37:18.4346983Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-real-sum/raw.txt",
+          "sha256": "3a1502a357192bc50d73ec1c7164f0740cc7121483e73c2677b3fddda7422331"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-real-sum/stdout.txt",
+          "sha256": "48f20611f970c370a96c4813bb471ddbd28198267fdf92155612be4900bc2417"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-real-sum/stdout.txt",
+            "sha256": "48f20611f970c370a96c4813bb471ddbd28198267fdf92155612be4900bc2417"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "integer-assignment-wrap",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-assignment-wrap/source.alg",
+        "sha256": "c4d7685dfb67d7877b9bf08f42d87545ccd061204b3d5505c9acd8b3eb17a03a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:37:28.5731280Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-assignment-wrap/raw.txt",
+          "sha256": "632b5d1046ce89625731716abe43bb9029c56629c89cd390d4c53413dc83e318"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-assignment-wrap/stdout.txt",
+          "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-assignment-wrap/stdout.txt",
+            "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "integer-function-wrap",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-function-wrap/source.alg",
+        "sha256": "f83c6aa8d0674ce3ce377837aca2ad5cc31d49c4a9988abadc18edd1f801e3ce"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:37:38.6768563Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-function-wrap/raw.txt",
+          "sha256": "632b5d1046ce89625731716abe43bb9029c56629c89cd390d4c53413dc83e318"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-function-wrap/stdout.txt",
+          "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-function-wrap/stdout.txt",
+            "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "integer-divide-real",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-divide-real/source.alg",
+        "sha256": "6b2e3bf9f26c70fee7a5d75790ccab52841772dc08129a6ded97a34596ebd01e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:37:48.8540853Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-divide-real/raw.txt",
+          "sha256": "afe1d6988bf8073007768b22becd59372fa49baf4abf5a75f1a2d0db22116cc6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-divide-real/stdout.txt",
+          "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-divide-real/stdout.txt",
+            "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+          }
+        }
+      }
+    },
+    {
+      "id": "integer-modulo-real",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-real/source.alg",
+        "sha256": "2638bcd3163a390ef52348df1ea364a292b2c7bf87589aebd8883720e22ee0a6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:37:59.0619757Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-real/raw.txt",
+          "sha256": "7bbf158b3d1b467d429f1554aca07e75312dfa4989ca3905718d91e9ad15a683"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-real/stdout.txt",
+          "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-modulo-real/stdout.txt",
+            "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+          }
+        }
+      }
+    },
+    {
+      "id": "integer-abs-minimum",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-abs-minimum/source.alg",
+        "sha256": "144a8d27793aac7c831bf1b235f27408ae65e3afda607700f17761af5dc052a4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:38:09.2412103Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-abs-minimum/raw.txt",
+          "sha256": "632b5d1046ce89625731716abe43bb9029c56629c89cd390d4c53413dc83e318"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-abs-minimum/stdout.txt",
+          "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-abs-minimum/stdout.txt",
+            "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "integer-int-large",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-int-large/source.alg",
+        "sha256": "4a5894084e464ee1a816e95c0f6cce3b9307751c684b6c862dc090f53e39dab4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:38:19.4321670Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-int-large/raw.txt",
+          "sha256": "632b5d1046ce89625731716abe43bb9029c56629c89cd390d4c53413dc83e318"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-int-large/stdout.txt",
+          "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-int-large/stdout.txt",
+            "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "integer-int-fraction",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-int-fraction/source.alg",
+        "sha256": "2806c9c446060560b3956c2a5f40eaf7934a66624dfafaed12d5e1f38b9a08da"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:38:29.6431858Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-int-fraction/raw.txt",
+          "sha256": "02104a2ce6317a349f9d71f4677058aa50b9042d24ef0fb445529ff1bb68b9a6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-int-fraction/stdout.txt",
+          "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-int-fraction/stdout.txt",
+            "sha256": "f8020b628001e3cfc8bfd66461a94c4a0458d920a739a11eef55abc1fe8bd631"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "int-random-bound",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/int-random-bound/source.alg",
+        "sha256": "d3bee79b97ad924291ba1d54a85b8f6e47853b7897862060ebe434c168aa603f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:49:02.5051236Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/int-random-bound/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/int-random-bound/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/int-random-bound/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "abs-random-bound",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/abs-random-bound/source.alg",
+        "sha256": "18e53c0a04bdefcce422ed5393fa6d39a9f00c4f604c5590241129474eacd9db"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:49:12.6788063Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/abs-random-bound/raw.txt",
+          "sha256": "f01fd89b93f56ce6101252de33a82f077fd488885a3bd3c746864fe85837db48"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/abs-random-bound/stdout.txt",
+          "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/abs-random-bound/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "int-wrap-zero",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/int-wrap-zero/source.alg",
+        "sha256": "0d59faad643d3c67e48c4352cafcd67e8622d2355926a49ab4bb4f206073036d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:49:22.8413968Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/int-wrap-zero/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/int-wrap-zero/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/int-wrap-zero/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
+        ]
+      }
+    },
+    {
+      "id": "int-truncation",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/int-truncation/source.alg",
+        "sha256": "aae1ddc06c94e36aa296afe6cb7d6c93eac852d9baa7958f6de4844871eb3328"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:49:32.9322925Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/int-truncation/raw.txt",
+          "sha256": "623ed1b67ef8ec81e5829f211b7617626a20de50015d464b1c336dbbda93df9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/int-truncation/stdout.txt",
+          "sha256": "8d5f2c17a6a69a31c728d06efa187bd623e5428e0ad46693aede7716fd774895"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/int-truncation/stdout.txt",
+            "sha256": "8d5f2c17a6a69a31c728d06efa187bd623e5428e0ad46693aede7716fd774895"
+          }
+        },
+        "tests": [
+          "integer_arithmetic_test.go#TestRecordedIntegerArithmetic"
         ]
       }
     }
