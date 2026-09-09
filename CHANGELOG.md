@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Read console input one line per destination, preserve spaces and empty
+  character values, and reproduce the recorded scalar input echo. Keep unread
+  lines across calls and interpreter reuse; update CLI and REPL regressions
+  for the shared input stream. Match numeric mantissa fallback, integer
+  narrowing, and first-character logical conversion, with positioned guards
+  for input exhaustion and numeric range failures.
+
 - Match recorded nested-output ordering and newline consumption. Evaluate and
   format a statement's items before emitting them, preserve nested output on
   evaluation failure, bound the statement buffer, and clear pending newline

@@ -6,7 +6,6 @@ import (
 	"math"
 	"strconv"
 	"strings"
-	"unicode"
 	"unicode/utf8"
 
 	"github.com/ncode/portugol-go/internal/ast"
@@ -21,7 +20,7 @@ func (i *Interpreter) execRead(s *ast.ReadStmt) error {
 		if err != nil {
 			return err
 		}
-		text, err := i.readToken(target.Start())
+		text, err := i.readLine(target.Start())
 		if err != nil {
 			return err
 		}
@@ -32,11 +31,25 @@ func (i *Interpreter) execRead(s *ast.ReadStmt) error {
 		if err := assign(cell, v); err != nil {
 			return err
 		}
+		switch v.Kind {
+		case runtime.IntegerValue:
+			text = strconv.FormatInt(v.Int, 10)
+		case runtime.RealValue:
+			text = strconv.FormatFloat(v.Real, 'f', 10, 64)
+		case runtime.BoolValue:
+			text = "Falso"
+			if v.Bool {
+				text = "Verdadeiro"
+			}
+		}
+		if _, err := fmt.Fprintln(i.out, text); err != nil {
+			return diag.Diagnostic{Code: diag.RHost, Pos: target.Start(), Message: "cannot echo input", Cause: err}
+		}
 	}
 	return nil
 }
 
-func (i *Interpreter) readToken(pos token.Pos) (string, error) {
+func (i *Interpreter) readLine(pos token.Pos) (string, error) {
 	var text strings.Builder
 	for {
 		r, _, err := i.in.ReadRune()
@@ -44,16 +57,13 @@ func (i *Interpreter) readToken(pos token.Pos) (string, error) {
 			return text.String(), nil
 		}
 		if err != nil {
-			return "", diag.Diagnostic{Code: diag.RInput, Pos: pos, Message: "cannot read input token", Cause: err}
+			return "", diag.Diagnostic{Code: diag.RInput, Pos: pos, Message: "cannot read input line", Cause: err}
 		}
-		if unicode.IsSpace(r) {
-			if text.Len() != 0 {
-				return text.String(), nil
-			}
-			continue
+		if r == '\n' {
+			return strings.TrimSuffix(text.String(), "\r"), nil
 		}
 		if text.Len() > maxTextBytes-utf8.RuneLen(r) {
-			return "", failure(pos, diag.RStorage, fmt.Errorf("input token size limit exceeded"))
+			return "", failure(pos, diag.RStorage, fmt.Errorf("input line size limit exceeded"))
 		}
 		text.WriteRune(r)
 	}
@@ -161,31 +171,73 @@ func checkFormatSize(v runtime.Value, width, decimals int64) error {
 func parseInput(text string, typ runtime.Type) (runtime.Value, error) {
 	switch typ.Kind {
 	case runtime.IntegerType:
-		v, err := strconv.ParseInt(text, 10, 64)
+		v, err := parseInputNumber(text)
 		if err != nil {
-			return runtime.Value{}, fmt.Errorf("invalid inteiro input %q", text)
+			return runtime.Value{}, err
 		}
-		return runtime.Value{Kind: runtime.IntegerValue, Int: v}, nil
+		if v < -0x1p63 || v >= 0x1p63 {
+			return runtime.Value{}, fmt.Errorf("inteiro input out of range")
+		}
+		return runtime.Value{Kind: runtime.IntegerValue, Int: int64(int32(int64(v)))}, nil
 	case runtime.RealType:
-		v, err := strconv.ParseFloat(strings.ReplaceAll(text, ",", "."), 64)
+		v, err := parseInputNumber(text)
 		if err != nil {
-			return runtime.Value{}, fmt.Errorf("invalid real input %q", text)
+			return runtime.Value{}, err
 		}
 		return runtime.Value{Kind: runtime.RealValue, Real: v}, nil
 	case runtime.StringType:
 		return runtime.Value{Kind: runtime.StringValue, Str: text}, nil
 	case runtime.BoolType:
-		switch strings.ToLower(text) {
-		case "verdadeiro", "true":
-			return runtime.Value{Kind: runtime.BoolValue, Bool: true}, nil
-		case "falso", "false":
-			return runtime.Value{Kind: runtime.BoolValue, Bool: false}, nil
-		default:
-			return runtime.Value{}, fmt.Errorf("invalid logico input %q", text)
-		}
+		return runtime.Value{Kind: runtime.BoolValue, Bool: len(text) != 0 && (text[0] == 'v' || text[0] == 'V')}, nil
 	default:
 		return runtime.Value{}, fmt.Errorf("cannot read %s", typ)
 	}
+}
+
+func parseInputNumber(text string) (float64, error) {
+	text = strings.ReplaceAll(strings.TrimLeft(text, " "), ",", ".")
+	start := 0
+	if len(text) != 0 && (text[0] == '+' || text[0] == '-') {
+		start++
+	}
+	end := start
+	for end < len(text) && text[end] >= '0' && text[end] <= '9' {
+		end++
+	}
+	if end < len(text) && text[end] == '.' {
+		end++
+		for end < len(text) && text[end] >= '0' && text[end] <= '9' {
+			end++
+		}
+	}
+	mantissa := text[start:end]
+	valid := mantissa != "" && mantissa != "."
+	if end < len(text) && (text[end] == 'e' || text[end] == 'E') {
+		end++
+		if end < len(text) && (text[end] == '+' || text[end] == '-') {
+			end++
+		}
+		exponent := end
+		for end < len(text) && text[end] >= '0' && text[end] <= '9' {
+			end++
+		}
+		valid = valid && end > exponent
+	}
+	if !valid || end != len(text) {
+		// Malformed input retains the unsigned mantissa before decimal/exponent scaling.
+		text = strings.ReplaceAll(mantissa, ".", "")
+		if text == "" {
+			return 0, nil
+		}
+	}
+	v, err := strconv.ParseFloat(text, 64)
+	if err != nil || math.IsInf(v, 0) || math.IsNaN(v) {
+		return 0, fmt.Errorf("numeric input out of range")
+	}
+	if v == 0 {
+		return 0, nil // Input conversion discards the sign of zero.
+	}
+	return v, nil
 }
 
 func formatValue(v runtime.Value, width, decimals int) string {

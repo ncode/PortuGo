@@ -1,0 +1,5 @@
+Início da execução
+15.0000000000
+OUT:[ 15]
+
+Fim da execução.

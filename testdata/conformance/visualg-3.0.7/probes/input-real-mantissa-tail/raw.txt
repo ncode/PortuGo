@@ -1,0 +1,5 @@
+Início da execução
+1234.0000000000
+OUT:[ 1234]
+
+Fim da execução.

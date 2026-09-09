@@ -74,9 +74,9 @@ func TestCommandContracts(t *testing.T) {
 		{"negative budget", []string{"run", "--max-steps", "-1", path}, "", "", "invalid value", 2},
 		{"repl args", []string{"repl", path}, "", "", "usage:", 2},
 		{"unknown command", []string{"unknown"}, "", "", "usage:", 2},
-		{"repl read", []string{"repl", "--max-steps", "20"}, "algoritmo \"read\"\nvar x: inteiro\ninicio\nleia(x)\nescreval(x)\nfimalgoritmo\n\n42\n:sair\n", "", "", 0},
+		{"repl read", []string{"repl", "--max-steps", "20"}, "algoritmo \"read\"\nvar x: inteiro\ninicio\nleia(x)\nescreval(x)\nfimalgoritmo\n42\n:sair\n", "", "", 0},
 		{"repl EOF", []string{"repl", "--max-steps", "20"}, string(replEOF), replBanner + "... ... ...  42\nportugol> ", "", 0},
-		{"repl automatic", []string{"repl", "--max-steps", "20"}, string(replAuto), replBanner + "... ... ... ... ...  42\nportugol> ... ... ...  7\nportugol> ", "", 0},
+		{"repl automatic", []string{"repl", "--max-steps", "20"}, string(replAuto), replBanner + "... ... ... ... ... 42\n 42\nportugol> ... ... ...  7\nportugol> ", "", 0},
 		{"repl limit recovery", []string{"repl", "--max-steps", "20"}, replOversized, replBanner + "portugol> ... ... ...  7\nportugol> ", "<repl>:1:4194305: E900:", 1},
 		{"repl incomplete EOF", []string{"repl"}, "algoritmo \"unfinished\"\ninicio\n", replBanner + "... ... ", "<repl>:3:1: P001:", 1},
 	} {

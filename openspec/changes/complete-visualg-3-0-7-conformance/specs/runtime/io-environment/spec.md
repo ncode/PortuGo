@@ -11,20 +11,28 @@ Defines reference-compatible input, output, file-backed execution, random-input 
 - **WHEN** one `leia` statement receives multiple compatible destinations and the input contains the required values across oracle-supported whitespace or line boundaries
 - **THEN** each destination receives the corresponding converted value in order and unread input remains available
 
+#### Scenario: Preserve console lines and typed echo
+- **WHEN** destinations receive recorded console input lines, including spaces and empty character values
+- **THEN** each destination consumes one complete line, character text is preserved, and successful input echoes use plain integers, ten fractional digits for reals, `Verdadeiro`/`Falso` for logical values, or the exact character text, followed by LF
+
 #### Scenario: Reach console end of input
 - **WHEN** execution needs another value after the injected console input is exhausted
 - **THEN** it returns the positioned input diagnostic or reference-compatible fallback behavior without blocking an explicitly headless run
 
 ### Requirement: Input value conversion
-Input SHALL reproduce the reference syntax and range rules for integers, reals, logical values, and character values, including accepted decimal separators, boolean spellings and casing, leading signs, surrounding whitespace, and overflow. Invalid input SHALL follow the reference retry or failure behavior and SHALL not partially mutate the destination.
+Input SHALL reproduce the reference syntax and range rules for integers, reals, logical values, and character values, including accepted decimal separators, boolean spellings and casing, leading signs, surrounding whitespace, and overflow. Completed conversions SHALL replace the destination with the recorded result, including zero or an unsigned mantissa produced from malformed text. Read failures and project range guards SHALL preserve the prior value.
 
 #### Scenario: Read a real value
 - **WHEN** input uses a decimal spelling accepted by the reference for a real destination
 - **THEN** the destination receives the same numeric value
 
-#### Scenario: Reject an overflowing integer
-- **WHEN** input text exceeds the reference integer range
-- **THEN** the destination retains its prior value and the reference-compatible retry or positioned input diagnostic occurs
+#### Scenario: Apply recorded scalar conversions
+- **WHEN** console input contains malformed numeric text, an integer requiring narrowing, or logical text
+- **THEN** malformed numbers retain the unsigned mantissa before scaling or become zero without digits, integers truncate and narrow to signed 32-bit values, and logical input is true exactly when its first character is `v` or `V`
+
+#### Scenario: Guard an unsupported numeric conversion
+- **WHEN** the headless runtime encounters input exhaustion, a number outside the finite real range, or integer conversion outside the signed 64-bit range before narrowing
+- **THEN** it reports positioned `R004` as a project guard and retains the destination and preceding output
 
 ### Requirement: Exact output rendering
 `escreva` and `escreval` SHALL reproduce VisuAlg 3.0.7 item separation, implicit spaces, newline placement, logical casing, integer and real rendering, decimal separator, negative zero handling, and string output. Output SHALL be written in argument order without host-language formatting leakage.

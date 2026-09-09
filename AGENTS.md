@@ -172,7 +172,7 @@ interrompa     // break out of innermost loop
 
 ### 6.5 I/O
 
-- `leia(x, y, ...)` — read from stdin, one token per variable, types coerced or error
+- `leia(x, y, ...)` — read one input line per variable, preserving character input and applying the recorded scalar conversion rules
 - `escreva(...)` — write without newline
 - `escreval(...)` — write with newline
 - Format specifiers: `x:n` for width, `x:n:m` for real width and decimals
@@ -224,7 +224,7 @@ These cost time when wrong. Each must have a regression test.
 4. **Case-insensitivity.** `Soma`, `soma`, `SOMA` all refer to the same identifier. Canonicalize at the symbol-table boundary. Keywords likewise.
 5. **Encoding.** Real VisuAlg files are Windows-1252. Detect BOM / UTF-8 validity; otherwise assume CP1252 and transcode. Never read as raw bytes into a Go string and hope.
 6. **Number formatting on output.** Use the recorded deterministic profile in `docs/language.md`; compare fixture bytes exactly.
-7. **Reading multiple values with `leia`.** Each variable consumes one whitespace-delimited token from stdin, not one line. Match VisuAlg.
+7. **Reading multiple values with `leia`.** Each variable consumes one complete input line. Preserve spaces and empty character lines, share unread input across calls, and emit the recorded typed input echo.
 8. **`escolha` fall-through.** Does **not** fall through. Each `caso` is independent.
 9. **`interrompa` outside a loop** is a sema error, not a runtime error.
 10. **Uninitialized variables.** VisuAlg gives them zero values per type. Match this; do not error on read-before-write.

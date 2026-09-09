@@ -190,12 +190,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 - [ ] 10.1 Add failing byte-golden and diagnostic fixtures for CP1252 text, shared buffered reads, every scalar input form, invalid/overflowing input, exact mixed output, logical casing, decimal syntax, negative zero, width/precision boundaries, and invalid I/O statements.
 - [ ] 10.2 Consolidate BOM-aware UTF-8 and Windows-1252 decode/encode helpers with original-byte position mapping and explicit unsupported-character behavior.
-- [ ] 10.3 Implement one interpreter-owned buffered console input controller that preserves unread data across reads, bounds token/text buffering before allocation, and charges retries to the shared execution budget.
-- [ ] 10.4 Implement oracle-confirmed integer, real, logical, and character input parsing, whitespace/line consumption, retry/end-of-input behavior, and mutation only after successful conversion.
+- [x] 10.3 Implement one interpreter-owned buffered console input controller that preserves unread data across reads, bounds token/text buffering before allocation, and charges retries to the shared execution budget.
+- [x] 10.4 Implement oracle-confirmed integer, real, logical, and character input parsing, whitespace/line consumption, retry/end-of-input behavior, and mutation only after successful conversion.
 - [x] 10.5 Implement exact `escreva`/`escreval` separation, spacing, newline, string, integer, real, logical, decimal, and negative-zero output bytes.
 - [ ] 10.6 Implement width and precision expression evaluation, validation, alignment, padding, rounding/truncation, sign, and overflow-width behavior.
 - [ ] 10.7 Reject invalid `leia` destinations and invalid output format arity/types/ranges during parsing or semantic analysis wherever statically knowable.
-- [ ] 10.8 Return positioned `R004` diagnostics for runtime input exhaustion/conversion failures and preserve destination values and preceding output.
+- [x] 10.8 Return positioned `R004` diagnostics for runtime input exhaustion/conversion failures and preserve destination values and preceding output.
 - [ ] 10.9 Add CP1252 source/input/output fixtures, CLI subprocess byte checks, fake failing readers/writers, and an example covering reference formatting.
 - [ ] 10.10 Update `docs/language.md` and `CHANGELOG.md` with exact input, output, encoding, formatting, and failure behavior.
 - [ ] 10.11 Run focused source/I/O/sema/interpreter/CLI tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.

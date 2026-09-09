@@ -1,0 +1,7 @@
+Início da execução
+one two
+
+three four
+OUT:[one two][][three four]
+
+Fim da execução.

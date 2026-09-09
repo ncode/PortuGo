@@ -27,7 +27,7 @@ func TestSourceLimitRecovery(t *testing.T) {
 			ok, err := Run(interp.Options{Input: strings.NewReader(tt.rejected + good), Output: &out, MaxSteps: 100}, &stderr)
 			if err != nil || ok || strings.Count(stderr.String(), ": E900:") != 1 ||
 				strings.Count(stderr.String(), "<repl>:") != 1 ||
-				strings.Count(out.String(), " 7\n") != 1 || !strings.HasSuffix(out.String(), " 7\nportugol> ") {
+				strings.Count(out.String(), "7\n 7\n") != 1 || !strings.HasSuffix(out.String(), " 7\nportugol> ") {
 				t.Fatalf("ok=%t, error=%v, output=%q, diagnostics=%q", ok, err, &out, &stderr)
 			}
 		})

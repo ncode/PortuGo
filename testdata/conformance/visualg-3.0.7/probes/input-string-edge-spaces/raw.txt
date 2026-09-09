@@ -1,0 +1,5 @@
+Início da execução
+  a b  
+OUT:[  a b  ]
+
+Fim da execução.

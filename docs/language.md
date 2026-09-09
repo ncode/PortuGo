@@ -270,8 +270,38 @@ Diagnostic ordering when a file also contains malformed syntax remains pending.
 
 ## I/O
 
-`leia` consumes one whitespace-delimited token per destination. Real input may
-use either `,` or `.` as the decimal separator.
+`leia` consumes one complete line per destination. Character input preserves
+spaces and accepts an empty line. LF and CRLF terminate input lines; a final
+nonempty line also works without a terminator. Multiple destinations,
+consecutive reads, and reused interpreters share the same buffered input.
+In the REPL, the line immediately after `fimalgoritmo` is available to `leia`;
+an extra blank line is input data.
+
+Console input is echoed after conversion: integers use plain decimal text,
+reals use ten fractional digits, logical values use `Verdadeiro` or `Falso`,
+and characters retain their exact text. Each echo ends with LF and is separate
+from `escreva`/`escreval` formatting. Real input accepts either decimal separator.
+
+Numeric input ignores leading ASCII spaces and accepts a sign and decimal
+exponent. Malformed text retains the unsigned mantissa before decimal and
+exponent scaling: `1.5x`, `-1.5x`, and `1.5 ` each produce `15`. Empty input
+or a nonnumeric prefix produces zero. Integer input truncates the numeric
+result toward zero and narrows it to a signed 32-bit value, including wrapping:
+`2147483648` becomes `-2147483648` and `4294967297` becomes `1`.
+Numeric input discards the sign of zero. Invalid text such as `x7` replaces
+an existing numeric value with zero.
+
+Logical input is true exactly when its first character is `v` or `V`.
+Leading spaces, empty text, English `true`, and numeric `1` therefore produce
+false; `v`, `VERD`, and `Verdadeiro ` produce true.
+
+The headless runtime reports positioned `R004` for input exhaustion, a number
+outside the finite real range, or integer conversion outside the signed 64-bit
+range before narrowing. These are project guards. Failures retain the
+destination and preceding output; successful conversions replace the value
+before echoing it. An echo writer failure reports `R008` at that destination.
+The input line buffer is limited to 16 MiB and reports `R003` at the destination
+before growing beyond that limit.
 
 `escreva` writes without a newline and `escreval` writes with a newline.
 Either command may stand alone on its physical line: bare `escreva` emits

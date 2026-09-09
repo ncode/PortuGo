@@ -29,7 +29,7 @@ FIMALGORITMO // completed
 		if err != nil || !ok || stderr.Len() != 0 {
 			t.Fatalf("ok=%t, error=%v, diagnostics=%q", ok, err, &stderr)
 		}
-		if strings.Count(out.String(), " 42\n") != 1 || strings.Count(out.String(), " 7\n") != 1 ||
+		if strings.Count(out.String(), "42\n 42\n") != 1 || strings.Count(out.String(), " 7\n") != 1 ||
 			strings.Index(out.String(), " 42\n") >= strings.Index(out.String(), " 7\n") ||
 			!strings.HasSuffix(out.String(), " 7\nportugol> ") {
 			t.Fatalf("program or input submission order: %q", &out)

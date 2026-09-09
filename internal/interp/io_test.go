@@ -6,7 +6,39 @@ import (
 	"testing"
 
 	"github.com/ncode/portugol-go/internal/diag"
+	"github.com/ncode/portugol-go/internal/runtime"
 )
+
+func TestInputFailurePreservesValue(t *testing.T) {
+	for _, tt := range []struct{ name, kind, input string }{
+		{"exhaustion", "inteiro", ""},
+		{"integer range", "inteiro", "9223372036854775808\n"},
+		{"real range", "real", "1e9999\n"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			src := "algoritmo \"failure\"\nvar x: " + tt.kind + "\ninicio\nx <- 9\nescreva(\"BEFORE\")\nleia(x)\nfimalgoritmo"
+			p, info := analyzed(t, src)
+			var out bytes.Buffer
+			i := New(Options{Input: strings.NewReader(tt.input), Output: &out})
+			ds := i.Run(p, info)
+			if len(ds) != 1 || ds[0].Code != diag.RInput || int(ds[0].Pos) != strings.LastIndex(src, "x)") || out.String() != "BEFORE" {
+				t.Fatalf("diagnostics=%v output=%q, want positioned R004 and preceding output", ds, &out)
+			}
+			binding, ok := info.Binding(p.Globals[0].Names[0])
+			if !ok {
+				t.Fatal("missing binding")
+			}
+			cell, ok := i.global.lookup(binding.ID)
+			want := runtime.Value{Kind: runtime.IntegerValue, Int: 9}
+			if tt.kind == "real" {
+				want = runtime.Value{Kind: runtime.RealValue, Real: 9}
+			}
+			if !ok || cell.Value != want {
+				t.Fatal("failed input changed the destination")
+			}
+		})
+	}
+}
 
 func TestWriteStateAfterFailure(t *testing.T) {
 	failed, failedInfo := analyzed(t, "algoritmo \"failed\"\ninicio\nescreva(\"before\")\nescreval(1 / 0)\nfimalgoritmo")

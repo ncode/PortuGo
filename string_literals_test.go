@@ -56,6 +56,11 @@ func TestStringFormattingPreservesProgramName(t *testing.T) {
 
 func checkFormattingPreservesExecution(t *testing.T, src string, want []byte) {
 	t.Helper()
+	checkFormattingPreservesExecutionWithInput(t, src, nil, want)
+}
+
+func checkFormattingPreservesExecutionWithInput(t *testing.T, src string, input, want []byte) {
+	t.Helper()
 	var name string
 	for pass := range 2 {
 		_, toks, lexDiags := lexer.Scan("source.alg", src)
@@ -73,7 +78,7 @@ func checkFormattingPreservesExecution(t *testing.T, src string, want []byte) {
 			t.Fatal(ds)
 		}
 		var out bytes.Buffer
-		if ds := interp.New(interp.Options{Output: &out}).Run(prog, info); len(ds) != 0 {
+		if ds := interp.New(interp.Options{Input: bytes.NewReader(input), Output: &out}).Run(prog, info); len(ds) != 0 {
 			t.Fatal(ds)
 		}
 		if !bytes.Equal(out.Bytes(), want) {

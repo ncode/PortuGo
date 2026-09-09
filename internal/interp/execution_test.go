@@ -46,6 +46,7 @@ func TestExecutionDiagnostics(t *testing.T) {
 		{"loop", "var x: inteiro", "para x de 1 ate 2 passo 0 faca\nfimpara", "para", diag.RLoop, Options{}},
 		{"builtin", "", "escreval(aleatorio(0))", "aleatorio", diag.RBuiltin, Options{}},
 		{"output", "", "escreva(1)", "1)", diag.RHost, Options{Output: failingWriter{}}},
+		{"input echo", "var x: inteiro", "leia(x)", "x)", diag.RHost, Options{Input: strings.NewReader("7\n"), Output: failingWriter{}}},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			src := "algoritmo \"diagnostic\"\n" + tt.declarations + "\ninicio\n" + tt.body + "\nfimalgoritmo"
@@ -176,13 +177,13 @@ func (failingWriter) Write([]byte) (int, error) { return 0, errors.New("writer f
 func TestInputBufferOwnership(t *testing.T) {
 	p, info := analyzed(t, "algoritmo \"read\"\nvar s: caractere\ninicio\nleia(s)\nescreva(s)\nfimalgoritmo")
 	var out bytes.Buffer
-	i := New(Options{Input: strings.NewReader("first second"), Output: &out})
+	i := New(Options{Input: strings.NewReader("first\nsecond"), Output: &out})
 	for run := 0; run < 2; run++ {
 		if ds := i.Run(p, info); len(ds) != 0 {
 			t.Fatal(ds)
 		}
 	}
-	if out.String() != "firstsecond" {
+	if out.String() != "first\nfirstsecond\nsecond" {
 		t.Fatalf("lost buffered input: %q", &out)
 	}
 	i = New(Options{Input: io.LimitReader(strings.NewReader(strings.Repeat("x", 16<<20+1)), 16<<20+1)})

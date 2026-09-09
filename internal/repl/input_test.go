@@ -48,14 +48,14 @@ func TestBufferedSourceAtEOF(t *testing.T) {
 
 func TestSharedInputPreservesFinalProgram(t *testing.T) {
 	t.Parallel()
-	input := "algoritmo \"read\"\nvar x: inteiro\ninicio\nleia(x)\nescreval(x)\nfimalgoritmo\n\n42\n" +
+	input := "algoritmo \"read\"\nvar x: inteiro\ninicio\nleia(x)\nescreval(x)\nfimalgoritmo\n42\n" +
 		"algoritmo \"next\"\ninicio\nescreval(7)\nfimalgoritmo"
 	var out, stderr bytes.Buffer
 	ok, err := Run(interp.Options{Input: strings.NewReader(input), Output: &out, MaxSteps: 100}, &stderr)
 	if err != nil || !ok || stderr.Len() != 0 {
 		t.Fatalf("ok=%t, error=%v, diagnostics=%q", ok, err, &stderr)
 	}
-	if strings.Count(out.String(), " 42\n") != 1 || !strings.HasSuffix(out.String(), " 7\nportugol> ") {
+	if strings.Count(out.String(), "42\n 42\n") != 1 || !strings.HasSuffix(out.String(), " 7\nportugol> ") {
 		t.Fatalf("shared input lost or replayed: %q", &out)
 	}
 }
