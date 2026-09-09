@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Preserve physical LF/CRLF tokens and match recorded program-header rules:
+  require the name on the header line, ignore text after its closing quote,
+  and avoid cascading errors for invalid headers and main-body starts.
+  Add six reference observations and verify eleven header/declaration cases.
+
 - Accept the recorded `caracter` type alias and accented `função`, `então`,
   `senão`, `faça`, `até`, and `não` keywords. Preserve token spelling/positions
   and normalize parsed scalar types for declarations, parameters, and returns.

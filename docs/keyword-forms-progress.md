@@ -20,8 +20,9 @@ recorded type spelling `lógico` remains a positioned `P001` rejection.
 
 The reference rejects `caracter` as a variable or function name, and rejects
 `caractere` as a variable name. The longer `caracter_extra` identifier executes
-successfully and is verified. Exact diagnostic recovery for the three reserved
-name declarations remains pending under task 4.8.
+successfully and is verified. Exact diagnostic recovery for the reserved
+function-name declaration remains pending under task 4.8. The two variable-name
+rejections are now verified by the program-header regressions.
 
 Other newly recorded grammar forms remain pending under task 4.6. The accepted
 choice-header forms and the rejected `ate_que`/`até_que` statements are retained

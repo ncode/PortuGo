@@ -80,6 +80,7 @@ const (
 	NAO
 	XOU
 	MOD
+	NEWLINE
 )
 
 // Token is one item in the source stream.
@@ -157,6 +158,7 @@ var kindNames = map[Kind]string{
 	FIMPARA: "fimpara", INTERROMPA: "interrompa", LEIA: "leia", ESCREVA: "escreva",
 	ESCREVAL: "escreval", VERDADEIRO: "verdadeiro", FALSO: "falso", E: "e", OU: "ou",
 	NAO: "nao", XOU: "xou", MOD: "mod",
+	NEWLINE: "NEWLINE",
 }
 
 // Lookup returns the keyword kind for ident, or IDENT.

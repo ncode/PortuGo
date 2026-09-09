@@ -30,21 +30,27 @@ type parser struct {
 }
 
 func (p *parser) parseProgram() *ast.Program {
-	start := p.expect(token.ALGORITMO, "expected algoritmo")
-	name := ""
-	if p.peek().Kind == token.STRING {
-		name = p.advance().Text
-	} else {
-		p.error(p.peek(), "expected algorithm name string")
+	start := p.peek()
+	prog := &ast.Program{At: start.Pos}
+	if !p.match(token.ALGORITMO) {
+		p.error(start, "expected algoritmo")
+		return prog
 	}
-	prog := &ast.Program{At: start.Pos, Name: name}
+	if p.pos >= len(p.tokens) || p.tokens[p.pos].Kind != token.STRING {
+		p.error(start, "expected algorithm name string on the same line")
+		return prog
+	}
+	prog.Name = p.advance().Text
 	if p.peek().Kind == token.VAR {
 		prog.Globals = p.parseVarBlock()
 	}
 	for p.peek().Kind == token.PROCEDIMENTO || p.peek().Kind == token.FUNCAO {
 		prog.Subs = append(prog.Subs, p.parseSubprogram())
 	}
-	p.expect(token.INICIO, "expected inicio")
+	if !p.match(token.INICIO) {
+		p.error(p.peek(), "expected inicio")
+		return prog
+	}
 	prog.Body = p.parseStmtList(stopSet(token.FIMALGORITMO))
 	p.expect(token.FIMALGORITMO, "expected fimalgoritmo")
 	return prog
@@ -415,8 +421,9 @@ func (p *parser) match(kind token.Kind) bool {
 
 func (p *parser) advance() token.Token {
 	tok := p.peek()
-	if p.pos < len(p.tokens) {
-		p.pos++
+	i := p.peekIndex(0)
+	if i < len(p.tokens) {
+		p.pos = i + 1
 	}
 	return tok
 }
@@ -426,11 +433,25 @@ func (p *parser) peek() token.Token {
 }
 
 func (p *parser) peekN(n int) token.Token {
-	i := p.pos + n
+	i := p.peekIndex(n)
 	if i >= 0 && i < len(p.tokens) {
 		return p.tokens[i]
 	}
 	return token.Token{Kind: token.EOF}
+}
+
+func (p *parser) peekIndex(n int) int {
+	i := p.pos
+	for i < len(p.tokens) {
+		if p.tokens[i].Kind != token.NEWLINE {
+			if n == 0 {
+				return i
+			}
+			n--
+		}
+		i++
+	}
+	return i
 }
 
 func (p *parser) error(tok token.Token, msg string) {

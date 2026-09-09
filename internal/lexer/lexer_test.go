@@ -27,16 +27,21 @@ func TestScanGolden(t *testing.T) {
 	want := strings.Join([]string{
 		"algoritmo \"algoritmo\" @1:1",
 		"STRING \"x\" @1:11",
+		"NEWLINE \"\\n\" @1:14",
 		"inicio \"inicio\" @2:1",
+		"NEWLINE \"\\n\" @2:7",
 		"IDENT \"x\" @3:1",
 		"<- \"<-\" @3:3",
 		"NUMBER \"1\" @3:6",
 		"+ \"+\" @3:8",
 		"NUMBER \"2\" @3:10",
+		"NEWLINE \"\\n\" @3:11",
 		"IDENT \"y\" @4:1",
 		"<- \":=\" @4:3",
 		"NUMBER \"3\" @4:6",
+		"NEWLINE \"\\n\" @4:7",
 		"fimalgoritmo \"fimalgoritmo\" @5:1",
+		"NEWLINE \"\\n\" @5:13",
 	}, "\n")
 	if got != want {
 		t.Fatalf("tokens mismatch\nwant:\n%s\n\ngot:\n%s", want, got)
@@ -86,10 +91,10 @@ func TestCommentLinePositions(t *testing.T) {
 			if len(ds) != 0 {
 				t.Fatalf("ending %q, prefix %q: %v", ending, comment, ds)
 			}
-			if len(tokens) != 6 || tokens[1].Kind != token.ESCREVAL {
+			if len(tokens) != 8 || tokens[3].Kind != token.ESCREVAL {
 				t.Fatalf("ending %q, prefix %q: tokens = %v", ending, comment, tokens)
 			}
-			if pos := file.Position(tokens[1].Pos); pos.Line != 3 || pos.Column != 3 {
+			if pos := file.Position(tokens[3].Pos); pos.Line != 3 || pos.Column != 3 {
 				t.Fatalf("ending %q, prefix %q: position = %v, want 3:3", ending, comment, pos)
 			}
 		}
@@ -122,6 +127,30 @@ func TestRecordedKeywordSpellings(t *testing.T) {
 				t.Fatalf("%q: position = %v, want 1:3", spelling, pos)
 			}
 		}
+	}
+}
+
+func TestPhysicalNewlines(t *testing.T) {
+	src := "inicio\r\n// comentário\r\n\n  escreval(1)\n\"unterminated\r\nnext"
+	file, tokens, ds := Scan("lines.alg", src)
+	if len(ds) != 1 || file.Position(ds[0].Pos).Line != 5 {
+		t.Fatalf("diagnostics = %v, want unterminated string on line 5", ds)
+	}
+	var endings []string
+	for _, tok := range tokens {
+		if tok.Kind.String() != "NEWLINE" {
+			continue
+		}
+		endings = append(endings, tok.Text)
+		if pos := file.Position(tok.Pos); pos.Line != len(endings) {
+			t.Fatalf("newline position = %v, want line %d", pos, len(endings))
+		}
+		if got := src[int(tok.Pos) : int(tok.Pos)+len(tok.Text)]; got != tok.Text {
+			t.Fatalf("newline text = %q, source bytes = %q", tok.Text, got)
+		}
+	}
+	if got := strings.Join(endings, "|"); got != "\r\n|\r\n|\n|\n|\r\n" {
+		t.Fatalf("newlines = %q", endings)
 	}
 }
 

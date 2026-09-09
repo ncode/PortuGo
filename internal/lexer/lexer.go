@@ -56,12 +56,17 @@ func (s *scanner) skipSpaceAndComments() {
 	for s.offset < len(s.src) {
 		r := s.peek()
 		switch r {
-		case ' ', '\t', '\r':
+		case ' ', '\t':
 			s.advance()
-		case '\n':
+		case '\r', '\n':
+			start := s.offset
 			s.advance()
+			if r == '\r' && !s.match('\n') {
+				continue
+			}
 			s.file.AddLine(s.offset)
 			s.lineStart = true
+			s.emit(token.NEWLINE, s.src[start:s.offset], token.Pos(start))
 		case '/', '*':
 			if !s.lineStart && (r != '/' || s.peekNext() != '/') {
 				return
@@ -77,6 +82,9 @@ func (s *scanner) skipSpaceAndComments() {
 
 func (s *scanner) skipLine() {
 	for s.offset < len(s.src) && s.peek() != '\n' {
+		if s.peek() == '\r' && s.peekNext() == '\n' {
+			return
+		}
 		s.advance()
 	}
 }
@@ -122,12 +130,24 @@ func (s *scanner) scanString(start int) {
 		r := s.advance()
 		switch r {
 		case '"':
+			header := len(s.tokens) > 0 && s.tokens[len(s.tokens)-1].Kind == token.ALGORITMO
 			s.emit(token.STRING, string(text), token.Pos(start))
+			if header {
+				s.skipLine()
+			}
 			return
-		case '\n':
+		case '\r', '\n':
+			newline := s.offset - 1
+			if r == '\r' {
+				if !s.match('\n') {
+					text = append(text, r)
+					continue
+				}
+			}
 			s.file.AddLine(s.offset)
 			s.lineStart = true
 			s.error(token.Pos(start), "unterminated string literal")
+			s.emit(token.NEWLINE, s.src[newline:s.offset], token.Pos(newline))
 			return
 		case '/':
 			if s.peek() == '/' {

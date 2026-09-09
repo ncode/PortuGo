@@ -108,7 +108,7 @@ func TestTypeDepthLimit(t *testing.T) {
 
 func TestLimitKeepsEarlierDiagnostics(t *testing.T) {
 	for _, expr := range []string{strings.Repeat("(", 300) + "1" + strings.Repeat(")", 300), strings.Repeat("1+", 300) + "1"} {
-		_, toks, ds := lexer.Scan("invalid.alg", "algoritmo\ninicio\nescreva("+expr+")\nfimalgoritmo")
+		_, toks, ds := lexer.Scan("invalid.alg", "algoritmo \"invalid\"\nvar\nv: vetor[2..1] de inteiro\ninicio\nescreva("+expr+")\nfimalgoritmo")
 		if len(ds) != 0 {
 			t.Fatal(ds)
 		}

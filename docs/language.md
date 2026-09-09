@@ -34,6 +34,13 @@ inicio
 fimalgoritmo
 ```
 
+The quoted algorithm name must follow `algoritmo` on the same physical line.
+Text after the closing quote on that line is ignored, including another quoted
+string or an unmatched quote. The executable body starts on a later line.
+A missing or misplaced header produces one `P001` diagnostic; parsing stops
+when the program header or the required main `inicio` is invalid. Formatting
+emits only the algorithm name on the header line and discards ignored header text.
+
 The `var` block may be omitted or left empty. Top-level `procedimento` and
 `funcao` declarations must appear before `inicio`. Recorded words and statements
 after `fimalgoritmo` are ignored during execution. Formatting currently discards
