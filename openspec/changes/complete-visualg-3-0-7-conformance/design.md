@@ -111,6 +111,13 @@ type Host interface {
 
 `Breakpoint` and `DisplayState` are closed typed values that carry only oracle-confirmed options, including foreground/background color and visibility state. Newly discovered host commands extend the typed interface or these closed values only after an oracle recording. The default headless host uses the system clock and delay, makes UI-only breakpoint, clear-screen, and display operations non-blocking no-ops, and emits no terminal escape bytes. Fakes record calls and control time. Host errors become `R008` at the originating statement.
 
+The recorded display slice exposes seven RGB colors and a foreground/background
+selector through `DisplayState`; visibility remains unqualified. `limpatela`
+and `mudacor` have dedicated statement nodes. They preserve the captured text
+stream while default host effects remain no-ops. Display keywords in expression
+context use a no-value node and do not call the host. Color arguments must share
+the command's physical line, and trailing command syntax is ignored as recorded.
+
 Alternative considered: call `time`, terminal functions, and global randomness directly. That would make conformance tests slow or nondeterministic and would entangle GUI assumptions with the language runtime.
 
 ### 4. Expand the AST around ordered declarations and explicit optionality

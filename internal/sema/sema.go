@@ -253,6 +253,10 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		}
 	case *ast.CallStmt:
 		c.checkCall(s.Call, true)
+	case *ast.ColorStmt:
+		if c.checkColorArg(s.Color) {
+			c.checkColorArg(s.Target)
+		}
 	case *ast.IfStmt:
 		c.requireBool(s.Cond)
 		c.checkStmts(s.Then)
@@ -337,6 +341,8 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 	defer func() { c.info.types[expr] = typ }()
 	switch e := expr.(type) {
+	case *ast.NoValueExpr:
+		return runtime.Type{Kind: runtime.VoidType}
 	case *ast.LiteralExpr:
 		switch e.Kind {
 		case ast.IntLiteral:

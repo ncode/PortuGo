@@ -37,6 +37,8 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 		}
 	}()
 	switch e := expr.(type) {
+	case *ast.NoValueExpr:
+		return runtime.Value{Kind: runtime.VoidValue}, nil
 	case *ast.LiteralExpr:
 		if len(e.Str) > maxTextBytes {
 			return value, failure(e.At, diag.RStorage, fmt.Errorf("text size limit exceeded"))

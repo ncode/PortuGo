@@ -126,6 +126,13 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		return control{}, i.execRead(s)
 	case *ast.WriteStmt:
 		return control{}, i.execWrite(s)
+	case *ast.ClearStmt:
+		if err := i.options.Host.ClearScreen(); err != nil {
+			return control{}, diag.Diagnostic{Code: diag.RHost, Pos: s.Start(), Message: "cannot clear display", Cause: err}
+		}
+		return control{}, nil
+	case *ast.ColorStmt:
+		return control{}, i.execColor(s)
 	default:
 		return control{}, fmt.Errorf("unsupported statement %T", stmt)
 	}

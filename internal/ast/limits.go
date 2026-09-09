@@ -96,6 +96,9 @@ func (c *limitChecker) stmts(stmts []Stmt, depth int) {
 			c.expr(s.Value, next)
 		case *CallStmt:
 			c.expr(s.Call, next)
+		case *ColorStmt:
+			c.expr(s.Color, next)
+			c.expr(s.Target, next)
 		case *IfStmt:
 			c.expr(s.Cond, next)
 			c.stmts(s.Then, next)

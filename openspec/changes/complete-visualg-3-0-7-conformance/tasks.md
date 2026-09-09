@@ -325,7 +325,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 15.4 Implement pause and debug/breakpoint commands through typed `Host.Breakpoint` events with non-blocking default headless behavior.
 - [ ] 15.5 Complete echo commands and state transitions not owned by `arquivo` or random-input groups, including oracle-confirmed output text.
 - [ ] 15.6 Implement chronometer start/query/reset/stop semantics through `Host.Now`, including deterministic elapsed calculations and clock-edge cases.
-- [ ] 15.7 Implement clear-screen and color/display operations through `Host.ClearScreen` and `Host.SetDisplay`, preserving call order and making UI-only default-headless effects no-ops.
+- [x] 15.7 Implement clear-screen and color/display operations through `Host.ClearScreen` and `Host.SetDisplay`, preserving call order and making UI-only default-headless effects no-ops.
 - [ ] 15.8 Implement every other oracle-confirmed host command with a typed operation and regression evidence; do not add generic string-based host dispatch.
 - [ ] 15.9 Return positioned `R008` for host failures and validate that headless execution emits no accidental terminal escapes, blocks, or platform-specific errors.
 - [ ] 15.10 Add fake clock/host tables, CLI headless fixtures, canonical-print coverage, and an example demonstrating portable environment-command behavior.

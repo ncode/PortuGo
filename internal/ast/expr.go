@@ -8,6 +8,12 @@ type Expr interface {
 	Start() token.Pos
 }
 
+// NoValueExpr is a display keyword used as an expression, without a host effect.
+type NoValueExpr struct{ Keyword token.Token }
+
+func (*NoValueExpr) exprNode()          {}
+func (e *NoValueExpr) Start() token.Pos { return e.Keyword.Pos }
+
 // LiteralKind identifies the concrete literal value field.
 type LiteralKind int
 

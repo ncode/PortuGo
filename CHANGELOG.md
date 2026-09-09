@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add recorded screen-clear and color commands through the typed host interface,
+  preserving headless output and reporting positioned host failures. Verify
+  original and formatted execution of three more bundled display examples.
+
 - Resolve integer constant vector bounds before allocation, including negative
   bounds and per-call local layouts. Preserve prior output on a later invalid
   declaration, reject recorded inline vector parameter/result types, and guard

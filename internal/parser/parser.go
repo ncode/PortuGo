@@ -297,6 +297,12 @@ func (p *parser) parseStmt() ast.Stmt {
 		return p.parseRead()
 	case token.ESCREVA, token.ESCREVAL:
 		return p.parseWrite()
+	case token.LIMPATELA:
+		s := &ast.ClearStmt{At: p.advance().Pos}
+		p.skipLine()
+		return s
+	case token.MUDACOR:
+		return p.parseColor()
 	default:
 		p.error(p.advance(), "expected statement")
 		p.skipLine()

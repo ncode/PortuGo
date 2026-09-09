@@ -28,8 +28,9 @@ execution adapter in a subprocess, with the same runtime guards. The adapter
 uses a fixed PCG seed, a clock starting at the Unix epoch, and recorded,
 nonblocking host operations. State JSON maps canonical global names to scalar
 values or vector objects with `bounds` and flattened `values`. Host JSON is an
-ordered array of typed operation records; no language host commands are yet
-implemented, so current program traces are empty. Each channel is byte-compared
+ordered array of typed operation records. Recorded display commands emit
+`clearScreen` or `display` events; display values contain an RGB `Color` integer
+and a `Background` boolean. Each channel is byte-compared
 with its hashed expected artifact. Observation files are capped at 1 MiB.
 State/host probes require the default current-checkout candidate so an unrelated
 external executable cannot be credited with the adapter's observations.

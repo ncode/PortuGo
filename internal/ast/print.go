@@ -167,6 +167,10 @@ func (p *printer) printStmt(stmt Stmt) {
 		p.line("fimpara")
 	case *BreakStmt:
 		p.line("interrompa")
+	case *ClearStmt:
+		p.line("limpatela")
+	case *ColorStmt:
+		p.line("mudacor(%s, %s)", exprString(s.Color), exprString(s.Target))
 	case *ReturnStmt:
 		p.line("retorne %s", exprString(s.Value))
 	case *ReadStmt:
@@ -228,6 +232,8 @@ func writeArgString(arg WriteArg) string {
 
 func exprString(expr Expr) string {
 	switch e := expr.(type) {
+	case *NoValueExpr:
+		return e.Keyword.Kind.String()
 	case *LiteralExpr:
 		switch e.Kind {
 		case IntLiteral:

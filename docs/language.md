@@ -454,6 +454,38 @@ numeric fields expand if needed. Strings are left-aligned and truncated to a
 positive width. Logical output is ` VERDADEIRO` or ` FALSO`, including its
 leading space; field widths on logical values are rejected.
 
+## Display commands
+
+`limpatela` requests one screen clear. It preserves the program's captured text
+output. `mudacor(color, target)` selects a foreground (`"frente"`) or background
+(`"fundos"`, plural) color from character expressions, evaluated left to right.
+Color and target names are case-insensitive. An unknown target, including the
+singular `"fundo"`, makes no display change.
+
+The accepted colors are `preto` (`#000000`), `azul` (`#0000FF`), `verde`
+(`#008000`), `vermelho` (`#FF0000`), `roxo` (`#800080`), `amarelo` (`#FFFF00`),
+and `branco` (`#FFFFFF`). Unknown colors leave the display unchanged. Leading
+or trailing spaces are significant in both arguments.
+
+`limpatela` ignores the remaining tokens on its physical line, including
+parentheses and apparent arguments. `mudacor` requires an opening parenthesis
+and two character expressions separated by a comma on the same physical line;
+it ignores the rest of that line after the second expression, including extra
+arguments or a missing closing parenthesis. Ignored expressions are not evaluated.
+Missing values and malformed forms produce the recorded `P001` or `E001`.
+
+In an expression, either display keyword produces no value and has no host
+effect; apparent call arguments are ignored. This discards the containing write
+as with other no-value expressions. Canonical formatting removes the ignored
+syntax. The remaining mixed-type expression and diagnostic-timing differences
+are listed in the [display recording report](display-commands-progress.md).
+
+Both commands use the injected host. The default headless host makes their UI
+effects silent, nonblocking no-ops without emitting terminal escape bytes.
+Injected failures return `R008` at the command, retain preceding output, stop
+later statements, and retain the underlying error without rendering its details.
+The [display example](../examples/display.alg) demonstrates portable output.
+
 ## Built-ins
 
 Numeric built-ins include `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`,
@@ -650,7 +682,8 @@ successful result for the same unchanged AST and returns positioned diagnostics.
 Nil input/output mean empty input and discarded output; the working directory
 resolves at construction. Hosts and randomness can be injected. The default
 headless host uses real time and silent, nonblocking UI operations. Display
-options and language host commands await reference recordings.
+commands expose typed foreground/background color changes and screen clears;
+other language host commands remain pending reference qualification.
 
 ## Out Of Scope
 

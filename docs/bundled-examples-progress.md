@@ -1,6 +1,6 @@
 # Bundled example progress
 
-The corpus records 37 original programs from the official VisuAlg 3.0.7
+The corpus records 42 original programs from the official VisuAlg 3.0.7
 distribution. Their source bytes match the sizes and SHA-256 hashes in the
 73-file catalog. Each observation links its catalog ID, exact source, reference
 outcome, and owning tasks in the conformance manifest.
@@ -9,8 +9,8 @@ The evidence gate checks catalog IDs, source hashes and sizes, classifications,
 recorded acceptance, and reviewed exclusion reasons. Pending entries still fail
 the missing-evidence gate; classifications do not grant them an exemption.
 
-Thirty programs complete successfully in the reference. All thirty match the
-CLI byte for byte and have permanent tests for original and formatted execution.
+Thirty-five programs complete successfully in the reference. Thirty-three match
+the CLI byte for byte and have permanent tests for original and formatted execution.
 The fixed-input cases cover combinations, factorials, minimum selection, means,
 prime decomposition, base conversion, vector sorting, remainders, reversed text,
 perfect numbers, square-root approximation, and text choices. Each input is
@@ -21,6 +21,12 @@ recordings with the accented `fimfunção` terminator and trailing declaration
 semicolon. The accepted `escolha.alg` program now also matches its recording
 with inclusive `ate` case ranges. A bundled-file classification alone does not
 claim CLI support.
+
+The display slice also verifies `CARACOL.ALG`, `Caracol2.ALG`, and `graus.alg`
+with their original screen-clear and color commands. `randomicos.alg.ALG` and
+`RELACIONAR.ALG` now have completed reference recordings, but their random output
+remains pending a domain-based replay contract. Their recorded samples do not
+establish portable exact sequences.
 
 The `randomicos.alg` example produces no output; its recording establishes
 successful execution, not an exact random sequence or a complete randomness

@@ -1,0 +1,6 @@
+Início da execução
+amarelo
+frente
+DONE
+
+Fim da execução.

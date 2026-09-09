@@ -58,6 +58,13 @@ func (p *parser) parsePrimary() ast.Expr {
 			return p.parseCall()
 		}
 		return p.parseDesignator()
+	case token.LIMPATELA, token.MUDACOR:
+		if p.peekN(1).Kind == token.LPAREN {
+			p.parseCall() // The reference consumes this syntax without evaluating it.
+		} else {
+			p.advance()
+		}
+		return &ast.NoValueExpr{Keyword: tok}
 	case token.LPAREN:
 		p.advance()
 		expr := p.parseExpr(0)
@@ -71,7 +78,7 @@ func (p *parser) parsePrimary() ast.Expr {
 }
 
 func (p *parser) parseCall() *ast.CallExpr {
-	name := p.expect(token.IDENT, "expected call name")
+	name := p.advance()
 	if strings.EqualFold(name.Text, "pi") {
 		p.error(name, "pi does not accept parentheses")
 	}

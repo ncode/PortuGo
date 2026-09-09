@@ -26,9 +26,25 @@ type RandomSource interface {
 // Breakpoint identifies the source location of a host pause request.
 type Breakpoint struct{ Pos token.Pos }
 
-// DisplayState carries display options once their syntax is reference-verified.
-// No display options are exposed by the currently supported language.
-type DisplayState struct{}
+// Color is a reference display color encoded as 0xRRGGBB.
+type Color uint32
+
+// Recorded display colors.
+const (
+	Black  Color = 0x000000
+	Blue   Color = 0x0000ff
+	Green  Color = 0x008000
+	Red    Color = 0xff0000
+	Purple Color = 0x800080
+	Yellow Color = 0xffff00
+	White  Color = 0xffffff
+)
+
+// DisplayState changes one color without replacing the other display settings.
+type DisplayState struct {
+	Color      Color
+	Background bool
+}
 
 // Host implements the interpreter's typed environment operations.
 type Host interface {

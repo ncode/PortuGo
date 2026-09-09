@@ -95,6 +95,7 @@ func FuzzParser(f *testing.F) {
 		"algoritmo \"x\"\ninicio\nescreval((1+2)^3)\nfimalgoritmo",
 		"algoritmo \"x\"\ninicio\nse entao senao fimse\nfimalgoritmo",
 		"algoritmo \"x\"\ninicio\nescolha 2\ncaso 1 ate 3, 5\nescreval(1)\nfimescolha\nfimalgoritmo",
+		"algoritmo \"x\"\ninicio\nlimpatela()\nmudacor(\"amarelo\",\"frente\", ignored)\nfimalgoritmo",
 		"\xff\x00\"",
 	} {
 		f.Add(seed)

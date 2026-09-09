@@ -125,6 +125,15 @@ Pause, debug or breakpoint, clear-screen, color or display, clock, and every add
 - **WHEN** a valid clear-screen command executes with the default headless host
 - **THEN** execution continues without terminal escape leakage or failure and subsequent ordinary output is preserved
 
+#### Scenario: Select a recorded display color
+- **WHEN** `mudacor` receives two character expressions on the command line
+- **THEN** they are evaluated left to right, the seven recorded color names and `frente`/`fundos` targets are matched without case distinctions or whitespace trimming, and recognized pairs produce one typed host event
+- **AND** unknown names preserve display settings, trailing syntax is ignored, and host failures return positioned `R008` without rendering the underlying error details
+
+#### Scenario: Use a display keyword as a value
+- **WHEN** `limpatela` or `mudacor` occurs in an expression with or without apparent call arguments
+- **THEN** it produces no value without a host event or argument evaluation, and a containing output statement follows the recorded no-value discard rule
+
 #### Scenario: Execute a breakpoint with a fake host
 - **WHEN** a debug or pause command executes with a recording host
 - **THEN** the host receives one typed operation at the correct point between surrounding language effects

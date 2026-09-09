@@ -139,3 +139,19 @@ type WriteStmt struct {
 
 func (*WriteStmt) stmtNode()          {}
 func (s *WriteStmt) Start() token.Pos { return s.At }
+
+// ClearStmt clears the host's display without discarding program output.
+type ClearStmt struct{ At token.Pos }
+
+func (*ClearStmt) stmtNode()          {}
+func (s *ClearStmt) Start() token.Pos { return s.At }
+
+// ColorStmt selects a foreground or background display color.
+type ColorStmt struct {
+	At     token.Pos
+	Color  Expr
+	Target Expr
+}
+
+func (*ColorStmt) stmtNode()          {}
+func (s *ColorStmt) Start() token.Pos { return s.At }

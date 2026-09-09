@@ -64,6 +64,10 @@ func TestStructuralLimits(t *testing.T) {
 	}{
 		{"flat boundary", "escreva(" + strings.Repeat("1+", 254) + "1)", false},
 		{"flat excessive", "escreva(" + strings.Repeat("1+", 255) + "1)", true},
+		{"color boundary", `mudacor(` + strings.Repeat(`"x"+`, 254) + `"x","frente")`, false},
+		{"color excessive", `mudacor(` + strings.Repeat(`"x"+`, 255) + `"x","frente")`, true},
+		{"display target boundary", `mudacor("amarelo",` + strings.Repeat(`"x"+`, 254) + `"x")`, false},
+		{"display target excessive", `mudacor("amarelo",` + strings.Repeat(`"x"+`, 255) + `"x")`, true},
 		{"case lower boundary", "escolha 1\ncaso " + strings.Repeat("1+", 254) + "1 ate 5\nfimescolha", false},
 		{"case lower excessive", "escolha 1\ncaso " + strings.Repeat("1+", 255) + "1 ate 5\nfimescolha", true},
 		{"case upper boundary", "escolha 1\ncaso 1 ate " + strings.Repeat("1+", 254) + "1\nfimescolha", false},

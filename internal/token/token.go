@@ -74,6 +74,8 @@ const (
 	LEIA
 	ESCREVA
 	ESCREVAL
+	LIMPATELA
+	MUDACOR
 	VERDADEIRO
 	FALSO
 	E
@@ -135,6 +137,8 @@ var keywords = map[string]Kind{
 	"leia":            LEIA,
 	"escreva":         ESCREVA,
 	"escreval":        ESCREVAL,
+	"limpatela":       LIMPATELA,
+	"mudacor":         MUDACOR,
 	"verdadeiro":      VERDADEIRO,
 	"falso":           FALSO,
 	"e":               E,
@@ -161,6 +165,7 @@ var kindNames = map[Kind]string{
 	FIMENQUANTO: "fimenquanto", REPITA: "repita", ATE: "ate", PARA: "para", PASSO: "passo",
 	FIMPARA: "fimpara", INTERROMPA: "interrompa", LEIA: "leia", ESCREVA: "escreva",
 	ESCREVAL: "escreval", VERDADEIRO: "verdadeiro", FALSO: "falso", E: "e", OU: "ou",
+	LIMPATELA: "limpatela", MUDACOR: "mudacor",
 	NAO: "nao", XOU: "xou", MOD: "mod",
 	NEWLINE: "NEWLINE",
 }
