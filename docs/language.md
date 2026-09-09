@@ -75,7 +75,15 @@ is rejected with `E001`. Element assignment remains supported. Recorded vectors
 with 500, 501, 5000, and 5001 elements execute successfully; these observations
 do not establish a universal storage maximum. See the
 [vector example](../examples/vector_bounds.alg). Aggregate parameter behavior
-and defensive handling of corrupted internal layouts remain under validation.
+and allocation accounting remain under validation.
+
+Storage lookup checks layout metadata and the exact backing length before
+computing an offset. Invalid ranges, overflowing dimension products, and
+inconsistent backing storage produce a controlled failure. Interpreter reads,
+writes, input, and reference arguments report this as `R003` at the indexing
+expression without changing elements or consuming input. These corruption
+checks are project safeguards; malformed Go storage objects have no source
+language counterpart.
 
 ## String Literals
 

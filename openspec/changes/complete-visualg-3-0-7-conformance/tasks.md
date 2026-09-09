@@ -145,8 +145,8 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
 - [ ] 7.3 Implement oracle-recorded slot accounting for scalars, vectors, accepted declaration contexts, and records only if confirmed, with checked addition and multiplication.
 - [ ] 7.4 Reject invalid bounds, unresolved constants, reversed ranges, separately confirmed storage restrictions, and arithmetic overflow before runtime allocation with positioned syntax or semantic diagnostics; preserve recorded accepted sizes beyond 500 slots.
 - [ ] 7.5 Refactor vector storage to use resolved layouts, preserve all declared offsets, allocate only checked sizes, and initialize elements recursively.
-- [ ] 7.6 Implement overflow-safe row/dimension flattening and validate dimensionality plus each bound before every read or write, including the recorded lower-bound default for an omitted second index.
-- [ ] 7.7 Return `R003` at the indexing expression for runtime index/storage failures and guarantee no backing access or partial mutation after failure.
+- [x] 7.6 Implement overflow-safe row/dimension flattening and validate dimensionality plus each bound before every read or write, including the recorded lower-bound default for an omitted second index.
+- [x] 7.7 Return `R003` at the indexing expression for runtime index/storage failures and guarantee no backing access or partial mutation after failure.
 - [ ] 7.8 Add property/table tests for flattening, bounds, slot totals, defensive corrupted layouts, and maximum-size allocations.
 - [x] 7.9 Extend canonical printer coverage and add an example using confirmed vector dimensions and non-one bounds; constants and records appear only if independently accepted.
 - [ ] 7.10 Update `docs/language.md` and `CHANGELOG.md` with bound expressions, dimension order, recorded storage restrictions, independent project guards, and defensive failure behavior.

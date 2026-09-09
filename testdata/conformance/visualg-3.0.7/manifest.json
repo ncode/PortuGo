@@ -710,7 +710,8 @@
       "probes": [
         "project.vector-storage",
         "vector-second-index-oob",
-        "vector-negative-index"
+        "vector-negative-index",
+        "project.vector-storage"
       ]
     },
     {
@@ -9147,26 +9148,6 @@
       }
     },
     {
-      "id": "project.vector-storage",
-      "ownerGroup": 7,
-      "timeoutMS": 5000,
-      "tasks": [
-        "7.6",
-        "7.7",
-        "7.8"
-      ],
-      "evidence": {
-        "state": "not-applicable",
-        "review": {
-          "reason": "Malformed Go storage layouts cannot be injected through reference source programs. These project guards are tested with synthetic storage objects; recorded ordinary bounds failures remain separately required.",
-          "link": "docs/conformance-evidence-baseline.md#Project tooling"
-        }
-      },
-      "implementation": {
-        "state": "pending"
-      }
-    },
-    {
       "id": "randi-empty",
       "ownerGroup": 13,
       "tasks": [
@@ -16900,6 +16881,31 @@
         },
         "tests": [
           "vector_reference_test.go#TestRecordedVectorPrograms"
+        ]
+      }
+    },
+    {
+      "id": "project.vector-storage",
+      "ownerGroup": 7,
+      "timeoutMS": 5000,
+      "tasks": [
+        "7.6",
+        "7.7",
+        "7.8"
+      ],
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "Malformed Go storage layouts cannot be injected through reference source programs. These project guards are tested with synthetic storage objects; recorded ordinary bounds failures remain separately required.",
+          "link": "docs/conformance-project-evidence.md#Defensive vector storage"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "internal/runtime/vector_test.go#TestVectorCellRejectsInvalidStorage",
+          "internal/runtime/vector_test.go#TestVectorCellOffsets",
+          "internal/interp/storage_test.go#TestCorruptedVectorStorage"
         ]
       }
     }

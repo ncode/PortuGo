@@ -216,3 +216,24 @@ replays pass. Native Windows build, vet, 732 tests, both 30-second fuzz checks,
 and all 199 CLI replays pass. All 112 transported branch files match the local
 snapshot before this validation note. The evidence gate reports the 108 missing
 mappings and no other errors.
+
+The defensive storage slice validates vector metadata, element kinds, dimension
+products, and exact backing lengths before offset arithmetic. Direct regression
+tests cover malformed layouts, both integer extremes, bounds, and every element
+of small matrices. Interpreter regressions inject truncated storage before a
+read, assignment, input, or reference argument; all return positioned `R003`
+without a panic, element changes, lost preceding output, or consumed input.
+
+These synthetic corruption cases are linked as `project.vector-storage`, with
+an explicit reference non-applicability rationale. All reference recordings and
+expectations remain unchanged. Tasks 7.6 and 7.7 are complete; allocation and
+slot-accounting work remains pending. The corpus retains 199 verified reference
+cases and 36 pending cases, with 108 inventory mappings still missing.
+
+Local build, formatting, vet, staticcheck, lint, ordinary/race tests, both
+30-second fuzz checks, strict specification validation, and all 199 verified CLI
+replays pass. Native Windows build, vet, both fuzz checks, 756 tests, and all 199
+CLI replays pass on the final production source. The final manifest correction
+also passes a fresh native test/replay run, with all nine transported files
+matching locally before this validation note. No extra evidence-gate errors
+remain beyond the 108 missing inventory mappings.

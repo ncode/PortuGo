@@ -1,6 +1,6 @@
-# Project conformance tooling evidence
+# Project conformance evidence
 
-These mappings cover repository tooling, not VisuAlg language behavior. Running
+These mappings cover project tooling and defensive guards. Running
 the reference application cannot validate a JSON manifest, a Git history check,
 or the project's recording and replay code. Each reference non-applicability
 decision below therefore names existing project tests. The quality suite runs
@@ -48,3 +48,19 @@ tests are `TestManifestValidation`, `TestManifestReferenceDisposition`,
 These mappings verify enforcement by the tooling. They do not declare the
 inventory complete, satisfy missing checklist/audit inputs, or authorize a
 conformance release. Release acceptance and the example sweep remain pending.
+
+## Defensive vector storage
+
+`project.vector-storage` covers invalid or inconsistent Go storage objects,
+including missing metadata, truncated or oversized backing slices, reversed
+ranges, and overflowing widths or dimension products. Such objects cannot be
+injected through a reference source program. `TestVectorCellRejectsInvalidStorage`
+checks controlled rejection without mutation, and `TestVectorCellOffsets` checks
+every element in small layouts and offsets near both integer extremes.
+
+`TestCorruptedVectorStorage` injects truncated backing storage during execution
+and checks reads, assignments, input, and reference arguments. Each operation
+returns `R003` at its indexing expression, preserves preceding output and
+elements, and leaves input unread. Recorded ordinary bounds failures remain
+separately required and linked; this project guard does not exempt language
+recordings, allocation accounting, or maximum-size validation.

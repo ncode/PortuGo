@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Validate vector layout products and backing lengths before computing storage
+  offsets. Corrupted storage now returns positioned `R003` diagnostics for
+  reads, writes, input, and reference arguments instead of panicking. Add
+  overflow, boundary, and corruption regressions that preserve prior output,
+  elements, and unread input.
 - Match recorded vector declaration and indexing rules: accept one or two
   dimensions and unsigned literal bounds; reject signed, fractional, expression,
   reversed, and third-dimension forms. Default an omitted second index to that
