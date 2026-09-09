@@ -51,6 +51,8 @@ func FuzzLexer(f *testing.F) {
 		"se verdadeiro e falso entao fimse",
 		"Algoritmo \"á\"\r\ninicio // comment\r\nfimalgoritmo\r\n",
 		"{ unterminated\n",
+		"/* line only\nescreval(8 / 2 * 3)\n*/\n",
+		"escreval(\"BEFORE//AFTER\")\n",
 		"\"unterminated\nnext",
 		"1..10 1.5 1e+2 1e-",
 		"\x00\xff\xc3",
@@ -74,6 +76,24 @@ func FuzzLexer(f *testing.F) {
 			}
 		}
 	})
+}
+
+func TestCommentLinePositions(t *testing.T) {
+	for _, ending := range []string{"\n", "\r\n"} {
+		for _, comment := range []string{"//", "{", "}", "/", "*"} {
+			src := "inicio" + ending + "  " + comment + " comentário" + ending + "  escreval(3)"
+			file, tokens, ds := Scan("comments.alg", src)
+			if len(ds) != 0 {
+				t.Fatalf("ending %q, prefix %q: %v", ending, comment, ds)
+			}
+			if len(tokens) != 6 || tokens[1].Kind != token.ESCREVAL {
+				t.Fatalf("ending %q, prefix %q: tokens = %v", ending, comment, tokens)
+			}
+			if pos := file.Position(tokens[1].Pos); pos.Line != 3 || pos.Column != 3 {
+				t.Fatalf("ending %q, prefix %q: position = %v, want 3:3", ending, comment, pos)
+			}
+		}
+	}
 }
 
 func TestFuzzAdversarial(t *testing.T) {

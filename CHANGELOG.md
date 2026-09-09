@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Match recorded comment lines: brace prefixes and slash/star prefixes at the
+  start of a line stop at that line's end, without opening multiline blocks.
+  Preserve arithmetic operators and quoted delimiters; reject `//` inside a
+  quoted value as the reference does. Add 24 reviewed observations and verify
+  29 comment-related cases. Comment retention and expression recovery remain
+  pending.
 - Accept the recorded `:=` assignment spelling through the existing assignment
   token and AST. Token positions and source spelling are retained; formatting
   consistently emits `<-`. The reference assignment probe is now verified.

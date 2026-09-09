@@ -37,7 +37,7 @@ func TestRecordedStringLiterals(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			checkStringFormatting(t, src, want)
+			checkFormattingPreservesExecution(t, src, want)
 		})
 	}
 }
@@ -51,10 +51,10 @@ func TestStringFormattingPreservesProgramName(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	checkStringFormatting(t, src, want)
+	checkFormattingPreservesExecution(t, src, want)
 }
 
-func checkStringFormatting(t *testing.T, src string, want []byte) {
+func checkFormattingPreservesExecution(t *testing.T, src string, want []byte) {
 	t.Helper()
 	var name string
 	for pass := range 2 {

@@ -39,3 +39,17 @@ Diagnostic codes in the manifest are the intended project mappings, not codes
 displayed by the reference application. GUI line numbers are preserved; columns
 are omitted where they were not established. Full evidence and implementation
 acceptance remain blocked by the outstanding inventory and pending behavior.
+
+## Focused comment follow-up
+
+Twenty-four additional reduced programs use the same executable, profile, and
+capture method: fifteen complete and nine report visible errors. Each rejection
+has an individually reviewed screenshot and a labeled manual transcription;
+all source and artifact hashes describe the published bytes.
+
+| Context | Recorded result | Representative probe IDs |
+| --- | --- | --- |
+| First non-whitespace character | A single `/`, `*`, `}`, or `*/` ignores the rest of its line; indentation does not change the slash/star cases. | `single-slash-comment`, `single-star-comment`, `closing-brace-comment`, `closing-c-comment`, `indented-slash-line`, `indented-star-line` |
+| After a complete statement | Braces ignore the remaining line, including another statement. A single slash/star or `/* ... */` is rejected there. | `brace-inline-trailing-statement`, `closing-brace-inline`, `single-slash-inline`, `single-star-inline`, `c-inline-without-statement`, `c-comment-after-statement` |
+| Quoted delimiters | `/`, `/*`, `*/`, `{`, and `}` remain literal. `//` truncates the line even inside a quoted value and produces an error. | `string-single-slash`, `string-c-opening`, `string-c-closing`, `string-brace-opening`, `string-brace-closing`, `string-brace-content`, `string-double-slash`, `string-comment-after-content`, `comment-symbols-in-string` |
+| Incomplete expressions | `escreval(1 { note } + 2)` reports a missing `)`, while `escreval(1{ note })` completes with no program output. A C-like opener within the tested expression reports an undeclared `NOTE`. These exact observations remain pending implementation and do not establish a general recovery rule. | `brace-comment-in-expression`, `brace-inline-math`, `c-comment-in-expression` |

@@ -84,7 +84,9 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
   Literal backslashes and backslash-quote rejection now match six recorded
   probes. Formatter round trips preserve these strings and program names.
-  Comment handling and the remaining literal boundaries are still pending.
+  Twenty-nine comment cases now match recorded physical-line prefixes, quoted
+  delimiters, and `//` truncation inside strings. Comment retention, incomplete
+  expression behavior, and the remaining literal boundaries are still pending.
 - [ ] 4.6 Make parser production boundaries newline-aware and enforce the reference program header, declaration region, body, terminators, and post-`fimalgoritmo` behavior.
 - [ ] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
 - [ ] 4.8 Add structural and newline synchronization that collects independent parser diagnostics without panics, duplicate errors, or infinite loops.

@@ -52,8 +52,9 @@ close seven missing requirement mappings without adding language observations
 or relaxing the evidence gate.
 
 The [September 9 batch](reference-observations-2026-09-09.md) adds 61 recorded
-probes: 41 accepted and 20 rejected. The corpus now contains 79 reference probes
-(21 verified, 58 pending implementation), plus the five project-tooling entries.
+probes: 41 accepted and 20 rejected. A focused comment follow-up adds another 24
+(15 accepted, 9 rejected). The corpus now contains 103 reference probes
+(50 verified, 53 pending implementation), plus the five project-tooling entries.
 The missing mappings at the corpus layer cover 44 requirements and all 73 bundled
 examples. The stable storage requirement ID is retained while its linked heading
 and text now reflect the recorded acceptance beyond the former 500-slot claim.
@@ -76,3 +77,13 @@ semantic checks, and runtime. Token spelling and positions are retained, while
 canonical formatting uses `<-`.
 Native Windows build, vet, ordinary tests, both 30-second fuzz checks, and all
 21 currently verified CLI reference cases pass for this slice.
+
+The comment slice verifies 26 accepted programs and three rejected strings
+containing `//`. Regression tests also check that comments preserve the next
+token's line and column with LF and CRLF. Comment retention in formatted source
+and the reference's incomplete-expression behavior remain pending.
+
+Local build, formatting, vet, static analysis, lint, ordinary/race tests, both
+30-second fuzz runs, and strict OpenSpec validation pass. Native Windows build,
+vet, ordinary tests, both 30-second fuzz runs, and all 50 verified CLI reference
+cases pass. The full evidence gate still reports only the 116 missing mappings.

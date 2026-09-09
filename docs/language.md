@@ -50,6 +50,24 @@ or doubled quotes. The recorded backslash forms are covered by byte-exact
 reference replay; formatting preserves their contents and program names.
 See [the literal-string example](../examples/literal_strings.alg).
 
+## Comments
+
+`//` consumes the rest of its physical line. The reference also treats it as
+a comment inside quotes, so a string containing `//` is rejected as unterminated.
+Single slashes, `/*`, `*/`, and braces otherwise remain literal inside strings.
+
+Outside strings, `{` and `}` consume the rest of the line. At the first
+non-whitespace position, `/` and `*` also consume the line, including `/*` and
+`*/`. These forms do not open multiline blocks and need no closing delimiter.
+Statements on subsequent lines still execute. After a complete statement,
+`/` and `*` retain their operator meaning; `/*` is not an inline comment there.
+See [the comment example](../examples/comment_lines.alg).
+
+Twenty-nine recorded cases cover these forms, quoted delimiters, and formatting
+without changing execution. Comments are currently discarded when formatting.
+The reference's handling of comments within incomplete expressions and the
+remaining syntax-recovery behavior are still pending.
+
 ## Expressions
 
 Arithmetic operators are `+`, `-`, `*`, `/`, `\`, `%`, `MOD`, and `^`.

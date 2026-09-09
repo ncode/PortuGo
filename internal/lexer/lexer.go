@@ -12,19 +12,21 @@ import (
 // Scan tokenizes decoded Portugol source text.
 func Scan(filename, src string) (*token.File, []token.Token, []diag.Diagnostic) {
 	l := &scanner{
-		src:  src,
-		file: token.NewFile(filename, len(src)),
+		src:       src,
+		file:      token.NewFile(filename, len(src)),
+		lineStart: true,
 	}
 	l.scan()
 	return l.file, l.tokens, l.diags
 }
 
 type scanner struct {
-	src    string
-	file   *token.File
-	offset int
-	tokens []token.Token
-	diags  []diag.Diagnostic
+	src       string
+	file      *token.File
+	offset    int
+	tokens    []token.Token
+	diags     []diag.Diagnostic
+	lineStart bool
 }
 
 func (s *scanner) scan() {
@@ -35,6 +37,7 @@ func (s *scanner) scan() {
 			return
 		}
 		start := s.offset
+		s.lineStart = false
 		r := s.advance()
 		switch {
 		case isIdentStart(r):
@@ -58,32 +61,23 @@ func (s *scanner) skipSpaceAndComments() {
 		case '\n':
 			s.advance()
 			s.file.AddLine(s.offset)
-		case '/':
-			if s.peekNext() != '/' {
+			s.lineStart = true
+		case '/', '*':
+			if !s.lineStart && (r != '/' || s.peekNext() != '/') {
 				return
 			}
-			for s.offset < len(s.src) && s.peek() != '\n' {
-				s.advance()
-			}
-		case '{':
-			start := s.offset
-			s.advance()
-			for s.offset < len(s.src) && s.peek() != '}' {
-				if s.peek() == '\n' {
-					s.advance()
-					s.file.AddLine(s.offset)
-					continue
-				}
-				s.advance()
-			}
-			if s.offset >= len(s.src) {
-				s.error(token.Pos(start), "unterminated block comment")
-				return
-			}
-			s.advance()
+			s.skipLine()
+		case '{', '}':
+			s.skipLine()
 		default:
 			return
 		}
+	}
+}
+
+func (s *scanner) skipLine() {
+	for s.offset < len(s.src) && s.peek() != '\n' {
+		s.advance()
 	}
 }
 
@@ -132,8 +126,17 @@ func (s *scanner) scanString(start int) {
 			return
 		case '\n':
 			s.file.AddLine(s.offset)
+			s.lineStart = true
 			s.error(token.Pos(start), "unterminated string literal")
 			return
+		case '/':
+			if s.peek() == '/' {
+				// The reference strips // even inside a quoted value.
+				s.skipLine()
+				s.error(token.Pos(start), "unterminated string literal")
+				return
+			}
+			text = append(text, r)
 		default:
 			text = append(text, r)
 		}
