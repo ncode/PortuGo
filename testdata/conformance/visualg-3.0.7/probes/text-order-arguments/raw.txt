@@ -1,0 +1,8 @@
+Início da execução
+ 1
+ 2
+ 3
+bc 4
+ 5
+ 1
+Fim da execução.

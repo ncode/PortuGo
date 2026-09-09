@@ -7,6 +7,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/ncode/portugol-go/internal/cp1252"
 	"github.com/ncode/portugol-go/internal/runtime"
 )
 
@@ -70,7 +71,13 @@ func (l *Library) Call(name string, args []runtime.Value) (runtime.Value, bool, 
 	case "copia":
 		return copia(args)
 	case "maiusc":
-		return string1(args, unicode.ToUpper)
+		return string1(args, func(r rune) rune {
+			// These Unicode uppercase counterparts are outside Windows-1252.
+			if r == 'µ' || r == 'ƒ' {
+				return r
+			}
+			return unicode.ToUpper(r)
+		})
 	case "minusc":
 		return string1(args, unicode.ToLower)
 	case "asc":
@@ -234,14 +241,35 @@ func copia(args []runtime.Value) (runtime.Value, bool, error) {
 	if len(args) != 3 {
 		return runtime.Value{}, true, fmt.Errorf("copia expects 3 arguments")
 	}
+	position, err := copyIndex(args[1])
+	if err != nil {
+		return runtime.Value{}, true, err
+	}
+	n, err := copyIndex(args[2])
+	if err != nil {
+		return runtime.Value{}, true, err
+	}
 	s := []rune(args[0].Str)
-	start := max(int64(1), args[1].Int) - 1
-	n := args[2].Int
+	start := max(int64(1), position) - 1
 	if n < 0 || start >= int64(len(s)) {
 		return runtime.Value{Kind: runtime.StringValue}, true, nil
 	}
 	end := start + min(n, int64(len(s))-start)
 	return runtime.Value{Kind: runtime.StringValue, Str: string(s[int(start):int(end)])}, true, nil
+}
+
+func copyIndex(v runtime.Value) (int64, error) {
+	if v.Kind == runtime.VoidValue {
+		return 0, nil
+	}
+	if v.Kind == runtime.IntegerValue {
+		return v.Int, nil
+	}
+	x, _, err := intval([]runtime.Value{v})
+	if err == nil && x.Kind != runtime.IntegerValue {
+		err = fmt.Errorf("copia expects numeric bounds")
+	}
+	return x.Int, err
 }
 
 func string1(args []runtime.Value, fn func(rune) rune) (runtime.Value, bool, error) {
@@ -263,38 +291,55 @@ func asc(args []runtime.Value) (runtime.Value, bool, error) {
 	if len(args) != 1 {
 		return runtime.Value{}, true, fmt.Errorf("asc expects 1 argument")
 	}
-	for _, r := range args[0].Str {
-		return runtime.Value{Kind: runtime.IntegerValue, Int: int64(r)}, true, nil
+	if args[0].Str == "" {
+		return runtime.Value{Kind: runtime.VoidValue}, true, nil
 	}
-	return runtime.Value{Kind: runtime.IntegerValue}, true, nil
+	r, _ := utf8.DecodeRuneInString(args[0].Str)
+	code, ok := cp1252.EncodeRune(r)
+	if !ok {
+		return runtime.Value{}, true, fmt.Errorf("character is outside Windows-1252")
+	}
+	return runtime.Value{Kind: runtime.IntegerValue, Int: int64(code)}, true, nil
 }
 
 func carac(args []runtime.Value) (runtime.Value, bool, error) {
-	if len(args) != 1 {
-		return runtime.Value{}, true, fmt.Errorf("carac expects 1 argument")
+	if len(args) > 1 {
+		return runtime.Value{}, true, fmt.Errorf("carac expects zero or one argument")
 	}
-	return runtime.Value{Kind: runtime.StringValue, Str: string(rune(args[0].Int))}, true, nil
+	var code int64
+	if len(args) == 1 && args[0].Kind != runtime.VoidValue {
+		var err error
+		code, err = asInt(args[0])
+		if err != nil {
+			return runtime.Value{}, true, err
+		}
+	}
+	if code < 0 || code > 255 {
+		return runtime.Value{Kind: runtime.VoidValue}, true, nil
+	}
+	if code < 32 {
+		code = 32
+	} else if code >= 127 {
+		code = int64(characterBytes[code-127])
+	}
+	return runtime.Value{Kind: runtime.StringValue, Str: string(cp1252.DecodeByte(byte(code)))}, true, nil
 }
 
 func compr(args []runtime.Value) (runtime.Value, bool, error) {
 	if len(args) != 1 {
 		return runtime.Value{}, true, fmt.Errorf("compr expects 1 argument")
 	}
-	return runtime.Value{Kind: runtime.IntegerValue, Int: int64(len([]rune(args[0].Str)))}, true, nil
+	return runtime.Value{Kind: runtime.IntegerValue, Int: int64(utf8.RuneCountInString(args[0].Str))}, true, nil
 }
 
 func pos(args []runtime.Value) (runtime.Value, bool, error) {
 	if len(args) != 2 {
 		return runtime.Value{}, true, fmt.Errorf("pos expects 2 arguments")
 	}
-	haystack := []rune(args[1].Str)
-	needle := []rune(args[0].Str)
-	if len(needle) == 0 {
-		return runtime.Value{Kind: runtime.IntegerValue, Int: 1}, true, nil
-	}
-	for i := 0; i+len(needle) <= len(haystack); i++ {
-		if string(haystack[i:i+len(needle)]) == string(needle) {
-			return runtime.Value{Kind: runtime.IntegerValue, Int: int64(i + 1)}, true, nil
+	haystack, needle := args[1].Str, args[0].Str
+	if needle != "" {
+		if offset := strings.Index(haystack, needle); offset >= 0 {
+			return runtime.Value{Kind: runtime.IntegerValue, Int: int64(utf8.RuneCountInString(haystack[:offset]) + 1)}, true, nil
 		}
 	}
 	return runtime.Value{Kind: runtime.IntegerValue}, true, nil

@@ -1,6 +1,6 @@
 # Bundled example progress
 
-The corpus records 42 original programs from the official VisuAlg 3.0.7
+The corpus records 43 original programs from the official VisuAlg 3.0.7
 distribution. Their source bytes match the sizes and SHA-256 hashes in the
 73-file catalog. Each observation links its catalog ID, exact source, reference
 outcome, and owning tasks in the conformance manifest.
@@ -9,7 +9,7 @@ The evidence gate checks catalog IDs, source hashes and sizes, classifications,
 recorded acceptance, and reviewed exclusion reasons. Pending entries still fail
 the missing-evidence gate; classifications do not grant them an exemption.
 
-Thirty-five programs complete successfully in the reference. Thirty-three match
+Thirty-six programs complete successfully in the reference. Thirty-four match
 the CLI byte for byte and have permanent tests for original and formatted execution.
 The fixed-input cases cover combinations, factorials, minimum selection, means,
 prime decomposition, base conversion, vector sorting, remainders, reversed text,
@@ -27,6 +27,10 @@ with their original screen-clear and color commands. `randomicos.alg.ALG` and
 `RELACIONAR.ALG` now have completed reference recordings, but their random output
 remains pending a domain-based replay contract. Their recorded samples do not
 establish portable exact sequences.
+
+The text slice adds `TABOADA.ALG`, which uses screen clearing, character input,
+and a counted multiplication-table loop. Its original and formatted executions
+match the reference with the recorded fixed input.
 
 The `randomicos.alg` example produces no output; its recording establishes
 successful execution, not an exact random sequence or a complete randomness
@@ -54,8 +58,8 @@ reference may execute a prefix before discovering malformed syntax or an invalid
 assignment, while CLI analysis reports errors before execution and may collect
 more than one diagnostic.
 
-The catalog has thirty accepted examples, seven unusable examples, and 36
+The catalog has thirty-six accepted examples, seven unusable examples, and 30
 awaiting recorded classifications. Incomplete captures are excluded. These
 records do not complete the full example sweep, evidence inventory, or
-conformance release gate, which still has 54 missing mappings: 18 requirements
-and 36 bundled examples.
+conformance release gate, which still has 41 missing mappings: 11 requirements
+and 30 bundled examples.

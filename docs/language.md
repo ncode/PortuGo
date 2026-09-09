@@ -563,7 +563,43 @@ described for `numpcarac`.
 The full numeric domain matrix and catalog consolidation remain pending.
 
 String built-ins: `copia`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, and
-`pos`. String positions are 1-indexed.
+`pos`. Their recorded character repertoire is Windows-1252, decoded to UTF-8
+inside the implementation. String positions count characters and are 1-indexed.
+UTF-8 source takes priority when bytes are valid in both supported encodings.
+
+`copia(s, start, count)` accepts integer or real bounds, truncates real fractions
+and narrows them to signed 32-bit values, substitutes zero for no-value bounds,
+clamps starts below one to one, and clips the length at the string's end.
+Nonpositive lengths and starts past the end return an empty string. `compr(s)`
+counts characters, including accented letters and the euro sign. `pos(needle, s)`
+returns the first matching position, or zero for missing or empty search text.
+Search is case-sensitive. `maiusc` and `minusc` use the recorded accented case
+pairs; uppercase preserves `µ` and `ƒ` because their Unicode uppercase forms
+are outside Windows-1252. Case conversion and copying preserve empty strings.
+Non-finite real bounds and real bounds outside the signed 64-bit conversion
+range receive positioned `R007` as a project guard; unpositioned reference
+application faults are not treated as language diagnostics.
+
+These text calls require parentheses and their complete argument lists.
+Character arguments of the wrong type or with no value receive `E001`.
+`copia` accepts numeric or no-value bounds, reporting `E001` for other types.
+Missing character arguments receive `E001`; extra arguments and a missing
+final `copia` bound receive `P001`. Argument expressions evaluate left to right.
+
+`asc(s)` returns the first character's Windows-1252 byte, not its Unicode
+code point: `asc("€")` is 128. An empty string produces no value. As a project
+guard, a first character outside Windows-1252 receives positioned `R007`.
+
+`carac(n)` accepts an integer code in `[0, 255]` and uses the complete recorded
+character table, including its substitutions for drawing characters.
+Codes 0–31, 127, and 255 produce a space; `carac()` also produces a space.
+Out-of-domain integers produce no value. A no-value argument is treated as zero.
+Real, character, and logical arguments receive `E001`; extra arguments receive
+`P001`.
+The two code functions are not inverses: `carac(128)` is `"Ç"`, whose `asc`
+value is 199. No-value results in output use the discard-and-continue behavior
+described below. Ordinary Unicode casing outside the reference repertoire
+remains a project extension, subject to the existing text-size limit.
 
 `numpcarac(x)` converts a numeric value to character text with 15 significant
 digits, no leading space, and uppercase `E` exponents without a plus sign or

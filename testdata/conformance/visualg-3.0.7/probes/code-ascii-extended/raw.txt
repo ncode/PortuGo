@@ -1,0 +1,4 @@
+Início da execução
+ 128| 156| 159| 225
+
+Fim da execução.

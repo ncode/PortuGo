@@ -169,7 +169,7 @@ Alternative considered: generate one switch from another. A shared descriptor is
 
 ### 8. Model input sources as one state machine
 
-The interpreter owns one buffered input controller whose active mode is console, `arquivo`, or random input. Mode transitions retain the injected console reader and encode file exhaustion, fallback recording, and echo as states derived from oracle probes. Paths resolve against `Options.WorkingDir`; tests use temporary directories. CP1252 decoding and encoding live in shared source/text helpers so source files, `arquivo`, generated files, character-code built-ins, and output agree.
+The interpreter owns one buffered input controller whose active mode is console, `arquivo`, or random input. Mode transitions retain the injected console reader and encode file exhaustion, fallback recording, and echo as states derived from oracle probes. Paths resolve against `Options.WorkingDir`; tests use temporary directories. CP1252 decoding and encoding live in shared source/text helpers so source files, `arquivo`, generated files, character-code built-ins, and output agree. The recorded `carac` table is a separate mapping to CP1252 bytes; it is not the inverse of `asc`. Its complete 256-code regression includes control-character and drawing-character substitutions.
 
 The REPL reads program text and program input through the same buffered abstraction. It uses lexer/parser completeness, not substring matching, to submit immediately when the terminating `fimalgoritmo` token completes a program. Blank lines remain ordinary input to the incomplete-program state, and every submitted program gets a fresh semantic/runtime state while the underlying reader remains shared.
 

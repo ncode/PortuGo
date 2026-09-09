@@ -119,37 +119,29 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 		}
 		return runtime.Type{Kind: runtime.IntegerType}, true
 	case "copia":
-		if c.requireArity(call, 3, 3) {
-			c.requireString(call.Args[0])
-			c.requireInt(call.Args[1])
-			c.requireInt(call.Args[2])
-		}
+		c.textArgs(call, 3, 1)
 		return runtime.Type{Kind: runtime.StringType}, true
 	case "maiusc", "minusc":
-		if c.requireArity(call, 1, 1) {
-			c.requireString(call.Args[0])
-		}
+		c.textArgs(call, 1, 1)
 		return runtime.Type{Kind: runtime.StringType}, true
 	case "asc":
-		if c.requireArity(call, 1, 1) {
-			c.requireString(call.Args[0])
-		}
+		c.textArgs(call, 1, 1)
 		return runtime.Type{Kind: runtime.IntegerType}, true
 	case "carac":
-		if c.requireArity(call, 1, 1) {
-			c.requireInt(call.Args[0])
+		if len(call.Args) > 1 {
+			c.error(call.Name.Pos, diag.EParse, "expected ')' after character code")
+		} else if len(call.Args) == 1 {
+			t := c.expr(call.Args[0])
+			if t.Kind != runtime.IntegerType && t.Kind != runtime.VoidType && t.Kind != runtime.InvalidType {
+				c.error(call.Args[0].Start(), diag.ETypeMismatch, "expected inteiro argument")
+			}
 		}
 		return runtime.Type{Kind: runtime.StringType}, true
 	case "compr":
-		if c.requireArity(call, 1, 1) {
-			c.requireString(call.Args[0])
-		}
+		c.textArgs(call, 1, 1)
 		return runtime.Type{Kind: runtime.IntegerType}, true
 	case "pos":
-		if c.requireArity(call, 2, 2) {
-			c.requireString(call.Args[0])
-			c.requireString(call.Args[1])
-		}
+		c.textArgs(call, 2, 2)
 		return runtime.Type{Kind: runtime.IntegerType}, true
 	default:
 		return runtime.Type{}, false
@@ -191,6 +183,8 @@ func (c *checker) possibleAbsence(expr ast.Expr) (possible, numeric bool) {
 	switch binding.Name {
 	case "arccos", "arcsen", "cotan", "radpgrau":
 		return true, true
+	case "asc", "carac":
+		return true, false
 	}
 	for _, arg := range call.Args {
 		absent, numericAbsent := c.possibleAbsence(arg)
@@ -216,8 +210,25 @@ func (c *checker) requireArity(call *ast.CallExpr, min, max int) bool {
 	return true
 }
 
-func (c *checker) requireString(expr ast.Expr) {
-	if t := c.expr(expr); t.Kind != runtime.StringType && t.Kind != runtime.InvalidType {
-		c.error(expr.Start(), diag.ETypeMismatch, "expected caractere, got %s", t)
+func (c *checker) textArgs(call *ast.CallExpr, arity, strings int) {
+	for index, arg := range call.Args[:min(len(call.Args), arity)] {
+		t := c.expr(arg)
+		if t.Kind == runtime.InvalidType {
+			return
+		}
+		if index < strings {
+			if t.Kind != runtime.StringType {
+				c.error(arg.Start(), diag.ETypeMismatch, "expected caractere argument")
+				return
+			}
+		} else if !isNumeric(t) && t.Kind != runtime.VoidType {
+			c.error(arg.Start(), diag.ETypeMismatch, "expected numeric argument")
+			return
+		}
+	}
+	if len(call.Args) < strings {
+		c.error(call.Name.Pos, diag.ETypeMismatch, "expected caractere argument")
+	} else if len(call.Args) != arity {
+		c.error(call.Name.Pos, diag.EParse, "expected ')' after text arguments")
 	}
 }

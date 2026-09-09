@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Match recorded text slicing, empty searches, accented casing, ANSI character
+  codes, and the reference character table. Accept fractional substring bounds,
+  preserve no-value character results, and pin text-call diagnostics. Verify
+  the original bundled multiplication-table example with fixed input.
+
 - Add recorded screen-clear and color commands through the typed host interface,
   preserving headless output and reporting positioned host failures. Verify
   original and formatted execution of three more bundled display examples.

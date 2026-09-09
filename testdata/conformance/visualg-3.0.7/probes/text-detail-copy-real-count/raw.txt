@@ -1,0 +1,4 @@
+Início da execução
+bcd
+
+Fim da execução.

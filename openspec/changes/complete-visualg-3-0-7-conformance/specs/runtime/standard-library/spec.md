@@ -61,18 +61,26 @@ The catalog SHALL implement the full oracle-confirmed text set, including `copia
 
 #### Scenario: Search for absent text
 - **WHEN** `pos` cannot find its search value
-- **THEN** it returns the reference not-found value rather than a Go index convention
+- **THEN** it returns zero, also returning zero for an empty search value
+
+#### Scenario: Convert accented case and fractional substring bounds
+- **WHEN** text contains Windows-1252 characters or `copia` receives real bounds
+- **THEN** case conversion preserves `µ` and `ƒ` when uppercasing, real bounds truncate toward zero and narrow to signed 32-bit values, no-value bounds become zero, starts below one clamp to one, and nonpositive lengths or past-end starts yield empty text
 
 ### Requirement: Character-code built-ins
-Character-code operations, including oracle-confirmed `asc`, `carac`, and aliases, SHALL use the VisuAlg 3.0.7 code domain, accepted string lengths, bounds, CP1252 mapping, and failure behavior rather than Unicode code-point or UTF-8 byte assumptions.
+Character-code operations, including oracle-confirmed `asc`, `carac`, and aliases, SHALL use the VisuAlg 3.0.7 code domain, accepted string lengths, bounds, recorded character tables, and failure behavior rather than Unicode code-point or UTF-8 byte assumptions. `asc` SHALL use Windows-1252 codes; `carac` SHALL use the separately recorded table, including its drawing-character substitutions. The operations are not required to be inverses.
 
-#### Scenario: Round trip an accented character
-- **WHEN** an accepted accented character is converted to its code and back
-- **THEN** the result and numeric code match the reference CP1252 behavior
+#### Scenario: Convert extended character codes
+- **WHEN** `asc("€")`, `carac(128)`, and `asc(carac(128))` are evaluated
+- **THEN** they produce 128, `"Ç"`, and 199 respectively
+
+#### Scenario: Convert an empty value or a control code
+- **WHEN** `asc` receives empty text or `carac` receives no argument, a no-value argument, codes 0–31, 127, or 255
+- **THEN** `asc` produces no value and `carac` produces one space
 
 #### Scenario: Convert an invalid character code
 - **WHEN** a character-conversion built-in receives a code outside the reference domain
-- **THEN** it returns the oracle-confirmed value or positioned built-in diagnostic without panicking
+- **THEN** `carac` returns no value for out-of-domain integers, rejects non-integer arguments with `E001`, and does not panic
 
 ### Requirement: Numeric and character conversion built-ins
 The catalog SHALL implement all oracle-confirmed explicit conversion functions and aliases for numeric, logical, and character values. Dynamic numeric conversion such as `caracpnum` SHALL accept and classify integer and real text at runtime according to reference decimal, sign, whitespace, overflow, and result-type rules.
