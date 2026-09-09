@@ -16,6 +16,7 @@ func TestRecordedBundledExamples(t *testing.T) {
 		"bundled-069318ac942f", // Exemplos/TESTE.ALG
 		"bundled-6f7f325a3d14", // troca.alg
 		"bundled-a3ab1c0f85e6", // vetr2dim.alg
+		"bundled-08dbc8f0cc9e", // PRIMOS.ALG
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)

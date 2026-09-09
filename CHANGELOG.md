@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Accept standalone `escreva`/`escreval` and optional `faca`/`faça` in choice
+  headers. Recover malformed statements at physical line boundaries, verify
+  matching LF/CRLF behavior, and run the original bundled prime-number example.
+  Add thirteen reference observations and verify fifteen more corpus cases.
+
 - Preserve physical LF/CRLF tokens and match recorded program-header rules:
   require the name on the header line, ignore text after its closing quote,
   and avoid cascading errors for invalid headers and main-body starts.

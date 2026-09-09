@@ -40,6 +40,9 @@ string or an unmatched quote. The executable body starts on a later line.
 A missing or misplaced header produces one `P001` diagnostic; parsing stops
 when the program header or the required main `inicio` is invalid. Formatting
 emits only the algorithm name on the header line and discards ignored header text.
+LF and CRLF inputs retain equivalent token kinds, line/column positions, and
+syntax. An unrecognized statement start is diagnosed once; parsing resumes on
+the next physical line to retain independent later errors.
 
 The `var` block may be omitted or left empty. Top-level `procedimento` and
 `funcao` declarations must appear before `inicio`. Recorded words and statements
@@ -159,7 +162,7 @@ Supported statements:
 - Assignment with `<-` or `:=`; formatting uses the canonical `<-` spelling
 - `leia`, `escreva`, and `escreval`
 - `se ... entao ... senao ... fimse`
-- `escolha ... caso ... outrocaso ... fimescolha`
+- `escolha ... [faca] ... caso ... outrocaso ... fimescolha`
 - `enquanto ... faca ... fimenquanto`
 - `repita ... ate`
 - `para ... de ... ate ... passo ... faca ... fimpara`
@@ -268,6 +271,10 @@ formatting when function bodies write during an outer write remain pending.
 use either `,` or `.` as the decimal separator.
 
 `escreva` writes without a newline and `escreval` writes with a newline.
+Either command may stand alone on its physical line: bare `escreva` emits
+nothing and bare `escreval` emits one newline. Arguments require parentheses
+on that line; unparenthesized values or another command after a bare write
+produce `P001` at the write statement.
 The portable CLI uses a deterministic profile matching the recorded `en-US`
 reference environment: `.` as decimal separator and LF for newlines. It does
 not change formatting with the host locale. Other VisuAlg locales remain

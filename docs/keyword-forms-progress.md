@@ -24,13 +24,14 @@ successfully and is verified. Exact diagnostic recovery for the reserved
 function-name declaration remains pending under task 4.8. The two variable-name
 rejections are now verified by the program-header regressions.
 
-Other newly recorded grammar forms remain pending under task 4.6. The accepted
-choice-header forms and the rejected `ate_que`/`até_que` statements are retained
-without claiming their parser work is complete. An unconditional break exits
+The accepted choice-header forms with optional `faca`/`faça` are now verified.
+The rejected `ate_que`/`até_que` statements remain pending under task 4.6.
+An unconditional break exits
 before the `fimrepita` text in one accepted probe; it does not establish that
-`fimrepita` is a valid terminator when reached. The bundled prime-number program
-also needs bare-output syntax and remains pending under task 17.3.
+`fimrepita` is a valid terminator when reached. A separate reachable-terminator
+probe confirms a syntax rejection. The bundled prime-number program now passes
+with bare-output syntax, while the complete example sweep remains open.
 
 Tasks 4.4 and 4.6 remain in progress because complete vocabulary and physical-line
 grammar obligations extend beyond these spellings. The evidence gate retains
-93 missing mappings: 32 requirements and 61 bundled examples.
+92 missing mappings: 31 requirements and 61 bundled examples.

@@ -247,8 +247,8 @@ func (p *parser) parseStmt() ast.Stmt {
 	case token.ESCREVA, token.ESCREVAL:
 		return p.parseWrite()
 	default:
-		p.error(p.peek(), "expected statement")
-		p.advance()
+		p.error(p.advance(), "expected statement")
+		p.skipLine()
 		return nil
 	}
 }
@@ -284,6 +284,7 @@ func (p *parser) parseIf() ast.Stmt {
 func (p *parser) parseSwitch() ast.Stmt {
 	start := p.expect(token.ESCOLHA, "expected escolha")
 	x := p.parseExpr(0)
+	p.match(token.FACA)
 	sw := &ast.SwitchStmt{At: start.Pos, X: x}
 	for p.peek().Kind != token.FIMESCOLHA && p.peek().Kind != token.EOF {
 		switch p.peek().Kind {
@@ -362,7 +363,14 @@ func (p *parser) parseRead() ast.Stmt {
 func (p *parser) parseWrite() ast.Stmt {
 	start := p.advance()
 	stmt := &ast.WriteStmt{At: start.Pos, Newline: start.Kind == token.ESCREVAL}
-	p.expect(token.LPAREN, "expected '(' after write")
+	if p.pos >= len(p.tokens) || p.tokens[p.pos].Kind == token.NEWLINE || p.tokens[p.pos].Kind == token.EOF {
+		return stmt
+	}
+	if !p.match(token.LPAREN) {
+		p.error(start, "expected '(' or end of line after write")
+		p.skipLine()
+		return stmt
+	}
 	if !p.match(token.RPAREN) {
 		for {
 			arg := ast.WriteArg{Expr: p.parseExpr(0)}
@@ -380,6 +388,12 @@ func (p *parser) parseWrite() ast.Stmt {
 		p.expect(token.RPAREN, "expected ')'")
 	}
 	return stmt
+}
+
+func (p *parser) skipLine() {
+	for p.pos < len(p.tokens) && p.tokens[p.pos].Kind != token.NEWLINE && p.tokens[p.pos].Kind != token.EOF {
+		p.pos++
+	}
 }
 
 func (p *parser) parseDesignator() ast.Expr {

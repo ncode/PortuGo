@@ -29,14 +29,16 @@ manual transcriptions:
 | `TESTE.alg` in the distribution root | `ATÉ_QUE` is reported as an unknown variable on line 23. |
 
 These rejection mappings remain pending implementation. The reference may
-execute a prefix before discovering malformed syntax; retained partial panel
-output documents that behavior. CLI compile-time rejection remains a preflight
+execute a prefix before discovering malformed syntax; private partial panel
+observations document that behavior. CLI compile-time rejection remains a preflight
 check that does not execute an invalid program.
 
 The keyword follow-up adds a completed `PRIMOS.ALG` recording with a longer,
 bounded observation window. Its original source hash matches the release
-catalog. Execution remains pending in the CLI because the example also uses
-bare `escreval`; the keyword aliases alone do not complete its grammar support.
+catalog. With bare `escreval` support, its original and formatted versions now
+match the complete reference output. Seven accepted bundled examples are verified.
+The prime search has an explicit 5,000,000-step replay allowance for its bounded
+nested loops; the five-second replay deadline still applies.
 
 The catalog currently has nine accepted examples, three unusable examples,
 and 61 awaiting committed classifications. Incomplete captures are excluded.
