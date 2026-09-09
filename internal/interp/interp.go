@@ -20,6 +20,8 @@ import (
 type Interpreter struct {
 	in           *bufio.Reader
 	out          io.Writer
+	writeNewline bool
+	writeBytes   int
 	lib          *stdlib.Library
 	env          *env
 	subs         map[token.Pos]ast.Subprogram
@@ -64,6 +66,8 @@ func New(options Options) *Interpreter {
 
 // Run executes a checked program.
 func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) []diag.Diagnostic {
+	i.writeNewline = false
+	i.writeBytes = 0
 	i.program = nil
 	i.global = nil
 	i.result = nil

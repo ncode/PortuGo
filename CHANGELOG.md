@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Match recorded nested-output ordering and newline consumption. Evaluate and
+  format a statement's items before emitting them, preserve nested output on
+  evaluation failure, bound the statement buffer, and clear pending newline
+  state before interpreter reuse. Add nine reference programs and verify
+  twelve nested-output and function-return cases.
+
 - Diagnose missing return values on the return line without consuming the next
   statement or function terminator. Verify all four scalar result types and
   bare returns outside functions; retain mixed syntax/semantic error ordering

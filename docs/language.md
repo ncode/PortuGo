@@ -266,8 +266,7 @@ does not apply to returns. Valued returns in procedures or the main body receive
 same physical line as `retorne`. A bare return in a function receives `E001`
 on the return line; a bare return in a procedure or the main body receives
 `E005`. The following statement or terminator is retained for analysis.
-Diagnostic ordering when a file also contains malformed syntax, and output
-formatting when function bodies write during an outer write, remain pending.
+Diagnostic ordering when a file also contains malformed syntax remains pending.
 
 ## I/O
 
@@ -279,6 +278,19 @@ Either command may stand alone on its physical line: bare `escreva` emits
 nothing and bare `escreval` emits one newline. Arguments require parentheses
 on that line; unparenthesized values or another command after a bare write
 produce `P001` at the write statement.
+Each statement evaluates and formats its arguments in order before emitting
+its own text. Output from functions called during that evaluation appears first.
+`escreval` requests a pending newline, which the next output statement to finish
+consumes. This includes a nested `escreva` or a bare output command, so the outer
+statement may finish without another newline. Starting a new program clears
+this pending newline, including after a failed run.
+
+An argument-evaluation failure discards that statement's buffered items while
+preserving output from earlier statements and completed nested writes.
+Pending buffered output is limited to 16 MiB across nested statements as a
+project resource guard; exceeding it reports `R003` before emitting the
+affected statement's items. Completed statements release their buffer capacity.
+
 The portable CLI uses a deterministic profile matching the recorded `en-US`
 reference environment: `.` as decimal separator and LF for newlines. It does
 not change formatting with the host locale. Other VisuAlg locales remain

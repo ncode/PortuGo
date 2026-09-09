@@ -789,7 +789,15 @@
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Exact output rendering",
       "probes": [
         "output-format",
-        "output-edges"
+        "output-edges",
+        "nested-escreva-inner-write",
+        "nested-escreva-inner-newline",
+        "nested-escreval-inner-write",
+        "nested-escreval-inner-newline",
+        "nested-newline-bare-write",
+        "nested-newline-bare-newline",
+        "nested-newline-no-inner-write",
+        "nested-newline-two-calls"
       ]
     },
     {
@@ -798,7 +806,8 @@
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Width and precision formatting",
       "probes": [
         "output-rounding",
-        "output-rounding-valid"
+        "output-rounding-valid",
+        "nested-newline-width-call"
       ]
     },
     {
@@ -9360,14 +9369,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/recursive-local-call-frame/stdout.txt",
             "sha256": "1072173ab694c328dbd0134ca9db967e07a97ed86e82cb10c709ffff10d48cc9"
           }
-        }
+        },
+        "tests": [
+          "function_returns_test.go#TestRecordedFunctionReturns"
+        ]
       }
     },
     {
@@ -13776,14 +13788,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/function-without-return/stdout.txt",
             "sha256": "6ee5542c4532ea3702b97a7bd4784f08ec3255332a7294543ce7ae0694fb8cbe"
           }
-        }
+        },
+        "tests": [
+          "function_returns_test.go#TestRecordedFunctionReturns"
+        ]
       }
     },
     {
@@ -14366,14 +14381,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/function-return-skips-tail/stdout.txt",
             "sha256": "a7c2bb4dd66d25f11771dc0f05c4608265f2f3ee8041e2f7b6cc9476e680c1a3"
           }
-        }
+        },
+        "tests": [
+          "function_returns_test.go#TestRecordedFunctionReturns"
+        ]
       }
     },
     {
@@ -19110,6 +19128,393 @@
             }
           ]
         }
+      }
+    },
+    {
+      "id": "nested-escreva-inner-write",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreva-inner-write/source.alg",
+        "sha256": "76e665f253f1343ea823fe846dcceabfef3b57d6e883ff835c564df14332622a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T15:47:35.9914851Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreva-inner-write/raw.txt",
+          "sha256": "6fb00b597e8db1a004279f3a817125a6e09e3352977f765750c797c8ed4f1567"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreva-inner-write/stdout.txt",
+          "sha256": "c0a5cb4898c02ed8eda890f3a74887a05e3b7629edc753ac44754b21817ed8ab"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreva-inner-write/stdout.txt",
+            "sha256": "c0a5cb4898c02ed8eda890f3a74887a05e3b7629edc753ac44754b21817ed8ab"
+          }
+        },
+        "tests": [
+          "nested_output_test.go#TestRecordedNestedOutput"
+        ]
+      }
+    },
+    {
+      "id": "nested-escreva-inner-newline",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreva-inner-newline/source.alg",
+        "sha256": "ddd1e70ad245969eac88c9a47af0f63601ef45f315fc43bf768e920add90355c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T15:47:45.2841222Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreva-inner-newline/raw.txt",
+          "sha256": "12a3fc664b2b54b92bb1485f4f654418c32755f805f9c2e24c6e3e4d450e4038"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreva-inner-newline/stdout.txt",
+          "sha256": "a143b8640d7f0c8e0b762313e4ad331decec6d28fc379b2ca4f226f6d254ef64"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreva-inner-newline/stdout.txt",
+            "sha256": "a143b8640d7f0c8e0b762313e4ad331decec6d28fc379b2ca4f226f6d254ef64"
+          }
+        },
+        "tests": [
+          "nested_output_test.go#TestRecordedNestedOutput"
+        ]
+      }
+    },
+    {
+      "id": "nested-escreval-inner-write",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreval-inner-write/source.alg",
+        "sha256": "88bb2d78eb8b48a60d4144180b9b859307b5187a8007bda1797d6921de56dac7"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T15:47:54.5071912Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreval-inner-write/raw.txt",
+          "sha256": "12a3fc664b2b54b92bb1485f4f654418c32755f805f9c2e24c6e3e4d450e4038"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreval-inner-write/stdout.txt",
+          "sha256": "a143b8640d7f0c8e0b762313e4ad331decec6d28fc379b2ca4f226f6d254ef64"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreval-inner-write/stdout.txt",
+            "sha256": "a143b8640d7f0c8e0b762313e4ad331decec6d28fc379b2ca4f226f6d254ef64"
+          }
+        },
+        "tests": [
+          "nested_output_test.go#TestRecordedNestedOutput"
+        ]
+      }
+    },
+    {
+      "id": "nested-escreval-inner-newline",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreval-inner-newline/source.alg",
+        "sha256": "8460b74dd1d6cc494a4884671c20f9cf5bb79aee443ef9d306a5e29e8cac2ba3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T15:48:03.7358698Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreval-inner-newline/raw.txt",
+          "sha256": "12a3fc664b2b54b92bb1485f4f654418c32755f805f9c2e24c6e3e4d450e4038"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreval-inner-newline/stdout.txt",
+          "sha256": "a143b8640d7f0c8e0b762313e4ad331decec6d28fc379b2ca4f226f6d254ef64"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/nested-escreval-inner-newline/stdout.txt",
+            "sha256": "a143b8640d7f0c8e0b762313e4ad331decec6d28fc379b2ca4f226f6d254ef64"
+          }
+        },
+        "tests": [
+          "nested_output_test.go#TestRecordedNestedOutput"
+        ]
+      }
+    },
+    {
+      "id": "nested-newline-bare-write",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-bare-write/source.alg",
+        "sha256": "0ffba2c25b49dfb7c98b70b84224ac8725f1eec301f45739b2ad48cf3d14a282"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T15:48:12.8715833Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-bare-write/raw.txt",
+          "sha256": "a080b88436a3c262e32c0c755a1fab214220346e5fc6d04bff4d50e4588996bc"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-bare-write/stdout.txt",
+          "sha256": "da0a5eba6b24fb39c21ef131895578bcdb422ee2a96d0d5bb09b3801f06717c0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-bare-write/stdout.txt",
+            "sha256": "da0a5eba6b24fb39c21ef131895578bcdb422ee2a96d0d5bb09b3801f06717c0"
+          }
+        },
+        "tests": [
+          "nested_output_test.go#TestRecordedNestedOutput"
+        ]
+      }
+    },
+    {
+      "id": "nested-newline-bare-newline",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-bare-newline/source.alg",
+        "sha256": "381d5f473d44907a71eac302f3f0e329c1bdf14013c404774c5e21aef6f5a0d1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T15:48:22.0187946Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-bare-newline/raw.txt",
+          "sha256": "a080b88436a3c262e32c0c755a1fab214220346e5fc6d04bff4d50e4588996bc"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-bare-newline/stdout.txt",
+          "sha256": "da0a5eba6b24fb39c21ef131895578bcdb422ee2a96d0d5bb09b3801f06717c0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-bare-newline/stdout.txt",
+            "sha256": "da0a5eba6b24fb39c21ef131895578bcdb422ee2a96d0d5bb09b3801f06717c0"
+          }
+        },
+        "tests": [
+          "nested_output_test.go#TestRecordedNestedOutput"
+        ]
+      }
+    },
+    {
+      "id": "nested-newline-no-inner-write",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-no-inner-write/source.alg",
+        "sha256": "518392e7358e0a5b901f3f292ca1a6011efa70cf394763cee5ecd50087da92e6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T15:48:31.1954863Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-no-inner-write/raw.txt",
+          "sha256": "8c1e036ac3be3f16fc89d2133db019fa760dd43e5a8dfdda2db253c50f502708"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-no-inner-write/stdout.txt",
+          "sha256": "566df98ffee0553a528a8f52c2acd36fafab6eed4e00bb68f4b87a73263718aa"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-no-inner-write/stdout.txt",
+            "sha256": "566df98ffee0553a528a8f52c2acd36fafab6eed4e00bb68f4b87a73263718aa"
+          }
+        },
+        "tests": [
+          "nested_output_test.go#TestRecordedNestedOutput"
+        ]
+      }
+    },
+    {
+      "id": "nested-newline-two-calls",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-two-calls/source.alg",
+        "sha256": "18bbadd13a69c3cf63afa490630af8e29119502684c50323c79b71efc22bee71"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T15:48:40.5283089Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-two-calls/raw.txt",
+          "sha256": "e56907919278565f6838f511dc71607f6bfc08479f5876eb7132c69be9147b15"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-two-calls/stdout.txt",
+          "sha256": "06621fb5e126bf7f0d2faf56ad13cca82631bc431bbea73df1dd5865205854b7"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-two-calls/stdout.txt",
+            "sha256": "06621fb5e126bf7f0d2faf56ad13cca82631bc431bbea73df1dd5865205854b7"
+          }
+        },
+        "tests": [
+          "nested_output_test.go#TestRecordedNestedOutput"
+        ]
+      }
+    },
+    {
+      "id": "nested-newline-width-call",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-width-call/source.alg",
+        "sha256": "5302e221ef4bdbbb9ae205229eb6b205c319574a6ab985adeb5d49eca87e67de"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T15:48:49.6641251Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-width-call/raw.txt",
+          "sha256": "c3fd5721aacf648305d7b47808a311fcc325c22f7554c42dd0c1b2a9502ad3e3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-width-call/stdout.txt",
+          "sha256": "a5681340ec719dbc592fffd18dbd5b4ef81a648ef50bd41faf514a30dd92c48f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/nested-newline-width-call/stdout.txt",
+            "sha256": "a5681340ec719dbc592fffd18dbd5b4ef81a648ef50bd41faf514a30dd92c48f"
+          }
+        },
+        "tests": [
+          "nested_output_test.go#TestRecordedNestedOutput"
+        ]
       }
     }
   ]

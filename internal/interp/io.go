@@ -60,7 +60,12 @@ func (i *Interpreter) readToken(pos token.Pos) (string, error) {
 }
 
 func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
-	for _, arg := range s.Args {
+	// Nested writes consume the newline requested by an outer escreval.
+	i.writeNewline = i.writeNewline || s.Newline
+	items := make([]string, len(s.Args))
+	buffered := 0
+	defer func() { i.writeBytes -= buffered }()
+	for index, arg := range s.Args {
 		v, err := i.eval(arg.Expr)
 		if err != nil {
 			return err
@@ -82,11 +87,21 @@ func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
 		if err := checkFormatSize(v, width, decimals); err != nil {
 			return failure(arg.Expr.Start(), diag.RStorage, err)
 		}
-		if _, err := io.WriteString(i.out, formatValue(v, int(max(0, width)), int(max(-1, decimals)))); err != nil {
-			return diag.Diagnostic{Code: diag.RHost, Pos: arg.Expr.Start(), Message: "cannot write output", Cause: err}
+		text := formatValue(v, int(max(0, width)), int(max(-1, decimals)))
+		if len(text) > maxTextBytes-i.writeBytes {
+			return failure(arg.Expr.Start(), diag.RStorage, fmt.Errorf("pending output size limit exceeded"))
+		}
+		items[index] = text
+		buffered += len(text)
+		i.writeBytes += len(text)
+	}
+	for index, text := range items {
+		if _, err := io.WriteString(i.out, text); err != nil {
+			return diag.Diagnostic{Code: diag.RHost, Pos: s.Args[index].Expr.Start(), Message: "cannot write output", Cause: err}
 		}
 	}
-	if s.Newline {
+	if i.writeNewline {
+		i.writeNewline = false
 		_, err := fmt.Fprintln(i.out)
 		if err != nil {
 			return diag.Diagnostic{Code: diag.RHost, Pos: s.Start(), Message: "cannot write output", Cause: err}

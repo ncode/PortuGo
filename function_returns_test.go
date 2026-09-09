@@ -11,6 +11,7 @@ import (
 
 func TestRecordedFunctionReturns(t *testing.T) {
 	for _, id := range []string{
+		"function-without-return", "function-return-skips-tail", "recursive-local-call-frame",
 		"function-partial-return", "function-widening-return",
 		"return-default-integer", "return-default-real", "return-default-string", "return-default-logical",
 		"return-result-persists", "return-continues-body", "return-last-value-wins",

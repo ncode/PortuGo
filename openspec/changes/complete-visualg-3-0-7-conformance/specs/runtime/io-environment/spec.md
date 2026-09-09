@@ -37,6 +37,10 @@ Input SHALL reproduce the reference syntax and range rules for integers, reals, 
 - **WHEN** equivalent items are emitted once with `escreva` and once with `escreval`
 - **THEN** the only newline differences are those observed in VisuAlg 3.0.7
 
+#### Scenario: Nested writes during argument evaluation
+- **WHEN** a function called by an output item or its format expression performs another output statement
+- **THEN** the nested statement emits before the outer statement's buffered items, and the next output statement to finish consumes any pending newline requested by `escreval`, including when that finishing statement is `escreva`
+
 #### Scenario: Replay the recorded portable output profile
 - **WHEN** selected 2026-09-07 `en-US` reference observations run through the portable CLI
 - **THEN** program output uses decimal dots, numeric and logical leading spaces, and uppercase logical values, with only fixed reference UI notices removed and CRLF converted to LF for comparison; other locale behavior remains pending evidence
