@@ -1,0 +1,91 @@
+package stdlib
+
+import (
+	"math/rand/v2"
+	"testing"
+
+	"github.com/ncode/portugol-go/internal/runtime"
+)
+
+type recordingRandom struct {
+	bounds []uint64
+	bad    bool
+}
+
+func (*recordingRandom) Float64() float64 { return .25 }
+func (r *recordingRandom) Uint64N(n uint64) uint64 {
+	r.bounds = append(r.bounds, n)
+	if r.bad {
+		return n
+	}
+	return n - 1
+}
+
+func TestRandiSource(t *testing.T) {
+	for _, tt := range []struct {
+		name  string
+		args  []runtime.Value
+		bound uint64
+		want  int64
+	}{
+		{"empty", nil, 0, 0},
+		{"zero", []runtime.Value{{Kind: runtime.IntegerValue}}, 0, 0},
+		{"unit", []runtime.Value{{Kind: runtime.IntegerValue, Int: 1}}, 1, 0},
+		{"exclusive upper bound", []runtime.Value{{Kind: runtime.IntegerValue, Int: 7}}, 7, 6},
+		{"negative bound", []runtime.Value{{Kind: runtime.IntegerValue, Int: -7}}, 4294967289, -8},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			r := &recordingRandom{}
+			got, found, err := New(r).Call("randi", tt.args)
+			if err != nil || !found || got.Kind != runtime.IntegerValue || got.Int != tt.want {
+				t.Fatalf("result=%v found=%t error=%v", got, found, err)
+			}
+			if tt.bound == 0 && len(r.bounds) != 0 || tt.bound != 0 && (len(r.bounds) != 1 || r.bounds[0] != tt.bound) {
+				t.Fatalf("draws=%v, expected bound %d", r.bounds, tt.bound)
+			}
+		})
+	}
+}
+
+func TestRandiFailures(t *testing.T) {
+	for _, args := range [][]runtime.Value{
+		{{Kind: runtime.RealValue, Real: 1}},
+		{{Kind: runtime.StringValue, Str: "7"}},
+		{{Kind: runtime.BoolValue}},
+		{{Kind: runtime.VoidValue}},
+		{{Kind: runtime.VectorValue}},
+		{{Kind: runtime.IntegerValue, Int: 2147483648}},
+		{{Kind: runtime.IntegerValue, Int: -2147483649}},
+		{{Kind: runtime.IntegerValue}, {Kind: runtime.IntegerValue}},
+	} {
+		r := &recordingRandom{}
+		if _, found, err := New(r).Call("randi", args); !found || err == nil || len(r.bounds) != 0 {
+			t.Fatalf("arguments=%v found=%t error=%v draws=%v", args, found, err, r.bounds)
+		}
+	}
+	for _, r := range []RandomSource{nil, &recordingRandom{bad: true}} {
+		if _, found, err := New(r).Call("randi", []runtime.Value{{Kind: runtime.IntegerValue, Int: 7}}); !found || err == nil {
+			t.Fatalf("invalid source: found=%t error=%v", found, err)
+		}
+	}
+}
+
+func TestRandiDomains(t *testing.T) {
+	for seed := uint64(0); seed < 64; seed++ {
+		lib := New(rand.New(rand.NewPCG(seed, seed+1)))
+		for _, bound := range []int64{1, 2, 7, 2147483647, -7} {
+			for draw := 0; draw < 64; draw++ {
+				got, found, err := lib.Call("randi", []runtime.Value{{Kind: runtime.IntegerValue, Int: bound}})
+				outside := got.Int < -2147483648 || got.Int > 2147483647
+				if bound > 0 {
+					outside = outside || got.Int < 0 || got.Int >= bound
+				} else {
+					outside = outside || got.Int < 0 && got.Int >= bound
+				}
+				if !found || err != nil || got.Kind != runtime.IntegerValue || outside {
+					t.Fatalf("seed=%d bound=%d result=%v found=%t error=%v", seed, bound, got, found, err)
+				}
+			}
+		}
+	}
+}

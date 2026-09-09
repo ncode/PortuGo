@@ -18,6 +18,7 @@ func TestRecordedBundledExamples(t *testing.T) {
 		"bundled-a3ab1c0f85e6", // vetr2dim.alg
 		"bundled-08dbc8f0cc9e", // PRIMOS.ALG
 		"bundled-b8d8516450ea", // caracfun.alg
+		"bundled-183b40a8f657", // randomicos.alg
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)

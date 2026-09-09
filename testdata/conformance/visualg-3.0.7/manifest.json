@@ -975,7 +975,22 @@
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Random built-ins",
       "probes": [
-        "randi-empty"
+        "randi-empty",
+        "randi-unit",
+        "randi-zero",
+        "randi-fraction",
+        "randi-bare",
+        "randi-extra",
+        "randi-string",
+        "randi-logical",
+        "randi-domain",
+        "randi-negative-domain",
+        "randi-wrap-zero",
+        "randi-wrap-unit",
+        "randi-signed-boundary",
+        "randi-vector",
+        "randi-no-value",
+        "randi-evaluation"
       ]
     },
     {
@@ -5757,14 +5772,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-183b40a8f657/stdout.txt",
             "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -9372,14 +9390,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/randi-empty/stdout.txt",
             "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
           }
-        }
+        },
+        "tests": [
+          "random_builtins_test.go#TestRecordedRandomBuiltins"
+        ]
       }
     },
     {
@@ -22710,6 +22731,792 @@
         },
         "tests": [
           "numeric_text_test.go#TestRecordedNumericText"
+        ]
+      }
+    },
+    {
+      "id": "randi-unit",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-unit/source.alg",
+        "sha256": "afc47f602ea915e3aa88a60be26d36f94e5e257550c3d64fb5afa4ecc38d497f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:08:38.1250255Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-unit/raw.txt",
+          "sha256": "61a1aacbe54a5792afbea4ac3cddd2c79a64a4d5aabbb817af315f96b8f6c9c9"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-unit/stdout.txt",
+          "sha256": "ae21a92a462b3af14726fe37bcba44ce99d9af4891f749eab369b9b2595680dd"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/randi-unit/stdout.txt",
+            "sha256": "ae21a92a462b3af14726fe37bcba44ce99d9af4891f749eab369b9b2595680dd"
+          }
+        },
+        "tests": [
+          "random_builtins_test.go#TestRecordedRandomBuiltins"
+        ]
+      }
+    },
+    {
+      "id": "randi-zero",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-zero/source.alg",
+        "sha256": "08598f99a0eecc8f9b17dce77550d6a83d2cc9a08ec1e38caa234e5277972c71"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:08:51.2634073Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-zero/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-zero/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/randi-zero/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "random_builtins_test.go#TestRecordedRandomBuiltins"
+        ]
+      }
+    },
+    {
+      "id": "randi-fraction",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-fraction/source.alg",
+        "sha256": "950b0b3a42b8faee84d547f6edf201d47a03bfd13cf2499ca759ae9e9ec820e1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:09:17.5889780Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-fraction/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-fraction/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-fraction/screenshot.png",
+          "sha256": "71ffe23eb3d6413faa665a6b5f1f7dfa46d9a4e793406c45f0289b95dcceec74"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-fraction/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "random_builtins_test.go#TestRandomBuiltinDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "randi-bare",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-bare/source.alg",
+        "sha256": "93e244706e42c26f0ab6c913fa6a80261ba5a40671c640bbdf3db681f565d107"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:09:43.9197654Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-bare/transcription.txt",
+          "sha256": "40aa07ec46f661057ac8fc548565397e81696b80fde45caf38cad556ec92fa41"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-bare/transcription.txt",
+          "sha256": "40aa07ec46f661057ac8fc548565397e81696b80fde45caf38cad556ec92fa41"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-bare/screenshot.png",
+          "sha256": "81ded437ebe94bb1715125f51d52b30479e27cbf344d3b94baf026a7c0031b2f"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-bare/transcription.txt",
+          "sha256": "40aa07ec46f661057ac8fc548565397e81696b80fde45caf38cad556ec92fa41"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "random_builtins_test.go#TestRandomBuiltinDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "randi-extra",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-extra/source.alg",
+        "sha256": "71229ea287440f4384dcd597d2f625e37179ded97527fdb59c985e78610c628b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:09:57.1071859Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-extra/transcription.txt",
+          "sha256": "42832129c9735aa3ca94a6ad090e5775555aff26798922eb43e97a20064024ef"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-extra/transcription.txt",
+          "sha256": "42832129c9735aa3ca94a6ad090e5775555aff26798922eb43e97a20064024ef"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-extra/screenshot.png",
+          "sha256": "9219e889c82fbfe6a21935bff806d1af17a230d2769849aa920984781152dc9d"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-extra/transcription.txt",
+          "sha256": "42832129c9735aa3ca94a6ad090e5775555aff26798922eb43e97a20064024ef"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "random_builtins_test.go#TestRandomBuiltinDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "randi-string",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-string/source.alg",
+        "sha256": "fb348bca1df40b0fdb1e6a3a6436f036c67330b38625e5b268967fca9e7c4b3b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:10:10.3356865Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-string/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-string/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-string/screenshot.png",
+          "sha256": "32bcd179688751ea31b651090cf5bad2c2cf4110a3270c649d03f532ffc76209"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-string/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "random_builtins_test.go#TestRandomBuiltinDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "randi-logical",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-logical/source.alg",
+        "sha256": "e71bce21c2d72a48a3b2d13dddb86cbbfe9bda001266fd3035c4e0cfb002ee31"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:10:23.5592538Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-logical/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-logical/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-logical/screenshot.png",
+          "sha256": "aa5276472943d94a3f5cc5eda601d17c658beec0daaf4f92c5ec7ba43adb9b5c"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-logical/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "random_builtins_test.go#TestRandomBuiltinDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "randi-domain",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-domain/source.alg",
+        "sha256": "068f71b95a50b7a1e1272a48d1a75a004ae028f0d19054052c396c14984ae576"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:10:49.8617592Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-domain/raw.txt",
+          "sha256": "f01fd89b93f56ce6101252de33a82f077fd488885a3bd3c746864fe85837db48"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-domain/stdout.txt",
+          "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/randi-domain/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          }
+        },
+        "tests": [
+          "random_builtins_test.go#TestRecordedRandomBuiltins"
+        ]
+      }
+    },
+    {
+      "id": "randi-negative-domain",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-negative-domain/source.alg",
+        "sha256": "46b046b754dae87ff01181cf5c4380b0552544c31d2b67b95a244007d1565aea"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:14:33.2130498Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-negative-domain/raw.txt",
+          "sha256": "f01fd89b93f56ce6101252de33a82f077fd488885a3bd3c746864fe85837db48"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-negative-domain/stdout.txt",
+          "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/randi-negative-domain/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          }
+        },
+        "tests": [
+          "random_builtins_test.go#TestRecordedRandomBuiltins"
+        ]
+      }
+    },
+    {
+      "id": "randi-wrap-zero",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-wrap-zero/source.alg",
+        "sha256": "fc644cace5bdc012e836c45112bd84290e8c40378827e7efdbe061fafdd2eb27"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:14:46.5240338Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-wrap-zero/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-wrap-zero/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-wrap-zero/screenshot.png",
+          "sha256": "c43786f3812a8a61669fe0527f4bf52a67db2199474c54250f46c90bf2215043"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-wrap-zero/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "randi-wrap-unit",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-wrap-unit/source.alg",
+        "sha256": "0bf24607590988ba4d94d4e1988a80211f358049306b753d801bd9d3d3172e81"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:14:59.7087782Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-wrap-unit/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-wrap-unit/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-wrap-unit/screenshot.png",
+          "sha256": "b88f8d535b88848a6aa9d3dc4f8bfa3e40764def00dfc514e80d9a805c83a0e2"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-wrap-unit/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "randi-signed-boundary",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-signed-boundary/source.alg",
+        "sha256": "481db7c52e9b31e35ea05eddfd8b3f99410a8cbcb098bfac07d477bdebf33c08"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:15:12.8926576Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-signed-boundary/transcription.txt",
+          "sha256": "722bbe3edf241a228957708258c7df18418c9a6d247fe15ba23d72aabac5abfb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-signed-boundary/transcription.txt",
+          "sha256": "722bbe3edf241a228957708258c7df18418c9a6d247fe15ba23d72aabac5abfb"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-signed-boundary/screenshot.png",
+          "sha256": "43696570e6655a3267f23f076fbe7a1959683b3fff3f9558ad4d4b8bad2f910a"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-signed-boundary/transcription.txt",
+          "sha256": "722bbe3edf241a228957708258c7df18418c9a6d247fe15ba23d72aabac5abfb"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 8
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "randi-vector",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-vector/source.alg",
+        "sha256": "7742c5ba2aaede434ca2ae6588a5543308b1bd6186f2ebf5b107aa26cc34b43c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:15:26.0809529Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-vector/transcription.txt",
+          "sha256": "8a428b037a737c06e7313ddeb21c05d547d177efda701a96a7b0f4143cc4feb4"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-vector/transcription.txt",
+          "sha256": "8a428b037a737c06e7313ddeb21c05d547d177efda701a96a7b0f4143cc4feb4"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-vector/screenshot.png",
+          "sha256": "32de8dc72ef5ffa013149b7bb2e07b4658a54de4ead0ca2a6ffc5c7992c8b455"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-vector/transcription.txt",
+          "sha256": "8a428b037a737c06e7313ddeb21c05d547d177efda701a96a7b0f4143cc4feb4"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "random_builtins_test.go#TestRandomBuiltinDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "randi-no-value",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-no-value/source.alg",
+        "sha256": "38fa68ab304b9ae690b14922cac5743adcd47967e79af904215753e0888a7555"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:15:39.3436018Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-no-value/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-no-value/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-no-value/screenshot.png",
+          "sha256": "09a7f689685a671d2a10190f39ed016ab336dc7b49dd17e79d4d40b7a3ee7c38"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-no-value/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "random_builtins_test.go#TestRandomBuiltinDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "randi-evaluation",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/randi-evaluation/source.alg",
+        "sha256": "2ccaa114630e2a069eceffd6ce311c24fdc399f765e8398331e1581f4b9e5eb3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:15:52.5267705Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-evaluation/raw.txt",
+          "sha256": "7fc6050620718c7f242c9cdce55518daed5ab706dbe47985e536bfeefeefe2f2"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/randi-evaluation/stdout.txt",
+          "sha256": "9cec4b336a506e6b00b6f04d0ed0c5a9af845c0c331ccc7e4e3de944e26365ea"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/randi-evaluation/stdout.txt",
+            "sha256": "9cec4b336a506e6b00b6f04d0ed0c5a9af845c0c331ccc7e4e3de944e26365ea"
+          }
+        },
+        "tests": [
+          "random_builtins_test.go#TestRecordedRandomBuiltins"
         ]
       }
     }

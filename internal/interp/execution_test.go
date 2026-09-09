@@ -45,6 +45,8 @@ func TestExecutionDiagnostics(t *testing.T) {
 		{"input", "var x: inteiro", "leia(x)", "x)", diag.RInput, Options{}},
 		{"loop", "var x: inteiro", "para x de 1 ate 2 passo 0 faca\nfimpara", "para", diag.RLoop, Options{}},
 		{"builtin", "", "escreval(aleatorio(0))", "aleatorio", diag.RBuiltin, Options{}},
+		{"random source", "", "escreval(randi(7))", "randi", diag.RBuiltin, Options{Random: &scriptedRandom{bad: true}}},
+		{"random bound", "", "escreval(randi(2147483648))", "randi", diag.RBuiltin, Options{}},
 		{"text conversion", "", "escreval(numpcarac(10 ^ 400))", "numpcarac", diag.RBuiltin, Options{}},
 		{"output", "", "escreva(1)", "1)", diag.RHost, Options{Output: failingWriter{}}},
 		{"input echo", "var x: inteiro", "leia(x)", "x)", diag.RHost, Options{Input: strings.NewReader("7\n"), Output: failingWriter{}}},
@@ -141,10 +143,19 @@ func TestCallAndValueLimits(t *testing.T) {
 	})
 }
 
-type scriptedRandom struct{ bounds []uint64 }
+type scriptedRandom struct {
+	bounds []uint64
+	bad    bool
+}
 
-func (*scriptedRandom) Float64() float64          { return .25 }
-func (r *scriptedRandom) Uint64N(n uint64) uint64 { r.bounds = append(r.bounds, n); return n - 1 }
+func (*scriptedRandom) Float64() float64 { return .25 }
+func (r *scriptedRandom) Uint64N(n uint64) uint64 {
+	r.bounds = append(r.bounds, n)
+	if r.bad {
+		return n
+	}
+	return n - 1
+}
 
 func TestOptionsRandomAndDefaults(t *testing.T) {
 	p, info := analyzed(t, "algoritmo \"random\"\ninicio\nescreval(aleatorio(), aleatorio(4), aleatorio(3, 5))\nfimalgoritmo")

@@ -11,12 +11,12 @@ import (
 	"github.com/ncode/portugol-go/internal/runtime"
 )
 
-// Library stores stateful built-ins such as aleatorio.
+// Library stores stateful random built-ins.
 type Library struct {
 	rng RandomSource
 }
 
-// RandomSource is the randomness consumed by aleatorio.
+// RandomSource supplies draws for random built-ins.
 type RandomSource interface {
 	Float64() float64
 	Uint64N(uint64) uint64
@@ -54,6 +54,8 @@ func (l *Library) Call(name string, args []runtime.Value) (runtime.Value, bool, 
 		return frac(args)
 	case "aleatorio":
 		return l.random(args)
+	case "randi":
+		return l.randi(args)
 	case "copia":
 		return copia(args)
 	case "maiusc":

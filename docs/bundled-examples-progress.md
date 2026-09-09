@@ -10,12 +10,11 @@ recorded acceptance, and reviewed exclusion reasons. Regression tests reproduce
 the previously unchecked mismatches. Pending entries still fail the existing
 missing-evidence gate; the new checks do not grant them an exemption.
 
-Nine programs complete successfully in the reference. Eight also match the CLI
+Nine programs complete successfully in the reference. All nine also match the CLI
 byte for byte and have permanent tests for original and formatted execution:
 `ajustes.alg`, `passo.alg`, `taxaspop.alg`, `Exemplos/TESTE.ALG`, `troca.alg`,
-`vetr2dim.alg`, `PRIMOS.ALG`, and `caracfun.alg`. The accepted `randomicos.alg`
-remains pending because it needs `randi`.
-It produces no output; that recording establishes successful execution,
+`vetr2dim.alg`, `PRIMOS.ALG`, `caracfun.alg`, and `randomicos.alg`.
+The random example produces no output; that recording establishes successful execution,
 not an exact random sequence or a complete randomness contract.
 
 Three bundled files are unusable as supplied. Their ordinary GUI diagnostics

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Implement recorded `randi` calls, positive and negative domains, empty/zero
+  bounds, argument evaluation, and positioned guards for invalid injected
+  sources. Add deterministic and seeded domain tests, verify the original
+  bundled random example, and retain large literal typing as pending evidence.
+
 - Implement recorded `numpcarac` conversion, including precision, exponent
   spelling, zero arguments, signed zero, and no-value output behavior. Add
   twenty-four reference programs and verify the original bundled string

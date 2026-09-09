@@ -326,8 +326,8 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 			c.checkArgs(&ast.CallExpr{Name: e.Name}, sym)
 			return sym.typ
 		}
-		if sym.kind == builtinSym && sym.name == "numpcarac" {
-			c.error(e.Name.Pos, diag.EParse, "expected '(' after numpcarac")
+		if sym.kind == builtinSym && (sym.name == "numpcarac" || sym.name == "randi") {
+			c.error(e.Name.Pos, diag.EParse, "expected '(' after %s", sym.name)
 			return runtime.Type{Kind: runtime.InvalidType}
 		}
 		if sym.kind != varSym {

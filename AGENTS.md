@@ -205,7 +205,7 @@ fimfuncao
 
 ### 6.7 Built-in functions (initial set)
 
-Numeric: `abs`, `raizq`, `exp`, `log`, `logn`, `pi`, `sen`, `cos`, `tan`, `int`, `frac`, `aleatorio`
+Numeric: `abs`, `raizq`, `exp`, `log`, `logn`, `pi`, `sen`, `cos`, `tan`, `int`, `frac`, `randi`, `aleatorio`
 `exp(base, exponent)` takes two numeric arguments and returns real-valued power.
 String: `copia(s, p, n)`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, `pos`
 Conversion: implicit `inteiro` → `real`; explicit elsewhere via built-ins (`int`, etc.)

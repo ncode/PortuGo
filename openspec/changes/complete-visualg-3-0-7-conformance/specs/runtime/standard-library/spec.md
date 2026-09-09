@@ -86,6 +86,16 @@ The catalog SHALL implement `rand`, `randi`, and any oracle-confirmed random ali
 - **WHEN** random bounds are empty, reversed, non-finite, or otherwise rejected by VisuAlg 3.0.7
 - **THEN** the stable positioned built-in diagnostic is returned without consuming an unintended input value
 
+#### Scenario: Use the recorded integer random bound
+- **WHEN** `randi` is called with a signed 32-bit integer
+- **THEN** a positive bound gives an integer in `[0, n)`, a negative bound uses its unsigned 32-bit width and a signed 32-bit result, and zero gives zero
+- **AND** the empty parenthesized call also gives zero
+
+#### Scenario: Diagnose integer random call syntax and types
+- **WHEN** `randi` has omitted parentheses, extra arguments, or an unindexed vector
+- **THEN** the recorded `P001` diagnostic is emitted
+- **AND** real, character, logical, or absent-value arguments receive `E001`
+
 ### Requirement: Built-in failure contract
 Invalid built-in arity or statically incompatible arguments SHALL be diagnosed during analysis. Domain, conversion, injected-source, and other runtime-only failures SHALL use the stable positioned built-in failure contract and SHALL never expose a Go panic or silently choose a different overload.
 

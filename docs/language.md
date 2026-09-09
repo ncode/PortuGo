@@ -338,7 +338,7 @@ leading space; field widths on logical values are rejected.
 ## Built-ins
 
 Numeric built-ins: `abs`, `raizq`, `exp`, `log`, `logn`, `pi`, `sen`, `cos`,
-`tan`, `int`, `frac`, and `aleatorio`.
+`tan`, `int`, `frac`, `randi`, and `aleatorio`.
 
 `exp(base, exponent)` takes two numeric arguments and returns real-valued
 exponentiation. The one-argument natural-exponential form is not supported.
@@ -360,6 +360,24 @@ any pending newline for the next successful output statement. Execution then
 continues. A typed return of this absent value receives `E001`; assignment is
 also rejected with `E001` as a project guard. Non-finite numeric arguments receive
 positioned `R007` as a project guard.
+
+`randi(n)` takes one signed 32-bit integer bound and returns an integer. For
+positive `n`, its domain is `[0, n)`. Negative bounds use their unsigned
+32-bit representation as the exclusive width, then interpret the result as
+signed 32-bit; for example, `randi(-7)` produces values in
+`[-2147483648, -8]` or `[0, 2147483647]`. Both `randi()` and `randi(0)`
+return zero. Arguments are evaluated once before the draw. Parentheses are
+required; omitted parentheses, extra arguments, and unindexed vectors receive
+`P001`. Real, character, logical, and no-value arguments receive `E001`.
+
+The injected source is per interpreter. Empty and zero-bound calls do not
+consume a draw in this implementation; this does not promise reference seed
+or draw-count compatibility. Out-of-range injected results and runtime bounds
+outside signed 32-bit receive positioned `R007` as project guards. The wider
+integer literal typing used elsewhere in the implementation remains pending:
+the reference rejects the recorded large literal bounds with `E001`, while
+the current CLI reaches the runtime guard. `rand` callable forms and
+command-form random input are separate pending work.
 
 `aleatorio()` returns a real in `[0, 1)`. `aleatorio(n)` returns an integer in
 `[0, n)`. `aleatorio(a, b)` returns an integer in the inclusive range `[a, b]`.

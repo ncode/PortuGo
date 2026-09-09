@@ -1,0 +1,5 @@
+Início da execução
+BOUND
+BOUND
+ 0 0
+Fim da execução.
