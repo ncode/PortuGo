@@ -1,0 +1,4 @@
+Início da execução
+[0][1.5][-1.25][2]
+
+Fim da execução.

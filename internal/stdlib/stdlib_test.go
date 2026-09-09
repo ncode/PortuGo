@@ -1,10 +1,26 @@
 package stdlib
 
 import (
+	"math"
 	"testing"
 
 	"github.com/ncode/portugol-go/internal/runtime"
 )
+
+func TestNumpcaracRejectsUnsupportedValues(t *testing.T) {
+	for _, args := range [][]runtime.Value{
+		{{Kind: runtime.RealValue, Real: math.NaN()}},
+		{{Kind: runtime.RealValue, Real: math.Inf(1)}},
+		{{Kind: runtime.RealValue, Real: math.Inf(-1)}},
+		{{Kind: runtime.IntegerValue}, {Kind: runtime.IntegerValue}},
+		{{Kind: runtime.VectorValue}},
+		{{}},
+	} {
+		if _, found, err := New(nil).Call("numpcarac", args); !found || err == nil {
+			t.Fatalf("arguments=%v found=%t error=%v, want a conversion error", args, found, err)
+		}
+	}
+}
 
 func TestExp(t *testing.T) {
 	integer := runtime.Value{Kind: runtime.IntegerValue, Int: 2}

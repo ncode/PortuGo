@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Implement recorded `numpcarac` conversion, including precision, exponent
+  spelling, zero arguments, signed zero, and no-value output behavior. Add
+  twenty-four reference programs and verify the original bundled string
+  example, with positioned syntax and conversion guards.
+
 - Read console input one line per destination, preserve spaces and empty
   character values, and reproduce the recorded scalar input echo. Keep unread
   lines across calls and interpreter reuse; update CLI and REPL regressions

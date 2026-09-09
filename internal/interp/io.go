@@ -80,6 +80,10 @@ func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
 		if err != nil {
 			return err
 		}
+		if v.Kind == runtime.VoidValue {
+			// Discard this statement without consuming a pending newline.
+			return nil
+		}
 		width := int64(0)
 		if arg.Width != nil {
 			width, err = i.evalInt(arg.Width)

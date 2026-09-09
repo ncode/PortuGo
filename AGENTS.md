@@ -209,6 +209,7 @@ Numeric: `abs`, `raizq`, `exp`, `log`, `logn`, `pi`, `sen`, `cos`, `tan`, `int`,
 `exp(base, exponent)` takes two numeric arguments and returns real-valued power.
 String: `copia(s, p, n)`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, `pos`
 Conversion: implicit `inteiro` → `real`; explicit elsewhere via built-ins (`int`, etc.)
+`numpcarac(x)` converts a number to text with 15 significant digits; `numpcarac()` returns `"0"`. Its recorded no-value behavior for nonnumeric input is documented in `docs/language.md`.
 
 VisuAlg strings are **1-indexed** in `copia` and `pos`. Don't make it 0-indexed "because Go". This is the language we're implementing.
 

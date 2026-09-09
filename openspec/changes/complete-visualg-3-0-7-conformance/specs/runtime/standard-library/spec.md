@@ -67,6 +67,14 @@ The catalog SHALL implement all oracle-confirmed explicit conversion functions a
 - **WHEN** conversion text contains a malformed number, trailing unsupported characters, or an out-of-range value
 - **THEN** it returns the oracle-confirmed fallback or stable positioned built-in diagnostic
 
+#### Scenario: Convert a number to character text
+- **WHEN** `numpcarac` receives one numeric argument or an empty parenthesized argument list
+- **THEN** it returns the recorded text with 15 significant digits, normalized zero, and uppercase exponents without a plus sign or leading zeros; an empty argument list returns `"0"`
+
+#### Scenario: Preserve an absent conversion result
+- **WHEN** `numpcarac` receives character or logical input, or another absent conversion result
+- **THEN** it produces no value; an output statement containing that result discards its buffered items and skips later items and format expressions without consuming a pending newline, while a typed return is rejected
+
 ### Requirement: Random built-ins
 The catalog SHALL implement `rand`, `randi`, and any oracle-confirmed random aliases with the reference arities, argument normalization, inclusive or exclusive bounds, result types, invalid-range behavior, and generator-state interaction. Runs SHALL accept an injected random source for deterministic tests; compatibility SHALL not require matching the reference sequence.
 

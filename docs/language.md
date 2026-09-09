@@ -346,6 +346,21 @@ exponentiation. The one-argument natural-exponential form is not supported.
 String built-ins: `copia`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, and
 `pos`. String positions are 1-indexed.
 
+`numpcarac(x)` converts a numeric value to character text with 15 significant
+digits, no leading space, and uppercase `E` exponents without a plus sign or
+leading exponent zeros. It discards the sign of zero. `numpcarac()` returns
+`"0"`; parentheses are required and at most one argument is accepted.
+Omitted parentheses, extra arguments, and an unindexed vector argument receive
+`P001`.
+
+String and logical arguments produce no value, and nested `numpcarac` calls
+preserve that absence. In an output item this discards the entire statement's
+buffered text, skips its remaining items and format expressions, and leaves
+any pending newline for the next successful output statement. Execution then
+continues. A typed return of this absent value receives `E001`; assignment is
+also rejected with `E001` as a project guard. Non-finite numeric arguments receive
+positioned `R007` as a project guard.
+
 `aleatorio()` returns a real in `[0, 1)`. `aleatorio(n)` returns an integer in
 `[0, n)`. `aleatorio(a, b)` returns an integer in the inclusive range `[a, b]`.
 The generator uses Go's standard pseudo-random source; VisuAlg's exact RNG is

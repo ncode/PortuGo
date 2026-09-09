@@ -1,6 +1,6 @@
 # Bundled example progress
 
-The first completed sweep records eleven original programs from the official
+The corpus records twelve original programs from the official
 VisuAlg 3.0.7 distribution. Their source bytes match the sizes and SHA-256 hashes
 in the 73-file catalog. Each observation links its catalog ID, exact source,
 reference outcome, and owning tasks in the conformance manifest.
@@ -10,12 +10,12 @@ recorded acceptance, and reviewed exclusion reasons. Regression tests reproduce
 the previously unchecked mismatches. Pending entries still fail the existing
 missing-evidence gate; the new checks do not grant them an exemption.
 
-Eight programs complete successfully in the reference. Six also match the CLI
+Nine programs complete successfully in the reference. Eight also match the CLI
 byte for byte and have permanent tests for original and formatted execution:
-`ajustes.alg`, `passo.alg`, `taxaspop.alg`, `Exemplos/TESTE.ALG`, `troca.alg`, and
-`vetr2dim.alg`. The accepted `caracfun.alg` and `randomicos.alg` remain pending:
-they expose missing string-type/built-in support and `randi`, respectively.
-The latter produces no output; that recording establishes successful execution,
+`ajustes.alg`, `passo.alg`, `taxaspop.alg`, `Exemplos/TESTE.ALG`, `troca.alg`,
+`vetr2dim.alg`, `PRIMOS.ALG`, and `caracfun.alg`. The accepted `randomicos.alg`
+remains pending because it needs `randi`.
+It produces no output; that recording establishes successful execution,
 not an exact random sequence or a complete randomness contract.
 
 Three bundled files are unusable as supplied. Their ordinary GUI diagnostics
@@ -33,14 +33,10 @@ execute a prefix before discovering malformed syntax; private partial panel
 observations document that behavior. CLI compile-time rejection remains a preflight
 check that does not execute an invalid program.
 
-The keyword follow-up adds a completed `PRIMOS.ALG` recording with a longer,
-bounded observation window. Its original source hash matches the release
-catalog. With bare `escreval` support, its original and formatted versions now
-match the complete reference output. Seven accepted bundled examples are verified.
-The prime search has an explicit 5,000,000-step replay allowance for its bounded
+The `PRIMOS.ALG` prime search has an explicit 5,000,000-step replay allowance for its bounded
 nested loops; the five-second replay deadline still applies.
 
 The catalog currently has nine accepted examples, three unusable examples,
 and 61 awaiting committed classifications. Incomplete captures are excluded.
-This slice does not close the full
-example sweep, evidence inventory, or conformance release gate.
+These records do not complete the full example sweep, evidence inventory,
+or conformance release gate.

@@ -45,6 +45,7 @@ func TestExecutionDiagnostics(t *testing.T) {
 		{"input", "var x: inteiro", "leia(x)", "x)", diag.RInput, Options{}},
 		{"loop", "var x: inteiro", "para x de 1 ate 2 passo 0 faca\nfimpara", "para", diag.RLoop, Options{}},
 		{"builtin", "", "escreval(aleatorio(0))", "aleatorio", diag.RBuiltin, Options{}},
+		{"text conversion", "", "escreval(numpcarac(10 ^ 400))", "numpcarac", diag.RBuiltin, Options{}},
 		{"output", "", "escreva(1)", "1)", diag.RHost, Options{Output: failingWriter{}}},
 		{"input echo", "var x: inteiro", "leia(x)", "x)", diag.RHost, Options{Input: strings.NewReader("7\n"), Output: failingWriter{}}},
 	} {

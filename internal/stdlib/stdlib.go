@@ -3,6 +3,7 @@ package stdlib
 import (
 	"fmt"
 	"math"
+	"strconv"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -67,9 +68,40 @@ func (l *Library) Call(name string, args []runtime.Value) (runtime.Value, bool, 
 		return compr(args)
 	case "pos":
 		return pos(args)
+	case "numpcarac":
+		return numpcarac(args)
 	default:
 		return runtime.Value{}, false, nil
 	}
+}
+
+func numpcarac(args []runtime.Value) (runtime.Value, bool, error) {
+	if len(args) > 1 {
+		return runtime.Value{}, true, fmt.Errorf("numpcarac expects zero or one argument")
+	}
+	var x float64
+	if len(args) == 1 {
+		if args[0].Kind == runtime.StringValue || args[0].Kind == runtime.BoolValue || args[0].Kind == runtime.VoidValue {
+			return runtime.Value{Kind: runtime.VoidValue}, true, nil
+		}
+		var err error
+		x, err = asFloat(args[0])
+		if err != nil {
+			return runtime.Value{}, true, err
+		}
+	}
+	if math.IsNaN(x) || math.IsInf(x, 0) {
+		return runtime.Value{}, true, fmt.Errorf("numpcarac requires a finite value")
+	}
+	if x == 0 {
+		return runtime.Value{Kind: runtime.StringValue, Str: "0"}, true, nil
+	}
+	text := strconv.FormatFloat(x, 'G', 15, 64)
+	if mantissa, exponent, ok := strings.Cut(text, "E"); ok {
+		n, _ := strconv.Atoi(exponent) // FormatFloat always emits a valid exponent.
+		text = mantissa + "E" + strconv.Itoa(n)
+	}
+	return runtime.Value{Kind: runtime.StringValue, Str: text}, true, nil
 }
 
 func abs(args []runtime.Value) (runtime.Value, bool, error) {
