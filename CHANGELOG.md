@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Record 21 more original bundled examples. Verify fourteen fixed-input
+  programs and three source rejections; retain the remaining accepted-program
+  and diagnostic differences as explicit conformance work.
+
 - Recognize case-insensitive `DIV` as the integer-division operator alias and
   preserve its behavior through formatting. Verify four more bundled examples
   with fixed input, including the combination program that uses this alias.

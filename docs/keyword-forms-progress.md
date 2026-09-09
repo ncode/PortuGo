@@ -41,4 +41,4 @@ programs now match fixed-input output, including the combination program using
 
 Tasks 4.4 and 4.6 remain in progress because complete vocabulary and physical-line
 grammar obligations extend beyond these spellings. The evidence gate retains
-84 missing mappings: 27 requirements and 57 bundled examples.
+63 missing mappings: 27 requirements and 36 bundled examples.

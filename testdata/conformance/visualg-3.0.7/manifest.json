@@ -218,7 +218,27 @@
         "bundled-0d33ed8315bc",
         "bundled-c1a2be69b9ce",
         "bundled-2ecb6b470914",
-        "bundled-9ddfb3dd3ea1"
+        "bundled-9ddfb3dd3ea1",
+        "bundled-8c99b59ea498",
+        "bundled-b233b8edad6d",
+        "bundled-a942295b3cc1",
+        "bundled-fb5b43336226",
+        "bundled-116164dd09bb",
+        "bundled-9d47ee7cb251",
+        "bundled-ce6fa8f9a2a3",
+        "bundled-24919c4a2e4c",
+        "bundled-eedf876719f1",
+        "bundled-82d1c4dba544",
+        "bundled-7afef248aa17",
+        "bundled-8a30556ea4fc",
+        "bundled-ef0a1355d503",
+        "bundled-1dfa641f1d7a",
+        "bundled-dc0f54ded747",
+        "bundled-f8eb1bdcb2cd",
+        "bundled-3a5ff4924627",
+        "bundled-61a67cb1f566",
+        "bundled-b3549ab1faa5",
+        "bundled-50f837d55875"
       ]
     },
     {
@@ -5906,6 +5926,49 @@
       }
     },
     {
+      "id": "bundled-0d33ed8315bc",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-0d33ed8315bc/source.alg",
+        "sha256": "ee8864d6e5f676642892370c7f514420010ba0e408a4fb1714da33a18368a141"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-0d33ed8315bc/input.txt",
+        "sha256": "2acb8b48ee300b54e32f5ed676635c90463360f4476ca4615a0c2f6d0c56f36a"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:18:56.1000598Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-0d33ed8315bc/raw.txt",
+          "sha256": "e16995a5c3b2bb4e6e5376565f3588a987819dda168751398f48d913605eb207"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-0d33ed8315bc/stdout.txt",
+          "sha256": "694f069e7242573fd266f0c41b3424355c152e40cd0476decc099bcf0f270b44"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/bundled-0d33ed8315bc/stdout.txt",
+            "sha256": "694f069e7242573fd266f0c41b3424355c152e40cd0476decc099bcf0f270b44"
+          }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
+      }
+    },
+    {
       "id": "bundled-116164dd09bb",
       "ownerGroup": 17,
       "tasks": [
@@ -6100,14 +6163,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-1dfa641f1d7a/stdout.txt",
             "sha256": "bac5dbed596e7bd8134a4412e882bb5aac2886c6d34627561f85485c6e3cc5db"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -6207,6 +6273,49 @@
       }
     },
     {
+      "id": "bundled-2ecb6b470914",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-2ecb6b470914/source.alg",
+        "sha256": "c4e3d73b3833ec551e2f2cdda5e4b04e4ad85ac63534940c19ee0ec2a86f501f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-2ecb6b470914/input.txt",
+        "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:19:17.1301274Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-2ecb6b470914/raw.txt",
+          "sha256": "0447f7cee64f34a7a0cc0d699b3e3fa8019990d610d9cf1902459f05c56979b3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-2ecb6b470914/stdout.txt",
+          "sha256": "06fdbf88c16c7a1b4ce0e5efa9e91f96b82872a53fec46705db2fa93c03a8106"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/bundled-2ecb6b470914/stdout.txt",
+            "sha256": "06fdbf88c16c7a1b4ce0e5efa9e91f96b82872a53fec46705db2fa93c03a8106"
+          }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
+      }
+    },
+    {
       "id": "bundled-32d43fcfece0",
       "ownerGroup": 17,
       "tasks": [
@@ -6277,14 +6386,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-3a5ff4924627/stdout.txt",
             "sha256": "541649b04eb87b6433b169c0fc2e0457e506c0a515d99f0889d08324fb5b2037"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -6632,14 +6744,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-4fdb89658892/stdout.txt",
             "sha256": "fda4a6623bd4599b4dcc242d4016d8785d3de574a9a03dc464471afeb1704b70"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -6681,7 +6796,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -6694,7 +6809,10 @@
               "line": 1
             }
           ]
-        }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections"
+        ]
       }
     },
     {
@@ -6850,14 +6968,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-61a67cb1f566/stdout.txt",
             "sha256": "d61ff4c17461fc158a941a2d080d699e92885d67e40a4dc9f5fe011f181d7a06"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -7062,14 +7183,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-7afef248aa17/stdout.txt",
             "sha256": "6a4cacd31be0f39946ced082f3275c3bbaf4e5920108e1109e32e96868fe33a0"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -7143,14 +7267,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-82d1c4dba544/stdout.txt",
             "sha256": "c15dadabfe7bcc6454353777ebad3c47a3ddf66edb3225169529b1abd468ed71"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -7280,14 +7407,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-8a30556ea4fc/stdout.txt",
             "sha256": "a0f72986351e95405041d4b1b15bbc6b917034fb94fee3725b24d244de9f4b76"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -7361,14 +7491,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-8c99b59ea498/stdout.txt",
             "sha256": "8f57354b61a2d2c747c3520d2cae3435905dc944dfad76923ac700b22efa02e7"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -7450,6 +7583,49 @@
             "sha256": "5bbf5e241f905047776530605c0ac6ec5f9952866e5c222c8513b7ea6f096dbe"
           }
         }
+      }
+    },
+    {
+      "id": "bundled-9ddfb3dd3ea1",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-9ddfb3dd3ea1/source.alg",
+        "sha256": "dc6a4944dfde3348a05d464e1a6d8ad452ac3eafaf37ca1cab0b6c3fa8e72555"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-9ddfb3dd3ea1/input.txt",
+        "sha256": "4b259764fc01310c1ee10d979092d27e462b35750fa6df2be6156c50b0084794"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:19:27.9701975Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-9ddfb3dd3ea1/raw.txt",
+          "sha256": "9e4a373f730caac05867caea744d995201e19207c0b932782a8d83d7b2613f92"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-9ddfb3dd3ea1/stdout.txt",
+          "sha256": "65cb8c836b6222f6d39a0feb8e4d6c9f6a51f9cc5f96b43aeb59392094a5383d"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/bundled-9ddfb3dd3ea1/stdout.txt",
+            "sha256": "65cb8c836b6222f6d39a0feb8e4d6c9f6a51f9cc5f96b43aeb59392094a5383d"
+          }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -7691,14 +7867,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-a942295b3cc1/stdout.txt",
             "sha256": "0573664174445a9dce564fd780db86491ede503fd2ecdb540eebad3988864db5"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -7813,14 +7992,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-b233b8edad6d/stdout.txt",
             "sha256": "3535e7bedc85d95f35aed28288e425b334879c214e719f4d3d06c54111f5c409"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -7862,7 +8044,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -7875,7 +8057,10 @@
               "line": 1
             }
           ]
-        }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections"
+        ]
       }
     },
     {
@@ -7960,6 +8145,49 @@
             "sha256": "a73b02411a5fd9013a19f5384192b20a39b4d7db165c0727fdf3733f707b6d4e"
           }
         }
+      }
+    },
+    {
+      "id": "bundled-c1a2be69b9ce",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c1a2be69b9ce/source.alg",
+        "sha256": "eb67f94859cc9c080feb87b55dc8c0cd5c44cd6d8b9e9644d83846802862d61f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c1a2be69b9ce/input.txt",
+        "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T19:19:06.5955608Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c1a2be69b9ce/raw.txt",
+          "sha256": "0447f7cee64f34a7a0cc0d699b3e3fa8019990d610d9cf1902459f05c56979b3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c1a2be69b9ce/stdout.txt",
+          "sha256": "06fdbf88c16c7a1b4ce0e5efa9e91f96b82872a53fec46705db2fa93c03a8106"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c1a2be69b9ce/stdout.txt",
+            "sha256": "06fdbf88c16c7a1b4ce0e5efa9e91f96b82872a53fec46705db2fa93c03a8106"
+          }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -8180,7 +8408,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -8193,7 +8421,10 @@
               "line": 13
             }
           ]
-        }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections"
+        ]
       }
     },
     {
@@ -8307,14 +8538,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-dc0f54ded747/stdout.txt",
             "sha256": "13ec3c0606436b9cb271d000a8608fc7cdae7e3e84cf84ab609c015beb18b801"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -8347,14 +8581,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-eedf876719f1/stdout.txt",
             "sha256": "437a007cff5dc01b52b475b67edff07c2472e1ffc2fa40a9ebda9b50af21942d"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -8539,14 +8776,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f8eb1bdcb2cd/stdout.txt",
             "sha256": "5ce67c68719e7263ce325782b8ea611debc74f6c6d7fce4a036efe17c18720af"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -8620,14 +8860,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-fb5b43336226/stdout.txt",
             "sha256": "60532803d91f54a9d46135af632ac6e3e34ddf7f6a4b918f7d38c5dd7123d9ee"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -9442,6 +9685,31 @@
       },
       "implementation": {
         "state": "pending"
+      }
+    },
+    {
+      "id": "project.vector-storage",
+      "ownerGroup": 7,
+      "timeoutMS": 5000,
+      "tasks": [
+        "7.6",
+        "7.7",
+        "7.8"
+      ],
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "Malformed Go storage layouts cannot be injected through reference source programs. These project guards are tested with synthetic storage objects; recorded ordinary bounds failures remain separately required.",
+          "link": "docs/conformance-project-evidence.md#Defensive vector storage"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "internal/runtime/vector_test.go#TestVectorCellRejectsInvalidStorage",
+          "internal/runtime/vector_test.go#TestVectorCellOffsets",
+          "internal/interp/storage_test.go#TestCorruptedVectorStorage"
+        ]
       }
     },
     {
@@ -17200,31 +17468,6 @@
         },
         "tests": [
           "vector_reference_test.go#TestRecordedVectorPrograms"
-        ]
-      }
-    },
-    {
-      "id": "project.vector-storage",
-      "ownerGroup": 7,
-      "timeoutMS": 5000,
-      "tasks": [
-        "7.6",
-        "7.7",
-        "7.8"
-      ],
-      "evidence": {
-        "state": "not-applicable",
-        "review": {
-          "reason": "Malformed Go storage layouts cannot be injected through reference source programs. These project guards are tested with synthetic storage objects; recorded ordinary bounds failures remain separately required.",
-          "link": "docs/conformance-project-evidence.md#Defensive vector storage"
-        }
-      },
-      "implementation": {
-        "state": "verified",
-        "tests": [
-          "internal/runtime/vector_test.go#TestVectorCellRejectsInvalidStorage",
-          "internal/runtime/vector_test.go#TestVectorCellOffsets",
-          "internal/interp/storage_test.go#TestCorruptedVectorStorage"
         ]
       }
     },
@@ -34617,178 +34860,6 @@
         },
         "tests": [
           "keyword_reference_test.go#TestRecordedKeywordPrograms"
-        ]
-      }
-    },
-    {
-      "id": "bundled-0d33ed8315bc",
-      "ownerGroup": 17,
-      "tasks": [
-        "17.3"
-      ],
-      "source": {
-        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-0d33ed8315bc/source.alg",
-        "sha256": "ee8864d6e5f676642892370c7f514420010ba0e408a4fb1714da33a18368a141"
-      },
-      "input": {
-        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-0d33ed8315bc/input.txt",
-        "sha256": "2acb8b48ee300b54e32f5ed676635c90463360f4476ca4615a0c2f6d0c56f36a"
-      },
-      "timeoutMS": 5000,
-      "evidence": {
-        "state": "recorded",
-        "accepted": true,
-        "capturedAt": "2026-09-09T19:18:56.1000598Z",
-        "raw": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-0d33ed8315bc/raw.txt",
-          "sha256": "e16995a5c3b2bb4e6e5376565f3588a987819dda168751398f48d913605eb207"
-        },
-        "normalized": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-0d33ed8315bc/stdout.txt",
-          "sha256": "694f069e7242573fd266f0c41b3424355c152e40cd0476decc099bcf0f270b44"
-        },
-        "normalizer": "panel-v1"
-      },
-      "implementation": {
-        "state": "verified",
-        "expected": {
-          "exitCode": 0,
-          "stdout": {
-            "path": "testdata/conformance/visualg-3.0.7/probes/bundled-0d33ed8315bc/stdout.txt",
-            "sha256": "694f069e7242573fd266f0c41b3424355c152e40cd0476decc099bcf0f270b44"
-          }
-        },
-        "tests": [
-          "bundled_examples_test.go#TestRecordedBundledExamples"
-        ]
-      }
-    },
-    {
-      "id": "bundled-c1a2be69b9ce",
-      "ownerGroup": 17,
-      "tasks": [
-        "17.3"
-      ],
-      "source": {
-        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c1a2be69b9ce/source.alg",
-        "sha256": "eb67f94859cc9c080feb87b55dc8c0cd5c44cd6d8b9e9644d83846802862d61f"
-      },
-      "input": {
-        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c1a2be69b9ce/input.txt",
-        "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06"
-      },
-      "timeoutMS": 5000,
-      "evidence": {
-        "state": "recorded",
-        "accepted": true,
-        "capturedAt": "2026-09-09T19:19:06.5955608Z",
-        "raw": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c1a2be69b9ce/raw.txt",
-          "sha256": "0447f7cee64f34a7a0cc0d699b3e3fa8019990d610d9cf1902459f05c56979b3"
-        },
-        "normalized": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c1a2be69b9ce/stdout.txt",
-          "sha256": "06fdbf88c16c7a1b4ce0e5efa9e91f96b82872a53fec46705db2fa93c03a8106"
-        },
-        "normalizer": "panel-v1"
-      },
-      "implementation": {
-        "state": "verified",
-        "expected": {
-          "exitCode": 0,
-          "stdout": {
-            "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c1a2be69b9ce/stdout.txt",
-            "sha256": "06fdbf88c16c7a1b4ce0e5efa9e91f96b82872a53fec46705db2fa93c03a8106"
-          }
-        },
-        "tests": [
-          "bundled_examples_test.go#TestRecordedBundledExamples"
-        ]
-      }
-    },
-    {
-      "id": "bundled-2ecb6b470914",
-      "ownerGroup": 17,
-      "tasks": [
-        "17.3"
-      ],
-      "source": {
-        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-2ecb6b470914/source.alg",
-        "sha256": "c4e3d73b3833ec551e2f2cdda5e4b04e4ad85ac63534940c19ee0ec2a86f501f"
-      },
-      "input": {
-        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-2ecb6b470914/input.txt",
-        "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06"
-      },
-      "timeoutMS": 5000,
-      "evidence": {
-        "state": "recorded",
-        "accepted": true,
-        "capturedAt": "2026-09-09T19:19:17.1301274Z",
-        "raw": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-2ecb6b470914/raw.txt",
-          "sha256": "0447f7cee64f34a7a0cc0d699b3e3fa8019990d610d9cf1902459f05c56979b3"
-        },
-        "normalized": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-2ecb6b470914/stdout.txt",
-          "sha256": "06fdbf88c16c7a1b4ce0e5efa9e91f96b82872a53fec46705db2fa93c03a8106"
-        },
-        "normalizer": "panel-v1"
-      },
-      "implementation": {
-        "state": "verified",
-        "expected": {
-          "exitCode": 0,
-          "stdout": {
-            "path": "testdata/conformance/visualg-3.0.7/probes/bundled-2ecb6b470914/stdout.txt",
-            "sha256": "06fdbf88c16c7a1b4ce0e5efa9e91f96b82872a53fec46705db2fa93c03a8106"
-          }
-        },
-        "tests": [
-          "bundled_examples_test.go#TestRecordedBundledExamples"
-        ]
-      }
-    },
-    {
-      "id": "bundled-9ddfb3dd3ea1",
-      "ownerGroup": 17,
-      "tasks": [
-        "17.3"
-      ],
-      "source": {
-        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-9ddfb3dd3ea1/source.alg",
-        "sha256": "dc6a4944dfde3348a05d464e1a6d8ad452ac3eafaf37ca1cab0b6c3fa8e72555"
-      },
-      "input": {
-        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-9ddfb3dd3ea1/input.txt",
-        "sha256": "4b259764fc01310c1ee10d979092d27e462b35750fa6df2be6156c50b0084794"
-      },
-      "timeoutMS": 5000,
-      "evidence": {
-        "state": "recorded",
-        "accepted": true,
-        "capturedAt": "2026-09-09T19:19:27.9701975Z",
-        "raw": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-9ddfb3dd3ea1/raw.txt",
-          "sha256": "9e4a373f730caac05867caea744d995201e19207c0b932782a8d83d7b2613f92"
-        },
-        "normalized": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-9ddfb3dd3ea1/stdout.txt",
-          "sha256": "65cb8c836b6222f6d39a0feb8e4d6c9f6a51f9cc5f96b43aeb59392094a5383d"
-        },
-        "normalizer": "panel-v1"
-      },
-      "implementation": {
-        "state": "verified",
-        "expected": {
-          "exitCode": 0,
-          "stdout": {
-            "path": "testdata/conformance/visualg-3.0.7/probes/bundled-9ddfb3dd3ea1/stdout.txt",
-            "sha256": "65cb8c836b6222f6d39a0feb8e4d6c9f6a51f9cc5f96b43aeb59392094a5383d"
-          }
-        },
-        "tests": [
-          "bundled_examples_test.go#TestRecordedBundledExamples"
         ]
       }
     }

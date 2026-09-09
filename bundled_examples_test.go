@@ -23,6 +23,20 @@ func TestRecordedBundledExamples(t *testing.T) {
 		"bundled-c1a2be69b9ce", // fatorial.alg
 		"bundled-2ecb6b470914", // fatorial2.alg
 		"bundled-9ddfb3dd3ea1", // menorde3.alg
+		"bundled-8c99b59ea498", // CALCULOMEDIA2.ALG
+		"bundled-b233b8edad6d", // decomp.alg
+		"bundled-a942295b3cc1", // dectobin.alg
+		"bundled-fb5b43336226", // dectohex.alg
+		"bundled-eedf876719f1", // EXEMPLO1.alg.ALG
+		"bundled-82d1c4dba544", // media_aluno.alg
+		"bundled-7afef248aa17", // MEDIA_SIMPLES.ALG
+		"bundled-8a30556ea4fc", // MEDIA_VETOR.ALG
+		"bundled-1dfa641f1d7a", // MODULO.ALG
+		"bundled-dc0f54ded747", // Nome_inverso.alg
+		"bundled-4fdb89658892", // PERFEITOS.ALG
+		"bundled-f8eb1bdcb2cd", // rqpaprox.alg
+		"bundled-3a5ff4924627", // times.alg
+		"bundled-61a67cb1f566", // Troca de Valores.alg
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)

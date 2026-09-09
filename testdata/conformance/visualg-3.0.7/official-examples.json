@@ -84,7 +84,7 @@
     "disposition": "unusable",
     "review": {
       "reason": "The bundled program has a malformed Agoritmo header and is rejected on line 1.",
-      "link": "docs/conformance-evidence-baseline.md#Bundled rejections"
+      "link": "docs/bundled-examples-progress.md"
     }
   },
   {
@@ -95,7 +95,7 @@
     "disposition": "unusable",
     "review": {
       "reason": "The bundled program has a malformed Agoritmo header and is rejected on line 1.",
-      "link": "docs/conformance-evidence-baseline.md#Bundled rejections"
+      "link": "docs/bundled-examples-progress.md"
     }
   },
   {
@@ -251,7 +251,7 @@
     "disposition": "unusable",
     "review": {
       "reason": "The bundled program uses the unrecognized NUMERICO type on line 13.",
-      "link": "docs/conformance-evidence-baseline.md#Bundled rejections"
+      "link": "docs/bundled-examples-progress.md"
     }
   },
   {
@@ -262,7 +262,7 @@
     "disposition": "unusable",
     "review": {
       "reason": "The bundled program assigns an integer to a character vector element on line 21.",
-      "link": "docs/conformance-evidence-baseline.md#Bundled rejections"
+      "link": "docs/bundled-examples-progress.md"
     }
   },
   {
