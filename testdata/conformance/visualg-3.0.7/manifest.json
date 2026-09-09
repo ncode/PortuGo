@@ -239,7 +239,9 @@
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Numeric evaluation and coercion",
       "probes": [
-        "exact-division-integer"
+        "exact-division-integer",
+        "integer-overflow-add",
+        "integer-overflow-subtract"
       ]
     },
     {
@@ -410,7 +412,16 @@
         "indented-star-line",
         "brace-inline-math",
         "string-comment-after-content",
-        "string-brace-content"
+        "string-brace-content",
+        "literal-large-output",
+        "literal-large-precision",
+        "literal-large-assignment",
+        "literal-negative-minimum",
+        "literal-negative-outside",
+        "literal-large-return",
+        "literal-int64-output",
+        "literal-uint64-output",
+        "literal-leading-zeros"
       ]
     },
     {
@@ -845,7 +856,13 @@
         "nested-newline-bare-write",
         "nested-newline-bare-newline",
         "nested-newline-no-inner-write",
-        "nested-newline-two-calls"
+        "nested-newline-two-calls",
+        "real-output-fractions",
+        "real-output-thresholds",
+        "real-output-zero",
+        "real-output-default-width",
+        "real-output-addition",
+        "real-output-exponents"
       ]
     },
     {
@@ -990,7 +1007,8 @@
         "randi-signed-boundary",
         "randi-vector",
         "randi-no-value",
-        "randi-evaluation"
+        "randi-evaluation",
+        "integer-computed-minimum"
       ]
     },
     {
@@ -23235,7 +23253,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -23248,7 +23266,10 @@
               "line": 3
             }
           ]
-        }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestNumericLiteralDiagnostics"
+        ]
       }
     },
     {
@@ -23290,7 +23311,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -23303,7 +23324,10 @@
               "line": 3
             }
           ]
-        }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestNumericLiteralDiagnostics"
+        ]
       }
     },
     {
@@ -23345,7 +23369,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -23358,7 +23382,10 @@
               "line": 8
             }
           ]
-        }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestNumericLiteralDiagnostics"
+        ]
       }
     },
     {
@@ -23517,6 +23544,831 @@
         },
         "tests": [
           "random_builtins_test.go#TestRecordedRandomBuiltins"
+        ]
+      }
+    },
+    {
+      "id": "literal-large-output",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-output/source.alg",
+        "sha256": "076691e87180920a07be988dec5966dde774980529c64d67e26d7d2a5eddf55b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:21:54.8866793Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-output/raw.txt",
+          "sha256": "5ff82a56dd15b5fb367bafff54700ba11ef383d31f940c5eaf3d4a21a97d2988"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-output/stdout.txt",
+          "sha256": "8deda2d218060671115e834df1295b5d36ed6484119a93f61cf3d0450cd192ca"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-output/stdout.txt",
+            "sha256": "8deda2d218060671115e834df1295b5d36ed6484119a93f61cf3d0450cd192ca"
+          }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestRecordedNumericLiterals"
+        ]
+      }
+    },
+    {
+      "id": "literal-large-precision",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-precision/source.alg",
+        "sha256": "0f5498c74b7c7d595f4f9fbc7967d1c84231e65752571ac5cd22bdb4071e7022"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:22:05.1044196Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-precision/raw.txt",
+          "sha256": "3a1502a357192bc50d73ec1c7164f0740cc7121483e73c2677b3fddda7422331"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-precision/stdout.txt",
+          "sha256": "48f20611f970c370a96c4813bb471ddbd28198267fdf92155612be4900bc2417"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-precision/stdout.txt",
+            "sha256": "48f20611f970c370a96c4813bb471ddbd28198267fdf92155612be4900bc2417"
+          }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestRecordedNumericLiterals"
+        ]
+      }
+    },
+    {
+      "id": "literal-large-assignment",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-assignment/source.alg",
+        "sha256": "86b5db1286989afc55b5c7c8595df252ced173ee0ac4dd7a31fe327baa5afdd2"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:22:15.3124086Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-assignment/transcription.txt",
+          "sha256": "da3215561198171e03395c067d9bcc3024685ef91267dbd1b88847240480a74e"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-assignment/transcription.txt",
+          "sha256": "da3215561198171e03395c067d9bcc3024685ef91267dbd1b88847240480a74e"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-assignment/screenshot.png",
+          "sha256": "d2570036715d78ad3f01c7bcc2535399d21be2941b19ed3c738d117d129fc16b"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-assignment/transcription.txt",
+          "sha256": "da3215561198171e03395c067d9bcc3024685ef91267dbd1b88847240480a74e"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-assignment/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R001",
+              "line": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "literal-negative-minimum",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/literal-negative-minimum/source.alg",
+        "sha256": "8570be17dcde19957ccd687d7679d255038ceb56774e76ef47a4b03cceb84a15"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:22:25.5442652Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-negative-minimum/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-negative-minimum/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-negative-minimum/screenshot.png",
+          "sha256": "0c049484db50097dc695076a162f68c36e7ae18626dfc272ea4b36f7752ff154"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-negative-minimum/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "numeric_literals_test.go#TestNumericLiteralDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "literal-negative-outside",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/literal-negative-outside/source.alg",
+        "sha256": "fdd2f88ef58081f290d465193893bff776c597bfd7321fa76cface54a1fd93b0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:22:35.6927114Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-negative-outside/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-negative-outside/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-negative-outside/screenshot.png",
+          "sha256": "4a1130bbe21a88ad9d56b01ffa874ec7e942c302bbc6ecc9595b4181f940cca6"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-negative-outside/transcription.txt",
+          "sha256": "c627a6c2987430eadc481940517df5ee5c4ebc4c0bdba77437b30ca05e5467bb"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "numeric_literals_test.go#TestNumericLiteralDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "literal-large-return",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-return/source.alg",
+        "sha256": "6357333420fd6fe3fab8d2afbdc711358bd789ca94a44f54743763c29eb978a8"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T17:22:45.8416541Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-return/transcription.txt",
+          "sha256": "cf049e3c368d621723294026dcaf089ecbb9abb34cacc45475278d9ab9ab9532"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-return/transcription.txt",
+          "sha256": "cf049e3c368d621723294026dcaf089ecbb9abb34cacc45475278d9ab9ab9532"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-return/screenshot.png",
+          "sha256": "58f6ef852a34cee5ee6f375145ae593ce25b4ea8ef7d0ae5881c58b4fadff40a"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-large-return/transcription.txt",
+          "sha256": "cf049e3c368d621723294026dcaf089ecbb9abb34cacc45475278d9ab9ab9532"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "numeric_literals_test.go#TestNumericLiteralDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "literal-int64-output",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/literal-int64-output/source.alg",
+        "sha256": "7bcee7d188110f6ec967f6f9365b37a04a19f7c7c4cef32ccaf74d3102fee062"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:22:56.0176960Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-int64-output/raw.txt",
+          "sha256": "0781ee2ea2f91674a1ea2c7af6e82c12cc2f625322bb9bf01cfb8d106b9c37c5"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-int64-output/stdout.txt",
+          "sha256": "bac0a692566ef7b859fb4f530dc124b70837813a7025f38992d14622d21a0a14"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/literal-int64-output/stdout.txt",
+            "sha256": "bac0a692566ef7b859fb4f530dc124b70837813a7025f38992d14622d21a0a14"
+          }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestRecordedNumericLiterals"
+        ]
+      }
+    },
+    {
+      "id": "literal-uint64-output",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/literal-uint64-output/source.alg",
+        "sha256": "3f9d2dd036da51ba50aaa5ce69503d73da7b6bdab0e72c7b868ad7970efbf969"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:23:06.2675015Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-uint64-output/raw.txt",
+          "sha256": "1afbc0ec40802eac899e18b2e22c384263716025b0c0c8888dd24adc77a1e510"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-uint64-output/stdout.txt",
+          "sha256": "89717ce5e691ce05b60ff12758b0bad249850016be554aa6c740247b98d88194"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/literal-uint64-output/stdout.txt",
+            "sha256": "89717ce5e691ce05b60ff12758b0bad249850016be554aa6c740247b98d88194"
+          }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestRecordedNumericLiterals"
+        ]
+      }
+    },
+    {
+      "id": "integer-overflow-add",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-overflow-add/source.alg",
+        "sha256": "22e9f2b96b355083feef9eb835a5394866409a8971df1dcb220b7c810715f1e2"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:23:16.5009756Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-overflow-add/raw.txt",
+          "sha256": "632b5d1046ce89625731716abe43bb9029c56629c89cd390d4c53413dc83e318"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-overflow-add/stdout.txt",
+          "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-overflow-add/stdout.txt",
+            "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+          }
+        }
+      }
+    },
+    {
+      "id": "integer-overflow-subtract",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-overflow-subtract/source.alg",
+        "sha256": "c52507954c757c62a825e903f62bf0c2c17c12bce926170d92630900a48627fb"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:23:26.6806934Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-overflow-subtract/raw.txt",
+          "sha256": "67d968df276827db89fe9c461557f20d1b51489ebeaeb87197e63bf1fd18522b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-overflow-subtract/stdout.txt",
+          "sha256": "376e2c66d68a0d407c1afe5f1bfe3e54649c436d2cc8de5c50588490be6e36c8"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-overflow-subtract/stdout.txt",
+            "sha256": "376e2c66d68a0d407c1afe5f1bfe3e54649c436d2cc8de5c50588490be6e36c8"
+          }
+        }
+      }
+    },
+    {
+      "id": "integer-computed-minimum",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/integer-computed-minimum/source.alg",
+        "sha256": "5c8596d2c8634bc6012846427d1068ea98d33f0954cdc43369ad72c0b240a423"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:23:36.8848830Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-computed-minimum/raw.txt",
+          "sha256": "f01fd89b93f56ce6101252de33a82f077fd488885a3bd3c746864fe85837db48"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/integer-computed-minimum/stdout.txt",
+          "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/integer-computed-minimum/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestRecordedNumericLiterals"
+        ]
+      }
+    },
+    {
+      "id": "literal-leading-zeros",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/literal-leading-zeros/source.alg",
+        "sha256": "ba33b3f80723205a6e667913925b30fc7a4c32795f29872837ca451823f7be1b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:23:47.0405411Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-leading-zeros/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/literal-leading-zeros/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/literal-leading-zeros/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestRecordedNumericLiterals"
+        ]
+      }
+    },
+    {
+      "id": "real-output-fractions",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/real-output-fractions/source.alg",
+        "sha256": "2b6ddce0ae495f459376af33906f0bb4eb4c62b22c2b48e8f10194de67d98a2d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:30:44.4829460Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/real-output-fractions/raw.txt",
+          "sha256": "8a07558544bee16580370a83ff894a6bc669b31ae3eba91c304738c9fd9c0984"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/real-output-fractions/stdout.txt",
+          "sha256": "264a2e5dcebf8a06c08f073fb2a2ab89cee5cfb7e928811b42919bfcde3c9ebe"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/real-output-fractions/stdout.txt",
+            "sha256": "264a2e5dcebf8a06c08f073fb2a2ab89cee5cfb7e928811b42919bfcde3c9ebe"
+          }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestRecordedNumericLiterals"
+        ]
+      }
+    },
+    {
+      "id": "real-output-thresholds",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/real-output-thresholds/source.alg",
+        "sha256": "decce843108c0fa3fe4b9c220c6380e6765926c2f71f21d9bc7e05f2452bfdaa"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:30:53.8038827Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/real-output-thresholds/raw.txt",
+          "sha256": "0b11eb56c489ff20764125ae0a66660762bcbae05bf0ed610d05f084b96c7342"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/real-output-thresholds/stdout.txt",
+          "sha256": "e469b77140e9a320fc9dca9350fe45d1a392dc8cb0f8a86b7cd1be0bacf5f09d"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/real-output-thresholds/stdout.txt",
+            "sha256": "e469b77140e9a320fc9dca9350fe45d1a392dc8cb0f8a86b7cd1be0bacf5f09d"
+          }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestRecordedNumericLiterals"
+        ]
+      }
+    },
+    {
+      "id": "real-output-zero",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/real-output-zero/source.alg",
+        "sha256": "ea5002e3113c52655c2c892c4d6d44b1fc3f752c3f82cde1a6d607f412570afd"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:31:02.9541171Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/real-output-zero/raw.txt",
+          "sha256": "c0debeec2f9154918d31d382e5b609d5ca3079f063fe15574cd4c7fe54b4556f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/real-output-zero/stdout.txt",
+          "sha256": "b9630035a95c3bbd778f01572674c227f79aa08a1e5040297fda33547200daaf"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/real-output-zero/stdout.txt",
+            "sha256": "b9630035a95c3bbd778f01572674c227f79aa08a1e5040297fda33547200daaf"
+          }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestRecordedNumericLiterals"
+        ]
+      }
+    },
+    {
+      "id": "real-output-default-width",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/real-output-default-width/source.alg",
+        "sha256": "37a9fe89817abcc0c0c52401a3dea4534e30f09e044a9ec4ed70ce9bccd10e35"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:31:12.1697555Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/real-output-default-width/raw.txt",
+          "sha256": "7b3ef4c134a234309631b22d29aa50b36ed4dcc7e8ee4606b2df51807dbfaded"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/real-output-default-width/stdout.txt",
+          "sha256": "75f6b40b484e3db86ad31286ce29fc5c09eabb13fe70401a6c1949a2ec5b4b08"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/real-output-default-width/stdout.txt",
+            "sha256": "75f6b40b484e3db86ad31286ce29fc5c09eabb13fe70401a6c1949a2ec5b4b08"
+          }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestRecordedNumericLiterals"
+        ]
+      }
+    },
+    {
+      "id": "real-output-addition",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/real-output-addition/source.alg",
+        "sha256": "e7d627d677fe12c4c304a712e5934ad05baf72857b5db2ad4a89f536c8e0f0cc"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:31:21.2726181Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/real-output-addition/raw.txt",
+          "sha256": "b8be2322accf1107bbaf0fbdb6ffb6355164befa23753017381ca58e01b4036e"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/real-output-addition/stdout.txt",
+          "sha256": "e852bd618b8e26e6990e8ac038d809123d8c90d06fc4613729c3ba6f45509b8c"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/real-output-addition/stdout.txt",
+            "sha256": "e852bd618b8e26e6990e8ac038d809123d8c90d06fc4613729c3ba6f45509b8c"
+          }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestRecordedNumericLiterals"
+        ]
+      }
+    },
+    {
+      "id": "real-output-exponents",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/real-output-exponents/source.alg",
+        "sha256": "4fff8956c5dcfa872886160cf4352b961dabfed8619db5033e283295ced5523b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T17:31:30.4612379Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/real-output-exponents/raw.txt",
+          "sha256": "07d637afceabe524751cc088b6518637d879d4b44e81451f0f8045b125811386"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/real-output-exponents/stdout.txt",
+          "sha256": "6c03fa1b88dd8dbe89d190038033535d10056d27908c184c772b1ac8ccc5930d"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/real-output-exponents/stdout.txt",
+            "sha256": "6c03fa1b88dd8dbe89d190038033535d10056d27908c184c772b1ac8ccc5930d"
+          }
+        },
+        "tests": [
+          "numeric_literals_test.go#TestRecordedNumericLiterals"
         ]
       }
     }

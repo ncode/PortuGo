@@ -46,7 +46,6 @@ func TestExecutionDiagnostics(t *testing.T) {
 		{"loop", "var x: inteiro", "para x de 1 ate 2 passo 0 faca\nfimpara", "para", diag.RLoop, Options{}},
 		{"builtin", "", "escreval(aleatorio(0))", "aleatorio", diag.RBuiltin, Options{}},
 		{"random source", "", "escreval(randi(7))", "randi", diag.RBuiltin, Options{Random: &scriptedRandom{bad: true}}},
-		{"random bound", "", "escreval(randi(2147483648))", "randi", diag.RBuiltin, Options{}},
 		{"text conversion", "", "escreval(numpcarac(10 ^ 400))", "numpcarac", diag.RBuiltin, Options{}},
 		{"output", "", "escreva(1)", "1)", diag.RHost, Options{Output: failingWriter{}}},
 		{"input echo", "var x: inteiro", "leia(x)", "x)", diag.RHost, Options{Input: strings.NewReader("7\n"), Output: failingWriter{}}},
@@ -125,7 +124,7 @@ func TestCallAndValueLimits(t *testing.T) {
 			{"recursion", "algoritmo \"x\"\nprocedimento p()\ninicio\np()\nfimprocedimento\ninicio\np()\nfimalgoritmo", diag.RCall},
 			{"bare function recursion", "algoritmo \"x\"\nfuncao f: inteiro\ninicio\nretorne f\nfimfuncao\ninicio\nescreval(f)\nfimalgoritmo", diag.RCall},
 			{"text", "algoritmo \"x\"\nvar s: caractere\ninicio\ns <- \"a\"\nenquanto verdadeiro faca\ns <- s+s\nfimenquanto\nfimalgoritmo", diag.RStorage},
-			{"format", "algoritmo \"x\"\ninicio\nescreva(1:9223372036854775807)\nfimalgoritmo", diag.RStorage},
+			{"format", "algoritmo \"x\"\ninicio\nescreva(1:2147483647)\nfimalgoritmo", diag.RStorage},
 		} {
 			t.Run(tt.name, func(t *testing.T) {
 				p, info := analyzed(t, tt.src)
@@ -221,7 +220,7 @@ func TestBuiltinTextLimits(t *testing.T) {
 		if len(ds) != 1 || ds[0].Code != diag.RStorage || ds[0].Pos != token.Pos(strings.Index(src, "maiusc")) {
 			t.Fatalf("case expansion bypassed value limit: %v", ds)
 		}
-		p, info = analyzed(t, "algoritmo \"copy\"\ninicio\nescreva(copia(\"abc\", 2, 9223372036854775807))\nfimalgoritmo")
+		p, info = analyzed(t, "algoritmo \"copy\"\ninicio\nescreva(copia(\"abc\", 2, 2147483647))\nfimalgoritmo")
 		var out bytes.Buffer
 		ds = New(Options{Output: &out}).Run(p, info)
 		if len(ds) != 0 || out.String() != "bc" {

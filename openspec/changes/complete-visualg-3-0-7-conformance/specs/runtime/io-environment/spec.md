@@ -54,6 +54,8 @@ Input SHALL reproduce the reference syntax and range rules for integers, reals, 
 - **THEN** program output uses decimal dots, numeric and logical leading spaces, and uppercase logical values, with only fixed reference UI notices removed and CRLF converted to LF for comparison; other locale behavior remains pending evidence
 
 ### Requirement: Width and precision formatting
+Default real rendering SHALL use 15 significant digits, discard the sign of zero, and use uppercase `E` without a plus sign or leading exponent zeros when scientific notation is needed. A nonpositive width SHALL ignore the decimal-count argument.
+
 Output width and precision fields SHALL accept the expression forms and value domains supported by VisuAlg 3.0.7 and SHALL reproduce its alignment, padding, rounding, truncation, sign placement, overflow-width, and non-real precision behavior. Invalid format values SHALL produce positioned diagnostics.
 
 #### Scenario: Format a real with width and decimals

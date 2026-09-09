@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Classify whole-number literals above the signed 32-bit limit as real values,
+  preserve real literal types through formatting, and match the recorded
+  15-significant-digit default output. Share numeric rendering with `numpcarac`,
+  diagnose large random bounds during analysis, and retain overflow and
+  assignment-timing observations as pending conformance work.
+
 - Implement recorded `randi` calls, positive and negative domains, empty/zero
   bounds, argument evaluation, and positioned guards for invalid injected
   sources. Add deterministic and seeded domain tests, verify the original

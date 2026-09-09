@@ -22,6 +22,20 @@ func TestNumpcaracRejectsUnsupportedValues(t *testing.T) {
 	}
 }
 
+func TestCopiaExtremeLength(t *testing.T) {
+	for _, length := range []int64{math.MaxInt32, math.MaxInt64} {
+		args := []runtime.Value{
+			{Kind: runtime.StringValue, Str: "abc"},
+			{Kind: runtime.IntegerValue, Int: 2},
+			{Kind: runtime.IntegerValue, Int: length},
+		}
+		got, found, err := New(nil).Call("copia", args)
+		if !found || err != nil || got.Kind != runtime.StringValue || got.Str != "bc" {
+			t.Fatalf("length=%d result=%v found=%t error=%v", length, got, found, err)
+		}
+	}
+}
+
 func TestExp(t *testing.T) {
 	integer := runtime.Value{Kind: runtime.IntegerValue, Int: 2}
 	real := runtime.Value{Kind: runtime.RealValue, Real: 3}

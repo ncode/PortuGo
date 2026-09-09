@@ -59,6 +59,15 @@ The lexer SHALL accept only the reference-confirmed comment forms and string, in
 - **WHEN** numeric source could be interpreted as a real literal, an integer followed by punctuation, or a range boundary
 - **THEN** tokenization matches the reduced oracle probe for that exact form
 
+#### Scenario: Classify a large whole-number literal
+- **WHEN** decimal digit text exceeds `2147483647` but is representable as a finite real
+- **THEN** its expression has real type, including under a unary minus
+- **AND** smaller digit-only literals have integer type, including forms with leading zeros
+
+#### Scenario: Preserve an integral real literal through formatting
+- **WHEN** a real literal with an integral value is formatted and parsed again
+- **THEN** its real type and value are preserved
+
 ### Requirement: Complete program grammar
 The parser SHALL recognize the oracle-confirmed VisuAlg 3.0.7 program header, declaration sections, subprograms, executable body, statements, and `fimalgoritmo` termination rules. Grammar variants not accepted by the reference SHALL produce diagnostics even if the earlier implementation accepted them.
 

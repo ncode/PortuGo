@@ -15,7 +15,7 @@ verified. The reference accepts vectors larger than 500 elements; the draft
 500-slot compatibility restriction has therefore been withdrawn. The recordings
 do not establish the upper storage limit in every declaration context.
 
-The [bundled example sweep](bundled-examples-progress.md) verifies six original
+The [bundled example sweep](bundled-examples-progress.md) verifies nine original
 programs against reference output, including formatting and execution. Other
 accepted examples still expose missing features, and three supplied files have
 recorded reference errors. Bundled-file presence alone does not establish that
@@ -78,6 +78,17 @@ Recorded real literals accept exponent notation such as `1e2` and a trailing
 decimal point such as `5.`. A leading decimal point, as in `.5`, is rejected with
 `L001` on its source line. A quoted string reaching a newline without its closing
 quote is also rejected with `L001`.
+
+Digit-only decimal literals from `0` through `2147483647` have integer type.
+Larger finite values have real type, including values beyond the signed 64-bit
+range. A decimal point or exponent also makes a literal real. Leading zeros
+do not change the type. The minus sign is a separate unary operator, so
+`-2147483648` is real, while `-2147483647 - 1` is an integer expression.
+The formatter retains a decimal point for integral real literals, preserving
+their type when the result is parsed again. A number outside the finite
+64-bit floating-point range receives positioned `P001` as a project guard.
+Recorded integer overflow and real-to-integer assignment diagnostic timing
+remain pending conformance work.
 
 ## Vectors
 
@@ -327,8 +338,11 @@ not change formatting with the host locale. Other VisuAlg locales remain
 unverified; input continues to accept either decimal separator.
 
 Format specifiers are supported as `expr:width` and `expr:width:decimals`.
-Without a positive width, each number has one leading space, reals omit
-unnecessary fractional zeros, and a decimal count is ignored. With a positive
+Without a positive width, each number has one leading space and a decimal
+count is ignored. Reals use 15 significant digits, omit unnecessary fractional
+zeros, and discard the sign of zero. Scientific notation uses uppercase `E`
+without a plus sign or exponent-leading zeros; for example, `0.00001` prints
+as ` 1E-5` and `1000000000000000.0` as ` 1E15`. With a positive
 width, numbers are right-aligned, the decimal count defaults to zero, and
 decimal ties round away from zero. Integer values can also request decimals;
 numeric fields expand if needed. Strings are left-aligned and truncated to a
@@ -373,10 +387,8 @@ required; omitted parentheses, extra arguments, and unindexed vectors receive
 The injected source is per interpreter. Empty and zero-bound calls do not
 consume a draw in this implementation; this does not promise reference seed
 or draw-count compatibility. Out-of-range injected results and runtime bounds
-outside signed 32-bit receive positioned `R007` as project guards. The wider
-integer literal typing used elsewhere in the implementation remains pending:
-the reference rejects the recorded large literal bounds with `E001`, while
-the current CLI reaches the runtime guard. `rand` callable forms and
+outside signed 32-bit receive positioned `R007` as project guards. Large
+whole-number literals have real type and receive `E001`. `rand` callable forms and
 command-form random input are separate pending work.
 
 `aleatorio()` returns a real in `[0, 1)`. `aleatorio(n)` returns an integer in

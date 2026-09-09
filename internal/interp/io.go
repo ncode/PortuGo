@@ -155,7 +155,7 @@ func checkFormatSize(v runtime.Value, width, decimals int64) error {
 		}
 	case runtime.RealValue:
 		if width <= 0 {
-			n = int64(len(strconv.FormatFloat(v.Real, 'f', -1, 64))) + 1
+			n = int64(len(runtime.FormatReal(v.Real))) + 1
 		} else {
 			n = int64(len(strconv.FormatFloat(v.Real, 'f', 0, 64)))
 			if decimals > 0 {
@@ -257,7 +257,7 @@ func formatValue(v runtime.Value, width, decimals int) string {
 		}
 	case runtime.RealValue:
 		if width <= 0 {
-			return " " + strconv.FormatFloat(v.Real, 'f', -1, 64)
+			return " " + runtime.FormatReal(v.Real)
 		}
 		decimals = max(0, decimals)
 		// The reference rounds decimal ties away from zero.

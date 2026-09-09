@@ -2,7 +2,6 @@ package parser
 
 import (
 	"strconv"
-	"strings"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/token"
@@ -39,18 +38,14 @@ func (p *parser) parsePrimary() ast.Expr {
 	switch tok.Kind {
 	case token.NUMBER:
 		p.advance()
-		if strings.ContainsAny(tok.Text, ".eE") {
-			v, err := strconv.ParseFloat(tok.Text, 64)
-			if err != nil {
-				p.error(tok, "invalid real literal")
-			}
-			return &ast.LiteralExpr{At: tok.Pos, Kind: ast.RealLiteral, Real: v}
+		if v, err := strconv.ParseInt(tok.Text, 10, 32); err == nil {
+			return &ast.LiteralExpr{At: tok.Pos, Kind: ast.IntLiteral, Int: v}
 		}
-		v, err := strconv.ParseInt(tok.Text, 10, 64)
+		v, err := strconv.ParseFloat(tok.Text, 64)
 		if err != nil {
-			p.error(tok, "invalid integer literal")
+			p.error(tok, "invalid real literal")
 		}
-		return &ast.LiteralExpr{At: tok.Pos, Kind: ast.IntLiteral, Int: v}
+		return &ast.LiteralExpr{At: tok.Pos, Kind: ast.RealLiteral, Real: v}
 	case token.STRING:
 		p.advance()
 		return &ast.LiteralExpr{At: tok.Pos, Kind: ast.StringLiteral, Str: tok.Text}

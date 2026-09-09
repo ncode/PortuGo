@@ -1,0 +1,4 @@
+Início da execução
+ 1E-20| -1E20
+
+Fim da execução.

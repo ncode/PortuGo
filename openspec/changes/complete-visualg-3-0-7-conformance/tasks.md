@@ -87,6 +87,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Twenty-nine comment cases now match recorded physical-line prefixes, quoted
   delimiters, and `//` truncation inside strings. Comment retention, incomplete
   expression behavior, and the remaining literal boundaries are still pending.
+
+  Digit-only literals now use integer type through `2147483647` and real type
+  above it; real literal types survive formatter round trips. Default real
+  output and numeric-to-text conversion share the recorded 15-digit profile.
+  Integer overflow and narrowing-assignment diagnostic timing remain pending.
 - [ ] 4.6 Make parser production boundaries newline-aware and enforce the reference program header, declaration region, body, terminators, and post-`fimalgoritmo` behavior.
 - [ ] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
 - [ ] 4.8 Add structural and newline synchronization that collects independent parser diagnostics without panics, duplicate errors, or infinite loops.

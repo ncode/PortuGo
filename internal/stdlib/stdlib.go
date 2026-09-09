@@ -3,7 +3,6 @@ package stdlib
 import (
 	"fmt"
 	"math"
-	"strconv"
 	"strings"
 	"unicode"
 	"unicode/utf8"
@@ -95,15 +94,7 @@ func numpcarac(args []runtime.Value) (runtime.Value, bool, error) {
 	if math.IsNaN(x) || math.IsInf(x, 0) {
 		return runtime.Value{}, true, fmt.Errorf("numpcarac requires a finite value")
 	}
-	if x == 0 {
-		return runtime.Value{Kind: runtime.StringValue, Str: "0"}, true, nil
-	}
-	text := strconv.FormatFloat(x, 'G', 15, 64)
-	if mantissa, exponent, ok := strings.Cut(text, "E"); ok {
-		n, _ := strconv.Atoi(exponent) // FormatFloat always emits a valid exponent.
-		text = mantissa + "E" + strconv.Itoa(n)
-	}
-	return runtime.Value{Kind: runtime.StringValue, Str: text}, true, nil
+	return runtime.Value{Kind: runtime.StringValue, Str: runtime.FormatReal(x)}, true, nil
 }
 
 func abs(args []runtime.Value) (runtime.Value, bool, error) {

@@ -222,7 +222,11 @@ func exprString(expr Expr) string {
 		case IntLiteral:
 			return strconv.FormatInt(e.Int, 10)
 		case RealLiteral:
-			return strconv.FormatFloat(e.Real, 'f', -1, 64)
+			text := strconv.FormatFloat(e.Real, 'f', -1, 64)
+			if !strings.ContainsRune(text, '.') {
+				text += ".0"
+			}
+			return text
 		case StringLiteral:
 			return `"` + e.Str + `"`
 		case BoolLiteral:
