@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Report invalid numeric powers and nonfinite arithmetic results at their
+  operators, preserve recorded nonnumeric division and no-value behavior,
+  and accept numeric unary plus through parsing, analysis, and formatting.
+
 - Match recorded division and remainder operand types, signed conversion,
   divisor handling, and left-to-right evaluation. Preserve positioned guards
   for unsupported conversions and integer division failures.

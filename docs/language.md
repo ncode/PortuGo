@@ -157,7 +157,9 @@ remaining syntax-recovery behavior are still pending.
 ## Expressions
 
 Arithmetic operators are `+`, `-`, `*`, `/`, `\`, `%`, `MOD`, and `^`.
-The `/` operator always returns `real`. With two integer operands, `\` truncates
+The `/` operator returns `real` for numeric operands. Other scalar pairs return
+the right operand unchanged: `"7" / 2` gives integer `2`, and `7 / "2"` gives
+text `"2"`. With two integer operands, `\` truncates
 division toward zero. For other scalar pairs, the recorded reference returns
 the right operand unchanged, including its type: `8.5 \ 3` gives integer `3`,
 `7 \ 2.5` gives real `2.5`, and `"7" \ 2` gives integer `2`. Both operands are
@@ -177,8 +179,17 @@ supported finite conversion range receive positioned `R002` project guards.
 The pass-through rule still applies to `7.5 \ 0`, which produces integer zero.
 
 Power is left-associative: `2^3^2` means `(2^3)^2` and produces 64.
-Unary minus binds more tightly than power: `-2^2` produces 4. Use `-(2^2)`
-for -4. These rules are pinned by recorded VisuAlg 3.0.7 probes.
+Unary signs bind more tightly than power: `-2^2` produces 4. Use `-(2^2)`
+for -4. Unary `+` preserves a numeric operand and its type. Numeric power returns
+real values, including `0^0 = 1`, `2^(-3) = 0.125`, and `10^(-400) = 0`.
+Negative bases with fractional exponents, zero with negative exponents, and
+overflowing powers report positioned `R002`. Other nonfinite arithmetic results
+also receive positioned `R002` as a project guard.
+
+Power with a text or logical operand, and unary minus applied to text or a
+logical value, produce no value. In output statements this uses the same
+recorded no-value handling as `numpcarac`: the current statement emits nothing.
+Additional nonnumeric arithmetic combinations remain pending conformance work.
 Even exact `/` results remain real: assigning `4/2` to an integer is rejected.
 
 Relational operators are `=`, `<>`, `<`, `>`, `<=`, and `>=`.

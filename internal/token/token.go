@@ -204,8 +204,8 @@ func (k Kind) UnaryPrecedence() int {
 	switch k {
 	case NAO:
 		return 7
-	case SUB:
-		return 9 // VisuAlg binds unary minus more tightly than power.
+	case ADD, SUB:
+		return 9 // Unary signs bind more tightly than power.
 	default:
 		return -1
 	}

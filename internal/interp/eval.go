@@ -88,12 +88,16 @@ func (i *Interpreter) evalUnary(e *ast.UnaryExpr) (runtime.Value, error) {
 		return runtime.Value{}, err
 	}
 	switch e.Op.Kind {
+	case token.ADD:
+		return v, nil
 	case token.SUB:
 		switch v.Kind {
 		case runtime.IntegerValue:
 			return runtime.Value{Kind: runtime.IntegerValue, Int: int64(-int32(v.Int))}, nil
 		case runtime.RealValue:
 			return runtime.Value{Kind: runtime.RealValue, Real: -v.Real}, nil
+		case runtime.StringValue, runtime.BoolValue:
+			return runtime.Value{Kind: runtime.VoidValue}, nil
 		}
 	case token.NAO:
 		if v.Kind == runtime.BoolValue {
@@ -104,7 +108,12 @@ func (i *Interpreter) evalUnary(e *ast.UnaryExpr) (runtime.Value, error) {
 }
 
 func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err error) {
-	defer func() { err = failure(e.Op.Pos, diag.RArithmetic, err) }()
+	defer func() {
+		if err == nil && value.Kind == runtime.RealValue && (math.IsNaN(value.Real) || math.IsInf(value.Real, 0)) {
+			err = fmt.Errorf("invalid result for operator %s", e.Op.Text)
+		}
+		err = failure(e.Op.Pos, diag.RArithmetic, err)
+	}()
 	left, err := i.eval(e.Left)
 	if err != nil {
 		return runtime.Value{}, err
@@ -129,7 +138,7 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 	case token.QUO:
 		a, b, err := floats(left, right)
 		if err != nil {
-			return runtime.Value{}, err
+			return right, nil
 		}
 		if b == 0 {
 			return runtime.Value{}, fmt.Errorf("division by zero")
@@ -169,7 +178,7 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 	case token.POW:
 		a, b, err := floats(left, right)
 		if err != nil {
-			return runtime.Value{}, err
+			return runtime.Value{Kind: runtime.VoidValue}, nil
 		}
 		return runtime.Value{Kind: runtime.RealValue, Real: math.Pow(a, b)}, nil
 	case token.EQL, token.NEQ, token.LSS, token.GTR, token.LEQ, token.GEQ:

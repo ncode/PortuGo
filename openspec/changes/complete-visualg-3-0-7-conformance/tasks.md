@@ -168,8 +168,10 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   Integer addition, subtraction, multiplication, and negation now reproduce
   signed 32-bit wrapping. Integer division overflow has a positioned project
   guard. Division and remainder now match recorded scalar result types, signed
-  conversion, divisor rules, and left-to-right evaluation. Exponentiation and
-  the remaining arithmetic domain cases are pending.
+  conversion, divisor rules, and left-to-right evaluation. Invalid numeric
+  powers report positioned errors; recorded nonnumeric power, unary minus,
+  division, and numeric unary plus are covered. Additional operand combinations
+  and the remaining domain cases are pending.
 - [ ] 8.5 Implement logical operand evaluation order and short-circuit/eager behavior with side-effect tests that pin the oracle result.
 - [ ] 8.6 Implement numeric, logical, and character comparison compatibility, ordering, case/accent behavior, and positioned rejection of unsupported pairs.
 - [ ] 8.7 Guarantee one-time oracle-ordered evaluation for binary operands, indices, statement expressions, and ordinary case labels.

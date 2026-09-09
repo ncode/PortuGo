@@ -283,7 +283,25 @@
         "divide-real-negative-right",
         "modulo-unit-divisor",
         "modulo-real-wrap-zero",
-        "operator-evaluation-order"
+        "operator-evaluation-order",
+        "power-zero-zero",
+        "power-negative-exponent",
+        "power-negative-fraction",
+        "power-zero-negative",
+        "power-overflow",
+        "power-underflow",
+        "power-real-exponent",
+        "power-string-left",
+        "power-string-right",
+        "power-logical-left",
+        "power-logical-right",
+        "slash-string-left",
+        "slash-string-right",
+        "slash-logical-left",
+        "slash-logical-right",
+        "unary-minus-string",
+        "unary-minus-logical",
+        "unary-plus-integer"
       ]
     },
     {
@@ -26546,6 +26564,825 @@
         },
         "tests": [
           "division_remainder_test.go#TestRecordedDivisionRemainder"
+        ]
+      }
+    },
+    {
+      "id": "power-zero-zero",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/power-zero-zero/source.alg",
+        "sha256": "2d03e019fc51592712a3e48fc7de13a8d7c053963bfa48f8b44653bdb3c20420"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:12:57.0934176Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-zero-zero/raw.txt",
+          "sha256": "7bbf158b3d1b467d429f1554aca07e75312dfa4989ca3905718d91e9ad15a683"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-zero-zero/stdout.txt",
+          "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/power-zero-zero/stdout.txt",
+            "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "power-negative-exponent",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/power-negative-exponent/source.alg",
+        "sha256": "939ddff16615ff554da5a194d63797a9a78259ac700fee8c11038af13251b3f3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:13:07.5623875Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-negative-exponent/raw.txt",
+          "sha256": "e670fd147dbe4573cf8a56e8caa62a77a215c2da9c3f0c9cfc22fdaad09846fd"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-negative-exponent/stdout.txt",
+          "sha256": "f53bac358b8e8cdec9ff7bffb2c55268c0bad8bbcb6c1d0df71b32f7ce096b73"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/power-negative-exponent/stdout.txt",
+            "sha256": "f53bac358b8e8cdec9ff7bffb2c55268c0bad8bbcb6c1d0df71b32f7ce096b73"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "power-negative-fraction",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/power-negative-fraction/source.alg",
+        "sha256": "5a8764c455feb9b706db58e75f3634360173c54dde6cf408b858291aeedf6db5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T18:13:17.7134832Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-negative-fraction/transcription.txt",
+          "sha256": "f0f3a047bc77275cfb14ef7dbc35beedc63e3b6c93f6343c269964bd486818cf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-negative-fraction/transcription.txt",
+          "sha256": "f0f3a047bc77275cfb14ef7dbc35beedc63e3b6c93f6343c269964bd486818cf"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-negative-fraction/screenshot.png",
+          "sha256": "7bb925bf016ff83b1ac65a184ab46ddb66996eab70dd977eb8bfd450fa3cded2"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-negative-fraction/transcription.txt",
+          "sha256": "f0f3a047bc77275cfb14ef7dbc35beedc63e3b6c93f6343c269964bd486818cf"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/power-negative-fraction/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R002",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedPowerDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "power-zero-negative",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/power-zero-negative/source.alg",
+        "sha256": "221e95d7283af342b8dffe3e353644615f9df12968c30ddd5a77ab8be938c6bf"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T18:13:27.9347047Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-zero-negative/transcription.txt",
+          "sha256": "f0f3a047bc77275cfb14ef7dbc35beedc63e3b6c93f6343c269964bd486818cf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-zero-negative/transcription.txt",
+          "sha256": "f0f3a047bc77275cfb14ef7dbc35beedc63e3b6c93f6343c269964bd486818cf"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-zero-negative/screenshot.png",
+          "sha256": "507608f62f561586a8080244dd5431349e5364773e71e99493d8be59eb33e5a6"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-zero-negative/transcription.txt",
+          "sha256": "f0f3a047bc77275cfb14ef7dbc35beedc63e3b6c93f6343c269964bd486818cf"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/power-zero-negative/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R002",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedPowerDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "power-overflow",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/power-overflow/source.alg",
+        "sha256": "741d157d94e578798f8d1abd2469d045a5a2cfe885623ca49af363f387cf0ed6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T18:13:38.1023860Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-overflow/transcription.txt",
+          "sha256": "f0f3a047bc77275cfb14ef7dbc35beedc63e3b6c93f6343c269964bd486818cf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-overflow/transcription.txt",
+          "sha256": "f0f3a047bc77275cfb14ef7dbc35beedc63e3b6c93f6343c269964bd486818cf"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-overflow/screenshot.png",
+          "sha256": "04ad6d2bb696c9ee76f61c6f7ac61b21dc1346649f00f44b6414cc32b9d37bab"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-overflow/transcription.txt",
+          "sha256": "f0f3a047bc77275cfb14ef7dbc35beedc63e3b6c93f6343c269964bd486818cf"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/power-overflow/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R002",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedPowerDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "power-underflow",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/power-underflow/source.alg",
+        "sha256": "afd0c541648d816252e455868949acf1405925865dde27195e138bbd7bad7511"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:13:48.3279333Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-underflow/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-underflow/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/power-underflow/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "power-real-exponent",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/power-real-exponent/source.alg",
+        "sha256": "84445596e1a809a270aac370878639483ff4b6db93b2fcc13c697f0cc80c1b5d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:13:58.4914901Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-real-exponent/raw.txt",
+          "sha256": "53a3726f7f1d9461fa13431d9cad015224015f9713f45d97e7c6c8e5fc008f81"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-real-exponent/stdout.txt",
+          "sha256": "b89cfdc48b6228ac0a65bc2cafc33c7d79884e6a4093d64d03e1f8799ff3650d"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/power-real-exponent/stdout.txt",
+            "sha256": "b89cfdc48b6228ac0a65bc2cafc33c7d79884e6a4093d64d03e1f8799ff3650d"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "power-string-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/power-string-left/source.alg",
+        "sha256": "c828e163d29147f57e8d01d9c2ce6067a10dbe6134b3c9ccdcd9dac03c29b8f3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:14:08.6169183Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-string-left/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-string-left/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/power-string-left/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "power-string-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/power-string-right/source.alg",
+        "sha256": "b0b803d7c57c0f03acc14f73002c58377651d9e8ce98968156c7a352bb31e0a8"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:14:18.8334374Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-string-right/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-string-right/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/power-string-right/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "power-logical-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/power-logical-left/source.alg",
+        "sha256": "c9d4e4e0802be45c6f281f156ca12f8055b1d8d388eaeabb07d95bed74496e1d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:14:29.0181345Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-logical-left/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-logical-left/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/power-logical-left/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "power-logical-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/power-logical-right/source.alg",
+        "sha256": "a3e63d2bda3d3b3dbe22ea80f11768720281b09c9a926b49191d3b8f6dba2cb4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:14:39.1847626Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-logical-right/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/power-logical-right/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/power-logical-right/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "slash-string-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/slash-string-left/source.alg",
+        "sha256": "a301f7eee92d0dc439a5423dd836a91ee2729a444082fb6db866aa830b97c956"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:14:49.2709727Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/slash-string-left/raw.txt",
+          "sha256": "afe1d6988bf8073007768b22becd59372fa49baf4abf5a75f1a2d0db22116cc6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/slash-string-left/stdout.txt",
+          "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/slash-string-left/stdout.txt",
+            "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "slash-string-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/slash-string-right/source.alg",
+        "sha256": "81ccea2272f30cec464e854447c6b2d3ddb7b9874fad9b31171b1a14132053a5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:14:59.4501248Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/slash-string-right/raw.txt",
+          "sha256": "babb57c396a289467a6b5b4dae4950c1dd3e14af53cc7956884229a8098b37cf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/slash-string-right/stdout.txt",
+          "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/slash-string-right/stdout.txt",
+            "sha256": "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "slash-logical-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/slash-logical-left/source.alg",
+        "sha256": "e189880d3327b0c703a9ba63f94a4eae0ce910a0bd8d8f06bf63f3ec68328569"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:15:09.6533366Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/slash-logical-left/raw.txt",
+          "sha256": "afe1d6988bf8073007768b22becd59372fa49baf4abf5a75f1a2d0db22116cc6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/slash-logical-left/stdout.txt",
+          "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/slash-logical-left/stdout.txt",
+            "sha256": "ce832e73ec35f894e4a42aa9087dc19015fb5429575f1b3ed6f86733f6263cb0"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "slash-logical-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/slash-logical-right/source.alg",
+        "sha256": "df70dc66edc01d52428ec771ecf368b7d9ac451d75721ba671493c013748b2ec"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:15:19.8877984Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/slash-logical-right/raw.txt",
+          "sha256": "f01fd89b93f56ce6101252de33a82f077fd488885a3bd3c746864fe85837db48"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/slash-logical-right/stdout.txt",
+          "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/slash-logical-right/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "unary-minus-string",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/unary-minus-string/source.alg",
+        "sha256": "96a7ae02fa1ae556ad7284fd6403eba1c3b1f7a6c43c30e73b504c8a0b72d17b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:16:00.7120102Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/unary-minus-string/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/unary-minus-string/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/unary-minus-string/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "unary-minus-logical",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/unary-minus-logical/source.alg",
+        "sha256": "1ab487dc2e694444373f382708f62c767fb78a6517cb29fbf027773f8b957560"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:16:10.8900691Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/unary-minus-logical/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/unary-minus-logical/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/unary-minus-logical/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
+        ]
+      }
+    },
+    {
+      "id": "unary-plus-integer",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/unary-plus-integer/source.alg",
+        "sha256": "c9fd3fad08820e7d59117ebb0b20e9993376c1d8478d31cc2b3e57dbc0727df2"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T18:16:21.0453877Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/unary-plus-integer/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/unary-plus-integer/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/unary-plus-integer/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "arithmetic_domains_test.go#TestRecordedArithmeticDomains"
         ]
       }
     }

@@ -362,11 +362,14 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 func (c *checker) unary(e *ast.UnaryExpr) runtime.Type {
 	t := c.expr(e.X)
 	switch e.Op.Kind {
-	case token.SUB:
+	case token.ADD, token.SUB:
 		if isNumeric(t) {
 			return t
 		}
-		c.error(e.Op.Pos, diag.ETypeMismatch, "operator - requires numeric operand")
+		if e.Op.Kind == token.SUB && isScalar(t) {
+			return runtime.Type{Kind: runtime.VoidType}
+		}
+		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires numeric operand", e.Op.Text)
 	case token.NAO:
 		if t.Kind == runtime.BoolType {
 			return t
@@ -390,6 +393,12 @@ func (c *checker) binary(e *ast.BinaryExpr) runtime.Type {
 	case token.QUO, token.POW:
 		if isNumeric(left) && isNumeric(right) {
 			return runtime.Type{Kind: runtime.RealType}
+		}
+		if isScalar(left) && isScalar(right) {
+			if e.Op.Kind == token.QUO {
+				return right
+			}
+			return runtime.Type{Kind: runtime.VoidType}
 		}
 		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires numeric operands", e.Op.Text)
 	case token.IDIV:

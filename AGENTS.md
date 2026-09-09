@@ -140,13 +140,13 @@ type spelling.
 
 ### 6.3 Operators
 
-- Arithmetic: `+ - * /` (real division), `\` (integer pairs truncate; other scalar pairs return the right operand), `%` or `MOD` (recorded remainder rules in `docs/language.md`), `^` (exponent, real-valued)
+- Arithmetic: `+ - *`, `/` (numeric pairs return real; other scalar pairs return the right operand), `\` (integer pairs truncate; other scalar pairs return the right operand), `%` or `MOD` (recorded remainder rules in `docs/language.md`), `^` (numeric power, with recorded no-value and domain rules)
 - Relational: `=`, `<>`, `<`, `>`, `<=`, `>=`
 - Logical: `e`, `ou`, `nao`, `xou`
 - String concat: `+` (when both operands are `caractere`)
 - Assignment: `<-`
 
-Precedence (high → low): unary `-`, left-associative `^`, `nao`, `* / \ % MOD`, `+ -`, relational, `e`, `xou`, `ou`. Recorded VisuAlg 3.0.7 probes pin `2^3^2 = 64` and `-2^2 = 4`; parentheses override those rules.
+Precedence (high → low): unary `+ -`, left-associative `^`, `nao`, `* / \ % MOD`, `+ -`, relational, `e`, `xou`, `ou`. Recorded VisuAlg 3.0.7 probes pin `2^3^2 = 64` and `-2^2 = 4`; parentheses override those rules.
 
 ### 6.4 Control flow
 
@@ -220,7 +220,7 @@ VisuAlg strings are **1-indexed** in `copia` and `pos`. Don't make it 0-indexed 
 These cost time when wrong. Each must have a regression test.
 
 1. **Declared vector indexing.** Bounds may start at zero or a positive integer; store an offset, do not assume 0 or 1. Vectors have at most two dimensions. An omitted second index selects that dimension's lower bound. Whole-vector assignment is rejected.
-2. **Integer vs real division.** `/` always produces `real`. `\` truncates two integers toward zero; other scalar pairs return the right operand and its type after evaluating both operands. Mixing integer and real operands in `+ - *` promotes to real. `%` and `MOD` follow the recorded divisor and conversion rules in `docs/language.md`.
+2. **Integer vs real division.** `/` produces `real` for numeric pairs and otherwise returns the right scalar operand. `\` truncates two integers toward zero; other scalar pairs return the right operand and its type after evaluating both operands. Mixing integer and real operands in `+ - *` promotes to real. `%` and `MOD` follow the recorded divisor and conversion rules in `docs/language.md`.
 3. **Short-circuit `e` / `ou`.** VisuAlg historically does **not** short-circuit. Decide once, document, test both branches always evaluate. This is a common source of student bugs and we should not silently change it.
 4. **Case-insensitivity.** `Soma`, `soma`, `SOMA` all refer to the same identifier. Canonicalize at the symbol-table boundary. Keywords likewise.
 5. **Encoding.** Real VisuAlg files are Windows-1252. Detect BOM / UTF-8 validity; otherwise assume CP1252 and transcode. Never read as raw bytes into a Go string and hope.

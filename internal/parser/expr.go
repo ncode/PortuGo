@@ -26,7 +26,7 @@ func (p *parser) parseExpr(minPrec int) ast.Expr {
 }
 
 func (p *parser) parseUnary() ast.Expr {
-	if p.peek().Kind == token.SUB || p.peek().Kind == token.NAO {
+	if p.peek().Kind == token.ADD || p.peek().Kind == token.SUB || p.peek().Kind == token.NAO {
 		op := p.advance()
 		return &ast.UnaryExpr{Op: op, X: p.parseExpr(op.Kind.UnaryPrecedence())}
 	}
