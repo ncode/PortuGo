@@ -83,7 +83,10 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
   Four recorded `div` cases now verify the case-insensitive `\` alias, its
   evaluation order, formatting, and rejection as a variable name. Complete
-  vocabulary qualification remains pending.
+  vocabulary qualification remains pending. Three further `fimfunção` cases
+  verify the accented function terminator, canonical formatting, and reserved
+  variable-name rejection; the original bundled string-processing example now
+  passes with that spelling.
 
 - [ ] 4.5 Implement exact comment, string, integer, real, range-punctuation, delimiter, and malformed-literal rules with positioned recovery.
 
@@ -330,8 +333,8 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 17.2 Complete bidirectional trace links for every OpenSpec requirement, `[VERIFICAR]`, original checklist item, audited defect, discovered official feature, implementation test, and bundled example with no stale IDs.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
-  Twenty-seven original examples now match recorded output before and after
-  formatting. Three accepted programs still expose grammar gaps, and four
+  Twenty-eight original examples now match recorded output before and after
+  formatting. Two accepted programs still expose grammar gaps, and four
   rejected programs retain diagnostic or execution-phase differences. Thirty-six
   bundled examples still await recorded disposition.
 

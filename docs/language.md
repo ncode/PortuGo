@@ -15,7 +15,7 @@ verified. The reference accepts vectors larger than 500 elements; the draft
 500-slot compatibility restriction has therefore been withdrawn. The recordings
 do not establish the upper storage limit in every declaration context.
 
-The [bundled example sweep](bundled-examples-progress.md) verifies 27 original
+The [bundled example sweep](bundled-examples-progress.md) verifies 28 original
 programs against reference output, including formatting and execution. Other
 accepted examples still expose missing features, and seven supplied files have
 recorded reference errors. Bundled-file presence alone does not establish that
@@ -59,11 +59,14 @@ that suffix; preserving its text remains pending.
 
 Variables are initialized to the zero value of their type.
 
-Recorded keyword aliases are `função` (`funcao`), `então` (`entao`), `senão`
+Recorded keyword aliases are `função` (`funcao`), `fimfunção` (`fimfuncao`),
+`então` (`entao`), `senão`
 (`senao`), `faça` (`faca`), `até` (`ate`), and `não` (`nao`). Recognition ignores
 case and retains token spelling and positions. Formatting emits unaccented
 keywords and the canonical type name `caractere`, including parameters and
 function results. See the [keyword example](../examples/keyword_aliases.alg).
+The function terminator `fimfunção` is also reserved as a variable name;
+using it in a declaration receives `P001` on that line.
 
 These are specific accepted spellings. The recorded type spelling `lógico` is
 rejected with `P001` on its declaration line. Further vocabulary and physical-line

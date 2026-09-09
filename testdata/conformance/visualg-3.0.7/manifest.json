@@ -444,7 +444,10 @@
         "division-alias-values",
         "division-alias-case",
         "division-alias-identifier",
-        "division-alias-order"
+        "division-alias-order",
+        "function-ending-accented",
+        "function-ending-uppercase",
+        "function-ending-variable"
       ]
     },
     {
@@ -5998,14 +6001,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-116164dd09bb/stdout.txt",
             "sha256": "1124a1070bd1372b9bfc0e167f9a8f5fb45507d9d9e43f0449609009551c233f"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -34860,6 +34866,150 @@
         },
         "tests": [
           "keyword_reference_test.go#TestRecordedKeywordPrograms"
+        ]
+      }
+    },
+    {
+      "id": "function-ending-accented",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-accented/source.alg",
+        "sha256": "244836a8ab00d43f02669b1a5106af4cbeeaac944433d6f8e3e5cd796131c0c9"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T20:10:01.1875653Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-accented/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-accented/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-accented/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "keyword_reference_test.go#TestRecordedKeywordPrograms"
+        ]
+      }
+    },
+    {
+      "id": "function-ending-uppercase",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-uppercase/source.alg",
+        "sha256": "a23d867f5444d84d745dd5e7887fd6e30e1d95027297529b8a32325f4b6d7351"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T20:10:11.3758205Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-uppercase/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-uppercase/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-uppercase/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "keyword_reference_test.go#TestRecordedKeywordPrograms"
+        ]
+      }
+    },
+    {
+      "id": "function-ending-variable",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-variable/source.alg",
+        "sha256": "4b25708e2f19f0e34b590f1685b95a2a43cb1bbabc3d6a88cc5602a7bc7dd88c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T20:10:21.5716733Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-variable/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-variable/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-variable/screenshot.png",
+          "sha256": "be9ac512b79badb0b2d8597ca070b0137d9203d42789152cad16a6abc5d5feb7"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/function-ending-variable/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections"
         ]
       }
     }

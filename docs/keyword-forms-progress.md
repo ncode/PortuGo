@@ -40,5 +40,8 @@ programs now match fixed-input output, including the combination program using
 `div`, two factorial programs, and the minimum-of-three program.
 
 Tasks 4.4 and 4.6 remain in progress because complete vocabulary and physical-line
-grammar obligations extend beyond these spellings. The evidence gate retains
-63 missing mappings: 27 requirements and 36 bundled examples.
+grammar obligations extend beyond these spellings. Three more observations
+verify case-insensitive `fimfunção`, canonical formatting as `fimfuncao`, and
+rejection as a variable name. The original bundled `ENCRYPT.ALG` program now
+matches its fixed-input recording before and after formatting. The evidence
+gate retains 63 missing mappings: 27 requirements and 36 bundled examples.

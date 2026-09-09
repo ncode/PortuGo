@@ -42,6 +42,7 @@ func TestRecordedHeaderRejections(t *testing.T) {
 		{"alias-caracter-variable", 3},
 		{"legacy-type-variable", 3},
 		{"division-alias-identifier", 3},
+		{"function-ending-variable", 3},
 		{"bundled-ce6fa8f9a2a3", 13}, // estcivil.alg
 		{"bundled-b3549ab1faa5", 1},  // Calculo_media2.alg
 		{"bundled-50f837d55875", 1},  // Calculo_media2.alg.ALG

@@ -4,7 +4,7 @@ var
 função Eco(texto: caracter): caracter
 inicio
   retorne texto
-fimfuncao
+fimfunção
 inicio
   para i de 1 até 2 faça
     se não falso então

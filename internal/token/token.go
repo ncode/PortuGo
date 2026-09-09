@@ -107,6 +107,7 @@ var keywords = map[string]Kind{
 	"funcao":          FUNCAO,
 	"função":          FUNCAO,
 	"fimfuncao":       FIMFUNCAO,
+	"fimfunção":       FIMFUNCAO,
 	"retorne":         RETORNE,
 	"se":              SE,
 	"entao":           ENTAO,

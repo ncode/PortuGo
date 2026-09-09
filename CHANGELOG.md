@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Accept case-insensitive `fimfunção` as a function terminator, reserve it as
+  a variable name, and format it as `fimfuncao`. Verify the original bundled
+  string-processing example that uses the accented ending.
+
 - Record 21 more original bundled examples. Verify fourteen fixed-input
   programs and three source rejections; retain the remaining accepted-program
   and diagnostic differences as explicit conformance work.
