@@ -14,7 +14,7 @@ func Fprint(w io.Writer, prog *Program) error {
 	}
 	p := &printer{w: w}
 	p.line(`algoritmo "%s"`, prog.Name)
-	p.printDecls(prog.Globals)
+	p.printDecls(prog.Consts, prog.Globals)
 	for _, sub := range prog.Subs {
 		p.line("")
 		p.printSub(sub)
@@ -50,9 +50,17 @@ func (p *printer) line(format string, args ...any) {
 	_, p.err = fmt.Fprintln(p.w)
 }
 
-func (p *printer) printDecls(decls []VarDecl) {
-	if len(decls) == 0 {
+func (p *printer) printDecls(consts []ConstDecl, decls []VarDecl) {
+	if len(consts) == 0 && len(decls) == 0 {
 		return
+	}
+	if len(consts) != 0 {
+		p.line("const")
+		p.indent++
+		for _, d := range consts {
+			p.line("%s = %s", d.Name.Text, exprString(d.Value))
+		}
+		p.indent--
 	}
 	p.line("var")
 	p.indent++
@@ -70,7 +78,7 @@ func (p *printer) printSub(sub Subprogram) {
 	switch s := sub.(type) {
 	case *ProcedureDecl:
 		p.line("procedimento %s(%s)", s.Name.Text, paramsString(s.Params))
-		p.printDecls(s.Locals)
+		p.printDecls(s.Consts, s.Locals)
 		p.line("inicio")
 		p.indent++
 		p.printStmts(s.Body)
@@ -78,7 +86,7 @@ func (p *printer) printSub(sub Subprogram) {
 		p.line("fimprocedimento")
 	case *FunctionDecl:
 		p.line("funcao %s(%s): %s", s.Name.Text, paramsString(s.Params), typeString(s.Return))
-		p.printDecls(s.Locals)
+		p.printDecls(s.Consts, s.Locals)
 		p.line("inicio")
 		p.indent++
 		p.printStmts(s.Body)

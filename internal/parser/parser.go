@@ -41,6 +41,7 @@ func (p *parser) parseProgram() *ast.Program {
 		return prog
 	}
 	prog.Name = p.advance().Text
+	prog.Consts = p.parseConstBlock()
 	if p.peek().Kind == token.VAR {
 		prog.Globals = p.parseVarBlock()
 	}
@@ -54,6 +55,24 @@ func (p *parser) parseProgram() *ast.Program {
 	prog.Body = p.parseStmtList(stopSet(token.FIMALGORITMO))
 	p.expect(token.FIMALGORITMO, "expected fimalgoritmo")
 	return prog
+}
+
+func (p *parser) parseConstBlock() []ast.ConstDecl {
+	if !p.match(token.CONST) {
+		return nil
+	}
+	var decls []ast.ConstDecl
+	for p.peek().Kind == token.IDENT {
+		name := p.advance()
+		p.expect(token.EQL, "expected '=' after constant name")
+		value := p.parseExpr(0)
+		p.parseDeclarationSemicolon()
+		decls = append(decls, ast.ConstDecl{Name: name, Value: value})
+	}
+	if p.peek().Kind != token.VAR {
+		p.error(p.peek(), "expected var after constants")
+	}
+	return decls
 }
 
 func (p *parser) parseVarBlock() []ast.VarDecl {
@@ -164,6 +183,7 @@ func (p *parser) parseProcedure() *ast.ProcedureDecl {
 	name := p.expect(token.IDENT, "expected procedure name")
 	params := p.parseParamList()
 	decl := &ast.ProcedureDecl{At: start.Pos, Name: name, Params: params}
+	decl.Consts = p.parseConstBlock()
 	if p.peek().Kind == token.VAR {
 		decl.Locals = p.parseVarBlock()
 	}
@@ -180,6 +200,7 @@ func (p *parser) parseFunction() *ast.FunctionDecl {
 	p.expect(token.COLON, "expected ':' before function return type")
 	ret := p.parseType()
 	decl := &ast.FunctionDecl{At: start.Pos, Name: name, Params: params, Return: ret}
+	decl.Consts = p.parseConstBlock()
 	if p.peek().Kind == token.VAR {
 		decl.Locals = p.parseVarBlock()
 	}

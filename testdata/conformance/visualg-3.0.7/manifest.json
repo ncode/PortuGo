@@ -859,7 +859,9 @@
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Ordered declaration sections",
       "probes": [
-        "constant-form-empty"
+        "constant-form-empty",
+        "constant-form-after-variable",
+        "constant-form-local"
       ]
     },
     {
@@ -869,7 +871,36 @@
       "probes": [
         "constant-declaration",
         "constant-var",
-        "constant-empty-var"
+        "constant-empty-var",
+        "constant-form-scalar-types",
+        "constant-form-negative",
+        "constant-form-arithmetic",
+        "constant-form-dependency",
+        "constant-form-forward",
+        "constant-form-cycle",
+        "constant-form-unknown",
+        "constant-form-builtin",
+        "constant-form-call",
+        "constant-form-assignment",
+        "constant-form-duplicate",
+        "constant-form-case-duplicate",
+        "constant-form-variable-collision",
+        "constant-form-function-use",
+        "constant-form-loop-bound",
+        "constant-form-overflow",
+        "constant-form-semicolon",
+        "constant-context-random-domain",
+        "constant-context-parameter",
+        "constant-context-global-variable",
+        "constant-context-shadow",
+        "constant-context-local-no-var",
+        "constant-context-negative-bound",
+        "constant-context-real-bound",
+        "constant-context-text-bound",
+        "constant-context-expression-bound",
+        "constant-context-bound-arithmetic",
+        "constant-context-local-vector-bound",
+        "constant-context-random-order"
       ]
     },
     {
@@ -2872,7 +2903,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -2885,7 +2916,10 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
       }
     },
     {
@@ -2918,14 +2952,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/constant-var/stdout.txt",
             "sha256": "d8771d0e1c4c02cd28a32229b41dd354d10480575dbd091d77cdfe6c97487a5a"
           }
-        }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
       }
     },
     {
@@ -4799,14 +4836,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/constant-empty-var/stdout.txt",
             "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
           }
-        }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
       }
     },
     {
@@ -9185,14 +9225,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-empty/stdout.txt",
             "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
           }
-        }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
       }
     },
     {
@@ -39684,6 +39727,1510 @@
           "internal/interp/execution_test.go#TestDefensiveEvaluationDepth",
           "internal/interp/execution_test.go#TestFormattedItemBoundary",
           "internal/interp/execution_test.go#TestBuiltinTextLimits"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-scalar-types",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-scalar-types/source.alg",
+        "sha256": "1843e54e0f0e0e586a2858eccc85bb20691393708baa6a7bac120bcbbfcd9984"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:24:28.7123648Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-scalar-types/raw.txt",
+          "sha256": "8647ae066ff063bc49d345127e9d1746534a28997f222e00f4472dff4bf08ba4"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-scalar-types/stdout.txt",
+          "sha256": "2d07bf97d816b922c7dee62c566e886c3ee7e923f83278cc8b1e997fc2e95481"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-scalar-types/stdout.txt",
+            "sha256": "2d07bf97d816b922c7dee62c566e886c3ee7e923f83278cc8b1e997fc2e95481"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-negative",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-negative/source.alg",
+        "sha256": "91172f2990d1ca3cc75e1eebd1669aea8e9aadfdbe056460e9587c3aa2232100"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:24:39.0429233Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-negative/raw.txt",
+          "sha256": "8cc0736abf3ae217692ec7b79e4b3bcbf4fc55a9a3b1128647a1d5f793874de8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-negative/stdout.txt",
+          "sha256": "a077e5008a8f005b2e48ea6fc5c869160fb95224f1ab383d3b873e25496c5944"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-negative/stdout.txt",
+            "sha256": "a077e5008a8f005b2e48ea6fc5c869160fb95224f1ab383d3b873e25496c5944"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-arithmetic",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-arithmetic/source.alg",
+        "sha256": "59cff9abb3c2d6337e2cb15f89e8382fdcf6aa9e68ef72b4903eef3e75efa83a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:24:49.2615170Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-arithmetic/raw.txt",
+          "sha256": "1fa2c5ad329e9670af989d44b0538ff6e0aea77d4f320ca3be35d0f8710ba1c3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-arithmetic/stdout.txt",
+          "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-arithmetic/stdout.txt",
+            "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-dependency",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-dependency/source.alg",
+        "sha256": "ec14dd80ddba636d3c1835b55b1084da98e836e9dba4af6a289b8b222030c2ac"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:24:59.4108413Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-dependency/raw.txt",
+          "sha256": "28b8eb788bceb38e9bc61983297666036cc4aff2a3a0e118e3401292d66ae0c5"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-dependency/stdout.txt",
+          "sha256": "b7d62783057fdf1c20365f4f23aef3978f09722a6fff20b711cbbec8a334953f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-dependency/stdout.txt",
+            "sha256": "b7d62783057fdf1c20365f4f23aef3978f09722a6fff20b711cbbec8a334953f"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-forward",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-forward/source.alg",
+        "sha256": "64fd03dcbd514069ceb4cbd63f0a1c6c1299ad1c3e47adb56a05b5b0bff82b9c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:25:09.8390840Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-forward/transcription.txt",
+          "sha256": "9bb4c9b74b298bfbab7b8579156e9bb546fc77b43292a942cc0fcf6ebd34e65f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-forward/transcription.txt",
+          "sha256": "9bb4c9b74b298bfbab7b8579156e9bb546fc77b43292a942cc0fcf6ebd34e65f"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-forward/screenshot.png",
+          "sha256": "8a32c388597d678646d41106617a3756bb591553b8890ebc47808ffa7a9df5d4"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-forward/transcription.txt",
+          "sha256": "9bb4c9b74b298bfbab7b8579156e9bb546fc77b43292a942cc0fcf6ebd34e65f"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-cycle",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-cycle/source.alg",
+        "sha256": "96a5142e91d48f3001c50d73d6651376f4cef9a194701a6ae4a5ce42375e528b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:25:20.0837271Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-cycle/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-cycle/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-cycle/screenshot.png",
+          "sha256": "5b2907e6e4818e7f11f489fa6c0fe9a38f7263663566ad343c41bdde3ff092dc"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-cycle/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-unknown",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-unknown/source.alg",
+        "sha256": "63df18c8c0172e65b8e8586907109ccfc2bb1732f93c1acadf2481531e06c126"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:25:30.3027276Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-unknown/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-unknown/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-unknown/screenshot.png",
+          "sha256": "956e8a3ea3675a03f09ec10c1df32b2b5d832a433be3d36a198ef83d8db17cee"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-unknown/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-builtin",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-builtin/source.alg",
+        "sha256": "4e606a1ff176265355c52c42fea776945af197b3d6a89da84fbad6bae667d4d7"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:25:40.4806633Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-builtin/raw.txt",
+          "sha256": "750080276cd1df3bb897af66e2d1cdadf009a70b272115ddb564d9e311c313f8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-builtin/stdout.txt",
+          "sha256": "fc0f6080b289e226dd570b2443fbeefd9617178ed6e2cc848e9716cee5c088b6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-builtin/stdout.txt",
+            "sha256": "fc0f6080b289e226dd570b2443fbeefd9617178ed6e2cc848e9716cee5c088b6"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-call",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-call/source.alg",
+        "sha256": "c1e32b28053e34529c07293661273e48277172d3e27c989b08691818697615c9"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:25:50.7305802Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-call/raw.txt",
+          "sha256": "1fa2c5ad329e9670af989d44b0538ff6e0aea77d4f320ca3be35d0f8710ba1c3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-call/stdout.txt",
+          "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-call/stdout.txt",
+            "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-assignment",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-assignment/source.alg",
+        "sha256": "6cc1b12bd3c96dfc957e5cb2aaea9589cc4527002d0cf2ea4cb41984e9dae47e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:26:00.9832949Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-assignment/transcription.txt",
+          "sha256": "87739cbc042fbff259b86514631f261266ecb67916ac9ed2cca9dcaa0e8a61cd"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-assignment/transcription.txt",
+          "sha256": "87739cbc042fbff259b86514631f261266ecb67916ac9ed2cca9dcaa0e8a61cd"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-assignment/screenshot.png",
+          "sha256": "d3ea9b68dadc0484cbeab7d1b2f874974d7861e5b5ee710b604ba732b0ffdf1f"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-assignment/transcription.txt",
+          "sha256": "87739cbc042fbff259b86514631f261266ecb67916ac9ed2cca9dcaa0e8a61cd"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E002",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-duplicate",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-duplicate/source.alg",
+        "sha256": "3f9668b28337ed4979ca844d1d7ab31009a2f6309fab2409996da2e200848b8f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:26:11.1887312Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-duplicate/transcription.txt",
+          "sha256": "88b71c409b951dd2c13d241855834eae767f03218b1e12a79fb453e051e6ba7a"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-duplicate/transcription.txt",
+          "sha256": "88b71c409b951dd2c13d241855834eae767f03218b1e12a79fb453e051e6ba7a"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-duplicate/screenshot.png",
+          "sha256": "3c50e163b78d903222234ffcb09c141f2d10d6e8845af2a2ee7dc82583104bb5"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-duplicate/transcription.txt",
+          "sha256": "88b71c409b951dd2c13d241855834eae767f03218b1e12a79fb453e051e6ba7a"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E003",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-case-duplicate",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-case-duplicate/source.alg",
+        "sha256": "6849e1d83788f75d6aeeb7475c888910776a3aec113d320cb324f9aa12574ac1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:26:21.4217203Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-case-duplicate/transcription.txt",
+          "sha256": "88b71c409b951dd2c13d241855834eae767f03218b1e12a79fb453e051e6ba7a"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-case-duplicate/transcription.txt",
+          "sha256": "88b71c409b951dd2c13d241855834eae767f03218b1e12a79fb453e051e6ba7a"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-case-duplicate/screenshot.png",
+          "sha256": "5272be0d9cf50be2643aaf825d1fda0054abfd590c32961335387279c6ffead8"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-case-duplicate/transcription.txt",
+          "sha256": "88b71c409b951dd2c13d241855834eae767f03218b1e12a79fb453e051e6ba7a"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E003",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-variable-collision",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-variable-collision/source.alg",
+        "sha256": "a840ac2e25cdaee6be174c18903ef83352e4aea74c3fcb3a5e04dbefc58e7ebf"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:26:31.5779824Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-variable-collision/transcription.txt",
+          "sha256": "9fe3425314a7e319063564f09d277a3bd1f408c8571eb224440013a09a993a73"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-variable-collision/transcription.txt",
+          "sha256": "9fe3425314a7e319063564f09d277a3bd1f408c8571eb224440013a09a993a73"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-variable-collision/screenshot.png",
+          "sha256": "7e9b2eee406eef0421ef6d18e72de087f65a4feedb5a54ab1932139d9b1e6c75"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-variable-collision/transcription.txt",
+          "sha256": "9fe3425314a7e319063564f09d277a3bd1f408c8571eb224440013a09a993a73"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E003",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-after-variable",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-after-variable/source.alg",
+        "sha256": "acbab9551e7963a14258ab15c27b2199230f5274b73165634d75749cc0d2d406"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:26:41.6718658Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-after-variable/transcription.txt",
+          "sha256": "835564ada9fa65f30ad1b1f8179e994aa05f409b15a52a8cc7a5cd2fd23b738b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-after-variable/transcription.txt",
+          "sha256": "835564ada9fa65f30ad1b1f8179e994aa05f409b15a52a8cc7a5cd2fd23b738b"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-after-variable/screenshot.png",
+          "sha256": "8b5b20bc526da0af3181cfd443fb06ebcec4cb973ccd305b3fba501226e26577"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-after-variable/transcription.txt",
+          "sha256": "835564ada9fa65f30ad1b1f8179e994aa05f409b15a52a8cc7a5cd2fd23b738b"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-local",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-local/source.alg",
+        "sha256": "ffe7844438de147c4e712cc02daa619e50479afdca903567f792315a04f6bcca"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:26:51.8269193Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-local/raw.txt",
+          "sha256": "1fa2c5ad329e9670af989d44b0538ff6e0aea77d4f320ca3be35d0f8710ba1c3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-local/stdout.txt",
+          "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-local/stdout.txt",
+            "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-function-use",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-function-use/source.alg",
+        "sha256": "172be5c15bfdb4cc877a6c6807f287ff973353dfc6cf547239e6300cc2cc5027"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:27:02.0137044Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-function-use/raw.txt",
+          "sha256": "53a3726f7f1d9461fa13431d9cad015224015f9713f45d97e7c6c8e5fc008f81"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-function-use/stdout.txt",
+          "sha256": "b89cfdc48b6228ac0a65bc2cafc33c7d79884e6a4093d64d03e1f8799ff3650d"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-function-use/stdout.txt",
+            "sha256": "b89cfdc48b6228ac0a65bc2cafc33c7d79884e6a4093d64d03e1f8799ff3650d"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-loop-bound",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-loop-bound/source.alg",
+        "sha256": "67ac14ae0d1ef3bdd3ea5dddb59c7674b719bbeb68b5e4628829036a58b57bbe"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:27:12.3533621Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-loop-bound/raw.txt",
+          "sha256": "0a7e918efa5ce3b5b27e877ab6e1bcd7ae38459a7d2dac3893877a18fb45e3cc"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-loop-bound/stdout.txt",
+          "sha256": "791cc7adeac9dc74e06bb408a380f259099fc691b55b69728c7cee956953035c"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-loop-bound/stdout.txt",
+            "sha256": "791cc7adeac9dc74e06bb408a380f259099fc691b55b69728c7cee956953035c"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-overflow",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-overflow/source.alg",
+        "sha256": "8bdcded863490b4c1e719f0c8d7811548e3c74eb745ecb57f31e32ffb5326c58"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:27:32.6539341Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-overflow/raw.txt",
+          "sha256": "632b5d1046ce89625731716abe43bb9029c56629c89cd390d4c53413dc83e318"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-overflow/stdout.txt",
+          "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-overflow/stdout.txt",
+            "sha256": "04c83b50f0b85515e7294b6267454e49ad29f12ad81d24bfbb68a9c14f9aa07f"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-form-semicolon",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-semicolon/source.alg",
+        "sha256": "fd4ba81e5739aed4b1c4ef3b064219f45f2a8bcb5a1233c6b401a843d3121c1f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:27:53.0306185Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-semicolon/raw.txt",
+          "sha256": "1fa2c5ad329e9670af989d44b0538ff6e0aea77d4f320ca3be35d0f8710ba1c3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-semicolon/stdout.txt",
+          "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-form-semicolon/stdout.txt",
+            "sha256": "97a48af4ff00379bde03c1da991ba363755ff1ee1624a0d061edc9219d1e664b"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-context-random-domain",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-random-domain/source.alg",
+        "sha256": "f993225316563ea9e2c4f4d9196efe1412e2086f07c3a83633bc43f6fba43ff5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:31:35.9830366Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-random-domain/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-random-domain/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-random-domain/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-context-parameter",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-parameter/source.alg",
+        "sha256": "1f19ba09d9c84b4ffb31554b570caa3bb20c2406ff55a86621e68702f5e19f66"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:31:46.2639297Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-parameter/raw.txt",
+          "sha256": "01d8ca99d7b49555268a4ae4c61e7bb9ec6587837fa3ac34d1b21869395c86a1"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-parameter/stdout.txt",
+          "sha256": "8fa55fdb4078a10cbb406940ebe5750cc443d13ff28359698f6c1de41a705bef"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-parameter/stdout.txt",
+            "sha256": "8fa55fdb4078a10cbb406940ebe5750cc443d13ff28359698f6c1de41a705bef"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-context-global-variable",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-global-variable/source.alg",
+        "sha256": "0bad70cbd3411583a331dd5d247ebfca2e111efffb6bffd16e55b7d849217dc9"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:31:56.5425986Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-global-variable/raw.txt",
+          "sha256": "168b8218c7107bc851d494fefc9ea259582f4f829b46fa778325e6cf72ef18c3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-global-variable/stdout.txt",
+          "sha256": "f9fc28805d91077841718021dad245355dd8b66b7e426c2cb663423fe08a4cdf"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-global-variable/stdout.txt",
+            "sha256": "f9fc28805d91077841718021dad245355dd8b66b7e426c2cb663423fe08a4cdf"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-context-shadow",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-shadow/source.alg",
+        "sha256": "e0352d04ab6062aee625981c8f06b845c45da634c796f89deb8b6017e7ace940"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:32:06.7731957Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-shadow/raw.txt",
+          "sha256": "6873cf1603b8de873fd0a163ca81637bc06c61764e0544e51af421432a041ad8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-shadow/stdout.txt",
+          "sha256": "88e36a8e8a328d54d17dfe0429c207b54a0da8a4fbf322c1daf147b9a7acb3e6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-shadow/stdout.txt",
+            "sha256": "88e36a8e8a328d54d17dfe0429c207b54a0da8a4fbf322c1daf147b9a7acb3e6"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
+        ]
+      }
+    },
+    {
+      "id": "constant-context-local-no-var",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-local-no-var/source.alg",
+        "sha256": "4aba1e4edcf6339970754912badbf79fa076557eb1bfd693c2f0eed51b7ff369"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:32:16.9822669Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-local-no-var/transcription.txt",
+          "sha256": "2b48bbe0c3aca2b2614a64a9be306aac2b776756623bc7ec7d1c2255d70ece86"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-local-no-var/transcription.txt",
+          "sha256": "2b48bbe0c3aca2b2614a64a9be306aac2b776756623bc7ec7d1c2255d70ece86"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-local-no-var/screenshot.png",
+          "sha256": "1604e9ca6dcf6f2f2a5f5be976d99e95525ea384723f9f9b2487ef2a262a32a6"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-local-no-var/transcription.txt",
+          "sha256": "2b48bbe0c3aca2b2614a64a9be306aac2b776756623bc7ec7d1c2255d70ece86"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-context-negative-bound",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-negative-bound/source.alg",
+        "sha256": "9b713d262caca94218fbb6db421cb4bbe377b2eff00ca79098f539a375bd5f2c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:32:27.1791422Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-negative-bound/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-negative-bound/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-negative-bound/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        }
+      }
+    },
+    {
+      "id": "constant-context-real-bound",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-real-bound/source.alg",
+        "sha256": "3cec75fb1900649045b49c3592f1e9f3c9ef66675f2eba1a6510f8dc40c60d6f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:32:37.4290549Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-real-bound/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-real-bound/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-real-bound/screenshot.png",
+          "sha256": "a807be16e31706f1892d95a1208d7df07d782786bb18afe177a8e2b09a3a2238"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-real-bound/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-context-text-bound",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-text-bound/source.alg",
+        "sha256": "65f0300cbc7f7c00ed5e956c26ebfb2720d82ee52ce7761ba7d8c94f78f7cf50"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:32:47.7162784Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-text-bound/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-text-bound/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-text-bound/screenshot.png",
+          "sha256": "64545ed07cd77d7943e901b4ab5449cfeb2d8ec1c68c8d0e04738e0e9d81cef2"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-text-bound/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-context-expression-bound",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-expression-bound/source.alg",
+        "sha256": "81467bd904fb2d45e8cba306854dd1607f3a55af8a5436b0636cf95438ce9811"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:32:57.8619519Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-expression-bound/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-expression-bound/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-expression-bound/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        }
+      }
+    },
+    {
+      "id": "constant-context-bound-arithmetic",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-bound-arithmetic/source.alg",
+        "sha256": "a49258743ed24c6b21b32c66519005b6fbb4437088c3b97064c1288162092bed"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T21:33:08.0506803Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-bound-arithmetic/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-bound-arithmetic/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-bound-arithmetic/screenshot.png",
+          "sha256": "2309f4cffc1a7b55938c971610a1b8be661106699f07eb3788d78a1b14d59e1b"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-bound-arithmetic/transcription.txt",
+          "sha256": "8b3a2c06e08aafc844e389e32d616e5463c5ec8c3f4d454c5b5a1c0bd0952522"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "constant_declarations_test.go#TestConstantDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "constant-context-local-vector-bound",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-local-vector-bound/source.alg",
+        "sha256": "a08e701eecc6941343f1a2f45f253e854145c110e3b063df4a9daed2f585c6d7"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:33:18.1470976Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-local-vector-bound/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-local-vector-bound/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-local-vector-bound/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        }
+      }
+    },
+    {
+      "id": "constant-context-random-order",
+      "ownerGroup": 6,
+      "tasks": [
+        "6.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-random-order/source.alg",
+        "sha256": "f12f375e03199545c6029bb8839aba1a8cc5a02e13e8b3bf86c046e7811ab02e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T21:33:28.3580339Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-random-order/raw.txt",
+          "sha256": "1a6ee689931e05b4811bab2c259fb87d86272d83d008d9c78d81f11cdd13b965"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-random-order/stdout.txt",
+          "sha256": "c9d71b1a6c5276039cbe46a6116e91fbba4ca8c66e9d389e1c5e024e6be6e821"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/constant-context-random-order/stdout.txt",
+            "sha256": "c9d71b1a6c5276039cbe46a6116e91fbba4ca8c66e9d389e1c5e024e6be6e821"
+          }
+        },
+        "tests": [
+          "constant_declarations_test.go#TestRecordedConstants"
         ]
       }
     }

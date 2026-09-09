@@ -31,6 +31,7 @@ type symbolKind int
 
 const (
 	varSym symbolKind = iota
+	constSym
 	procSym
 	funcSym
 	builtinSym
@@ -87,6 +88,9 @@ func (s *scope) declare(sym symbol) bool {
 }
 
 func (c *checker) checkProgram(prog *ast.Program) {
+	if !c.declareConsts(prog.Consts) {
+		return
+	}
 	for _, decl := range prog.Globals {
 		c.declareVars(decl)
 	}
@@ -160,6 +164,9 @@ func (c *checker) checkSub(sub ast.Subprogram) {
 	case *ast.ProcedureDecl:
 		c.inFunction = false
 		c.declareParams(d.Params)
+		if !c.declareConsts(d.Consts) {
+			return
+		}
 		for _, decl := range d.Locals {
 			c.declareVars(decl)
 		}
@@ -168,6 +175,9 @@ func (c *checker) checkSub(sub ast.Subprogram) {
 		c.inFunction = true
 		c.returnType = runtime.TypeFromSpec(d.Return)
 		c.declareParams(d.Params)
+		if !c.declareConsts(d.Consts) {
+			return
+		}
 		for _, decl := range d.Locals {
 			c.declareVars(decl)
 		}
@@ -340,7 +350,7 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 			c.error(e.Name.Pos, diag.EParse, "expected '(' after %s", sym.name)
 			return runtime.Type{Kind: runtime.InvalidType}
 		}
-		if sym.kind != varSym {
+		if sym.kind != varSym && sym.kind != constSym {
 			c.error(e.Name.Pos, diag.ETypeMismatch, "%q is not a variable", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}
 		}
@@ -514,7 +524,7 @@ func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 	switch e := expr.(type) {
 	case *ast.IdentExpr:
 		sym, ok := c.lookup(e.Name)
-		if !ok || sym.kind == funcSym {
+		if !ok || sym.kind == funcSym || sym.kind == constSym {
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}, false
 		}

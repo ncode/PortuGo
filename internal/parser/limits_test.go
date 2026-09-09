@@ -110,6 +110,33 @@ func TestTypeDepthLimit(t *testing.T) {
 	}
 }
 
+func TestConstantDepthLimit(t *testing.T) {
+	for _, section := range []string{"", "funcao value: inteiro\n", "procedimento value\n"} {
+		for _, depth := range []int{256, 257} {
+			src := "algoritmo \"constants\"\n" + section + "const\nn = " + strings.Repeat("1+", depth-1) + "1\nvar\ninicio\n"
+			if section != "" {
+				if strings.HasPrefix(section, "funcao") {
+					src += "retorne n\nfimfuncao\ninicio\n"
+				} else {
+					src += "fimprocedimento\ninicio\n"
+				}
+			}
+			_, toks, ds := lexer.Scan("constant.alg", src+"fimalgoritmo")
+			if len(ds) != 0 {
+				t.Fatal(ds)
+			}
+			prog, ds := Parse(toks)
+			if depth == 256 {
+				if prog == nil || len(ds) != 0 {
+					t.Fatalf("constant boundary rejected: %v", ds)
+				}
+			} else if prog != nil || len(ds) != 1 || ds[0].Code != diag.EResource {
+				t.Fatalf("constant traversal unprotected: %v", ds)
+			}
+		}
+	}
+}
+
 func TestLimitKeepsEarlierDiagnostics(t *testing.T) {
 	for _, expr := range []string{strings.Repeat("(", 300) + "1" + strings.Repeat(")", 300), strings.Repeat("1+", 300) + "1"} {
 		_, toks, ds := lexer.Scan("invalid.alg", "algoritmo \"invalid\"\nvar\nv: vetor[2..1] de inteiro\ninicio\nescreva("+expr+")\nfimalgoritmo")

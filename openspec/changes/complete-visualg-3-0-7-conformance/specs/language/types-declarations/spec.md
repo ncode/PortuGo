@@ -27,11 +27,15 @@ The language SHALL support the complete oracle-confirmed declaration section voc
 - **THEN** semantic or syntax analysis reports the positioned traced diagnostic without losing later independent declarations
 
 ### Requirement: Constants and declaration expressions
-If constant declarations are accepted by the reference, they SHALL be immutable, case-insensitive named values evaluated according to the recorded declaration-time expression rules. Every context that the reference permits to use a constant expression, including vector bounds, case labels, and other declarations, SHALL resolve it before execution and SHALL diagnose cycles, non-constant dependencies, overflow, and invalid types. Rejection of constant declarations SHALL NOT prohibit literal bounds or other expression forms independently accepted by the reference.
+Constants SHALL be immutable, case-insensitive named values initialized in declaration order when their section is entered. A `const` section SHALL precede a required, possibly empty `var` section. Global initializers run before the main body; local initializers run once per call after parameter setup and may read current parameters and global variables. Earlier constants and recorded built-ins are accepted; unknown/forward dependencies and cycles receive positioned syntax diagnostics. Duplicate declarations receive the recorded duplicate-name diagnostic. Integer arithmetic SHALL retain the recorded signed 32-bit wrapping behavior. Independently accepted constant-bound forms remain required; their values SHALL resolve before allocation, including during local declaration initialization. Unqualified aggregate-valued or no-value initializers SHALL NOT acquire positive support from scalar observations.
 
 #### Scenario: Use a constant in a vector bound
 - **WHEN** an integer constant is referenced by a vector bound accepted by the oracle
-- **THEN** the declared bound is resolved before runtime and is reflected in indexing and storage accounting
+- **THEN** the declared bound is resolved before allocation and is reflected in indexing and storage accounting
+
+#### Scenario: Initialize a local constant from current values
+- **WHEN** a subprogram constant reads a parameter or global variable
+- **THEN** it captures that call's current value before the body and remains unchanged until the call ends
 
 #### Scenario: Detect a cyclic constant
 - **WHEN** constant declarations depend on each other cyclically

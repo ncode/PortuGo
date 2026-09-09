@@ -146,6 +146,13 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
 - [ ] 6.1 Add failing fixtures for the recorded declaration dispositions, including rejected constants/types/records/fields, and positive ordering, assignment, zero-value, copy, and reference cases only where accepted.
 - [ ] 6.2 Use ordered program/local declarations for the section kinds actually accepted by the reference, migrating visitors and preserving the group 4 comment anchors.
 - [ ] 6.3 Implement constant declarations and bounded declaration-time evaluation only if confirmed, including dependency/cycle and overflow diagnostics; otherwise add the recorded rejection fixtures.
+
+  Thirty-two recordings now verify scalar declarations, earlier dependencies,
+  local shadowing and per-call initialization from parameters/global variables,
+  accepted built-ins, integer wrapping, and positioned rejections. Constants
+  initialize in source order when their section is entered, not during static
+  analysis. Four accepted constant-bound recordings remain pending under 7.2;
+  aggregate-valued and no-value initializers remain unqualified.
 - [ ] 6.4 Implement named types/aliases and identity/compatibility rules only if confirmed, including bounded unknown-type/cycle handling; otherwise add rejection fixtures and omit named-type machinery.
 - [ ] 6.5 Implement record syntax and layouts in `sema.Info` only if confirmed, including field order, duplicates, and depth/size guards; otherwise add rejection fixtures and omit record layout machinery.
 - [ ] 6.6 Add field designators through AST, parser, printer, sema, and runtime only for confirmed record support; otherwise pin field-syntax rejection and remove positive field obligations from dependent tasks/specs.

@@ -16,14 +16,17 @@ func CheckLimits(prog *Program) []diag.Diagnostic {
 		return []diag.Diagnostic{{Code: diag.EParse, Message: "missing program"}}
 	}
 	c := &limitChecker{}
+	c.consts(prog.Consts)
 	c.decls(prog.Globals)
 	for _, sub := range prog.Subs {
 		switch s := sub.(type) {
 		case *ProcedureDecl:
+			c.consts(s.Consts)
 			c.params(s.Params)
 			c.decls(s.Locals)
 			c.stmts(s.Body, 1)
 		case *FunctionDecl:
+			c.consts(s.Consts)
 			c.params(s.Params)
 			c.typ(s.Return, 1)
 			c.decls(s.Locals)
@@ -38,6 +41,12 @@ func CheckLimits(prog *Program) []diag.Diagnostic {
 }
 
 type limitChecker struct{ failure *diag.Diagnostic }
+
+func (c *limitChecker) consts(decls []ConstDecl) {
+	for _, decl := range decls {
+		c.expr(decl.Value, 1)
+	}
+}
 
 func (c *limitChecker) enter(pos token.Pos, depth int) bool {
 	if c.failure != nil {

@@ -1,0 +1,4 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 4
+Message: Variável ou constante 'N' declarada mais de uma vez.
+Column: not established.

@@ -15,9 +15,8 @@ verified. The reference accepts vectors larger than 500 elements; the draft
 500-slot compatibility restriction has therefore been withdrawn. The recordings
 do not establish the upper storage limit in every declaration context.
 
-The [bundled example sweep](bundled-examples-progress.md) verifies 29 original
-programs against reference output, including formatting and execution. One
-accepted example still exposes missing syntax, and seven supplied files have
+The [bundled example sweep](bundled-examples-progress.md) verifies 30 original
+programs against reference output, including formatting and execution. Seven supplied files have
 recorded reference errors. Bundled-file presence alone does not establish that
 its syntax is accepted by this release.
 
@@ -58,6 +57,30 @@ one declaration per line and omits the optional semicolon; see the
 [declaration example](../examples/declaration_semicolons.alg).
 
 ## Types
+
+A `const` section precedes `var`, globally or inside a subprogram. Each
+declaration has the form `name = expression`, optionally ending with `;`.
+The following `var` section is required, even when it is empty. Constants use
+case-insensitive names and infer their scalar type from the initializer.
+Initializers can use scalar literals, ordinary arithmetic, earlier constants,
+and accepted built-ins, including `pi`, `abs`, and `randi`. Integer arithmetic
+retains its signed 32-bit wrapping behavior.
+
+Global constants initialize before the main body. Local constants initialize
+once per call, after parameter setup and before local variables; their values
+can depend on the current parameters and global variables. Local declarations
+may shadow global constants. Repeated reads retain the initialized value.
+Formatting preserves initializer expressions, declaration order, and the
+required empty `var` section. See the [constant example](../examples/constants.alg).
+
+Unknown or forward constant dependencies, including cycles, receive `P001`.
+Duplicate names or collisions with a variable in the same scope receive `E003`.
+Assignment to a constant receives `E002`. Named constants in vector bounds
+remain pending despite recorded acceptance; aggregate-valued initializers and
+no-value initializer results remain unqualified. The CLI currently requires a
+scalar initializer type as a project guard. Existing expression-depth, step,
+and arithmetic guards apply during initialization; an initializer failure does
+not enter the subprogram body or copy reference parameters back.
 
 - `inteiro`: signed integer
 - `real`: floating point number

@@ -1,0 +1,4 @@
+Início da execução
+ 3| 1.5|abc| VERDADEIRO
+
+Fim da execução.

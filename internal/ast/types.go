@@ -6,9 +6,16 @@ import "github.com/ncode/portugol-go/internal/token"
 type Program struct {
 	At      token.Pos
 	Name    string
+	Consts  []ConstDecl
 	Globals []VarDecl
 	Subs    []Subprogram
 	Body    []Stmt
+}
+
+// ConstDecl binds an expression once when its declaration section is entered.
+type ConstDecl struct {
+	Name  token.Token
+	Value Expr
 }
 
 // VarDecl declares one or more variables with the same type.
@@ -53,6 +60,7 @@ type ProcedureDecl struct {
 	At     token.Pos
 	Name   token.Token
 	Params []Param
+	Consts []ConstDecl
 	Locals []VarDecl
 	Body   []Stmt
 }
@@ -67,6 +75,7 @@ type FunctionDecl struct {
 	Name   token.Token
 	Params []Param
 	Return TypeSpec
+	Consts []ConstDecl
 	Locals []VarDecl
 	Body   []Stmt
 }

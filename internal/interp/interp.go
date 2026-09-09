@@ -88,6 +88,9 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) []diag.Diagnostic 
 	i.env = newEnv(nil)
 	i.global = i.env
 	i.subs = make(map[token.Pos]ast.Subprogram)
+	if err := i.defineConsts(prog.Consts); err != nil {
+		return diagnostics(err, pos, diag.RType)
+	}
 	for _, decl := range prog.Globals {
 		if err := i.defineVars(decl); err != nil {
 			return diagnostics(err, decl.At, diag.RStorage)
@@ -114,7 +117,7 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) []diag.Diagnostic 
 	}
 }
 
-// State returns independent copies of global values after the most recent run.
+// State returns independent copies of global variables after the most recent run.
 func (i *Interpreter) State() map[string]runtime.Value {
 	values := make(map[string]runtime.Value)
 	if i.program == nil || i.global == nil {
@@ -144,6 +147,21 @@ func (i *Interpreter) defineVars(decl ast.VarDecl) error {
 			return failure(name.Pos, diag.RStorage, fmt.Errorf("inconsistent storage layout"))
 		}
 		i.env.define(b.ID, b.Type)
+	}
+	return nil
+}
+
+func (i *Interpreter) defineConsts(decls []ast.ConstDecl) error {
+	for _, decl := range decls {
+		b, ok := i.info.Binding(decl.Name)
+		if !ok {
+			return failure(decl.Name.Pos, diag.RType, fmt.Errorf("missing constant binding"))
+		}
+		value, err := i.eval(decl.Value)
+		if err != nil {
+			return err
+		}
+		i.env.cells[b.ID] = &runtime.Cell{Type: value.Type(), Value: runtime.Clone(value)}
 	}
 	return nil
 }

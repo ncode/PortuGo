@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Add global and local scalar constants with ordered initialization, current
+  parameter/global values, immutable names, and preserved formatter output.
+  Match recorded declaration errors, dependencies, built-ins, and overflow;
+  retain constant-based vector layouts as pending conformance work.
+
 - Add dynamic `ate` case ranges with inclusive numeric matching, first-match
   selection, and positioned label diagnostics. Match numeric selector
   truncation and recorded text-label casing, preserve ranges through
