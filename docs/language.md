@@ -41,6 +41,15 @@ declarations must appear before `inicio`.
 
 Variables are initialized to the zero value of their type.
 
+## String Literals
+
+Strings use double quotes. A backslash is an ordinary character: `"a\nb"`
+contains four characters, and `"tail\"` ends with a literal backslash. There
+are no Go-style escape sequences. An embedded quote cannot be written as `\"`
+or doubled quotes. The recorded backslash forms are covered by byte-exact
+reference replay; formatting preserves their contents and program names.
+See [the literal-string example](../examples/literal_strings.alg).
+
 ## Expressions
 
 Arithmetic operators are `+`, `-`, `*`, `/`, `\`, `%`, `MOD`, and `^`.

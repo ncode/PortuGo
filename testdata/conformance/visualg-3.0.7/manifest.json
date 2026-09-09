@@ -3471,7 +3471,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -3484,7 +3484,10 @@
               "line": 3
             }
           ]
-        }
+        },
+        "tests": [
+          "string_literals_test.go#TestRecordedStringLiterals"
+        ]
       }
     },
     {
@@ -3517,14 +3520,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/backslash-string-newline/stdout.txt",
             "sha256": "d32170bf6e447af933ecabf6607a7e94b1fc35e01f71b618141aab849e00f45b"
           }
-        }
+        },
+        "tests": [
+          "string_literals_test.go#TestRecordedStringLiterals"
+        ]
       }
     },
     {
@@ -4502,14 +4508,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/backslash-string-tab/stdout.txt",
             "sha256": "11b6ca2e51aac96230cefaba7840c12a9a1ae229d967b636c2700d7e06160353"
           }
-        }
+        },
+        "tests": [
+          "string_literals_test.go#TestRecordedStringLiterals"
+        ]
       }
     },
     {
@@ -4542,14 +4551,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/backslash-string-pair/stdout.txt",
             "sha256": "31849877981b6eb9e81f48f02ce0d76b04451485d4b05b5fd53b743941ab9adc"
           }
-        }
+        },
+        "tests": [
+          "string_literals_test.go#TestRecordedStringLiterals"
+        ]
       }
     },
     {
@@ -4582,14 +4594,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/backslash-string-unknown/stdout.txt",
             "sha256": "728fb1ef7fb70a107494c18f6c09559a93d70b1b358d5c44269347617a04dbe9"
           }
-        }
+        },
+        "tests": [
+          "string_literals_test.go#TestRecordedStringLiterals"
+        ]
       }
     },
     {
@@ -4622,14 +4637,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/backslash-string-final/stdout.txt",
             "sha256": "3f0de0f5f6bf746835d2ff1249890ebfa0b2c8447a551feca4920be8b15cd8a4"
           }
-        }
+        },
+        "tests": [
+          "string_literals_test.go#TestRecordedStringLiterals"
+        ]
       }
     },
     {

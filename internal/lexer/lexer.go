@@ -134,21 +134,6 @@ func (s *scanner) scanString(start int) {
 			s.file.AddLine(s.offset)
 			s.error(token.Pos(start), "unterminated string literal")
 			return
-		case '\\':
-			if s.offset >= len(s.src) {
-				break
-			}
-			esc := s.advance()
-			switch esc {
-			case 'n':
-				text = append(text, '\n')
-			case 't':
-				text = append(text, '\t')
-			case '"', '\\':
-				text = append(text, esc)
-			default:
-				text = append(text, esc)
-			}
 		default:
 			text = append(text, r)
 		}

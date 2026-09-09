@@ -2,9 +2,10 @@
 
 This batch records 61 reduced programs against the same hashed VisuAlg 3.0.7.0
 executable and `en-US` profile as the existing corpus. Forty-one completed
-successfully and twenty produced a visible rejection diagnostic. Every new
-implementation entry remains pending; these observations guide subsequent
-changes and do not certify current conformance.
+successfully and twenty produced a visible rejection diagnostic. Recording
+alone does not verify implementation; current verification states and tests
+are tracked in the manifest. These observations guide subsequent changes and
+do not certify complete conformance.
 
 Exact CP1252 source bytes were decoded into the editor control and checked by
 readback before execution. Capture timestamps, source hashes, and executable

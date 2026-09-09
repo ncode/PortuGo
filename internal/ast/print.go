@@ -13,7 +13,7 @@ func Fprint(w io.Writer, prog *Program) error {
 		return ds[0]
 	}
 	p := &printer{w: w}
-	p.line("algoritmo %s", strconv.Quote(prog.Name))
+	p.line(`algoritmo "%s"`, prog.Name)
 	p.printDecls(prog.Globals)
 	for _, sub := range prog.Subs {
 		p.line("")
@@ -224,7 +224,7 @@ func exprString(expr Expr) string {
 		case RealLiteral:
 			return strconv.FormatFloat(e.Real, 'f', -1, 64)
 		case StringLiteral:
-			return strconv.Quote(e.Str)
+			return `"` + e.Str + `"`
 		case BoolLiteral:
 			if e.Bool {
 				return "verdadeiro"

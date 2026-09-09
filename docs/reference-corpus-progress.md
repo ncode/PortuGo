@@ -53,7 +53,7 @@ or relaxing the evidence gate.
 
 The [September 9 batch](reference-observations-2026-09-09.md) adds 61 recorded
 probes: 41 accepted and 20 rejected. The corpus now contains 79 reference probes
-(14 verified, 65 pending implementation), plus the five project-tooling entries.
+(20 verified, 59 pending implementation), plus the five project-tooling entries.
 The missing mappings at the corpus layer cover 44 requirements and all 73 bundled
 examples. The stable storage requirement ID is retained while its linked heading
 and text now reflect the recorded acceptance beyond the former 500-slot claim.
@@ -62,3 +62,11 @@ The [REPL input slice](repl-input-progress.md) also traces the verified common
 reader and EOF paths separately from pending blank-line behavior. The remaining
 missing mappings cover 43 requirements and all 73 bundled examples. Pending
 project behavior remains visible and still fails implementation acceptance.
+
+The string-literal slice verifies five accepted literal-backslash forms and the
+rejected backslash-quote form. Original and formatted programs produce the same
+recorded output, and repeated formatting preserves both values and program names.
+Local build, formatting, vet, lint, ordinary/race tests, and 30-second lexer and
+parser fuzz runs pass. Native Windows build, vet, ordinary tests, both 30-second
+fuzz runs, and all 20 verified CLI reference replays pass. Raw environment logs
+remain outside the repository.
