@@ -18,13 +18,42 @@ cancellation, and preservation of a prior failure's session status.
 source follows the existing file decoder. This is input-path consistency, not a
 new reference encoding observation.
 
-## Pending blank-line behavior
+## Blank-line preservation
 
-`project.repl-blank-lines` remains pending under tasks 16.3 and 16.4. The current
-REPL still submits on a blank line instead of preserving it inside incomplete
-source. Completing the shared-input requirement therefore remains blocked even
-though the common reader and EOF paths are tested.
+`project.repl-blank-lines` now verifies that blank lines remain inside unfinished
+source. `TestIncompleteBlankLinesAndTerminatorLookalikes` checks blank lines in
+declarations and statements, strings, comments, and longer identifiers.
+`TestAutomaticSubmissionDiagnostics` verifies that source positions still count
+preserved blank lines.
 
-Automatic submission, recovery after source-size exhaustion, and integration
-with future environment input modes also remain pending. This slice does not
-close the full REPL or formatter group.
+## Automatic submission and recovery
+
+`project.repl-submission` covers the project REPL protocol. Its token completion
+result recognizes a real `fimalgoritmo`; lexer tokens distinguish
+strings, comments, and longer identifiers. Complete invalid input still goes
+through the ordinary decoder, parser, and analyzer and reports its diagnostics.
+Each new physical line is scanned once, and the full source is analyzed only
+when submitted, avoiding repeated parsing of the growing buffer.
+
+`TestAutomaticSubmission` checks immediate execution, consecutive programs,
+shared `leia` input, uppercase terminators, and LF/CRLF. The CLI transcript
+`testdata/cli/repl_auto.in` also checks exact prompt/output order and exit status
+through `TestCommandContracts`. Lexical, syntax, semantic, runtime, and budget
+failures report once, retain the session's failure status, and permit a fresh
+program with its own execution budget.
+
+Line framing uses decoded text, preventing Windows-1252 bytes in longer names
+from being mistaken for a terminator. `TestCP1252TerminatorLookalike` verifies
+cancellation of that unfinished input; it does not claim acceptance of its
+identifier form as a reference language feature.
+
+Recovery after source-size exhaustion, host failures, and integration with
+future environment input modes remain pending. This slice does not close the
+full REPL or formatter group.
+
+Local build, formatting, vet, staticcheck, lint, ordinary/race tests, both
+30-second fuzz checks, strict specification validation, and all 199 verified
+reference CLI replays pass. Native Windows build, vet, 766 tests, both fuzz
+checks, and all 199 CLI replays pass. All 11 transported files match the local
+snapshot before the final validation notes. The evidence gate reports only
+106 missing mappings: 33 requirements and 73 bundled examples.

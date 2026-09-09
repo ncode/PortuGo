@@ -9111,9 +9111,7 @@
       "id": "project.repl-submission",
       "ownerGroup": 16,
       "tasks": [
-        "16.1",
         "16.3",
-        "16.4",
         "16.5",
         "16.6"
       ],
@@ -9122,11 +9120,17 @@
         "state": "not-applicable",
         "review": {
           "reason": "Automatic REPL submission, prompt ordering, shared input, and recovery are project interface behavior. Transcript and CLI tests verify these paths without replacing reference evidence for the submitted language programs.",
-          "link": "docs/conformance-evidence-baseline.md#Project tooling"
+          "link": "docs/repl-input-progress.md#Automatic submission and recovery"
         }
       },
       "implementation": {
-        "state": "pending"
+        "state": "verified",
+        "tests": [
+          "internal/repl/submission_test.go#TestAutomaticSubmission",
+          "internal/repl/submission_test.go#TestAutomaticSubmissionDiagnostics",
+          "internal/repl/submission_test.go#TestCP1252TerminatorLookalike",
+          "cmd/portugol/dispatch_test.go#TestCommandContracts"
+        ]
       }
     },
     {
@@ -9667,12 +9671,16 @@
       "evidence": {
         "state": "not-applicable",
         "review": {
-          "reason": "Preserving blank lines during incomplete REPL entry is a project interface requirement; its implementation is still pending.",
-          "link": "docs/repl-input-progress.md#Pending blank-line behavior"
+          "reason": "Blank-line preservation and source positions during unfinished REPL entry are project interface requirements, verified with transcript tests rather than reference editor behavior.",
+          "link": "docs/repl-input-progress.md#Blank-line preservation"
         }
       },
       "implementation": {
-        "state": "pending"
+        "state": "verified",
+        "tests": [
+          "internal/repl/submission_test.go#TestIncompleteBlankLinesAndTerminatorLookalikes",
+          "internal/repl/submission_test.go#TestAutomaticSubmissionDiagnostics"
+        ]
       }
     },
     {

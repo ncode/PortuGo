@@ -237,3 +237,24 @@ CLI replays pass on the final production source. The final manifest correction
 also passes a fresh native test/replay run, with all nine transported files
 matching locally before this validation note. No extra evidence-gate errors
 remain beyond the 108 missing inventory mappings.
+
+The automatic REPL slice preserves blank lines inside unfinished programs and
+submits immediately on a real terminator token. New transcripts cover LF/CRLF,
+consecutive programs, shared input, terminator lookalikes, exact CLI prompt
+ordering, source positions, and recovery after lexical, syntax, semantic,
+runtime, and execution-budget failures. Decoded line framing prevents an encoded
+longer identifier from prematurely submitting an unfinished program.
+
+The pending project blank-line entry is now verified. A new project submission
+entry traces automatic submission and recovery without changing reference
+recordings or expectations. Tasks 16.3, 16.4, and 16.5 are complete. Source-size
+and host-failure recovery, environment input modes, and formatter retention
+remain pending. The missing inventory now covers 33 requirements and all 73
+bundled examples; the reference corpus remains at 199 verified and 36 pending.
+
+Local build, formatting, vet, staticcheck, lint, ordinary/race tests, both
+30-second fuzz checks, strict specification validation, and all 199 verified CLI
+replays pass. Native Windows build, vet, 766 tests, both fuzz checks, and all 199
+CLI replays pass with all 11 transported files matching locally before these
+validation notes. The required-evidence gate reports the 106 missing mappings
+and no other errors.

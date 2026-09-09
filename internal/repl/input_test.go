@@ -32,7 +32,7 @@ func TestBufferedSourceAtEOF(t *testing.T) {
 			if err != nil || ok != tt.ok {
 				t.Fatalf("ok=%t, error=%v, diagnostics=%q", ok, err, &stderr)
 			}
-			if tt.output != "" && !strings.HasSuffix(out.String(), tt.output) {
+			if tt.output != "" && !strings.HasSuffix(out.String(), tt.output+"portugol> ") {
 				t.Errorf("output %q lacks final result %q", &out, tt.output)
 			}
 			if tt.diagnostic == "" {
@@ -55,7 +55,7 @@ func TestSharedInputPreservesFinalProgram(t *testing.T) {
 	if err != nil || !ok || stderr.Len() != 0 {
 		t.Fatalf("ok=%t, error=%v, diagnostics=%q", ok, err, &stderr)
 	}
-	if strings.Count(out.String(), " 42\n") != 1 || !strings.HasSuffix(out.String(), " 7\n") {
+	if strings.Count(out.String(), " 42\n") != 1 || !strings.HasSuffix(out.String(), " 7\nportugol> ") {
 		t.Fatalf("shared input lost or replayed: %q", &out)
 	}
 }

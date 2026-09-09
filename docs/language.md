@@ -285,12 +285,15 @@ go to stderr with the source filename, line, column, and a stable code. Runtime
 failure preserves preceding stdout. `check` and `fmt` never execute the program.
 REPL submissions share one buffered input stream with `leia`; a failed
 submission does not prevent a later submission, but the session exits 1 if any
-submission failed. A blank line or EOF submits accumulated source in the current
-REPL. EOF runs a complete buffered program and reports diagnostics for incomplete
-input; `:sair` cancels the buffer and exits. Submitted source uses the same UTF-8,
-UTF-8 BOM, and Windows-1252 decoder as files. Automatic submission on the program
-terminator and preservation of blank lines inside incomplete programs remain
-pending.
+submission failed. A real `fimalgoritmo` token submits the program immediately;
+the same text inside a string, comment, or longer identifier does not. Blank
+lines inside unfinished source are preserved, including their source positions.
+Consecutive programs need no separator, and `leia` consumes following input from
+the shared stream before source entry resumes. EOF submits any buffered source
+and reports incomplete input; `:sair` cancels the buffer and exits. Submitted
+source uses the same UTF-8, UTF-8 BOM, and Windows-1252 decoder as files.
+Lexical, syntax, semantic, runtime, and execution-budget failures clear the
+submitted buffer and permit another program; each program gets a fresh budget.
 
 | Runtime code | Category |
 | --- | --- |

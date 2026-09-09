@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Run REPL programs immediately at a real `fimalgoritmo` token and preserve
+  blank lines in unfinished source. Ignore terminator lookalikes in strings,
+  comments, and longer identifiers. Keep shared input, diagnostic positions,
+  consecutive program execution, and per-program budget resets consistent;
+  update the prompt banner and add an exact CLI transcript.
 - Validate vector layout products and backing lengths before computing storage
   offsets. Corrupted storage now returns positioned `R003` diagnostics for
   reads, writes, input, and reference arguments instead of panicking. Add

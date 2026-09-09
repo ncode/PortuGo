@@ -48,7 +48,11 @@ func TestCommandContracts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	replBanner := "Portugol REPL. Enter a complete program, blank line runs it, :sair exits.\nportugol> "
+	replAuto, err := os.ReadFile("../../testdata/cli/repl_auto.in")
+	if err != nil {
+		t.Fatal(err)
+	}
+	replBanner := "Portugol REPL. Enter a complete program, fimalgoritmo runs it, :sair exits.\nportugol> "
 	for _, tt := range []struct {
 		name                  string
 		args                  []string
@@ -70,7 +74,8 @@ func TestCommandContracts(t *testing.T) {
 		{"repl args", []string{"repl", path}, "", "", "usage:", 2},
 		{"unknown command", []string{"unknown"}, "", "", "usage:", 2},
 		{"repl read", []string{"repl", "--max-steps", "20"}, "algoritmo \"read\"\nvar x: inteiro\ninicio\nleia(x)\nescreval(x)\nfimalgoritmo\n\n42\n:sair\n", "", "", 0},
-		{"repl EOF", []string{"repl", "--max-steps", "20"}, string(replEOF), replBanner + "... ... ... ...  42\n", "", 0},
+		{"repl EOF", []string{"repl", "--max-steps", "20"}, string(replEOF), replBanner + "... ... ...  42\nportugol> ", "", 0},
+		{"repl automatic", []string{"repl", "--max-steps", "20"}, string(replAuto), replBanner + "... ... ... ... ...  42\nportugol> ... ... ...  7\nportugol> ", "", 0},
 		{"repl incomplete EOF", []string{"repl"}, "algoritmo \"unfinished\"\ninicio\n", replBanner + "... ... ", "<repl>:3:1: P001:", 1},
 	} {
 		t.Run(tt.name, func(t *testing.T) {

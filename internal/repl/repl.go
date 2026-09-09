@@ -16,7 +16,7 @@ import (
 	"github.com/ncode/portugol-go/internal/token"
 )
 
-// Run starts a small complete-program REPL. An empty line or EOF submits input.
+// Run starts a complete-program REPL. A program terminator or EOF submits input.
 func Run(options interp.Options, errout io.Writer) (bool, error) {
 	if options.Input == nil {
 		options.Input = strings.NewReader("")
@@ -31,7 +31,7 @@ func Run(options interp.Options, errout io.Writer) (bool, error) {
 	ok := true
 	var lines []string
 	size := 0
-	if _, err := fmt.Fprintln(out, "Portugol REPL. Enter a complete program, blank line runs it, :sair exits."); err != nil {
+	if _, err := fmt.Fprintln(out, "Portugol REPL. Enter a complete program, fimalgoritmo runs it, :sair exits."); err != nil {
 		return false, err
 	}
 	for {
@@ -64,15 +64,15 @@ func Run(options interp.Options, errout io.Writer) (bool, error) {
 		if strings.TrimSpace(line) == ":sair" {
 			return ok, nil
 		}
-		if strings.TrimSpace(line) != "" {
-			if len(line) > source.MaxBytes-size {
-				return false, submissionLimit(len(lines)+1, source.MaxBytes-size+1)
-			}
-			lines = append(lines, line)
-			size += len(line)
+		if len(lines) == 0 && strings.TrimSpace(line) == "" {
 			continue
 		}
-		if len(lines) == 0 {
+		if len(line) > source.MaxBytes-size {
+			return false, submissionLimit(len(lines)+1, source.MaxBytes-size+1)
+		}
+		lines = append(lines, line)
+		size += len(line)
+		if !submissionComplete(line) {
 			continue
 		}
 		valid, err := runSource(strings.Join(lines, ""), i, errout)
@@ -84,6 +84,22 @@ func Run(options interp.Options, errout io.Writer) (bool, error) {
 		lines = lines[:0]
 		size = 0
 	}
+}
+
+// Strings and comments end on each physical line. Scan each new line once for
+// framing; runSource still diagnoses the full decoded program, including errors.
+func submissionComplete(line string) bool {
+	decoded, err := source.Decode([]byte(line))
+	if err != nil {
+		return false
+	}
+	_, toks, _ := lexer.Scan("<repl>", decoded)
+	for _, tok := range toks {
+		if tok.Kind == token.FIMALGORITMO {
+			return true
+		}
+	}
+	return false
 }
 
 func runSource(src string, i *interp.Interpreter, errout io.Writer) (bool, error) {
