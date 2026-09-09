@@ -241,7 +241,11 @@ func (p *parser) parseStmt() ast.Stmt {
 		return &ast.BreakStmt{At: p.advance().Pos}
 	case token.RETORNE:
 		tok := p.advance()
-		return &ast.ReturnStmt{At: tok.Pos, Value: p.parseExpr(0)}
+		stmt := &ast.ReturnStmt{At: tok.Pos}
+		if !p.atLineEnd() {
+			stmt.Value = p.parseExpr(0)
+		}
+		return stmt
 	case token.LEIA:
 		return p.parseRead()
 	case token.ESCREVA, token.ESCREVAL:
@@ -363,7 +367,7 @@ func (p *parser) parseRead() ast.Stmt {
 func (p *parser) parseWrite() ast.Stmt {
 	start := p.advance()
 	stmt := &ast.WriteStmt{At: start.Pos, Newline: start.Kind == token.ESCREVAL}
-	if p.pos >= len(p.tokens) || p.tokens[p.pos].Kind == token.NEWLINE || p.tokens[p.pos].Kind == token.EOF {
+	if p.atLineEnd() {
 		return stmt
 	}
 	if !p.match(token.LPAREN) {
@@ -391,9 +395,13 @@ func (p *parser) parseWrite() ast.Stmt {
 }
 
 func (p *parser) skipLine() {
-	for p.pos < len(p.tokens) && p.tokens[p.pos].Kind != token.NEWLINE && p.tokens[p.pos].Kind != token.EOF {
+	for !p.atLineEnd() {
 		p.pos++
 	}
+}
+
+func (p *parser) atLineEnd() bool {
+	return p.pos >= len(p.tokens) || p.tokens[p.pos].Kind == token.NEWLINE || p.tokens[p.pos].Kind == token.EOF
 }
 
 func (p *parser) parseDesignator() ast.Expr {

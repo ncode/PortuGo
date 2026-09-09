@@ -47,6 +47,12 @@ func TestRecordedReturnRejections(t *testing.T) {
 		code diag.Code
 		line int
 	}{
+		{"function-bare-return", diag.ETypeMismatch, 5},
+		{"procedure-bare-return", diag.EReturn, 5},
+		{"main-bare-return", diag.EReturn, 3},
+		{"bare-return-real", diag.ETypeMismatch, 4},
+		{"bare-return-string", diag.ETypeMismatch, 4},
+		{"bare-return-logical", diag.ETypeMismatch, 4},
 		{"procedure-valued-return", diag.EReturn, 5},
 		{"main-valued-return", diag.EReturn, 3},
 		{"function-narrowing-return", diag.ETypeMismatch, 4},

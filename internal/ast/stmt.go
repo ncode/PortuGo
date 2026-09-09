@@ -96,7 +96,7 @@ type BreakStmt struct {
 func (*BreakStmt) stmtNode()          {}
 func (s *BreakStmt) Start() token.Pos { return s.At }
 
-// ReturnStmt returns from a function.
+// ReturnStmt sets the function result. Value is nil when the expression is missing.
 type ReturnStmt struct {
 	At    token.Pos
 	Value Expr

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Diagnose missing return values on the return line without consuming the next
+  statement or function terminator. Verify all four scalar result types and
+  bare returns outside functions; retain mixed syntax/semantic error ordering
+  as pending reference work.
+
 - Accept standalone `escreva`/`escreval` and optional `faca`/`faça` in choice
   headers. Recover malformed statements at physical line boundaries, verify
   matching LF/CRLF behavior, and run the original bundled prime-number example.

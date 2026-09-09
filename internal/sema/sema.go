@@ -272,6 +272,10 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			c.error(s.At, diag.EReturn, "retorne outside function")
 			return
 		}
+		if s.Value == nil {
+			c.error(s.At, diag.ETypeMismatch, "retorne requires a value")
+			return
+		}
 		t := c.expr(s.Value)
 		if !runtime.Assignable(c.returnType, t) {
 			c.error(s.Value.Start(), diag.ETypeMismatch, "cannot return %s from %s function", t, c.returnType)

@@ -262,8 +262,12 @@ Return expressions accept integer-to-real widening, but an integer function
 rejects real expressions with `E001`, including `2.0`. Numeric argument narrowing
 does not apply to returns. Valued returns in procedures or the main body receive
 `E005`. Assigning to a function name without a variable of that name receives
-`E002`; it does not assign the result. Bare-return diagnostics and output
-formatting when function bodies write during an outer write remain pending.
+`E002`; it does not assign the result. A return expression must begin on the
+same physical line as `retorne`. A bare return in a function receives `E001`
+on the return line; a bare return in a procedure or the main body receives
+`E005`. The following statement or terminator is retained for analysis.
+Diagnostic ordering when a file also contains malformed syntax, and output
+formatting when function bodies write during an outer write, remain pending.
 
 ## I/O
 
