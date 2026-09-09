@@ -2,6 +2,7 @@ package parser
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/token"
@@ -71,6 +72,9 @@ func (p *parser) parsePrimary() ast.Expr {
 
 func (p *parser) parseCall() *ast.CallExpr {
 	name := p.expect(token.IDENT, "expected call name")
+	if strings.EqualFold(name.Text, "pi") {
+		p.error(name, "pi does not accept parentheses")
+	}
 	call := &ast.CallExpr{Name: name}
 	p.expect(token.LPAREN, "expected '('")
 	if !p.match(token.RPAREN) {

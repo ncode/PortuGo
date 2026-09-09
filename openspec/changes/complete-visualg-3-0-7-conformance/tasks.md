@@ -221,6 +221,11 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 11.3 Replace semantic built-in switches and name lists with descriptor-driven binding, arity, argument, mode, and result-type analysis.
 - [ ] 11.4 Replace runtime built-in name maps and switches with descriptor lookup and evaluator dispatch while preserving per-interpreter state.
 - [ ] 11.5 Implement or correct all accepted candidates: `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, and `frac`, plus discovered functions/aliases. Cover `exp(base, expoente)` explicitly and reject any legacy candidate the oracle rejects.
+
+  The seven missing numeric functions and bare `pi` now match recorded values,
+  result types, optional arguments, no-value results, and syntax rejections.
+  Recordings identify remaining legacy arity, logarithm, and rejected-name
+  corrections; those and the unified descriptor registry remain pending.
 - [ ] 11.6 Add explicit numeric domain, finite-value, integer-overflow, precision-tolerance, and positioned `R007` behavior matching the oracle table.
 - [ ] 11.7 Add a generated or table-driven catalog report that proves semantic and runtime coverage for every descriptor without making generated source authoritative.
 - [ ] 11.8 Add semantic signature tests, runtime value/error tables, integration fixtures, and a numeric built-ins example.

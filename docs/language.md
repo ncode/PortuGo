@@ -383,8 +383,27 @@ leading space; field widths on logical values are rejected.
 
 ## Built-ins
 
-Numeric built-ins: `abs`, `raizq`, `exp`, `log`, `logn`, `pi`, `sen`, `cos`,
-`tan`, `int`, `frac`, `randi`, and `aleatorio`.
+Numeric built-ins include `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`,
+`exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`,
+`sen`, `tan`, `randi`, and the current legacy `frac` and `aleatorio` forms.
+
+`arccos`, `arcsen`, `arctan`, `cotan`, `grauprad`, and `radpgrau` return real
+values. Trigonometric results and arguments use radians; `grauprad` converts
+degrees to radians and `radpgrau` converts radians to degrees. Their empty
+parentheses supply zero. `quad(x)` squares its argument, retaining integer or
+real type and signed 32-bit wrapping for integers. `quad()` and text or logical
+arguments to `quad` produce no value.
+
+These seven functions accept at most one argument. Extra arguments receive
+`P001`. The six real functions reject text and logical arguments with `P001`
+and propagate a no-value argument. Out-of-domain `arccos` and `arcsen`, and
+zero-argument or zero-valued `cotan`, produce no value at runtime; output handles
+that result as described for `numpcarac` below. This runtime absence is allowed
+even when the expression's static result type is real.
+
+`pi` is written without parentheses and uses the recorded real precision:
+default output is `3.14159265358979`. `pi()` receives `P001`. Remaining legacy
+numeric arity, logarithm, and rejected-name corrections are still pending.
 
 `exp(base, exponent)` takes two numeric arguments and returns real-valued
 exponentiation. The one-argument natural-exponential form is not supported.

@@ -31,7 +31,8 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 		err = failure(expr.Start(), diag.RType, err)
 		// Numeric reference parameters can change a caller's runtime type.
 		actual := value.Type()
-		if err == nil && !runtime.Assignable(typ, actual) && !runtime.Assignable(actual, typ) {
+		// Numeric built-ins can produce no value for a domain failure.
+		if err == nil && actual.Kind != runtime.VoidType && !runtime.Assignable(typ, actual) && !runtime.Assignable(actual, typ) {
 			err = failure(expr.Start(), diag.RType, fmt.Errorf("inconsistent expression value"))
 		}
 	}()
@@ -42,7 +43,7 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 		}
 		return literalValue(e), nil
 	case *ast.IdentExpr:
-		if binding, ok := i.info.Binding(e.Name); ok && i.subs[binding.ID] != nil {
+		if binding, ok := i.info.Binding(e.Name); ok && (binding.Builtin || i.subs[binding.ID] != nil) {
 			return i.callFunction(&ast.CallExpr{Name: e.Name})
 		}
 		cell, err := i.lookupCell(e.Name)

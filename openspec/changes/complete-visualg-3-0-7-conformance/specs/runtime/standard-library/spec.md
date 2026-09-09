@@ -20,6 +20,10 @@ The project SHALL maintain one authoritative catalog of every VisuAlg 3.0.7 buil
 - **THEN** it receives the same signature and behavior as the catalog's canonical built-in
 
 ### Requirement: Numeric built-ins
+The recorded `arccos`, `arcsen`, `arctan`, `cotan`, `grauprad`, and `radpgrau` functions SHALL accept zero or one argument, use zero when omitted, return real values, and preserve the recorded trigonometric and angle-conversion units. Text and logical arguments and extra arguments SHALL receive `P001`; a no-value argument SHALL propagate no value. Out-of-domain inverse cosine/sine and cotangent of zero SHALL produce no value. Runtime no-value results SHALL be permitted even for statically real expressions.
+
+`quad` SHALL preserve numeric argument type, square integers with signed 32-bit wrapping, and produce no value for absent, text, or logical arguments. The constant `pi` SHALL accept its bare form and reject parentheses with `P001`, preserving the recorded default real output.
+
 For integer input, `abs` SHALL preserve the recorded signed 32-bit result, including the signed minimum. `int` SHALL truncate numeric input toward zero and narrow the result to signed 32-bit; unsupported non-finite or intermediate conversion values SHALL receive the positioned built-in failure guard.
 
 The catalog SHALL implement the full oracle-confirmed numeric set with the reference arity, accepted numeric types, result types, angle units, rounding or truncation, constants, domains, and exceptional behavior. The candidate inventory SHALL explicitly include `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, and the existing `frac`, plus any additional discovered functions and aliases. Every candidate SHALL receive a recorded disposition; accepted names SHALL be implemented as distinct operations where their semantics differ, and rejected legacy names SHALL receive rejection coverage.

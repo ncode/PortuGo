@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add recorded inverse trigonometric functions, cotangent, angle conversions,
+  and `quad`, including optional arguments, result types, and no-value domains.
+  Support bare `pi` and reject its parenthesized call form.
+
 - Report invalid numeric powers and nonfinite arithmetic results at their
   operators, preserve recorded nonnumeric division and no-value behavior,
   and accept numeric unary plus through parsing, analysis, and formatting.

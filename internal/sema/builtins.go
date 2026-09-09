@@ -10,6 +10,7 @@ func (c *checker) declareBuiltins() {
 	for _, name := range []string{
 		"abs", "raizq", "exp", "log", "logn", "pi", "sen", "cos", "tan", "int", "frac",
 		"aleatorio", "copia", "maiusc", "minusc", "asc", "carac", "compr", "pos", "numpcarac", "randi",
+		"arccos", "arcsen", "arctan", "cotan", "grauprad", "radpgrau", "quad",
 	} {
 		c.scope.declare(symbol{name: name, kind: builtinSym})
 	}
@@ -31,6 +32,32 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 		return runtime.Type{Kind: runtime.InvalidType}, true
 	case "raizq", "log", "sen", "cos", "tan", "frac":
 		c.checkBuiltinArgs(call, runtime.Type{Kind: runtime.RealType})
+		return runtime.Type{Kind: runtime.RealType}, true
+	case "arccos", "arcsen", "arctan", "cotan", "grauprad", "radpgrau", "quad":
+		if len(call.Args) > 1 {
+			c.error(call.Name.Pos, diag.EParse, "expected ')' after numeric argument")
+		} else if len(call.Args) == 0 {
+			if name == "quad" {
+				return runtime.Type{Kind: runtime.VoidType}, true
+			}
+		} else {
+			t := c.expr(call.Args[0])
+			switch t.Kind {
+			case runtime.IntegerType, runtime.RealType:
+				if name == "quad" {
+					return t, true
+				}
+			case runtime.VoidType:
+				return t, true
+			case runtime.StringType, runtime.BoolType:
+				if name == "quad" {
+					return runtime.Type{Kind: runtime.VoidType}, true
+				}
+				c.error(call.Args[0].Start(), diag.EParse, "expected numeric expression")
+			case runtime.VectorType:
+				c.error(call.Args[0].Start(), diag.EParse, "expected '[' after vector")
+			}
+		}
 		return runtime.Type{Kind: runtime.RealType}, true
 	case "exp", "logn":
 		if c.requireArity(call, 2, 2) {

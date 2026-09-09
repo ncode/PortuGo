@@ -205,7 +205,8 @@ fimfuncao
 
 ### 6.7 Built-in functions (initial set)
 
-Numeric: `abs`, `raizq`, `exp`, `log`, `logn`, `pi`, `sen`, `cos`, `tan`, `int`, `frac`, `randi`, `aleatorio`
+Numeric: `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, `randi`; legacy `frac` and `aleatorio` corrections remain pending.
+`pi` is written without parentheses. The new inverse-trigonometric and angle-conversion calls, `cotan`, and `quad` follow the recorded optional-argument and no-value rules in `docs/language.md`.
 `exp(base, exponent)` takes two numeric arguments and returns real-valued power.
 String: `copia(s, p, n)`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, `pos`
 Conversion: implicit `inteiro` → `real`; explicit elsewhere via built-ins (`int`, etc.)

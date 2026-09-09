@@ -47,6 +47,20 @@ func (l *Library) Call(name string, args []runtime.Value) (runtime.Value, bool, 
 		return real1(args, math.Cos)
 	case "tan":
 		return real1(args, math.Tan)
+	case "arccos":
+		return numeric1(args, math.Acos)
+	case "arcsen":
+		return numeric1(args, math.Asin)
+	case "arctan":
+		return numeric1(args, math.Atan)
+	case "cotan":
+		return numeric1(args, func(x float64) float64 { return 1 / math.Tan(x) })
+	case "grauprad":
+		return numeric1(args, func(x float64) float64 { return x * math.Pi / 180 })
+	case "radpgrau":
+		return numeric1(args, func(x float64) float64 { return x * 180 / math.Pi })
+	case "quad":
+		return square(args)
 	case "int":
 		return intval(args)
 	case "frac":

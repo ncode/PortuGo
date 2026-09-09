@@ -403,7 +403,7 @@ Todas case-insensitive. Usáveis em qualquer posição de expressão (nunca no l
 | `int(x)` | real → inteiro | parte inteira. `[VERIFICAR]` trunca em direção a zero ou floor? Para negativos: `int(-1.8)` = -1 (trunc, comportamento Delphi Int()) ou -2 (floor, comportamento DL)? **DL usa Math.floor, o que provavelmente diverge do original Delphi (Trunc).** |
 | `log(x)` | real → real | log base 10 |
 | `logn(x)` | real → real | log natural (base e) |
-| `pi` | → real | 3.141592... (help diz "retorna o valor 3.141592"; precisão real `[VERIFICAR]`) |
+| `pi` | → real | saída padrão registrada: `3.14159265358979` |
 | `quad(x)` | num → num | x*x |
 | `radpgrau(x)` | real → real | radianos → graus |
 | `raizq(x)` | real → real | raiz quadrada |
@@ -412,7 +412,7 @@ Todas case-insensitive. Usáveis em qualquer posição de expressão (nunca no l
 | `sen(x)` | real → real | seno (radianos) |
 | `tan(x)` | real → real | tangente (radianos) |
 
-`pi` e `rand` são chamadas sem parênteses (e `[VERIFICAR]` se aceitam `pi()` com parênteses).
+`pi` é usado sem parênteses; a forma `pi()` é rejeitada com diagnóstico de sintaxe nas gravações. As formas de chamada de `rand` continuam em verificação.
 
 ### 9.2 Manipulação de strings
 | Função | Assinatura | Semântica |
