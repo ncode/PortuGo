@@ -10,6 +10,10 @@
   exact source/output hashes and reviewed GUI rejection evidence. Implementation
   remains pending. Corrected the draft storage specification after the reference
   accepted vectors with 501, 5000, and 5001 elements.
+- Fixed the REPL dropping buffered source at EOF and bypassing source decoding.
+  Complete input now executes, incomplete input reports diagnostics, and UTF-8
+  BOM and Windows-1252 source use the file decoder. Earlier submission failures
+  still determine the session exit status without preventing later execution.
 - Linked existing corpus-tooling tests and recorded feature dispositions to their
   specification requirements, with reviewed reasons for project-only evidence.
   Language recordings, bundled examples, and full acceptance remain incomplete.

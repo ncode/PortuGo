@@ -763,7 +763,8 @@
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Shared REPL input",
       "probes": [
-        "project.repl-shared-input"
+        "project.repl-shared-input",
+        "project.repl-blank-lines"
       ]
     },
     {
@@ -8806,11 +8807,17 @@
         "state": "not-applicable",
         "review": {
           "reason": "The shared REPL input stream and EOF submission are project interfaces, verified with transcript and CLI tests rather than reference editor behavior.",
-          "link": "docs/conformance-evidence-baseline.md#Project tooling"
+          "link": "docs/repl-input-progress.md#Shared input"
         }
       },
       "implementation": {
-        "state": "pending"
+        "state": "verified",
+        "tests": [
+          "internal/repl/input_test.go#TestSharedInputPreservesFinalProgram",
+          "internal/repl/input_test.go#TestBufferedSourceAtEOF",
+          "internal/repl/input_test.go#TestSourceEncoding",
+          "cmd/portugol/dispatch_test.go#TestCommandContracts"
+        ]
       }
     },
     {
@@ -9368,6 +9375,25 @@
           "reason": "The original menu leaves the outer exit variable unchanged and repeats after F and Enter; complete execution is excluded from the finite sweep, while input, scope, return and choice behavior remain required.",
           "link": "docs/bundled-external-stop.md#Conversion menu"
         }
+      }
+    },
+    {
+      "id": "project.repl-blank-lines",
+      "ownerGroup": 16,
+      "tasks": [
+        "16.3",
+        "16.4"
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "Preserving blank lines during incomplete REPL entry is a project interface requirement; its implementation is still pending.",
+          "link": "docs/repl-input-progress.md#Pending blank-line behavior"
+        }
+      },
+      "implementation": {
+        "state": "pending"
       }
     }
   ]

@@ -16,7 +16,7 @@ import (
 	"github.com/ncode/portugol-go/internal/token"
 )
 
-// Run starts a small complete-program REPL. Submit an empty line to run.
+// Run starts a small complete-program REPL. An empty line or EOF submits input.
 func Run(options interp.Options, errout io.Writer) (bool, error) {
 	if options.Input == nil {
 		options.Input = strings.NewReader("")
@@ -48,6 +48,10 @@ func Run(options interp.Options, errout io.Writer) (bool, error) {
 		// submission. Other text is rejected before joining the source buffer.
 		line, err := readLine(reader, max(source.MaxBytes-size, len(":sair\r\n")))
 		if err == io.EOF {
+			if len(lines) != 0 {
+				valid, err := runSource(strings.Join(lines, ""), i, errout)
+				return ok && valid, err
+			}
 			return ok, nil
 		}
 		if err != nil {
@@ -71,34 +75,40 @@ func Run(options interp.Options, errout io.Writer) (bool, error) {
 		if len(lines) == 0 {
 			continue
 		}
-		if !runSource(strings.Join(lines, ""), i, errout) {
-			ok = false
+		valid, err := runSource(strings.Join(lines, ""), i, errout)
+		if err != nil {
+			return false, err
 		}
+		ok = ok && valid
 		clear(lines)
 		lines = lines[:0]
 		size = 0
 	}
 }
 
-func runSource(src string, i *interp.Interpreter, errout io.Writer) bool {
-	file, toks, lexDiags := lexer.Scan("<repl>", src)
+func runSource(src string, i *interp.Interpreter, errout io.Writer) (bool, error) {
+	decoded, err := source.Decode([]byte(src))
+	if err != nil {
+		return false, err
+	}
+	file, toks, lexDiags := lexer.Scan("<repl>", decoded)
 	if len(lexDiags) > 0 {
 		diag.Render(errout, file, lexDiags)
-		return false
+		return false, nil
 	}
 	prog, parseDiags := parser.Parse(toks)
 	if len(parseDiags) > 0 {
 		diag.Render(errout, file, parseDiags)
-		return false
+		return false, nil
 	}
 	info, semaDiags := sema.Analyze(prog)
 	if diag.HasErrors(semaDiags) {
 		diag.Render(errout, file, semaDiags)
-		return false
+		return false, nil
 	}
 	ds := i.Run(prog, info)
 	diag.Render(errout, file, ds)
-	return !diag.HasErrors(ds)
+	return !diag.HasErrors(ds), nil
 }
 
 func readLine(reader *bufio.Reader, limit int) (string, error) {

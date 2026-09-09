@@ -131,7 +131,12 @@ go to stderr with the source filename, line, column, and a stable code. Runtime
 failure preserves preceding stdout. `check` and `fmt` never execute the program.
 REPL submissions share one buffered input stream with `leia`; a failed
 submission does not prevent a later submission, but the session exits 1 if any
-submission failed. A blank line still submits a program in the current REPL.
+submission failed. A blank line or EOF submits accumulated source in the current
+REPL. EOF runs a complete buffered program and reports diagnostics for incomplete
+input; `:sair` cancels the buffer and exits. Submitted source uses the same UTF-8,
+UTF-8 BOM, and Windows-1252 decoder as files. Automatic submission on the program
+terminator and preservation of blank lines inside incomplete programs remain
+pending.
 
 | Runtime code | Category |
 | --- | --- |

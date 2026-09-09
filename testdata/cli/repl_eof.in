@@ -1,0 +1,4 @@
+algoritmo "eof"
+inicio
+escreval(42)
+fimalgoritmo

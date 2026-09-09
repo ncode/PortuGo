@@ -44,6 +44,11 @@ func TestCommandContracts(t *testing.T) {
 	if err := os.WriteFile(formatNesting, []byte("algoritmo \"nesting\"\ninicio\nescreval("+strings.Repeat("- nao ", 85)+"1)\nfimalgoritmo\n"), 0600); err != nil {
 		t.Fatal(err)
 	}
+	replEOF, err := os.ReadFile("../../testdata/cli/repl_eof.in")
+	if err != nil {
+		t.Fatal(err)
+	}
+	replBanner := "Portugol REPL. Enter a complete program, blank line runs it, :sair exits.\nportugol> "
 	for _, tt := range []struct {
 		name                  string
 		args                  []string
@@ -65,6 +70,8 @@ func TestCommandContracts(t *testing.T) {
 		{"repl args", []string{"repl", path}, "", "", "usage:", 2},
 		{"unknown command", []string{"unknown"}, "", "", "usage:", 2},
 		{"repl read", []string{"repl", "--max-steps", "20"}, "algoritmo \"read\"\nvar x: inteiro\ninicio\nleia(x)\nescreval(x)\nfimalgoritmo\n\n42\n:sair\n", "", "", 0},
+		{"repl EOF", []string{"repl", "--max-steps", "20"}, string(replEOF), replBanner + "... ... ... ...  42\n", "", 0},
+		{"repl incomplete EOF", []string{"repl"}, "algoritmo \"unfinished\"\ninicio\n", replBanner + "... ... ", "<repl>:3:1: P001:", 1},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			executable, err := os.Executable()

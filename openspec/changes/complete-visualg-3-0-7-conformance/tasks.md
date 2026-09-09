@@ -263,9 +263,14 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 ## 16. REPL Input, Completion, Recovery, and Formatter Coverage
 
 - [ ] 16.1 Add failing transcript tests for shared program/input buffering, blank lines in incomplete programs, immediate `fimalgoritmo` submission, lookalikes in strings/comments, consecutive programs, `leia`, EOF, exit commands, and recovery after every diagnostic stage.
-- [ ] 16.2 Replace competing scanners with one buffered input abstraction shared by REPL prompting, source accumulation, and interpreter `leia` consumption.
+- [x] 16.2 Replace competing scanners with one buffered input abstraction shared by REPL prompting, source accumulation, and interpreter `leia` consumption.
 - [ ] 16.3 Add a lexer/parser completeness result that distinguishes incomplete input from invalid complete input without string matching or swallowing diagnostics.
 - [ ] 16.4 Preserve meaningful blank lines while incomplete, enforce the submission size cap during accumulation, handle EOF cleanly, and keep prompt/output/error ordering deterministic.
+
+  EOF now submits buffered source through the shared decoder and reports an
+  incomplete program instead of silently discarding it. Transcript and CLI
+  regressions cover EOF, source encoding, prior failures, and shared `leia`
+  input. Blank-line preservation and automatic completion remain open.
 - [ ] 16.5 Automatically analyze and run as soon as a real terminating `fimalgoritmo` completes the accumulated program, then reset only per-program state.
 - [ ] 16.6 Recover to a clean primary prompt after decoding, syntax, semantic, runtime, resource-limit, or host diagnostics; reset each submitted program's budget without consuming the next program's buffered input.
 - [ ] 16.7 Verify `leia`, `arquivo`, random-input mode, echo, and environment commands consume only their intended shared input and leave the next REPL program intact.
