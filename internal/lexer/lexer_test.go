@@ -108,6 +108,8 @@ func TestRecordedKeywordSpellings(t *testing.T) {
 	}{
 		{"caracter", token.CARACTERE},
 		{"caracter_extra", token.IDENT},
+		{"div", token.IDIV},
+		{"divisor", token.IDENT},
 		{"função", token.FUNCAO},
 		{"então", token.ENTAO},
 		{"senão", token.SENAO},

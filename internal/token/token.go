@@ -140,6 +140,7 @@ var keywords = map[string]Kind{
 	"não":             NAO,
 	"xou":             XOU,
 	"mod":             MOD,
+	"div":             IDIV,
 }
 
 var kindNames = map[Kind]string{

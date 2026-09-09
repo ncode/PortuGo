@@ -15,6 +15,7 @@ func TestRecordedKeywordPrograms(t *testing.T) {
 		"keyword-nao-accented", "keyword-ate-accented",
 		"keyword-faca-accented", "keyword-funcao-accented",
 		"alias-caracter-lookalike",
+		"division-alias-values", "division-alias-case", "division-alias-order",
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)

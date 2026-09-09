@@ -41,6 +41,7 @@ func TestRecordedHeaderRejections(t *testing.T) {
 		{"header-leading-unrelated-word", 1},
 		{"alias-caracter-variable", 3},
 		{"legacy-type-variable", 3},
+		{"division-alias-identifier", 3},
 	} {
 		t.Run(tt.id, func(t *testing.T) {
 			src, err := source.ReadFile(filepath.Join("testdata/conformance/visualg-3.0.7/probes", tt.id, "source.alg"))

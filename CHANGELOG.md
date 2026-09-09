@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Recognize case-insensitive `DIV` as the integer-division operator alias and
+  preserve its behavior through formatting. Verify four more bundled examples
+  with fixed input, including the combination program that uses this alias.
+
 - Preserve finite large-angle conversions, report real squaring overflow at
   the call site, and match numeric-domain absence through nested calls and
   exponentiation argument evaluation.

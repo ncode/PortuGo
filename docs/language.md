@@ -156,7 +156,10 @@ remaining syntax-recovery behavior are still pending.
 
 ## Expressions
 
-Arithmetic operators are `+`, `-`, `*`, `/`, `\`, `%`, `MOD`, and `^`.
+Arithmetic operators are `+`, `-`, `*`, `/`, `\`, `DIV`, `%`, `MOD`, and `^`.
+The case-insensitive word `DIV` is an alias for `\`, with the same precedence,
+operand types, and evaluation order. Formatting emits `\`. The word is reserved:
+using `div` as a variable name receives `P001` on its declaration line.
 The `/` operator returns `real` for numeric operands. Other scalar pairs return
 the right operand unchanged: `"7" / 2` gives integer `2`, and `7 / "2"` gives
 text `"2"`. With two integer operands, `\` truncates

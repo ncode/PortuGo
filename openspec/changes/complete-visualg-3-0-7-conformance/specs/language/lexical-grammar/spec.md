@@ -48,6 +48,10 @@ The lexer SHALL recognize the complete VisuAlg 3.0.7 keyword and command vocabul
 - **WHEN** a word absent from the reference keyword vocabulary is used as an identifier
 - **THEN** it remains an identifier even if the current implementation previously treated it as reserved
 
+#### Scenario: Recognize the division word alias
+- **WHEN** a program uses `div` in any letter case
+- **THEN** it uses the `\` operator's precedence, operand types, and left-to-right evaluation, formats as `\`, and is rejected as a variable name with `P001` on its declaration line
+
 ### Requirement: Comments and literals
 The lexer SHALL accept only the reference-confirmed comment forms and string, integer, and real literal forms. It SHALL preserve literal source text and decoded value separately, apply the reference rules for escapes, delimiters, decimal syntax, and line termination, and emit positioned diagnostics for malformed or unterminated constructs.
 

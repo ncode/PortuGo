@@ -32,6 +32,13 @@ before the `fimrepita` text in one accepted probe; it does not establish that
 probe confirms a syntax rejection. The bundled prime-number program now passes
 with bare-output syntax, while the complete example sweep remains open.
 
+Four further observations verify case-insensitive `div` as the `\` alias,
+including operand types, precedence, left-to-right evaluation, and rejection
+as a variable name. Formatting emits `\`. An unfinished function-name recording
+remains inconclusive and is excluded from the corpus. Four more original bundled
+programs now match fixed-input output, including the combination program using
+`div`, two factorial programs, and the minimum-of-three program.
+
 Tasks 4.4 and 4.6 remain in progress because complete vocabulary and physical-line
 grammar obligations extend beyond these spellings. The evidence gate retains
-92 missing mappings: 31 requirements and 61 bundled examples.
+84 missing mappings: 27 requirements and 57 bundled examples.

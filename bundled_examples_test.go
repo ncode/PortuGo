@@ -19,6 +19,10 @@ func TestRecordedBundledExamples(t *testing.T) {
 		"bundled-08dbc8f0cc9e", // PRIMOS.ALG
 		"bundled-b8d8516450ea", // caracfun.alg
 		"bundled-183b40a8f657", // randomicos.alg
+		"bundled-0d33ed8315bc", // combin.alg
+		"bundled-c1a2be69b9ce", // fatorial.alg
+		"bundled-2ecb6b470914", // fatorial2.alg
+		"bundled-9ddfb3dd3ea1", // menorde3.alg
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)
@@ -30,7 +34,11 @@ func TestRecordedBundledExamples(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			checkFormattingPreservesExecution(t, src, want)
+			input, err := os.ReadFile(filepath.Join(dir, "input.txt"))
+			if err != nil && !os.IsNotExist(err) {
+				t.Fatal(err)
+			}
+			checkFormattingPreservesExecutionWithInput(t, src, input, want)
 		})
 	}
 }

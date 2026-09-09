@@ -140,13 +140,13 @@ type spelling.
 
 ### 6.3 Operators
 
-- Arithmetic: `+ - *`, `/` (numeric pairs return real; other scalar pairs return the right operand), `\` (integer pairs truncate; other scalar pairs return the right operand), `%` or `MOD` (recorded remainder rules in `docs/language.md`), `^` (numeric power, with recorded no-value and domain rules)
+- Arithmetic: `+ - *`, `/` (numeric pairs return real; other scalar pairs return the right operand), `\` or `DIV` (integer pairs truncate; other scalar pairs return the right operand), `%` or `MOD` (recorded remainder rules in `docs/language.md`), `^` (numeric power, with recorded no-value and domain rules)
 - Relational: `=`, `<>`, `<`, `>`, `<=`, `>=`
 - Logical: `e`, `ou`, `nao`, `xou`
 - String concat: `+` (when both operands are `caractere`)
 - Assignment: `<-`
 
-Precedence (high → low): unary `+ -`, left-associative `^`, `nao`, `* / \ % MOD`, `+ -`, relational, `e`, `xou`, `ou`. Recorded VisuAlg 3.0.7 probes pin `2^3^2 = 64` and `-2^2 = 4`; parentheses override those rules.
+Precedence (high → low): unary `+ -`, left-associative `^`, `nao`, `* / \ DIV % MOD`, `+ -`, relational, `e`, `xou`, `ou`. Recorded VisuAlg 3.0.7 probes pin `2^3^2 = 64` and `-2^2 = 4`; parentheses override those rules.
 
 ### 6.4 Control flow
 

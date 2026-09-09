@@ -80,6 +80,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 - [ ] 4.2 Preserve positioned physical newline and comment tokens through decoding and lexing with original-byte mapping; comments must not consume their terminating newline.
 - [ ] 4.3 Implement the oracle-recorded identifier character set, case-preserving token text, locale-independent canonical matching, and rejection of unsupported identifier forms.
 - [ ] 4.4 Replace the keyword table with the complete oracle-recorded command vocabulary, accented and unaccented spellings, aliases, and non-reserved lookalikes.
+
+  Four recorded `div` cases now verify the case-insensitive `\` alias, its
+  evaluation order, formatting, and rejection as a variable name. Complete
+  vocabulary qualification remains pending.
+
 - [ ] 4.5 Implement exact comment, string, integer, real, range-punctuation, delimiter, and malformed-literal rules with positioned recovery.
 
   Literal backslashes and backslash-quote rejection now match six recorded
@@ -324,6 +329,11 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 17.1 Add failing implementation-acceptance tests for pending behavior, mismatches, stale traces, unsupported examples, unpositioned errors, and missing quality results. Test release task-completion checks separately with synthetic complete/incomplete task lists so tests can pass before their own reporting/handoff tasks finish.
 - [ ] 17.2 Complete bidirectional trace links for every OpenSpec requirement, `[VERIFICAR]`, original checklist item, audited defect, discovered official feature, implementation test, and bundled example with no stale IDs.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
+
+  Four additional original examples (combination, two factorial programs, and
+  minimum of three) now match recorded fixed-input output before and after
+  formatting. Fifty-seven bundled examples still await recorded disposition.
+
 - [ ] 17.4 Exercise the assembled source/depth/call/value/step guards, including empty infinite loops, recursive calls, flat AST chains, input retries, and cleanup, plus storage/encoding/host/filesystem adversarial cases; require controlled diagnostics and fail on a subprocess watchdog kill or accepted-example budget exhaustion.
 - [ ] 17.5 Run and archive results for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, race tests, Windows/macOS/Linux tests, and 30-second lexer and parser fuzz jobs.
 - [ ] 17.6 Run strict OpenSpec validation and the corpus runner in implementation-acceptance mode; produce a report proving no pending behavior, mismatches, or untraced requirements, stable positioned diagnostics, and complete accepted-example support. Report remaining handoff tasks separately from behavioral acceptance.
