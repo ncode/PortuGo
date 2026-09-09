@@ -96,6 +96,35 @@ func TestCommentLinePositions(t *testing.T) {
 	}
 }
 
+func TestRecordedKeywordSpellings(t *testing.T) {
+	for _, tt := range []struct {
+		text string
+		kind token.Kind
+	}{
+		{"caracter", token.CARACTERE},
+		{"caracter_extra", token.IDENT},
+		{"função", token.FUNCAO},
+		{"então", token.ENTAO},
+		{"senão", token.SENAO},
+		{"faça", token.FACA},
+		{"até", token.ATE},
+		{"não", token.NAO},
+		{"lógico", token.IDENT},
+		{"início", token.IDENT},
+		{"até_que", token.IDENT},
+	} {
+		for _, spelling := range []string{tt.text, strings.ToUpper(tt.text)} {
+			file, tokens, ds := Scan("keywords.alg", "  "+spelling)
+			if len(ds) != 0 || len(tokens) != 2 || tokens[0].Kind != tt.kind || tokens[0].Text != spelling {
+				t.Fatalf("%q: tokens = %v, diagnostics = %v", spelling, tokens, ds)
+			}
+			if pos := file.Position(tokens[0].Pos); pos.Line != 1 || pos.Column != 3 {
+				t.Fatalf("%q: position = %v, want 1:3", spelling, pos)
+			}
+		}
+	}
+}
+
 func TestFuzzAdversarial(t *testing.T) {
 	for _, tt := range []struct{ name, src string }{
 		{"long comment", "//" + strings.Repeat("x", testprocess.MaxSourceBytes-2)},

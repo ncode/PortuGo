@@ -213,7 +213,8 @@
         "bundled-6f7f325a3d14",
         "bundled-c9455d0abe8e",
         "bundled-a3ab1c0f85e6",
-        "bundled-8576df453f1f"
+        "bundled-8576df453f1f",
+        "bundled-08dbc8f0cc9e"
       ]
     },
     {
@@ -337,7 +338,20 @@
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Complete keyword vocabulary",
       "probes": [
-        "accented-keywords"
+        "accented-keywords",
+        "string-type-caracter",
+        "string-type-parameter-caracter",
+        "logical-type-accented",
+        "keyword-entao-accented",
+        "keyword-senao-accented",
+        "keyword-nao-accented",
+        "keyword-ate-accented",
+        "keyword-faca-accented",
+        "keyword-funcao-accented",
+        "alias-caracter-variable",
+        "alias-caracter-callable",
+        "alias-caracter-lookalike",
+        "legacy-type-variable"
       ]
     },
     {
@@ -411,7 +425,12 @@
         "expression-next-line",
         "post-terminator-words",
         "post-terminator-statement",
-        "post-terminator-broken-string"
+        "post-terminator-broken-string",
+        "repeat-fimrepita",
+        "repeat-ate-que",
+        "repeat-ate-que-accented",
+        "choice-faca",
+        "choice-faca-accented"
       ]
     },
     {
@@ -16952,6 +16971,877 @@
           "internal/runtime/vector_test.go#TestVectorCellOffsets",
           "internal/interp/storage_test.go#TestCorruptedVectorStorage"
         ]
+      }
+    },
+    {
+      "id": "string-type-caracter",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-type-caracter/source.alg",
+        "sha256": "43f83eaa667b7a35e9994102c2292357c5f1b04e76a98113f804a4885054d0ff"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T13:48:59.6121251Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-type-caracter/raw.txt",
+          "sha256": "ebdf1e4300268f55e81f8fc0e1cd740d31ed419a0a20fae6d2763ccfd28cffbf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-type-caracter/stdout.txt",
+          "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-type-caracter/stdout.txt",
+            "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+          }
+        },
+        "tests": [
+          "keyword_reference_test.go#TestRecordedKeywordPrograms",
+          "internal/lexer/lexer_test.go#TestRecordedKeywordSpellings"
+        ]
+      }
+    },
+    {
+      "id": "string-type-parameter-caracter",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-type-parameter-caracter/source.alg",
+        "sha256": "61143d9eee39454cdd9e1e87ca561a19dba2986fb5f2b4b3b72586d4e62353a6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T13:49:08.8812960Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-type-parameter-caracter/raw.txt",
+          "sha256": "ebdf1e4300268f55e81f8fc0e1cd740d31ed419a0a20fae6d2763ccfd28cffbf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-type-parameter-caracter/stdout.txt",
+          "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-type-parameter-caracter/stdout.txt",
+            "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+          }
+        },
+        "tests": [
+          "keyword_reference_test.go#TestRecordedKeywordPrograms",
+          "internal/lexer/lexer_test.go#TestRecordedKeywordSpellings"
+        ]
+      }
+    },
+    {
+      "id": "logical-type-accented",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-type-accented/source.alg",
+        "sha256": "f8f9da17fc591f509b3395cb675c5629cc070dbb34518e15cc41b042a05b781c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T13:49:18.0281298Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-type-accented/transcription.txt",
+          "sha256": "5f6094360be51b731aabde9078852fc1478cbb6ec647302d2c65831ac0510e0e"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-type-accented/transcription.txt",
+          "sha256": "5f6094360be51b731aabde9078852fc1478cbb6ec647302d2c65831ac0510e0e"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-type-accented/screenshot.png",
+          "sha256": "7dc788131a94ebe3d48a29a8bf10a43b6fb7269d9ea75dfafdfd5068a6286ad0"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-type-accented/transcription.txt",
+          "sha256": "5f6094360be51b731aabde9078852fc1478cbb6ec647302d2c65831ac0510e0e"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "frontend_reference_test.go#TestRecordedFrontendRejections",
+          "internal/lexer/lexer_test.go#TestRecordedKeywordSpellings"
+        ]
+      }
+    },
+    {
+      "id": "keyword-entao-accented",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/keyword-entao-accented/source.alg",
+        "sha256": "2586334a6ebfeb59a2400de2848342d1d84763eb9b7e86951ed415ec3ffe14fe"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T13:49:27.2763748Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/keyword-entao-accented/raw.txt",
+          "sha256": "ebdf1e4300268f55e81f8fc0e1cd740d31ed419a0a20fae6d2763ccfd28cffbf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/keyword-entao-accented/stdout.txt",
+          "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/keyword-entao-accented/stdout.txt",
+            "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+          }
+        },
+        "tests": [
+          "keyword_reference_test.go#TestRecordedKeywordPrograms",
+          "internal/lexer/lexer_test.go#TestRecordedKeywordSpellings"
+        ]
+      }
+    },
+    {
+      "id": "keyword-senao-accented",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/keyword-senao-accented/source.alg",
+        "sha256": "60783669758cf5d4133ed03087da400ce7eb3778854b0924be834ea188d942db"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T13:49:36.4711373Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/keyword-senao-accented/raw.txt",
+          "sha256": "ebdf1e4300268f55e81f8fc0e1cd740d31ed419a0a20fae6d2763ccfd28cffbf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/keyword-senao-accented/stdout.txt",
+          "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/keyword-senao-accented/stdout.txt",
+            "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+          }
+        },
+        "tests": [
+          "keyword_reference_test.go#TestRecordedKeywordPrograms",
+          "internal/lexer/lexer_test.go#TestRecordedKeywordSpellings"
+        ]
+      }
+    },
+    {
+      "id": "keyword-nao-accented",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/keyword-nao-accented/source.alg",
+        "sha256": "93c0b06efa6851f978c2a58dfff85e43977063a8c0a9627663aaae8d3d5dde4c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T13:49:45.6045624Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/keyword-nao-accented/raw.txt",
+          "sha256": "f01fd89b93f56ce6101252de33a82f077fd488885a3bd3c746864fe85837db48"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/keyword-nao-accented/stdout.txt",
+          "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/keyword-nao-accented/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          }
+        },
+        "tests": [
+          "keyword_reference_test.go#TestRecordedKeywordPrograms",
+          "internal/lexer/lexer_test.go#TestRecordedKeywordSpellings"
+        ]
+      }
+    },
+    {
+      "id": "keyword-ate-accented",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/keyword-ate-accented/source.alg",
+        "sha256": "3f54eab503751dbe700652ebdc4372dfd1f73bf8b3d3517228e9ad8b69000f55"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T13:49:54.7807941Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/keyword-ate-accented/raw.txt",
+          "sha256": "8a2b04719b382de8907be158ac4c5fb22f0497104839b17dc7272ccd9231192a"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/keyword-ate-accented/stdout.txt",
+          "sha256": "0083d969bf9bbbff054cd18b5d5dd146ba4864d60d93903b491817177c4eb35e"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/keyword-ate-accented/stdout.txt",
+            "sha256": "0083d969bf9bbbff054cd18b5d5dd146ba4864d60d93903b491817177c4eb35e"
+          }
+        },
+        "tests": [
+          "keyword_reference_test.go#TestRecordedKeywordPrograms",
+          "internal/lexer/lexer_test.go#TestRecordedKeywordSpellings"
+        ]
+      }
+    },
+    {
+      "id": "keyword-faca-accented",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/keyword-faca-accented/source.alg",
+        "sha256": "b96b93fbde37303ce05be7c09cb2e0fe781512e158e0d4cc129a4894bf4dc0d8"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T13:50:03.9617546Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/keyword-faca-accented/raw.txt",
+          "sha256": "ebdf1e4300268f55e81f8fc0e1cd740d31ed419a0a20fae6d2763ccfd28cffbf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/keyword-faca-accented/stdout.txt",
+          "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/keyword-faca-accented/stdout.txt",
+            "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+          }
+        },
+        "tests": [
+          "keyword_reference_test.go#TestRecordedKeywordPrograms",
+          "internal/lexer/lexer_test.go#TestRecordedKeywordSpellings"
+        ]
+      }
+    },
+    {
+      "id": "keyword-funcao-accented",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/keyword-funcao-accented/source.alg",
+        "sha256": "ca7fdeda7d10515d780dd398f33b83433bbc925cbd429ac80fa614f605281eaf"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T13:50:13.1879638Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/keyword-funcao-accented/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/keyword-funcao-accented/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/keyword-funcao-accented/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "keyword_reference_test.go#TestRecordedKeywordPrograms",
+          "internal/lexer/lexer_test.go#TestRecordedKeywordSpellings"
+        ]
+      }
+    },
+    {
+      "id": "repeat-fimrepita",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/repeat-fimrepita/source.alg",
+        "sha256": "79aa9ada48059bf83f2e7e3eaa54cc0c0ed719908b80811e48101aec15de4b5c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T13:50:22.2834964Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/repeat-fimrepita/raw.txt",
+          "sha256": "2378553e0824bc90ef8b6fd18a8a1399082ae697b6175323a8b5e3daeacc83c0"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/repeat-fimrepita/stdout.txt",
+          "sha256": "bac2589259cea9f078c0733f698046d4bc495daae234e0c4b80719247d9fe00f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/repeat-fimrepita/stdout.txt",
+            "sha256": "bac2589259cea9f078c0733f698046d4bc495daae234e0c4b80719247d9fe00f"
+          }
+        }
+      }
+    },
+    {
+      "id": "repeat-ate-que",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/repeat-ate-que/source.alg",
+        "sha256": "3892560d3319fe55d4f8f3de52ac575a78b688484d81d1260596f8f4f863fc16"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T13:50:31.4969719Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/repeat-ate-que/transcription.txt",
+          "sha256": "294c544d801a79a5afad21b2fc26d35171ea60293f11d08e6a1a862a6601a6ad"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/repeat-ate-que/transcription.txt",
+          "sha256": "294c544d801a79a5afad21b2fc26d35171ea60293f11d08e6a1a862a6601a6ad"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/repeat-ate-que/screenshot.png",
+          "sha256": "b8b3bfa6edd8f77f72e91b4af0056f37a90afe16941cd094ec222f5aa7d9d8fe"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/repeat-ate-que/transcription.txt",
+          "sha256": "294c544d801a79a5afad21b2fc26d35171ea60293f11d08e6a1a862a6601a6ad"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E002",
+              "line": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "repeat-ate-que-accented",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/repeat-ate-que-accented/source.alg",
+        "sha256": "98b53fdcbddaea194ec1707dd18a31344aea618c20f5b5f1a95b587c1bdd5ba6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T13:50:40.7665216Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/repeat-ate-que-accented/transcription.txt",
+          "sha256": "b440518f128131eb97d693b7690ae104d6b26c98b6f62ebf58d7f4b93b6e0936"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/repeat-ate-que-accented/transcription.txt",
+          "sha256": "b440518f128131eb97d693b7690ae104d6b26c98b6f62ebf58d7f4b93b6e0936"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/repeat-ate-que-accented/screenshot.png",
+          "sha256": "3655cbf5e95807f9ea97c9eb0ae7f0a9be3f0eb544949981919a9be20b507e4b"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/repeat-ate-que-accented/transcription.txt",
+          "sha256": "b440518f128131eb97d693b7690ae104d6b26c98b6f62ebf58d7f4b93b6e0936"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E002",
+              "line": 5
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "choice-faca",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/choice-faca/source.alg",
+        "sha256": "45ebc134a4d01ab8d4cbf223a315f4f8abd4f6b5e5c56397819227acd3115cbf"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T13:50:49.9139272Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/choice-faca/raw.txt",
+          "sha256": "ebdf1e4300268f55e81f8fc0e1cd740d31ed419a0a20fae6d2763ccfd28cffbf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/choice-faca/stdout.txt",
+          "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/choice-faca/stdout.txt",
+            "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+          }
+        }
+      }
+    },
+    {
+      "id": "choice-faca-accented",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/choice-faca-accented/source.alg",
+        "sha256": "ecda5ab9ccf6cdfa65a3b01ae717e6f7f4e36958cfbe8e9e7a8cac4b55738330"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T13:50:59.0628412Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/choice-faca-accented/raw.txt",
+          "sha256": "ebdf1e4300268f55e81f8fc0e1cd740d31ed419a0a20fae6d2763ccfd28cffbf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/choice-faca-accented/stdout.txt",
+          "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/choice-faca-accented/stdout.txt",
+            "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
+          }
+        }
+      }
+    },
+    {
+      "id": "alias-caracter-variable",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4",
+        "4.8"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-variable/source.alg",
+        "sha256": "6d1a7bdd68b3f7c58daa195927924aa00171d0832544a3db9b9ad7858ba80da9"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T14:18:23.2874271Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-variable/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-variable/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-variable/screenshot.png",
+          "sha256": "24f8a70d00f012e2bfbfd45c1fc952f5f3a23b382ef20678f2e9bb50f5dbf943"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-variable/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "alias-caracter-callable",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4",
+        "4.8"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-callable/source.alg",
+        "sha256": "27e7edd2fc44dc45d40bd96a7019c5586893ad36bcc9ebffe57eb36b488cb02a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T14:18:32.5934286Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-callable/transcription.txt",
+          "sha256": "d7b6f25aeef7bd311e399db158f746575b3f5a7c7ab5c561a0863bebb1bea6b7"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-callable/transcription.txt",
+          "sha256": "d7b6f25aeef7bd311e399db158f746575b3f5a7c7ab5c561a0863bebb1bea6b7"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-callable/screenshot.png",
+          "sha256": "69f0cf3ef4b3563d32f755cac58c6340a0236908f4a8199e7d8d23d9484ca7ad"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-callable/transcription.txt",
+          "sha256": "d7b6f25aeef7bd311e399db158f746575b3f5a7c7ab5c561a0863bebb1bea6b7"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 2
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "alias-caracter-lookalike",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-lookalike/source.alg",
+        "sha256": "6d42f35da1963a56255abbcf0e423467d454709cce99e031b5dd1ed4ebb04a1b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T14:18:41.8178037Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-lookalike/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-lookalike/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/alias-caracter-lookalike/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "keyword_reference_test.go#TestRecordedKeywordPrograms",
+          "internal/lexer/lexer_test.go#TestRecordedKeywordSpellings"
+        ]
+      }
+    },
+    {
+      "id": "legacy-type-variable",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.12",
+        "4.4",
+        "4.8"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/legacy-type-variable/source.alg",
+        "sha256": "742a372bf831be60fcc1d24669f28fde269bd2f8fa2a029dae9a6af955e451bd"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T14:18:50.9940393Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/legacy-type-variable/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/legacy-type-variable/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/legacy-type-variable/screenshot.png",
+          "sha256": "ff9674d7748eef034f1b970faee5fa345e389feeb6127f1570c5d965de0f7553"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/legacy-type-variable/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        }
       }
     }
   ]

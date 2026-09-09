@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Accept the recorded `caracter` type alias and accented `função`, `então`,
+  `senão`, `faça`, `até`, and `não` keywords. Preserve token spelling/positions
+  and normalize parsed scalar types for declarations, parameters, and returns.
+  Add nineteen reference observations, verify ten keyword cases, and retain
+  the remaining grammar and bundled-program gaps.
 - Record eleven hash-verified bundled examples: eight accepted by the reference
   and three rejected as supplied. Add byte-exact original/formatted regressions
   for six matching programs. Validate catalog IDs, source hashes and sizes,

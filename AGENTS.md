@@ -127,11 +127,16 @@ fimalgoritmo
 |--------------|-------------------|
 | `inteiro`    | `int64`           |
 | `real`       | `float64`         |
-| `caractere`  | `string`          |
+| `caractere` / `caracter` | `string` |
 | `logico`     | `bool`            |
 | `vetor[a..b] de T` | slice with index offset; bounds checked |
 
 Booleans literals: `verdadeiro`, `falso`. String literals use `"..."`. No char type.
+
+Recorded keyword aliases include `função`, `então`, `senão`, `faça`, `até`, and
+`não`, in any letter case. Canonical output uses unaccented keywords and
+`caractere`. Do not remove accents indiscriminately: `lógico` is not an accepted
+type spelling.
 
 ### 6.3 Operators
 

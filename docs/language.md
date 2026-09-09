@@ -43,11 +43,21 @@ that suffix; preserving its text remains pending.
 
 - `inteiro`: signed integer
 - `real`: floating point number
-- `caractere`: string
+- `caractere` or `caracter`: string
 - `logico`: boolean
 - `vetor[a..b] de T`: one or two declared dimensions with checked indexing
 
 Variables are initialized to the zero value of their type.
+
+Recorded keyword aliases are `função` (`funcao`), `então` (`entao`), `senão`
+(`senao`), `faça` (`faca`), `até` (`ate`), and `não` (`nao`). Recognition ignores
+case and retains token spelling and positions. Formatting emits unaccented
+keywords and the canonical type name `caractere`, including parameters and
+function results. See the [keyword example](../examples/keyword_aliases.alg).
+
+These are specific accepted spellings. The recorded type spelling `lógico` is
+rejected with `P001` on its declaration line. Further vocabulary and physical-line
+grammar work remains pending; see the [keyword observations](keyword-forms-progress.md).
 
 Recorded identifiers accept leading and internal underscores. Identifier
 matching ignores case: a declaration named `SoMa` can be assigned through `soma`

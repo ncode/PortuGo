@@ -2,7 +2,6 @@ package parser
 
 import (
 	"strconv"
-	"strings"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
@@ -80,7 +79,7 @@ func (p *parser) parseType() ast.TypeSpec {
 	switch tok.Kind {
 	case token.INTEIRO, token.REAL, token.CARACTERE, token.LOGICO:
 		p.advance()
-		return ast.TypeSpec{At: tok.Pos, Name: strings.ToLower(tok.Text)}
+		return ast.TypeSpec{At: tok.Pos, Name: tok.Kind.String()}
 	case token.VETOR:
 		p.advance()
 		p.expect(token.LBRACK, "expected '[' after vetor")

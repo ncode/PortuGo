@@ -1,0 +1,4 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 2
+Message: Nome inválido para procedimento ou função: 'CARACTER'.
+Column: not established.

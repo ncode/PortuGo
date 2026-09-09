@@ -41,6 +41,7 @@ func TestRecordedFrontendRejections(t *testing.T) {
 		{"unterminated-string", diag.ELexer},
 		{"single-slash-inline", diag.EParse},
 		{"single-star-inline", diag.EParse},
+		{"logical-type-accented", diag.EParse},
 	} {
 		t.Run(tt.id, func(t *testing.T) {
 			path := filepath.Join("testdata/conformance/visualg-3.0.7/probes", tt.id, "source.alg")

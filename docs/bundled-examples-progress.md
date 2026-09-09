@@ -33,7 +33,12 @@ execute a prefix before discovering malformed syntax; retained partial panel
 output documents that behavior. CLI compile-time rejection remains a preflight
 check that does not execute an invalid program.
 
-The catalog currently has eight accepted examples, three unusable examples,
-and 62 awaiting committed classifications. Incomplete captures are excluded.
+The keyword follow-up adds a completed `PRIMOS.ALG` recording with a longer,
+bounded observation window. Its original source hash matches the release
+catalog. Execution remains pending in the CLI because the example also uses
+bare `escreval`; the keyword aliases alone do not complete its grammar support.
+
+The catalog currently has nine accepted examples, three unusable examples,
+and 61 awaiting committed classifications. Incomplete captures are excluded.
 This slice does not close the full
 example sweep, evidence inventory, or conformance release gate.
