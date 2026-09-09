@@ -42,3 +42,11 @@ the outstanding inventory mappings; group 2 remains in progress. All 18 currentl
 registered probes have evidence; additional required probes still need to be
 prepared and recorded. Inventory validation discovers the entire change's spec
 tree independently of the manifest's source list.
+
+Five additional [project tooling entries](conformance-project-evidence.md) link
+existing provenance, recording, normalization, traceability, and phase-validation
+tests with explicit reference non-applicability reasons. Existing recorded
+observations also now trace reference authority and feature dispositions. These
+close seven missing requirement mappings without adding language observations
+or relaxing the evidence gate. The remaining missing mappings cover 56
+requirements and all 73 bundled examples.

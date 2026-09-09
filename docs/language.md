@@ -137,6 +137,9 @@ Retirement records remain in later manifests; retired IDs cannot be reused.
 Recording verifies input-only file hashes before accepting a capture.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.
+The [project tooling evidence](conformance-project-evidence.md) separately traces
+provenance, recording, normalization, and validation tests. Those mappings do not
+substitute for language recordings or establish complete reference conformance.
 
 Runtime fixture output is compared byte for byte, including decimal separators,
 whitespace, and newlines. Git preserves committed fixture bytes on every

@@ -140,43 +140,62 @@
       "id": "requirement.reference-release-authority",
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference release authority",
-      "probes": []
+      "probes": [
+        "power-associativity",
+        "exp-two"
+      ]
     },
     {
       "id": "requirement.reference-provenance-manifest",
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference provenance manifest",
-      "probes": []
+      "probes": [
+        "project.provenance"
+      ]
     },
     {
       "id": "requirement.interactive-oracle-recording",
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Interactive oracle recording",
-      "probes": []
+      "probes": [
+        "project.recording"
+      ]
     },
     {
       "id": "requirement.complete-oracle-evidence",
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Complete oracle evidence",
-      "probes": []
+      "probes": [
+        "project.recording",
+        "project.normalization"
+      ]
     },
     {
       "id": "requirement.requirement-traceability",
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Requirement traceability",
-      "probes": []
+      "probes": [
+        "project.traceability"
+      ]
     },
     {
       "id": "requirement.progressive-conformance-gates",
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Progressive conformance gates",
-      "probes": []
+      "probes": [
+        "project.validation-phases"
+      ]
     },
     {
       "id": "requirement.recorded-feature-dispositions",
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Recorded feature dispositions",
-      "probes": []
+      "probes": [
+        "constant-declaration",
+        "constant-var",
+        "named-type",
+        "record-field"
+      ]
     },
     {
       "id": "requirement.bundled-example-acceptance",
@@ -1042,6 +1061,111 @@
     }
   ],
   "probes": [
+    {
+      "id": "project.provenance",
+      "ownerGroup": 2,
+      "tasks": ["2.1", "2.5"],
+      "timeoutMS": 1000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "Provenance, containment, and prohibited-artifact validation are project tooling, exercised with synthetic manifests rather than reference programs.",
+          "link": "docs/conformance-project-evidence.md#Provenance validation"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "scripts/conformance/manifest_test.go#TestManifestValidation",
+          "scripts/conformance/manifest_test.go#TestManifestRejectsSymlink",
+          "scripts/conformance/main_test.go#TestLoadRejectsUnknownFieldsAndTrailingJSON"
+        ]
+      }
+    },
+    {
+      "id": "project.recording",
+      "ownerGroup": 2,
+      "tasks": ["2.7"],
+      "timeoutMS": 1000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "Staging and capture integrity are properties of the recording tools. Their tests do not substitute for required language recordings.",
+          "link": "docs/conformance-project-evidence.md#Recording and normalization"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "scripts/conformance/record_test.go#TestPrepareRecording",
+          "scripts/conformance/record_test.go#TestCaptureRecording",
+          "scripts/conformance/record_test.go#TestCaptureGeneratedBytes",
+          "scripts/conformance/record_test.go#TestCaptureInitialFiles"
+        ]
+      }
+    },
+    {
+      "id": "project.normalization",
+      "ownerGroup": 2,
+      "tasks": ["2.4"],
+      "timeoutMS": 1000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "Normalization is a project-defined byte transformation tested with fixed inputs; it does not assert new language behavior.",
+          "link": "docs/conformance-project-evidence.md#Recording and normalization"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": ["scripts/conformance/normalize_test.go#TestNormalize"]
+      }
+    },
+    {
+      "id": "project.traceability",
+      "ownerGroup": 2,
+      "tasks": ["2.1", "2.5"],
+      "timeoutMS": 1000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "Trace-link and history enforcement are project validation rules tested with synthetic inventories and Git history. Inventory completeness remains a separate obligation.",
+          "link": "docs/conformance-project-evidence.md#Traceability and phase validation"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "scripts/conformance/manifest_test.go#TestManifestValidation",
+          "scripts/conformance/manifest_test.go#TestManifestPreservesVerifiedHistory",
+          "scripts/conformance/manifest_test.go#TestManifestPreservesRetiredHistory",
+          "scripts/conformance/manifest_test.go#TestManifestRetirementIDs",
+          "scripts/conformance/main_test.go#TestCommandHistoryValidation"
+        ]
+      }
+    },
+    {
+      "id": "project.validation-phases",
+      "ownerGroup": 2,
+      "tasks": ["2.5", "2.6"],
+      "timeoutMS": 1000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "Phase readiness and regression enforcement are project policies. Synthetic pending and verified cases test the rules without inventing reference observations.",
+          "link": "docs/conformance-project-evidence.md#Traceability and phase validation"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "scripts/conformance/manifest_test.go#TestManifestValidation",
+          "scripts/conformance/manifest_test.go#TestManifestReferenceDisposition",
+          "scripts/conformance/replay_test.go#TestReplay",
+          "scripts/conformance/replay_test.go#TestReplaySummary"
+        ]
+      }
+    },
     {
       "id": "output-format",
       "ownerGroup": 10,

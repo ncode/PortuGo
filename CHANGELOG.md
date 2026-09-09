@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Linked existing corpus-tooling tests and recorded feature dispositions to their
+  specification requirements, with reviewed reasons for project-only evidence.
+  Language recordings, bundled examples, and full acceptance remain incomplete.
 - Preserve conformance history for pending probes, inventory entries, linked
   tasks, and prior retirements. Removed IDs require reviewed dispositions;
   replacements may identify an active probe, inventory entry, or task.
