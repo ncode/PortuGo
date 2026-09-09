@@ -15,9 +15,9 @@ verified. The reference accepts vectors larger than 500 elements; the draft
 500-slot compatibility restriction has therefore been withdrawn. The recordings
 do not establish the upper storage limit in every declaration context.
 
-The [bundled example sweep](bundled-examples-progress.md) verifies 28 original
-programs against reference output, including formatting and execution. Other
-accepted examples still expose missing features, and seven supplied files have
+The [bundled example sweep](bundled-examples-progress.md) verifies 29 original
+programs against reference output, including formatting and execution. One
+accepted example still exposes missing syntax, and seven supplied files have
 recorded reference errors. Bundled-file presence alone does not establish that
 its syntax is accepted by this release.
 
@@ -48,6 +48,14 @@ The `var` block may be omitted or left empty. Top-level `procedimento` and
 `funcao` declarations must appear before `inicio`. Recorded words and statements
 after `fimalgoritmo` are ignored during execution. Formatting currently discards
 that suffix; preserving its text remains pending.
+
+An optional `;` may end a `var` line or a scalar/vector declaration, including
+local declarations and an empty `var` block. It must be on that physical line
+and followed only by whitespace or a comment. Repeated semicolons, another
+declaration after `;`, or a semicolon on its own line receive `P001` on that line.
+Adjacent declarations without a separator remain accepted. Formatting emits
+one declaration per line and omits the optional semicolon; see the
+[declaration example](../examples/declaration_semicolons.alg).
 
 ## Types
 

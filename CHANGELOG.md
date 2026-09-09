@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Accept one optional semicolon at the end of a `var` or variable-declaration
+  line, including local and vector declarations. Reject repeated or misplaced
+  semicolons with a positioned diagnostic and verify the bundled mean example.
+
 - Accept case-insensitive `fimfunção` as a function terminator, reserve it as
   a variable name, and format it as `fimfuncao`. Verify the original bundled
   string-processing example that uses the accented ending.

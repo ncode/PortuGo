@@ -83,6 +83,10 @@ The parser SHALL recognize the oracle-confirmed VisuAlg 3.0.7 program header, de
 - **WHEN** a program uses only reference-confirmed header, declaration, body, and termination forms
 - **THEN** parsing returns a positioned syntax tree and no syntax diagnostics
 
+#### Scenario: End a declaration line with a semicolon
+- **WHEN** a `var` line or a scalar/vector declaration has one trailing semicolon followed only by whitespace or a comment
+- **THEN** it is accepted and formats without the semicolon, while repeated semicolons, another declaration after it, or a semicolon on its own line receive `P001` on that line
+
 #### Scenario: Detect text after program termination
 - **WHEN** non-comment, non-whitespace source appears after `fimalgoritmo`
 - **THEN** the parser accepts or diagnoses it exactly as established by the post-termination oracle probes

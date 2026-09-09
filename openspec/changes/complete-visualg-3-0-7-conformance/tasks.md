@@ -101,6 +101,12 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   output and numeric-to-text conversion share the recorded 15-digit profile.
   Division/remainder rules and narrowing-assignment diagnostic timing remain pending.
 - [ ] 4.6 Make parser production boundaries newline-aware and enforce the reference program header, declaration region, body, terminators, and post-`fimalgoritmo` behavior.
+
+  Thirteen declaration observations now verify one optional semicolon at a
+  physical line's end, including local, vector, and empty declarations, while
+  rejecting repeated or misplaced delimiters. The original bundled mean
+  example matches its recording; other physical-line rules remain pending.
+
 - [ ] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
 - [ ] 4.8 Add structural and newline synchronization that collects independent parser diagnostics without panics, duplicate errors, or infinite loops.
 - [x] 4.9 Enforce source-size and syntax/AST-traversal limits from design decision 10 across source loading, parsing, analysis, and printing, reserving `E900`; cover flat expression chains and exact boundary/one-beyond cases before recursion or allocation.
@@ -333,8 +339,8 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 17.2 Complete bidirectional trace links for every OpenSpec requirement, `[VERIFICAR]`, original checklist item, audited defect, discovered official feature, implementation test, and bundled example with no stale IDs.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
-  Twenty-eight original examples now match recorded output before and after
-  formatting. Two accepted programs still expose grammar gaps, and four
+  Twenty-nine original examples now match recorded output before and after
+  formatting. One accepted program still exposes a grammar gap, and four
   rejected programs retain diagnostic or execution-phase differences. Thirty-six
   bundled examples still await recorded disposition.
 

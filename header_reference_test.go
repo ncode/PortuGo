@@ -12,7 +12,13 @@ import (
 )
 
 func TestRecordedProgramHeaders(t *testing.T) {
-	for _, id := range []string{"header-extra-word", "header-extra-string", "header-extra-broken-string"} {
+	for _, id := range []string{
+		"header-extra-word", "header-extra-string", "header-extra-broken-string",
+		"declaration-semicolon-scalar", "declaration-semicolon-real",
+		"declaration-semicolon-vector", "declaration-semicolon-local",
+		"declaration-semicolon-var", "declaration-without-separator",
+		"declaration-semicolon-empty-var", "declaration-semicolon-comment",
+	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)
 			src, err := source.ReadFile(filepath.Join(dir, "source.alg"))
@@ -43,6 +49,11 @@ func TestRecordedHeaderRejections(t *testing.T) {
 		{"legacy-type-variable", 3},
 		{"division-alias-identifier", 3},
 		{"function-ending-variable", 3},
+		{"declaration-semicolon-repeated", 3},
+		{"declaration-semicolon-same-line", 3},
+		{"declaration-semicolon-next-line", 4},
+		{"declaration-semicolon-var-same-line", 2},
+		{"declaration-semicolon-var-repeated", 2},
 		{"bundled-ce6fa8f9a2a3", 13}, // estcivil.alg
 		{"bundled-b3549ab1faa5", 1},  // Calculo_media2.alg
 		{"bundled-50f837d55875", 1},  // Calculo_media2.alg.ALG

@@ -9,18 +9,18 @@ The evidence gate checks catalog IDs, source hashes and sizes, classifications,
 recorded acceptance, and reviewed exclusion reasons. Pending entries still fail
 the missing-evidence gate; classifications do not grant them an exemption.
 
-Thirty programs complete successfully in the reference. Twenty-eight match the
+Thirty programs complete successfully in the reference. Twenty-nine match the
 CLI byte for byte and have permanent tests for original and formatted execution.
 The fixed-input cases cover combinations, factorials, minimum selection, means,
 prime decomposition, base conversion, vector sorting, remainders, reversed text,
 perfect numbers, square-root approximation, and text choices. Each input is
 retained alongside the original source and recorded output.
 
-The original `ENCRYPT.ALG` program now matches its fixed-input recording with
-the accented `fimfunção` terminator. The accepted `escolha.alg` and `mediaar.alg`
-programs still expose missing inclusive `ate` case ranges and a trailing
-declaration semicolon, respectively. Their recorded outputs remain pending
-implementation. A bundled-file classification does not claim CLI support.
+The original `ENCRYPT.ALG` and `mediaar.alg` programs now match their fixed-input
+recordings with the accented `fimfunção` terminator and trailing declaration
+semicolon. The accepted `escolha.alg` program still exposes missing inclusive
+`ate` case ranges. Its recorded output remains pending implementation. A
+bundled-file classification does not claim CLI support.
 
 The `randomicos.alg` example produces no output; its recording establishes
 successful execution, not an exact random sequence or a complete randomness

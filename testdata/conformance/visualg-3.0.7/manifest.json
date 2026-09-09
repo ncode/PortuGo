@@ -550,7 +550,20 @@
         "repeat-fimrepita-reached",
         "write-parentheses-next-line",
         "write-bare-comment",
-        "choice-faca-next-line"
+        "choice-faca-next-line",
+        "declaration-semicolon-scalar",
+        "declaration-semicolon-real",
+        "declaration-semicolon-repeated",
+        "declaration-semicolon-same-line",
+        "declaration-semicolon-vector",
+        "declaration-semicolon-local",
+        "declaration-semicolon-var",
+        "declaration-semicolon-next-line",
+        "declaration-without-separator",
+        "declaration-semicolon-var-same-line",
+        "declaration-semicolon-var-repeated",
+        "declaration-semicolon-empty-var",
+        "declaration-semicolon-comment"
       ]
     },
     {
@@ -8630,14 +8643,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-ef0a1355d503/stdout.txt",
             "sha256": "15bc6360d04c0c1ca4c0bbe9622302345974ade69d615b039542c6446196f6d8"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -35010,6 +35026,640 @@
         },
         "tests": [
           "header_reference_test.go#TestRecordedHeaderRejections"
+        ]
+      }
+    },
+    {
+      "id": "declaration-semicolon-scalar",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-scalar/source.alg",
+        "sha256": "b368e2be7cde2826a582c4302db1af39a9f7f93a79ebe34bec404c9c49e6f98f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T20:08:19.0027488Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-scalar/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-scalar/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-scalar/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedProgramHeaders"
+        ]
+      }
+    },
+    {
+      "id": "declaration-semicolon-real",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-real/source.alg",
+        "sha256": "ea2142babe4bc025041274b6fd361133547901d434485f5ce55eda23c8650019"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T20:08:29.2794672Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-real/raw.txt",
+          "sha256": "3b2fce068f82f395149da792c9da7781c804d8767376320384a5d82c9c50a8aa"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-real/stdout.txt",
+          "sha256": "aed3704a2688a4b1404f79920c3b5792bf34df48b96991c06e03130c4c49a155"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-real/stdout.txt",
+            "sha256": "aed3704a2688a4b1404f79920c3b5792bf34df48b96991c06e03130c4c49a155"
+          }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedProgramHeaders"
+        ]
+      }
+    },
+    {
+      "id": "declaration-semicolon-repeated",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-repeated/source.alg",
+        "sha256": "a7ebe2bebf3180e334518fd59dc2eb7d2857176c9fbc27d67ca9b85b08edef6a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T20:08:39.5284364Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-repeated/transcription.txt",
+          "sha256": "9bb4c9b74b298bfbab7b8579156e9bb546fc77b43292a942cc0fcf6ebd34e65f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-repeated/transcription.txt",
+          "sha256": "9bb4c9b74b298bfbab7b8579156e9bb546fc77b43292a942cc0fcf6ebd34e65f"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-repeated/screenshot.png",
+          "sha256": "0710f965fb46b9e9bc944ca1b2ed5f1ebe7901980af180773d192d5fa950527b"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-repeated/transcription.txt",
+          "sha256": "9bb4c9b74b298bfbab7b8579156e9bb546fc77b43292a942cc0fcf6ebd34e65f"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections"
+        ]
+      }
+    },
+    {
+      "id": "declaration-semicolon-same-line",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-same-line/source.alg",
+        "sha256": "9d672fcac75615d4ffbea5007313c69effd04eae74180fc7e7b86eeb7c2225ab"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T20:08:49.8518593Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-same-line/transcription.txt",
+          "sha256": "9bb4c9b74b298bfbab7b8579156e9bb546fc77b43292a942cc0fcf6ebd34e65f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-same-line/transcription.txt",
+          "sha256": "9bb4c9b74b298bfbab7b8579156e9bb546fc77b43292a942cc0fcf6ebd34e65f"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-same-line/screenshot.png",
+          "sha256": "d27958a190bf87c80ac70d98accd208edf38226116ced1efa847cebcdc83ebde"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-same-line/transcription.txt",
+          "sha256": "9bb4c9b74b298bfbab7b8579156e9bb546fc77b43292a942cc0fcf6ebd34e65f"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections"
+        ]
+      }
+    },
+    {
+      "id": "declaration-semicolon-vector",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-vector/source.alg",
+        "sha256": "7470e5aac61703507cb74d3aead7da3fe0f0bc85c1a8e901a3940eb8e99d66d6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T20:09:00.0278358Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-vector/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-vector/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-vector/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedProgramHeaders"
+        ]
+      }
+    },
+    {
+      "id": "declaration-semicolon-local",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-local/source.alg",
+        "sha256": "83b2ed72b1f9bc63d6a6401704d0ebf195c7a6a11f3bb8cc8d6b3d6c7353b409"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T20:09:10.1348572Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-local/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-local/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-local/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedProgramHeaders"
+        ]
+      }
+    },
+    {
+      "id": "declaration-semicolon-var",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var/source.alg",
+        "sha256": "e2ddf2dfac0dc1043e30ce46c421b46d98bb5147bf535f883d63cac635ee9b46"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T20:09:30.5614631Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedProgramHeaders"
+        ]
+      }
+    },
+    {
+      "id": "declaration-semicolon-next-line",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-next-line/source.alg",
+        "sha256": "c195c14ffe188a118fd738a6557b458049555341eec3466a9d0e7ce2fa999e50"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T20:23:09.3138777Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-next-line/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-next-line/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-next-line/screenshot.png",
+          "sha256": "aaca218a8b30b2df91f351d09fa85d3774292074b7685da897dfb307d31c1d31"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-next-line/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections"
+        ]
+      }
+    },
+    {
+      "id": "declaration-without-separator",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-without-separator/source.alg",
+        "sha256": "dea902abc2d4918b077d9b00204ce0eea9fd12ab43de48c3ff1c5958d0bd4237"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T20:23:29.8177213Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-without-separator/raw.txt",
+          "sha256": "809a368d1b9166d6228d0efbcb69c048c6bc3757e70cb4b01e8eac8104725bf9"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-without-separator/stdout.txt",
+          "sha256": "e3d767ad0c38f3c34584df806b19cd34992f4d9848806528a8db3876f8260cb0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/declaration-without-separator/stdout.txt",
+            "sha256": "e3d767ad0c38f3c34584df806b19cd34992f4d9848806528a8db3876f8260cb0"
+          }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedProgramHeaders"
+        ]
+      }
+    },
+    {
+      "id": "declaration-semicolon-var-same-line",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var-same-line/source.alg",
+        "sha256": "ffe7274e49f5469ea35ff6e5a31d3cd4e0cb0f0de2db94fa771ed326463b61aa"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T20:23:40.0561075Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var-same-line/transcription.txt",
+          "sha256": "f729c3a14e0455767106b0d6ecffd692a9aa41683079a5b39eb5e4276fb70ef1"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var-same-line/transcription.txt",
+          "sha256": "f729c3a14e0455767106b0d6ecffd692a9aa41683079a5b39eb5e4276fb70ef1"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var-same-line/screenshot.png",
+          "sha256": "5687b45859ab2f7fb00bcc348258b41f42c102986a689bbf1655c3e68d821e38"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var-same-line/transcription.txt",
+          "sha256": "f729c3a14e0455767106b0d6ecffd692a9aa41683079a5b39eb5e4276fb70ef1"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 2
+            }
+          ]
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections"
+        ]
+      }
+    },
+    {
+      "id": "declaration-semicolon-var-repeated",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var-repeated/source.alg",
+        "sha256": "ae82ddd8a48ce1c557f2cd725c7e9e7c64f27d074c8cb33dec34b5e4e835cd0b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-09T20:23:50.4479391Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var-repeated/transcription.txt",
+          "sha256": "f729c3a14e0455767106b0d6ecffd692a9aa41683079a5b39eb5e4276fb70ef1"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var-repeated/transcription.txt",
+          "sha256": "f729c3a14e0455767106b0d6ecffd692a9aa41683079a5b39eb5e4276fb70ef1"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var-repeated/screenshot.png",
+          "sha256": "322ad385120874893a0aaf8257f875a19aef0c543acb9b7bc467453a8682b43d"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-var-repeated/transcription.txt",
+          "sha256": "f729c3a14e0455767106b0d6ecffd692a9aa41683079a5b39eb5e4276fb70ef1"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 2
+            }
+          ]
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections"
+        ]
+      }
+    },
+    {
+      "id": "declaration-semicolon-empty-var",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-empty-var/source.alg",
+        "sha256": "89c80636aa764a4b8c6dbeba7f24b30129c8255b349a3dd5fb4a90c6226e6c34"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T20:24:03.1609881Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-empty-var/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-empty-var/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-empty-var/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedProgramHeaders"
+        ]
+      }
+    },
+    {
+      "id": "declaration-semicolon-comment",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-comment/source.alg",
+        "sha256": "957d6c238d5d5734762a38cf2859f4e149399279047e20be9366f2d75bbd2060"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-09T20:24:46.1049906Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-comment/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-comment/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/declaration-semicolon-comment/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedProgramHeaders"
         ]
       }
     }

@@ -58,6 +58,7 @@ func (p *parser) parseProgram() *ast.Program {
 
 func (p *parser) parseVarBlock() []ast.VarDecl {
 	p.expect(token.VAR, "expected var")
+	p.parseDeclarationSemicolon()
 	var decls []ast.VarDecl
 	for p.peek().Kind == token.IDENT {
 		decls = append(decls, p.parseVarDecl())
@@ -73,7 +74,18 @@ func (p *parser) parseVarDecl() ast.VarDecl {
 	}
 	p.expect(token.COLON, "expected ':' after variable name")
 	typ := p.parseType()
+	p.parseDeclarationSemicolon()
 	return ast.VarDecl{At: first.Pos, Names: names, Type: typ}
+}
+
+func (p *parser) parseDeclarationSemicolon() {
+	if p.atLineEnd() || !p.match(token.SEMI) {
+		return
+	}
+	if !p.atLineEnd() {
+		p.error(p.peek(), "expected end of line after declaration semicolon")
+		p.skipLine()
+	}
 }
 
 func (p *parser) parseType() ast.TypeSpec {
