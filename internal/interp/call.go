@@ -52,6 +52,8 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 				}
 				return runtime.Value{Kind: runtime.VoidValue}, nil
 			}
+			v.Comparison = false
+			v.RealFallback = false
 			args[idx] = v
 		}
 		if b.Name == "exp" && len(call.Args) != 0 && len(call.Args) != 2 {
@@ -138,6 +140,8 @@ func (i *Interpreter) callSub(params []ast.Param, consts []ast.ConstDecl, locals
 		if err != nil {
 			return runtime.Value{}, err
 		}
+		v.Comparison = false
+		v.RealFallback = false
 		if typ.Kind == runtime.IntegerType && v.Kind == runtime.RealValue {
 			if math.IsNaN(v.Real) || v.Real < -0x1p63 || v.Real >= 0x1p63 {
 				return runtime.Value{}, fmt.Errorf("integer argument out of range")

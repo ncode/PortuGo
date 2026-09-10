@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Match logical ordering and Windows-1252 character ordering. Preserve mixed
+  comparisons' concrete values and logical assignment/condition category,
+  including changed logical storage, reference parameters, positioned consumer
+  errors, and no-value handling. Preserve prior output before rejected logical
+  field formatting.
+
 - Add named records with scalar fields, local layouts, zero initialization,
   independent copies, vector elements, and scalar reference arguments. Match
   empty output, record alias identity, non-addressable nested fields, and

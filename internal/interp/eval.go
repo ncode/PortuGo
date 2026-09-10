@@ -1,11 +1,13 @@
 package interp
 
 import (
+	"cmp"
 	"fmt"
 	"math"
-	"strings"
+	"slices"
 
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/cp1252"
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
 	"github.com/ncode/portugol-go/internal/token"
@@ -35,7 +37,7 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 		// Numeric reference parameters can change a caller's runtime type.
 		actual := value.Type()
 		// Numeric built-ins can produce no value for a domain failure.
-		if err == nil && actual.Kind != runtime.VoidType && !runtime.Assignable(typ, actual) && !runtime.Assignable(actual, typ) {
+		if err == nil && !value.Comparison && actual.Kind != runtime.VoidType && !runtime.Assignable(typ, actual) && !runtime.Assignable(actual, typ) {
 			err = failure(expr.Start(), diag.RType, fmt.Errorf("inconsistent expression value"))
 		}
 	}()
@@ -95,8 +97,23 @@ func (i *Interpreter) evalUnary(e *ast.UnaryExpr) (runtime.Value, error) {
 	}
 	switch e.Op.Kind {
 	case token.ADD:
+		if v.Kind == runtime.VoidValue {
+			return v, nil
+		}
+		if v.Comparison || v.RealFallback && v.Kind != runtime.RealValue {
+			return runtime.Value{}, failure(e.Op.Pos, diag.EParse, fmt.Errorf("expected numeric operand"))
+		}
+		if v.Kind != runtime.IntegerValue && v.Kind != runtime.RealValue {
+			return runtime.Value{}, failure(e.Op.Pos, diag.ETypeMismatch, fmt.Errorf("expected numeric operand"))
+		}
 		return v, nil
 	case token.SUB:
+		if v.Comparison {
+			return runtime.Value{Kind: runtime.VoidValue}, nil
+		}
+		if v.RealFallback && v.Kind == runtime.IntegerValue {
+			return runtime.Value{Kind: runtime.RealValue, Real: -math.Float64frombits(uint64(uint32(v.Int)))}, nil
+		}
 		switch v.Kind {
 		case runtime.IntegerValue:
 			return runtime.Value{Kind: runtime.IntegerValue, Int: int64(-int32(v.Int))}, nil
@@ -106,9 +123,10 @@ func (i *Interpreter) evalUnary(e *ast.UnaryExpr) (runtime.Value, error) {
 			return runtime.Value{Kind: runtime.VoidValue}, nil
 		}
 	case token.NAO:
-		if v.Kind == runtime.BoolValue {
+		if v.Kind == runtime.BoolValue || v.Comparison {
 			return runtime.Value{Kind: runtime.BoolValue, Bool: !v.Bool}, nil
 		}
+		return runtime.Value{}, failure(e.Op.Pos, diag.ETypeMismatch, fmt.Errorf("expected logico"))
 	}
 	return runtime.Value{}, fmt.Errorf("invalid unary operator %s", e.Op.Text)
 }
@@ -123,6 +141,9 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 	left, err := i.eval(e.Left)
 	if err != nil {
 		return runtime.Value{}, err
+	}
+	if e.IsComparison() && left.NumericAbsence {
+		return left, nil
 	}
 	right, err := i.eval(e.Right)
 	if err != nil {
@@ -144,6 +165,8 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 	case token.QUO:
 		a, b, err := floats(left, right)
 		if err != nil {
+			right.Comparison = false
+			right.RealFallback = true
 			return right, nil
 		}
 		if b == 0 {
@@ -152,6 +175,7 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 		return runtime.Value{Kind: runtime.RealValue, Real: a / b}, nil
 	case token.IDIV:
 		if left.Kind != runtime.IntegerValue || right.Kind != runtime.IntegerValue {
+			right.Comparison = false
 			return right, nil
 		}
 		a, b := left.Int, right.Int
@@ -164,6 +188,7 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 		return runtime.Value{Kind: runtime.IntegerValue, Int: a / b}, nil
 	case token.REM, token.MOD:
 		if left.Kind == runtime.BoolValue || right.Kind == runtime.BoolValue {
+			right.Comparison = false
 			return right, nil
 		}
 		if _, _, err := floats(left, right); err != nil {
@@ -188,8 +213,20 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 		}
 		return runtime.Value{Kind: runtime.RealValue, Real: math.Pow(a, b)}, nil
 	case token.EQL, token.NEQ, token.LSS, token.GTR, token.LEQ, token.GEQ:
-		return compare(e.Op.Kind, left, right)
+		if right.NumericAbsence {
+			return runtime.Value{}, failure(e.Op.Pos, diag.EParse, fmt.Errorf("expected comparison operand"))
+		}
+		value, err := compare(e.Op.Kind, left, right)
+		value.Comparison = true
+		value.RealFallback = false
+		return value, err
 	case token.E, token.OU, token.XOU:
+		if left.Kind != runtime.BoolValue || right.Kind != runtime.BoolValue {
+			if e.Op.Kind == token.E {
+				return right, nil
+			}
+			return runtime.Value{}, failure(e.Op.Pos, diag.EParse, fmt.Errorf("expected logico operands"))
+		}
 		a, err := runtime.Truth(left)
 		if err != nil {
 			return runtime.Value{}, err
@@ -230,10 +267,18 @@ func (i *Interpreter) location(expr ast.Expr) (cell *runtime.Cell, err error) {
 		if err != nil {
 			return nil, err
 		}
+		baseType, _ := i.info.TypeOf(e.X)
 		if base.Kind != runtime.RecordValue || base.Rec == nil {
+			if baseType.Kind == runtime.DynamicType {
+				return nil, failure(e.Name.Pos, diag.EUndeclared, fmt.Errorf("unknown field %q", e.Name.Text))
+			}
 			return nil, fmt.Errorf("cannot select a field of a non-record")
 		}
-		return base.Rec.Cell(e.Name.Text)
+		cell, err := base.Rec.Cell(e.Name.Text)
+		if err != nil && baseType.Kind == runtime.DynamicType {
+			err = failure(e.Name.Pos, diag.EUndeclared, err)
+		}
+		return cell, err
 	case *ast.IndexExpr:
 		base, err := i.eval(e.X)
 		if err != nil {
@@ -260,7 +305,8 @@ func (i *Interpreter) evalBool(expr ast.Expr) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	return runtime.Truth(v)
+	truth, err := runtime.Truth(v)
+	return truth, failure(expr.Start(), diag.ETypeMismatch, err)
 }
 
 func (i *Interpreter) evalInt(expr ast.Expr, code diag.Code) (int64, error) {
@@ -268,7 +314,7 @@ func (i *Interpreter) evalInt(expr ast.Expr, code diag.Code) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	if v.Kind != runtime.IntegerValue {
+	if v.Kind != runtime.IntegerValue || v.Comparison {
 		return 0, failure(expr.Start(), code, fmt.Errorf("expected inteiro"))
 	}
 	return v.Int, nil
@@ -309,6 +355,29 @@ func asFloat(v runtime.Value) (float64, bool) {
 }
 
 func compare(op token.Kind, left, right runtime.Value) (runtime.Value, error) {
+	if right.Kind == runtime.VoidValue && left.Kind != runtime.VoidValue {
+		return left, nil
+	}
+	if left.Comparison {
+		if !right.Comparison && right.Kind != runtime.BoolValue {
+			return right, nil
+		}
+		left = runtime.Value{Kind: runtime.BoolValue, Bool: left.Bool}
+	}
+	if right.Comparison {
+		if left.Kind != runtime.BoolValue {
+			return right, nil
+		}
+		right = runtime.Value{Kind: runtime.BoolValue, Bool: right.Bool}
+	}
+	if left.Kind == runtime.RecordValue || right.Kind == runtime.RecordValue {
+		return right, nil
+	}
+	if left.Kind != right.Kind {
+		if _, _, err := floats(left, right); err != nil {
+			return right, nil
+		}
+	}
 	if op == token.EQL || op == token.NEQ {
 		eq, err := equalValues(left, right)
 		if err != nil {
@@ -372,8 +441,26 @@ func ordering(left, right runtime.Value) (int, error) {
 			return 0, nil
 		}
 	}
+	if left.Kind == runtime.BoolValue && right.Kind == runtime.BoolValue {
+		if left.Bool == right.Bool {
+			return 0, nil
+		}
+		if left.Bool {
+			return 1, nil
+		}
+		return -1, nil
+	}
 	if left.Kind == runtime.StringValue && right.Kind == runtime.StringValue {
-		return strings.Compare(left.Str, right.Str), nil
+		return slices.CompareFunc([]rune(left.Str), []rune(right.Str), func(a, b rune) int {
+			x, y := int(a)+256, int(b)+256
+			if code, ok := cp1252.EncodeRune(a); ok {
+				x = int(code)
+			}
+			if code, ok := cp1252.EncodeRune(b); ok {
+				y = int(code)
+			}
+			return cmp.Compare(x, y)
+		}), nil
 	}
 	return 0, fmt.Errorf("values are not ordered")
 }

@@ -28,21 +28,24 @@ func (c *checker) recordType(spec ast.TypeSpec) runtime.Type {
 }
 
 func (c *checker) fieldType(expr *ast.FieldExpr) runtime.Type {
-	if c.fieldError {
+	if c.stopped {
 		return runtime.Type{Kind: runtime.InvalidType}
 	}
 	base := c.expr(expr.X)
 	if base.Kind == runtime.InvalidType {
 		return base
 	}
+	if base.Kind == runtime.DynamicType {
+		return base
+	}
 	if base.Kind == runtime.RecordType {
 		for _, field := range base.Fields {
 			if field.Name == canon(expr.Name.Text) {
-				return field.Type
+				return c.valueType(expr, field.Type)
 			}
 		}
 	}
 	c.error(expr.Name.Pos, diag.EUndeclared, "unknown field %q", expr.Name.Text)
-	c.fieldError = true
+	c.stopped = true
 	return runtime.Type{Kind: runtime.InvalidType}
 }

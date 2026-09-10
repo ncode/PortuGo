@@ -296,12 +296,61 @@ logical value, produce no value. In output statements this uses the same
 recorded no-value handling as `numpcarac`: the current statement emits nothing.
 Additional nonnumeric arithmetic combinations remain pending conformance work.
 Even exact `/` results remain real: assigning `4/2` to an integer is rejected.
+Mixed `/` expressions retaining an integer also retain a real expression
+category for unary signs. Unary plus reports `P001`. Unary minus interprets the
+unsigned 32-bit integer payload as the low bits of a real value before negating
+it: `-("a" / ("x" = 7))` prints ` -3.45845952088873E-323`.
+Ordinary numeric division and its unary signs remain numeric operations.
 
 Relational operators are `=`, `<>`, `<`, `>`, `<=`, and `>=`.
+Numeric pairs compare their values, promoting integer/real pairs for comparison.
+Logical pairs compare with `falso` before `verdadeiro`. Character equality is
+case-sensitive and accent-sensitive: `"A" = "a"` and `"a" = "á"` are both false.
+Character ordering compares Windows-1252 byte values, with a shorter equal
+prefix first. It does not use locale collation: `"€" < "á"` is true.
+As a project extension, characters outside Windows-1252 sort after that
+repertoire, in Unicode code-point order; other reference locales are unverified.
+For mixed scalar pairs other than integer/real, every relational operator
+retains the right operand's concrete value. For example, `1 = "1"` prints
+text `"1"`, and `"1" >= 1` prints integer `1`. Built-ins consume that retained
+value: `abs("x" = 7)` produces `7` and `compr(7 = "x")` produces `1`.
+
+Comparisons nevertheless have a logical assignment and condition category.
+Assigning one to an integer, real, character, or record destination reports
+`R001` during execution. The direct condition `"x" = 7` is false. A logical
+variable can retain the concrete operand: after `b <- "x" = 7`, printing `b`
+produces `7`; a subsequent bare condition on `b` rejects its nonlogical value
+with `E001`. The stored value also determines later assignment and argument
+compatibility: `b <- 8` succeeds, while `b <- verdadeiro` receives `R001`.
+Logical vector elements and record fields retain values in the same way.
+Function parameters consume the concrete argument; a logical function's
+`retorne` instead takes the comparison's logical payload (`falso` for `"x" = 7`).
+Integer format bounds reject comparison results with `P001`.
+Whole-record operands retain the right value for output, but record assignment
+still rejects the comparison's logical category. A logical destination holding
+a record result has an empty layout without the original record's identity or
+fields; accessing a field receives `E002`. Bare vectors require an
+index and receive `P001` at the first unindexed operand.
+
+Ordinary comparisons evaluate both operands once, left to right.
+When exactly one operand has a generic no-value result, such as `abs()` or
+`asc("")`, the other operand is preserved. A numeric domain absence on the left,
+such as `arccos(2)`, suppresses the output statement; on the right it reports
+`P001`. A left numeric-domain absence skips the right operand; a generic absence
+still evaluates it.
+Comparisons between two statically absent operands receive a positioned `E001`
+project guard; the reference's undefined output is not an equivalence target.
+
 Logical operators are `e`, `ou`, `xou`, and unary `nao`.
 
 The operators `e` and `ou` intentionally do not short-circuit; both operands
 are evaluated to match VisuAlg behavior.
+For comparison results retaining mixed concrete values, `e` retains its right
+operand, while `ou` and `xou` report `P001` after evaluating both operands.
+Thus `verdadeiro e ("x" = 7)` retains `7` and has a false logical payload.
+`nao ("x" = 7)` produces `verdadeiro`. Unary plus of a comparison reports
+`P001`; unary minus produces no value, suppressing its output statement.
+See the [comparison recordings](comparisons-progress.md).
 
 ## Statements
 
@@ -511,7 +560,8 @@ values can also request decimals, which append zeros. Numeric fields expand
 if needed. Positive widths are capped at 255 characters before padding,
 including widths larger than the project byte budget. Strings are left-aligned
 and truncated to that width. Logical output is ` VERDADEIRO` or ` FALSO`,
-including its leading space; logical field widths are rejected.
+including its leading space. Logical field widths receive `P001` during
+execution, preserving output from completed preceding statements.
 
 Fixed real fields round the stored binary value: `1.005:10:2` ends in `1.00`
 and `2.675:10:2` in `2.67`. Exact halfway values round away from zero, so

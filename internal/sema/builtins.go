@@ -40,6 +40,8 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 		}
 		t := c.expr(call.Args[0])
 		switch t.Kind {
+		case runtime.DynamicType:
+			return t, true
 		case runtime.IntegerType, runtime.RealType, runtime.NumericType:
 			if name == "abs" || name == "quad" {
 				return t, true
@@ -104,7 +106,7 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 			switch c.expr(call.Args[0]).Kind {
 			case runtime.VectorType:
 				c.error(call.Args[0].Start(), diag.EParse, "expected '[' after vector")
-			case runtime.IntegerType, runtime.NumericType, runtime.InvalidType:
+			case runtime.IntegerType, runtime.NumericType, runtime.DynamicType, runtime.InvalidType:
 			default:
 				c.error(call.Args[0].Start(), diag.ETypeMismatch, "expected inteiro argument")
 			}
@@ -218,6 +220,9 @@ func (c *checker) textArgs(call *ast.CallExpr, arity, strings int) {
 		t := c.expr(arg)
 		if t.Kind == runtime.InvalidType {
 			return
+		}
+		if t.Kind == runtime.DynamicType {
+			continue
 		}
 		if index < strings {
 			if t.Kind != runtime.StringType {

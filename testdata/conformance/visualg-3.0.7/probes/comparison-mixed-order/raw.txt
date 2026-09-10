@@ -1,0 +1,15 @@
+Início da execução
+ 1
+ 2
+x 1
+ 2
+x 1
+ 2
+x 1
+ 2
+x 1
+ 2
+x 1
+ 2
+x
+Fim da execução.

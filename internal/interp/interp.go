@@ -166,6 +166,8 @@ func (i *Interpreter) defineConsts(decls []ast.ConstDecl) error {
 		if err != nil {
 			return err
 		}
+		value.Comparison = false
+		value.RealFallback = false
 		i.env.cells[b.ID] = &runtime.Cell{Type: value.Type(), Value: runtime.Clone(value)}
 	}
 	return nil

@@ -1,0 +1,5 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 5
+Message: Erro na atribuição de valores à variável N:
+LOGICO para INTEIRO.
+Column: not established.

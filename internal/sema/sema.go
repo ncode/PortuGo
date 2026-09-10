@@ -13,17 +13,28 @@ import (
 
 // Analyze resolves names, types, layouts, calls, loop control, and returns.
 func Analyze(prog *ast.Program) (*Info, []diag.Diagnostic) {
-	info := &Info{program: prog, types: make(map[ast.Expr]runtime.Type), bindings: make(map[token.Pos]Binding), names: make(map[token.Pos]string)}
-	c := &checker{scope: newScope(nil), subs: make(map[string]symbol), info: info}
-	if prog == nil {
-		c.error(token.NoPos, diag.ETypeMismatch, "missing program")
-		return info, c.diags
+	dynamicCells := make(map[dynamicCell]bool)
+	var info *Info
+	var c *checker
+	for pass := 0; pass < 2; pass++ {
+		info = &Info{program: prog, types: make(map[ast.Expr]runtime.Type), bindings: make(map[token.Pos]Binding), names: make(map[token.Pos]string)}
+		c = &checker{scope: newScope(nil), subs: make(map[string]symbol), info: info, dynamicCells: dynamicCells, copyBack: make(map[dynamicCell][]dynamicCell)}
+		if pass == 0 {
+			if prog == nil {
+				c.error(token.NoPos, diag.ETypeMismatch, "missing program")
+				return info, c.diags
+			}
+			if ds := ast.CheckLimits(prog); len(ds) != 0 {
+				return info, ds
+			}
+		}
+		c.declareBuiltins()
+		c.checkProgram(prog)
+		if len(dynamicCells) == 0 {
+			break
+		}
+		c.propagateDynamicCells()
 	}
-	if ds := ast.CheckLimits(prog); len(ds) != 0 {
-		return info, ds
-	}
-	c.declareBuiltins()
-	c.checkProgram(prog)
 	info.valid = !diag.HasErrors(c.diags)
 	return info, diag.Ordered(c.diags)
 }
@@ -40,6 +51,7 @@ const (
 )
 
 type paramSig struct {
+	pos   token.Pos
 	name  string
 	typ   runtime.Type
 	byRef bool
@@ -60,14 +72,16 @@ type scope struct {
 }
 
 type checker struct {
-	info       *Info
-	scope      *scope
-	subs       map[string]symbol
-	diags      []diag.Diagnostic
-	loopDepth  int
-	returnType runtime.Type
-	inFunction bool
-	fieldError bool
+	info         *Info
+	scope        *scope
+	subs         map[string]symbol
+	diags        []diag.Diagnostic
+	loopDepth    int
+	returnType   runtime.Type
+	inFunction   bool
+	stopped      bool
+	dynamicCells map[dynamicCell]bool
+	copyBack     map[dynamicCell][]dynamicCell
 }
 
 func newScope(parent *scope) *scope {
@@ -111,7 +125,7 @@ func (c *checker) checkProgram(prog *ast.Program) {
 	}
 	for _, sub := range prog.Subs {
 		c.checkSub(sub)
-		if c.fieldError {
+		if c.stopped {
 			return
 		}
 	}
@@ -162,7 +176,7 @@ func (c *checker) declareSub(sub ast.Subprogram) {
 func paramsFromAST(params []ast.Param) []paramSig {
 	out := make([]paramSig, len(params))
 	for i, p := range params {
-		out[i] = paramSig{name: canon(p.Name.Text), typ: runtime.TypeFromSpec(p.Type), byRef: p.ByRef}
+		out[i] = paramSig{pos: p.Name.Pos, name: canon(p.Name.Text), typ: runtime.TypeFromSpec(p.Type), byRef: p.ByRef}
 	}
 	return out
 }
@@ -256,7 +270,7 @@ func (c *checker) validateType(spec ast.TypeSpec, typ runtime.Type) {
 
 func (c *checker) checkStmts(stmts []ast.Stmt) {
 	for _, stmt := range stmts {
-		if c.fieldError {
+		if c.stopped {
 			return
 		}
 		c.checkStmt(stmt)
@@ -271,7 +285,7 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			return
 		}
 		dst, ok := c.writable(s.Target)
-		if c.fieldError {
+		if c.stopped {
 			return
 		}
 		if ok && dst.Kind == runtime.VectorType {
@@ -279,7 +293,13 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			return
 		}
 		src := c.expr(s.Value)
-		if ok && src.Kind != runtime.NumericType && !runtime.Assignable(dst, src) {
+		logicalResult := comparisonResult(s.Value)
+		if ok && logicalResult && (dst.Kind == runtime.BoolType || dst.Kind == runtime.DynamicType) {
+			if key, ok := c.cellKey(s.Target); ok {
+				c.dynamicCells[key] = true
+			}
+		}
+		if ok && !logicalResult && src.Kind != runtime.NumericType && !runtime.Assignable(dst, src) {
 			c.error(s.Value.Start(), diag.ETypeMismatch, "cannot assign %s to %s", src, dst)
 		}
 	case *ast.CallStmt:
@@ -344,6 +364,9 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			return
 		}
 		t := c.expr(s.Value)
+		if c.returnType.Kind == runtime.BoolType && comparisonResult(s.Value) {
+			t = runtime.Type{Kind: runtime.BoolType}
+		}
 		if !runtime.Assignable(c.returnType, t) {
 			c.error(s.Value.Start(), diag.ETypeMismatch, "cannot return %s from %s function", t, c.returnType)
 		}
@@ -355,11 +378,8 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		}
 	case *ast.WriteStmt:
 		for _, arg := range s.Args {
-			typ := c.expr(arg.Expr)
+			c.expr(arg.Expr)
 			if arg.Width != nil {
-				if typ.Kind == runtime.BoolType {
-					c.error(arg.Expr.Start(), diag.ETypeMismatch, "cannot format logico with a field width")
-				}
 				c.requireInt(arg.Width)
 			}
 			if arg.Decimals != nil {
@@ -406,13 +426,16 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 			c.error(e.Name.Pos, diag.ETypeMismatch, "%q is not a variable", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}
 		}
-		return sym.typ
+		return c.valueType(e, sym.typ)
 	case *ast.FieldExpr:
 		return c.fieldType(e)
 	case *ast.IndexExpr:
 		base := c.expr(e.X)
 		for _, idx := range e.Indices {
 			c.requireInt(idx)
+		}
+		if base.Kind == runtime.DynamicType {
+			return base
 		}
 		if base.Kind != runtime.VectorType || base.Elem == nil {
 			c.error(e.Start(), diag.ETypeMismatch, "cannot index %s", base)
@@ -422,7 +445,7 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 		if len(e.Indices) != len(base.Ranges) && !omittedColumn {
 			c.error(e.Start(), diag.ETypeMismatch, "expected %d indices, got %d", len(base.Ranges), len(e.Indices))
 		}
-		return *base.Elem
+		return c.valueType(e, *base.Elem)
 	case *ast.UnaryExpr:
 		return c.unary(e)
 	case *ast.BinaryExpr:
@@ -435,6 +458,17 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 
 func (c *checker) unary(e *ast.UnaryExpr) runtime.Type {
 	t := c.expr(e.X)
+	if comparisonResult(e.X) {
+		switch e.Op.Kind {
+		case token.ADD:
+			return runtime.Type{Kind: runtime.DynamicType}
+		case token.SUB:
+			return runtime.Type{Kind: runtime.VoidType}
+		}
+	}
+	if t.Kind == runtime.DynamicType {
+		return t
+	}
 	switch e.Op.Kind {
 	case token.ADD, token.SUB:
 		if isNumeric(t) {
@@ -445,8 +479,8 @@ func (c *checker) unary(e *ast.UnaryExpr) runtime.Type {
 		}
 		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires numeric operand", e.Op.Text)
 	case token.NAO:
-		if t.Kind == runtime.BoolType {
-			return t
+		if t.Kind == runtime.BoolType || comparisonResult(e.X) {
+			return runtime.Type{Kind: runtime.BoolType}
 		}
 		c.error(e.Op.Pos, diag.ETypeMismatch, "operator nao requires logico operand")
 	}
@@ -456,6 +490,17 @@ func (c *checker) unary(e *ast.UnaryExpr) runtime.Type {
 func (c *checker) binary(e *ast.BinaryExpr) runtime.Type {
 	left := c.expr(e.Left)
 	right := c.expr(e.Right)
+	if !e.IsComparison() && (left.Kind == runtime.DynamicType || right.Kind == runtime.DynamicType) {
+		return runtime.Type{Kind: runtime.DynamicType}
+	}
+	if comparisonResult(e.Left) || comparisonResult(e.Right) {
+		switch e.Op.Kind {
+		case token.QUO, token.IDIV, token.REM, token.MOD:
+			// Arithmetic consumes the temporary category; check the concrete
+			// retained value and destination during execution.
+			return runtime.Type{Kind: runtime.DynamicType}
+		}
+	}
 	switch e.Op.Kind {
 	case token.ADD:
 		if left.Kind == runtime.StringType && right.Kind == runtime.StringType {
@@ -488,17 +533,46 @@ func (c *checker) binary(e *ast.BinaryExpr) runtime.Type {
 			return right
 		}
 		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires numeric or logico operands", e.Op.Text)
-	case token.EQL, token.NEQ:
-		if runtime.Assignable(left, right) || runtime.Assignable(right, left) {
+	case token.EQL, token.NEQ, token.LSS, token.GTR, token.LEQ, token.GEQ:
+		if left.Kind == runtime.VectorType || right.Kind == runtime.VectorType {
+			pos := e.Left.Start()
+			if left.Kind != runtime.VectorType {
+				pos = e.Right.Start()
+			}
+			c.error(pos, diag.EParse, "expected '[' after vector")
+			c.stopped = true
+			return runtime.Type{Kind: runtime.InvalidType}
+		}
+		if left.Kind == runtime.DynamicType || right.Kind == runtime.DynamicType {
+			return runtime.Type{Kind: runtime.DynamicType}
+		}
+		if left.Kind == runtime.VoidType && (isScalar(right) || right.Kind == runtime.RecordType) {
+			return right
+		}
+		if right.Kind == runtime.VoidType && (isScalar(left) || left.Kind == runtime.RecordType) {
+			return left
+		}
+		if left.Kind == runtime.RecordType || right.Kind == runtime.RecordType {
+			return right
+		}
+		leftCategory, rightCategory := left, right
+		if inner, ok := e.Left.(*ast.BinaryExpr); ok && inner.IsComparison() {
+			leftCategory = runtime.Type{Kind: runtime.BoolType}
+		}
+		if inner, ok := e.Right.(*ast.BinaryExpr); ok && inner.IsComparison() {
+			rightCategory = runtime.Type{Kind: runtime.BoolType}
+		}
+		if isNumeric(leftCategory) && isNumeric(rightCategory) || leftCategory.Kind == rightCategory.Kind && (leftCategory.Kind == runtime.StringType || leftCategory.Kind == runtime.BoolType) {
 			return runtime.Type{Kind: runtime.BoolType}
 		}
-		c.error(e.Op.Pos, diag.ETypeMismatch, "cannot compare %s with %s", left, right)
-	case token.LSS, token.GTR, token.LEQ, token.GEQ:
-		if (isNumeric(left) && isNumeric(right)) || (left.Kind == runtime.StringType && right.Kind == runtime.StringType) {
-			return runtime.Type{Kind: runtime.BoolType}
+		if isScalar(left) && isScalar(right) {
+			return right
 		}
-		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires comparable operands", e.Op.Text)
+		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires scalar operands", e.Op.Text)
 	case token.E, token.OU, token.XOU:
+		if comparisonResult(e.Left) || comparisonResult(e.Right) {
+			return runtime.Type{Kind: runtime.DynamicType}
+		}
 		if left.Kind == runtime.BoolType && right.Kind == runtime.BoolType {
 			return runtime.Type{Kind: runtime.BoolType}
 		}
@@ -574,6 +648,12 @@ func (c *checker) checkArgs(call *ast.CallExpr, sym symbol) {
 		if params[i].byRef && !c.isWritableExpr(arg) {
 			c.error(arg.Start(), diag.ECall, "argument %d must be assignable for var parameter", i+1)
 		}
+		if params[i].byRef && params[i].typ.Kind == runtime.BoolType {
+			if target, ok := c.cellKey(arg); ok {
+				formal := dynamicCell{id: params[i].pos}
+				c.copyBack[formal] = append(c.copyBack[formal], target)
+			}
+		}
 	}
 }
 
@@ -589,8 +669,9 @@ func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 			c.error(e.Name.Pos, diag.ETypeMismatch, "%q is not assignable", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}, false
 		}
-		c.info.types[expr] = sym.typ
-		return sym.typ, true
+		typ := c.valueType(e, sym.typ)
+		c.info.types[expr] = typ
+		return typ, true
 	case *ast.IndexExpr:
 		return c.expr(e), true
 	case *ast.FieldExpr:
@@ -603,13 +684,17 @@ func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 }
 
 func (c *checker) requireBool(expr ast.Expr) {
-	if t := c.expr(expr); t.Kind != runtime.BoolType && t.Kind != runtime.InvalidType {
+	t := c.expr(expr)
+	if comparisonResult(expr) {
+		return
+	}
+	if t.Kind != runtime.BoolType && t.Kind != runtime.DynamicType && t.Kind != runtime.InvalidType {
 		c.error(expr.Start(), diag.ETypeMismatch, "expected logico, got %s", t)
 	}
 }
 
 func (c *checker) requireInt(expr ast.Expr) {
-	if t := c.expr(expr); t.Kind != runtime.IntegerType && t.Kind != runtime.NumericType && t.Kind != runtime.InvalidType {
+	if t := c.expr(expr); t.Kind != runtime.IntegerType && t.Kind != runtime.NumericType && t.Kind != runtime.DynamicType && t.Kind != runtime.InvalidType {
 		c.error(expr.Start(), diag.ETypeMismatch, "expected inteiro, got %s", t)
 	}
 }
@@ -621,7 +706,7 @@ func (c *checker) withLoop(fn func()) {
 }
 
 func (c *checker) error(pos token.Pos, code diag.Code, format string, args ...any) {
-	if c.fieldError {
+	if c.stopped {
 		return
 	}
 	c.diags = append(c.diags, diag.Diagnostic{Code: code, Pos: pos, Message: fmt.Sprintf(format, args...)})

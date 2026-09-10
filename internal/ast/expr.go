@@ -84,6 +84,15 @@ type BinaryExpr struct {
 func (*BinaryExpr) exprNode()          {}
 func (e *BinaryExpr) Start() token.Pos { return e.Op.Pos }
 
+// IsComparison reports whether the operator has the logical result category.
+func (e *BinaryExpr) IsComparison() bool {
+	switch e.Op.Kind {
+	case token.EQL, token.NEQ, token.LSS, token.GTR, token.LEQ, token.GEQ:
+		return true
+	}
+	return false
+}
+
 // CallExpr calls a function or built-in.
 type CallExpr struct {
 	Name token.Token

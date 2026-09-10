@@ -37,6 +37,11 @@ func assign(cell *runtime.Cell, v runtime.Value) error {
 	if err != nil {
 		return err
 	}
+	if v.Comparison && cell.Type.Kind == runtime.BoolType {
+		cell.Type = converted.Type().Clone()
+		cell.Value = runtime.Clone(converted)
+		return nil
+	}
 	if cell.Type.Kind == runtime.RecordType {
 		return cell.Value.Rec.AssignFrom(converted.Rec)
 	}

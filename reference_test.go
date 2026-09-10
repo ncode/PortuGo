@@ -47,6 +47,18 @@ func TestRecordedWindowsProbes(t *testing.T) {
 					t.Fatalf("unexpected diagnostics: %v %v", lexDiags, parseDiags)
 				}
 				info, diags := sema.Analyze(prog)
+				if probe.ID == "output-rounding" {
+					if len(diags) != 0 {
+						t.Fatal(diags)
+					}
+					var out bytes.Buffer
+					ds := interp.New(interp.Options{Output: &out}).Run(prog, info)
+					want := "BEGIN:output-rounding\nR=[3][-3][1.3][2.3]\n"
+					if len(ds) != 1 || ds[0].Code != diag.EParse || file.Position(ds[0].Pos).Line != 5 || out.String() != want {
+						t.Fatalf("diagnostics = %v, output = %q; want P001 on line 5 after %q", ds, out.String(), want)
+					}
+					return
+				}
 				var code diag.Code
 				var line int
 				count := 1
@@ -55,9 +67,6 @@ func TestRecordedWindowsProbes(t *testing.T) {
 					code, line = diag.EParse, 4
 				case "exact-division-integer":
 					code, line = diag.ETypeMismatch, 6
-				case "output-rounding":
-					code, line = diag.ETypeMismatch, 5
-					count = 3
 				}
 				if code != "" {
 					if len(diags) != count {

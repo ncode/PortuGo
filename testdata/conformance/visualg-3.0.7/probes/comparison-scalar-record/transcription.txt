@@ -1,0 +1,5 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 10
+Message: Erro na atribuição de valores à variável C:
+LOGICO para REGISTRO.
+Column: not established.

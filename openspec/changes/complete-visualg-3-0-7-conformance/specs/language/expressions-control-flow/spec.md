@@ -44,6 +44,10 @@ Arithmetic SHALL use the reference operand compatibility, promotion, result type
 - **WHEN** the recorded expressions `8.5 \ 3`, `7 \ 2.5`, and `7.5 \ 0` are evaluated
 - **THEN** they produce integer `3`, real `2.5`, and integer `0`, respectively, after evaluating both operands
 
+#### Scenario: Apply a unary sign to an integer retained by mixed real division
+- **WHEN** the recorded mixed `/` expression retains an integer operand
+- **THEN** unary plus reports `P001`, while unary minus negates the real value whose low bits hold the unsigned 32-bit integer payload
+
 #### Scenario: Reject invalid power domains
 - **WHEN** a negative base has a fractional exponent, zero has a negative exponent, or a numeric power overflows
 - **THEN** execution reports `R002` at the power operator and does not emit the incomplete output statement
@@ -64,7 +68,9 @@ Logical operators SHALL require the oracle-confirmed operand types and SHALL rep
 - **THEN** whether and when that operand executes matches the committed VisuAlg 3.0.7 probe
 
 ### Requirement: Boolean, numeric, and string comparison
-Relational operators SHALL accept exactly the type pairs accepted by VisuAlg 3.0.7 and SHALL reproduce its numeric coercion, boolean ordering or equality, string comparison, case sensitivity, and locale behavior. Unsupported comparisons SHALL be diagnosed at the operator.
+Relational operators SHALL accept exactly the type pairs accepted by VisuAlg 3.0.7 and SHALL reproduce its numeric coercion, boolean ordering or equality, string comparison, case sensitivity, and locale behavior. Unsupported uses SHALL be diagnosed at the recorded operand or operator position and phase.
+
+Numeric pairs, logical pairs, and character pairs SHALL return logical comparison results. Logical ordering SHALL place `falso` before `verdadeiro`. Character ordering SHALL compare Windows-1252 byte values, retaining case, accents, and prefix length. Other scalar pairs SHALL retain the right operand's concrete value for every relational operator. Comparisons SHALL preserve their logical assignment and condition category separately from that value. Ordinary operands SHALL be evaluated exactly once, left to right; no-value handling SHALL match the recorded generic and numeric-domain cases.
 
 #### Scenario: Compare character values
 - **WHEN** two `caractere` expressions are compared with a reference-supported relational operator
@@ -72,7 +78,29 @@ Relational operators SHALL accept exactly the type pairs accepted by VisuAlg 3.0
 
 #### Scenario: Reject an unsupported comparison
 - **WHEN** operands or an operator combination are not comparable in the reference
-- **THEN** analysis emits a positioned type diagnostic and execution does not evaluate the invalid comparison
+- **THEN** the recorded positioned diagnostic is emitted, preserving prior output and the recorded operand evaluation order
+
+#### Scenario: Preserve a mixed comparison result
+- **WHEN** `1 = "1"` or `"1" >= 1` is evaluated
+- **THEN** the result is text `"1"` or integer `1`, respectively, after both operands are evaluated
+
+#### Scenario: Assign a comparison result
+- **WHEN** a comparison retaining integer `7` is assigned to a logical variable
+- **THEN** output retains `7` and a subsequent bare condition rejects its nonlogical value
+- **AND** assigning the comparison to an integer destination reports `R001` during execution
+
+#### Scenario: Retain a value in logical storage
+- **WHEN** a logical variable, vector element, record field, or reference parameter receives a comparison retaining a character value
+- **THEN** later reads and assignments use that concrete character type, including after parameter copy-back
+- **AND** retaining a record gives an empty layout without the original named type or fields
+
+#### Scenario: Consume a comparison as a function result
+- **WHEN** a logical function returns `"x" = 7`
+- **THEN** its result is `falso`, while an integer function returning the same expression receives positioned `E001`
+
+#### Scenario: Apply a logical operator to a mixed comparison value
+- **WHEN** the recorded `e`, `ou`, or `xou` expressions consume a mixed comparison result
+- **THEN** both operands are evaluated, `e` retains the right value, and `ou` or `xou` reports positioned `P001`
 
 ### Requirement: Deterministic expression order
 Subexpressions, designator indices, statement expressions, and format expressions SHALL be evaluated once and in the exact left-to-right or oracle-recorded order. A failure SHALL stop further evaluation only where the reference stops it.

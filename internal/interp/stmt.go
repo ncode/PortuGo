@@ -121,6 +121,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		if err != nil {
 			return control{}, err
 		}
+		if i.result.Type.Kind == runtime.BoolType && v.Comparison {
+			v = runtime.Value{Kind: runtime.BoolValue, Bool: v.Bool}
+		}
 		return control{}, failure(s.Start(), diag.ETypeMismatch, assign(i.result, v))
 	case *ast.ReadStmt:
 		return control{}, i.execRead(s)

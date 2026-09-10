@@ -86,6 +86,9 @@ func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
 		}
 		width := int64(0)
 		if arg.Width != nil {
+			if v.Kind == runtime.BoolValue {
+				return failure(arg.Width.Start(), diag.EParse, fmt.Errorf("cannot format logico with a field width"))
+			}
 			width, err = i.evalInt(arg.Width, diag.EParse)
 			if err != nil {
 				return err

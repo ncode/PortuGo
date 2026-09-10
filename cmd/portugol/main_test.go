@@ -29,7 +29,7 @@ func TestRunExitStatus(t *testing.T) {
 		{"undeclared", "E002", "", 1},
 		{"exp_one", "P001", "", 1},
 		{"division_integer", "E001", "", 1},
-		{"formatted_boolean", "E001", "", 1},
+		{"formatted_boolean", "P001", "", 1},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			path, err := filepath.Abs(filepath.Join("..", "..", "testdata", "cli", tt.name+".alg"))

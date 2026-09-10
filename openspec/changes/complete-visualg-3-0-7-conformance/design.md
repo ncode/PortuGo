@@ -136,9 +136,11 @@ Alternative considered: add more fields to the current `Globals`, `Subs`, and `T
 
 Resolved types are immutable descriptors for the scalar and vector types accepted by the oracle. Named-type identities and record layouts are conditional on group 2 evidence; accepted records contain ordered fields with offsets and resolved field types. Analysis retains literal vector bounds and binds named integer constants, marking dimensions that require initialization. Local constants can depend on current parameters, so those layouts resolve per declaration entry before allocation, without mutating `sema.Info`. Every allocated vector has concrete bounds and an overflow-checked flattened size. Fully literal layouts are checked during analysis; execution checks all resolved sizes again before allocation.
 
-Runtime environments bind semantic symbols to typed locations. A location can select a scalar or vector element, and a record field only if supported, without copying its container. Accepted value assignment and value parameters use one copy operation following the recorded depth rules; `var` parameters carry locations and require exact semantic type compatibility. This centralizes copying versus alias behavior and ensures index or field failure occurs before mutation.
+Runtime environments bind semantic symbols to typed locations. A location selects a scalar, vector element, or supported record field without copying its container. Value assignment and parameters use the recorded copy depth. Reference arguments capture locations once, initialize temporary parameter cells, and copy values and concrete types back in declaration order after a successful body. Failed initialization or execution does not copy parameters back.
 
-Alternative considered: represent aliases as copied `runtime.Value` instances plus write-back. Write-back fails for early returns and nested designators, evaluates indices at the wrong time, and cannot reproduce aliasing between arguments.
+Comparisons retain their temporary logical category separately from the concrete value consumed by output and arguments. Assignment can change a logical cell's concrete type; the temporary category is cleared on storage. Analysis conservatively marks affected bindings, vector elements, and record-layout fields, propagates reference copy-back edges, and rechecks with dynamic expression types. Runtime cells remain concrete and validate every consuming operation. Stored record results use empty layouts, preventing undeclared nested record storage.
+
+Alternative considered: directly alias every reference parameter to the caller's cell. That contradicts the recorded copy-in/copy-back behavior and repeated-destination ordering.
 
 ### 6. Use structured runtime diagnostics end to end
 

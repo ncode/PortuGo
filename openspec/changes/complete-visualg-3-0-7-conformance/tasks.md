@@ -228,7 +228,11 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   division, and numeric unary plus are covered. Additional operand combinations
   and the remaining domain cases are pending.
 - [ ] 8.5 Implement logical operand evaluation order and short-circuit/eager behavior with side-effect tests that pin the oracle result.
-- [ ] 8.6 Implement numeric, logical, and character comparison compatibility, ordering, case/accent behavior, and positioned rejection of unsupported pairs.
+- [x] 8.6 Implement numeric, logical, and character comparison compatibility, ordering, case/accent behavior, and positioned rejection of unsupported pairs.
+  Ninety-five recorded comparison probes cover scalar pairs, Windows-1252 ordering,
+  retained values, logical storage and reference arguments, consumer errors,
+  record/vector boundaries, and generic/numeric-domain absence. Undefined
+  two-absent-operand output remains a positioned project guard.
 - [ ] 8.7 Guarantee one-time oracle-ordered evaluation for binary operands, indices, statement expressions, and ordinary case labels.
 - [ ] 8.8 Evaluate an `escolha` selector once, choose the first matching ordinary label, prevent fall-through, and execute `outrocaso` only after no match.
 - [ ] 8.9 Add parser goldens, semantic diagnostic tables, runtime `.out`/`.err` fixtures, and an example that makes precedence/coercion/comparison choices observable.

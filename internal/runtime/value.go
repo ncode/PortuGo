@@ -29,6 +29,12 @@ type Value struct {
 	Real float64
 	Str  string
 	Bool bool
+	// Comparison keeps the logical assignment/condition category of a comparison
+	// without replacing an unmatched operand's concrete value.
+	Comparison bool
+	// RealFallback retains the real expression category of mixed division
+	// without replacing the right operand's concrete output value.
+	RealFallback bool
 	// NumericAbsence retains the domain origin of a VoidValue.
 	NumericAbsence bool
 	Vec            *Vector
@@ -87,10 +93,22 @@ func (v Value) Type() Type {
 
 // ConvertForAssign converts integer to real when assigning to a real cell.
 func ConvertForAssign(dst Type, v Value) (Value, error) {
+	v.RealFallback = false
 	if v.Kind == RecordValue {
 		if err := v.Rec.validate(); err != nil {
 			return Value{}, err
 		}
+	}
+	if v.Comparison {
+		if dst.Kind == BoolType {
+			if v.Kind == RecordValue {
+				// A logical cell has no declared record layout to retain.
+				return Zero(Type{Kind: RecordType}), nil
+			}
+			v.Comparison = false
+			return v, nil
+		}
+		return Value{}, fmt.Errorf("cannot assign logico to %s", dst)
 	}
 	if dst.Kind == RealType && v.Kind == IntegerValue {
 		return Value{Kind: RealValue, Real: float64(v.Int)}, nil
@@ -108,7 +126,8 @@ func Clone(v Value) Value {
 		for n, cell := range v.Rec.Fields {
 			record.Fields[n] = Cell{Type: cell.Type.Clone(), Value: Clone(cell.Value)}
 		}
-		return Value{Kind: RecordValue, Rec: record}
+		v.Rec = record
+		return v
 	}
 	if v.Kind != VectorValue || v.Vec == nil {
 		return v
@@ -120,12 +139,13 @@ func Clone(v Value) Value {
 	for i, cell := range v.Vec.Elements {
 		vec.Elements[i] = Cell{Type: cell.Type.Clone(), Value: Clone(cell.Value)}
 	}
-	return Value{Kind: VectorValue, Vec: vec}
+	v.Vec = vec
+	return v
 }
 
 // Truth returns a boolean value or an error.
 func Truth(v Value) (bool, error) {
-	if v.Kind != BoolValue {
+	if v.Kind != BoolValue && !v.Comparison {
 		return false, fmt.Errorf("expected logico, got %s", v.Type())
 	}
 	return v.Bool, nil

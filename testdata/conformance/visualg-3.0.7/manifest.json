@@ -347,7 +347,101 @@
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Boolean, numeric, and string comparison",
       "probes": [
-        "comparison-negative-category"
+        "comparison-negative-category",
+        "comparison-numeric-mixed",
+        "comparison-numeric-order",
+        "comparison-numeric-boundary",
+        "comparison-logical-order",
+        "comparison-logical-same",
+        "comparison-string-case",
+        "comparison-string-accent",
+        "comparison-integer-string",
+        "comparison-string-integer",
+        "comparison-integer-logical",
+        "comparison-logical-integer",
+        "comparison-logical-string",
+        "comparison-string-logical",
+        "comparison-string-order",
+        "comparison-operand-order",
+        "comparison-real-string",
+        "comparison-string-real",
+        "comparison-real-logical",
+        "comparison-logical-real",
+        "comparison-logical-reverse",
+        "comparison-empty-left",
+        "comparison-empty-right",
+        "comparison-record-values",
+        "comparison-vector-values",
+        "comparison-byte-order",
+        "comparison-mixed-order",
+        "comparison-record-result",
+        "comparison-record-scalar",
+        "comparison-scalar-record",
+        "comparison-record-types",
+        "comparison-domain-empty-left",
+        "comparison-domain-empty-right",
+        "comparison-code-empty-left",
+        "comparison-code-empty-right",
+        "comparison-integer-assignment",
+        "comparison-string-assignment",
+        "comparison-logical-assignment",
+        "comparison-logical-number",
+        "comparison-logical-text",
+        "comparison-numeric-call",
+        "comparison-text-call",
+        "comparison-integer-format",
+        "comparison-logical-condition",
+        "comparison-mixed-numeric-condition",
+        "comparison-formatted-value",
+        "comparison-chained",
+        "comparison-arithmetic",
+        "comparison-stored-numeric-call",
+        "comparison-stored-text-call",
+        "comparison-stored-condition",
+        "comparison-domain-left-order",
+        "comparison-generic-left-order",
+        "comparison-reassign-integer",
+        "comparison-reassign-logical",
+        "comparison-stored-condition-prefix",
+        "comparison-stored-global-call",
+        "comparison-stored-branch",
+        "comparison-stored-field",
+        "comparison-stored-element",
+        "comparison-stored-record",
+        "comparison-negation",
+        "comparison-logical-operators",
+        "comparison-logical-parameter",
+        "comparison-integer-parameter",
+        "comparison-logical-return",
+        "comparison-stored-record-field",
+        "comparison-stored-record-copy",
+        "comparison-stored-record-overwrite",
+        "comparison-nested-record-slot",
+        "comparison-e-left",
+        "comparison-e-right",
+        "comparison-e-text",
+        "comparison-ou-left",
+        "comparison-ou-right",
+        "comparison-ou-text",
+        "comparison-xou-left",
+        "comparison-xou-right",
+        "comparison-xou-text",
+        "comparison-plus-category",
+        "comparison-division-category",
+        "comparison-constant-value",
+        "comparison-reference-scalar",
+        "comparison-reference-chain",
+        "comparison-reference-element",
+        "comparison-reference-field",
+        "comparison-and-assignment",
+        "comparison-and-condition",
+        "comparison-integer-return",
+        "comparison-division-value",
+        "comparison-consumed-category",
+        "comparison-sign-divided",
+        "comparison-sign-plus-numeric",
+        "comparison-sign-plus-sum",
+        "comparison-division-sign-values"
       ]
     },
     {
@@ -3134,20 +3228,12 @@
         "expected": {
           "exitCode": 1,
           "stdout": {
-            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
-            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            "path": "testdata/conformance/visualg-3.0.7/probes/output-rounding/stdout.txt",
+            "sha256": "bf5fc90a7fdaea8dc6fe8160da10418dd2170f41676a6225ab4f85a1df6afbe1"
           },
           "diagnostics": [
             {
-              "code": "E001",
-              "line": 5
-            },
-            {
-              "code": "E001",
-              "line": 5
-            },
-            {
-              "code": "E001",
+              "code": "P001",
               "line": 5
             }
           ]
@@ -9675,14 +9761,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/comparison-negative-category/stdout.txt",
             "sha256": "8221ac66be71558c921fb44cfb66f7997699aea754d917763882d6d9eddc836e"
           }
-        }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
       }
     },
     {
@@ -10645,7 +10734,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -10658,7 +10747,10 @@
               "line": 10
             }
           ]
-        }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
       }
     },
     {
@@ -62746,6 +62838,4453 @@
         },
         "tests": [
           "record_types_test.go#TestRecordedRecords"
+        ]
+      }
+    },
+    {
+      "id": "comparison-numeric-mixed",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-mixed/source.alg",
+        "sha256": "3ac9d34cc62e53cce4f2547dc0992df180794c8e170c75fcf4c0fe499c02bfa5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:57:50.6114148Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-mixed/raw.txt",
+          "sha256": "580613d689bb429a58ada4d56cb2dbac4d11cef577af107aa8323679e9209441"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-mixed/stdout.txt",
+          "sha256": "72f35b725e8fe6cb0d961bb4d87d90f02220187c0cfd755e2d11c09889f08844"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-mixed/stdout.txt",
+            "sha256": "72f35b725e8fe6cb0d961bb4d87d90f02220187c0cfd755e2d11c09889f08844"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-numeric-order",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-order/source.alg",
+        "sha256": "b323507f559d1898da6c2895c4208e22f3b14bdf13c468453dfe7f62c1150a02"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:58:00.9045181Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-order/raw.txt",
+          "sha256": "5a2d9187e702522df8812b8fae149040b4df9301c6ec60f7f44e28234f864dc7"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-order/stdout.txt",
+          "sha256": "6c5401b43f4e119e6d0df3210a95bcf7b744c92aac59ba486edddf045dc039c1"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-order/stdout.txt",
+            "sha256": "6c5401b43f4e119e6d0df3210a95bcf7b744c92aac59ba486edddf045dc039c1"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-numeric-boundary",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-boundary/source.alg",
+        "sha256": "8864a7dbd6e96791a4c7ef410a242f2dc10743dd711eb9fed3f65b26b41787fe"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:58:11.0807343Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-boundary/raw.txt",
+          "sha256": "56e27b880523b9d830907be0ba3d673b6408071829a30c0016a10eec15fe6fb8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-boundary/stdout.txt",
+          "sha256": "8d58c269159e81802fac5bbfa2cb8e82f22f5ab9353b07766e45924d01d672cb"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-boundary/stdout.txt",
+            "sha256": "8d58c269159e81802fac5bbfa2cb8e82f22f5ab9353b07766e45924d01d672cb"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-order",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-order/source.alg",
+        "sha256": "30047c077d90073af029014e2cadaaf5fcdaae8865e2d9209e097d592dea3546"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:58:21.2539780Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-order/raw.txt",
+          "sha256": "5a2d9187e702522df8812b8fae149040b4df9301c6ec60f7f44e28234f864dc7"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-order/stdout.txt",
+          "sha256": "6c5401b43f4e119e6d0df3210a95bcf7b744c92aac59ba486edddf045dc039c1"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-order/stdout.txt",
+            "sha256": "6c5401b43f4e119e6d0df3210a95bcf7b744c92aac59ba486edddf045dc039c1"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-same",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-same/source.alg",
+        "sha256": "d0635fab8947e88740aff8b312a936ad661fa9ab0bb5f663185ea3aa5aca8ffe"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:58:31.3873158Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-same/raw.txt",
+          "sha256": "580613d689bb429a58ada4d56cb2dbac4d11cef577af107aa8323679e9209441"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-same/stdout.txt",
+          "sha256": "72f35b725e8fe6cb0d961bb4d87d90f02220187c0cfd755e2d11c09889f08844"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-same/stdout.txt",
+            "sha256": "72f35b725e8fe6cb0d961bb4d87d90f02220187c0cfd755e2d11c09889f08844"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-string-case",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-case/source.alg",
+        "sha256": "bd42a9c332bbc381c9e4f2cf64d190d26fb0eac38a64add9d2840afce99a66dd"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:58:41.6070411Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-case/raw.txt",
+          "sha256": "5a2d9187e702522df8812b8fae149040b4df9301c6ec60f7f44e28234f864dc7"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-case/stdout.txt",
+          "sha256": "6c5401b43f4e119e6d0df3210a95bcf7b744c92aac59ba486edddf045dc039c1"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-case/stdout.txt",
+            "sha256": "6c5401b43f4e119e6d0df3210a95bcf7b744c92aac59ba486edddf045dc039c1"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-string-accent",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-accent/source.alg",
+        "sha256": "89b86d57ea3f88c8d19d2576ad9b3aa81ee9aa8fa25eb41c659653d2e9d6143f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:58:51.7769464Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-accent/raw.txt",
+          "sha256": "5a2d9187e702522df8812b8fae149040b4df9301c6ec60f7f44e28234f864dc7"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-accent/stdout.txt",
+          "sha256": "6c5401b43f4e119e6d0df3210a95bcf7b744c92aac59ba486edddf045dc039c1"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-accent/stdout.txt",
+            "sha256": "6c5401b43f4e119e6d0df3210a95bcf7b744c92aac59ba486edddf045dc039c1"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-integer-string",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-string/source.alg",
+        "sha256": "ce991f5770581927700a354b15b1bedd024945d9768891672ee1eb472dca94a3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:59:02.0584200Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-string/raw.txt",
+          "sha256": "1769a62a71c4e8dc7222d7a61855cded8e94959ece8d69cdb3fe047802b96738"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-string/stdout.txt",
+          "sha256": "ae84dc86f55bcd769723ff65fdacf7689908b9662f927becaa05f8e5da52a468"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-string/stdout.txt",
+            "sha256": "ae84dc86f55bcd769723ff65fdacf7689908b9662f927becaa05f8e5da52a468"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-string-integer",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-integer/source.alg",
+        "sha256": "ef97d0a0f9f28f8027f6e46c340d5b79e70085f37573c55bc06022df225e7fb3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:59:12.1651380Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-integer/raw.txt",
+          "sha256": "4777f25b879752f18c32a359bc955143332bff4af54df35310fa8cae62a72cff"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-integer/stdout.txt",
+          "sha256": "3278c597f61e23960bc0a20bd976a8050a8f1d0dee37341190b09239b0df57c0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-integer/stdout.txt",
+            "sha256": "3278c597f61e23960bc0a20bd976a8050a8f1d0dee37341190b09239b0df57c0"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-integer-logical",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-logical/source.alg",
+        "sha256": "e11c2feb114add45beb1678cf7288abaeef435c879cd47cfa1b255cf61f6ce0f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:59:22.3482545Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-logical/raw.txt",
+          "sha256": "03b38a150f77a4807a28b73a2b7e085cc71f5dd201675b47fb7cca8b38cf9468"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-logical/stdout.txt",
+          "sha256": "234006b830999febd2a78d909e45f2d432c2374637bb62a788c39cc3cb92ff08"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-logical/stdout.txt",
+            "sha256": "234006b830999febd2a78d909e45f2d432c2374637bb62a788c39cc3cb92ff08"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-integer",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-integer/source.alg",
+        "sha256": "0715ba305ba4e639210602b216ec7a7a1f0cbd6e048f3b200aa72ee468f18a63"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:59:32.5373698Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-integer/raw.txt",
+          "sha256": "4777f25b879752f18c32a359bc955143332bff4af54df35310fa8cae62a72cff"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-integer/stdout.txt",
+          "sha256": "3278c597f61e23960bc0a20bd976a8050a8f1d0dee37341190b09239b0df57c0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-integer/stdout.txt",
+            "sha256": "3278c597f61e23960bc0a20bd976a8050a8f1d0dee37341190b09239b0df57c0"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-string",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-string/source.alg",
+        "sha256": "fe49be268671a91f8149ac5f791596faff5ddc99ebe94d4a057f65387f5761c4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:59:42.7340526Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-string/raw.txt",
+          "sha256": "6fa4b7371cae26d6cb227470e2d6ca5453f93f06c82ed4fcd25f828f9f192c96"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-string/stdout.txt",
+          "sha256": "e84600227dc5379df46ad141d576a13301863d4e5a067ede8a224e57e1177949"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-string/stdout.txt",
+            "sha256": "e84600227dc5379df46ad141d576a13301863d4e5a067ede8a224e57e1177949"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-string-logical",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-logical/source.alg",
+        "sha256": "841048e3b3aaf96c37b5b40d4d2b5121caa3e073e2d937109284ac3657f06352"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T02:59:52.8725819Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-logical/raw.txt",
+          "sha256": "03b38a150f77a4807a28b73a2b7e085cc71f5dd201675b47fb7cca8b38cf9468"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-logical/stdout.txt",
+          "sha256": "234006b830999febd2a78d909e45f2d432c2374637bb62a788c39cc3cb92ff08"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-logical/stdout.txt",
+            "sha256": "234006b830999febd2a78d909e45f2d432c2374637bb62a788c39cc3cb92ff08"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-string-order",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-order/source.alg",
+        "sha256": "70123250245a7281a72ad9f2cb05e7d42f9c3e7e635485c866bbd8df5045d85d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:00:03.0794807Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-order/raw.txt",
+          "sha256": "95ee794ef9758043937419ad487cbfa7f5c98227afbfbfb13d0fe53c45066a74"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-order/stdout.txt",
+          "sha256": "a59d89dfc6d316c959081627da5b3fc15a7d7b5f49fcb2df55f773d451077791"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-order/stdout.txt",
+            "sha256": "a59d89dfc6d316c959081627da5b3fc15a7d7b5f49fcb2df55f773d451077791"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-operand-order",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-operand-order/source.alg",
+        "sha256": "67881e08a18ba6b0d852dbcd056595e5545871ff7d53528ca2aeaa9c1ebc9139"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:00:13.2850607Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-operand-order/raw.txt",
+          "sha256": "1568242d8cd515eda7bc944c7dbb19b6632b9cf443431a8018453c0ae53508b9"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-operand-order/stdout.txt",
+          "sha256": "3577d84fdd76ca4d2bb7b069f7e3c5f8596e9e51f9e9a6498d8e8b65914ebcd8"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-operand-order/stdout.txt",
+            "sha256": "3577d84fdd76ca4d2bb7b069f7e3c5f8596e9e51f9e9a6498d8e8b65914ebcd8"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-real-string",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-real-string/source.alg",
+        "sha256": "e98fcea16e363769ecb0b984c0a4b13f3fc5ba5881e391d7cce12858c419d4f1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:02:23.6087339Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-real-string/raw.txt",
+          "sha256": "6fa4b7371cae26d6cb227470e2d6ca5453f93f06c82ed4fcd25f828f9f192c96"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-real-string/stdout.txt",
+          "sha256": "e84600227dc5379df46ad141d576a13301863d4e5a067ede8a224e57e1177949"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-real-string/stdout.txt",
+            "sha256": "e84600227dc5379df46ad141d576a13301863d4e5a067ede8a224e57e1177949"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-string-real",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-real/source.alg",
+        "sha256": "684398a6203cf9865a4e33c713c56ab0be6c6b8ca97cd3181eedabe431671244"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:02:33.8744148Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-real/raw.txt",
+          "sha256": "8dd25cac41a6bff659ebcb270d14113925709d5ea7dea410ec6a4eba600e06af"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-real/stdout.txt",
+          "sha256": "e96550495c1e1335e4575d448b4b290cbe459a9140c6481769fbd55fb6364d78"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-real/stdout.txt",
+            "sha256": "e96550495c1e1335e4575d448b4b290cbe459a9140c6481769fbd55fb6364d78"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-real-logical",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-real-logical/source.alg",
+        "sha256": "d1c75d393681fc941c3d0e4c9e6a1aa253e8d8a2f42f35887e9e243783d99a7c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:02:44.1056769Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-real-logical/raw.txt",
+          "sha256": "25e83690d8790ba82ba7663243ae13e5f02656a9c6ddce1821a6a5ba2a5043d9"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-real-logical/stdout.txt",
+          "sha256": "3b459aff216f8b2628be656f9f442b28b1bbc2718c68892e874fe8fd83dc6fd4"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-real-logical/stdout.txt",
+            "sha256": "3b459aff216f8b2628be656f9f442b28b1bbc2718c68892e874fe8fd83dc6fd4"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-real",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-real/source.alg",
+        "sha256": "33022838d62a1b65dc50820cae05e8264de961f18b591a2b910ebb5275bae3ef"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:02:54.3172499Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-real/raw.txt",
+          "sha256": "8dd25cac41a6bff659ebcb270d14113925709d5ea7dea410ec6a4eba600e06af"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-real/stdout.txt",
+          "sha256": "e96550495c1e1335e4575d448b4b290cbe459a9140c6481769fbd55fb6364d78"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-real/stdout.txt",
+            "sha256": "e96550495c1e1335e4575d448b4b290cbe459a9140c6481769fbd55fb6364d78"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-reverse",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-reverse/source.alg",
+        "sha256": "f5678815ad9992f82007c390e629787a5ac8b490d57e6666119a7920a174a7df"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:03:04.4473597Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-reverse/raw.txt",
+          "sha256": "56e27b880523b9d830907be0ba3d673b6408071829a30c0016a10eec15fe6fb8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-reverse/stdout.txt",
+          "sha256": "8d58c269159e81802fac5bbfa2cb8e82f22f5ab9353b07766e45924d01d672cb"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-reverse/stdout.txt",
+            "sha256": "8d58c269159e81802fac5bbfa2cb8e82f22f5ab9353b07766e45924d01d672cb"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-empty-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-empty-left/source.alg",
+        "sha256": "c9a9be1f0ad8398a4fccddb6e63b7748730b83928fb0bc3cbc67b34f9166bb13"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:03:14.5465215Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-empty-left/raw.txt",
+          "sha256": "4777f25b879752f18c32a359bc955143332bff4af54df35310fa8cae62a72cff"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-empty-left/stdout.txt",
+          "sha256": "3278c597f61e23960bc0a20bd976a8050a8f1d0dee37341190b09239b0df57c0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-empty-left/stdout.txt",
+            "sha256": "3278c597f61e23960bc0a20bd976a8050a8f1d0dee37341190b09239b0df57c0"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-empty-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-empty-right/source.alg",
+        "sha256": "79047399ac0cd049bbe298b155fcbf645d1af4f9ba0123d5e2784c37a9fba8ea"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:03:24.6893123Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-empty-right/raw.txt",
+          "sha256": "4777f25b879752f18c32a359bc955143332bff4af54df35310fa8cae62a72cff"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-empty-right/stdout.txt",
+          "sha256": "3278c597f61e23960bc0a20bd976a8050a8f1d0dee37341190b09239b0df57c0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-empty-right/stdout.txt",
+            "sha256": "3278c597f61e23960bc0a20bd976a8050a8f1d0dee37341190b09239b0df57c0"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-record-values",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-values/source.alg",
+        "sha256": "71ffdb13fdb96245deea8d0484e3618222fa0bd5197eb30afbd5e1501720a0cb"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:03:45.1679371Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-values/raw.txt",
+          "sha256": "c325703254ab9a2ee0eaa1804f85fc195c19fef5ec1294cb6f97bb7b9e187cb4"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-values/stdout.txt",
+          "sha256": "d088784b7ecb87f1ea17e6f982fa968ffefcc07b79de6ecc548fc00242868da6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-values/stdout.txt",
+            "sha256": "d088784b7ecb87f1ea17e6f982fa968ffefcc07b79de6ecc548fc00242868da6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-vector-values",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-vector-values/source.alg",
+        "sha256": "524a51fad35349641564adcd1976ac5587041acd80bf004fe0f9c90f57c01d8e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:03:55.3492227Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-vector-values/transcription.txt",
+          "sha256": "8a428b037a737c06e7313ddeb21c05d547d177efda701a96a7b0f4143cc4feb4"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-vector-values/transcription.txt",
+          "sha256": "8a428b037a737c06e7313ddeb21c05d547d177efda701a96a7b0f4143cc4feb4"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-vector-values/screenshot.png",
+          "sha256": "ed117f1622300e1c5887aa94ada8034a14f212e0209df80d3d9033d245f654bb"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-vector-values/transcription.txt",
+          "sha256": "8a428b037a737c06e7313ddeb21c05d547d177efda701a96a7b0f4143cc4feb4"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-byte-order",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-byte-order/source.alg",
+        "sha256": "44ab628846738a051de29b85055b28235a94425b8b1f7b5314ec936114cdd20d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:04:05.5907313Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-byte-order/raw.txt",
+          "sha256": "875d1ec047869d4affa12fd062e7350181439394690bb3c0bae2eb3f86a8a7e6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-byte-order/stdout.txt",
+          "sha256": "dfb9e8a0fde906d69f265b92b019a72954f7be3151b26febc29171735d19ec61"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-byte-order/stdout.txt",
+            "sha256": "dfb9e8a0fde906d69f265b92b019a72954f7be3151b26febc29171735d19ec61"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-mixed-order",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-mixed-order/source.alg",
+        "sha256": "9b5092e4436d34c48d835b6a3a900925dd58b1d4d5f35cf9b0e031b9dc0d8568"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:04:15.7663640Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-mixed-order/raw.txt",
+          "sha256": "cd5b5d247b3a5b2cb0f8b1ec40086deb3091c0eb809fb1d17ffb29d6905b7bd2"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-mixed-order/stdout.txt",
+          "sha256": "2cf57f7b5a540dd8c76b5da2eade2f9773aab9b7ceb1c86d36a5f84c0eeb3729"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-mixed-order/stdout.txt",
+            "sha256": "2cf57f7b5a540dd8c76b5da2eade2f9773aab9b7ceb1c86d36a5f84c0eeb3729"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-record-result",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-result/source.alg",
+        "sha256": "9ce7187c052a97800da7de7e3f35b957db80ec67175739ea980bb2b1e6a577b4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:07:12.7098473Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-result/transcription.txt",
+          "sha256": "0c094fec932a17c2d9bcb5447c87c841325fa7660de34c132d09cb9c4af9acc1"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-result/transcription.txt",
+          "sha256": "0c094fec932a17c2d9bcb5447c87c841325fa7660de34c132d09cb9c4af9acc1"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-result/screenshot.png",
+          "sha256": "f2bd6ae0206357ac8b80bc990e89aff68917a97597c7069c6090006125d6677c"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-result/transcription.txt",
+          "sha256": "0c094fec932a17c2d9bcb5447c87c841325fa7660de34c132d09cb9c4af9acc1"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-result/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R001",
+              "line": 11
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-record-scalar",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-scalar/source.alg",
+        "sha256": "01417ec4b0ad1c0aa69513a460ad4f1046616c3aaaf8156069d7d7a679a4b976"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:07:23.0034093Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-scalar/raw.txt",
+          "sha256": "f1471a41164701dff0f174bd82b62b6f92f08f41fa20cd83f5948b89acac9c86"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-scalar/stdout.txt",
+          "sha256": "919b1b6750ec9f74c06b507edf2c8cbebc326b714f1732eab3f424b4a9da29de"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-scalar/stdout.txt",
+            "sha256": "919b1b6750ec9f74c06b507edf2c8cbebc326b714f1732eab3f424b4a9da29de"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-scalar-record",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-scalar-record/source.alg",
+        "sha256": "ac197142d011c06b8c7e40aca7df6ea1c03b17e0b3dda289b540326dde04613e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:07:33.3191459Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-scalar-record/transcription.txt",
+          "sha256": "b09cfe3c2bae34a890c033bc9b74808fdbcf5583118d0e045ae8215591e2ffba"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-scalar-record/transcription.txt",
+          "sha256": "b09cfe3c2bae34a890c033bc9b74808fdbcf5583118d0e045ae8215591e2ffba"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-scalar-record/screenshot.png",
+          "sha256": "011c98489d414c3597dfb8073d3775e38632c8ca74e9dc2f3a383625e6f77caf"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-scalar-record/transcription.txt",
+          "sha256": "b09cfe3c2bae34a890c033bc9b74808fdbcf5583118d0e045ae8215591e2ffba"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-scalar-record/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R001",
+              "line": 10
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-record-types",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-types/source.alg",
+        "sha256": "2c09e49cbc33da9eb12e71c9bafb53082b2c9c834974900357d56c9d79bb93b9"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:07:43.5015398Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-types/transcription.txt",
+          "sha256": "4ca4116e64f9816276a54dac6d008b964d431e0b3ac82cefd4ce4d92d61c4e05"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-types/transcription.txt",
+          "sha256": "4ca4116e64f9816276a54dac6d008b964d431e0b3ac82cefd4ce4d92d61c4e05"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-types/screenshot.png",
+          "sha256": "db58f8d2336fe5ed4b8d8ca1e9e624fb9b8d9a41b3b55f67aea3f7d23974f7ff"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-types/transcription.txt",
+          "sha256": "4ca4116e64f9816276a54dac6d008b964d431e0b3ac82cefd4ce4d92d61c4e05"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-record-types/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R001",
+              "line": 15
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-domain-empty-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-empty-left/source.alg",
+        "sha256": "cf0025f9cf8900dca630c2cbae616f5b3e89de87a26b24021d3751117f7793c5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:07:53.6363876Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-empty-left/raw.txt",
+          "sha256": "ad777ca40d73daaaeb09baf68d63aa83c6cdc9124b7ad4c4c46910143d3bb4bb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-empty-left/stdout.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-empty-left/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-domain-empty-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-empty-right/source.alg",
+        "sha256": "c3da253e56c86bac80174b81a7b95830b92cbe1da040245d14cf1d2e3f2675a5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:08:03.8578084Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-empty-right/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-empty-right/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-empty-right/screenshot.png",
+          "sha256": "0a40412f89eda49aa6bab8d2de8cc317f9d61173639e4ed6ad6df645d6498623"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-empty-right/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-code-empty-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-code-empty-left/source.alg",
+        "sha256": "2c6842e3a83b404d1ec919b9329819c1991f95d292d45d67e446406c4457b26e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:08:14.0142093Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-code-empty-left/raw.txt",
+          "sha256": "f1471a41164701dff0f174bd82b62b6f92f08f41fa20cd83f5948b89acac9c86"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-code-empty-left/stdout.txt",
+          "sha256": "919b1b6750ec9f74c06b507edf2c8cbebc326b714f1732eab3f424b4a9da29de"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-code-empty-left/stdout.txt",
+            "sha256": "919b1b6750ec9f74c06b507edf2c8cbebc326b714f1732eab3f424b4a9da29de"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-code-empty-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-code-empty-right/source.alg",
+        "sha256": "2fb47c963468e556b16474d11650c9a648c44d1d43c34ab4fe7ea047104b03cd"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:08:24.2491600Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-code-empty-right/raw.txt",
+          "sha256": "f1471a41164701dff0f174bd82b62b6f92f08f41fa20cd83f5948b89acac9c86"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-code-empty-right/stdout.txt",
+          "sha256": "919b1b6750ec9f74c06b507edf2c8cbebc326b714f1732eab3f424b4a9da29de"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-code-empty-right/stdout.txt",
+            "sha256": "919b1b6750ec9f74c06b507edf2c8cbebc326b714f1732eab3f424b4a9da29de"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-integer-assignment",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-assignment/source.alg",
+        "sha256": "6469d3ac025b509e4697fb71fbbfb1a4a587439294231d769934718701a615ae"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:11:56.2920007Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-assignment/transcription.txt",
+          "sha256": "da9cf0ed6adecafbde920058f0d6ffd292d89fd53b213a9ad84ef46712766e95"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-assignment/transcription.txt",
+          "sha256": "da9cf0ed6adecafbde920058f0d6ffd292d89fd53b213a9ad84ef46712766e95"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-assignment/screenshot.png",
+          "sha256": "92c28772288b6f173e8aff86cb7492c60429757caadd210b43d41961d12bf860"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-assignment/transcription.txt",
+          "sha256": "da9cf0ed6adecafbde920058f0d6ffd292d89fd53b213a9ad84ef46712766e95"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-assignment/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-string-assignment",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-assignment/source.alg",
+        "sha256": "cc779d440129a56280246e3e23aa7ffee46fa51056e45fd7eb8eb34dd90c6f7f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:12:06.5930785Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-assignment/transcription.txt",
+          "sha256": "f6b5870544bdbb9703ed6d6e90a5fb892c2d64d4a57cf7cd317299e0befbced3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-assignment/transcription.txt",
+          "sha256": "f6b5870544bdbb9703ed6d6e90a5fb892c2d64d4a57cf7cd317299e0befbced3"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-assignment/screenshot.png",
+          "sha256": "bf1ef06adb2cf28b58f0731b0563fe4f4095a332c3fb61611c8f57d92e296c43"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-assignment/transcription.txt",
+          "sha256": "f6b5870544bdbb9703ed6d6e90a5fb892c2d64d4a57cf7cd317299e0befbced3"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-string-assignment/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-assignment",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-assignment/source.alg",
+        "sha256": "89e78e4ff827bcc23cd1e2ee7b41037936ffc60f862c710c4a33e1c02927bda1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:12:18.2272131Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-assignment/raw.txt",
+          "sha256": "7dd3f49225c5a096604d477e01999a5447bf713811c1822f395eca59034f6257"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-assignment/stdout.txt",
+          "sha256": "e5e4e6cb9963e8f1eecc6eac98006ae48dd5506dcac86f2e6a2a1b54863628e5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-assignment/stdout.txt",
+            "sha256": "e5e4e6cb9963e8f1eecc6eac98006ae48dd5506dcac86f2e6a2a1b54863628e5"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-number",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-number/source.alg",
+        "sha256": "aac7ce847744f6506695e83f6cee4bc0f6111332a5f55e8170550f2321f2e9f6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:12:28.4321001Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-number/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-number/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-number/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-text",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-text/source.alg",
+        "sha256": "65d3e9b206901b88da91877c723c92e0b482a64a6afbd08e0e427ab56f0aae7c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:12:38.6511228Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-text/raw.txt",
+          "sha256": "356482ba10f0fa5072024d1cd763bfd72f9370ca425073fd88c6c7e091466909"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-text/stdout.txt",
+          "sha256": "73cb3858a687a8494ca3323053016282f3dad39d42cf62ca4e79dda2aac7d9ac"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-text/stdout.txt",
+            "sha256": "73cb3858a687a8494ca3323053016282f3dad39d42cf62ca4e79dda2aac7d9ac"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-numeric-call",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-call/source.alg",
+        "sha256": "d86d1ff3252aced3a042d54e86a1e77b43e56e5507a17855acafd36bd549f0c9"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:12:48.8191294Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-call/raw.txt",
+          "sha256": "224ddbc68d123422e4319b48086283ea0420a3e630062a763c8b8df0273fb05b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-call/stdout.txt",
+          "sha256": "24e0e6618be44edb8274891cc81fce8e95cb0cdb6fd8565a0c1ab3690a8365d8"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-numeric-call/stdout.txt",
+            "sha256": "24e0e6618be44edb8274891cc81fce8e95cb0cdb6fd8565a0c1ab3690a8365d8"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-text-call",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-text-call/source.alg",
+        "sha256": "2d61e9b88b1bb4e73057753b511bd93d0c604eb66ecaaa26b6c2f4f03b3c8980"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:12:58.9668008Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-text-call/raw.txt",
+          "sha256": "d558b30955c5ea73ac85acbf1a34332cc9d08235d4111ff48652c1eb317d4c44"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-text-call/stdout.txt",
+          "sha256": "93b9bc9f443b75398da108cd9b817c3b92c30fe167663cfcce39ccfa27f882c5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-text-call/stdout.txt",
+            "sha256": "93b9bc9f443b75398da108cd9b817c3b92c30fe167663cfcce39ccfa27f882c5"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-integer-format",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-format/source.alg",
+        "sha256": "a28561f1898303567db10190f5156f76b9077bb1b2820a79bb6909802076f848"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:13:09.3355241Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-format/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-format/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-format/screenshot.png",
+          "sha256": "3140e55e48e189c92d4068d17e3d5bf1bd7a32d724884aa33a0e246ab5f9a45b"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-format/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-condition",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-condition/source.alg",
+        "sha256": "9da836962ce09f3749ab27ec1301ec6313c87acb586dbee35734ed173c686c54"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:13:19.4793402Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-condition/raw.txt",
+          "sha256": "7fdf29be58a547336409265ffdbe9450c996610527ab2ba229b604bc32b0a18c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-condition/stdout.txt",
+          "sha256": "cfe72034a9f298fb79a6c1f2302673bb449c826d446b3efafdde95e6c48dc3ca"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-condition/stdout.txt",
+            "sha256": "cfe72034a9f298fb79a6c1f2302673bb449c826d446b3efafdde95e6c48dc3ca"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-mixed-numeric-condition",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-mixed-numeric-condition/source.alg",
+        "sha256": "fda1ff187dcd99146e5da716c1d15e3af55557e4d46d0e0686cfa05243a1553d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:13:29.6066235Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-mixed-numeric-condition/raw.txt",
+          "sha256": "7fdf29be58a547336409265ffdbe9450c996610527ab2ba229b604bc32b0a18c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-mixed-numeric-condition/stdout.txt",
+          "sha256": "cfe72034a9f298fb79a6c1f2302673bb449c826d446b3efafdde95e6c48dc3ca"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-mixed-numeric-condition/stdout.txt",
+            "sha256": "cfe72034a9f298fb79a6c1f2302673bb449c826d446b3efafdde95e6c48dc3ca"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-formatted-value",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-formatted-value/source.alg",
+        "sha256": "f5e574f8b906e84ba3f47c226f3fe7bc793682f630d9cbf756ed748a1e919209"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:20:50.7035650Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-formatted-value/raw.txt",
+          "sha256": "a4b4f04864b4d1c7b96cd908db8bdacc8eaecc08bcada95c8573f2cf1b5644e6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-formatted-value/stdout.txt",
+          "sha256": "b68bbfa7cb89c98d72e7029807e3b1b29e60ea4827acbfde0d138bb15ecc1830"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-formatted-value/stdout.txt",
+            "sha256": "b68bbfa7cb89c98d72e7029807e3b1b29e60ea4827acbfde0d138bb15ecc1830"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-chained",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-chained/source.alg",
+        "sha256": "fddfaf4ecfdbe557e34fadca9140c2ae7c084c5c11ff70b3136a784e921b1056"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:21:00.8843355Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-chained/raw.txt",
+          "sha256": "e657aed51723744e6ffc44a200b207a892f79209457893d52b7be632dcb17c68"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-chained/stdout.txt",
+          "sha256": "fbf7de0a30a0409b075d2faccc32b99145c39e00130e176b1b6ec31a82535b50"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-chained/stdout.txt",
+            "sha256": "fbf7de0a30a0409b075d2faccc32b99145c39e00130e176b1b6ec31a82535b50"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-arithmetic",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-arithmetic/source.alg",
+        "sha256": "51079a779c04d06f04f38cd4b86527a34c60c623340cf905953c5d564bfaee54"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:21:11.1042092Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-arithmetic/raw.txt",
+          "sha256": "4203047baf593b8b58b1d1102832900e2e5763c21e9057f65e7eeeb820cde8ff"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-arithmetic/stdout.txt",
+          "sha256": "c77abe9f94f36394ad4d2f196c4728a8b33a2467c5fe64de386dea031a143189"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-arithmetic/stdout.txt",
+            "sha256": "c77abe9f94f36394ad4d2f196c4728a8b33a2467c5fe64de386dea031a143189"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-stored-numeric-call",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-numeric-call/source.alg",
+        "sha256": "da53d40c7d42b16001890402101135d37aafcd6de0add6a248794693e6d9cbc4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:21:21.3039698Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-numeric-call/raw.txt",
+          "sha256": "224ddbc68d123422e4319b48086283ea0420a3e630062a763c8b8df0273fb05b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-numeric-call/stdout.txt",
+          "sha256": "24e0e6618be44edb8274891cc81fce8e95cb0cdb6fd8565a0c1ab3690a8365d8"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-numeric-call/stdout.txt",
+            "sha256": "24e0e6618be44edb8274891cc81fce8e95cb0cdb6fd8565a0c1ab3690a8365d8"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-stored-text-call",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-text-call/source.alg",
+        "sha256": "161cade1b07859bfec369c5ab17ae2d78440c903a7e9d7990cb30894f9b5c417"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:21:31.5581018Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-text-call/raw.txt",
+          "sha256": "d558b30955c5ea73ac85acbf1a34332cc9d08235d4111ff48652c1eb317d4c44"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-text-call/stdout.txt",
+          "sha256": "93b9bc9f443b75398da108cd9b817c3b92c30fe167663cfcce39ccfa27f882c5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-text-call/stdout.txt",
+            "sha256": "93b9bc9f443b75398da108cd9b817c3b92c30fe167663cfcce39ccfa27f882c5"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-stored-condition",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-condition/source.alg",
+        "sha256": "1c510abbd5b3f62eba92a83fb8e4b79144e12e22e1c5c096a6e09a0f47e80c31"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:21:41.7079804Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-condition/transcription.txt",
+          "sha256": "021a6ab47b4771b0ab4659c749ad8462b73c78567610b63f095d40fd8b11d9c7"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-condition/transcription.txt",
+          "sha256": "021a6ab47b4771b0ab4659c749ad8462b73c78567610b63f095d40fd8b11d9c7"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-condition/screenshot.png",
+          "sha256": "1fa60ac2fa76bff17a7209989c15b4701845e7192813192e3e39a4a8a0371cd5"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-condition/transcription.txt",
+          "sha256": "021a6ab47b4771b0ab4659c749ad8462b73c78567610b63f095d40fd8b11d9c7"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-domain-left-order",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-left-order/source.alg",
+        "sha256": "1e45f384fab869c88fbe9e4513fcbc10674ecdbeb8241d0fc3a32a3446bcf2e5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:21:51.8088141Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-left-order/raw.txt",
+          "sha256": "824ebf88817761e3584ada6977a9f964fc765f46d19f9ae524829592633837a8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-left-order/stdout.txt",
+          "sha256": "8221ac66be71558c921fb44cfb66f7997699aea754d917763882d6d9eddc836e"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-domain-left-order/stdout.txt",
+            "sha256": "8221ac66be71558c921fb44cfb66f7997699aea754d917763882d6d9eddc836e"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-generic-left-order",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-generic-left-order/source.alg",
+        "sha256": "ff66f493178b19a899cd19c26ef2ca138ad101cb6b01a35b2ea26c648de3ea12"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:22:02.1135152Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-generic-left-order/raw.txt",
+          "sha256": "90eedcd36ef5b654b8d8ca57009fc0f3a3d03ae7b578e8b36ab5d6496eeec514"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-generic-left-order/stdout.txt",
+          "sha256": "562a6d56f1ec891f62ada405e9bddb3511395c896e34d67244ff209804b8c6fe"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-generic-left-order/stdout.txt",
+            "sha256": "562a6d56f1ec891f62ada405e9bddb3511395c896e34d67244ff209804b8c6fe"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-reassign-integer",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reassign-integer/source.alg",
+        "sha256": "5cd6c5e77de7265897a1ad1ead06359d0456098bf3c3f9f0e99878bcd1db7fd7"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:33:25.1412661Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reassign-integer/raw.txt",
+          "sha256": "e075ad1756f586209d14c79572baf516af0980b6729df3248b882a40a3bea3df"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reassign-integer/stdout.txt",
+          "sha256": "370ce531599333970ec615654a66419dcfc1d180e7dffbde7e7afd8670df5083"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reassign-integer/stdout.txt",
+            "sha256": "370ce531599333970ec615654a66419dcfc1d180e7dffbde7e7afd8670df5083"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-reassign-logical",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reassign-logical/source.alg",
+        "sha256": "c4c9d066653b3454d955a904d9e8f9bf88f74626d4c82df682cefe7bace93366"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:33:36.7779076Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reassign-logical/transcription.txt",
+          "sha256": "d31fcca51fb237f90808a5cefde2df6475dd02c2bf705c6a6b7430d11225579c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reassign-logical/transcription.txt",
+          "sha256": "d31fcca51fb237f90808a5cefde2df6475dd02c2bf705c6a6b7430d11225579c"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reassign-logical/screenshot.png",
+          "sha256": "9a256f875bfcfc57843812fc46d4f358524d6e9aa31c6161419cfc019fe748bb"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reassign-logical/transcription.txt",
+          "sha256": "d31fcca51fb237f90808a5cefde2df6475dd02c2bf705c6a6b7430d11225579c"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reassign-logical/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-stored-condition-prefix",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-condition-prefix/source.alg",
+        "sha256": "4944efdcb679de3e3098f0cf4c00aea54332377312ad2fcc2bbfa1d1e951f6f8"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:33:47.0786182Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-condition-prefix/transcription.txt",
+          "sha256": "8cb9acf8f51f79d649ae80c794a57921bf534863f9222a4a156990675c2fd4cf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-condition-prefix/transcription.txt",
+          "sha256": "8cb9acf8f51f79d649ae80c794a57921bf534863f9222a4a156990675c2fd4cf"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-condition-prefix/screenshot.png",
+          "sha256": "baa3b3e4ce349f404bce62739c8824fe032e735f488720853ac8d6e1e8a0a1da"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-condition-prefix/transcription.txt",
+          "sha256": "8cb9acf8f51f79d649ae80c794a57921bf534863f9222a4a156990675c2fd4cf"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-condition-prefix/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 7
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-stored-global-call",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-global-call/source.alg",
+        "sha256": "e71514b0f0add69c440f745a5a434202293804a7175e28db42dddb94434fa8ce"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:33:57.2742140Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-global-call/raw.txt",
+          "sha256": "7bbf158b3d1b467d429f1554aca07e75312dfa4989ca3905718d91e9ad15a683"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-global-call/stdout.txt",
+          "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-global-call/stdout.txt",
+            "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-stored-branch",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-branch/source.alg",
+        "sha256": "817e539d0031d9ed9d554d10ca1b29023e07c4dc39268bc1803f47b89213714e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:34:07.4835537Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-branch/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-branch/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-branch/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-stored-field",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-field/source.alg",
+        "sha256": "57844ed88321a98446b02a4ed560bac3b04f727f4818b57e4b8a12945be62b70"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:34:17.6055005Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-field/raw.txt",
+          "sha256": "7bbf158b3d1b467d429f1554aca07e75312dfa4989ca3905718d91e9ad15a683"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-field/stdout.txt",
+          "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-field/stdout.txt",
+            "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-stored-element",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-element/source.alg",
+        "sha256": "12deef5ce5c3c58b57566c383769ee6f50513a27a8aa14af661125d0cb11d906"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:34:27.7782563Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-element/raw.txt",
+          "sha256": "7bbf158b3d1b467d429f1554aca07e75312dfa4989ca3905718d91e9ad15a683"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-element/stdout.txt",
+          "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-element/stdout.txt",
+            "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-stored-record",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record/source.alg",
+        "sha256": "b1850d837d96b718d4e52c3aec810bc53cfb466d780053c10a094f49dd0dff25"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:34:38.1297705Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record/raw.txt",
+          "sha256": "309671747856c5fb104eebb0dd8ffd68e53236c52e9b14cfa8636c5d2d3f36d4"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record/stdout.txt",
+          "sha256": "b7d92476e847e2ac908b5ee14fb610276229a344ecf792ec844afdd4eb1e602e"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record/stdout.txt",
+            "sha256": "b7d92476e847e2ac908b5ee14fb610276229a344ecf792ec844afdd4eb1e602e"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-negation",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-negation/source.alg",
+        "sha256": "858154822baeef1e32adf41fcdd456df6bdb61ca5336e992adec686ac41a3c1e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:40:43.5631356Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-negation/raw.txt",
+          "sha256": "f01fd89b93f56ce6101252de33a82f077fd488885a3bd3c746864fe85837db48"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-negation/stdout.txt",
+          "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-negation/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-operators",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-operators/source.alg",
+        "sha256": "e1e24bf0c1dcf887c1c881f05adc2449dd3330d05f06007c8c0b649f3824405b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:40:53.8294480Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-operators/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-operators/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-operators/screenshot.png",
+          "sha256": "eb5aba9c1acadd194ec42d918732a794da3fbe31f798d086085574783ccb8493"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-operators/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-operators/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-parameter",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-parameter/source.alg",
+        "sha256": "7570b6ff1a1ec22ec6f25979cd1fcc1185562fc58cb4fadbbfb03f73c64a2d0c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:41:04.1301689Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-parameter/transcription.txt",
+          "sha256": "fe8a3d11f8171b13c7021cdfabaf70e01447377c934f387f76a12ba57d27cd20"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-parameter/transcription.txt",
+          "sha256": "fe8a3d11f8171b13c7021cdfabaf70e01447377c934f387f76a12ba57d27cd20"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-parameter/screenshot.png",
+          "sha256": "28b469b8412565bf0a0096c88eed5357def3e6dbbc3e1bbb911a3c789545fcb1"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-parameter/transcription.txt",
+          "sha256": "fe8a3d11f8171b13c7021cdfabaf70e01447377c934f387f76a12ba57d27cd20"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 2
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-integer-parameter",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-parameter/source.alg",
+        "sha256": "644e14678c34383fe4a78d2be1931aab759b3ae253520e1f22e79df274f172a1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:41:14.3273413Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-parameter/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-parameter/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-parameter/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-logical-return",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-return/source.alg",
+        "sha256": "30d5234622cc8e661ae42dec50aa8f4664a7ed24864ef7bcfc1ea9d5e44a2a55"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T03:41:24.7118688Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-return/raw.txt",
+          "sha256": "7dd3f49225c5a096604d477e01999a5447bf713811c1822f395eca59034f6257"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-return/stdout.txt",
+          "sha256": "e5e4e6cb9963e8f1eecc6eac98006ae48dd5506dcac86f2e6a2a1b54863628e5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-logical-return/stdout.txt",
+            "sha256": "e5e4e6cb9963e8f1eecc6eac98006ae48dd5506dcac86f2e6a2a1b54863628e5"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-stored-record-field",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-field/source.alg",
+        "sha256": "3371c96c0229ea1fc3b889dcb4c1c1670cd508d258449c7df78d8a36f8038d2a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:41:34.8727121Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-field/transcription.txt",
+          "sha256": "d57ac5d91b2ebd8731fd993df5d282812b63add1e7a7b9f6b934b617c0911834"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-field/transcription.txt",
+          "sha256": "d57ac5d91b2ebd8731fd993df5d282812b63add1e7a7b9f6b934b617c0911834"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-field/screenshot.png",
+          "sha256": "c467a9262f4736b8c6f4440a0482d4808da6a6a39250667a0013d950729403ac"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-field/transcription.txt",
+          "sha256": "d57ac5d91b2ebd8731fd993df5d282812b63add1e7a7b9f6b934b617c0911834"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E002",
+              "line": 12
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-stored-record-copy",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-copy/source.alg",
+        "sha256": "d41294a0bbbc45ff8128cdde7d88348042e6b3897d5098c7a596442e6b564b09"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:41:45.0029303Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-copy/transcription.txt",
+          "sha256": "582d581ce39eeb9273ad70679550f357e1755eab892691013887216e81796fc0"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-copy/transcription.txt",
+          "sha256": "582d581ce39eeb9273ad70679550f357e1755eab892691013887216e81796fc0"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-copy/screenshot.png",
+          "sha256": "78fdbda10c87ebd3f81f5c5149d6764aab12ecd4a51c0bd38f8851de6f4e1484"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-copy/transcription.txt",
+          "sha256": "582d581ce39eeb9273ad70679550f357e1755eab892691013887216e81796fc0"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-copy/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R001",
+              "line": 12
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-stored-record-overwrite",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-overwrite/source.alg",
+        "sha256": "45ac6a853e25822e1a787606483101505067001ebd05a75f53b96b43643d417d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:41:55.2870497Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-overwrite/transcription.txt",
+          "sha256": "582d581ce39eeb9273ad70679550f357e1755eab892691013887216e81796fc0"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-overwrite/transcription.txt",
+          "sha256": "582d581ce39eeb9273ad70679550f357e1755eab892691013887216e81796fc0"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-overwrite/screenshot.png",
+          "sha256": "57da90269e99dca4e0512754433fe0e450cbea70b05603fd345a9c6795a35774"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-overwrite/transcription.txt",
+          "sha256": "582d581ce39eeb9273ad70679550f357e1755eab892691013887216e81796fc0"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-stored-record-overwrite/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R001",
+              "line": 12
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-nested-record-slot",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-nested-record-slot/source.alg",
+        "sha256": "7239f97717d0ea99f57915c03a3e2c2526204ce8d6fabaef5087fef925a90ec3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T03:42:05.5466125Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-nested-record-slot/transcription.txt",
+          "sha256": "3182f15047d01423a64a3a057a465a69d6611f17cc29001755395375b84aff7b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-nested-record-slot/transcription.txt",
+          "sha256": "3182f15047d01423a64a3a057a465a69d6611f17cc29001755395375b84aff7b"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-nested-record-slot/screenshot.png",
+          "sha256": "28b881a792ca9b4330cb55d23b4c3d55cd722a5f7572d496b0d47565f4029ab0"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-nested-record-slot/transcription.txt",
+          "sha256": "3182f15047d01423a64a3a057a465a69d6611f17cc29001755395375b84aff7b"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E002",
+              "line": 12
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-e-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-e-left/source.alg",
+        "sha256": "37f8c783a87e2c4f03fbb0c079e1ef3d79624bc99c88a6e841afc49c226e26ca"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:25:19.4550417Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-e-left/raw.txt",
+          "sha256": "938ecbb1c097fd887c1e3e50001697073e92c87ab52a2189e923807d3f1d7510"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-e-left/stdout.txt",
+          "sha256": "78ee7b81f12bddeda978880af32d9fda9d010fcecfa1dfb3ba9f0497c89d7390"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-e-left/stdout.txt",
+            "sha256": "78ee7b81f12bddeda978880af32d9fda9d010fcecfa1dfb3ba9f0497c89d7390"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-e-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-e-right/source.alg",
+        "sha256": "3b2763e546f7eb901deaeaca4ade8dd9afdf5c865a46f1dc3b4e0cc2f896185c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:25:29.7768927Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-e-right/raw.txt",
+          "sha256": "224ddbc68d123422e4319b48086283ea0420a3e630062a763c8b8df0273fb05b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-e-right/stdout.txt",
+          "sha256": "24e0e6618be44edb8274891cc81fce8e95cb0cdb6fd8565a0c1ab3690a8365d8"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-e-right/stdout.txt",
+            "sha256": "24e0e6618be44edb8274891cc81fce8e95cb0cdb6fd8565a0c1ab3690a8365d8"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-e-text",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-e-text/source.alg",
+        "sha256": "a013fb25204565c14599608786b3beff83d7c4be18683798e70815f5218bbb71"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:25:39.9481387Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-e-text/raw.txt",
+          "sha256": "5b8b396dd6b7c7ebff03b549e9a5482a5428843e287e8f7603973eb2ad2a1c3b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-e-text/stdout.txt",
+          "sha256": "d40f2426a9e6b52d6053ffa1b5d3074185ae0d4ef610df042f84d050d4be4c7b"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-e-text/stdout.txt",
+            "sha256": "d40f2426a9e6b52d6053ffa1b5d3074185ae0d4ef610df042f84d050d4be4c7b"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-ou-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-left/source.alg",
+        "sha256": "a7e4568fbc5fef2bb29c03d8b4ac5e7fcb37e40f6e7736a72ac0e7a59f00f2d0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T04:25:50.1631403Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-left/transcription.txt",
+          "sha256": "683e1f78504147327c9fbb75cad6409d751bdad5faf3bef5cd5dc000fd4afd46"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-left/transcription.txt",
+          "sha256": "683e1f78504147327c9fbb75cad6409d751bdad5faf3bef5cd5dc000fd4afd46"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-left/screenshot.png",
+          "sha256": "5bf573c29efd5817a2cdf73aea35c9ac57dc4055b08cc0cd2e5d5b88efae6d7e"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-left/transcription.txt",
+          "sha256": "683e1f78504147327c9fbb75cad6409d751bdad5faf3bef5cd5dc000fd4afd46"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-left/stdout.txt",
+            "sha256": "e41c74a5cab71488d3feaf45ea92acfe433890f429d6d3a29e91fe3308b1780b"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 8
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-ou-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-right/source.alg",
+        "sha256": "80895a305fda4fa5697d59ff1aaa7da004fa29319f841240983e2ae4f80cde12"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T04:26:00.3574764Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-right/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-right/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-right/screenshot.png",
+          "sha256": "5e6c6a67bc0d31645b34fa4d860fd2f58cc27ebae82a4513a0279152681b9a96"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-right/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-ou-text",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-text/source.alg",
+        "sha256": "ed8b14f9663cfeb4dd5cdbbf0945e313f6696659d79fa804b6558af52f6a760c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T04:26:10.5486315Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-text/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-text/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-text/screenshot.png",
+          "sha256": "2541c7d0a013a4541e1d443a4de76c4728c36c467418c5ce36ad490a2968cb38"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-ou-text/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-xou-left",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-left/source.alg",
+        "sha256": "2049cbc1ea392f1f969ced0039518418ff0ff57ef7f293469b5f23e20b930443"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T04:26:20.7113491Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-left/transcription.txt",
+          "sha256": "683e1f78504147327c9fbb75cad6409d751bdad5faf3bef5cd5dc000fd4afd46"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-left/transcription.txt",
+          "sha256": "683e1f78504147327c9fbb75cad6409d751bdad5faf3bef5cd5dc000fd4afd46"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-left/screenshot.png",
+          "sha256": "8e473d75adf60cc144c67194d0f8723829490f2fe603a928303a72d151560b3a"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-left/transcription.txt",
+          "sha256": "683e1f78504147327c9fbb75cad6409d751bdad5faf3bef5cd5dc000fd4afd46"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-left/stdout.txt",
+            "sha256": "e41c74a5cab71488d3feaf45ea92acfe433890f429d6d3a29e91fe3308b1780b"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 8
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-xou-right",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-right/source.alg",
+        "sha256": "20c7e5fa998d4b2be3a7e9432974901b19986147d4861a4713c6925f323b0e16"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T04:26:30.9922143Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-right/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-right/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-right/screenshot.png",
+          "sha256": "e43ebcdeb08eaffbee263c2f6fb5fd8cefb99fdb9d65af1942a92dd97bc8e618"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-right/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-xou-text",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-text/source.alg",
+        "sha256": "40ebffac36fe3d793f4616537f678e5add51427848caec647cfa86be52120fa8"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T04:26:41.1868042Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-text/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-text/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-text/screenshot.png",
+          "sha256": "ff261845fb3998a25d8c95826385f6eb082a8462658fba882f59d72edfd52912"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-xou-text/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-plus-category",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-plus-category/source.alg",
+        "sha256": "d44332a747018f8f24ba972dcbcab0ce30741d3c94dc72510b8a53809da2862c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T04:26:51.5389649Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-plus-category/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-plus-category/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-plus-category/screenshot.png",
+          "sha256": "706457f9896f00c04518b1229829bb76889dda3221e5138ac7f15499603b6c23"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-plus-category/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-division-category",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-category/source.alg",
+        "sha256": "ca25af5d0d8e20a5825bc7f85ae48b37d3f42f393548af0fd2c36cf689f0b0bf"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T04:27:01.6807783Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-category/transcription.txt",
+          "sha256": "1ffa705ae4bda57187b9c667877968e251c1ad7bd010129e8f299d1643c1d387"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-category/transcription.txt",
+          "sha256": "1ffa705ae4bda57187b9c667877968e251c1ad7bd010129e8f299d1643c1d387"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-category/screenshot.png",
+          "sha256": "84b1858ecccf5f24f5e6c87e7d420d98caa0f4eabd2ff8ceac5a3a17030d6cdd"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-category/transcription.txt",
+          "sha256": "1ffa705ae4bda57187b9c667877968e251c1ad7bd010129e8f299d1643c1d387"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-category/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R001",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-constant-value",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-constant-value/source.alg",
+        "sha256": "09bb9e52bcc548072de9a66632f7982886dbd0fcb7f957865997811f0c00eb85"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:27:11.8509685Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-constant-value/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-constant-value/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-constant-value/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-reference-scalar",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-scalar/source.alg",
+        "sha256": "eeed5a13f4f4987a0e0a284926008c87e10260914a66d252670f8487af4b72a1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:28:16.0663536Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-scalar/raw.txt",
+          "sha256": "7bbf158b3d1b467d429f1554aca07e75312dfa4989ca3905718d91e9ad15a683"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-scalar/stdout.txt",
+          "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-scalar/stdout.txt",
+            "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-reference-chain",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-chain/source.alg",
+        "sha256": "62aa5ec00d38cd95c530d71ff5753d295d134ed7590945cfa68af3569d1bcbef"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:28:26.2716807Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-chain/raw.txt",
+          "sha256": "7bbf158b3d1b467d429f1554aca07e75312dfa4989ca3905718d91e9ad15a683"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-chain/stdout.txt",
+          "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-chain/stdout.txt",
+            "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-reference-element",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-element/source.alg",
+        "sha256": "8f8d57d34195bf5c5dab993d643300c63d443863c89867438ad6f83d6ed15d73"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:28:36.4989066Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-element/raw.txt",
+          "sha256": "7bbf158b3d1b467d429f1554aca07e75312dfa4989ca3905718d91e9ad15a683"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-element/stdout.txt",
+          "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-element/stdout.txt",
+            "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-reference-field",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-field/source.alg",
+        "sha256": "1153d0f5c34f9c79853ba9dbe7bc196dd5b26b285e344b2c8bead04c38848007"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:28:46.7231849Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-field/raw.txt",
+          "sha256": "7bbf158b3d1b467d429f1554aca07e75312dfa4989ca3905718d91e9ad15a683"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-field/stdout.txt",
+          "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-reference-field/stdout.txt",
+            "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-and-assignment",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-and-assignment/source.alg",
+        "sha256": "a75b0d73f2ca96ed3da82ddb07eee49ad8483a2cf4536e9499a673fc0dafad28"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:29:57.6804940Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-and-assignment/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-and-assignment/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-and-assignment/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-and-condition",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-and-condition/source.alg",
+        "sha256": "74aaec65ffa66c5b84a4894bbce9ad04873c63f5ba9fba5053c26643d51516d4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:30:08.0236346Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-and-condition/raw.txt",
+          "sha256": "7fdf29be58a547336409265ffdbe9450c996610527ab2ba229b604bc32b0a18c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-and-condition/stdout.txt",
+          "sha256": "cfe72034a9f298fb79a6c1f2302673bb449c826d446b3efafdde95e6c48dc3ca"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-and-condition/stdout.txt",
+            "sha256": "cfe72034a9f298fb79a6c1f2302673bb449c826d446b3efafdde95e6c48dc3ca"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-integer-return",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-return/source.alg",
+        "sha256": "26c01bf27c39e66073388a4ff42aad1ec71276d2aac42512b39157d4f809d7a3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T04:30:28.4821695Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-return/transcription.txt",
+          "sha256": "cf049e3c368d621723294026dcaf089ecbb9abb34cacc45475278d9ab9ab9532"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-return/transcription.txt",
+          "sha256": "cf049e3c368d621723294026dcaf089ecbb9abb34cacc45475278d9ab9ab9532"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-return/screenshot.png",
+          "sha256": "59199b973e1805531dd8afcefd4a64f6cbe0bd9a878c740989a5164db979aa79"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-integer-return/transcription.txt",
+          "sha256": "cf049e3c368d621723294026dcaf089ecbb9abb34cacc45475278d9ab9ab9532"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-division-value",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-value/source.alg",
+        "sha256": "6583ec2a14934a91893f09ded4aa13ba584ca88b1cb7aa3f2584d4c03210600c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:30:38.6754604Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-value/raw.txt",
+          "sha256": "224ddbc68d123422e4319b48086283ea0420a3e630062a763c8b8df0273fb05b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-value/stdout.txt",
+          "sha256": "24e0e6618be44edb8274891cc81fce8e95cb0cdb6fd8565a0c1ab3690a8365d8"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-value/stdout.txt",
+            "sha256": "24e0e6618be44edb8274891cc81fce8e95cb0cdb6fd8565a0c1ab3690a8365d8"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-consumed-category",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-consumed-category/source.alg",
+        "sha256": "29bbd08536471367bc968bb3d99b4950cd1dbc880b508a506e6468a34d46e58e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T04:35:52.0945247Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-consumed-category/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-consumed-category/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-consumed-category/screenshot.png",
+          "sha256": "956f252043e943f4596b3eedc7e742dee27ecc33b8926104f07b6e9ea3344726"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-consumed-category/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "comparison-sign-divided",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-sign-divided/source.alg",
+        "sha256": "d8e6b7af028f14137476d9f4d004b247effb6dfb606f958f8057b22f56d73385"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:37:23.8086637Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-sign-divided/raw.txt",
+          "sha256": "38cb6438694b0a2bf5408bcfcfbccb7a318f4821318fb9c3c3dab97c26947e0c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-sign-divided/stdout.txt",
+          "sha256": "8a1afacf1d863ad4e8a6ff3a1eb3f18e5d8b590aa76b056c3fbe4e40569b2565"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-sign-divided/stdout.txt",
+            "sha256": "8a1afacf1d863ad4e8a6ff3a1eb3f18e5d8b590aa76b056c3fbe4e40569b2565"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-sign-plus-numeric",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-sign-plus-numeric/source.alg",
+        "sha256": "6207389d5dab195ae2a413cf88177eb21df312519cc46a54863c4aa8359014a1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:37:34.0493385Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-sign-plus-numeric/raw.txt",
+          "sha256": "16310fc915fc4418e3bec6620336716f0e209017625773613c75573f764d3d2d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-sign-plus-numeric/stdout.txt",
+          "sha256": "9de32af0ec649466bbd9a86eb5a15895a2bf2b16159043dd606bffb74300c3e6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-sign-plus-numeric/stdout.txt",
+            "sha256": "9de32af0ec649466bbd9a86eb5a15895a2bf2b16159043dd606bffb74300c3e6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-sign-plus-sum",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-sign-plus-sum/source.alg",
+        "sha256": "e1a3149310797bda6a1830649518f7086c52a95a6ae6b9c445526bf3e9fff7f6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:37:44.2926457Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-sign-plus-sum/raw.txt",
+          "sha256": "f811235b8f1d9be7c647eede6a19840577c29b00f8036ef6008143eb10d33e8d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-sign-plus-sum/stdout.txt",
+          "sha256": "5d0b73fd6f8cec50b166b02c5d97c99a3e97d263056e1e6396af48771393b50a"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-sign-plus-sum/stdout.txt",
+            "sha256": "5d0b73fd6f8cec50b166b02c5d97c99a3e97d263056e1e6396af48771393b50a"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "comparison-division-sign-values",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-sign-values/source.alg",
+        "sha256": "7171cd08386bc4e2c0ea814b2f7186315e36c62ce2e8d9ed480ff19b2adf8f7e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T04:40:35.0763511Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-sign-values/raw.txt",
+          "sha256": "fdea9525c4d7a474c91d311eeef451cfc27fa9df555dcce23ea7c8fc5ae2c83a"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-sign-values/stdout.txt",
+          "sha256": "5d9609c4ce145b51cab68115282c520d1f0a8ab9378fd37800edaa08f17b5452"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/comparison-division-sign-values/stdout.txt",
+            "sha256": "5d9609c4ce145b51cab68115282c520d1f0a8ab9378fd37800edaa08f17b5452"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
         ]
       }
     }

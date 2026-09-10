@@ -1,0 +1,5 @@
+Início da execução
+EFFECT
+ 7DONE
+
+Fim da execução.
