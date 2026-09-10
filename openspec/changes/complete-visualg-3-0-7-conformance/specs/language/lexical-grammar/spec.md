@@ -67,6 +67,14 @@ The lexer SHALL accept only the reference-confirmed comment forms and string, in
 - **WHEN** numeric source could be interpreted as a real literal, an integer followed by punctuation, or a range boundary
 - **THEN** tokenization matches the reduced oracle probe for that exact form
 
+#### Scenario: Preserve an empty exponent as real
+- **WHEN** a source literal ends with `e` or `E` without exponent digits, including `1.e`
+- **THEN** the exponent contributes zero and the literal retains real type through canonical formatting
+
+#### Scenario: End an exponent before a sign
+- **WHEN** source contains `1e-2`, `1e+2`, or `2e-3^2`
+- **THEN** the sign is an arithmetic operator after the real literal, yielding `-1`, `3`, and `-7` with the ordinary precedence rules
+
 #### Scenario: Classify a large whole-number literal
 - **WHEN** decimal digit text exceeds `2147483647` but is representable as a finite real
 - **THEN** its expression has real type, including under a unary minus

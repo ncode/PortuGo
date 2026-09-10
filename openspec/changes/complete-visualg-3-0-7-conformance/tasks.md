@@ -100,6 +100,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   above it; real literal types survive formatter round trips. Default real
   output and numeric-to-text conversion share the recorded 15-digit profile.
   Division/remainder rules and narrowing-assignment diagnostic timing remain pending.
+
+  Empty exponent digits now preserve real literal type, and signs following
+  an exponent marker start arithmetic operators. Five reference cases verify
+  original/formatted execution; two assignment-diagnostic timing cases remain
+  pending with their recorded real-to-integer errors.
 - [ ] 4.6 Make parser production boundaries newline-aware and enforce the reference program header, declaration region, body, terminators, and post-`fimalgoritmo` behavior.
 
   Thirteen declaration observations now verify one optional semicolon at a

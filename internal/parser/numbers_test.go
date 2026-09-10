@@ -25,6 +25,10 @@ func TestNumericLiteralKinds(t *testing.T) {
 		{"00000000000000000000000000000001", ast.IntLiteral, 1, 0},
 		{"1.0", ast.RealLiteral, 0, 1},
 		{"1e0", ast.RealLiteral, 0, 1},
+		{"1e", ast.RealLiteral, 0, 1},
+		{"1E", ast.RealLiteral, 0, 1},
+		{"1.e", ast.RealLiteral, 0, 1},
+		{"1.5e", ast.RealLiteral, 0, 1.5},
 	} {
 		t.Run(tt.source, func(t *testing.T) {
 			source := "algoritmo \"literal\"\ninicio\nescreval(" + tt.source + ")\nfimalgoritmo"

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Accept an empty source exponent as zero and treat a following sign as an
+  arithmetic operator. Preserve real literal types and behavior through formatting.
+
 - Preserve integer-zero fallback for numeric text with a zero integral
   prefix, including fractional and exponent forms. Keep nonzero-prefix real
   conversions and their runtime type checks intact.

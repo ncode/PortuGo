@@ -21,7 +21,8 @@ show rounding, negative zero, trailing-zero padding, and scientific notation.
 Three new observations were retained outside formatting:
 
 - `format-precision-small-values` exposes signed exponent tokens being parsed
-  differently by the reference source parser.
+  differently by the reference source parser. The subsequent
+  [exponent-syntax slice](exponent-syntax-progress.md) verifies this case.
 - `format-precision-small-rounding` and `format-identity-tiny-decimals` expose
   long decimal strings converting to zero where equivalent exponent strings
   retain their numeric value. The subsequent

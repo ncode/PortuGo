@@ -48,6 +48,31 @@ func TestScanGolden(t *testing.T) {
 	}
 }
 
+func TestExponentTokenBoundaries(t *testing.T) {
+	for _, tt := range []struct{ source, want string }{
+		{"1e-2", "NUMBER 1e @0\n- - @2\nNUMBER 2 @3"},
+		{"1E+2", "NUMBER 1E @0\n+ + @2\nNUMBER 2 @3"},
+		{"1.e", "NUMBER 1.e @0"},
+		{"1e2", "NUMBER 1e2 @0"},
+	} {
+		t.Run(tt.source, func(t *testing.T) {
+			_, tokens, ds := Scan("literal.alg", tt.source)
+			if len(ds) != 0 {
+				t.Fatal(ds)
+			}
+			var lines []string
+			for _, tok := range tokens {
+				if tok.Kind != token.EOF {
+					lines = append(lines, fmt.Sprintf("%s %s @%d", tok.Kind, tok.Text, tok.Pos))
+				}
+			}
+			if got := strings.Join(lines, "\n"); got != tt.want {
+				t.Fatalf("tokens = %q, want %q", got, tt.want)
+			}
+		})
+	}
+}
+
 func FuzzLexer(f *testing.F) {
 	for _, seed := range []string{
 		"",

@@ -108,17 +108,10 @@ func (s *scanner) scanNumber(start int) {
 		}
 	}
 	if s.offset < len(s.src) && (s.peek() == 'e' || s.peek() == 'E') {
-		save := s.offset
 		s.advance()
-		if s.peek() == '+' || s.peek() == '-' {
+		// Exponent digits are unsigned; a following sign starts an operator.
+		for s.offset < len(s.src) && unicode.IsDigit(s.peek()) {
 			s.advance()
-		}
-		if s.offset >= len(s.src) || !unicode.IsDigit(s.peek()) {
-			s.offset = save
-		} else {
-			for s.offset < len(s.src) && unicode.IsDigit(s.peek()) {
-				s.advance()
-			}
 		}
 	}
 	s.emit(token.NUMBER, s.src[start:s.offset], token.Pos(start))

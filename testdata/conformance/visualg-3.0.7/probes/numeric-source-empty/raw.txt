@@ -1,0 +1,9 @@
+Início da execução
+1
+1
+1
+1.5
+1
+100
+
+Fim da execução.

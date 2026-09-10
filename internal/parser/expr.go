@@ -42,7 +42,8 @@ func (p *parser) parsePrimary() ast.Expr {
 		if v, err := strconv.ParseInt(tok.Text, 10, 32); err == nil {
 			return &ast.LiteralExpr{At: tok.Pos, Kind: ast.IntLiteral, Int: v}
 		}
-		v, err := strconv.ParseFloat(tok.Text, 64)
+		// A bare exponent marker contributes zero and retains the real type.
+		v, err := strconv.ParseFloat(strings.TrimRight(tok.Text, "eE"), 64)
 		if err != nil {
 			p.error(tok, "invalid real literal")
 		}

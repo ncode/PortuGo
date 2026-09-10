@@ -107,8 +107,13 @@ matching ignores case: a declaration named `SoMa` can be assigned through `soma`
 and read through `SOMA`. Broader identifier character rules remain under
 validation.
 
-Recorded real literals accept exponent notation such as `1e2` and a trailing
-decimal point such as `5.`. A leading decimal point, as in `.5`, is rejected with
+Recorded real literals accept an unsigned exponent such as `1e2` and a trailing
+decimal point such as `5.`. An exponent marker without digits contributes zero
+and still makes the literal real: `1e`, `1E`, and `1.e` all represent real `1`.
+A following `+` or `-` starts an arithmetic operator, so `1e-2` evaluates as
+`1e - 2` and produces real `-1`; `1e+2` produces real `3`. The ordinary operator
+precedence applies, including `2e-3^2 = -7`. Small reals can be written directly
+as decimals, such as `0.01`. A leading decimal point, as in `.5`, is rejected with
 `L001` on its source line. A quoted string reaching a newline without its closing
 quote is also rejected with `L001`.
 

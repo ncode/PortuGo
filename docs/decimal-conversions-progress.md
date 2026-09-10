@@ -25,5 +25,5 @@ program-only output panels. Raw operational evidence remains private.
 The corpus now contains 1155 reference recordings: 1108 verified and 47
 pending, plus 16 project-contract records. The conformance gate still needs
 10 requirement mappings and 30 bundled-example classifications. Conversion
-catalog aliases and the separately recorded signed-exponent source grammar
-remain open.
+catalog aliases remain open. The separately recorded source grammar is covered
+by the subsequent [exponent-syntax slice](exponent-syntax-progress.md).
