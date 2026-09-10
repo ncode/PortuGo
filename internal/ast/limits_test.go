@@ -33,3 +33,30 @@ func TestTraversalLimitsBeforeOutput(t *testing.T) {
 		}
 	}
 }
+
+func TestTypeDeclarationTraversalLimits(t *testing.T) {
+	typ := ast.TypeSpec{At: 1, Name: "inteiro"}
+	for n := 0; n < ast.MaxDepth; n++ {
+		elem := typ
+		typ = ast.TypeSpec{At: token.Pos(n + 2), Name: "vetor", Elem: &elem}
+	}
+	decls := []ast.TypeDecl{{Name: token.Token{Text: "T", Pos: 1}, Type: typ}}
+	for _, tt := range []struct {
+		name    string
+		program *ast.Program
+	}{
+		{"global", &ast.Program{Types: decls}},
+		{"procedure", &ast.Program{Subs: []ast.Subprogram{&ast.ProcedureDecl{Types: decls}}}},
+		{"function", &ast.Program{Subs: []ast.Subprogram{&ast.FunctionDecl{Types: decls}}}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			var out bytes.Buffer
+			err := ast.Fprint(&out, tt.program)
+			info, ds := sema.Analyze(tt.program)
+			var d diag.Diagnostic
+			if !errors.As(err, &d) || d.Code != diag.EResource || out.Len() != 0 || len(ds) != 1 || ds[0].Code != diag.EResource || info.ValidFor(tt.program) {
+				t.Fatalf("unprotected type declaration: %v %v, output %d bytes", err, ds, out.Len())
+			}
+		})
+	}
+}

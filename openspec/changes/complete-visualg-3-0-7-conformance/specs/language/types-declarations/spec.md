@@ -44,6 +44,8 @@ Constants SHALL be immutable, case-insensitive named values initialized in decla
 ### Requirement: Named types and aliases
 The language SHALL support oracle-confirmed named-type and alias declarations, resolve alias chains, preserve name identity wherever the reference distinguishes it, and detect unknown or cyclic type definitions. Assignment, parameter matching, and comparison SHALL use the resulting reference-compatible identity and compatibility rules.
 
+Recorded scalar aliases SHALL use a `tipo` section after optional `const` and before required `var`. Their names SHALL be case-insensitive and separate from variable names. Local definitions SHALL shadow global definitions without entering sibling scopes. The first definition of a duplicate name SHALL remain effective; later definitions SHALL still resolve against earlier valid types. Unknown, forward, and cyclic definitions SHALL produce positioned syntax diagnostics without recursive resolution. Scalar aliases SHALL preserve the underlying scalar representation and may be used as vector element types. Vector aliases and named parameter or result types SHALL be rejected. Alias-typed values SHALL remain compatible with recorded built-in scalar parameter forms. Record identity and aggregate compatibility SHALL require separate accepted evidence.
+
 #### Scenario: Resolve an alias chain
 - **WHEN** a variable is declared through multiple valid type aliases
 - **THEN** it receives the final resolved representation while retaining every identity distinction observable in assignment and call compatibility
@@ -51,6 +53,14 @@ The language SHALL support oracle-confirmed named-type and alias declarations, r
 #### Scenario: Detect a cyclic type alias
 - **WHEN** named types form a cycle with no concrete base type accepted by the reference
 - **THEN** analysis emits a positioned diagnostic and terminates safely
+
+#### Scenario: Keep a local scalar alias local
+- **WHEN** a subprogram declares an alias with the same name as a global alias
+- **THEN** its local variables use the local type while the global and sibling scopes retain their own type resolution
+
+#### Scenario: Reject a named callable header type
+- **WHEN** a parameter or function result names a scalar alias instead of a built-in type
+- **THEN** a positioned syntax diagnostic is returned before execution
 
 ### Requirement: Record types and fields
 The language SHALL support oracle-confirmed record declarations, nested records, record-typed variables, field selection, and fields whose types include named types and vectors. Field names SHALL follow the reference's case and duplicate rules, and field designators SHALL be valid wherever the selected value is valid.

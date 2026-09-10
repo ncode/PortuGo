@@ -58,7 +58,7 @@ one declaration per line and omits the optional semicolon; see the
 
 ## Types
 
-A `const` section precedes `var`, globally or inside a subprogram. Each
+A `const` section precedes optional `tipo` and required `var` sections, globally or inside a subprogram. Each
 declaration has the form `name = expression`, optionally ending with `;`.
 The following `var` section is required, even when it is empty. Constants use
 case-insensitive names and infer their scalar type from the initializer.
@@ -88,6 +88,30 @@ not enter the subprogram body or copy reference parameters back.
 - `vetor[a..b] de T`: one or two declared dimensions with checked indexing
 
 Variables are initialized to the zero value of their type.
+
+A `tipo` section names scalar types with `Name = inteiro`, `real`, `caractere`,
+`logico`, or an earlier alias. It follows `const` when present and requires a
+following `var`, even when no variables are declared. An empty `tipo` section
+and one semicolon after its header are accepted; a semicolon after an alias
+definition receives `P001`. The word `tipo` is reserved.
+
+Alias names ignore case and occupy a separate namespace from variables.
+Local aliases may shadow global aliases and are not visible in sibling
+subprograms. The first definition of a repeated name determines its type;
+later definitions must still name a valid earlier type. Unknown, forward, and
+cyclic definitions receive one positioned `P001`, without recursive resolution.
+
+Scalar aliases preserve the underlying type's zero value and assignment,
+comparison, and call compatibility. They may name vector element types.
+Parameters and function results must use built-in type names; a named type in
+either header position receives `P001`. Variables declared through an alias
+can still be passed to compatible built-in scalar parameters, including `var`
+parameters. Vector type aliases are rejected. Record declarations and their
+alias compatibility remain pending separate implementation.
+
+Formatting preserves alias spelling, definition order, and local scopes, and
+emits the required `var` section. See the [type-alias example](../examples/type_aliases.alg)
+and [recorded type boundaries](type-aliases-progress.md).
 
 Recorded keyword aliases are `função` (`funcao`), `fimfunção` (`fimfuncao`),
 `então` (`entao`), `senão`

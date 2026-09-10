@@ -7,6 +7,7 @@ type Program struct {
 	At      token.Pos
 	Name    string
 	Consts  []ConstDecl
+	Types   []TypeDecl
 	Globals []VarDecl
 	Subs    []Subprogram
 	Body    []Stmt
@@ -16,6 +17,12 @@ type Program struct {
 type ConstDecl struct {
 	Name  token.Token
 	Value Expr
+}
+
+// TypeDecl gives a name to an earlier scalar type.
+type TypeDecl struct {
+	Name token.Token
+	Type TypeSpec
 }
 
 // VarDecl declares one or more variables with the same type.
@@ -61,6 +68,7 @@ type ProcedureDecl struct {
 	Name   token.Token
 	Params []Param
 	Consts []ConstDecl
+	Types  []TypeDecl
 	Locals []VarDecl
 	Body   []Stmt
 }
@@ -76,6 +84,7 @@ type FunctionDecl struct {
 	Params []Param
 	Return TypeSpec
 	Consts []ConstDecl
+	Types  []TypeDecl
 	Locals []VarDecl
 	Body   []Stmt
 }

@@ -1,0 +1,4 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 3
+Message: O tipo de dados 'MISSING' não foi reconhecido.
+Column: not established.

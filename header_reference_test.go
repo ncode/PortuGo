@@ -5,9 +5,11 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/lexer"
 	"github.com/ncode/portugol-go/internal/parser"
+	"github.com/ncode/portugol-go/internal/sema"
 	"github.com/ncode/portugol-go/internal/source"
 )
 
@@ -65,7 +67,11 @@ func TestRecordedHeaderRejections(t *testing.T) {
 			}
 			file, tokens, ds := lexer.Scan("source.alg", src)
 			if len(ds) == 0 {
-				_, ds = parser.Parse(tokens)
+				var prog *ast.Program
+				prog, ds = parser.Parse(tokens)
+				if len(ds) == 0 {
+					_, ds = sema.Analyze(prog)
+				}
 			}
 			if len(ds) != 1 || ds[0].Code != diag.EParse || file.Position(ds[0].Pos).Line != tt.line {
 				t.Fatalf("diagnostics = %v, want P001 on line %d", ds, tt.line)

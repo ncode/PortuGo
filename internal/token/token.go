@@ -40,6 +40,7 @@ const (
 
 	ALGORITMO
 	CONST
+	TIPO
 	VAR
 	INICIO
 	FIMALGORITMO
@@ -96,6 +97,7 @@ type Token struct {
 var keywords = map[string]Kind{
 	"algoritmo":       ALGORITMO,
 	"const":           CONST,
+	"tipo":            TIPO,
 	"var":             VAR,
 	"inicio":          INICIO,
 	"fimalgoritmo":    FIMALGORITMO,
@@ -156,7 +158,7 @@ var kindNames = map[Kind]string{
 	ASSIGN: "<-", EQL: "=", NEQ: "<>", LSS: "<", GTR: ">", LEQ: "<=", GEQ: ">=",
 	LPAREN: "(", RPAREN: ")", LBRACK: "[", RBRACK: "]", COMMA: ",", COLON: ":",
 	SEMI: ";", DOTDOT: "..",
-	ALGORITMO: "algoritmo", CONST: "const", VAR: "var", INICIO: "inicio", FIMALGORITMO: "fimalgoritmo",
+	ALGORITMO: "algoritmo", CONST: "const", TIPO: "tipo", VAR: "var", INICIO: "inicio", FIMALGORITMO: "fimalgoritmo",
 	INTEIRO: "inteiro", REAL: "real", CARACTERE: "caractere", LOGICO: "logico",
 	VETOR: "vetor", DE: "de", PROCEDIMENTO: "procedimento", FIMPROCEDIMENTO: "fimprocedimento",
 	FUNCAO: "funcao", FIMFUNCAO: "fimfuncao", RETORNE: "retorne", SE: "se",

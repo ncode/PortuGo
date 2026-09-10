@@ -159,6 +159,13 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   analysis. The accepted constant-bound recordings are implemented under 7.2;
   aggregate-valued and no-value initializers remain unqualified.
 - [ ] 6.4 Implement named types/aliases and identity/compatibility rules only if confirmed, including bounded unknown-type/cycle handling; otherwise add rejection fixtures and omit named-type machinery.
+
+  Scalar aliases now resolve earlier definitions, retain first-definition
+  precedence, and share underlying scalar compatibility. Fifteen accepted
+  programs and nineteen positioned rejections verify global/local scopes,
+  aliased vector elements, scalar arguments, declaration boundaries, and
+  unsupported named callable headers. One narrowing-assignment diagnostic
+  remains pending; record alias identity is still unqualified.
 - [ ] 6.5 Implement record syntax and layouts in `sema.Info` only if confirmed, including field order, duplicates, and depth/size guards; otherwise add rejection fixtures and omit record layout machinery.
 - [ ] 6.6 Add field designators through AST, parser, printer, sema, and runtime only for confirmed record support; otherwise pin field-syntax rejection and remove positive field obligations from dependent tasks/specs.
 - [x] 6.7 Accept only oracle-confirmed assignment aliases and normalize them to the assignment AST without losing source positions.

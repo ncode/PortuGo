@@ -11,6 +11,7 @@ import (
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/lexer"
 	"github.com/ncode/portugol-go/internal/parser"
+	"github.com/ncode/portugol-go/internal/sema"
 	"github.com/ncode/portugol-go/internal/source"
 	"github.com/ncode/portugol-go/internal/token"
 )
@@ -65,7 +66,11 @@ func TestRecordedFrontendRejections(t *testing.T) {
 			}
 			file, tokens, ds := lexer.Scan("source.alg", src)
 			if len(ds) == 0 {
-				_, ds = parser.Parse(tokens)
+				var prog *ast.Program
+				prog, ds = parser.Parse(tokens)
+				if len(ds) == 0 {
+					_, ds = sema.Analyze(prog)
+				}
 			}
 			if len(ds) != 1 || ds[0].Code != tt.code || file.Position(ds[0].Pos).Line != tt.line {
 				t.Fatalf("diagnostics = %v, want %s on line %d", ds, tt.code, tt.line)

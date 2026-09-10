@@ -33,6 +33,7 @@ type symbolKind int
 const (
 	varSym symbolKind = iota
 	constSym
+	typeSym
 	procSym
 	funcSym
 	builtinSym
@@ -55,6 +56,7 @@ type symbol struct {
 type scope struct {
 	parent *scope
 	syms   map[string]symbol
+	types  map[string]symbol
 }
 
 type checker struct {
@@ -68,7 +70,7 @@ type checker struct {
 }
 
 func newScope(parent *scope) *scope {
-	return &scope{parent: parent, syms: make(map[string]symbol)}
+	return &scope{parent: parent, syms: make(map[string]symbol), types: make(map[string]symbol)}
 }
 
 func (s *scope) lookup(name string) (symbol, bool) {
@@ -92,8 +94,13 @@ func (c *checker) checkProgram(prog *ast.Program) {
 	if !c.declareConsts(prog.Consts) {
 		return
 	}
+	if !c.declareTypes(prog.Types) {
+		return
+	}
 	for _, decl := range prog.Globals {
-		c.declareVars(decl)
+		if !c.declareVars(decl) {
+			return
+		}
 	}
 	for _, sub := range prog.Subs {
 		c.declareSub(sub)
@@ -107,8 +114,11 @@ func (c *checker) checkProgram(prog *ast.Program) {
 	c.checkStmts(prog.Body)
 }
 
-func (c *checker) declareVars(decl ast.VarDecl) {
-	typ := runtime.TypeFromSpec(decl.Type)
+func (c *checker) declareVars(decl ast.VarDecl) bool {
+	typ := c.resolveType(decl.Type)
+	if typ.Kind == runtime.InvalidType {
+		return false
+	}
 	c.validateType(decl.Type, typ)
 	for _, name := range decl.Names {
 		key := canon(name.Text)
@@ -118,6 +128,7 @@ func (c *checker) declareVars(decl ast.VarDecl) {
 			c.error(name.Pos, diag.ERedeclared, "redeclared identifier %q", name.Text)
 		}
 	}
+	return true
 }
 
 func (c *checker) declareSub(sub ast.Subprogram) {
@@ -168,8 +179,13 @@ func (c *checker) checkSub(sub ast.Subprogram) {
 		if !c.declareConsts(d.Consts) {
 			return
 		}
+		if !c.declareTypes(d.Types) {
+			return
+		}
 		for _, decl := range d.Locals {
-			c.declareVars(decl)
+			if !c.declareVars(decl) {
+				return
+			}
 		}
 		c.checkStmts(d.Body)
 	case *ast.FunctionDecl:
@@ -179,8 +195,13 @@ func (c *checker) checkSub(sub ast.Subprogram) {
 		if !c.declareConsts(d.Consts) {
 			return
 		}
+		if !c.declareTypes(d.Types) {
+			return
+		}
 		for _, decl := range d.Locals {
-			c.declareVars(decl)
+			if !c.declareVars(decl) {
+				return
+			}
 		}
 		c.checkStmts(d.Body)
 	}

@@ -42,11 +42,18 @@ func (p *parser) parseProgram() *ast.Program {
 	}
 	prog.Name = p.advance().Text
 	prog.Consts = p.parseConstBlock()
+	prog.Types = p.parseTypeBlock()
+	if len(p.diags) != 0 {
+		return prog
+	}
 	if p.peek().Kind == token.VAR {
 		prog.Globals = p.parseVarBlock()
 	}
 	for p.peek().Kind == token.PROCEDIMENTO || p.peek().Kind == token.FUNCAO {
 		prog.Subs = append(prog.Subs, p.parseSubprogram())
+		if len(p.diags) != 0 {
+			return prog
+		}
 	}
 	if !p.match(token.INICIO) {
 		p.error(p.peek(), "expected inicio")
@@ -69,7 +76,7 @@ func (p *parser) parseConstBlock() []ast.ConstDecl {
 		p.parseDeclarationSemicolon()
 		decls = append(decls, ast.ConstDecl{Name: name, Value: value})
 	}
-	if p.peek().Kind != token.VAR {
+	if p.peek().Kind != token.VAR && p.peek().Kind != token.TIPO {
 		p.error(p.peek(), "expected var after constants")
 	}
 	return decls
@@ -114,6 +121,9 @@ func (p *parser) parseType() ast.TypeSpec {
 	defer func() { p.depth-- }()
 	tok := p.peek()
 	switch tok.Kind {
+	case token.IDENT:
+		p.advance()
+		return ast.TypeSpec{At: tok.Pos, Name: tok.Text}
 	case token.INTEIRO, token.REAL, token.CARACTERE, token.LOGICO:
 		p.advance()
 		return ast.TypeSpec{At: tok.Pos, Name: tok.Kind.String()}
@@ -189,6 +199,10 @@ func (p *parser) parseProcedure() *ast.ProcedureDecl {
 	params := p.parseParamList()
 	decl := &ast.ProcedureDecl{At: start.Pos, Name: name, Params: params}
 	decl.Consts = p.parseConstBlock()
+	decl.Types = p.parseTypeBlock()
+	if len(p.diags) != 0 {
+		return decl
+	}
 	if p.peek().Kind == token.VAR {
 		decl.Locals = p.parseVarBlock()
 	}
@@ -206,6 +220,10 @@ func (p *parser) parseFunction() *ast.FunctionDecl {
 	ret := p.parseCallableType()
 	decl := &ast.FunctionDecl{At: start.Pos, Name: name, Params: params, Return: ret}
 	decl.Consts = p.parseConstBlock()
+	decl.Types = p.parseTypeBlock()
+	if len(p.diags) != 0 {
+		return decl
+	}
 	if p.peek().Kind == token.VAR {
 		decl.Locals = p.parseVarBlock()
 	}
@@ -244,10 +262,14 @@ func (p *parser) parseParamList() []ast.Param {
 }
 
 func (p *parser) parseCallableType() ast.TypeSpec {
-	before := len(p.diags)
 	typ := p.parseType()
-	if typ.Name == "vetor" && len(p.diags) == before {
+	if len(p.diags) != 0 {
+		return typ
+	}
+	if typ.Name == "vetor" {
 		p.error(token.Token{Pos: typ.At}, "inline vector parameter and result types are unsupported")
+	} else if token.Lookup(typ.Name) == token.IDENT {
+		p.error(token.Token{Pos: typ.At}, "named parameter and result types are unsupported")
 	}
 	return typ
 }

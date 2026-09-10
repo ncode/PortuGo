@@ -6,10 +6,17 @@ import (
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/portugol-go/internal/token"
 )
 
 func (i *Interpreter) resolveType(spec ast.TypeSpec) (runtime.Type, error) {
 	typ := runtime.TypeFromSpec(spec)
+	if typ.Kind == runtime.InvalidType {
+		if binding, ok := i.info.Binding(token.Token{Text: spec.Name, Pos: spec.At}); ok {
+			return binding.Type, nil
+		}
+		return runtime.Type{}, failure(spec.At, diag.RType, fmt.Errorf("missing named type binding"))
+	}
 	if typ.Kind != runtime.VectorType {
 		return typ, nil
 	}

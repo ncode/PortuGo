@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add global and local scalar type aliases with earlier-alias resolution,
+  first-definition precedence, compatible vector elements and scalar arguments,
+  positioned declaration errors, and preserved formatter output.
+
 - Accept an empty source exponent as zero and treat a following sign as an
   arithmetic operator. Preserve real literal types and behavior through formatting.
 

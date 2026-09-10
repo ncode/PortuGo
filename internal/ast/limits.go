@@ -17,16 +17,19 @@ func CheckLimits(prog *Program) []diag.Diagnostic {
 	}
 	c := &limitChecker{}
 	c.consts(prog.Consts)
+	c.types(prog.Types)
 	c.decls(prog.Globals)
 	for _, sub := range prog.Subs {
 		switch s := sub.(type) {
 		case *ProcedureDecl:
 			c.consts(s.Consts)
+			c.types(s.Types)
 			c.params(s.Params)
 			c.decls(s.Locals)
 			c.stmts(s.Body, 1)
 		case *FunctionDecl:
 			c.consts(s.Consts)
+			c.types(s.Types)
 			c.params(s.Params)
 			c.typ(s.Return, 1)
 			c.decls(s.Locals)
@@ -45,6 +48,12 @@ type limitChecker struct{ failure *diag.Diagnostic }
 func (c *limitChecker) consts(decls []ConstDecl) {
 	for _, decl := range decls {
 		c.expr(decl.Value, 1)
+	}
+}
+
+func (c *limitChecker) types(decls []TypeDecl) {
+	for _, decl := range decls {
+		c.typ(decl.Type, 1)
 	}
 }
 
