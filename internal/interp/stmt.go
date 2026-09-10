@@ -121,7 +121,7 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		if err != nil {
 			return control{}, err
 		}
-		return control{}, failure(s.Start(), diag.RCall, assign(i.result, v))
+		return control{}, failure(s.Start(), diag.ETypeMismatch, assign(i.result, v))
 	case *ast.ReadStmt:
 		return control{}, i.execRead(s)
 	case *ast.WriteStmt:
@@ -144,17 +144,17 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 	if err != nil {
 		return control{}, err
 	}
-	from, err := i.evalInt(s.From)
+	from, err := i.evalInt(s.From, diag.EParse)
 	if err != nil {
 		return control{}, err
 	}
-	to, err := i.evalInt(s.To)
+	to, err := i.evalInt(s.To, diag.EParse)
 	if err != nil {
 		return control{}, err
 	}
 	step := int64(1)
 	if s.Step != nil {
-		step, err = i.evalInt(s.Step)
+		step, err = i.evalInt(s.Step, diag.EParse)
 		if err != nil {
 			return control{}, err
 		}

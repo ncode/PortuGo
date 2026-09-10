@@ -616,6 +616,43 @@ continues. A typed return of this absent value receives `E001`; assignment is
 also rejected with `E001` as a project guard. Non-finite numeric arguments receive
 positioned `R007` as a project guard.
 
+`caracpnum(s)` requires one character argument and selects an integer or real
+result at runtime. Analysis keeps this numeric choice unresolved. Numeric
+expressions and calls preserve the resulting type; integer-only consumers
+check the actual value during execution. A real result used by `carac`,
+`randi`, a vector index, or an integer return receives `E001`; real loop or
+format bounds receive `P001`. Incompatible assignments receive `R001` after
+evaluating the conversion. Integer parameters retain their documented real
+argument conversion. A constant conversion can supply an integer vector
+bound; a real result receives `P001` when that declaration is reached.
+
+ASCII spaces around the text are ignored; tabs and nonbreaking spaces are
+not. Empty text, an absent numeric prefix, leading `.` or `,`, and unsupported
+alphabetic spellings such as `NaN` produce integer zero. Decimal points,
+commas, or `e`/`E` exponent syntax select real type, including `"1.0"`,
+`"1,0"`, and `"1e0"`. An exponent with no digits (`"1e"`, `"1e+"`, or
+`"1e-"`) contributes zero. Real underflow produces zero; overflow and
+malformed text after a numeric prefix receive `R007` at the conversion call.
+Already emitted output is preserved if conversion fails.
+
+Integer spellings from zero through 2147483647 produce integer values;
+2147483648 and 2147483649 produce integer zero, and positive integer
+spellings from 2147483650 select real type. A leading plus is accepted.
+Negative integer spellings through -2147483648 produce zero; more negative
+integer spellings select real type. Signed decimal or exponent forms preserve
+their sign. Hexadecimal prefixes `$`, `0x`, and `0X` are accepted, including
+a leading plus: values through `7FFFFFFF` produce integers, negative and larger
+32-bit values produce zero, and overflow beyond 32 bits receives `R007`. An
+empty or invalid first hexadecimal digit produces zero. Digit separators such
+as underscores are rejected after a numeric prefix.
+
+Omitted parentheses or extra arguments receive `P001`; an empty call,
+non-character argument, or no-value argument receives `E001`. The separately
+recorded 255-character limit for literals and concatenation remains pending
+in the shared string runtime; conversions currently consume that runtime's
+full string value. See `docs/character-conversions-progress.md` for evidence
+and the retained boundary cases.
+
 `randi(n)` takes one signed 32-bit integer bound and returns an integer. For
 positive `n`, its domain is `[0, n)`. Negative bounds use their unsigned
 32-bit representation as the exclusive width, then interpret the result as

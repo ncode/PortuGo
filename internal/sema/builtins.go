@@ -10,7 +10,7 @@ import (
 func (c *checker) declareBuiltins() {
 	for _, name := range []string{
 		"abs", "raizq", "exp", "log", "logn", "pi", "sen", "cos", "tan", "int",
-		"aleatorio", "copia", "maiusc", "minusc", "asc", "carac", "compr", "pos", "numpcarac", "randi",
+		"aleatorio", "copia", "maiusc", "minusc", "asc", "carac", "compr", "pos", "numpcarac", "caracpnum", "randi",
 		"arccos", "arcsen", "arctan", "cotan", "grauprad", "radpgrau", "quad",
 	} {
 		c.scope.declare(symbol{name: name, kind: builtinSym})
@@ -40,7 +40,7 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 		}
 		t := c.expr(call.Args[0])
 		switch t.Kind {
-		case runtime.IntegerType, runtime.RealType:
+		case runtime.IntegerType, runtime.RealType, runtime.NumericType:
 			if name == "abs" || name == "quad" {
 				return t, true
 			}
@@ -94,6 +94,9 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 			}
 		}
 		return runtime.Type{Kind: runtime.StringType}, true
+	case "caracpnum":
+		c.textArgs(call, 1, 1)
+		return runtime.Type{Kind: runtime.NumericType}, true
 	case "randi":
 		if len(call.Args) > 1 {
 			c.error(call.Name.Pos, diag.EParse, "expected ')' after random bound")
@@ -101,7 +104,7 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 			switch c.expr(call.Args[0]).Kind {
 			case runtime.VectorType:
 				c.error(call.Args[0].Start(), diag.EParse, "expected '[' after vector")
-			case runtime.IntegerType, runtime.InvalidType:
+			case runtime.IntegerType, runtime.NumericType, runtime.InvalidType:
 			default:
 				c.error(call.Args[0].Start(), diag.ETypeMismatch, "expected inteiro argument")
 			}
@@ -132,7 +135,7 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 			c.error(call.Name.Pos, diag.EParse, "expected ')' after character code")
 		} else if len(call.Args) == 1 {
 			t := c.expr(call.Args[0])
-			if t.Kind != runtime.IntegerType && t.Kind != runtime.VoidType && t.Kind != runtime.InvalidType {
+			if t.Kind != runtime.IntegerType && t.Kind != runtime.NumericType && t.Kind != runtime.VoidType && t.Kind != runtime.InvalidType {
 				c.error(call.Args[0].Start(), diag.ETypeMismatch, "expected inteiro argument")
 			}
 		}

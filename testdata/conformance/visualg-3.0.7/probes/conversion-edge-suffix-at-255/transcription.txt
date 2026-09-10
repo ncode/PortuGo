@@ -1,0 +1,5 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 3
+Message: Não consegui converter
+[The remaining message extends beyond the visible diagnostic window.]
+Column: not established.

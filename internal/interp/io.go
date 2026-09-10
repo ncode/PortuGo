@@ -86,14 +86,14 @@ func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
 		}
 		width := int64(0)
 		if arg.Width != nil {
-			width, err = i.evalInt(arg.Width)
+			width, err = i.evalInt(arg.Width, diag.EParse)
 			if err != nil {
 				return err
 			}
 		}
 		decimals := int64(-1)
 		if arg.Decimals != nil {
-			decimals, err = i.evalInt(arg.Decimals)
+			decimals, err = i.evalInt(arg.Decimals, diag.EParse)
 			if err != nil {
 				return err
 			}

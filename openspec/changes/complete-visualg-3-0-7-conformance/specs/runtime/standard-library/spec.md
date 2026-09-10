@@ -89,6 +89,14 @@ The catalog SHALL implement all oracle-confirmed explicit conversion functions a
 - **WHEN** `caracpnum` receives text accepted as an integer and text accepted as a real
 - **THEN** each call returns the reference value with the reference-selected dynamic numeric type
 
+#### Scenario: Use a conversion in an integer-only context
+- **WHEN** the same analyzed `caracpnum` call receives `"1"` and `"1.0"` at runtime
+- **THEN** the first result is accepted by `randi` and the second receives positioned `E001`, without a static real-to-integer coercion
+
+#### Scenario: Preserve conversion failure output
+- **WHEN** a character-producing argument emits output and returns malformed numeric text
+- **THEN** that output remains visible and conversion receives positioned `R007` at its call
+
 #### Scenario: Reject invalid numeric text
 - **WHEN** conversion text contains a malformed number, trailing unsupported characters, or an out-of-range value
 - **THEN** it returns the oracle-confirmed fallback or stable positioned built-in diagnostic

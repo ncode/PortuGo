@@ -281,7 +281,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 12.3 Implement 1-based reference bounds, empty/not-found behavior, and CP1252-aware text indexing and case conversion without UTF-8 byte or Unicode-code-point leakage.
 - [ ] 12.4 Complete descriptors and evaluators for `asc`, `carac`, all character-code aliases, and the separately recorded code tables and domain/failure behavior.
 - [ ] 12.5 Complete explicit integer, real, logical, and character conversion descriptors and evaluators with oracle decimal, sign, whitespace, range, and fallback rules.
-- [ ] 12.6 Implement dynamic numeric `caracpnum` analysis and runtime selection so integer and real results retain their reference types and invalid uses are diagnosed.
+- [x] 12.6 Implement dynamic numeric `caracpnum` analysis and runtime selection so integer and real results retain their reference types and invalid uses are diagnosed.
 - [ ] 12.7 Return positioned `R007` for runtime-only text/code/conversion failures and `R003` for project allocation-limit failures; check sizes before materializing results and verify no panic or partial conversion.
 - [ ] 12.8 Add catalog signature tests, byte-precise runtime tables, integration fixtures, and an example combining accented text, codes, search, slicing, and conversions.
 - [ ] 12.9 Update `docs/language.md` and `CHANGELOG.md` with the full text, code, conversion, and dynamic-result contracts.

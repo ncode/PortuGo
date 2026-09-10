@@ -30,14 +30,14 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 			if v.Kind == runtime.VoidValue && (b.Name == "carac" || b.Name == "copia" && idx > 0) {
 				v = runtime.Value{Kind: runtime.IntegerValue}
 			}
-			textArg := b.Name == "maiusc" || b.Name == "minusc" || b.Name == "asc" || b.Name == "compr" || b.Name == "pos" || b.Name == "copia" && idx == 0
+			textArg := b.Name == "maiusc" || b.Name == "minusc" || b.Name == "asc" || b.Name == "compr" || b.Name == "pos" || b.Name == "caracpnum" || b.Name == "copia" && idx == 0
 			if textArg && v.Kind != runtime.StringValue {
 				return runtime.Value{}, failure(arg.Start(), diag.ETypeMismatch, fmt.Errorf("expected caractere argument"))
 			}
 			if b.Name == "copia" && idx > 0 && v.Kind != runtime.IntegerValue && v.Kind != runtime.RealValue {
 				return runtime.Value{}, failure(arg.Start(), diag.ETypeMismatch, fmt.Errorf("expected numeric argument"))
 			}
-			if b.Name == "carac" && v.Kind != runtime.IntegerValue {
+			if (b.Name == "carac" || b.Name == "randi") && v.Kind != runtime.IntegerValue {
 				return runtime.Value{}, failure(arg.Start(), diag.ETypeMismatch, fmt.Errorf("expected inteiro argument"))
 			}
 			if v.Kind == runtime.VoidValue || (b.Name == "exp" || b.Name == "int") && (v.Kind == runtime.StringValue || v.Kind == runtime.BoolValue) {

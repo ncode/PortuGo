@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add `caracpnum` with recorded integer/real result selection, numeric spellings,
+  fallback values, and positioned conversion errors. Preserve the runtime type
+  through expressions, assignments, calls, vector indices, and format bounds.
+
 - Match recorded text slicing, empty searches, accented casing, ANSI character
   codes, and the reference character table. Accept fractional substring bounds,
   preserve no-value character results, and pin text-call diagnostics. Verify

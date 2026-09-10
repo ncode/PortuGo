@@ -248,7 +248,7 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			return
 		}
 		src := c.expr(s.Value)
-		if ok && !runtime.Assignable(dst, src) {
+		if ok && src.Kind != runtime.NumericType && !runtime.Assignable(dst, src) {
 			c.error(s.Value.Start(), diag.ETypeMismatch, "cannot assign %s to %s", src, dst)
 		}
 	case *ast.CallStmt:
@@ -479,6 +479,9 @@ func (c *checker) numericBinary(pos token.Pos, left, right runtime.Type) runtime
 		if left.Kind == runtime.RealType || right.Kind == runtime.RealType {
 			return runtime.Type{Kind: runtime.RealType}
 		}
+		if left.Kind == runtime.NumericType || right.Kind == runtime.NumericType {
+			return runtime.Type{Kind: runtime.NumericType}
+		}
 		return runtime.Type{Kind: runtime.IntegerType}
 	}
 	c.error(pos, diag.ETypeMismatch, "operator requires numeric operands")
@@ -570,7 +573,7 @@ func (c *checker) requireBool(expr ast.Expr) {
 }
 
 func (c *checker) requireInt(expr ast.Expr) {
-	if t := c.expr(expr); t.Kind != runtime.IntegerType && t.Kind != runtime.InvalidType {
+	if t := c.expr(expr); t.Kind != runtime.IntegerType && t.Kind != runtime.NumericType && t.Kind != runtime.InvalidType {
 		c.error(expr.Start(), diag.ETypeMismatch, "expected inteiro, got %s", t)
 	}
 }
@@ -590,7 +593,7 @@ func canon(name string) string {
 }
 
 func isNumeric(t runtime.Type) bool {
-	return t.Kind == runtime.IntegerType || t.Kind == runtime.RealType
+	return t.Kind == runtime.IntegerType || t.Kind == runtime.RealType || t.Kind == runtime.NumericType
 }
 
 func isScalar(t runtime.Type) bool {

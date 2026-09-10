@@ -232,7 +232,7 @@ func (i *Interpreter) location(expr ast.Expr) (cell *runtime.Cell, err error) {
 		}
 		indices := make([]int64, len(e.Indices))
 		for idx, expr := range e.Indices {
-			indices[idx], err = i.evalInt(expr)
+			indices[idx], err = i.evalInt(expr, diag.ETypeMismatch)
 			if err != nil {
 				return nil, err
 			}
@@ -251,13 +251,13 @@ func (i *Interpreter) evalBool(expr ast.Expr) (bool, error) {
 	return runtime.Truth(v)
 }
 
-func (i *Interpreter) evalInt(expr ast.Expr) (int64, error) {
+func (i *Interpreter) evalInt(expr ast.Expr, code diag.Code) (int64, error) {
 	v, err := i.eval(expr)
 	if err != nil {
 		return 0, err
 	}
 	if v.Kind != runtime.IntegerValue {
-		return 0, fmt.Errorf("expected inteiro")
+		return 0, failure(expr.Start(), code, fmt.Errorf("expected inteiro"))
 	}
 	return v.Int, nil
 }

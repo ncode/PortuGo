@@ -13,7 +13,7 @@ func (c *checker) checkBound(expr ast.Expr, at token.Pos) bool {
 		return true
 	}
 	if name, ok := expr.(*ast.IdentExpr); ok {
-		if sym, found := c.lookup(name.Name); found && sym.kind == constSym && sym.typ.Kind == runtime.IntegerType {
+		if sym, found := c.lookup(name.Name); found && sym.kind == constSym && (sym.typ.Kind == runtime.IntegerType || sym.typ.Kind == runtime.NumericType) {
 			c.info.types[expr] = sym.typ
 			return true
 		}

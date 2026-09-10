@@ -90,6 +90,8 @@ func (l *Library) Call(name string, args []runtime.Value) (runtime.Value, bool, 
 		return pos(args)
 	case "numpcarac":
 		return numpcarac(args)
+	case "caracpnum":
+		return caracpnum(args)
 	default:
 		return runtime.Value{}, false, nil
 	}

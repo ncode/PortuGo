@@ -1,0 +1,5 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 7
+Message: Erro na atribuição de valores à variávelX:
+REAL para INTEIRO.
+Column: not established.

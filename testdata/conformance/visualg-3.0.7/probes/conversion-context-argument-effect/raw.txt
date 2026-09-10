@@ -1,0 +1,4 @@
+Início da execução
+EFFECT
+ 12
+Fim da execução.

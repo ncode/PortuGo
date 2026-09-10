@@ -20,6 +20,8 @@ const (
 	BoolType
 	VectorType
 	VoidType
+	// NumericType is an analysis-only union; runtime values remain integer or real.
+	NumericType
 )
 
 // Range is one vector dimension bound. Dynamic endpoints are unresolved
@@ -155,6 +157,8 @@ func (t Type) String() string {
 		return "inteiro"
 	case RealType:
 		return "real"
+	case NumericType:
+		return "inteiro ou real"
 	case StringType:
 		return "caractere"
 	case BoolType:
@@ -186,6 +190,9 @@ func (t Type) String() string {
 // Assignable reports whether src satisfies dst, deferring dynamic endpoints.
 // Runtime assignment uses concrete layouts, so it checks every endpoint.
 func Assignable(dst, src Type) bool {
+	if src.Kind == NumericType && (dst.Kind == IntegerType || dst.Kind == RealType) {
+		return true
+	}
 	if dst.equal(src, true) {
 		return true
 	}
