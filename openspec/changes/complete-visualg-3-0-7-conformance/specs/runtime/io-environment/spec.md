@@ -66,6 +66,18 @@ Output width and precision fields SHALL accept the expression forms and value do
 - **WHEN** an output item supplies valid width and decimal expressions
 - **THEN** the exact padded and rounded result matches the committed oracle bytes
 
+#### Scenario: Bound and pad decimal precision
+- **WHEN** an integer or real field requests more than 216 decimal places
+- **THEN** the count is capped at 216 before expansion, and real places beyond the recorded binary-exponent digit budget are padded with zeros
+
+#### Scenario: Round a stored binary value
+- **WHEN** positive-width fixed fields format `1.005` and `2.675` with two decimals, or the exact half `0.125`
+- **THEN** their unpadded results are `1.00`, `2.67`, and `0.13`, and fixed formatting preserves the sign of negative zero
+
+#### Scenario: Switch a large fixed field to scientific notation
+- **WHEN** a positive-width real field has absolute value at least `2^120`
+- **THEN** it uses a minimum width of 10, at most 17 fractional digits, a sign column, and a signed four-digit exponent, ignoring the decimal-count argument
+
 #### Scenario: Value exceeds requested width
 - **WHEN** a rendered value is wider than its valid requested width
 - **THEN** output expands, truncates, or fails exactly as the reference does

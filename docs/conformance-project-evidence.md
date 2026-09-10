@@ -72,10 +72,10 @@ separate; these mappings cover the project's diagnostic API.
 ## Execution limits
 
 `project.execution-limits` covers the explicit work budget, active-call limit,
-evaluation-depth limit, text and format allocation limits, and reuse after a
+evaluation-depth limit, input and pending-output allocation limits, and reuse after a
 failed run. Its tests are `TestStepBudgetAndReuse`, `TestCallAndValueLimits`,
 `TestDefensiveEvaluationDepth`, `TestFormattedItemBoundary`, and
-`TestBuiltinTextLimits`. These safeguards are project policies, not inferred
+`TestCaseConversionAllocationGuard` and `TestWriteBufferLimit`. These safeguards are project policies, not inferred
 reference limits. Recorded programs still fail acceptance if a configured
 limit prevents their required outcome.
 

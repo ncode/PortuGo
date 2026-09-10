@@ -241,7 +241,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [x] 10.3 Implement one interpreter-owned buffered console input controller that preserves unread data across reads, bounds token/text buffering before allocation, and charges retries to the shared execution budget.
 - [x] 10.4 Implement oracle-confirmed integer, real, logical, and character input parsing, whitespace/line consumption, retry/end-of-input behavior, and mutation only after successful conversion.
 - [x] 10.5 Implement exact `escreva`/`escreval` separation, spacing, newline, string, integer, real, logical, decimal, and negative-zero output bytes.
-- [ ] 10.6 Implement width and precision expression evaluation, validation, alignment, padding, rounding/truncation, sign, and overflow-width behavior.
+- [x] 10.6 Implement width and precision expression evaluation, validation, alignment, padding, rounding/truncation, sign, and overflow-width behavior.
 - [ ] 10.7 Reject invalid `leia` destinations and invalid output format arity/types/ranges during parsing or semantic analysis wherever statically knowable.
 - [x] 10.8 Return positioned `R004` diagnostics for runtime input exhaustion/conversion failures and preserve destination values and preceding output.
 - [ ] 10.9 Add CP1252 source/input/output fixtures, CLI subprocess byte checks, fake failing readers/writers, and an example covering reference formatting.

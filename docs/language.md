@@ -448,14 +448,30 @@ count is ignored. Reals use 15 significant digits, omit unnecessary fractional
 zeros, and discard the sign of zero. Scientific notation uses uppercase `E`
 without a plus sign or exponent-leading zeros; for example, `0.00001` prints
 as ` 1E-5` and `1000000000000000.0` as ` 1E15`. With a positive
-width, numbers are right-aligned, the decimal count defaults to zero, and
-decimal ties round away from zero. Integer values can also request decimals;
-numeric fields expand if needed. Positive widths are capped at 255 characters
-before padding or size checks, including widths larger than the project byte
-budget. Strings are left-aligned and truncated to that width. Very large
-decimal counts remain pending precision-conformance work; the width cap does
-not bound every formatted numeric result. Logical output is ` VERDADEIRO` or
-` FALSO`, including its leading space; logical field widths are rejected.
+width, numbers are right-aligned and the decimal count defaults to zero.
+Negative counts use zero places; positive counts are capped at 216. Integer
+values can also request decimals, which append zeros. Numeric fields expand
+if needed. Positive widths are capped at 255 characters before padding,
+including widths larger than the project byte budget. Strings are left-aligned
+and truncated to that width. Logical output is ` VERDADEIRO` or ` FALSO`,
+including its leading space; logical field widths are rejected.
+
+Fixed real fields round the stored binary value: `1.005:10:2` ends in `1.00`
+and `2.675:10:2` in `2.67`. Exact halfway values round away from zero, so
+`0.125:10:2` ends in `0.13`. Fixed fields preserve negative zero, including
+when a negative nonzero value rounds to zero. They calculate at most 17
+fractional places and pad additional requested places with zeros. The digit
+budget also falls with the value's binary exponent: for a nonzero value
+`m * 2^e`, where `0.5 <= abs(m) < 1`, the calculated decimal count is limited
+to `18 - ceil((e - 1) * log10(2))`. A negative limit rounds whole-number digits
+and replaces the remaining digits with zeros.
+
+At an absolute real value of `2^120` or greater, positive-width fields switch
+to scientific notation. The effective width is at least 10, with at most
+17 fractional digits, a reserved sign column, uppercase `E`, and a signed
+four-digit exponent. The decimal-count argument is ignored in this form;
+`1e40:10:2` prints ` 1.0E+0040`. Wider fields add fractional digits up to that
+limit and then left padding. These rules describe the recorded output profile.
 
 ## Display commands
 
@@ -730,11 +746,11 @@ stops the sample loop early; omitting the flag lets it finish.
 
 Regardless of that budget, execution permits at most 256 active language calls,
 256 expression-evaluation levels within one call frame, and a 16 MiB
-allocation safeguard for incoming text, an input token/line, or a formatted
-item. Language string values have the separate 255-character reference limit.
-Case conversion retains its allocation guard for direct library callers;
-format widths are capped before allocation, and precision expansion still
-checks its requested size before creating a result. Each vector
+allocation safeguard for incoming text or an input token/line. Language string
+values have the separate 255-character reference limit. Case conversion retains
+its allocation guard for direct library callers; format widths and decimal
+counts are capped before expansion, and pending output has its aggregate
+buffer limit. Each vector
 aggregate is capped at 1,048,576 scalar slots, including nested elements, with
 checked dimension products. Oversized literal layouts receive `E900` during
 analysis; constant-dependent layouts receive `R003` at declaration initialization,

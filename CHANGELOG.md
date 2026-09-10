@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Match recorded fixed and scientific field formatting, including the
+  216-place cap, binary-value rounding, negative zero, digit padding, and
+  the large-value scientific-notation threshold.
+
 - Limit string values and output widths to the recorded 255-character bound.
   Preserve complete input echo while storing the bounded value, keep accented
   characters intact, and apply the same limit before text conversion.

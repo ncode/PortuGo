@@ -16,9 +16,9 @@ keeps its left alignment. A shared character-limit helper preserves UTF-8
 boundaries and copies truncated prefixes so stored values do not retain a
 large input buffer.
 
-Three large-precision recordings remain pending: `string-field-real-precision`,
-`string-field-integer-precision`, and `string-field-wide-precision`. Their
-numeric precision behavior is separate from the width limit. The positioned
+Three large-precision recordings were retained for the subsequent
+[precision slice](format-precision-progress.md): `string-field-real-precision`,
+`string-field-integer-precision`, and `string-field-wide-precision`. The positioned
 `string-size-format-values` rejection also remains pending because reference
 output precedes a later invalid logical format, while current analysis rejects
 the program before execution. Its reviewed diagnostic crop and labeled manual
@@ -37,5 +37,5 @@ step limit because its string value stays bounded.
 
 The corpus contains 1102 reference recordings: 1053 verified and 49 pending,
 plus 16 project-contract records. The evidence gate still needs 10 requirement
-mappings and 30 bundled-example classifications. Remaining precision, catalog,
+mappings and 30 bundled-example classifications. Remaining catalog,
 and evaluation-order work stays open in the conformance task list.
