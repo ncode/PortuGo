@@ -337,7 +337,7 @@ func (p *parser) parseIdentStmt() ast.Stmt {
 		call := p.parseCall()
 		return &ast.CallStmt{Call: call}
 	}
-	if p.peekN(1).Kind != token.ASSIGN && p.peekN(1).Kind != token.LBRACK {
+	if p.peekN(1).Kind != token.ASSIGN && p.peekN(1).Kind != token.LBRACK && p.peekN(1).Kind != token.DOT {
 		return &ast.CallStmt{Call: &ast.CallExpr{Name: p.advance()}}
 	}
 	target := p.parseDesignator()
@@ -495,7 +495,14 @@ func (p *parser) atLineEnd() bool {
 func (p *parser) parseDesignator() ast.Expr {
 	name := p.expect(token.IDENT, "expected identifier")
 	var expr ast.Expr = &ast.IdentExpr{Name: name}
-	for p.match(token.LBRACK) {
+	for {
+		if p.match(token.DOT) {
+			expr = &ast.FieldExpr{At: expr.Start(), X: expr, Name: p.expect(token.IDENT, "expected field name after '.'")}
+			continue
+		}
+		if !p.match(token.LBRACK) {
+			break
+		}
 		at := expr.Start()
 		var indices []ast.Expr
 		if !p.match(token.RBRACK) {

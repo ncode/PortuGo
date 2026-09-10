@@ -196,7 +196,11 @@ func (s *scanner) scanSymbol(start int, r rune) {
 			s.emit(token.DOTDOT, "..", token.Pos(start))
 			return
 		}
-		s.error(token.Pos(start), "unexpected '.'")
+		if next := s.peek(); next >= '0' && next <= '9' {
+			s.error(token.Pos(start), "unexpected '.'")
+		} else {
+			s.emit(token.DOT, ".", token.Pos(start))
+		}
 	case '<':
 		switch {
 		case s.match('-'):

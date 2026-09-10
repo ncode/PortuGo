@@ -13,6 +13,7 @@ const (
 	BoolValue
 	VectorValue
 	VoidValue
+	RecordValue
 )
 
 // Cell is an assignable storage location.
@@ -31,6 +32,7 @@ type Value struct {
 	// NumericAbsence retains the domain origin of a VoidValue.
 	NumericAbsence bool
 	Vec            *Vector
+	Rec            *Record
 }
 
 // Zero returns the zero value for a type.
@@ -46,6 +48,8 @@ func Zero(t Type) Value {
 		return Value{Kind: BoolValue}
 	case VectorType:
 		return Value{Kind: VectorValue, Vec: NewVector(t)}
+	case RecordType:
+		return Value{Kind: RecordValue, Rec: NewRecord(t)}
 	case VoidType:
 		return Value{Kind: VoidValue}
 	default:
@@ -69,6 +73,11 @@ func (v Value) Type() Type {
 			return v.Vec.Type
 		}
 		return Type{Kind: VectorType}
+	case RecordValue:
+		if v.Rec != nil {
+			return v.Rec.Type
+		}
+		return Type{Kind: RecordType}
 	case VoidValue:
 		return Type{Kind: VoidType}
 	default:
@@ -78,6 +87,11 @@ func (v Value) Type() Type {
 
 // ConvertForAssign converts integer to real when assigning to a real cell.
 func ConvertForAssign(dst Type, v Value) (Value, error) {
+	if v.Kind == RecordValue {
+		if err := v.Rec.validate(); err != nil {
+			return Value{}, err
+		}
+	}
 	if dst.Kind == RealType && v.Kind == IntegerValue {
 		return Value{Kind: RealValue, Real: float64(v.Int)}, nil
 	}
@@ -89,6 +103,13 @@ func ConvertForAssign(dst Type, v Value) (Value, error) {
 
 // Clone returns a deep copy of v where mutation would otherwise be observable.
 func Clone(v Value) Value {
+	if v.Kind == RecordValue && v.Rec != nil {
+		record := &Record{Type: v.Rec.Type.Clone(), Fields: make([]Cell, len(v.Rec.Fields))}
+		for n, cell := range v.Rec.Fields {
+			record.Fields[n] = Cell{Type: cell.Type.Clone(), Value: Clone(cell.Value)}
+		}
+		return Value{Kind: RecordValue, Rec: record}
+	}
 	if v.Kind != VectorValue || v.Vec == nil {
 		return v
 	}

@@ -36,11 +36,14 @@ const (
 	COMMA
 	COLON
 	SEMI
+	DOT
 	DOTDOT
 
 	ALGORITMO
 	CONST
 	TIPO
+	REGISTRO
+	FIMREGISTRO
 	VAR
 	INICIO
 	FIMALGORITMO
@@ -98,6 +101,8 @@ var keywords = map[string]Kind{
 	"algoritmo":       ALGORITMO,
 	"const":           CONST,
 	"tipo":            TIPO,
+	"registro":        REGISTRO,
+	"fimregistro":     FIMREGISTRO,
 	"var":             VAR,
 	"inicio":          INICIO,
 	"fimalgoritmo":    FIMALGORITMO,
@@ -157,7 +162,8 @@ var kindNames = map[Kind]string{
 	ADD: "+", SUB: "-", MUL: "*", QUO: "/", IDIV: "\\", REM: "%", POW: "^",
 	ASSIGN: "<-", EQL: "=", NEQ: "<>", LSS: "<", GTR: ">", LEQ: "<=", GEQ: ">=",
 	LPAREN: "(", RPAREN: ")", LBRACK: "[", RBRACK: "]", COMMA: ",", COLON: ":",
-	SEMI: ";", DOTDOT: "..",
+	SEMI: ";", DOT: ".", DOTDOT: "..",
+	REGISTRO: "registro", FIMREGISTRO: "fimregistro",
 	ALGORITMO: "algoritmo", CONST: "const", TIPO: "tipo", VAR: "var", INICIO: "inicio", FIMALGORITMO: "fimalgoritmo",
 	INTEIRO: "inteiro", REAL: "real", CARACTERE: "caractere", LOGICO: "logico",
 	VETOR: "vetor", DE: "de", PROCEDIMENTO: "procedimento", FIMPROCEDIMENTO: "fimprocedimento",

@@ -37,6 +37,9 @@ func assign(cell *runtime.Cell, v runtime.Value) error {
 	if err != nil {
 		return err
 	}
+	if cell.Type.Kind == runtime.RecordType {
+		return cell.Value.Rec.AssignFrom(converted.Rec)
+	}
 	cell.Value = runtime.Clone(converted)
 	return nil
 }

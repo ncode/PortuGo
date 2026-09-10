@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Add named records with scalar fields, local layouts, zero initialization,
+  independent copies, vector elements, and scalar reference arguments. Match
+  empty output, record alias identity, non-addressable nested fields, and
+  positioned field/declaration errors; guard storage before access or copying
+  and preserve captured field references across whole-record assignment.
+
 - Add global and local scalar type aliases with earlier-alias resolution,
   first-definition precedence, compatible vector elements and scalar arguments,
   positioned declaration errors, and preserved formatter output.

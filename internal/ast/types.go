@@ -19,7 +19,7 @@ type ConstDecl struct {
 	Value Expr
 }
 
-// TypeDecl gives a name to an earlier scalar type.
+// TypeDecl defines a record or gives a name to an earlier type.
 type TypeDecl struct {
 	Name token.Token
 	Type TypeSpec
@@ -38,6 +38,7 @@ type TypeSpec struct {
 	Name   string
 	Ranges []Range
 	Elem   *TypeSpec
+	Fields []VarDecl
 }
 
 // Range is one vector dimension bound.

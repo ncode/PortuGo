@@ -107,7 +107,7 @@ Parameters and function results must use built-in type names; a named type in
 either header position receives `P001`. Variables declared through an alias
 can still be passed to compatible built-in scalar parameters, including `var`
 parameters. Vector type aliases are rejected. Record declarations and their
-alias compatibility remain pending separate implementation.
+distinct alias behavior are described below.
 
 Formatting preserves alias spelling, definition order, and local scopes, and
 emits the required `var` section. See the [type-alias example](../examples/type_aliases.alg)
@@ -156,6 +156,34 @@ minimum. Mixing a real operand into addition, subtraction, or multiplication
 uses real arithmetic. Division of the signed minimum by `-1` receives positioned
 `R002` as a project guard. The recorded real-to-integer assignment diagnostic
 behavior remains pending conformance work.
+
+## Records
+
+A named record is declared in a `tipo` section as `Name = registro`, followed
+by scalar field declarations and `fimregistro`. Fields may use scalar aliases
+and comma-separated names. Field lookup ignores case and selects the first
+declaration of a repeated field name. Empty records are accepted. One optional
+semicolon may follow `registro` or `fimregistro`; a semicolon after a field
+declaration receives `P001`.
+
+Record variables and vector elements expose fields through `value.field`.
+Fields start at their scalar zero values and can be assigned, read with `leia`,
+or passed to compatible scalar parameters, including `var` parameters. Local
+record definitions may shadow global definitions. Separate record definitions
+retain distinct assignment identities. Assignment within one record type,
+including self-assignment and copying between vector elements, copies field
+values without sharing mutable storage. Whole-record output contributes empty
+text. Captured field references remain valid across whole-record assignment,
+including self-assignment and replacement during later argument evaluation.
+See the [record example](../examples/records.alg).
+
+An alias of a record retains record type and separate identity but exposes no
+copied fields. A field declared with a named record type likewise creates no
+addressable nested field. Selecting either missing field produces `E002` at
+the first failing selection; analysis stops there. Inline record fields,
+vector fields, and named record parameter/result types receive `P001`.
+Cross-type record assignments are rejected; matching their recorded runtime
+diagnostic timing remains pending.
 
 ## Vectors
 
@@ -787,11 +815,12 @@ allocation safeguard for incoming text or an input token/line. Language string
 values have the separate 255-character reference limit. Case conversion retains
 its allocation guard for direct library callers; format widths and decimal
 counts are capped before expansion, and pending output has its aggregate
-buffer limit. Each vector
-aggregate is capped at 1,048,576 scalar slots, including nested elements, with
+buffer limit. Each record or vector
+aggregate is capped at 1,048,576 scalar slots, including record fields, with
 checked dimension products. Oversized literal layouts receive `E900` during
 analysis; constant-dependent layouts receive `R003` at declaration initialization,
-before allocation. Reference-specific storage quotas remain pending.
+before allocation. An empty record counts as one cell for this project guard.
+Reference-specific storage quotas remain pending.
 These are project safeguards, not measured VisuAlg limits. A safeguard
 hit in an accepted reference example remains a conformance failure.
 

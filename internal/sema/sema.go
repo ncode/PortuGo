@@ -67,6 +67,7 @@ type checker struct {
 	loopDepth  int
 	returnType runtime.Type
 	inFunction bool
+	fieldError bool
 }
 
 func newScope(parent *scope) *scope {
@@ -110,6 +111,9 @@ func (c *checker) checkProgram(prog *ast.Program) {
 	}
 	for _, sub := range prog.Subs {
 		c.checkSub(sub)
+		if c.fieldError {
+			return
+		}
 	}
 	c.checkStmts(prog.Body)
 }
@@ -252,6 +256,9 @@ func (c *checker) validateType(spec ast.TypeSpec, typ runtime.Type) {
 
 func (c *checker) checkStmts(stmts []ast.Stmt) {
 	for _, stmt := range stmts {
+		if c.fieldError {
+			return
+		}
 		c.checkStmt(stmt)
 	}
 }
@@ -264,6 +271,9 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			return
 		}
 		dst, ok := c.writable(s.Target)
+		if c.fieldError {
+			return
+		}
 		if ok && dst.Kind == runtime.VectorType {
 			c.error(s.Target.Start(), diag.ETypeMismatch, "vector assignment requires an indexed target")
 			return
@@ -397,6 +407,8 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 			return runtime.Type{Kind: runtime.InvalidType}
 		}
 		return sym.typ
+	case *ast.FieldExpr:
+		return c.fieldType(e)
 	case *ast.IndexExpr:
 		base := c.expr(e.X)
 		for _, idx := range e.Indices {
@@ -581,6 +593,9 @@ func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 		return sym.typ, true
 	case *ast.IndexExpr:
 		return c.expr(e), true
+	case *ast.FieldExpr:
+		typ := c.expr(e)
+		return typ, typ.Kind != runtime.InvalidType
 	default:
 		c.error(expr.Start(), diag.ETypeMismatch, "expression is not assignable")
 		return runtime.Type{Kind: runtime.InvalidType}, false
@@ -606,6 +621,9 @@ func (c *checker) withLoop(fn func()) {
 }
 
 func (c *checker) error(pos token.Pos, code diag.Code, format string, args ...any) {
+	if c.fieldError {
+		return
+	}
 	c.diags = append(c.diags, diag.Diagnostic{Code: code, Pos: pos, Message: fmt.Sprintf(format, args...)})
 }
 
@@ -627,6 +645,8 @@ func (c *checker) isWritableExpr(expr ast.Expr) bool {
 		sym, ok := c.lookupCallable(e.Name, funcSym)
 		return ok && sym.kind == varSym
 	case *ast.IndexExpr:
+		return c.isWritableExpr(e.X)
+	case *ast.FieldExpr:
 		return c.isWritableExpr(e.X)
 	default:
 		return false

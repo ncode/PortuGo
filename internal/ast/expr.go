@@ -55,6 +55,16 @@ type IndexExpr struct {
 func (*IndexExpr) exprNode()          {}
 func (e *IndexExpr) Start() token.Pos { return e.At }
 
+// FieldExpr selects a named record field.
+type FieldExpr struct {
+	At   token.Pos
+	X    Expr
+	Name token.Token
+}
+
+func (*FieldExpr) exprNode()          {}
+func (e *FieldExpr) Start() token.Pos { return e.At }
+
 // UnaryExpr applies one unary operator.
 type UnaryExpr struct {
 	Op token.Token

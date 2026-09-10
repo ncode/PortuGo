@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/token"
 )
 
 // TypeKind is a Portugol runtime type category.
@@ -22,6 +23,7 @@ const (
 	VoidType
 	// NumericType is an analysis-only union; runtime values remain integer or real.
 	NumericType
+	RecordType
 )
 
 // Range is one vector dimension bound. Dynamic endpoints are unresolved
@@ -35,14 +37,26 @@ type Range struct {
 
 // Type describes a Portugol value type.
 type Type struct {
-	Kind   TypeKind
-	Elem   *Type
-	Ranges []Range
+	Kind     TypeKind
+	Elem     *Type
+	Ranges   []Range
+	RecordID token.Pos
+	Fields   []Field
+}
+
+// Field describes one scalar field in declaration order.
+type Field struct {
+	Name string
+	Type Type
 }
 
 // Clone returns an independent copy of the type and its layout.
 func (t Type) Clone() Type {
 	t.Ranges = slices.Clone(t.Ranges)
+	t.Fields = slices.Clone(t.Fields)
+	for n := range t.Fields {
+		t.Fields[n].Type = t.Fields[n].Type.Clone()
+	}
 	if t.Elem != nil {
 		elem := t.Elem.Clone()
 		t.Elem = &elem
@@ -53,6 +67,18 @@ func (t Type) Clone() Type {
 // Slots returns the checked number of scalar storage slots in this type.
 // Reference-specific storage quotas are separate from representability.
 func (t Type) Slots() (int, error) {
+	if t.Kind == RecordType {
+		for _, field := range t.Fields {
+			if field.Type.Kind < IntegerType || field.Type.Kind > BoolType {
+				return 0, fmt.Errorf("invalid record field layout")
+			}
+		}
+		if len(t.Fields) > MaxVectorSlots {
+			return 0, ErrVectorSize
+		}
+		// Empty records still occupy one cell when used as vector elements.
+		return max(1, len(t.Fields)), nil
+	}
 	if t.Kind != VectorType {
 		return 1, nil
 	}
@@ -131,8 +157,13 @@ func (t Type) Equal(o Type) bool {
 }
 
 func (t Type) equal(o Type, allowDynamic bool) bool {
-	if t.Kind != o.Kind || len(t.Ranges) != len(o.Ranges) {
+	if t.Kind != o.Kind || t.RecordID != o.RecordID || len(t.Fields) != len(o.Fields) || len(t.Ranges) != len(o.Ranges) {
 		return false
+	}
+	for n, field := range t.Fields {
+		if field.Name != o.Fields[n].Name || !field.Type.equal(o.Fields[n].Type, allowDynamic) {
+			return false
+		}
 	}
 	for i := range t.Ranges {
 		a, b := t.Ranges[i], o.Ranges[i]
@@ -163,6 +194,8 @@ func (t Type) String() string {
 		return "caractere"
 	case BoolType:
 		return "logico"
+	case RecordType:
+		return "registro"
 	case VectorType:
 		parts := make([]string, len(t.Ranges))
 		for i, r := range t.Ranges {

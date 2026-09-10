@@ -67,11 +67,22 @@ func (p *printer) printDecls(consts []ConstDecl, types []TypeDecl, decls []VarDe
 		p.indent++
 		for _, d := range types {
 			p.line("%s = %s", d.Name.Text, typeString(d.Type))
+			if d.Type.Name == "registro" {
+				p.indent++
+				p.printVars(d.Type.Fields)
+				p.indent--
+				p.line("fimregistro")
+			}
 		}
 		p.indent--
 	}
 	p.line("var")
 	p.indent++
+	p.printVars(decls)
+	p.indent--
+}
+
+func (p *printer) printVars(decls []VarDecl) {
 	for _, d := range decls {
 		names := make([]string, len(d.Names))
 		for i, name := range d.Names {
@@ -79,7 +90,6 @@ func (p *printer) printDecls(consts []ConstDecl, types []TypeDecl, decls []VarDe
 		}
 		p.line("%s: %s", strings.Join(names, ", "), typeString(d.Type))
 	}
-	p.indent--
 }
 
 func (p *printer) printSub(sub Subprogram) {
@@ -262,6 +272,8 @@ func exprString(expr Expr) string {
 		}
 	case *IdentExpr:
 		return e.Name.Text
+	case *FieldExpr:
+		return exprString(e.X) + "." + e.Name.Text
 	case *IndexExpr:
 		indices := make([]string, len(e.Indices))
 		for i, idx := range e.Indices {

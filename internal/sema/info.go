@@ -90,6 +90,8 @@ func (c *checker) assignmentProcedure(expr ast.Expr) (symbol, bool) {
 		return sym, ok && sym.kind == procSym
 	case *ast.IndexExpr:
 		return c.assignmentProcedure(e.X)
+	case *ast.FieldExpr:
+		return c.assignmentProcedure(e.X)
 	default:
 		return symbol{}, false
 	}

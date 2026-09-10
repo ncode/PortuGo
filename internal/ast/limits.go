@@ -91,6 +91,9 @@ func (c *limitChecker) typ(t TypeSpec, depth int) {
 	if t.Elem != nil {
 		c.typ(*t.Elem, depth+1)
 	}
+	for _, field := range t.Fields {
+		c.typ(field.Type, depth+1)
+	}
 }
 
 func (c *limitChecker) stmts(stmts []Stmt, depth int) {
@@ -166,6 +169,8 @@ func (c *limitChecker) expr(expr Expr, depth int) {
 	case *IndexExpr:
 		c.expr(e.X, depth+1)
 		c.exprs(e.Indices, depth+1)
+	case *FieldExpr:
+		c.expr(e.X, depth+1)
 	case *CallExpr:
 		c.exprs(e.Args, depth+1)
 	}

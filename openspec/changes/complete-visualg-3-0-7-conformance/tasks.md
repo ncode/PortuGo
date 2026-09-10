@@ -165,12 +165,26 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   programs and nineteen positioned rejections verify global/local scopes,
   aliased vector elements, scalar arguments, declaration boundaries, and
   unsupported named callable headers. One narrowing-assignment diagnostic
-  remains pending; record alias identity is still unqualified.
-- [ ] 6.5 Implement record syntax and layouts in `sema.Info` only if confirmed, including field order, duplicates, and depth/size guards; otherwise add rejection fixtures and omit record layout machinery.
-- [ ] 6.6 Add field designators through AST, parser, printer, sema, and runtime only for confirmed record support; otherwise pin field-syntax rejection and remove positive field obligations from dependent tasks/specs.
+  remains pending. Record aliases now retain distinct record identity without
+  copied fields; their declaration and field-selection behavior is recorded.
+- [x] 6.5 Implement record syntax and layouts in `sema.Info` only if confirmed, including field order, duplicates, and depth/size guards; otherwise add rejection fixtures and omit record layout machinery.
+- [x] 6.6 Add field designators through AST, parser, printer, sema, and runtime only for confirmed record support; otherwise pin field-syntax rejection and remove positive field obligations from dependent tasks/specs.
+
+  Forty-six new record observations verify 42 cases, including two earlier
+  recordings: 28 accepted programs and 14 positioned rejections. Layouts retain
+  scalar field order, first definitions, local scope, and distinct record
+  identity. Nested named fields are not addressable; inline record/vector
+  fields and named callable headers are rejected. Traversal, slot, backing
+  storage, and copy checks guard the implementation. Five assignment-diagnostic
+  cases and one keyword type-name case remain pending.
 - [x] 6.7 Accept only oracle-confirmed assignment aliases and normalize them to the assignment AST without losing source positions.
-- [ ] 6.8 Implement zero initialization and copying only for accepted scalar/aggregate operations, with the depth and allocation guards applied before nested copies.
-- [ ] 6.9 Implement location-based `var` aliases for accepted scalar/vector designators and, if confirmed, fields; reproduce rejection of unsupported aggregate parameter forms.
+- [x] 6.8 Implement zero initialization and copying only for accepted scalar/aggregate operations, with the depth and allocation guards applied before nested copies.
+- [x] 6.9 Implement location-based `var` aliases for accepted scalar/vector designators and, if confirmed, fields; reproduce rejection of unsupported aggregate parameter forms.
+
+  Four field-reference controls exposed detached destinations after whole-record
+  replacement. Copies now preserve captured field locations across direct and
+  vector-element replacement, self-assignment, and later argument side effects.
+  Backing layouts are checked before copying or mutating destination storage.
 - [ ] 6.10 Add parser goldens, diagnostic tables, runtime fixtures, comment-preserving round trips, and an example combining only confirmed declarations and copy/reference forms.
 - [ ] 6.11 Update `docs/language.md` and `CHANGELOG.md` with accepted declarations, rejected extension forms, assignment spelling, and actual copy/reference semantics.
 - [ ] 6.12 Run focused AST/parser/sema/runtime aggregate tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.

@@ -56,7 +56,7 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 			return runtime.Value{}, err
 		}
 		return cell.Value, nil
-	case *ast.IndexExpr:
+	case *ast.IndexExpr, *ast.FieldExpr:
 		cell, err := i.location(e)
 		if err != nil {
 			return runtime.Value{}, err
@@ -225,6 +225,15 @@ func (i *Interpreter) location(expr ast.Expr) (cell *runtime.Cell, err error) {
 	switch e := expr.(type) {
 	case *ast.IdentExpr:
 		return i.lookupCell(e.Name)
+	case *ast.FieldExpr:
+		base, err := i.eval(e.X)
+		if err != nil {
+			return nil, err
+		}
+		if base.Kind != runtime.RecordValue || base.Rec == nil {
+			return nil, fmt.Errorf("cannot select a field of a non-record")
+		}
+		return base.Rec.Cell(e.Name.Text)
 	case *ast.IndexExpr:
 		base, err := i.eval(e.X)
 		if err != nil {

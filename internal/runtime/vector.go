@@ -37,7 +37,7 @@ func (v *Vector) Cell(indices []int64) (*Cell, error) {
 	if v.Type.Kind != VectorType || v.Type.Elem == nil || len(v.Type.Ranges) == 0 {
 		return nil, fmt.Errorf("invalid vector layout")
 	}
-	if kind := v.Type.Elem.Kind; kind < IntegerType || kind > VectorType {
+	if kind := v.Type.Elem.Kind; (kind < IntegerType || kind > VectorType) && kind != RecordType {
 		return nil, fmt.Errorf("invalid vector element type")
 	}
 	size := uint64(1)

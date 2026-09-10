@@ -13,6 +13,17 @@ func (c *checker) declareTypes(decls []ast.TypeDecl) bool {
 		if typ.Kind == runtime.InvalidType {
 			return false
 		}
+		if typ.Kind == runtime.RecordType {
+			typ.RecordID = decl.Name.Pos
+			if decl.Type.Name != "registro" {
+				// A record alias keeps record identity but exposes no copied fields.
+				typ.Fields = nil
+			}
+			if _, err := typ.Slots(); err != nil {
+				c.error(decl.Name.Pos, diag.EResource, "%s", err)
+				return false
+			}
+		}
 		key := canon(decl.Name.Text)
 		if _, exists := c.scope.types[key]; !exists {
 			c.scope.types[key] = symbol{pos: decl.Name.Pos, name: key, kind: typeSym, typ: typ}
@@ -23,6 +34,9 @@ func (c *checker) declareTypes(decls []ast.TypeDecl) bool {
 }
 
 func (c *checker) resolveType(spec ast.TypeSpec) runtime.Type {
+	if spec.Name == "registro" {
+		return c.recordType(spec)
+	}
 	typ := runtime.TypeFromSpec(spec)
 	if typ.Kind == runtime.VectorType && spec.Elem != nil {
 		elem := c.resolveType(*spec.Elem)

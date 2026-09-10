@@ -63,11 +63,15 @@ Recorded scalar aliases SHALL use a `tipo` section after optional `const` and be
 - **THEN** a positioned syntax diagnostic is returned before execution
 
 ### Requirement: Record types and fields
-The language SHALL support oracle-confirmed record declarations, nested records, record-typed variables, field selection, and fields whose types include named types and vectors. Field names SHALL follow the reference's case and duplicate rules, and field designators SHALL be valid wherever the selected value is valid.
+The language SHALL support recorded named records with scalar fields, including scalar aliases, grouped names, empty layouts, local definitions, record variables, and vector elements. Field lookup SHALL ignore case and select the first declaration of a repeated name. Scalar field designators SHALL be valid in assignments, input, output, and compatible scalar parameter positions. A named record used as a field type SHALL create no addressable nested field. Inline record and vector fields SHALL receive positioned syntax diagnostics. Record aliases SHALL retain distinct record identity without copied fields; missing selections through these declarations SHALL receive a positioned undeclared-field diagnostic. Named record parameter and result types SHALL be rejected.
 
-#### Scenario: Assign a nested record field
-- **WHEN** a program selects an existing field through a valid chain and assigns a compatible value
+#### Scenario: Assign a scalar record field
+- **WHEN** a program selects an existing scalar field of a record variable or vector element and assigns a compatible value
 - **THEN** only the selected storage location changes
+
+#### Scenario: Reject an unaddressable nested field
+- **WHEN** a program selects a field declared with a named record type or a copied field through a record alias
+- **THEN** analysis reports the first missing field and does not invent nested storage
 
 #### Scenario: Select an unknown field
 - **WHEN** a designator names a field absent from the resolved record layout
@@ -123,6 +127,12 @@ Assignment SHALL require the exact reference-compatible source and destination t
 
 ### Requirement: Aggregate copy and reference semantics
 Whole-vector assignment, including self-assignment and assignment to a scalar, SHALL be rejected as recorded. Element assignment remains supported. Record assignment and aggregate parameters SHALL be supported only in independently accepted forms, with copying, conversion, visibility, and copy-back matching their recordings. Nested aggregates SHALL follow the same confirmed rules without accidental sharing or copying; scalar parameter behavior SHALL NOT establish unrecorded aggregate alias behavior.
+
+Assignment between variables or vector elements of the same record definition SHALL copy field values without sharing mutable storage, including self-assignment. Existing field locations SHALL remain valid when the enclosing record is assigned, including during later argument evaluation. Distinct record definitions and record aliases SHALL remain incompatible for whole-record copying. Passing a scalar field through a compatible scalar `var` parameter SHALL preserve the recorded copy-back behavior; this SHALL NOT establish support for record-typed parameters.
+
+#### Scenario: Copy a record vector element
+- **WHEN** one record vector element is assigned to another element of the same record type and the source is subsequently modified
+- **THEN** the destination retains its copied scalar field values
 
 #### Scenario: Reject whole-vector assignment
 - **WHEN** an assignment uses a whole vector as its destination or assigns a whole vector to a scalar

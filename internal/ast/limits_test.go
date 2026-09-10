@@ -46,6 +46,7 @@ func TestTypeDeclarationTraversalLimits(t *testing.T) {
 		program *ast.Program
 	}{
 		{"global", &ast.Program{Types: decls}},
+		{"record field", &ast.Program{Types: []ast.TypeDecl{{Type: ast.TypeSpec{Name: "registro", Fields: []ast.VarDecl{{Type: typ}}}}}}},
 		{"procedure", &ast.Program{Subs: []ast.Subprogram{&ast.ProcedureDecl{Types: decls}}}},
 		{"function", &ast.Program{Subs: []ast.Subprogram{&ast.FunctionDecl{Types: decls}}}},
 	} {

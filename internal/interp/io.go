@@ -238,7 +238,7 @@ func formatValue(v runtime.Value, width, decimals int) string {
 			return " VERDADEIRO"
 		}
 		return " FALSO"
-	case runtime.VoidValue:
+	case runtime.VoidValue, runtime.RecordValue:
 		s = ""
 	default:
 		s = "<invalido>"
