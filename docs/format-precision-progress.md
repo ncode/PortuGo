@@ -18,13 +18,15 @@ Input-line and direct-library allocation safeguards remain, as does the shared
 pending-output limit across nested writes. The example and interpreter fixture
 show rounding, negative zero, trailing-zero padding, and scientific notation.
 
-Three new observations remain pending outside formatting:
+Three new observations were retained outside formatting:
 
 - `format-precision-small-values` exposes signed exponent tokens being parsed
   differently by the reference source parser.
 - `format-precision-small-rounding` and `format-identity-tiny-decimals` expose
   long decimal strings converting to zero where equivalent exponent strings
-  retain their numeric value.
+  retain their numeric value. The subsequent
+  [decimal-conversion slice](decimal-conversions-progress.md) verifies these
+  as the zero-integral-prefix fallback, which also applies to ordinary fractions.
 
 Arithmetic and exponent-string control cases show that these differences
 precede formatting. No magnitude-based zeroing was added to the formatter.

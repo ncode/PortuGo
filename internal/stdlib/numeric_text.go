@@ -41,6 +41,8 @@ func caracpnum(args []runtime.Value) (runtime.Value, bool, error) {
 		}
 		return integer, true, nil
 	}
+	// A zero integral prefix takes the integer-zero fallback before real parsing.
+	prefix = strings.TrimLeft(prefix, "0")
 	if prefix == "" || prefix[0] < '0' || prefix[0] > '9' {
 		return integer, true, nil
 	}

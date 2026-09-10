@@ -102,6 +102,8 @@ func TestCharacterConversionDiagnostics(t *testing.T) {
 		{"conversion-spelling-underscore-integer", diag.RBuiltin, 3},
 		{"conversion-spelling-underscore-real", diag.RBuiltin, 3},
 		{"conversion-spelling-hex-suffix", diag.RBuiltin, 3},
+		{"decimal-type-tiny-exponent", diag.RType, 5},
+		{"decimal-invalid-nonzero-control", diag.RBuiltin, 3},
 	} {
 		t.Run(tt.id, func(t *testing.T) {
 			src, err := source.ReadFile(filepath.Join("testdata/conformance/visualg-3.0.7/probes", tt.id, "source.alg"))

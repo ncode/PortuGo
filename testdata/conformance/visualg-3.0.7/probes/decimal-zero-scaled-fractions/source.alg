@@ -1,0 +1,19 @@
+algoritmo "fraction conversion"
+inicio
+escreval(numpcarac(caracpnum("0.5e3")))
+escreval("|",caracpnum("0.5e3"):10:30,"|")
+escreval(numpcarac(caracpnum("0.5e-3")))
+escreval("|",caracpnum("0.5e-3"):10:30,"|")
+escreval(numpcarac(caracpnum("00.5e3")))
+escreval("|",caracpnum("00.5e3"):10:30,"|")
+escreval(numpcarac(caracpnum("1.5e-3")))
+escreval("|",caracpnum("1.5e-3"):10:30,"|")
+escreval(numpcarac(caracpnum("0001.5e-3")))
+escreval("|",caracpnum("0001.5e-3"):10:30,"|")
+escreval(numpcarac(caracpnum("0,5")))
+escreval("|",caracpnum("0,5"):10:30,"|")
+escreval(numpcarac(caracpnum("00,5")))
+escreval("|",caracpnum("00,5"):10:30,"|")
+escreval(numpcarac(caracpnum("01,5")))
+escreval("|",caracpnum("01,5"):10:30,"|")
+fimalgoritmo

@@ -659,23 +659,31 @@ bound; a real result receives `P001` when that declaration is reached.
 
 ASCII spaces around the text are ignored; tabs and nonbreaking spaces are
 not. Empty text, an absent numeric prefix, leading `.` or `,`, and unsupported
-alphabetic spellings such as `NaN` produce integer zero. Decimal points,
+alphabetic spellings such as `NaN` produce integer zero. For decimal text,
+leading zeros are ignored when checking for a nonzero integral prefix.
+Without one, conversion returns integer zero before parsing the fraction or
+exponent: `"0.5"`, `"-00.5"`, and `"0.5e3"` all produce integer zero.
+`"01.5"` produces real `1.5`, and `"6e-18"` preserves its small real value.
+This fallback precedes suffix validation: `"0.5x"`, `"0e9999"`, `"0.0.1"`,
+and `"0_1"` also return integer zero; `"01.5x"` receives `R007`.
+Hexadecimal text is handled separately. Decimal points,
 commas, or `e`/`E` exponent syntax select real type, including `"1.0"`,
 `"1,0"`, and `"1e0"`. An exponent with no digits (`"1e"`, `"1e+"`, or
 `"1e-"`) contributes zero. Real underflow produces zero; overflow and
-malformed text after a numeric prefix receive `R007` at the conversion call.
+malformed text after a nonzero integral prefix receive `R007` at the conversion call.
 Already emitted output is preserved if conversion fails.
 
 Integer spellings from zero through 2147483647 produce integer values;
 2147483648 and 2147483649 produce integer zero, and positive integer
 spellings from 2147483650 select real type. A leading plus is accepted.
 Negative integer spellings through -2147483648 produce zero; more negative
-integer spellings select real type. Signed decimal or exponent forms preserve
-their sign. Hexadecimal prefixes `$`, `0x`, and `0X` are accepted, including
+integer spellings select real type. Signed decimal or exponent forms with a
+nonzero integral prefix preserve their sign. Hexadecimal prefixes `$`, `0x`,
+and `0X` are accepted, including
 a leading plus: values through `7FFFFFFF` produce integers, negative and larger
 32-bit values produce zero, and overflow beyond 32 bits receives `R007`. An
 empty or invalid first hexadecimal digit produces zero. Digit separators such
-as underscores are rejected after a numeric prefix.
+as underscores are rejected after a nonzero integral prefix.
 
 Omitted parentheses or extra arguments receive `P001`; an empty call,
 non-character argument, or no-value argument receives `E001`. Conversion uses

@@ -98,6 +98,14 @@ The catalog SHALL implement all oracle-confirmed explicit conversion functions a
 - **WHEN** the same analyzed `caracpnum` call receives `"1"` and `"1.0"` at runtime
 - **THEN** the first result is accepted by `randi` and the second receives positioned `E001`, without a static real-to-integer coercion
 
+#### Scenario: Convert a zero integral prefix
+- **WHEN** `caracpnum` receives `"0.5"`, `"-00.5"`, or `"0.5e3"`
+- **THEN** each result is integer zero and can be assigned to an integer variable, while `"01.5"` and `"6e-18"` retain their real values and result types
+
+#### Scenario: Apply zero fallback before suffix validation
+- **WHEN** decimal conversion receives `"0.5x"`, `"0e9999"`, `"0.0.1"`, or `"0_1"`
+- **THEN** each returns integer zero, while the nonzero-prefix control `"01.5x"` receives positioned `R007`
+
 #### Scenario: Preserve conversion failure output
 - **WHEN** a character-producing argument emits output and returns malformed numeric text
 - **THEN** that output remains visible and conversion receives positioned `R007` at its call

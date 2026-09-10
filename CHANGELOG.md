@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Preserve integer-zero fallback for numeric text with a zero integral
+  prefix, including fractional and exponent forms. Keep nonzero-prefix real
+  conversions and their runtime type checks intact.
+
 - Match recorded fixed and scientific field formatting, including the
   216-place cap, binary-value rounding, negative zero, digit padding, and
   the large-value scientific-notation threshold.

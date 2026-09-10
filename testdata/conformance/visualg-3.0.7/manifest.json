@@ -1711,7 +1711,28 @@
         "conversion-spelling-plus-currency",
         "conversion-spelling-underscore-integer",
         "conversion-spelling-underscore-real",
-        "conversion-spelling-hex-suffix"
+        "conversion-spelling-hex-suffix",
+        "decimal-conversion-tiny-lengths",
+        "decimal-conversion-leading-zeroes",
+        "decimal-conversion-significant-tails",
+        "decimal-conversion-exponent-scaling",
+        "decimal-zero-fractions",
+        "decimal-zero-scaled-fractions",
+        "decimal-zero-signs-zero",
+        "decimal-type-zero",
+        "decimal-type-fraction",
+        "decimal-type-negative",
+        "decimal-type-leading-zeroes",
+        "decimal-type-scaled",
+        "decimal-type-tiny-exponent",
+        "decimal-invalid-suffix",
+        "decimal-invalid-zeroes-suffix",
+        "decimal-invalid-exponent-overflow",
+        "decimal-invalid-fraction-overflow",
+        "decimal-invalid-repeated-point",
+        "decimal-invalid-underscore",
+        "decimal-invalid-alphabetic",
+        "decimal-invalid-nonzero-control"
       ]
     },
     {
@@ -56775,14 +56796,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/format-precision-small-rounding/stdout.txt",
             "sha256": "d1058b16164b3edd750e3bc412100432e12d2a0a06b18ac91ab6cea1af0dfd55"
           }
-        }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
       }
     },
     {
@@ -56987,14 +57011,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/format-identity-tiny-decimals/stdout.txt",
             "sha256": "f455c7f5c3e45e8f8c014c8060c70edace564fbf96b14db4c6dbe908a5e887f6"
           }
-        }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
       }
     },
     {
@@ -57381,6 +57408,939 @@
         },
         "tests": [
           "format_precision_test.go#TestRecordedFormatPrecision"
+        ]
+      }
+    },
+    {
+      "id": "decimal-conversion-tiny-lengths",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-tiny-lengths/source.alg",
+        "sha256": "2eac82e1a2885cb18201dbeeb782e27dbfdcc7a0fd5356dfdd8bf4ffc6caf95d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:13:51.4822979Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-tiny-lengths/raw.txt",
+          "sha256": "c4e27301979a2f671a54e530a21e70e19032a57317c1480f9590566e1512705d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-tiny-lengths/stdout.txt",
+          "sha256": "141aefb2743c88d4be6f4fe0632d0fb5bfb8875deebe6f645ab8f4422e5e71ea"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-tiny-lengths/stdout.txt",
+            "sha256": "141aefb2743c88d4be6f4fe0632d0fb5bfb8875deebe6f645ab8f4422e5e71ea"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-conversion-leading-zeroes",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-leading-zeroes/source.alg",
+        "sha256": "b5707ef8397510caf4bf451d8c3502ed638fbac2faa3741e3f4257fc29ea8fbf"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:14:01.7411045Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-leading-zeroes/raw.txt",
+          "sha256": "08e5f11c3f2ad59979cb3747b620781a1efcb67a4fcc62f6fa12afa637323246"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-leading-zeroes/stdout.txt",
+          "sha256": "3988bacc7a3f2f8a3708db9d49437dd8a36ed6031d5a3227ff1c84a52678a990"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-leading-zeroes/stdout.txt",
+            "sha256": "3988bacc7a3f2f8a3708db9d49437dd8a36ed6031d5a3227ff1c84a52678a990"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-conversion-significant-tails",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-significant-tails/source.alg",
+        "sha256": "145325d3a036273778c52772f8fc58c0983fb65b8c048925b06cd8f173129a46"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:14:11.9783471Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-significant-tails/raw.txt",
+          "sha256": "9e918575e440f3106b259408713cc131f411f4dd8035d119645ddb62d3de93ef"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-significant-tails/stdout.txt",
+          "sha256": "5feb188a4d54a671a201ac5e6bbcb481185e151940efd8167c3490c43d6262f0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-significant-tails/stdout.txt",
+            "sha256": "5feb188a4d54a671a201ac5e6bbcb481185e151940efd8167c3490c43d6262f0"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-conversion-exponent-scaling",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-exponent-scaling/source.alg",
+        "sha256": "ca36dfed1fabf84ec5f62577348f1a32efb78b75d2fc78c05afe9dd8644ea6bf"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:14:22.1908950Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-exponent-scaling/raw.txt",
+          "sha256": "48ec6923c0f941b7f88c013353cef0864728a0c4c6d770d0806c1a26a3d0505b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-exponent-scaling/stdout.txt",
+          "sha256": "17190589e9981206b07883bea2d5387aee1c93634236774f55fe771c109ef4e0"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-conversion-exponent-scaling/stdout.txt",
+            "sha256": "17190589e9981206b07883bea2d5387aee1c93634236774f55fe771c109ef4e0"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-zero-fractions",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-zero-fractions/source.alg",
+        "sha256": "74a45e957f292c258fa63d976add00a7e3b65b93124d2d6609f10ebe00e6ac5d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:16:49.7176431Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-zero-fractions/raw.txt",
+          "sha256": "5170bfe6d9a4932aea3f1052e3638eeec3ef2298628a7f7f994f29139dea7ef3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-zero-fractions/stdout.txt",
+          "sha256": "da6fb56d1f3332040a47854c154fa9a1062bc15ea6231e79fd7595f582d739e3"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-zero-fractions/stdout.txt",
+            "sha256": "da6fb56d1f3332040a47854c154fa9a1062bc15ea6231e79fd7595f582d739e3"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-zero-scaled-fractions",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-zero-scaled-fractions/source.alg",
+        "sha256": "c29443d37037933e0c395cbfb4b6426bc30b96a13f2bd7345d8dbb73877d0e5b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:16:59.9899562Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-zero-scaled-fractions/raw.txt",
+          "sha256": "acd2137e4ab3197cbe42f21f13e1665db5eb5396abe2434cec54a535cd244be6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-zero-scaled-fractions/stdout.txt",
+          "sha256": "1c61635c7b836edc968e82f9b0507a7af9ed15b5c0feb05dbf4a9bec841b6d60"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-zero-scaled-fractions/stdout.txt",
+            "sha256": "1c61635c7b836edc968e82f9b0507a7af9ed15b5c0feb05dbf4a9bec841b6d60"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-zero-signs-zero",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-zero-signs-zero/source.alg",
+        "sha256": "dc3b728008371ea1020aca52efcfaa441c5f0cf8802a397b1d47b0dbe4316830"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:17:10.2723885Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-zero-signs-zero/raw.txt",
+          "sha256": "5265946eff7a4afaaf4a169333ddfcdc15fdb518b3bee60eddcba25891d561c9"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-zero-signs-zero/stdout.txt",
+          "sha256": "c87495dc57dc3d4b60927b7cf7661fbc258c4b51552d22cdbe0b0cde4be06813"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-zero-signs-zero/stdout.txt",
+            "sha256": "c87495dc57dc3d4b60927b7cf7661fbc258c4b51552d22cdbe0b0cde4be06813"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-type-zero",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-zero/source.alg",
+        "sha256": "981290d5773135e33fb284702c0f92685ae666c1af2f18cc232781d067b02410"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:18:14.8756492Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-zero/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-zero/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-zero/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-type-fraction",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-fraction/source.alg",
+        "sha256": "89a1074d181d5bf37e5b1a20cc9c408e2c6ef8a2542b92b170cffcff46a5aa76"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:18:25.1323824Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-fraction/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-fraction/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-fraction/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-type-negative",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-negative/source.alg",
+        "sha256": "543849c100819f5bec49b55d5e7602822920eeda7f5ce74582a3dc63d4b59b2b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:18:35.3811406Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-negative/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-negative/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-negative/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-type-leading-zeroes",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-leading-zeroes/source.alg",
+        "sha256": "94b51dc95e4db05dac8b1bf816347794dbe19ecbcae1b60633d490896af0a883"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:18:45.6144001Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-leading-zeroes/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-leading-zeroes/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-leading-zeroes/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-type-scaled",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-scaled/source.alg",
+        "sha256": "a51439257ef803f5a03b067b750e3378f8d3e88ba136314947c1e30ae5c0486c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:18:55.7887561Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-scaled/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-scaled/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-scaled/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-type-tiny-exponent",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-tiny-exponent/source.alg",
+        "sha256": "64e1a8cdcb83b3d4ccb8c4da37b313f1c6f178a692d714d1415e99016a05f864"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T01:19:06.0809396Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-tiny-exponent/transcription.txt",
+          "sha256": "da3215561198171e03395c067d9bcc3024685ef91267dbd1b88847240480a74e"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-tiny-exponent/transcription.txt",
+          "sha256": "da3215561198171e03395c067d9bcc3024685ef91267dbd1b88847240480a74e"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-tiny-exponent/screenshot.png",
+          "sha256": "47a2f5b319a0833b6a21c91facb41f06fdf4e3b5dbdd4878f83efb6f657fde42"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-tiny-exponent/transcription.txt",
+          "sha256": "da3215561198171e03395c067d9bcc3024685ef91267dbd1b88847240480a74e"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-type-tiny-exponent/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "character_conversion_test.go#TestCharacterConversionDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "decimal-invalid-suffix",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-suffix/source.alg",
+        "sha256": "6a66295cb538a06ed8806f337ec3627e064bffb70e06c851edda6abb9b1bb7d2"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:19:50.1495877Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-suffix/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-suffix/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-suffix/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-invalid-zeroes-suffix",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-zeroes-suffix/source.alg",
+        "sha256": "5a6722b00d2b725c3c3d280eb85b81c7409a2cdfd59118fffcdaf7751dbb7c29"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:20:00.4182137Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-zeroes-suffix/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-zeroes-suffix/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-zeroes-suffix/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-invalid-exponent-overflow",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-exponent-overflow/source.alg",
+        "sha256": "0010ed6cd775a6aedfbcea61b19e8619b4141e679d8ee87aa3cf6441cc78ff1a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:20:10.6523980Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-exponent-overflow/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-exponent-overflow/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-exponent-overflow/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-invalid-fraction-overflow",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-fraction-overflow/source.alg",
+        "sha256": "ed8b402127cad799c99175b6d6e261aec7159afd0c02f9195800f6140c60ae6c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:20:20.8849398Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-fraction-overflow/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-fraction-overflow/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-fraction-overflow/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-invalid-repeated-point",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-repeated-point/source.alg",
+        "sha256": "f41dfa096fb8f90a135e17a8af8ced018d25d36272602a2b7301a589127f2c53"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:20:31.0242525Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-repeated-point/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-repeated-point/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-repeated-point/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-invalid-underscore",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-underscore/source.alg",
+        "sha256": "27d94278efdb1b94e2b32aef064515079068ad5640cd341d87523363c0505254"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:20:41.1287610Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-underscore/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-underscore/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-underscore/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-invalid-alphabetic",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-alphabetic/source.alg",
+        "sha256": "04aa45ae42b2169c33bab2bdf8c2f3e34a45dd40e053b7d7d3f3707df4db748c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T01:20:51.3211606Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-alphabetic/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-alphabetic/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-alphabetic/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "decimal_conversion_test.go#TestRecordedDecimalConversions"
+        ]
+      }
+    },
+    {
+      "id": "decimal-invalid-nonzero-control",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-nonzero-control/source.alg",
+        "sha256": "e19ecac3214ff2593324e7a6305cb83d7b270d3491ece312206b6b692a4b7e0c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-10T01:21:01.5457386Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-nonzero-control/transcription.txt",
+          "sha256": "52feeec2b6f2228592c793ab60d3a9d3ec08a5760f7b726bbebd3b19207d945e"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-nonzero-control/transcription.txt",
+          "sha256": "52feeec2b6f2228592c793ab60d3a9d3ec08a5760f7b726bbebd3b19207d945e"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-nonzero-control/screenshot.png",
+          "sha256": "cc331c90bf718f47104560325fa977f65df38e4ef1536ae6aa92d059a7e9030a"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-nonzero-control/transcription.txt",
+          "sha256": "52feeec2b6f2228592c793ab60d3a9d3ec08a5760f7b726bbebd3b19207d945e"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/decimal-invalid-nonzero-control/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "R007",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "character_conversion_test.go#TestCharacterConversionDiagnostics"
         ]
       }
     }
