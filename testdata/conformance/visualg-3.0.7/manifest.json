@@ -1110,7 +1110,12 @@
         "real-output-zero",
         "real-output-default-width",
         "real-output-addition",
-        "real-output-exponents"
+        "real-output-exponents",
+        "string-field-widths",
+        "string-field-real-precision",
+        "string-field-integer-precision",
+        "string-field-wide-precision",
+        "string-field-large-width"
       ]
     },
     {
@@ -1476,7 +1481,26 @@
         "text-order-no-value-bound",
         "text-order-no-value-code",
         "conversion-edge-literal-length",
-        "conversion-edge-joined-length"
+        "conversion-edge-joined-length",
+        "string-size-literal-254",
+        "string-size-literal-255",
+        "string-size-literal-256",
+        "string-size-literal-511",
+        "string-size-accent-tail",
+        "string-size-joined-tail",
+        "string-size-accent-count",
+        "string-size-uppercase",
+        "string-size-search-tail",
+        "string-size-copy-tail",
+        "string-size-comparison",
+        "string-size-assignment",
+        "string-size-parameter-result",
+        "string-size-vector",
+        "string-size-output-width",
+        "string-size-constant-value",
+        "string-size-constant-joined",
+        "string-size-input-255",
+        "string-size-input-256"
       ]
     },
     {
@@ -10186,7 +10210,8 @@
         "state": "verified",
         "tests": [
           "internal/interp/execution_test.go#TestExecutionDiagnostics",
-          "internal/interp/execution_test.go#TestBuiltinTextLimits"
+          "internal/stdlib/stdlib_test.go#TestCaseConversionAllocationGuard",
+          "internal/stdlib/stdlib_test.go#TestCopiaExtremeLength"
         ]
       }
     },
@@ -40051,7 +40076,8 @@
           "internal/interp/execution_test.go#TestCallAndValueLimits",
           "internal/interp/execution_test.go#TestDefensiveEvaluationDepth",
           "internal/interp/execution_test.go#TestFormattedItemBoundary",
-          "internal/interp/execution_test.go#TestBuiltinTextLimits"
+          "internal/stdlib/stdlib_test.go#TestCaseConversionAllocationGuard",
+          "internal/interp/io_test.go#TestWriteBufferLimit"
         ]
       }
     },
@@ -50345,14 +50371,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/conversion-enormous/stdout.txt",
             "sha256": "968320bc4dc9906ab8deaa775715ce12568eda53236f9b085a47994a38698a09"
           }
-        }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
       }
     },
     {
@@ -52274,14 +52303,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/conversion-edge-literal-length/stdout.txt",
             "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
           }
-        }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
       }
     },
     {
@@ -52314,14 +52346,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/conversion-edge-joined-length/stdout.txt",
             "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
           }
-        }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
       }
     },
     {
@@ -52354,14 +52389,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/conversion-edge-joined-number/stdout.txt",
             "sha256": "968320bc4dc9906ab8deaa775715ce12568eda53236f9b085a47994a38698a09"
           }
-        }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
       }
     },
     {
@@ -52394,14 +52432,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/conversion-edge-suffix-after-255/stdout.txt",
             "sha256": "ff1243e11fc94348f135f32892104e19ea71cc06f5a1f5765380aec0683d60a5"
           }
-        }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
       }
     },
     {
@@ -54907,6 +54948,1031 @@
         },
         "tests": [
           "character_conversion_test.go#TestCharacterConversionDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "string-size-literal-254",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-254/source.alg",
+        "sha256": "9c6fc8e05d9e54a10eba2527737650b0b8f55a39431800265aa19067e60f798b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:13:47.3056506Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-254/raw.txt",
+          "sha256": "6635d612d75b7ecf74814faf15c208b2d11cbc2252e0c56d9383a6d1bacaea1b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-254/stdout.txt",
+          "sha256": "b063d77c12dade9d9546768c64ebed3796001016fae7f91f326239c8b75dfc91"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-254/stdout.txt",
+            "sha256": "b063d77c12dade9d9546768c64ebed3796001016fae7f91f326239c8b75dfc91"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-literal-255",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-255/source.alg",
+        "sha256": "ccd122a98794855a07f812419d15b2a3ccab56ed06c8d468cf36877e945c0362"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:13:57.5570166Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-255/raw.txt",
+          "sha256": "3a72abd73c3e45654fd9eb6a32c53e73a633be82fb26ac0376675877ba574651"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-255/stdout.txt",
+          "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-255/stdout.txt",
+            "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-literal-256",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-256/source.alg",
+        "sha256": "e98be0cd7ca8fe3a6ed21d0aea1608f2de39dba9bf2de7956d3f3d04bcf5da4c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:14:07.8485272Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-256/raw.txt",
+          "sha256": "3a72abd73c3e45654fd9eb6a32c53e73a633be82fb26ac0376675877ba574651"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-256/stdout.txt",
+          "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-256/stdout.txt",
+            "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-literal-511",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-511/source.alg",
+        "sha256": "a942b5b0e80dcfc74a3bc0e7a894f6a3b76554e472ac605a37cd3e137542dca6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:14:18.0682369Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-511/raw.txt",
+          "sha256": "3a72abd73c3e45654fd9eb6a32c53e73a633be82fb26ac0376675877ba574651"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-511/stdout.txt",
+          "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-literal-511/stdout.txt",
+            "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-accent-tail",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-accent-tail/source.alg",
+        "sha256": "2a50e428de42bca6cab000f694e1467655e1a8dad8cbb0f3d79818f57d38ea7a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:14:28.2187809Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-accent-tail/raw.txt",
+          "sha256": "b93c9529a02a4d697c88e05d120c56df0d4c33bb9e621c85ec6fdbea16241fb3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-accent-tail/stdout.txt",
+          "sha256": "49c4b47a73a0557f37220f5c6e147f0f1220347e89cd37bdae2725273f371298"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-accent-tail/stdout.txt",
+            "sha256": "49c4b47a73a0557f37220f5c6e147f0f1220347e89cd37bdae2725273f371298"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-joined-tail",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-joined-tail/source.alg",
+        "sha256": "30d0c0c71a88ac58e8c996fe8132ea244f8f17fae3c1cd0744b93521e5a941a9"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:14:38.2987631Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-joined-tail/raw.txt",
+          "sha256": "b93c9529a02a4d697c88e05d120c56df0d4c33bb9e621c85ec6fdbea16241fb3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-joined-tail/stdout.txt",
+          "sha256": "49c4b47a73a0557f37220f5c6e147f0f1220347e89cd37bdae2725273f371298"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-joined-tail/stdout.txt",
+            "sha256": "49c4b47a73a0557f37220f5c6e147f0f1220347e89cd37bdae2725273f371298"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-accent-count",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-accent-count/source.alg",
+        "sha256": "bf7e49501a6913cb8db4f64499aa1ace7852d92dc6e21cd4bbd892036a815fa6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:14:48.5168509Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-accent-count/raw.txt",
+          "sha256": "3a72abd73c3e45654fd9eb6a32c53e73a633be82fb26ac0376675877ba574651"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-accent-count/stdout.txt",
+          "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-accent-count/stdout.txt",
+            "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-uppercase",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-uppercase/source.alg",
+        "sha256": "b14d8d89bd4d25203008f1a4b685b2715a2d0a4825af3abf95def3be2f289507"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:14:58.8414453Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-uppercase/raw.txt",
+          "sha256": "e0ffec4eb0ad0e8b60edad511843332a001ef49c7271bb3369cb673b38f4bbea"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-uppercase/stdout.txt",
+          "sha256": "f791380fb7ad4e0dae07e6e3fd6b1046b610a38bb316df0f36189d76f8e4942b"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-uppercase/stdout.txt",
+            "sha256": "f791380fb7ad4e0dae07e6e3fd6b1046b610a38bb316df0f36189d76f8e4942b"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-search-tail",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-search-tail/source.alg",
+        "sha256": "473e66ca81ae07874dbe6457f6a4db9b87b31003086a056269eb5272f9b13e29"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:15:09.0300008Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-search-tail/raw.txt",
+          "sha256": "7ee171044cba4f75d625a923264d029fc7e45014916a63a7383e4632d6ee5c9c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-search-tail/stdout.txt",
+          "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-search-tail/stdout.txt",
+            "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-copy-tail",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-copy-tail/source.alg",
+        "sha256": "27c417948ff87c947005cafb111017f40a1cea88fbf02c7297e97e2f8fb1704d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:15:19.1530826Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-copy-tail/raw.txt",
+          "sha256": "915aa41f1509d10f160bcc58a584ec014eaabce397b0096129d0792668cf18e0"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-copy-tail/stdout.txt",
+          "sha256": "f45151f5253c62de69c95935f083b5649876fdb661412d4f32065a7b018bf68b"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-copy-tail/stdout.txt",
+            "sha256": "f45151f5253c62de69c95935f083b5649876fdb661412d4f32065a7b018bf68b"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-comparison",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-comparison/source.alg",
+        "sha256": "76d7834f933876f7bde96a83ab6a8beb3d7ff8e9e3728816859e0153e49457e9"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:15:29.3115690Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-comparison/raw.txt",
+          "sha256": "f01fd89b93f56ce6101252de33a82f077fd488885a3bd3c746864fe85837db48"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-comparison/stdout.txt",
+          "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-comparison/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-assignment",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-assignment/source.alg",
+        "sha256": "58012140c551e335952fcfad128223e1a977dd145e0a03e756f72ff39e14b362"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:15:39.5545244Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-assignment/raw.txt",
+          "sha256": "b93c9529a02a4d697c88e05d120c56df0d4c33bb9e621c85ec6fdbea16241fb3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-assignment/stdout.txt",
+          "sha256": "49c4b47a73a0557f37220f5c6e147f0f1220347e89cd37bdae2725273f371298"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-assignment/stdout.txt",
+            "sha256": "49c4b47a73a0557f37220f5c6e147f0f1220347e89cd37bdae2725273f371298"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-parameter-result",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-parameter-result/source.alg",
+        "sha256": "cb7499e522a92b2c074b56832d83546fde7c42d840b3c1188b382b7c29c77f3f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:16:00.0141194Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-parameter-result/raw.txt",
+          "sha256": "3a72abd73c3e45654fd9eb6a32c53e73a633be82fb26ac0376675877ba574651"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-parameter-result/stdout.txt",
+          "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-parameter-result/stdout.txt",
+            "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-vector",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-vector/source.alg",
+        "sha256": "d49fa597791fe1686912f5551de87eafdd1edcdef0e4020a17a06f1271c1cb90"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:16:10.2091713Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-vector/raw.txt",
+          "sha256": "3a72abd73c3e45654fd9eb6a32c53e73a633be82fb26ac0376675877ba574651"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-vector/stdout.txt",
+          "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-vector/stdout.txt",
+            "sha256": "5874c9ac1654be9d098a32881a81d4364dec3f8bde6fb9c4242608c0d0a049e5"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-output-width",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-output-width/source.alg",
+        "sha256": "4ef83fea7055eb71bf592e414db70d33b8f8853404cd511c2d3ce676c91aac45"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:16:20.3721708Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-output-width/raw.txt",
+          "sha256": "525298510cce4f22a89ded77e11c03286883d55f97e4b0c1d8e274ed161bf96c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-output-width/stdout.txt",
+          "sha256": "437c8f471c5a94610a229f7f4493a8d96eb9efab7d17a04ed115db7fa673440a"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-output-width/stdout.txt",
+            "sha256": "437c8f471c5a94610a229f7f4493a8d96eb9efab7d17a04ed115db7fa673440a"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-constant-value",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-constant-value/source.alg",
+        "sha256": "51a7e55de0e9a5fb6b89bf7d6edd88ec32d45c9832d6154be78792c1cad8c3c2"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:20:22.7230711Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-constant-value/raw.txt",
+          "sha256": "b93c9529a02a4d697c88e05d120c56df0d4c33bb9e621c85ec6fdbea16241fb3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-constant-value/stdout.txt",
+          "sha256": "49c4b47a73a0557f37220f5c6e147f0f1220347e89cd37bdae2725273f371298"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-constant-value/stdout.txt",
+            "sha256": "49c4b47a73a0557f37220f5c6e147f0f1220347e89cd37bdae2725273f371298"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-constant-joined",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-constant-joined/source.alg",
+        "sha256": "81246b6a04c2e5cc35d98eda25ae0a7a74eb53ca2830b3f7ae4aa990c90be4f8"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:20:32.9910585Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-constant-joined/raw.txt",
+          "sha256": "b93c9529a02a4d697c88e05d120c56df0d4c33bb9e621c85ec6fdbea16241fb3"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-constant-joined/stdout.txt",
+          "sha256": "49c4b47a73a0557f37220f5c6e147f0f1220347e89cd37bdae2725273f371298"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-constant-joined/stdout.txt",
+            "sha256": "49c4b47a73a0557f37220f5c6e147f0f1220347e89cd37bdae2725273f371298"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-size-input-255",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-input-255/source.alg",
+        "sha256": "6a6a8ddeccb1f77244ff63dba712e04347b60e08303f1ed1c01a54904d1541c0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-input-255/input.txt",
+        "sha256": "ab1a11771850563e6f93b5b0a086753c351ae2bc9bf850f17458b3cb88f0196e"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:20:50.3025230Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-input-255/raw.txt",
+          "sha256": "297e91a9ce0cde84d859d4e5fcbf2c40c6339039bbb8e5c5826a5608c1621059"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-input-255/stdout.txt",
+          "sha256": "8f5cb0e8adf6c658b4f704fe46a3d75126a7b530414b8c2099ba8a24305b02b4"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-input-255/stdout.txt",
+            "sha256": "8f5cb0e8adf6c658b4f704fe46a3d75126a7b530414b8c2099ba8a24305b02b4"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits",
+          "internal/interp/io_test.go#TestInputStringLimitPreservesEcho"
+        ]
+      }
+    },
+    {
+      "id": "string-size-input-256",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-input-256/source.alg",
+        "sha256": "6a6a8ddeccb1f77244ff63dba712e04347b60e08303f1ed1c01a54904d1541c0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-size-input-256/input.txt",
+        "sha256": "8c22eff9b4b13e45e40471ee0a5280c4cb17674714bb6feaad8d5994dc83e14b"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:21:07.7307777Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-input-256/raw.txt",
+          "sha256": "4926b2151c51754f2b1f4cd80970b4726b0537592c08f11b3ea29b8775c23a2d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-size-input-256/stdout.txt",
+          "sha256": "4f08f4576dc6a176a35d0c5b0f467d6c2c187a8a9c0e77155ac979283810a834"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-size-input-256/stdout.txt",
+            "sha256": "4f08f4576dc6a176a35d0c5b0f467d6c2c187a8a9c0e77155ac979283810a834"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits",
+          "internal/interp/io_test.go#TestInputStringLimitPreservesEcho"
+        ]
+      }
+    },
+    {
+      "id": "string-field-widths",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-field-widths/source.alg",
+        "sha256": "f3a2ccdbae5ea223e3adf1bb2e3b5a496640951c273f61bae41c37134f12020a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:24:34.4293056Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-field-widths/raw.txt",
+          "sha256": "d017f96ca5aa1d05f4a81d0442296175fd3098cfa4d4c6cdbc7f758cdaabd1f4"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-field-widths/stdout.txt",
+          "sha256": "72252c7e52857ffcc9e0344fea990a848139b94ecc17232d9d04af7151890139"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-field-widths/stdout.txt",
+            "sha256": "72252c7e52857ffcc9e0344fea990a848139b94ecc17232d9d04af7151890139"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
+        ]
+      }
+    },
+    {
+      "id": "string-field-real-precision",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-field-real-precision/source.alg",
+        "sha256": "34c81f1637c0786dc75c24850517141274ad55e7d0f36fbaea8aa367dfa00ee5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:24:44.6157826Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-field-real-precision/raw.txt",
+          "sha256": "b2ff42b417eb0b0df7e379622881b7697bcc153d24479d285c29c65fb6b1b009"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-field-real-precision/stdout.txt",
+          "sha256": "1c6682821ae44fb57e16c729a04d965bb810bc82372c0d969c07a45fc07249b7"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-field-real-precision/stdout.txt",
+            "sha256": "1c6682821ae44fb57e16c729a04d965bb810bc82372c0d969c07a45fc07249b7"
+          }
+        }
+      }
+    },
+    {
+      "id": "string-field-integer-precision",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-field-integer-precision/source.alg",
+        "sha256": "0f099ccb3cb710b3712d05e91cb81efaab43c5a890d5dfbd51aec7f57f69303f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:24:54.8951410Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-field-integer-precision/raw.txt",
+          "sha256": "7669de8fb07dadc2e4818ef2eb2413a3fd95e956c85fc9a9d1fb6c440709622f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-field-integer-precision/stdout.txt",
+          "sha256": "aa9c5993371497c0a3717161b1f2f7a17500595516baa77100062b7e7c7a0272"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-field-integer-precision/stdout.txt",
+            "sha256": "aa9c5993371497c0a3717161b1f2f7a17500595516baa77100062b7e7c7a0272"
+          }
+        }
+      }
+    },
+    {
+      "id": "string-field-wide-precision",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-field-wide-precision/source.alg",
+        "sha256": "e2c5d480ea8a88f602f35b6366543c8d6ef06939ea973b81f51b9804935c7178"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:25:05.1193092Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-field-wide-precision/raw.txt",
+          "sha256": "3951d782e0585eb8fcb59e22433ec3166b9be4b041e01316f0d697594b8d1f87"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-field-wide-precision/stdout.txt",
+          "sha256": "484b9484909616f4ed52bad3051dd68d5afbeb44e9b5b7fae9534ac1d0f3162e"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-field-wide-precision/stdout.txt",
+            "sha256": "484b9484909616f4ed52bad3051dd68d5afbeb44e9b5b7fae9534ac1d0f3162e"
+          }
+        }
+      }
+    },
+    {
+      "id": "string-field-large-width",
+      "ownerGroup": 10,
+      "tasks": [
+        "10.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/string-field-large-width/source.alg",
+        "sha256": "72556947d56e9028b3b3effccbb0fa5136a51442ae0840238f61f06929cf5f20"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-10T00:28:30.6542599Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-field-large-width/raw.txt",
+          "sha256": "1af5a5ed096e0656f825742f1d5d1b88ddf4da403c4c13ad0f1ad160830f35a4"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/string-field-large-width/stdout.txt",
+          "sha256": "8f8095a5da3dd06d2d6e4fc6a70b04ad260a2ff1f0a6af15a793ba85cee12eaa"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/string-field-large-width/stdout.txt",
+            "sha256": "8f8095a5da3dd06d2d6e4fc6a70b04ad260a2ff1f0a6af15a793ba85cee12eaa"
+          }
+        },
+        "tests": [
+          "string_limits_test.go#TestRecordedStringLimits"
         ]
       }
     }

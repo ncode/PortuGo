@@ -1,0 +1,12 @@
+Início da execução
+|abc       |
+|abc                                                                                                                                                                                                                                                            |
+|                                                                                                                                                                                                                                                               |
+|é                                                                                                                                                                                                                                                              |
+|                                                                                                                                                                                                                                                              7|
+|                                                                                                                                                                                                                                                            1.5|
+|                                                                                                                                                                                                                                                              7|
+|                                                                                                                                                                                                                                                              7|
+|                                                                                                                                                                                                                                                              7|
+
+Fim da execução.

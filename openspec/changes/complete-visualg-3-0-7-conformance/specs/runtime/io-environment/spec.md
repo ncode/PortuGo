@@ -58,6 +58,10 @@ Default real rendering SHALL use 15 significant digits, discard the sign of zero
 
 Output width and precision fields SHALL accept the expression forms and value domains supported by VisuAlg 3.0.7 and SHALL reproduce its alignment, padding, rounding, truncation, sign placement, overflow-width, and non-real precision behavior. Invalid format values SHALL produce positioned diagnostics.
 
+#### Scenario: Cap a positive field width
+- **WHEN** a character or numeric output item requests a width above 255
+- **THEN** padding uses width 255, preserving character left alignment and numeric right alignment without allocating the requested larger width
+
 #### Scenario: Format a real with width and decimals
 - **WHEN** an output item supplies valid width and decimal expressions
 - **THEN** the exact padded and rounded result matches the committed oracle bytes

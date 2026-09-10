@@ -136,8 +136,8 @@ func TestCallAndValueLimits(t *testing.T) {
 		}{
 			{"recursion", "algoritmo \"x\"\nprocedimento p()\ninicio\np()\nfimprocedimento\ninicio\np()\nfimalgoritmo", diag.RCall},
 			{"bare function recursion", "algoritmo \"x\"\nfuncao f: inteiro\ninicio\nretorne f\nfimfuncao\ninicio\nescreval(f)\nfimalgoritmo", diag.RCall},
-			{"text", "algoritmo \"x\"\nvar s: caractere\ninicio\ns <- \"a\"\nenquanto verdadeiro faca\ns <- s+s\nfimenquanto\nfimalgoritmo", diag.RStorage},
-			{"format", "algoritmo \"x\"\ninicio\nescreva(1:2147483647)\nfimalgoritmo", diag.RStorage},
+			{"bounded text loop", "algoritmo \"x\"\nvar s: caractere\ninicio\ns <- \"a\"\nenquanto verdadeiro faca\ns <- s+s\nfimenquanto\nfimalgoritmo", diag.RLoop},
+			{"precision", "algoritmo \"x\"\ninicio\nescreva(1:1:2147483647)\nfimalgoritmo", diag.RStorage},
 		} {
 			t.Run(tt.name, func(t *testing.T) {
 				p, info := analyzed(t, tt.src)
@@ -220,26 +220,9 @@ func TestFormattedItemBoundary(t *testing.T) {
 	p, info := analyzed(t, "algoritmo \"width\"\ninicio\nescreva(1:1048576)\nfimalgoritmo")
 	var out bytes.Buffer
 	ds := New(Options{Output: &out}).Run(p, info)
-	if len(ds) != 0 || out.Len() != 1<<20 || out.Bytes()[out.Len()-1] != '1' {
+	if len(ds) != 0 || out.Len() != 255 || out.Bytes()[out.Len()-1] != '1' {
 		t.Fatalf("valid width corrupted: diagnostics %v, bytes %d", ds, out.Len())
 	}
-}
-
-func TestBuiltinTextLimits(t *testing.T) {
-	testprocess.Run(t, func() {
-		src := "algoritmo \"case\"\nvar s: caractere\nn: inteiro\ninicio\ns <- \"\u023f\"\npara n de 1 ate 23 faca\ns <- s+s\nfimpara\nescreva(maiusc(s))\nfimalgoritmo"
-		p, info := analyzed(t, src)
-		ds := New(Options{MaxSteps: 10000}).Run(p, info)
-		if len(ds) != 1 || ds[0].Code != diag.RStorage || ds[0].Pos != token.Pos(strings.Index(src, "maiusc")) {
-			t.Fatalf("case expansion bypassed value limit: %v", ds)
-		}
-		p, info = analyzed(t, "algoritmo \"copy\"\ninicio\nescreva(copia(\"abc\", 2, 2147483647))\nfimalgoritmo")
-		var out bytes.Buffer
-		ds = New(Options{Output: &out}).Run(p, info)
-		if len(ds) != 0 || out.String() != "bc" {
-			t.Fatalf("overflowing copy length: %v %q", ds, &out)
-		}
-	})
 }
 
 func TestStateObservationIsIndependent(t *testing.T) {

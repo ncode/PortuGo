@@ -55,6 +55,11 @@ The catalog SHALL implement the full oracle-confirmed numeric set with the refer
 ### Requirement: Text built-ins
 The catalog SHALL implement the full oracle-confirmed text set, including `copia`, `maiusc`, `minusc`, `compr`, and `pos`, using the reference's 1-based positions, substring bounds, not-found value, case conversion, accented-character behavior, empty-string behavior, and result types.
 
+#### Scenario: Keep bounded string values
+- **WHEN** literals, concatenation, input, or a function result produce more than 255 characters
+- **THEN** subsequent operations observe the first 255 characters without splitting decoded Windows-1252 characters
+- **AND** input still consumes and echoes the complete entered line before storing the bounded value
+
 #### Scenario: Extract a substring
 - **WHEN** `copia` receives a valid character value, 1-based position, and length
 - **THEN** it returns exactly the oracle-confirmed substring for ASCII and Windows-1252 text

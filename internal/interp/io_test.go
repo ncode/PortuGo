@@ -40,6 +40,22 @@ func TestInputFailurePreservesValue(t *testing.T) {
 	}
 }
 
+func TestInputStringLimitPreservesEcho(t *testing.T) {
+	input := strings.Repeat("a", 254) + "éZ"
+	p, info := analyzed(t, "algoritmo \"input size\"\nvar\ns: caractere\ninicio\nleia(s)\nfimalgoritmo")
+	var out bytes.Buffer
+	i := New(Options{Input: strings.NewReader(input + "\n"), Output: &out})
+	if ds := i.Run(p, info); len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	if got := i.State()["s"].Str; got != strings.Repeat("a", 254)+"é" {
+		t.Fatalf("stored string has %d bytes, want a complete 255-character prefix", len(got))
+	}
+	if out.String() != input+"\n" {
+		t.Fatal("input echo did not preserve the complete entered line")
+	}
+}
+
 func TestWriteStateAfterFailure(t *testing.T) {
 	failed, failedInfo := analyzed(t, "algoritmo \"failed\"\ninicio\nescreva(\"before\")\nescreval(1 / 0)\nfimalgoritmo")
 	next, nextInfo := analyzed(t, "algoritmo \"next\"\ninicio\nescreva(\"after\")\nfimalgoritmo")
@@ -57,10 +73,12 @@ func TestWriteStateAfterFailure(t *testing.T) {
 }
 
 func TestWriteBufferLimit(t *testing.T) {
-	value := strings.Repeat("x", maxTextBytes/2+1)
+	value := strings.Repeat("x", runtime.MaxTextChars)
+	// A statement can exceed the pending-output budget using many valid values.
+	full := strings.Repeat("s,", maxTextBytes/runtime.MaxTextChars)
 	for _, tt := range []struct{ name, declarations, body string }{
-		{"flat", "", "escreval(s, s)"},
-		{"nested", "funcao F: inteiro\ninicio\nescreva(s)\nretorne 1\nfimfuncao\n", "escreval(s, F())"},
+		{"flat", "", "escreval(" + full + "s)"},
+		{"nested", "funcao F: inteiro\ninicio\nescreva(s)\nretorne 1\nfimfuncao\n", "escreval(" + full + "F())"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			p, info := analyzed(t, "algoritmo \"buffer\"\nvar\ns: caractere\n"+tt.declarations+"inicio\ns <- \""+value+"\"\n"+tt.body+"\nfimalgoritmo")
@@ -71,7 +89,8 @@ func TestWriteBufferLimit(t *testing.T) {
 			}
 		})
 	}
-	p, info := analyzed(t, "algoritmo \"reuse\"\nvar\ns: caractere\ninicio\ns <- \""+value+"\"\nescreva(s)\nescreva(s)\nfimalgoritmo")
+	write := "escreva(" + strings.TrimSuffix(full, ",") + ")\n"
+	p, info := analyzed(t, "algoritmo \"reuse\"\nvar\ns: caractere\ninicio\ns <- \""+value+"\"\n"+write+write+"fimalgoritmo")
 	if ds := New(Options{}).Run(p, info); len(ds) != 0 {
 		t.Fatalf("completed statement did not release its buffer: %v", ds)
 	}

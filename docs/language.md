@@ -450,9 +450,12 @@ without a plus sign or exponent-leading zeros; for example, `0.00001` prints
 as ` 1E-5` and `1000000000000000.0` as ` 1E15`. With a positive
 width, numbers are right-aligned, the decimal count defaults to zero, and
 decimal ties round away from zero. Integer values can also request decimals;
-numeric fields expand if needed. Strings are left-aligned and truncated to a
-positive width. Logical output is ` VERDADEIRO` or ` FALSO`, including its
-leading space; field widths on logical values are rejected.
+numeric fields expand if needed. Positive widths are capped at 255 characters
+before padding or size checks, including widths larger than the project byte
+budget. Strings are left-aligned and truncated to that width. Very large
+decimal counts remain pending precision-conformance work; the width cap does
+not bound every formatted numeric result. Logical output is ` VERDADEIRO` or
+` FALSO`, including its leading space; logical field widths are rejected.
 
 ## Display commands
 
@@ -567,6 +570,18 @@ String built-ins: `copia`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, and
 inside the implementation. String positions count characters and are 1-indexed.
 UTF-8 source takes priority when bytes are valid in both supported encodings.
 
+String values keep their first 255 characters. The limit applies to literals,
+each concatenation, constants, assignments, parameters, function results, and
+vector elements. Thus a character appended after position 255 is unavailable
+to search, slicing, comparison, or numeric conversion. Accented Windows-1252
+characters count once after decoding. Unicode extensions use the same limit
+without splitting UTF-8 encodings. Formatting retains the complete source
+literal so reparsing preserves its runtime behavior.
+
+Character input consumes and echoes the complete entered line, then stores
+its first 255 characters. The line-size safeguard still applies before
+conversion. See the [string-limit example](../examples/string_limits.alg).
+
 `copia(s, start, count)` accepts integer or real bounds, truncates real fractions
 and narrows them to signed 32-bit values, substitutes zero for no-value bounds,
 clamps starts below one to one, and clips the length at the string's end.
@@ -647,11 +662,10 @@ empty or invalid first hexadecimal digit produces zero. Digit separators such
 as underscores are rejected after a numeric prefix.
 
 Omitted parentheses or extra arguments receive `P001`; an empty call,
-non-character argument, or no-value argument receives `E001`. The separately
-recorded 255-character limit for literals and concatenation remains pending
-in the shared string runtime; conversions currently consume that runtime's
-full string value. See `docs/character-conversions-progress.md` for evidence
-and the retained boundary cases.
+non-character argument, or no-value argument receives `E001`. Conversion uses
+the same bounded string value as other consumers: 400 literal nines become
+255 nines before conversion and produce `1E255`. The boundary cases retained
+by the conversion slice are now verified; see `docs/string-limits-progress.md`.
 
 `randi(n)` takes one signed 32-bit integer bound and returns an integer. For
 positive `n`, its domain is `[0, n)`. Negative bounds use their unsigned
@@ -715,9 +729,12 @@ For example, `portugol run --max-steps 20 examples/execution_budget.alg`
 stops the sample loop early; omitting the flag lets it finish.
 
 Regardless of that budget, execution permits at most 256 active language calls,
-256 expression-evaluation levels within one call frame, and 16 MiB in one text
-value, input token/line, or formatted item. Concatenation, case conversion, and
-width/precision expansion check sizes before creating the result. Each vector
+256 expression-evaluation levels within one call frame, and a 16 MiB
+allocation safeguard for incoming text, an input token/line, or a formatted
+item. Language string values have the separate 255-character reference limit.
+Case conversion retains its allocation guard for direct library callers;
+format widths are capped before allocation, and precision expansion still
+checks its requested size before creating a result. Each vector
 aggregate is capped at 1,048,576 scalar slots, including nested elements, with
 checked dimension products. Oversized literal layouts receive `E900` during
 analysis; constant-dependent layouts receive `R003` at declaration initialization,

@@ -37,6 +37,7 @@ remaining text/conversion checklist.
 `project.text-code-guards` documents positioned `R007` for a character outside
 Windows-1252 and for real substring bounds outside the signed 64-bit conversion
 range. Unpositioned reference application faults and complete desktop captures
-remain excluded. Runtime tests also preserve the existing `R003` limit for
-case-conversion expansion. These are portable project contracts, not invented
-reference diagnostic positions.
+remain excluded. The later string-limit slice bounds language values at 255
+characters. A direct library test retains the case-conversion allocation guard
+for oversized Go values that cannot arise from those bounded language strings.
+These are portable project contracts, not invented reference diagnostics.

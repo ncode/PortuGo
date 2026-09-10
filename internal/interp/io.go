@@ -98,6 +98,7 @@ func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
 				return err
 			}
 		}
+		width = min(width, runtime.MaxTextChars)
 		if err := checkFormatSize(v, width, decimals); err != nil {
 			return failure(arg.Expr.Start(), diag.RStorage, err)
 		}
@@ -125,9 +126,6 @@ func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
 }
 
 func checkFormatSize(v runtime.Value, width, decimals int64) error {
-	if width > maxTextBytes {
-		return fmt.Errorf("formatted item size limit exceeded")
-	}
 	n := int64(0)
 	switch v.Kind {
 	case runtime.StringValue:
@@ -190,7 +188,7 @@ func parseInput(text string, typ runtime.Type) (runtime.Value, error) {
 		}
 		return runtime.Value{Kind: runtime.RealValue, Real: v}, nil
 	case runtime.StringType:
-		return runtime.Value{Kind: runtime.StringValue, Str: text}, nil
+		return runtime.Value{Kind: runtime.StringValue, Str: runtime.LimitText(text)}, nil
 	case runtime.BoolType:
 		return runtime.Value{Kind: runtime.BoolValue, Bool: len(text) != 0 && (text[0] == 'v' || text[0] == 'V')}, nil
 	default:

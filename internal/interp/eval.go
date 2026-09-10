@@ -29,6 +29,9 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 	defer func() {
 		i.depth--
 		err = failure(expr.Start(), diag.RType, err)
+		if err == nil && value.Kind == runtime.StringValue {
+			value.Str = runtime.LimitText(value.Str)
+		}
 		// Numeric reference parameters can change a caller's runtime type.
 		actual := value.Type()
 		// Numeric built-ins can produce no value for a domain failure.

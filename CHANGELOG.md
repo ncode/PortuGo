@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Limit string values and output widths to the recorded 255-character bound.
+  Preserve complete input echo while storing the bounded value, keep accented
+  characters intact, and apply the same limit before text conversion.
+
 - Add `caracpnum` with recorded integer/real result selection, numeric spellings,
   fallback values, and positioned conversion errors. Preserve the runtime type
   through expressions, assignments, calls, vector indices, and format bounds.

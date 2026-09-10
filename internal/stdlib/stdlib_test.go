@@ -1,11 +1,22 @@
 package stdlib
 
 import (
+	"errors"
 	"math"
+	"strings"
 	"testing"
 
 	"github.com/ncode/portugol-go/internal/runtime"
 )
+
+func TestCaseConversionAllocationGuard(t *testing.T) {
+	// Direct callers can supply values larger than language strings allow.
+	text := strings.Repeat("\u023f", runtime.MaxTextBytes/2)
+	_, found, err := New(nil).Call("maiusc", []runtime.Value{{Kind: runtime.StringValue, Str: text}})
+	if !found || !errors.Is(err, runtime.ErrTextSize) {
+		t.Fatalf("case expansion found=%t error=%v, want the allocation guard", found, err)
+	}
+}
 
 func TestNumpcaracRejectsUnsupportedValues(t *testing.T) {
 	for _, args := range [][]runtime.Value{
