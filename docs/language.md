@@ -1014,6 +1014,10 @@ compatibility remain pending reference qualification.
 
 ## Execution diagnostics and safeguards
 
+Parser recovery retains the final source position after consuming EOF, so
+additional missing-expression or delimiter diagnostics stay at the end of the
+file rather than moving to line 1.
+
 `run`, `check`, `fmt`, and `repl` use exit status 0 for success, 1 for source,
 execution, or operational failures, and 2 for invalid command usage. Diagnostics
 go to stderr with the source filename, line, column, and a stable code. Runtime

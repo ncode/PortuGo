@@ -261,7 +261,18 @@
         "bundled-fa172f3f5f70",
         "bundled-c47bf27802a4",
         "bundled-acf5d46a3a6a",
-        "bundled-a5945bc9ee4d"
+        "bundled-a5945bc9ee4d",
+        "bundled-c2c3c37e29ae",
+        "bundled-86701928f296",
+        "bundled-460092b86448",
+        "bundled-da71c1ad0344",
+        "bundled-8b2d8c702924",
+        "bundled-467736cf246b",
+        "bundled-43742446e585",
+        "bundled-0cef94aa6573",
+        "bundled-54f1e50d1c02",
+        "bundled-51b9ad3b51c5",
+        "bundled-f251f2cd0c22"
       ]
     },
     {
@@ -6892,7 +6903,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -6905,7 +6916,10 @@
               "line": 9
             }
           ]
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestBundledGameRejectsLiteralType"
+        ]
       }
     },
     {
@@ -7847,14 +7861,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-51b9ad3b51c5/stdout.txt",
             "sha256": "344b0adce07c24c2440bf9dda1849d2dbf4f89db6779123aa9e4dd1b2f72f8b8"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Retain EOF source positions when parser recovery reports additional missing
+  expressions or delimiters. Record eleven more original bundled examples,
+  verify the record-menu exit path and game type rejection, and retain remaining
+  execution and diagnostic mismatches explicitly.
+
 - Consolidate all 28 recorded built-ins into immutable descriptors shared by
   semantic analysis and runtime dispatch. Validate descriptor construction and
   independently check signatures, domain rules, bindings and evaluator results

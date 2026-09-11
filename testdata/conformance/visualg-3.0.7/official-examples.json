@@ -233,7 +233,7 @@
     "disposition": "unusable",
     "review": {
       "reason": "With the recorded SAIR input, the original program reports a missing FIMSE at end of file on line 320 after displaying its input prompt.",
-      "link": "docs/conformance-evidence-baseline.md#Bundled rejections"
+      "link": "docs/bundled-examples-progress.md"
     }
   },
   {
@@ -280,7 +280,7 @@
     "disposition": "unusable",
     "review": {
       "reason": "The original program is rejected for the unrecognized LITERAL element type on line 8.",
-      "link": "docs/conformance-evidence-baseline.md#Bundled rejections"
+      "link": "docs/bundled-examples-progress.md"
     }
   },
   {
@@ -330,7 +330,7 @@
     "disposition": "unusable",
     "review": {
       "reason": "The original program is rejected for the unrecognized LITERAL type on line 9.",
-      "link": "docs/conformance-evidence-baseline.md#Bundled rejections"
+      "link": "docs/bundled-examples-progress.md"
     }
   },
   {

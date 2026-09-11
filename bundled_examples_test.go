@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/source"
 )
 
@@ -49,6 +50,7 @@ func TestRecordedBundledExamples(t *testing.T) {
 		"bundled-d7146725d637", // MENU_COM_CASE.alg
 		"bundled-c0633dc8add4", // Numeros_primos.alg
 		"bundled-ffd86884c181", // REGISTROS com VETORES.ALG
+		"bundled-51b9ad3b51c5", // REGISTROS.ALG
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)
@@ -67,4 +69,8 @@ func TestRecordedBundledExamples(t *testing.T) {
 			checkFormattingPreservesExecutionWithInput(t, src, input, want)
 		})
 	}
+}
+
+func TestBundledGameRejectsLiteralType(t *testing.T) {
+	checkSemanticDiagnostic(t, "testdata/conformance/visualg-3.0.7/probes/bundled-0cef94aa6573/source.alg", diag.EParse, 9)
 }

@@ -1,6 +1,6 @@
 # Bundled example progress
 
-The corpus records 60 original programs from the official VisuAlg 3.0.7
+The corpus records 71 original programs from the official VisuAlg 3.0.7
 distribution. Their source bytes match the sizes and SHA-256 hashes in the
 73-file catalog. Each observation links its catalog ID, exact source, reference
 outcome, and owning tasks in the conformance manifest.
@@ -9,7 +9,7 @@ The evidence gate checks catalog IDs, source hashes and sizes, classifications,
 recorded acceptance, and reviewed exclusion reasons. Pending entries still fail
 the missing-evidence gate; classifications do not grant them an exemption.
 
-Fifty-two programs complete successfully in the reference. Forty-two match
+Sixty programs complete successfully in the reference. Forty-three match
 the CLI byte for byte and have permanent tests for original and formatted execution.
 The fixed-input cases cover combinations, factorials, minimum selection, means,
 prime decomposition, base conversion, vector sorting, remainders, reversed text,
@@ -53,7 +53,15 @@ loop header in `aleatorio1.alg`. Their generated values remain in the recorded
 transcripts. Implementation verification remains pending; these observations
 do not establish exact portable random sequences or complete branch coverage.
 
-Eight bundled files are unusable as supplied. Their ordinary GUI diagnostics
+The latest recordings add `bin2dec.alg`, `buscaseq.alg`, `buscaseqreg.alg`,
+`buscbinr.alg`, `DESTAQUES.ALG`, `SEMNOME.ALG`, `MENU_PRINCIPAL.alg`, and
+`REGISTROS.ALG`. The original `REGISTROS.ALG` exit path now has exact original
+and formatted replay coverage. Five generated-data transcripts remain pending
+a random-output comparison contract. The valid recorded paths through
+`bin2dec.alg` and `MENU_PRINCIPAL.alg` complete in the reference but are rejected
+by the CLI for errors in unexecuted code; those mismatches remain pending.
+
+Eleven bundled files are unusable on their recorded paths. Their GUI diagnostics
 were individually reviewed; the corpus retains diagnostic evidence and labeled
 manual transcriptions:
 
@@ -67,9 +75,13 @@ manual transcriptions:
 | `estcivil.alg` | The `NUMERICO` type is not recognized on line 13. |
 | `EXEMPLO1.alg` | Assignment from integer to a character vector element fails on line 21. |
 | `Tabela_ASCII4.alg` | A syntax diagnostic on line 301 stops the original character-table program. |
+| `Jogo_velha.alg` | The `LITERAL` type is not recognized on line 9. |
+| `EXTENSO4.ALG` | The `LITERAL` vector element type is not recognized on line 8. |
+| `ESCOLA1.alg` | After input `SAIR`, a missing `FIMSE` is reported at EOF on line 320. The preceding prompt and echoed input are retained. |
 
 The two malformed headers and the unrecognized type now have matching positioned
-parser regressions. The other five rejection mappings remain pending. The
+parser regressions. The game example now also has a matching type rejection.
+The other seven rejection mappings remain pending. The
 reference may execute a prefix before discovering malformed syntax or an invalid
 assignment, while CLI analysis reports errors before execution and may collect
 more than one diagnostic.
@@ -78,7 +90,14 @@ The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
 recording therefore remains pending; the retained diagnostic and preceding output
 record the reference outcome without claiming an implementation match.
 
-The catalog has fifty-two accepted examples, eight unusable examples, and 13
-awaiting recorded classifications. Incomplete captures are excluded. These
+The school example's initial capture was waiting for input and was excluded;
+the later capture records the displayed EOF diagnostic. Parser recovery now
+keeps the source's EOF position after consuming the final token, instead of
+moving subsequent missing-delimiter diagnostics to line 1. This corrects
+position loss without claiming to match the school's earlier parsing behavior.
+
+The catalog has sixty accepted examples, eleven unusable examples, and two
+awaiting recorded classifications: `Cronometro.alg` and `decpoutras.alg`.
+Incomplete captures are excluded. These
 records do not complete the full example sweep, evidence inventory, or
 conformance release gate.

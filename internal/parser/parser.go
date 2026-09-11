@@ -617,6 +617,11 @@ func (p *parser) peekN(n int) token.Token {
 	if i >= 0 && i < len(p.tokens) {
 		return p.tokens[i]
 	}
+	if len(p.tokens) != 0 {
+		// Recovery may already have consumed EOF while parsing an incomplete
+		// expression. Keep the last source position for missing delimiters.
+		return token.Token{Kind: token.EOF, Pos: p.tokens[len(p.tokens)-1].Pos}
+	}
 	return token.Token{Kind: token.EOF}
 }
 

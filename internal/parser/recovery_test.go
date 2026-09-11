@@ -7,7 +7,28 @@ import (
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/lexer"
 	"github.com/ncode/portugol-go/internal/source"
+	"github.com/ncode/portugol-go/internal/token"
 )
+
+func TestRecoveryKeepsEOFPosition(t *testing.T) {
+	src, err := source.ReadFile("../../testdata/check/truncated_call.alg")
+	if err != nil {
+		t.Fatal(err)
+	}
+	file, tokens, ds := lexer.Scan("truncated_call.alg", src)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	_, ds = Parse(tokens)
+	if len(ds) < 2 {
+		t.Fatalf("expected expression and delimiter diagnostics, got %v", ds)
+	}
+	for _, d := range ds {
+		if d.Pos != token.Pos(len(src)) {
+			t.Fatalf("recovery diagnostic moved to line %d; want EOF line %d", file.Position(d.Pos).Line, file.Position(token.Pos(len(src))).Line)
+		}
+	}
+}
 
 func TestStatementLineRecovery(t *testing.T) {
 	file, tokens, ds := lexer.Scan("recovery.alg", "algoritmo \"recovery\"\ninicio\n(1 + 2)\nescreval(7)\n(3 + 4)\nfimalgoritmo\n")

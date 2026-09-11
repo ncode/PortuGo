@@ -114,6 +114,10 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
 - [ ] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
 - [ ] 4.8 Add structural and newline synchronization that collects independent parser diagnostics without panics, duplicate errors, or infinite loops.
+
+  Recovery now retains the final source position after consuming EOF. A
+  truncated-call fixture pins all subsequent diagnostics to the EOF line.
+  Broader structural and execution-phase recovery differences remain pending.
 - [x] 4.9 Enforce source-size and syntax/AST-traversal limits from design decision 10 across source loading, parsing, analysis, and printing, reserving `E900`; cover flat expression chains and exact boundary/one-beyond cases before recursion or allocation.
 - [ ] 4.10 Extend canonical printing and round-trip tests to retain every comment exactly once with its anchor and suffix, comparing comment content/order as well as AST structure and idempotence.
 - [ ] 4.11 Expand lexer/parser fuzz and subprocess adversarial cases with newline, encoding, comment, literal, deep-nesting, truncation, and oversized inputs; assert controlled limit diagnostics and fail on watchdog expiration.
@@ -462,12 +466,13 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 17.2 Complete bidirectional trace links for every OpenSpec requirement, `[VERIFICAR]`, original checklist item, audited defect, discovered official feature, implementation test, and bundled example with no stale IDs.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
-  Forty-two original examples now match recorded output before and after
-  formatting. Two accepted programs still need a random-output replay contract,
-  and five rejected programs retain diagnostic or execution-phase differences.
-  Twenty-one bundled examples still await recorded disposition. The latest nine
-  recordings cover fixed-input calendar, validation, menus, vectors, record means,
-  and prime search, plus the reference's character-table rejection.
+  Forty-three original examples now match recorded output before and after
+  formatting. Fifteen accepted programs still need a random-output replay
+  contract; two accepted paths encounter CLI errors in unexecuted code. Seven
+  rejected programs retain diagnostic or execution-phase differences. The latest
+  eleven recordings add eight completed reference runs and three reviewed
+  rejections, including the school's input-dependent EOF diagnostic. Only
+  `Cronometro.alg` and `decpoutras.alg` still await recorded disposition.
 
 - [ ] 17.4 Exercise the assembled source/depth/call/value/step guards, including empty infinite loops, recursive calls, flat AST chains, input retries, and cleanup, plus storage/encoding/host/filesystem adversarial cases; require controlled diagnostics and fail on a subprocess watchdog kill or accepted-example budget exhaustion.
 - [ ] 17.5 Run and archive results for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, race tests, Windows/macOS/Linux tests, and 30-second lexer and parser fuzz jobs.
