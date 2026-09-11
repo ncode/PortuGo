@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Verify eight more bundled examples with fixed input and original/formatted
+  execution. Retain the reference's character-table rejection separately from
+  implementation support, reducing the unrecorded example backlog to 21.
+
 - Add `dos` console configuration with ignored line tails, repeated directives,
   subprogram configuration, typed host calls, headless output, and positioned
   failures that preserve preceding output. Preserve directives through formatting.

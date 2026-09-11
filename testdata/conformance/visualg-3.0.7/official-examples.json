@@ -488,7 +488,7 @@
     "disposition": "unusable",
     "review": {
       "reason": "The reference rejects the original program with a syntax diagnostic on line 301 before completing its character table.",
-      "link": "docs/conformance-evidence-baseline.md#Bundled rejections"
+      "link": "docs/bundled-examples-progress.md"
     }
   },
   {

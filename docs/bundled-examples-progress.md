@@ -1,6 +1,6 @@
 # Bundled example progress
 
-The corpus records 43 original programs from the official VisuAlg 3.0.7
+The corpus records 52 original programs from the official VisuAlg 3.0.7
 distribution. Their source bytes match the sizes and SHA-256 hashes in the
 73-file catalog. Each observation links its catalog ID, exact source, reference
 outcome, and owning tasks in the conformance manifest.
@@ -9,7 +9,7 @@ The evidence gate checks catalog IDs, source hashes and sizes, classifications,
 recorded acceptance, and reviewed exclusion reasons. Pending entries still fail
 the missing-evidence gate; classifications do not grant them an exemption.
 
-Thirty-six programs complete successfully in the reference. Thirty-four match
+Forty-four programs complete successfully in the reference. Forty-two match
 the CLI byte for byte and have permanent tests for original and formatted execution.
 The fixed-input cases cover combinations, factorials, minimum selection, means,
 prime decomposition, base conversion, vector sorting, remainders, reversed text,
@@ -38,7 +38,14 @@ contract. The `PRIMOS.ALG` prime search has an explicit 5,000,000-step replay
 allowance for its bounded nested loops; the five-second replay deadline still
 applies.
 
-Seven bundled files are unusable as supplied. Their ordinary GUI diagnostics
+The latest fixed-input recordings add `CALENDARIO.ALG`, `CHECA_CPF.alg`,
+`decpoutrasproc.alg`, `ELEMENTO_OCUPADO.alg`, `MEDIA_REGISTRO.ALG`,
+`MENU_COM_CASE.alg`, `Numeros_primos.alg`, and `REGISTROS com VETORES.ALG`.
+The menu recording exercises all four actions and exits; the vector-registration
+recording exercises its exit path. These are recorded input paths, not a claim
+that every interactive branch has been tested.
+
+Eight bundled files are unusable as supplied. Their ordinary GUI diagnostics
 were individually reviewed; the corpus retains diagnostic evidence and labeled
 manual transcriptions:
 
@@ -51,15 +58,20 @@ manual transcriptions:
 | `Calculo_media2.alg.ALG` | The malformed `Agoritmo` header is rejected on line 1. |
 | `estcivil.alg` | The `NUMERICO` type is not recognized on line 13. |
 | `EXEMPLO1.alg` | Assignment from integer to a character vector element fails on line 21. |
+| `Tabela_ASCII4.alg` | A syntax diagnostic on line 301 stops the original character-table program. |
 
 The two malformed headers and the unrecognized type now have matching positioned
-parser regressions. The other four rejection mappings remain pending. The
+parser regressions. The other five rejection mappings remain pending. The
 reference may execute a prefix before discovering malformed syntax or an invalid
 assignment, while CLI analysis reports errors before execution and may collect
 more than one diagnostic.
 
-The catalog has thirty-six accepted examples, seven unusable examples, and 30
+The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
+recording therefore remains pending; the retained diagnostic and preceding output
+record the reference outcome without claiming an implementation match.
+
+The catalog has forty-four accepted examples, eight unusable examples, and 21
 awaiting recorded classifications. Incomplete captures are excluded. These
 records do not complete the full example sweep, evidence inventory, or
-conformance release gate, which still has 41 missing mappings: 11 requirements
-and 30 bundled examples.
+conformance release gate, which still has 29 missing mappings: eight requirements
+and 21 bundled examples.

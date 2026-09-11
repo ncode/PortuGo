@@ -396,10 +396,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 17.2 Complete bidirectional trace links for every OpenSpec requirement, `[VERIFICAR]`, original checklist item, audited defect, discovered official feature, implementation test, and bundled example with no stale IDs.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
-  Twenty-nine original examples now match recorded output before and after
-  formatting. One accepted program still exposes a grammar gap, and four
-  rejected programs retain diagnostic or execution-phase differences. Thirty-six
-  bundled examples still await recorded disposition.
+  Forty-two original examples now match recorded output before and after
+  formatting. Two accepted programs still need a random-output replay contract,
+  and five rejected programs retain diagnostic or execution-phase differences.
+  Twenty-one bundled examples still await recorded disposition. The latest nine
+  recordings cover fixed-input calendar, validation, menus, vectors, record means,
+  and prime search, plus the reference's character-table rejection.
 
 - [ ] 17.4 Exercise the assembled source/depth/call/value/step guards, including empty infinite loops, recursive calls, flat AST chains, input retries, and cleanup, plus storage/encoding/host/filesystem adversarial cases; require controlled diagnostics and fail on a subprocess watchdog kill or accepted-example budget exhaustion.
 - [ ] 17.5 Run and archive results for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, race tests, Windows/macOS/Linux tests, and 30-second lexer and parser fuzz jobs.
