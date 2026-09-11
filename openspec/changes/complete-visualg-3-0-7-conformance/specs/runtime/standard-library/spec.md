@@ -125,6 +125,12 @@ The catalog SHALL implement all oracle-confirmed explicit conversion functions a
 ### Requirement: Random built-ins
 The catalog SHALL implement `rand`, `randi`, and any oracle-confirmed random aliases with the reference arities, argument normalization, inclusive or exclusive bounds, result types, invalid-range behavior, and generator-state interaction. Runs SHALL accept an injected random source for deterministic tests; compatibility SHALL not require matching the reference sequence.
 
+`rand` SHALL be a reserved bare expression returning a real in `[0, 1)`. A parenthesized suffix SHALL be rejected in an output expression with `P001`; assignment and standalone-statement forms SHALL ignore the remaining line tokens without evaluating them. Each evaluated occurrence SHALL consume one injected fraction. A missing source or a non-finite or out-of-range injected fraction SHALL receive positioned `R007` as a project guard and preserve prior output.
+
+#### Scenario: Distinguish random expressions from ignored suffixes
+- **WHEN** `x <- rand(1) + 7` and `escreval(rand())` are checked separately
+- **THEN** the assignment stores a fraction in `[0, 1)` without evaluating the suffix, and the output expression receives `P001`
+
 #### Scenario: Generate random values at boundaries
 - **WHEN** `rand` and `randi` are repeatedly called with valid oracle boundary arguments
 - **THEN** every result has the reference type and lies within the reference-confirmed domain

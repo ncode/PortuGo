@@ -1,6 +1,7 @@
 package stdlib
 
 import (
+	"math"
 	"math/rand/v2"
 	"testing"
 
@@ -8,17 +9,62 @@ import (
 )
 
 type recordingRandom struct {
-	bounds []uint64
-	bad    bool
+	bounds   []uint64
+	bad      bool
+	fraction float64
+	draws    int
 }
 
-func (*recordingRandom) Float64() float64 { return .25 }
+func (r *recordingRandom) Float64() float64 { r.draws++; return r.fraction }
 func (r *recordingRandom) Uint64N(n uint64) uint64 {
 	r.bounds = append(r.bounds, n)
 	if r.bad {
 		return n
 	}
 	return n - 1
+}
+
+func TestRandSource(t *testing.T) {
+	for _, value := range []float64{0, .25, math.Nextafter(1, 0), -1, 1, math.NaN(), math.Inf(1)} {
+		r := &recordingRandom{fraction: value}
+		v, found, err := New(r).Call("rand", nil)
+		valid := value >= 0 && value < 1
+		if !found || (err == nil) != valid || r.draws != 1 || len(r.bounds) != 0 || valid && (v.Kind != runtime.RealValue || v.Real != value) {
+			t.Fatalf("draw %g: result=%v found=%t error=%v calls=%d bounds=%v", value, v, found, err, r.draws, r.bounds)
+		}
+	}
+	if _, found, err := New(nil).Call("rand", nil); !found || err == nil {
+		t.Fatalf("missing source: found=%t error=%v", found, err)
+	}
+	r := &recordingRandom{}
+	if _, found, err := New(r).Call("rand", []runtime.Value{{Kind: runtime.IntegerValue}}); !found || err == nil || r.draws != 0 {
+		t.Fatalf("unexpected argument: found=%t error=%v draws=%d", found, err, r.draws)
+	}
+}
+
+func TestRandDomains(t *testing.T) {
+	for seed := uint64(0); seed < 64; seed++ {
+		lib := New(rand.New(rand.NewPCG(seed, seed+1)))
+		for range 64 {
+			v, found, err := lib.Call("rand", nil)
+			if !found || err != nil || v.Kind != runtime.RealValue || !(v.Real >= 0 && v.Real < 1) {
+				t.Fatalf("seed=%d result=%v found=%t error=%v", seed, v, found, err)
+			}
+		}
+	}
+}
+
+func TestLegacyRandomSourceFailures(t *testing.T) {
+	for _, args := range [][]runtime.Value{
+		{{Kind: runtime.IntegerValue, Int: 7}},
+		{{Kind: runtime.IntegerValue, Int: -3}, {Kind: runtime.IntegerValue, Int: 5}},
+	} {
+		for _, source := range []RandomSource{&recordingRandom{bad: true}, nil} {
+			if _, found, err := New(source).Call("aleatorio", args); !found || err == nil {
+				t.Fatalf("invalid source: found=%t error=%v", found, err)
+			}
+		}
+	}
 }
 
 func TestRandiSource(t *testing.T) {

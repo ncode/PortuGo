@@ -13,6 +13,11 @@ func TestRecordedRandomBuiltins(t *testing.T) {
 	for _, id := range []string{
 		"randi-unit", "randi-zero", "randi-empty", "randi-domain",
 		"randi-negative-domain", "randi-evaluation",
+		"rand-context-domain-bare", "rand-context-domain-call", "rand-context-direct-comparison",
+		"rand-context-assigned-sum", "rand-context-grouped-sum", "rand-context-argument",
+		"rand-context-command", "rand-context-argument-effect", "rand-context-prefix-error", "rand-context-extra",
+		"rand-suffix-ignored-addition", "rand-suffix-grouped-comparisons",
+		"rand-suffix-command-call", "rand-suffix-binary-call",
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)

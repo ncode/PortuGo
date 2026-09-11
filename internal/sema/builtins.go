@@ -10,7 +10,7 @@ import (
 func (c *checker) declareBuiltins() {
 	for _, name := range []string{
 		"abs", "raizq", "exp", "log", "logn", "pi", "sen", "cos", "tan", "int",
-		"aleatorio", "copia", "maiusc", "minusc", "asc", "carac", "compr", "pos", "numpcarac", "caracpnum", "randi",
+		"aleatorio", "copia", "maiusc", "minusc", "asc", "carac", "compr", "pos", "numpcarac", "caracpnum", "randi", "rand",
 		"arccos", "arcsen", "arctan", "cotan", "grauprad", "radpgrau", "quad",
 	} {
 		c.scope.declare(symbol{name: name, kind: builtinSym})
@@ -19,7 +19,7 @@ func (c *checker) declareBuiltins() {
 
 func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type, bool) {
 	switch name {
-	case "pi":
+	case "pi", "rand":
 		c.requireArity(call, 0, 0)
 		return runtime.Type{Kind: runtime.RealType}, true
 	case "abs", "raizq", "log", "logn", "sen", "cos", "tan", "int",

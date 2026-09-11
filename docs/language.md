@@ -844,15 +844,32 @@ The injected source is per interpreter. Empty and zero-bound calls do not
 consume a draw in this implementation; this does not promise reference seed
 or draw-count compatibility. Out-of-range injected results and runtime bounds
 outside signed 32-bit receive positioned `R007` as project guards. Large
-whole-number literals have real type and receive `E001`. `rand` callable forms and
-command-form random input are separate pending work.
+whole-number literals have real type and receive `E001`.
 
-`aleatorio()` returns a real in `[0, 1)`. `aleatorio(n)` returns an integer in
+`rand` is a bare, case-insensitive expression that returns a real in `[0, 1)`.
+It is reserved and cannot name a variable. `escreval(rand)` is accepted;
+`escreval(rand())` receives `P001`. An assignment such as `x <- rand(1) + 7`
+stores the bare random draw and discards the suffix, following the assignment
+line rule. The discarded argument has no side effects. Parenthesize comparisons
+separately when combining random domain checks, for example
+`(x >= 0) e (x < 1)`.
+
+As a statement, `rand` consumes a draw and ignores the remaining tokens on its
+line. Each evaluated occurrence uses the interpreter's injected source once.
+Missing sources and non-finite or out-of-range draws receive positioned `R007`
+as project guards, preserving earlier output. Tests establish domains and
+injection behavior; they do not promise reference seed or sequence compatibility.
+See [random fraction recordings](random-fraction-progress.md).
+
+The existing legacy `aleatorio()` API returns a real in `[0, 1)`. `aleatorio(n)` returns an integer in
 `[0, n)`. `aleatorio(a, b)` returns an integer in the inclusive range `[a, b]`.
 The generator uses Go's standard pseudo-random source; VisuAlg's exact RNG is
 not emulated. Each interpreter has its own source. The inclusive interval
 covering every signed 64-bit integer is rejected with `R007` because its draw
-size cannot be represented by the random-source interface.
+size cannot be represented by the random-source interface. These legacy callable
+forms do not qualify the reference's command-form random input, which is pending.
+The bounded legacy forms use the same missing-source and out-of-range draw
+guards as `randi`, returning positioned `R007`.
 
 ## Execution diagnostics and safeguards
 

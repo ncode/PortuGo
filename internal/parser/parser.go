@@ -310,6 +310,10 @@ func (p *parser) parseStmt() ast.Stmt {
 		stmt := &ast.ConsoleStmt{At: p.advance().Pos}
 		p.skipLine()
 		return stmt
+	case token.RAND:
+		call := &ast.CallExpr{Name: p.advance()}
+		p.skipLine()
+		return &ast.CallStmt{Call: call}
 	case token.IDENT:
 		return p.parseIdentStmt()
 	case token.SE:

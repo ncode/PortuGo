@@ -418,7 +418,7 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 			c.checkArgs(&ast.CallExpr{Name: e.Name}, sym)
 			return sym.typ
 		}
-		if sym.kind == builtinSym && sym.name == "pi" {
+		if sym.kind == builtinSym && (sym.name == "pi" || sym.name == "rand") {
 			return c.checkCall(&ast.CallExpr{Name: e.Name}, false)
 		}
 		if sym.kind == builtinSym {

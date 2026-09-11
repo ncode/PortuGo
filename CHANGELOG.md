@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add bare `rand` expressions, recorded statement and assignment-suffix forms,
+  deterministic injection, and guarded random fractions in `[0, 1)`.
+  Reject missing sources and invalid bounded draws in the legacy random API.
+
 - Correct logical precedence and single-comparison syntax, preserve grouped
   comparisons during formatting, and ignore suffixes after assignment expressions.
 

@@ -66,6 +66,11 @@ func (l *Library) Call(name string, args []runtime.Value) (runtime.Value, bool, 
 		return intval(args)
 	case "aleatorio":
 		return l.random(args)
+	case "rand":
+		if len(args) != 0 {
+			return runtime.Value{}, true, fmt.Errorf("rand takes no arguments")
+		}
+		return l.random(nil)
 	case "randi":
 		return l.randi(args)
 	case "copia":
@@ -207,7 +212,14 @@ func intval(args []runtime.Value) (runtime.Value, bool, error) {
 func (l *Library) random(args []runtime.Value) (runtime.Value, bool, error) {
 	switch len(args) {
 	case 0:
-		return runtime.Value{Kind: runtime.RealValue, Real: l.rng.Float64()}, true, nil
+		if l.rng == nil {
+			return runtime.Value{}, true, fmt.Errorf("random source is unavailable")
+		}
+		draw := l.rng.Float64()
+		if !(draw >= 0 && draw < 1) {
+			return runtime.Value{}, true, fmt.Errorf("random source returned an out-of-range value")
+		}
+		return runtime.Value{Kind: runtime.RealValue, Real: draw}, true, nil
 	case 1:
 		n, err := asInt(args[0])
 		if err != nil {
@@ -216,7 +228,8 @@ func (l *Library) random(args []runtime.Value) (runtime.Value, bool, error) {
 		if n <= 0 {
 			return runtime.Value{}, true, fmt.Errorf("aleatorio upper bound must be positive")
 		}
-		return runtime.Value{Kind: runtime.IntegerValue, Int: int64(l.rng.Uint64N(uint64(n)))}, true, nil
+		draw, err := l.randomUint64(uint64(n))
+		return runtime.Value{Kind: runtime.IntegerValue, Int: int64(draw)}, true, err
 	case 2:
 		lo, err := asInt(args[0])
 		if err != nil {
@@ -233,7 +246,8 @@ func (l *Library) random(args []runtime.Value) (runtime.Value, bool, error) {
 		if width == 0 {
 			return runtime.Value{}, true, fmt.Errorf("aleatorio range exceeds representable draw size")
 		}
-		return runtime.Value{Kind: runtime.IntegerValue, Int: int64(uint64(lo) + l.rng.Uint64N(width))}, true, nil
+		draw, err := l.randomUint64(width)
+		return runtime.Value{Kind: runtime.IntegerValue, Int: int64(uint64(lo) + draw)}, true, err
 	default:
 		return runtime.Value{}, true, fmt.Errorf("aleatorio expects 0 to 2 arguments")
 	}
