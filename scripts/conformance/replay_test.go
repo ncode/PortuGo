@@ -52,7 +52,7 @@ func TestReplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, tt := range []struct{ source, want string }{
-		{"pass", ""}, {"mismatch", "stdout mismatch"}, {"reject", ""}, {"hang", "deadline"}, {"flood", "output limit"}, {"file", ""},
+		{"pass", ""}, {"mismatch", "stdout mismatch"}, {"reject", ""}, {"hang", "deadline"}, {"flood", "output limit"}, {"file", ""}, {"unexpected-file", "expected absent file"},
 	} {
 		t.Run(tt.source, func(t *testing.T) {
 			t.Parallel()
@@ -72,6 +72,12 @@ func TestReplay(t *testing.T) {
 				a := writeArtifact(t, root, "fixture.dat", "\xe9\r\n ")
 				p.Files = []generatedFile{{Path: "input.dat", Content: a}}
 				p.Implementation.Expected.Generated = []generatedFile{{Path: "result.dat", Content: a}}
+			}
+			p.Implementation.Expected.Absent = []string{"absent.dat"}
+			if tt.source == "unexpected-file" {
+				p.Source = writeArtifact(t, root, p.Source.Path, "pass")
+				a := writeArtifact(t, root, "present.dat", "unexpected")
+				p.Files = []generatedFile{{Path: "absent.dat", Content: a}}
 			}
 			err := replayProbe(root, p, executable, []string{"-test.run=^TestReplayChild$", "--"}, "")
 			if tt.want == "" && err != nil {

@@ -168,6 +168,11 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 			return fmt.Errorf("generated file mismatch: %s", file.Path)
 		}
 	}
+	for _, name := range want.Absent {
+		if err := checkAbsent(dir, name); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

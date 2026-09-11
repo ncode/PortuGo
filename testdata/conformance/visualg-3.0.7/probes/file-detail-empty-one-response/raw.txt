@@ -1,0 +1,7 @@
+Início da execução
+0
+8
+VALUES 0 8
+DONE
+
+Fim da execução.

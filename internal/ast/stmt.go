@@ -2,6 +2,15 @@ package ast
 
 import "github.com/ncode/portugol-go/internal/token"
 
+// FileInputStmt selects a literal input filename in the configuration section.
+type FileInputStmt struct {
+	At   token.Pos
+	Path string
+}
+
+func (*FileInputStmt) stmtNode()          {}
+func (s *FileInputStmt) Start() token.Pos { return s.At }
+
 // Stmt is a Portugol statement.
 type Stmt interface {
 	stmtNode()

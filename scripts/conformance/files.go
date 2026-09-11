@@ -49,6 +49,17 @@ func readFile(root, name string) ([]byte, error) {
 	return os.ReadFile(p)
 }
 
+func checkAbsent(root, name string) error {
+	p, err := safePath(root, name)
+	if err != nil {
+		return err
+	}
+	if _, err := os.Lstat(p); !os.IsNotExist(err) {
+		return fmt.Errorf("expected absent file: %s", name)
+	}
+	return nil
+}
+
 func validHash(s string) bool {
 	b, err := hex.DecodeString(s)
 	return err == nil && len(b) == sha256.Size && s == strings.ToLower(s)

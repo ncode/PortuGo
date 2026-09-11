@@ -41,6 +41,7 @@ type Interpreter struct {
 	chronometerStart   time.Time
 	chronometerRunning bool
 	timerDelay         time.Duration
+	fileInput          fileInputState
 }
 
 // New resolves defaults once and owns the buffered input for subsequent runs.
@@ -72,7 +73,13 @@ func New(options Options) *Interpreter {
 }
 
 // Run executes a checked program.
-func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) []diag.Diagnostic {
+func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) (ds []diag.Diagnostic) {
+	i.fileInput = fileInputState{}
+	defer func() {
+		if err := i.closeInputFile(len(ds) == 0); err != nil {
+			ds = append(ds, diagnostics(err, token.NoPos, diag.RHost)...)
+		}
+	}()
 	i.writeNewline = false
 	i.writeBytes = 0
 	i.program = nil
@@ -101,7 +108,7 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) []diag.Diagnostic 
 	i.env = newEnv(nil)
 	i.global = i.env
 	i.subs = make(map[token.Pos]ast.Subprogram)
-	if err := i.configureConsole(prog.Console); err != nil {
+	if err := i.configure(prog.Config); err != nil {
 		return diagnostics(err, pos, diag.RHost)
 	}
 	if err := i.defineConsts(prog.Consts); err != nil {

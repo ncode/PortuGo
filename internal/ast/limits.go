@@ -16,18 +16,21 @@ func CheckLimits(prog *Program) []diag.Diagnostic {
 		return []diag.Diagnostic{{Code: diag.EParse, Message: "missing program"}}
 	}
 	c := &limitChecker{}
+	c.stmts(prog.Config, 1)
 	c.consts(prog.Consts)
 	c.types(prog.Types)
 	c.decls(prog.Globals)
 	for _, sub := range prog.Subs {
 		switch s := sub.(type) {
 		case *ProcedureDecl:
+			c.stmts(s.Config, 1)
 			c.consts(s.Consts)
 			c.types(s.Types)
 			c.params(s.Params)
 			c.decls(s.Locals)
 			c.stmts(s.Body, 1)
 		case *FunctionDecl:
+			c.stmts(s.Config, 1)
 			c.consts(s.Consts)
 			c.types(s.Types)
 			c.params(s.Params)

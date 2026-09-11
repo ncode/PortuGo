@@ -224,7 +224,36 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		_, err = readArtifact(root, file.Content)
 		add(err)
 	}
+	for _, paths := range [][]string{e.Absent, i.Expected.Absent} {
+		seen := make(map[string]bool)
+		for _, name := range paths {
+			_, err := safePath(root, name)
+			add(err)
+			if seen[name] {
+				add(fmt.Errorf("duplicate absent path %s", name))
+			}
+			seen[name] = true
+			for _, file := range append(append([]generatedFile(nil), e.Generated...), i.Expected.Generated...) {
+				if file.Path == name {
+					add(fmt.Errorf("file is both generated and absent: %s", name))
+				}
+			}
+		}
+	}
 	if e.State == "recorded" {
+		absent := make(map[string]bool)
+		for _, name := range e.Absent {
+			absent[name] = true
+		}
+		if len(e.Absent) != len(i.Expected.Absent) {
+			add(fmt.Errorf("absent reference inventory differs from replay expectation"))
+		}
+		for _, name := range i.Expected.Absent {
+			if !absent[name] {
+				add(fmt.Errorf("absent reference inventory differs from replay expectation"))
+			}
+			delete(absent, name)
+		}
 		generated := make(map[string]string)
 		for _, file := range e.Generated {
 			if _, exists := generated[file.Path]; exists {

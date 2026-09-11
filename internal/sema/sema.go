@@ -308,7 +308,7 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 				return
 			}
 		}
-	case *ast.ConsoleStmt:
+	case *ast.ConsoleStmt, *ast.FileInputStmt:
 		// A directive reached in an executable body fails at runtime.
 		return
 	case *ast.AssignStmt:

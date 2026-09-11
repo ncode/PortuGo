@@ -368,16 +368,29 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 ## 14. Arquivo Paths, Encoding, Exhaustion, Fallback, and Echo
 
 - [ ] 14.1 Add failing temporary-filesystem fixtures for relative and nested paths, existing/missing/unreadable/empty/exhausted files, CP1252 bytes, mixed value types, fallback recording, generated files, echo combinations, cleanup, and positioned failures.
-- [ ] 14.2 Add typed AST, parser, canonical-printer, and semantic rules for every oracle-confirmed `arquivo` form and path expression.
-- [ ] 14.3 Resolve relative file paths against `interp.Options.WorkingDir`, reject invalid resolution safely, and keep tests isolated in temporary directories.
-- [ ] 14.4 Implement the file-input mode with shared buffering and the exact Windows-1252, newline, token/line, conversion, and consecutive-read behavior.
+
+  Forty-two file-input observations cover 40 matching cases, including literal
+  syntax, local selection, encoding, line boundaries and failure buffering.
+  Unreadable-path reference behavior still needs qualification.
+- [x] 14.2 Add typed AST, parser, canonical-printer, and semantic rules for every oracle-confirmed `arquivo` form and path expression.
+- [x] 14.3 Resolve relative file paths against `interp.Options.WorkingDir`, reject invalid resolution safely, and keep tests isolated in temporary directories.
+- [x] 14.4 Implement the file-input mode with shared buffering and the exact Windows-1252, newline, token/line, conversion, and consecutive-read behavior.
 - [ ] 14.5 Implement oracle behavior for missing, unreadable, empty, and exhausted files, including transitions to console or random input where recorded.
-- [ ] 14.6 Implement fallback recording and generated-file byte behavior atomically, including file creation/truncation/append rules and partial-failure cleanup.
-- [ ] 14.7 Integrate input echo with file values, fallback console values, random values, formatting, and mode transitions exactly as recorded.
-- [ ] 14.8 Return `R008` at the `arquivo` statement for path/open/read/write/encode/close failures and `R004` at the consuming `leia` where required by the oracle.
-- [ ] 14.9 Add cross-platform path tests, byte-hash integration fixtures, fake reader/writer failures, and an example that uses only temporary/sandbox-safe relative data.
-- [ ] 14.10 Update `docs/language.md` and `CHANGELOG.md` with `arquivo` path, encoding, state, fallback, recording, echo, and error semantics.
-- [ ] 14.11 Run focused filesystem/input/interpreter/CLI tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
+
+  Ordinary missing, empty and exhausted files and random transitions match.
+  Two missing-parent-directory recordings continue silently in the reference;
+  the documented `R008` guard still differs and those entries remain pending.
+- [x] 14.6 Implement fallback recording and generated-file byte behavior, including exclusive creation, recorded 128-byte buffering, replacement and partial-failure cleanup; validate each input conversion and encoding before changing its recording buffer.
+
+  Reference controls establish partial flushed prefixes rather than whole-file
+  atomicity: complete 128-byte blocks remain after failure or replacement, and
+  only successful completion flushes the unfinished block. This replaces the
+  earlier unqualified atomic-recording assumption.
+- [x] 14.7 Integrate input echo with file values, fallback console values, random values, formatting, and mode transitions exactly as recorded.
+- [x] 14.8 Return `R008` at the `arquivo` statement for path/open/read/write/encode/close failures and `R004` at the consuming `leia` where required by the oracle.
+- [x] 14.9 Add cross-platform path tests, byte-hash integration fixtures, fake reader/writer failures, and an example that uses only temporary/sandbox-safe relative data.
+- [x] 14.10 Update `docs/language.md` and `CHANGELOG.md` with `arquivo` path, encoding, state, fallback, recording, echo, and error semantics.
+- [x] 14.11 Run focused filesystem/input/interpreter/CLI tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
 - [ ] 14.12 Mark every completed 14.x task immediately, commit the focused `arquivo` changes, push the next stacked branch, and open its draft PR before group 15.
 
 ## 15. Timer, Pause, Debug, Echo, Chronometer, Screen, and Color

@@ -41,6 +41,7 @@ const (
 
 	ALGORITMO
 	DOS
+	ARQUIVO
 	RAND
 	ALEATORIO
 	ECO
@@ -108,6 +109,7 @@ type Token struct {
 var keywords = map[string]Kind{
 	"algoritmo":       ALGORITMO,
 	"dos":             DOS,
+	"arquivo":         ARQUIVO,
 	"rand":            RAND,
 	"aleatorio":       ALEATORIO,
 	"eco":             ECO,
@@ -190,6 +192,7 @@ var kindNames = map[Kind]string{
 	FIMPARA: "fimpara", INTERROMPA: "interrompa", LEIA: "leia", ESCREVA: "escreva",
 	ESCREVAL: "escreval", VERDADEIRO: "verdadeiro", FALSO: "falso", E: "e", OU: "ou",
 	LIMPATELA: "limpatela", MUDACOR: "mudacor", DOS: "dos", RAND: "rand",
+	ARQUIVO:   "arquivo",
 	ALEATORIO: "aleatorio",
 	ECO:       "eco", CRONOMETRO: "cronometro",
 	TIMER: "timer", PAUSA: "pausa", DEBUG: "debug",

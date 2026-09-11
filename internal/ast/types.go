@@ -6,7 +6,7 @@ import "github.com/ncode/portugol-go/internal/token"
 type Program struct {
 	At      token.Pos
 	Name    string
-	Console []ConsoleStmt
+	Config  []Stmt
 	Consts  []ConstDecl
 	Types   []TypeDecl
 	Globals []VarDecl
@@ -66,14 +66,14 @@ type Subprogram interface {
 
 // ProcedureDecl declares a procedure.
 type ProcedureDecl struct {
-	At      token.Pos
-	Name    token.Token
-	Params  []Param
-	Console []ConsoleStmt
-	Consts  []ConstDecl
-	Types   []TypeDecl
-	Locals  []VarDecl
-	Body    []Stmt
+	At     token.Pos
+	Name   token.Token
+	Params []Param
+	Config []Stmt
+	Consts []ConstDecl
+	Types  []TypeDecl
+	Locals []VarDecl
+	Body   []Stmt
 }
 
 func (*ProcedureDecl) subprogramNode()          {}
@@ -82,15 +82,15 @@ func (d *ProcedureDecl) NameToken() token.Token { return d.Name }
 
 // FunctionDecl declares a function.
 type FunctionDecl struct {
-	At      token.Pos
-	Name    token.Token
-	Params  []Param
-	Return  TypeSpec
-	Console []ConsoleStmt
-	Consts  []ConstDecl
-	Types   []TypeDecl
-	Locals  []VarDecl
-	Body    []Stmt
+	At     token.Pos
+	Name   token.Token
+	Params []Param
+	Return TypeSpec
+	Config []Stmt
+	Consts []ConstDecl
+	Types  []TypeDecl
+	Locals []VarDecl
+	Body   []Stmt
 }
 
 func (*FunctionDecl) subprogramNode()          {}

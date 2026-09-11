@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -87,6 +88,31 @@ func TestCaptureGeneratedBytes(t *testing.T) {
 	}
 	if len(e.Generated) != 1 || e.Generated[0].Content != want {
 		t.Fatalf("generated evidence = %+v, want %+v", e.Generated, want)
+	}
+}
+
+func TestCaptureAbsentFiles(t *testing.T) {
+	for _, present := range []bool{false, true} {
+		t.Run(fmt.Sprint(present), func(t *testing.T) {
+			root, m := testManifest(t)
+			p := m.Probes[0]
+			p.Implementation.Expected.Absent = []string{"absent.dat"}
+			stage := filepath.Join(t.TempDir(), "recording")
+			if err := prepareRecording(root, p, stage); err != nil {
+				t.Fatal(err)
+			}
+			writeArtifact(t, stage, "raw.txt", "Início da execução\r\n 1\r\n\r\nFim da execução.\r\n")
+			if present {
+				writeArtifact(t, stage, "absent.dat", "unexpected")
+			}
+			e, err := captureRecording(stage, true, "2026-09-07T12:00:00Z", "panel-v1", false)
+			if present && (err == nil || !strings.Contains(err.Error(), "expected absent file")) {
+				t.Fatalf("unexpected capture error=%v", err)
+			}
+			if !present && (err != nil || len(e.Absent) != 1 || e.Absent[0] != "absent.dat") {
+				t.Fatalf("absence evidence=%v error=%v", e.Absent, err)
+			}
+		})
 	}
 }
 

@@ -16,6 +16,7 @@ type stagedRecording struct {
 	Input     artifact   `json:"input"`
 	Files     []artifact `json:"files,omitempty"`
 	Generated []string   `json:"generated,omitempty"`
+	Absent    []string   `json:"absent,omitempty"`
 }
 
 func writeNew(name string, data []byte) error {
@@ -96,6 +97,12 @@ func prepareRecording(root string, p probe, stage string) error {
 		}
 		staged.Generated = append(staged.Generated, file.Path)
 	}
+	for _, name := range p.Implementation.Expected.Absent {
+		if _, err := safePath(stage, name); err != nil {
+			return err
+		}
+		staged.Absent = append(staged.Absent, name)
+	}
 	metadata, err := json.MarshalIndent(staged, "", "  ")
 	if err != nil {
 		return err
@@ -105,7 +112,7 @@ func prepareRecording(root string, p probe, stage string) error {
 	}
 	return writeNew(filepath.Join(stage, "instructions.txt"), []byte(`1. Open source.alg in the official VisuAlg 3.0.7 Windows application.
 2. Verify the editor contains exactly this source; supply input.txt values in order.
-   Keep auxiliary input files unchanged unless declared as generated outputs.
+   Keep auxiliary input files unchanged unless declared as generated or absent outputs.
 3. Run the program. Record acceptance/rejection and the capture time in UTC.
 4. Save unchanged output/error control text as UTF-8 raw.txt. Do not trim spaces.
 5. Preserve generated files as bytes. For GUI-only results, retain screenshot.png
@@ -139,7 +146,7 @@ func captureRecording(stage string, accepted bool, capturedAt, normalizer string
 	}
 	for _, a := range staged.Files {
 		// Files declared as outputs may be changed by the reference program.
-		if !slices.Contains(staged.Generated, a.Path) {
+		if !slices.Contains(staged.Generated, a.Path) && !slices.Contains(staged.Absent, a.Path) {
 			if _, err := readArtifact(stage, a); err != nil {
 				return e, err
 			}
@@ -160,6 +167,12 @@ func captureRecording(stage string, accepted bool, capturedAt, normalizer string
 			return evidence{}, err
 		}
 		e.Generated = append(e.Generated, generatedFile{Path: name, Content: artifact{Path: name, SHA256: hashBytes(b)}})
+	}
+	for _, name := range staged.Absent {
+		if err := checkAbsent(stage, name); err != nil {
+			return evidence{}, err
+		}
+		e.Absent = append(e.Absent, name)
 	}
 	if guiOnly {
 		for name, target := range map[string]**artifact{"screenshot.png": &e.Screenshot, "transcription.txt": &e.Transcription} {

@@ -50,6 +50,9 @@ func (i *Interpreter) execRead(s *ast.ReadStmt) error {
 				text = "Verdadeiro"
 			}
 		}
+		if err := i.recordInput(text); err != nil {
+			return err
+		}
 		if _, err := fmt.Fprintln(i.out, text); err != nil {
 			return diag.Diagnostic{Code: diag.RHost, Pos: target.Start(), Message: "cannot echo input", Cause: err}
 		}
@@ -58,6 +61,9 @@ func (i *Interpreter) execRead(s *ast.ReadStmt) error {
 }
 
 func (i *Interpreter) readLine(pos token.Pos) (string, error) {
+	if i.fileInput.reader != nil {
+		return i.readFileLine()
+	}
 	var text strings.Builder
 	for {
 		r, _, err := i.in.ReadRune()

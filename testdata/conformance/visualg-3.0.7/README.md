@@ -113,6 +113,11 @@ hashes are lowercase SHA-256 of the exact published bytes.
   trace. Omitting a source file from `inventorySources` cannot hide its requirements.
 - Probes have stable `id`, `ownerGroup`, existing `tasks`, `source`, `input`,
   optional initial `files`, `timeoutMS`, `evidence`, and `implementation`.
+  `evidence.absent` and `implementation.expected.absent` declare relative files
+  that must not exist after execution. Their inventories must agree, contain
+  no duplicate paths, and never conflict with generated-file expectations.
+  Capture and replay check absence explicitly; an unreadable or locked file
+  does not count as absent.
 - Recorded evidence includes explicit `accepted`, UTC `capturedAt`, hashed `raw`
   and `normalized` artifacts, `normalizer`, and optional generated/GUI artifacts.
 - Evidence states are `unrecorded`, `recorded`, and `not-applicable`.

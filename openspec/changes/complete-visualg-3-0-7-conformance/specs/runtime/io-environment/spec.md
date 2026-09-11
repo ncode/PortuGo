@@ -112,6 +112,33 @@ The oracle-confirmed `arquivo` command SHALL resolve relative paths against the 
 - **WHEN** the configured file contains fewer values than subsequent reads require
 - **THEN** input changes source, records fallback data, or fails exactly as the oracle evidence specifies
 
+#### Scenario: Read the recorded file line boundaries
+- **WHEN** an existing file contains LF, CRLF, an unterminated last line or no bytes
+- **THEN** LF terminates each line, CR bytes are discarded, the last unterminated line is consumed once, and an initially empty file supplies one empty value before console fallback
+- **AND** the existing file remains unchanged after fallback
+
+#### Scenario: Record a missing file
+- **WHEN** a literal configuration filename does not exist in an existing directory
+- **THEN** the file is created before ordinary execution, and converted input values are recorded in Windows-1252 with CRLF
+- **AND** integers use plain decimal text, reals ten fractional digits, and logical values `Verdadeiro` or `Falso`
+
+#### Scenario: Preserve the recorded failure and replacement buffers
+- **WHEN** a new recording reaches a full 128-byte block
+- **THEN** that block is flushed immediately, including when its final byte completes a line
+- **AND** successful completion flushes the remaining bytes, while a positioned execution failure or replacement directive discards only the unfinished block and leaves the file and its flushed prefix
+- **AND** the headless implementation closes every owned file handle on either outcome
+
+#### Scenario: Select the recorded literal filename
+- **WHEN** configuration contains repeated `arquivo` directives or a quoted filename with trailing text
+- **THEN** the last directive selects the input file, and only its first quoted filename is used
+- **AND** a subprogram's selection persists after its return and is reapplied on another call
+- **AND** unquoted, missing and parenthesized filenames receive positioned `P001`
+
+#### Scenario: Combine file input with random input and echo
+- **WHEN** random input is enabled around a selected file and later disabled
+- **THEN** generated values leave an existing file's next line unread, while a newly created recording includes generated values
+- **AND** the recorded file-input transcript retains echo around `eco off`
+
 ### Requirement: Random-input mode
 The command-form random-input facility, including `aleatorio` and any paired range or disable commands confirmed by the oracle, SHALL reproduce its activation, bounds, destination-type conversion, echo, interaction with console and `arquivo` input, and reset behavior. It SHALL match the reference value domains but need not reproduce exact sequences.
 

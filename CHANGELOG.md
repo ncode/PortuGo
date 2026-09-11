@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Add literal `arquivo` configuration, Windows-1252 file input, console fallback,
+  generated CRLF recordings, random-input transitions and canonical formatting.
+  Resolve paths against the configured working directory, close files after
+  success or failure, and report positioned file errors without host details.
+
 - Add numeric timer commands, conditional debug breakpoints and pause commands.
   Route delays and pauses through the host, preserve recorded loop and call
   timing, clamp delays to ten seconds, reset timer state per run and report

@@ -51,6 +51,20 @@ func TestManifestValidation(t *testing.T) {
 		mutate           func(*testing.T, string, *manifest)
 	}{
 		{name: "recorded pending evidence", mode: "evidence"},
+		{name: "omitted absence evidence", mode: "evidence", want: "absent reference inventory", mutate: func(_ *testing.T, _ string, m *manifest) {
+			m.Probes[0].Implementation.Expected.Absent = []string{"result.dat"}
+		}},
+		{name: "duplicate absent path", mode: "evidence", want: "duplicate absent", mutate: func(_ *testing.T, _ string, m *manifest) {
+			m.Probes[0].Evidence.Absent = []string{"result.dat", "result.dat"}
+			m.Probes[0].Implementation.Expected.Absent = []string{"result.dat", "result.dat"}
+		}},
+		{name: "conflicting file observations", mode: "evidence", want: "both generated and absent", mutate: func(t *testing.T, root string, m *manifest) {
+			a := writeArtifact(t, root, "result.dat", "result")
+			m.Probes[0].Evidence.Generated = []generatedFile{{Path: "result.dat", Content: a}}
+			m.Probes[0].Implementation.Expected.Generated = m.Probes[0].Evidence.Generated
+			m.Probes[0].Evidence.Absent = []string{"result.dat"}
+			m.Probes[0].Implementation.Expected.Absent = []string{"result.dat"}
+		}},
 		{name: "pending project safeguard", mode: "evidence", mutate: func(t *testing.T, root string, m *manifest) {
 			writeArtifact(t, root, "review.md", "Project safeguard: no reference behavior. Implementation belongs to group 10.\n")
 			m.Probes[0].Evidence.State = "not-applicable"

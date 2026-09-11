@@ -40,6 +40,7 @@ type evidence struct {
 	Transcription *artifact       `json:"transcription,omitempty"`
 	Review        *review         `json:"review,omitempty"`
 	Generated     []generatedFile `json:"generated,omitempty"`
+	Absent        []string        `json:"absent,omitempty"`
 }
 
 type diagnostic struct {
@@ -60,6 +61,7 @@ type observation struct {
 	Stdout      artifact        `json:"stdout"`
 	Diagnostics []diagnostic    `json:"diagnostics,omitempty"`
 	Generated   []generatedFile `json:"generated,omitempty"`
+	Absent      []string        `json:"absent,omitempty"`
 	State       *artifact       `json:"state,omitempty"`
 	HostTrace   *artifact       `json:"hostTrace,omitempty"`
 }

@@ -531,13 +531,57 @@ reals use ten fractional digits, logical values use `Verdadeiro` or `Falso`,
 and characters retain their exact text. Each echo ends with LF and is separate
 from `escreva`/`escreval` formatting. Real input accepts either decimal separator.
 
+`arquivo "data.txt"` selects a literal filename in a program or subprogram's
+configuration section, before declarations and `inicio`. Repeated directives select the last file;
+remaining text on each directive line is ignored. Parenthesized filenames,
+unquoted names and missing arguments receive `P001`. A directive after variable
+declarations is rejected; one reached inside the executable body reports `P001`
+at that statement, preserving preceding output.
+
+Relative filenames resolve against `interp.Options.WorkingDir`, which defaults
+to the process working directory. Both slash and backslash separate nested
+path components. Parent directories must already exist. Native absolute paths
+and filesystem permissions follow the host; Windows drive paths are rejected
+on other hosts. Tests supply temporary working directories.
+
+Existing files supply Windows-1252 lines to `leia`. LF ends a line, CR bytes are
+discarded, and a final unterminated line is consumed once. An initially empty
+file supplies one empty line before subsequent reads fall back to the existing
+console stream. Exhausted files are closed and left unchanged. File values use
+the same conversions and echo as console input, including around `eco off`.
+
+A missing file is created when its directive is processed, even if no input is
+read. Console input is buffered as Windows-1252 with CRLF after each successfully
+converted value: integers use decimal text, reals ten fractional digits and
+logical values `Verdadeiro`/`Falso`. Character recording preserves the complete
+entered line even when the stored variable is limited to 255 characters.
+Each full 128-byte block is flushed immediately; successful completion flushes
+the remaining bytes. Failure or a replacement directive discards the unfinished
+block, leaving the file and its already flushed prefix. A replaced short
+recording therefore remains an empty file. A subprogram's file selection
+persists after returning and is reapplied when that subprogram is called again.
+Random input leaves an existing file's next
+line untouched; generated values are recorded when creating a missing file.
+Disabling random input resumes the selected file or console source.
+
+Files close on normal completion and failure. Path, open, read, write and close
+errors report `R008` at `arquivo`, without rendering underlying host paths.
+Undefined Windows-1252 bytes and unrepresentable output characters also receive
+`R008` as project guards; those byte cases are not claimed as reference matches.
+Encoding is checked before buffering a line. Oversized input lines receive `R003`; exhausted
+headless console input still reports `R004` at the consuming destination.
+Missing parent directories receive `R008` as an explicit project guard. Two
+reference recordings silently continue without creating the requested file;
+they remain pending compatibility verification rather than being reported as
+matches. See [the file-input recordings](file-input-progress.md).
+
 `eco on` and `eco off` request a typed echo setting from the host. Both recorded
 console and random-input transcripts retain input echo around `eco off`, so the
 headless host leaves the transcript unchanged. Bare `eco`, numeric, quoted and
 unknown tails are accepted without a headless effect. The formatter retains an
 explicit `on`/`off` setting and discards other tails. `eco` cannot be a declared
-name or a value expression; those uses receive `P001`. File-input echo and the
-GUI state of ignored tails remain unqualified.
+name or a value expression; those uses receive `P001`. The recorded file-input
+transcript also retains echo. The GUI state of ignored tails remains unqualified.
 
 `cronometro` or `cronometro on` samples the host clock, starts or restarts the
 chronometer and writes `\nCronômetro iniciado.\n`. `cronometro off` stops it and

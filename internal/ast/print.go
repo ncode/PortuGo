@@ -16,7 +16,7 @@ func Fprint(w io.Writer, prog *Program) error {
 	}
 	p := &printer{w: w}
 	p.line(`algoritmo "%s"`, prog.Name)
-	p.printConsole(prog.Console)
+	p.printStmts(prog.Config)
 	p.printDecls(prog.Consts, prog.Types, prog.Globals)
 	for _, sub := range prog.Subs {
 		p.line("")
@@ -51,12 +51,6 @@ func (p *printer) line(format string, args ...any) {
 		}
 	}
 	_, p.err = fmt.Fprintln(p.w)
-}
-
-func (p *printer) printConsole(settings []ConsoleStmt) {
-	for range settings {
-		p.line("dos")
-	}
 }
 
 func (p *printer) printDecls(consts []ConstDecl, types []TypeDecl, decls []VarDecl) {
@@ -105,7 +99,7 @@ func (p *printer) printSub(sub Subprogram) {
 	switch s := sub.(type) {
 	case *ProcedureDecl:
 		p.line("procedimento %s(%s)", s.Name.Text, paramsString(s.Params))
-		p.printConsole(s.Console)
+		p.printStmts(s.Config)
 		p.printDecls(s.Consts, s.Types, s.Locals)
 		p.line("inicio")
 		p.indent++
@@ -114,7 +108,7 @@ func (p *printer) printSub(sub Subprogram) {
 		p.line("fimprocedimento")
 	case *FunctionDecl:
 		p.line("funcao %s(%s): %s", s.Name.Text, paramsString(s.Params), typeString(s.Return))
-		p.printConsole(s.Console)
+		p.printStmts(s.Config)
 		p.printDecls(s.Consts, s.Types, s.Locals)
 		p.line("inicio")
 		p.indent++
@@ -132,6 +126,8 @@ func (p *printer) printStmts(stmts []Stmt) {
 
 func (p *printer) printStmt(stmt Stmt) {
 	switch s := stmt.(type) {
+	case *FileInputStmt:
+		p.line("arquivo \"%s\"", s.Path)
 	case *ConsoleStmt:
 		p.line("dos")
 	case *EchoStmt:

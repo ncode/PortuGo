@@ -173,6 +173,8 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		return control{}, i.execWrite(s)
 	case *ast.ConsoleStmt:
 		return control{}, failure(s.At, diag.EParse, fmt.Errorf("dos outside the configuration section"))
+	case *ast.FileInputStmt:
+		return control{}, failure(s.At, diag.EParse, fmt.Errorf("arquivo outside the configuration section"))
 	case *ast.ClearStmt:
 		if err := i.options.Host.ClearScreen(); err != nil {
 			return control{}, diag.Diagnostic{Code: diag.RHost, Pos: s.Start(), Message: "cannot clear display", Cause: err}
