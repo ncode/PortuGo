@@ -756,7 +756,12 @@ The [independent builtin inventory](builtin-inventory-progress.md) records 28
 documented names with semantic-binding, reference-output and formatting checks.
 The additional `pot` candidate is rejected with `E002`. The accepted no-value
 `div(...)` expression form remains pending; its infix operator form is supported.
-Shared descriptor and signature/domain agreement work is still in progress.
+One immutable descriptor registry supplies built-in names, callable forms,
+parameter types and value modes, result rules, domain metadata and evaluators.
+Semantic analysis and execution share it. An independent table checks all 28
+signatures, bindings and runtime outputs; constructor checks reject incomplete
+or contradictory descriptors and duplicate names or aliases. The recorded set
+has no aliases or reference parameters. Random state remains per interpreter.
 
 Numeric built-ins include `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`,
 `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`,
@@ -830,7 +835,8 @@ signed 32-bit: `int(2147483648.0)` is `-2147483648`, and
 An absent numeric argument propagates through a containing numeric call,
 subject to the `exp` argument rules above. Output handles the result as
 described for `numpcarac`.
-The full numeric domain matrix and catalog consolidation remain pending.
+The broader numeric domain matrix remains pending. Catalog consolidation is
+complete for the recorded names and behaviors.
 
 String built-ins: `copia`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, and
 `pos`. Their recorded character repertoire is Windows-1252, decoded to UTF-8

@@ -8,6 +8,7 @@ import (
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/portugol-go/internal/stdlib"
 	"github.com/ncode/portugol-go/internal/token"
 )
 
@@ -447,10 +448,10 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 			c.checkArgs(&ast.CallExpr{Name: e.Name}, sym)
 			return sym.typ
 		}
-		if sym.kind == builtinSym && (sym.name == "pi" || sym.name == "rand") {
-			return c.checkCall(&ast.CallExpr{Name: e.Name}, false)
-		}
 		if sym.kind == builtinSym {
+			if descriptor, ok := stdlib.Lookup(sym.name); ok && descriptor.Signature().Form == stdlib.Bare {
+				return c.checkCall(&ast.CallExpr{Name: e.Name}, false)
+			}
 			c.error(e.Name.Pos, diag.EParse, "expected '(' after %s", sym.name)
 			return runtime.Type{Kind: runtime.InvalidType}
 		}

@@ -18,9 +18,29 @@ Two additional candidates from the command guide have separate recordings.
 expression form remains pending and is not counted as another documented
 function. The word `DIV` is already supported as an infix operator.
 
-The complete shared descriptor registry and signature/domain agreement checks
-remain pending. This inventory establishes a required set, without claiming
-that all callable forms or undocumented aliases have been exhausted.
+The shared immutable descriptor registry now covers all 28 names. Descriptors
+carry callable forms, value-parameter types, ordinary arity, optional-call and
+absence rules, result types, domain descriptions and evaluator dispatch. No
+recorded alias or reference parameter is invented. Construction rejects missing
+metadata, unsupported modes, contradictory signatures, duplicate names and
+aliases, and missing evaluators. Returned metadata cannot mutate the catalog.
+
+`TestBuiltinRegistryAgreement` reports each name's independently specified
+signature, semantic binding and runtime output in lowercase and uppercase.
+`TestCatalogDomainResults` checks wrapping, conversion, power underflow,
+numeric-domain absence and guarded failures through descriptor dispatch.
+Existing recorded fixtures retain argument-order, source-position, formatting
+and injected-random-state coverage. `examples/numeric_functions.alg` exercises
+the numeric set alongside its integration fixture.
+
+Four controlled mutations fail validation: omitting `arccos`, changing the
+`caracpnum` result type, changing `arccos` absence metadata, and routing `cos` to
+the sine evaluator. The omission affects semantic and runtime recognition
+together, so the independent inventory remains necessary.
+
+The broader numeric domain matrix and undocumented callable forms remain
+pending. Catalog agreement does not qualify reference behavior that has not
+been recorded.
 
 Published evidence contains synthetic source, two program-only output panels,
 one reviewed diagnostic crop and a labeled transcription. The original document

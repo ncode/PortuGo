@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/stdlib"
 	"github.com/ncode/portugol-go/internal/token"
 )
 
@@ -89,8 +90,8 @@ func (p *parser) parsePrimary() ast.Expr {
 
 func (p *parser) parseCall() *ast.CallExpr {
 	name := p.advance()
-	if strings.EqualFold(name.Text, "pi") {
-		p.error(name, "pi does not accept parentheses")
+	if descriptor, ok := stdlib.Lookup(strings.ToLower(name.Text)); ok && descriptor.Signature().Form == stdlib.Bare {
+		p.error(name, descriptor.Name()+" does not accept parentheses")
 	}
 	call := &ast.CallExpr{Name: name}
 	p.expect(token.LPAREN, "expected '('")

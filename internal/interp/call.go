@@ -8,6 +8,7 @@ import (
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/portugol-go/internal/stdlib"
 	"github.com/ncode/portugol-go/internal/token"
 )
 
@@ -18,9 +19,14 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 		return value, failure(call.Start(), diag.RType, fmt.Errorf("missing call binding"))
 	}
 	if b.Builtin {
+		descriptor, ok := stdlib.Lookup(b.Name)
+		if !ok {
+			return value, failure(call.Start(), diag.RType, fmt.Errorf("missing builtin descriptor"))
+		}
+		signature := descriptor.Signature()
 		exprs := call.Args
-		if b.Name == "exp" {
-			exprs = exprs[:min(len(exprs), 2)]
+		if signature.Rule == stdlib.PowerCall {
+			exprs = exprs[:min(len(exprs), signature.Arity)]
 		}
 		args := make([]runtime.Value, len(exprs))
 		for idx, arg := range exprs {
@@ -28,27 +34,31 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 			if err != nil {
 				return runtime.Value{}, err
 			}
-			if v.Kind == runtime.VoidValue && (b.Name == "carac" || b.Name == "copia" && idx > 0) {
+			var parameter stdlib.Parameter
+			if idx < signature.Arity {
+				parameter = signature.Parameters[idx]
+			}
+			if v.Kind == runtime.VoidValue && parameter.AbsenceAsZero {
 				v = runtime.Value{Kind: runtime.IntegerValue}
 			}
-			textArg := b.Name == "maiusc" || b.Name == "minusc" || b.Name == "asc" || b.Name == "compr" || b.Name == "pos" || b.Name == "caracpnum" || b.Name == "copia" && idx == 0
-			if textArg && v.Kind != runtime.StringValue {
+			if parameter.Type == runtime.StringType && v.Kind != runtime.StringValue {
 				return runtime.Value{}, failure(arg.Start(), diag.ETypeMismatch, fmt.Errorf("expected caractere argument"))
 			}
-			if b.Name == "copia" && idx > 0 && v.Kind != runtime.IntegerValue && v.Kind != runtime.RealValue {
+			if signature.Rule == stdlib.TextCall && parameter.Type == runtime.NumericType && v.Kind != runtime.IntegerValue && v.Kind != runtime.RealValue {
 				return runtime.Value{}, failure(arg.Start(), diag.ETypeMismatch, fmt.Errorf("expected numeric argument"))
 			}
-			if (b.Name == "carac" || b.Name == "randi") && v.Kind != runtime.IntegerValue {
+			if parameter.Type == runtime.IntegerType && v.Kind != runtime.IntegerValue {
 				return runtime.Value{}, failure(arg.Start(), diag.ETypeMismatch, fmt.Errorf("expected inteiro argument"))
 			}
-			if v.Kind == runtime.VoidValue || (b.Name == "exp" || b.Name == "int") && (v.Kind == runtime.StringValue || v.Kind == runtime.BoolValue) {
+			stopOnScalar := signature.Rule == stdlib.PowerCall || signature.NonNumericAbsent && !signature.ArityFirst
+			if v.Kind == runtime.VoidValue || stopOnScalar && (v.Kind == runtime.StringValue || v.Kind == runtime.BoolValue) {
 				// An absent numeric exponent consumes one trailing expression.
-				if b.Name == "exp" && idx == 1 && v.NumericAbsence && len(call.Args) > 2 {
-					if _, err := i.eval(call.Args[2]); err != nil {
+				if signature.Rule == stdlib.PowerCall && idx == signature.Arity-1 && v.NumericAbsence && len(call.Args) > signature.Arity {
+					if _, err := i.eval(call.Args[signature.Arity]); err != nil {
 						return runtime.Value{}, err
 					}
 				}
-				if v.Kind == runtime.VoidValue && b.Name != "exp" && b.Name != "numpcarac" {
+				if v.Kind == runtime.VoidValue && !signature.ClearsNumericAbsence() {
 					return v, nil
 				}
 				return runtime.Value{Kind: runtime.VoidValue}, nil
@@ -57,7 +67,7 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 			v.RealFallback = false
 			args[idx] = v
 		}
-		if b.Name == "exp" && len(call.Args) != 0 && len(call.Args) != 2 {
+		if signature.Rule == stdlib.PowerCall && len(call.Args) != 0 && len(call.Args) != signature.Arity {
 			return runtime.Value{}, failure(call.Start(), diag.EParse, fmt.Errorf("expected ')' after numeric argument"))
 		}
 		if v, ok, err := i.lib.Call(b.Name, args); ok {

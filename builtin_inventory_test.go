@@ -11,6 +11,7 @@ import (
 	"github.com/ncode/portugol-go/internal/parser"
 	"github.com/ncode/portugol-go/internal/sema"
 	"github.com/ncode/portugol-go/internal/source"
+	"github.com/ncode/portugol-go/internal/stdlib"
 )
 
 func TestIndependentBuiltinInventory(t *testing.T) {
@@ -35,6 +36,16 @@ func TestIndependentBuiltinInventory(t *testing.T) {
 	}
 	if len(required) != 28 {
 		t.Fatalf("documented inventory has %d names, want 28", len(required))
+	}
+	for _, descriptor := range stdlib.Catalog() {
+		if _, ok := required[descriptor.Name()]; !ok {
+			t.Errorf("catalog includes undocumented name %q", descriptor.Name())
+		}
+	}
+	for name := range required {
+		if _, ok := stdlib.Lookup(name); !ok {
+			t.Errorf("catalog omits required reference function %q", name)
+		}
 	}
 	dir := filepath.Join(root, "probes", inventory.ProbeID)
 	src, err := source.ReadFile(filepath.Join(dir, "source.alg"))

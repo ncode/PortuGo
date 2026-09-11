@@ -4,37 +4,33 @@ import (
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/portugol-go/internal/stdlib"
 	"github.com/ncode/portugol-go/internal/token"
 )
 
 func (c *checker) declareBuiltins() {
-	for _, name := range []string{
-		"abs", "raizq", "exp", "log", "logn", "pi", "sen", "cos", "tan", "int",
-		"copia", "maiusc", "minusc", "asc", "carac", "compr", "pos", "numpcarac", "caracpnum", "randi", "rand",
-		"arccos", "arcsen", "arctan", "cotan", "grauprad", "radpgrau", "quad",
-	} {
-		c.scope.declare(symbol{name: name, kind: builtinSym})
+	for _, descriptor := range stdlib.Catalog() {
+		for _, name := range descriptor.Names() {
+			c.scope.declare(symbol{name: name, kind: builtinSym})
+		}
 	}
 }
 
 func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type, bool) {
-	switch name {
-	case "pi", "rand":
-		c.requireArity(call, 0, 0)
-		return runtime.Type{Kind: runtime.RealType}, true
-	case "abs", "raizq", "log", "logn", "sen", "cos", "tan", "int",
-		"arccos", "arcsen", "arctan", "cotan", "grauprad", "radpgrau", "quad":
-		result := runtime.Type{Kind: runtime.RealType}
-		if name == "int" {
-			result.Kind = runtime.IntegerType
-		}
+	descriptor, ok := stdlib.Lookup(name)
+	if !ok {
+		return runtime.Type{}, false
+	}
+	signature := descriptor.Signature()
+	result := runtime.Type{Kind: signature.Result}
+	switch signature.Rule {
+	case stdlib.ConstantCall:
+		c.requireArity(call, signature.Arity, signature.Arity)
+	case stdlib.UnaryNumericCall:
 		if len(call.Args) == 0 {
-			if name == "abs" || name == "quad" {
-				result.Kind = runtime.VoidType
-			}
-			return result, true
+			return runtime.Type{Kind: signature.Empty}, true
 		}
-		if len(call.Args) > 1 && (name == "abs" || name == "quad" || name == "raizq") {
+		if len(call.Args) > signature.Arity && signature.ArityFirst {
 			c.error(call.Name.Pos, diag.EParse, "expected ')' after numeric argument")
 			return result, true
 		}
@@ -43,29 +39,28 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 		case runtime.DynamicType:
 			return t, true
 		case runtime.IntegerType, runtime.RealType, runtime.NumericType:
-			if name == "abs" || name == "quad" {
+			if signature.PreserveNumeric {
 				return t, true
 			}
 		case runtime.VoidType:
 			return t, true
 		case runtime.StringType, runtime.BoolType:
-			if name == "abs" || name == "quad" || name == "int" || name == "raizq" {
+			if signature.NonNumericAbsent {
 				return runtime.Type{Kind: runtime.VoidType}, true
 			}
 			c.error(call.Args[0].Start(), diag.EParse, "expected numeric expression")
 		case runtime.VectorType:
 			c.error(call.Args[0].Start(), diag.EParse, "expected '[' after vector")
 		}
-		if len(call.Args) > 1 {
+		if len(call.Args) > signature.Arity {
 			c.error(call.Name.Pos, diag.EParse, "expected ')' after numeric argument")
 		}
-		return result, true
-	case "exp":
+	case stdlib.PowerCall:
 		if len(call.Args) == 0 {
-			return runtime.Type{Kind: runtime.VoidType}, true
+			return runtime.Type{Kind: signature.Empty}, true
 		}
 		possiblyAbsent := false
-		for index, arg := range call.Args[:min(len(call.Args), 2)] {
+		for index, arg := range call.Args[:min(len(call.Args), signature.Arity)] {
 			typ := c.expr(arg)
 			switch typ.Kind {
 			case runtime.VoidType, runtime.StringType, runtime.BoolType:
@@ -74,17 +69,16 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 				c.error(arg.Start(), diag.EParse, "expected '[' after vector")
 			}
 			absent, numericAbsent := c.possibleAbsence(arg)
-			if index == 1 && numericAbsent && len(call.Args) > 2 {
-				c.expr(call.Args[2])
+			if index == signature.Arity-1 && numericAbsent && len(call.Args) > signature.Arity {
+				c.expr(call.Args[signature.Arity])
 			}
 			possiblyAbsent = possiblyAbsent || absent
 		}
-		if len(call.Args) != 2 && !possiblyAbsent {
+		if len(call.Args) != signature.Arity && !possiblyAbsent {
 			c.error(call.Name.Pos, diag.EParse, "expected ')' after numeric argument")
 		}
-		return runtime.Type{Kind: runtime.RealType}, true
-	case "numpcarac":
-		if len(call.Args) > 1 {
+	case stdlib.NumberTextCall:
+		if len(call.Args) > signature.Arity {
 			c.error(call.Name.Pos, diag.EParse, "expected ')' after conversion argument")
 		} else if len(call.Args) == 1 {
 			t := c.expr(call.Args[0])
@@ -95,12 +89,8 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 				c.error(call.Args[0].Start(), diag.EParse, "expected '[' after vector")
 			}
 		}
-		return runtime.Type{Kind: runtime.StringType}, true
-	case "caracpnum":
-		c.textArgs(call, 1, 1)
-		return runtime.Type{Kind: runtime.NumericType}, true
-	case "randi":
-		if len(call.Args) > 1 {
+	case stdlib.RandomIntegerCall:
+		if len(call.Args) > signature.Arity {
 			c.error(call.Name.Pos, diag.EParse, "expected ')' after random bound")
 		} else if len(call.Args) == 1 {
 			switch c.expr(call.Args[0]).Kind {
@@ -111,18 +101,8 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 				c.error(call.Args[0].Start(), diag.ETypeMismatch, "expected inteiro argument")
 			}
 		}
-		return runtime.Type{Kind: runtime.IntegerType}, true
-	case "copia":
-		c.textArgs(call, 3, 1)
-		return runtime.Type{Kind: runtime.StringType}, true
-	case "maiusc", "minusc":
-		c.textArgs(call, 1, 1)
-		return runtime.Type{Kind: runtime.StringType}, true
-	case "asc":
-		c.textArgs(call, 1, 1)
-		return runtime.Type{Kind: runtime.IntegerType}, true
-	case "carac":
-		if len(call.Args) > 1 {
+	case stdlib.CharacterCall:
+		if len(call.Args) > signature.Arity {
 			c.error(call.Name.Pos, diag.EParse, "expected ')' after character code")
 		} else if len(call.Args) == 1 {
 			t := c.expr(call.Args[0])
@@ -130,16 +110,10 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 				c.error(call.Args[0].Start(), diag.ETypeMismatch, "expected inteiro argument")
 			}
 		}
-		return runtime.Type{Kind: runtime.StringType}, true
-	case "compr":
-		c.textArgs(call, 1, 1)
-		return runtime.Type{Kind: runtime.IntegerType}, true
-	case "pos":
-		c.textArgs(call, 2, 2)
-		return runtime.Type{Kind: runtime.IntegerType}, true
-	default:
-		return runtime.Type{}, false
+	case stdlib.TextCall:
+		c.textArgs(call, signature)
 	}
+	return result, true
 }
 
 // possibleAbsence distinguishes generic absence from a numeric domain result.
@@ -174,10 +148,14 @@ func (c *checker) possibleAbsence(expr ast.Expr) (possible, numeric bool) {
 	if !ok || !binding.Builtin {
 		return false, false
 	}
-	switch binding.Name {
-	case "arccos", "arcsen", "cotan", "radpgrau":
+	descriptor, ok := stdlib.Lookup(binding.Name)
+	if !ok {
+		return false, false
+	}
+	switch descriptor.Domain().Absence {
+	case stdlib.NumericDomainAbsence:
 		return true, true
-	case "asc", "carac":
+	case stdlib.GenericDomainAbsence:
 		return true, false
 	}
 	for _, arg := range call.Args {
@@ -185,7 +163,7 @@ func (c *checker) possibleAbsence(expr ast.Expr) (possible, numeric bool) {
 		possible = possible || absent
 		numeric = numeric || numericAbsent
 	}
-	if binding.Name == "exp" || binding.Name == "numpcarac" {
+	if descriptor.Signature().ClearsNumericAbsence() {
 		numeric = false
 	}
 	return possible, numeric
@@ -204,8 +182,14 @@ func (c *checker) requireArity(call *ast.CallExpr, min, max int) bool {
 	return true
 }
 
-func (c *checker) textArgs(call *ast.CallExpr, arity, strings int) {
-	for index, arg := range call.Args[:min(len(call.Args), arity)] {
+func (c *checker) textArgs(call *ast.CallExpr, signature stdlib.Signature) {
+	strings := 0
+	for _, parameter := range signature.Parameters[:signature.Arity] {
+		if parameter.Type == runtime.StringType {
+			strings++
+		}
+	}
+	for index, arg := range call.Args[:min(len(call.Args), signature.Arity)] {
 		t := c.expr(arg)
 		if t.Kind == runtime.InvalidType {
 			return
@@ -213,19 +197,20 @@ func (c *checker) textArgs(call *ast.CallExpr, arity, strings int) {
 		if t.Kind == runtime.DynamicType {
 			continue
 		}
-		if index < strings {
+		parameter := signature.Parameters[index]
+		if parameter.Type == runtime.StringType {
 			if t.Kind != runtime.StringType {
 				c.error(arg.Start(), diag.ETypeMismatch, "expected caractere argument")
 				return
 			}
-		} else if !isNumeric(t) && t.Kind != runtime.VoidType {
+		} else if !isNumeric(t) && (!parameter.AbsenceAsZero || t.Kind != runtime.VoidType) {
 			c.error(arg.Start(), diag.ETypeMismatch, "expected numeric argument")
 			return
 		}
 	}
 	if len(call.Args) < strings {
 		c.error(call.Name.Pos, diag.ETypeMismatch, "expected caractere argument")
-	} else if len(call.Args) != arity {
+	} else if len(call.Args) != signature.Arity {
 		c.error(call.Name.Pos, diag.EParse, "expected ')' after text arguments")
 	}
 }

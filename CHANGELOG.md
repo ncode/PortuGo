@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Consolidate all 28 recorded built-ins into immutable descriptors shared by
+  semantic analysis and runtime dispatch. Validate descriptor construction and
+  independently check signatures, domain rules, bindings and evaluator results
+  while preserving argument order, absent values and per-interpreter random state.
+
 - Add literal `arquivo` configuration, Windows-1252 file input, console fallback,
   generated CRLF recordings, random-input transitions and canonical formatting.
   Resolve paths against the configured working directory, close files after

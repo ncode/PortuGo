@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"strings"
-	"unicode"
 	"unicode/utf8"
 
 	"github.com/ncode/portugol-go/internal/cp1252"
@@ -29,75 +28,11 @@ func New(random RandomSource) *Library {
 
 // Call invokes a built-in function by canonical lowercase name.
 func (l *Library) Call(name string, args []runtime.Value) (runtime.Value, bool, error) {
-	switch name {
-	case "abs":
-		return abs(args)
-	case "raizq":
-		return squareRoot(args)
-	case "exp":
-		return exp(args)
-	case "log":
-		return checkedNumeric1(args, math.Log10)
-	case "logn":
-		return checkedNumeric1(args, math.Log)
-	case "pi":
-		return runtime.Value{Kind: runtime.RealValue, Real: math.Pi}, true, nil
-	case "sen":
-		return numeric1(args, math.Sin)
-	case "cos":
-		return numeric1(args, math.Cos)
-	case "tan":
-		return numeric1(args, math.Tan)
-	case "arccos":
-		return numeric1(args, math.Acos)
-	case "arcsen":
-		return numeric1(args, math.Asin)
-	case "arctan":
-		return numeric1(args, math.Atan)
-	case "cotan":
-		return numeric1(args, func(x float64) float64 { return 1 / math.Tan(x) })
-	case "grauprad":
-		return numeric1(args, func(x float64) float64 { return x * (math.Pi / 180) })
-	case "radpgrau":
-		return numeric1(args, func(x float64) float64 { return x * (180 / math.Pi) })
-	case "quad":
-		return square(args)
-	case "int":
-		return intval(args)
-	case "rand":
-		if len(args) != 0 {
-			return runtime.Value{}, true, fmt.Errorf("rand takes no arguments")
-		}
-		return l.randomFraction()
-	case "randi":
-		return l.randi(args)
-	case "copia":
-		return copia(args)
-	case "maiusc":
-		return string1(args, func(r rune) rune {
-			// These Unicode uppercase counterparts are outside Windows-1252.
-			if r == 'µ' || r == 'ƒ' {
-				return r
-			}
-			return unicode.ToUpper(r)
-		})
-	case "minusc":
-		return string1(args, unicode.ToLower)
-	case "asc":
-		return asc(args)
-	case "carac":
-		return carac(args)
-	case "compr":
-		return compr(args)
-	case "pos":
-		return pos(args)
-	case "numpcarac":
-		return numpcarac(args)
-	case "caracpnum":
-		return caracpnum(args)
-	default:
+	d, ok := Lookup(name)
+	if !ok {
 		return runtime.Value{}, false, nil
 	}
+	return d.evaluate(l, args)
 }
 
 func numpcarac(args []runtime.Value) (runtime.Value, bool, error) {

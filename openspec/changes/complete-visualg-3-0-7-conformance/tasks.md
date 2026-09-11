@@ -294,34 +294,36 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 ## 11. Unified Built-in Registry and Numeric Functions
 
-- [ ] 11.1 Add failing catalog completeness/drift tests against the independent reference inventory and numeric signature/domain tables; prove that removing a required name from both sema and runtime still fails validation.
+- [x] 11.1 Add failing catalog completeness/drift tests against the independent reference inventory and numeric signature/domain tables; prove that removing a required name from both sema and runtime still fails validation.
 
   An independent 28-name inventory from the distributed function guide now has
   recorded execution, semantic-binding and formatting coverage. Removing
   `arccos` from both semantic recognition and runtime dispatch makes the inventory
   test fail. The rejected `pot` candidate is verified; the accepted no-value
-  `div(...)` candidate stays pending. Descriptor signature/domain drift coverage
-  remains part of the following registry work.
-- [ ] 11.2 Define immutable built-in descriptors and registry construction checks for duplicate aliases, incomplete signatures, parameter modes, result rules, domains, and missing evaluators.
-- [ ] 11.3 Replace semantic built-in switches and name lists with descriptor-driven binding, arity, argument, mode, and result-type analysis.
-- [ ] 11.4 Replace runtime built-in name maps and switches with descriptor lookup and evaluator dispatch while preserving per-interpreter state.
+  `div(...)` candidate stays pending. Independent descriptor signatures, domain
+  absence, bindings and outputs now cover all 28 entries. Controlled omission,
+  result-type, domain-metadata and evaluator mutations each fail validation.
+- [x] 11.2 Define immutable built-in descriptors and registry construction checks for duplicate aliases, incomplete signatures, parameter modes, result rules, domains, and missing evaluators.
+- [x] 11.3 Replace semantic built-in switches and name lists with descriptor-driven binding, arity, argument, mode, and result-type analysis.
+- [x] 11.4 Replace runtime built-in name maps and switches with descriptor lookup and evaluator dispatch while preserving per-interpreter state.
 - [ ] 11.5 Implement or correct all accepted candidates: `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, and `frac`, plus discovered functions/aliases. Cover `exp(base, expoente)` explicitly and reject any legacy candidate the oracle rejects.
 
   The seven missing numeric functions and bare `pi` now match recorded values,
   result types, optional arguments, no-value results, and syntax rejections.
   Recorded legacy empty calls, logarithm signatures and domains, rejected
   `frac` calls, and no-value argument order are now covered as well. The full
-  numeric domain matrix and unified descriptor registry remain pending.
+  numeric domain matrix remains pending; descriptor consolidation is complete.
 - [ ] 11.6 Add explicit numeric domain, finite-value, integer-overflow, precision-tolerance, and positioned `R007` behavior matching the oracle table.
 
   Recorded numeric endpoints, logarithm and exponentiation domains, large
   angle conversions, and absence origin/order now have regression coverage.
   Unpositioned real-squaring faults use a documented project guard. Broader
-  domain qualification and the independent catalog remain pending.
-- [ ] 11.7 Add a generated or table-driven catalog report that proves semantic and runtime coverage for every descriptor without making generated source authoritative.
-- [ ] 11.8 Add semantic signature tests, runtime value/error tables, integration fixtures, and a numeric built-ins example.
-- [ ] 11.9 Update `docs/language.md` authoritative built-in catalog and `CHANGELOG.md` with corrected names, signatures, units, values, and errors.
-- [ ] 11.10 Run focused registry/sema/stdlib/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+  domain qualification remains pending. The independent catalog and descriptor
+  domain-regression table now validate the recorded implementation.
+- [x] 11.7 Add a generated or table-driven catalog report that proves semantic and runtime coverage for every descriptor without making generated source authoritative.
+- [x] 11.8 Add semantic signature tests, runtime value/error tables, integration fixtures, and a numeric built-ins example.
+- [x] 11.9 Update `docs/language.md` authoritative built-in catalog and `CHANGELOG.md` with corrected names, signatures, units, values, and errors.
+- [x] 11.10 Run focused registry/sema/stdlib/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
 - [ ] 11.11 Mark every completed 11.x task immediately, commit the focused registry/numeric changes, push the next stacked branch, and open its draft PR before group 12.
 
 ## 12. Text, Character-Code, and Conversion Built-ins
