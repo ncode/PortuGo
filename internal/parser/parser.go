@@ -314,6 +314,8 @@ func (p *parser) parseStmt() ast.Stmt {
 		call := &ast.CallExpr{Name: p.advance()}
 		p.skipLine()
 		return &ast.CallStmt{Call: call}
+	case token.ALEATORIO:
+		return p.parseRandomInput()
 	case token.IDENT:
 		return p.parseIdentStmt()
 	case token.SE:

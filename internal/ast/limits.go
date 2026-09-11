@@ -103,6 +103,8 @@ func (c *limitChecker) stmts(stmts []Stmt, depth int) {
 		}
 		next := depth + 1
 		switch s := stmt.(type) {
+		case *RandomInputStmt:
+			c.exprs(s.Args, next)
 		case *AssignStmt:
 			c.expr(s.Target, next)
 			c.expr(s.Value, next)

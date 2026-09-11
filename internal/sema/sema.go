@@ -279,6 +279,22 @@ func (c *checker) checkStmts(stmts []ast.Stmt) {
 
 func (c *checker) checkStmt(stmt ast.Stmt) {
 	switch s := stmt.(type) {
+	case *ast.RandomInputStmt:
+		for _, arg := range s.Args {
+			before := len(c.diags)
+			typ := c.expr(arg)
+			if len(c.diags) != before {
+				if c.diags[before].Code == diag.EUndeclared {
+					c.diags[before].Code = diag.EParse
+				}
+				c.diags = c.diags[:before+1]
+				return
+			}
+			if !isNumeric(typ) && typ.Kind != runtime.DynamicType {
+				c.error(arg.Start(), diag.EParse, "expected numeric random-input bound")
+				return
+			}
+		}
 	case *ast.ConsoleStmt:
 		// A directive reached in an executable body fails at runtime.
 		return

@@ -132,6 +132,18 @@ func (p *printer) printStmt(stmt Stmt) {
 	switch s := stmt.(type) {
 	case *ConsoleStmt:
 		p.line("dos")
+	case *RandomInputStmt:
+		if s.Off {
+			p.line("aleatorio off")
+		} else if len(s.Args) == 0 {
+			p.line("aleatorio on")
+		} else {
+			args := make([]string, len(s.Args))
+			for n, arg := range s.Args {
+				args[n] = exprString(arg)
+			}
+			p.line("aleatorio %s", strings.Join(args, ", "))
+		}
 	case *AssignStmt:
 		p.line("%s <- %s", exprString(s.Target), exprString(s.Value))
 	case *CallStmt:

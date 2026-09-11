@@ -341,7 +341,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 ## 13. Injected Randomness, Rand, Randi, and Random-Input Command
 
 - [ ] 13.1 Add failing deterministic-fake and property tests for `rand`, `randi`, aliases, each arity, inclusive/exclusive boundaries, reversed/empty/overflowing ranges, generator consumption, and command-form random input transitions.
-- [ ] 13.2 Finish per-interpreter `RandomSource` plumbing through the builtin library and input controller with deterministic recording fakes and no global mutable generator.
+- [x] 13.2 Finish per-interpreter `RandomSource` plumbing through the builtin library and input controller with deterministic recording fakes and no global mutable generator.
 - [ ] 13.3 Implement descriptor signatures and exact oracle value domains/result types for `rand`, `randi`, and every confirmed alias without promising an exact reference sequence.
 
   Bare `rand`, reserved-name syntax, ignored assignment/statement suffixes and
@@ -349,9 +349,17 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   boundaries and failures are tested. The shared descriptor registry and
   command-form random input remain pending.
 - [ ] 13.4 Implement overflow-safe bound normalization and rejection, including full integer-domain cases, while consuming random values only when the reference does.
-- [ ] 13.5 Add typed AST, parser, printer, and semantic validation for command-form `aleatorio` and any oracle-confirmed range/disable companion commands.
+- [x] 13.5 Add typed AST, parser, printer, and semantic validation for command-form `aleatorio` and any oracle-confirmed range/disable companion commands.
 - [ ] 13.6 Implement random-input activation, destination conversion, bounds, echo state, and return to the prior/default input mode.
-- [ ] 13.7 Return positioned `R007` for builtin random failures and `R004` for random-input failures with no panic or invalid source call.
+
+  Command-form input now has typed syntax, expression bounds, precision limited
+  to five fractional digits, console transitions, subprogram state, per-run
+  reset, and shared source validation. Of 56 synthetic reference recordings,
+  37 have exact original/formatted regression coverage. Random samples and the
+  two echo-command controls remain pending exact replay qualification. File-input
+  interaction, extreme bounds and the shared descriptor registry remain pending.
+
+- [x] 13.7 Return positioned `R007` for builtin random failures and `R004` for random-input failures with no panic or invalid source call.
 - [x] 13.8 Add repeatable runtime fixtures using scripted random values, property checks across many seeds, and an example that asserts domains rather than sequences.
 - [ ] 13.9 Update `docs/language.md` and `CHANGELOG.md` with exact random domains, modes, seeding guarantees, errors, and the explicit sequence non-goal.
 - [ ] 13.10 Run focused random/registry/input/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.

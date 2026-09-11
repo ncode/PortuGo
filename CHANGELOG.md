@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Add command-form random input with evaluated bounds, bounded real precision,
+  generated text, console transitions, per-run reset and guarded source failures.
+  Replace the legacy callable `aleatorio` API with recorded no-value behavior.
+  Record eight more original bundled examples without claiming exact random
+  sequence compatibility.
+
 - Pin an independent inventory of 28 documented builtins to a recorded reference
   program and check semantic binding, runtime results and formatting. Record
   rejection of the `pot` candidate and pending `div(...)` value behavior.

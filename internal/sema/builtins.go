@@ -10,7 +10,7 @@ import (
 func (c *checker) declareBuiltins() {
 	for _, name := range []string{
 		"abs", "raizq", "exp", "log", "logn", "pi", "sen", "cos", "tan", "int",
-		"aleatorio", "copia", "maiusc", "minusc", "asc", "carac", "compr", "pos", "numpcarac", "caracpnum", "randi", "rand",
+		"copia", "maiusc", "minusc", "asc", "carac", "compr", "pos", "numpcarac", "caracpnum", "randi", "rand",
 		"arccos", "arcsen", "arctan", "cotan", "grauprad", "radpgrau", "quad",
 	} {
 		c.scope.declare(symbol{name: name, kind: builtinSym})
@@ -110,17 +110,6 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 			default:
 				c.error(call.Args[0].Start(), diag.ETypeMismatch, "expected inteiro argument")
 			}
-		}
-		return runtime.Type{Kind: runtime.IntegerType}, true
-	case "aleatorio":
-		if !c.requireArity(call, 0, 2) {
-			return runtime.Type{Kind: runtime.InvalidType}, true
-		}
-		for _, arg := range call.Args {
-			c.requireInt(arg)
-		}
-		if len(call.Args) == 0 {
-			return runtime.Type{Kind: runtime.RealType}, true
 		}
 		return runtime.Type{Kind: runtime.IntegerType}, true
 	case "copia":

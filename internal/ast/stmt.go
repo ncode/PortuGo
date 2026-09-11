@@ -14,6 +14,16 @@ type ConsoleStmt struct{ At token.Pos }
 func (*ConsoleStmt) stmtNode()          {}
 func (s *ConsoleStmt) Start() token.Pos { return s.At }
 
+// RandomInputStmt selects console input or generated input with numeric bounds.
+type RandomInputStmt struct {
+	At   token.Pos
+	Off  bool
+	Args []Expr
+}
+
+func (*RandomInputStmt) stmtNode()          {}
+func (s *RandomInputStmt) Start() token.Pos { return s.At }
+
 // AssignStmt assigns to a variable or indexed vector element.
 type AssignStmt struct {
 	At     token.Pos

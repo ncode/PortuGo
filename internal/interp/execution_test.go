@@ -75,11 +75,8 @@ func TestExecutionDiagnostics(t *testing.T) {
 		{"storage", "var v: vetor[1..2] de inteiro", "v[3] <- 1", "v[3]", diag.RStorage, Options{}},
 		{"input", "var x: inteiro", "leia(x)", "x)", diag.RInput, Options{}},
 		{"loop", "var x: inteiro", "para x de 1 ate 2 passo 0 faca\nfimpara", "para", diag.RLoop, Options{}},
-		{"builtin", "", "escreval(aleatorio(0))", "aleatorio", diag.RBuiltin, Options{}},
 		{"random source", "", "escreval(randi(7))", "randi", diag.RBuiltin, Options{Random: &scriptedRandom{bad: true}}},
 		{"fraction source", "", "escreva(\"before\")\nescreval(rand)", "rand", diag.RBuiltin, Options{Random: &scriptedRandom{badFraction: true}}},
-		{"legacy random source", "", "escreval(aleatorio(7))", "aleatorio", diag.RBuiltin, Options{Random: &scriptedRandom{bad: true}}},
-		{"legacy random interval", "", "escreval(aleatorio(-3, 5))", "aleatorio", diag.RBuiltin, Options{Random: &scriptedRandom{bad: true}}},
 		{"power before conversion", "", "escreval(numpcarac(10 ^ 400))", "^", diag.RArithmetic, Options{}},
 		{"integer conversion", "", "escreval(int(100000000000000000000.0))", "int", diag.RBuiltin, Options{}},
 		{"character outside Windows-1252", "", "escreval(asc(\"🦀\"))", "asc", diag.RBuiltin, Options{}},
@@ -211,11 +208,11 @@ func (r *scriptedRandom) Uint64N(n uint64) uint64 {
 }
 
 func TestOptionsRandomAndDefaults(t *testing.T) {
-	p, info := analyzed(t, "algoritmo \"random\"\ninicio\nescreval(aleatorio(), aleatorio(4), aleatorio(3, 5))\nescreval(RaNd)\nfimalgoritmo")
+	p, info := analyzed(t, "algoritmo \"random\"\ninicio\nescreval(rand, randi(4), randi(3))\nescreval(RaNd)\nfimalgoritmo")
 	r := &scriptedRandom{}
 	var out bytes.Buffer
 	i := New(Options{Random: r, Output: &out})
-	if ds := i.Run(p, info); len(ds) != 0 || out.String() != " 0.25 3 5\n 0.25\n" || r.fractions != 2 {
+	if ds := i.Run(p, info); len(ds) != 0 || out.String() != " 0.25 3 2\n 0.25\n" || r.fractions != 2 {
 		t.Fatalf("random injection: %v %q", ds, &out)
 	}
 	if len(r.bounds) != 2 || r.bounds[0] != 4 || r.bounds[1] != 3 {

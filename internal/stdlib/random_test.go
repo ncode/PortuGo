@@ -54,14 +54,11 @@ func TestRandDomains(t *testing.T) {
 	}
 }
 
-func TestLegacyRandomSourceFailures(t *testing.T) {
-	for _, args := range [][]runtime.Value{
-		{{Kind: runtime.IntegerValue, Int: 7}},
-		{{Kind: runtime.IntegerValue, Int: -3}, {Kind: runtime.IntegerValue, Int: 5}},
-	} {
+func TestRandomInputSourceFailures(t *testing.T) {
+	for _, kind := range []runtime.TypeKind{runtime.IntegerType, runtime.RealType, runtime.StringType} {
 		for _, source := range []RandomSource{&recordingRandom{bad: true}, nil} {
-			if _, found, err := New(source).Call("aleatorio", args); !found || err == nil {
-				t.Fatalf("invalid source: found=%t error=%v", found, err)
+			if _, err := New(source).RandomInput(kind, -3, 5, 3); err == nil {
+				t.Fatalf("invalid random-input source accepted for type %v", kind)
 			}
 		}
 	}

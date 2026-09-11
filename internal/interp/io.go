@@ -20,11 +20,19 @@ func (i *Interpreter) execRead(s *ast.ReadStmt) error {
 		if err != nil {
 			return err
 		}
-		text, err := i.readLine(target.Start())
-		if err != nil {
-			return err
+		var text string
+		var v runtime.Value
+		if i.randomInput.active && cell.Type.Kind != runtime.BoolType {
+			state := i.randomInput
+			v, err = i.lib.RandomInput(cell.Type.Kind, state.low, state.high, state.decimals)
+			text = v.Str
+		} else {
+			text, err = i.readLine(target.Start())
+			if err != nil {
+				return err
+			}
+			v, err = parseInput(text, cell.Type)
 		}
-		v, err := parseInput(text, cell.Type)
 		if err != nil {
 			return failure(target.Start(), diag.RInput, err)
 		}

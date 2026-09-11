@@ -36,6 +36,7 @@ type Interpreter struct {
 	results      []runtime.Value
 	operands     []runtime.Value
 	evalFrames   int
+	randomInput  randomInputState
 }
 
 // New resolves defaults once and owns the buffered input for subsequent runs.
@@ -76,6 +77,7 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) []diag.Diagnostic 
 	i.results = nil
 	i.operands = nil
 	i.evalFrames = 0
+	i.randomInput = randomInputState{}
 	pos := token.NoPos
 	if prog != nil {
 		pos = prog.At

@@ -664,7 +664,7 @@ Shared descriptor and signature/domain agreement work is still in progress.
 
 Numeric built-ins include `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`,
 `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`,
-`sen`, `tan`, `randi`, and the current legacy `aleatorio` forms. The reference
+`sen`, `tan`, and `randi`. The reference
 rejects `frac` as an undeclared name (`E002`).
 
 `arccos`, `arcsen`, `arctan`, `cotan`, `grauprad`, and `radpgrau` return real
@@ -876,15 +876,39 @@ as project guards, preserving earlier output. Tests establish domains and
 injection behavior; they do not promise reference seed or sequence compatibility.
 See [random fraction recordings](random-fraction-progress.md).
 
-The existing legacy `aleatorio()` API returns a real in `[0, 1)`. `aleatorio(n)` returns an integer in
-`[0, n)`. `aleatorio(a, b)` returns an integer in the inclusive range `[a, b]`.
-The generator uses Go's standard pseudo-random source; VisuAlg's exact RNG is
-not emulated. Each interpreter has its own source. The inclusive interval
-covering every signed 64-bit integer is rejected with `R007` because its draw
-size cannot be represented by the random-source interface. These legacy callable
-forms do not qualify the reference's command-form random input, which is pending.
-The bounded legacy forms use the same missing-source and out-of-range draw
-guards as `randi`, returning positioned `R007`.
+`aleatorio` is a reserved input command. `aleatorio on` enables generated input;
+`aleatorio off` returns subsequent reads to console input. A bare command is
+rejected with `P001`. Numeric bounds accept expressions: `aleatorio low, high`
+selects an inclusive integer range, swapping reversed endpoints. A single bound
+sets the lower endpoint and leaves the upper endpoint at 100. This differs from
+the bundled manual's single-upper-bound description.
+
+An optional third argument selects additional fractional digits for real reads:
+`aleatorio low, high, digits`. Its integer part is clamped to 0 through 5;
+omission means zero digits. The base value is `low` plus an integer draw from
+zero through `trunc(high-low)`. A real destination additionally receives a
+fraction from zero through `1-10^-digits` when digits are positive. Thus
+`aleatorio 2,2,3` can produce 2.847, and fractional lower bounds are retained:
+`aleatorio 2.75,2.75,0` produces 2.75. Integer destinations discard fractional
+parts and do not use the precision setting. `aleatorio on` restores the default
+0-through-100 range and zero additional fractional digits.
+
+Generated character input contains five uppercase ASCII letters. Logical reads
+continue consuming console input while random mode is active. The ordinary
+console transcript includes generated input in the same representation as typed
+input. Input modes reset for every `Interpreter.Run`; all random operations use
+the same per-interpreter source. Bounds are evaluated when the command executes.
+
+The old callable random API has been removed: the reference treats `aleatorio`,
+`aleatorio()`, and calls with arguments as no-value expressions, discarding the
+output statement without evaluating those arguments. Use bare `rand` for random
+fractions and `randi(n)` for exclusive-upper-bound integers. Neither API promises
+the reference's exact seeds or sequences.
+
+Missing random sources, invalid draws and unrepresentable random-input ranges
+return positioned `R004` without assigning or echoing the failed read. Builtin
+random failures continue using `R007`. File-input interaction and extreme bound
+compatibility remain pending reference qualification.
 
 ## Execution diagnostics and safeguards
 

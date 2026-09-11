@@ -1,0 +1,5 @@
+Início da execução
+Verdadeiro
+ VERDADEIRO
+
+Fim da execução.

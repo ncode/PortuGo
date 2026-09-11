@@ -25,6 +25,8 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 	}
 	defer func() { err = failure(stmt.Start(), diag.RType, err) }()
 	switch s := stmt.(type) {
+	case *ast.RandomInputStmt:
+		return control{}, i.execRandomInput(s)
 	case *ast.AssignStmt:
 		cell, err := i.lvalue(s.Target)
 		if err != nil {

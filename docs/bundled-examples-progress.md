@@ -1,6 +1,6 @@
 # Bundled example progress
 
-The corpus records 52 original programs from the official VisuAlg 3.0.7
+The corpus records 60 original programs from the official VisuAlg 3.0.7
 distribution. Their source bytes match the sizes and SHA-256 hashes in the
 73-file catalog. Each observation links its catalog ID, exact source, reference
 outcome, and owning tasks in the conformance manifest.
@@ -9,7 +9,7 @@ The evidence gate checks catalog IDs, source hashes and sizes, classifications,
 recorded acceptance, and reviewed exclusion reasons. Pending entries still fail
 the missing-evidence gate; classifications do not grant them an exemption.
 
-Forty-four programs complete successfully in the reference. Forty-two match
+Fifty-two programs complete successfully in the reference. Forty-two match
 the CLI byte for byte and have permanent tests for original and formatted execution.
 The fixed-input cases cover combinations, factorials, minimum selection, means,
 prime decomposition, base conversion, vector sorting, remainders, reversed text,
@@ -45,6 +45,14 @@ The menu recording exercises all four actions and exits; the vector-registration
 recording exercises its exit path. These are recorded input paths, not a claim
 that every interactive branch has been tested.
 
+Random-input recordings add `aleatorio1.alg`, `bbsort.alg`, `bbsortp.alg`,
+`bbsortreg.alg`, `bubblrec.alg`, `buscabin.alg`, `cntsort.alg`, and `inssort.alg`.
+The binary-search recording supplies `-1` to exit after generating its data.
+All eight complete in the reference, including the original incomplete-looking
+loop header in `aleatorio1.alg`. Their generated values remain in the recorded
+transcripts. Implementation verification remains pending; these observations
+do not establish exact portable random sequences or complete branch coverage.
+
 Eight bundled files are unusable as supplied. Their ordinary GUI diagnostics
 were individually reviewed; the corpus retains diagnostic evidence and labeled
 manual transcriptions:
@@ -70,8 +78,7 @@ The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
 recording therefore remains pending; the retained diagnostic and preceding output
 record the reference outcome without claiming an implementation match.
 
-The catalog has forty-four accepted examples, eight unusable examples, and 21
+The catalog has fifty-two accepted examples, eight unusable examples, and 13
 awaiting recorded classifications. Incomplete captures are excluded. These
 records do not complete the full example sweep, evidence inventory, or
-conformance release gate, which still has 29 missing mappings: eight requirements
-and 21 bundled examples.
+conformance release gate.

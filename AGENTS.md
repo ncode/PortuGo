@@ -205,7 +205,7 @@ fimfuncao
 
 ### 6.7 Built-in functions (initial set)
 
-Numeric: `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, `randi`; legacy `aleatorio` corrections remain pending. `frac` is rejected as undeclared.
+Numeric: `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, `randi`, and bare `rand`. `aleatorio` configures generated input; its expression forms produce no value. `frac` is rejected as undeclared.
 `pi` is written without parentheses. The new inverse-trigonometric and angle-conversion calls, `cotan`, and `quad` follow the recorded optional-argument and no-value rules in `docs/language.md`.
 `exp(base, exponent)` takes two numeric arguments and returns real-valued power. `log` is base ten and `logn` is the one-argument natural logarithm. Empty calls, no-value propagation, argument order, and domain failures follow `docs/language.md`.
 String: `copia(s, p, n)`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, `pos`
@@ -264,7 +264,7 @@ These are real decisions, not rhetorical. Resolve before implementing the affect
 1. **Dialect target.** VisuAlg only, or also Portugol Studio (UNIVALI)? They differ on vector syntax (`vetor[10]` vs `vetor[1..10]`), subprogram syntax, and stdlib. Pick one for v1.
 2. **Short-circuit `e` / `ou`.** Spec-faithful (no SC) or pragmatic (SC)? Affects observable behavior of programs with side effects in conditions.
 3. **Decimal separator on I/O — resolved for the current profile.** Output uses the recorded `en-US` decimal dot on every host; input accepts comma or dot. Other reference locales remain unverified.
-4. **`aleatorio` semantics.** Match VisuAlg's RNG exactly (would need to reverse-engineer it) or use Go's `math/rand/v2` with documented seeding?
+4. **Random sequences — resolved.** Match recorded `rand`, `randi`, and command-form `aleatorio` domains with a per-interpreter source. Exact reference seeds and sequences are not promised; file-input interactions and extreme command bounds remain pending.
 5. **File I/O.** v1 = no, v2 = maybe. Confirm.
 6. **CLI framework.** stdlib `flag` or `cobra`? Default: `flag`.
 
