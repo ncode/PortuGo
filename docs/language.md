@@ -268,8 +268,17 @@ Use `(x >= 0) e (x < 7)` for a compound comparison.
 An expression accepts one unparenthesized comparison. `1 < 2 < 3` is rejected
 with `P001` in output; `(1 < 2) < 3` explicitly supplies the left comparison.
 Formatting preserves the parentheses needed for nested comparisons and logical
-operands. Some mixed arithmetic/logical value reductions remain pending in the
-[expression recording report](expression-boundaries-progress.md).
+operands. The [expression recording report](expression-boundaries-progress.md)
+tracks the precedence and boundary recordings.
+
+Mixed reductions can retain an intermediate operand for enclosing arithmetic.
+The recorded `2 + (3 e 7)` produces `10`, `20 - (3 e 7)` produces `-4`, and
+`2 * (3 e 7)` produces `21`. This also occurs through a numeric builtin or a
+function returning the mixed expression. For example, `2 + abs(3 e 7)` is `10`.
+Addition in the recorded `2 + (3 e ("x" = 7))` receives `P001` instead.
+See [retained operand recordings](retained-operands-progress.md) for the tested
+cases. These behaviors are reference compatibility rules, not ordinary numeric
+identities.
 
 Arithmetic operators are `+`, `-`, `*`, `/`, `\`, `DIV`, `%`, `MOD`, and `^`.
 The case-insensitive word `DIV` is an alias for `\`, with the same precedence,
@@ -920,7 +929,10 @@ aggregate is capped at 1,048,576 scalar slots, including record fields, with
 checked dimension products. Oversized literal layouts receive `E900` during
 analysis; constant-dependent layouts receive `R003` at declaration initialization,
 before allocation. An empty record counts as one cell for this project guard.
-Reference-specific storage quotas remain pending.
+One enclosing evaluation may retain at most 65,536 intermediate operands across
+nested language calls. Exceeding that project safeguard reports `R003` at the
+operator. Independent outer evaluations release retained values, including after
+an error. Reference-specific storage quotas remain pending.
 These are project safeguards, not measured VisuAlg limits. A safeguard
 hit in an accepted reference example remains a conformance failure.
 

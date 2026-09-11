@@ -34,6 +34,8 @@ type Interpreter struct {
 	depth, calls int
 	result       *runtime.Cell
 	results      []runtime.Value
+	operands     []runtime.Value
+	evalFrames   int
 }
 
 // New resolves defaults once and owns the buffered input for subsequent runs.
@@ -72,6 +74,8 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) []diag.Diagnostic 
 	i.global = nil
 	i.result = nil
 	i.results = nil
+	i.operands = nil
+	i.evalFrames = 0
 	pos := token.NoPos
 	if prog != nil {
 		pos = prog.At

@@ -220,10 +220,17 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
 
   Logical operators bind more tightly than comparisons; `ou` and `xou` share
   precedence. The parser accepts one unparenthesized comparison and the printer
-  preserves required grouping. Recorded assignment tails are discarded. Four
-  mixed arithmetic/logical value cases remain pending under 8.3.
+  preserves required grouping. Recorded assignment tails are discarded. The four
+  mixed arithmetic/logical value cases are now verified under the 8.3 progress
+  described below.
 
 - [ ] 8.3 Resolve expression types and implicit coercions in `sema.Info` for every accepted numeric and logical operator combination.
+
+  Twenty retained-operand cases now match the reference, including all four
+  pending cases from the expression-boundary slice, arithmetic grouping, nested
+  mixed comparisons and numeric builtin/language function contexts. The complete
+  operand-type matrix remains pending. Retained storage has a positioned project
+  guard and is released after each outer evaluation or error.
 - [ ] 8.4 Implement overflow-safe integer arithmetic, real division, integer division, modulo, exponentiation, unary operations, and `R002` domain failures exactly as recorded.
 
   Integer addition, subtraction, multiplication, and negation now reproduce

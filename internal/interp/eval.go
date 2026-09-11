@@ -27,6 +27,16 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 	if i.depth == maxDepth {
 		return value, failure(expr.Start(), diag.RStorage, fmt.Errorf("expression depth limit exceeded"))
 	}
+	// Call frames reset the depth guard but share the enclosing expression's
+	// retained operands. Release those values when the outer evaluation ends.
+	i.evalFrames++
+	defer func() {
+		i.evalFrames--
+		if i.evalFrames == 0 {
+			clear(i.operands)
+			i.operands = i.operands[:0]
+		}
+	}()
 	i.depth++
 	defer func() {
 		i.depth--
@@ -145,10 +155,27 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 	if e.IsComparison() && left.NumericAbsence {
 		return left, nil
 	}
+	if len(i.operands) == maxOperands {
+		return runtime.Value{}, failure(e.Op.Pos, diag.RStorage, fmt.Errorf("retained operand limit exceeded"))
+	}
+	i.operands = append(i.operands, left)
 	right, err := i.eval(e.Right)
 	if err != nil {
 		return runtime.Value{}, err
 	}
+	// Comparisons keep their own left value. Other operators reduce the most
+	// recent operand, including one retained by a nested mixed expression.
+	if !e.IsComparison() {
+		left = i.operands[len(i.operands)-1]
+	}
+	keepLeft := false
+	defer func() {
+		if !keepLeft {
+			last := len(i.operands) - 1
+			i.operands[last] = runtime.Value{}
+			i.operands = i.operands[:last]
+		}
+	}()
 	switch e.Op.Kind {
 	case token.ADD:
 		if left.Kind == runtime.StringValue && right.Kind == runtime.StringValue {
@@ -157,10 +184,18 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 			}
 			return runtime.Value{Kind: runtime.StringValue, Str: left.Str + right.Str}, nil
 		}
+		if _, _, err := floats(left, right); err != nil {
+			return runtime.Value{}, failure(e.Op.Pos, diag.EParse, err)
+		}
 		return numeric(left, right, func(a, b int64) int64 { return a + b }, func(a, b float64) float64 { return a + b })
 	case token.SUB:
 		return numeric(left, right, func(a, b int64) int64 { return a - b }, func(a, b float64) float64 { return a - b })
 	case token.MUL:
+		if _, _, err := floats(left, right); err != nil {
+			keepLeft = true
+			right.Comparison = false
+			return right, nil
+		}
 		return numeric(left, right, func(a, b int64) int64 { return a * b }, func(a, b float64) float64 { return a * b })
 	case token.QUO:
 		a, b, err := floats(left, right)
@@ -216,13 +251,15 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 		if right.NumericAbsence {
 			return runtime.Value{}, failure(e.Op.Pos, diag.EParse, fmt.Errorf("expected comparison operand"))
 		}
-		value, err := compare(e.Op.Kind, left, right)
+		value, consumed, err := compare(e.Op.Kind, left, right)
+		keepLeft = !consumed
 		value.Comparison = true
 		value.RealFallback = false
 		return value, err
 	case token.E, token.OU, token.XOU:
 		if left.Kind != runtime.BoolValue || right.Kind != runtime.BoolValue {
 			if e.Op.Kind == token.E {
+				keepLeft = true
 				return right, nil
 			}
 			return runtime.Value{}, failure(e.Op.Pos, diag.EParse, fmt.Errorf("expected logico operands"))
@@ -354,43 +391,44 @@ func asFloat(v runtime.Value) (float64, bool) {
 	}
 }
 
-func compare(op token.Kind, left, right runtime.Value) (runtime.Value, error) {
+// compare also reports whether the reduction consumes a retained operand.
+func compare(op token.Kind, left, right runtime.Value) (runtime.Value, bool, error) {
 	if right.Kind == runtime.VoidValue && left.Kind != runtime.VoidValue {
-		return left, nil
+		return left, true, nil
 	}
 	if left.Comparison {
 		if !right.Comparison && right.Kind != runtime.BoolValue {
-			return right, nil
+			return right, false, nil
 		}
 		left = runtime.Value{Kind: runtime.BoolValue, Bool: left.Bool}
 	}
 	if right.Comparison {
 		if left.Kind != runtime.BoolValue {
-			return right, nil
+			return right, false, nil
 		}
 		right = runtime.Value{Kind: runtime.BoolValue, Bool: right.Bool}
 	}
 	if left.Kind == runtime.RecordValue || right.Kind == runtime.RecordValue {
-		return right, nil
+		return right, false, nil
 	}
 	if left.Kind != right.Kind {
 		if _, _, err := floats(left, right); err != nil {
-			return right, nil
+			return right, false, nil
 		}
 	}
 	if op == token.EQL || op == token.NEQ {
 		eq, err := equalValues(left, right)
 		if err != nil {
-			return runtime.Value{}, err
+			return runtime.Value{}, true, err
 		}
 		if op == token.NEQ {
 			eq = !eq
 		}
-		return runtime.Value{Kind: runtime.BoolValue, Bool: eq}, nil
+		return runtime.Value{Kind: runtime.BoolValue, Bool: eq}, true, nil
 	}
 	cmp, err := ordering(left, right)
 	if err != nil {
-		return runtime.Value{}, err
+		return runtime.Value{}, true, err
 	}
 	var ok bool
 	switch op {
@@ -403,7 +441,7 @@ func compare(op token.Kind, left, right runtime.Value) (runtime.Value, error) {
 	case token.GEQ:
 		ok = cmp >= 0
 	}
-	return runtime.Value{Kind: runtime.BoolValue, Bool: ok}, nil
+	return runtime.Value{Kind: runtime.BoolValue, Bool: ok}, true, nil
 }
 
 func equalValues(left, right runtime.Value) (bool, error) {

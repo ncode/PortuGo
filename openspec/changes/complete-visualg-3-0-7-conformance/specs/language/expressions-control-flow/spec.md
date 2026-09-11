@@ -63,6 +63,16 @@ Arithmetic SHALL use the reference operand compatibility, promotion, result type
 ### Requirement: Logical evaluation
 Logical operators SHALL require the oracle-confirmed operand types and SHALL reproduce the reference evaluation order and short-circuit or eager behavior, including operand side effects and failures. Unary logical negation and exclusive-or SHALL return the reference boolean values.
 
+The recorded mixed logical and comparison reductions SHALL preserve intermediate operands that affect enclosing arithmetic, including across numeric builtin and language-function evaluation. `2 + (3 e 7)` SHALL produce `10`, `20 - (3 e 7)` SHALL produce `-4`, and `2 * (3 e 7)` SHALL produce `21`. Ordinary `2 + (3 + 7)` SHALL remain `12`.
+
+#### Scenario: Retain operands through nested reductions
+- **WHEN** the recorded expression `2 + ((3 e 7) + (4 e 9))` is evaluated
+- **THEN** it produces integer `20`, and evaluating the formatted program preserves that result
+
+#### Scenario: Reject incompatible retained addition operands
+- **WHEN** `2 + (3 e ("x" = 7))` is evaluated
+- **THEN** the retained incompatible operand receives positioned `P001`
+
 #### Scenario: Observe right-operand evaluation
 - **WHEN** the right operand of `e` or `ou` has an observable side effect or runtime failure
 - **THEN** whether and when that operand executes matches the committed VisuAlg 3.0.7 probe

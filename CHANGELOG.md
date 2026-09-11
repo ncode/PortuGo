@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Preserve intermediate operands in recorded mixed logical/comparison reductions,
+  including enclosing arithmetic and function calls. Bound retained storage and
+  release it after each outer evaluation or failure.
+
 - Add bare `rand` expressions, recorded statement and assignment-suffix forms,
   deterministic injection, and guarded random fractions in `[0, 1)`.
   Reject missing sources and invalid bounded draws in the legacy random API.

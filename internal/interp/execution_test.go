@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"io"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -12,6 +13,7 @@ import (
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/lexer"
 	"github.com/ncode/portugol-go/internal/parser"
+	"github.com/ncode/portugol-go/internal/runtime"
 	"github.com/ncode/portugol-go/internal/sema"
 	"github.com/ncode/portugol-go/internal/testprocess"
 	"github.com/ncode/portugol-go/internal/token"
@@ -32,6 +34,35 @@ func analyzed(t *testing.T, src string) (*ast.Program, *sema.Info) {
 		t.Fatal(ds)
 	}
 	return p, info
+}
+
+func TestRetainedOperandStorage(t *testing.T) {
+	loop := "para counter de 1 ate " + strconv.Itoa(maxOperands+1) + " faca\nvalue <- 1 e 2\nfimpara\n"
+	plain := "algoritmo \"operand scope\"\nvar counter, value: inteiro\ninicio\n" + loop + "escreval(value)\nfimalgoritmo\n"
+	nested := "algoritmo \"operand limit\"\nfuncao accumulate: inteiro\nvar counter, value: inteiro\ninicio\n" + loop + "retorne value\nfimfuncao\ninicio\nescreval(accumulate)\nfimalgoritmo\n"
+	var out bytes.Buffer
+	i := New(Options{Output: &out})
+	for _, src := range []string{plain, nested, plain} {
+		out.Reset()
+		program, info := analyzed(t, src)
+		ds := i.Run(program, info)
+		if src == nested {
+			at := token.Pos(strings.Index(src, " e ") + 1)
+			if len(ds) != 1 || ds[0].Code != diag.RStorage || ds[0].Pos != at || out.Len() != 0 {
+				t.Fatalf("operand limit: diagnostics=%v output=%q", ds, out.String())
+			}
+		} else if len(ds) != 0 || out.String() != " 2\n" {
+			t.Fatalf("independent expressions: diagnostics=%v output=%q", ds, out.String())
+		}
+		if i.evalFrames != 0 || len(i.operands) != 0 {
+			t.Fatal("retained evaluation state after completion")
+		}
+		for _, value := range i.operands[:cap(i.operands)] {
+			if value != (runtime.Value{}) {
+				t.Fatal("retained operand references after completion")
+			}
+		}
+	}
 }
 
 func TestExecutionDiagnostics(t *testing.T) {

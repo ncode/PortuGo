@@ -12,6 +12,7 @@ import (
 const (
 	maxDepth     = 256
 	maxCalls     = 256
+	maxOperands  = maxDepth * maxCalls
 	maxTextBytes = runtime.MaxTextBytes
 )
 
