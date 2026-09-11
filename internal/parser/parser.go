@@ -360,6 +360,7 @@ func (p *parser) parseIdentStmt() ast.Stmt {
 	at := target.Start()
 	p.expect(token.ASSIGN, "expected '<-' in assignment")
 	value := p.parseExpr(0)
+	p.skipLine()
 	return &ast.AssignStmt{At: at, Target: target, Value: value}
 }
 
@@ -493,7 +494,10 @@ func (p *parser) parseWrite() ast.Stmt {
 				break
 			}
 		}
-		p.expect(token.RPAREN, "expected ')'")
+		if !p.match(token.RPAREN) {
+			p.error(p.peek(), "expected ')'")
+			p.skipLine()
+		}
 	}
 	return stmt
 }

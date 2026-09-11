@@ -216,7 +216,13 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
 ## 8. Expressions, Precedence, Coercion, Comparison, and Choice Matching
 
 - [ ] 8.1 Add failing oracle-table tests for every unary/binary operator, ambiguous precedence and associativity, numeric coercion/result types, eager or short-circuit side effects, boolean/string comparisons, evaluation order, and ordinary `escolha` labels.
-- [ ] 8.2 Rebuild precedence parsing and operator alias recognition from the committed oracle table, including parentheses and all unary forms.
+- [x] 8.2 Rebuild precedence parsing and operator alias recognition from the committed oracle table, including parentheses and all unary forms.
+
+  Logical operators bind more tightly than comparisons; `ou` and `xou` share
+  precedence. The parser accepts one unparenthesized comparison and the printer
+  preserves required grouping. Recorded assignment tails are discarded. Four
+  mixed arithmetic/logical value cases remain pending under 8.3.
+
 - [ ] 8.3 Resolve expression types and implicit coercions in `sema.Info` for every accepted numeric and logical operator combination.
 - [ ] 8.4 Implement overflow-safe integer arithmetic, real division, integer division, modulo, exponentiation, unary operations, and `R002` domain failures exactly as recorded.
 

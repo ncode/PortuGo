@@ -199,17 +199,11 @@ func (k Kind) String() string {
 // BinaryPrecedence returns the binding strength of a binary operator, or -1.
 func (k Kind) BinaryPrecedence() int {
 	switch k {
-	case OU:
-		return 1
-	case XOU:
-		return 2
-	case E:
-		return 3
 	case EQL, NEQ, LSS, GTR, LEQ, GEQ:
 		return 4
-	case ADD, SUB:
+	case ADD, SUB, OU, XOU:
 		return 5
-	case MUL, QUO, IDIV, REM, MOD:
+	case MUL, QUO, IDIV, REM, MOD, E:
 		return 6
 	case POW:
 		return 8

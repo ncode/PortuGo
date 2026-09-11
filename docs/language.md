@@ -15,8 +15,8 @@ verified. The reference accepts vectors larger than 500 elements; the draft
 500-slot compatibility restriction has therefore been withdrawn. The recordings
 do not establish the upper storage limit in every declaration context.
 
-The [bundled example sweep](bundled-examples-progress.md) verifies 30 original
-programs against reference output, including formatting and execution. Seven supplied files have
+The [bundled example sweep](bundled-examples-progress.md) verifies 42 original
+programs against reference output, including formatting and execution. Eight supplied files have
 recorded reference errors. Bundled-file presence alone does not establish that
 its syntax is accepted by this release.
 
@@ -258,6 +258,19 @@ remaining syntax-recovery behavior are still pending.
 
 ## Expressions
 
+Operator precedence, from highest to lowest, is unary `+ -`, left-associative
+`^`, `nao`, `* / \ DIV % MOD e`, `+ - ou xou`, and comparisons. Operators on
+the same level associate left to right. In particular, `ou` and `xou` share a
+precedence level, and logical operators bind more tightly than comparisons.
+`falso = falso e falso` is `verdadeiro`; `falso = falso ou verdadeiro` is `falso`.
+Use `(x >= 0) e (x < 7)` for a compound comparison.
+
+An expression accepts one unparenthesized comparison. `1 < 2 < 3` is rejected
+with `P001` in output; `(1 < 2) < 3` explicitly supplies the left comparison.
+Formatting preserves the parentheses needed for nested comparisons and logical
+operands. Some mixed arithmetic/logical value reductions remain pending in the
+[expression recording report](expression-boundaries-progress.md).
+
 Arithmetic operators are `+`, `-`, `*`, `/`, `\`, `DIV`, `%`, `MOD`, and `^`.
 The case-insensitive word `DIV` is an alias for `\`, with the same precedence,
 operand types, and evaluation order. Formatting emits `\`. The word is reserved:
@@ -368,6 +381,11 @@ Supported statements:
 - `retorne` inside functions
 
 `interrompa` outside a loop is a semantic error.
+
+After a complete assignment expression, a following parenthesized suffix or
+same-line statement is ignored. `x <- 7(1)` stores `7`; in
+`x <- 7 escreval("IGNORED")`, the write does not execute. Put subsequent statements
+on separate lines. Formatting discards these ignored tokens.
 
 `escolha` evaluates its selector once. Numeric selectors are truncated toward
 zero before matching; labels and range bounds retain their numeric values.

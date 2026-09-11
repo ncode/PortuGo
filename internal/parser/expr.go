@@ -22,7 +22,11 @@ func (p *parser) parseExpr(minPrec int) ast.Expr {
 		}
 		p.advance()
 		right := p.parseExpr(prec + 1)
-		left = &ast.BinaryExpr{Op: op, Left: left, Right: right}
+		binary := &ast.BinaryExpr{Op: op, Left: left, Right: right}
+		left = binary
+		if binary.IsComparison() {
+			return left
+		}
 	}
 }
 

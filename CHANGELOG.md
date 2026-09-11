@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Correct logical precedence and single-comparison syntax, preserve grouped
+  comparisons during formatting, and ignore suffixes after assignment expressions.
+
 - Verify eight more bundled examples with fixed input and original/formatted
   execution. Retain the reference's character-table rejection separately from
   implementation support, reducing the unrecorded example backlog to 21.

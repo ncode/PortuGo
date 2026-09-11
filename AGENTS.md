@@ -146,7 +146,7 @@ type spelling.
 - String concat: `+` (when both operands are `caractere`)
 - Assignment: `<-`
 
-Precedence (high → low): unary `+ -`, left-associative `^`, `nao`, `* / \ DIV % MOD`, `+ -`, relational, `e`, `xou`, `ou`. Recorded VisuAlg 3.0.7 probes pin `2^3^2 = 64` and `-2^2 = 4`; parentheses override those rules.
+Precedence (high → low): unary `+ -`, left-associative `^`, `nao`, `* / \ DIV % MOD e`, `+ - ou xou`, relational. An expression has one unparenthesized comparison; group compound conditions as `(a < b) e (c < d)`. Recorded VisuAlg 3.0.7 probes pin `2^3^2 = 64`, `-2^2 = 4`, and `falso = falso e falso` as true; parentheses override precedence.
 
 ### 6.4 Control flow
 

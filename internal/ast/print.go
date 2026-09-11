@@ -295,7 +295,11 @@ func exprString(expr Expr) string {
 		return e.Op.Text + " " + operandString(e.X, e.Op.Kind.UnaryPrecedence())
 	case *BinaryExpr:
 		prec := e.Op.Kind.BinaryPrecedence()
-		return operandString(e.Left, prec) + " " + e.Op.Text + " " + operandString(e.Right, prec+1)
+		leftPrec := prec
+		if e.IsComparison() {
+			leftPrec++
+		}
+		return operandString(e.Left, leftPrec) + " " + e.Op.Text + " " + operandString(e.Right, prec+1)
 	case *CallExpr:
 		args := make([]string, len(e.Args))
 		for i, arg := range e.Args {

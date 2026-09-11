@@ -579,6 +579,9 @@ func (c *checker) binary(e *ast.BinaryExpr) runtime.Type {
 		if left.Kind == runtime.BoolType && right.Kind == runtime.BoolType {
 			return runtime.Type{Kind: runtime.BoolType}
 		}
+		if e.Op.Kind == token.E && isScalar(left) && isScalar(right) {
+			return right
+		}
 		c.error(e.Op.Pos, diag.ETypeMismatch, "logical operator requires logico operands")
 	}
 	return runtime.Type{Kind: runtime.InvalidType}

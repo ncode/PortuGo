@@ -270,7 +270,21 @@
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Operator vocabulary and precedence",
       "probes": [
         "power-associativity",
-        "unary-power"
+        "unary-power",
+        "logical-precedence-relation-and",
+        "logical-precedence-relation-or",
+        "logical-precedence-or-xor",
+        "logical-precedence-relation-chain",
+        "logical-precedence-and-or",
+        "logical-precedence-relation-xor",
+        "logical-binding-add",
+        "logical-binding-add-first",
+        "logical-binding-and-first",
+        "logical-binding-multiply",
+        "logical-binding-multiply-first",
+        "logical-binding-and-before-multiply",
+        "logical-binding-values-add",
+        "logical-binding-values-multiply"
       ]
     },
     {
@@ -771,7 +785,9 @@
         "declaration-semicolon-var-repeated",
         "declaration-semicolon-empty-var",
         "declaration-semicolon-comment",
-        "choice-range-next-line-selected"
+        "choice-range-next-line-selected",
+        "rand-suffix-number-control",
+        "rand-suffix-assignment-line"
       ]
     },
     {
@@ -68067,6 +68083,727 @@
         },
         "tests": [
           "display_commands_test.go#TestRecordedDisplayCommands"
+        ]
+      }
+    },
+    {
+      "id": "logical-precedence-relation-and",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-and/source.alg",
+        "sha256": "2c341aed88b74850867794102ecc58aabb868b175bb92dd021cd0bb1411d015e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:09:38.8224938Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-and/raw.txt",
+          "sha256": "f01fd89b93f56ce6101252de33a82f077fd488885a3bd3c746864fe85837db48"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-and/stdout.txt",
+          "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-and/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "logical-precedence-relation-or",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-or/source.alg",
+        "sha256": "25d4590b60e79ae30057e98ef2e4e88fffb7de876350615005ff403b25d566b5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:09:49.0639340Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-or/raw.txt",
+          "sha256": "7dd3f49225c5a096604d477e01999a5447bf713811c1822f395eca59034f6257"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-or/stdout.txt",
+          "sha256": "e5e4e6cb9963e8f1eecc6eac98006ae48dd5506dcac86f2e6a2a1b54863628e5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-or/stdout.txt",
+            "sha256": "e5e4e6cb9963e8f1eecc6eac98006ae48dd5506dcac86f2e6a2a1b54863628e5"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "logical-precedence-or-xor",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-or-xor/source.alg",
+        "sha256": "bd2a4be333619f9c4fca6dc43801fc08ae475dedede11b96ac5c30b2ce22c73a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:09:59.3298377Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-or-xor/raw.txt",
+          "sha256": "7dd3f49225c5a096604d477e01999a5447bf713811c1822f395eca59034f6257"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-or-xor/stdout.txt",
+          "sha256": "e5e4e6cb9963e8f1eecc6eac98006ae48dd5506dcac86f2e6a2a1b54863628e5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-or-xor/stdout.txt",
+            "sha256": "e5e4e6cb9963e8f1eecc6eac98006ae48dd5506dcac86f2e6a2a1b54863628e5"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "logical-precedence-relation-chain",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-chain/source.alg",
+        "sha256": "991cdfed999469dc31226ce6989f89c246e6b65a362dc7e6e8a90bd5aa0877a7"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-11T09:10:09.5963694Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-chain/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-chain/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-chain/screenshot.png",
+          "sha256": "d5d4e62c8470a5e9f2cd23b8dff9aceaff05d79c2b6ffcfd705fea7d6f46405c"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-chain/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "logical-precedence-and-or",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-and-or/source.alg",
+        "sha256": "3949384d548e186cbd07a691fa171a52601a4cd448a3d3d4b588cd8e0b7510b0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:10:19.8033263Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-and-or/raw.txt",
+          "sha256": "f01fd89b93f56ce6101252de33a82f077fd488885a3bd3c746864fe85837db48"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-and-or/stdout.txt",
+          "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-and-or/stdout.txt",
+            "sha256": "8be565988703132eb12995bffa715a09252b3eafeea2c0ef4ea81d13c3d4d164"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "logical-precedence-relation-xor",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-xor/source.alg",
+        "sha256": "04bf5fb90e4b9b749236a2c5c94c160cd6f14c9297f338bbcc61586b63a9af74"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:10:29.9144538Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-xor/raw.txt",
+          "sha256": "7dd3f49225c5a096604d477e01999a5447bf713811c1822f395eca59034f6257"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-xor/stdout.txt",
+          "sha256": "e5e4e6cb9963e8f1eecc6eac98006ae48dd5506dcac86f2e6a2a1b54863628e5"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/logical-precedence-relation-xor/stdout.txt",
+            "sha256": "e5e4e6cb9963e8f1eecc6eac98006ae48dd5506dcac86f2e6a2a1b54863628e5"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "logical-binding-add",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-add/source.alg",
+        "sha256": "0063d969602372fc85c80441d457507ee0b6ce4f2c7c8f3c69aa6c7a8872c718"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-11T09:14:56.5825527Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-add/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-add/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-add/screenshot.png",
+          "sha256": "11de41be12e7f42212d26bff0d497a8d5a998f8879329fc5361dbfe4dd714e0d"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-add/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "logical-binding-add-first",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-add-first/source.alg",
+        "sha256": "64b12623c4c8048a6f6fe6e92c47f4607f2f32c1643217d504951f6745df8deb"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:15:06.9268032Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-add-first/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-add-first/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-add-first/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "logical-binding-and-first",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-and-first/source.alg",
+        "sha256": "ba3f74e887eb182e41038ca75590da7f12956d1d0b74ba4f893b3f041b81c319"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-11T09:15:17.1982659Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-and-first/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-and-first/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-and-first/screenshot.png",
+          "sha256": "acda81f26ed2da44923b1c78c19a27a88edec7beb5b084c5f7d093fe87ed4230"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-and-first/transcription.txt",
+          "sha256": "18fa9676feaae1e2ae2cf17182b2f2460015c0556d28ec36a42e6fda53e79923"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "logical-binding-multiply",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-multiply/source.alg",
+        "sha256": "ce6b3db62b6e039f4840bf742c357cc6d0a12b0e0550aed2139f2956aefdc3b6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:15:27.3037279Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-multiply/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-multiply/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-multiply/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "logical-binding-multiply-first",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-multiply-first/source.alg",
+        "sha256": "410dc5cfc2c71c589382b5686acdaaa6d2ebb74ef665d9bc9341098587679c45"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:15:37.4738632Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-multiply-first/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-multiply-first/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-multiply-first/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "logical-binding-and-before-multiply",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-and-before-multiply/source.alg",
+        "sha256": "8d93ca4125c56139cfc3953783a3d3d6a4d26c09dc9100422cf8b45ec707c766"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:15:47.5485596Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-and-before-multiply/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-and-before-multiply/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-and-before-multiply/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        }
+      }
+    },
+    {
+      "id": "rand-suffix-number-control",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rand-suffix-number-control/source.alg",
+        "sha256": "ca0ff8c50c20a31e2e18506a4cce9d677c65880cb534d273416ad246aecc395e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:00:23.3917364Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rand-suffix-number-control/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rand-suffix-number-control/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rand-suffix-number-control/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "rand-suffix-assignment-line",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rand-suffix-assignment-line/source.alg",
+        "sha256": "8c3ad272737caf62d9f6119f0020938e835385ccf9ac198635a391d85db03abe"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:01:14.5450845Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rand-suffix-assignment-line/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rand-suffix-assignment-line/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rand-suffix-assignment-line/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
+        ]
+      }
+    },
+    {
+      "id": "logical-binding-values-add",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-values-add/source.alg",
+        "sha256": "3cbe2175838a7eb3fb08047589d424d0841fbddc41412c11716497aa3a67cc5b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:19:02.7226309Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-values-add/raw.txt",
+          "sha256": "dbd5c3d6cf2d2d2d220497b417913291e04d4ac15855a246da09ea99e270684e"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-values-add/stdout.txt",
+          "sha256": "796ef59dc2cef705ed18b799061ed72bcc07ed0ead113525255c5e42355a8d6f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-values-add/stdout.txt",
+            "sha256": "796ef59dc2cef705ed18b799061ed72bcc07ed0ead113525255c5e42355a8d6f"
+          }
+        }
+      }
+    },
+    {
+      "id": "logical-binding-values-multiply",
+      "ownerGroup": 8,
+      "tasks": [
+        "8.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-values-multiply/source.alg",
+        "sha256": "f256f8d5987c10ce32eb3b3ac1387c4cdaf14645df3f4bed539a333e9f5f2557"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T09:19:12.9344325Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-values-multiply/raw.txt",
+          "sha256": "4846a52f9b4b3f0b0309f9cd800e5285bb54f989038b4a068e2067f468060ddf"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-values-multiply/stdout.txt",
+          "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/logical-binding-values-multiply/stdout.txt",
+            "sha256": "388e0371b10ee86f7209bb4613b34377a6bb8383d539a71bb0746980487e8bc6"
+          }
+        },
+        "tests": [
+          "comparisons_test.go#TestRecordedComparisons"
         ]
       }
     }

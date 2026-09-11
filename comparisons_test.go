@@ -41,6 +41,11 @@ func TestRecordedComparisons(t *testing.T) {
 		"comparison-and-assignment", "comparison-and-condition", "comparison-division-value", "comparison-negative-category",
 		"comparison-sign-divided", "comparison-sign-plus-numeric", "comparison-sign-plus-sum",
 		"comparison-division-sign-values",
+		"logical-precedence-relation-and", "logical-precedence-relation-or", "logical-precedence-or-xor",
+		"logical-precedence-and-or", "logical-precedence-relation-xor",
+		"logical-binding-add-first", "logical-binding-multiply", "logical-binding-multiply-first",
+		"rand-suffix-number-control", "rand-suffix-assignment-line",
+		"logical-binding-values-multiply",
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)
@@ -64,6 +69,7 @@ func TestRecordedComparisonRejection(t *testing.T) {
 		line int
 	}{
 		{"comparison-vector-values", diag.EParse, 5},
+		{"logical-precedence-relation-chain", diag.EParse, 3},
 		{"comparison-domain-empty-right", diag.EParse, 3},
 		{"comparison-record-result", diag.RType, 11},
 		{"comparison-record-types", diag.RType, 15},
