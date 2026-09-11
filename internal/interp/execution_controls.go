@@ -24,11 +24,10 @@ func (i *Interpreter) execTimer(s *ast.TimerStmt) error {
 		return nil
 	}
 	n = math.Trunc(n)
-	const maxMilliseconds = math.MaxInt64 / int64(time.Millisecond)
-	if math.IsNaN(n) || math.IsInf(n, 0) || n > float64(maxMilliseconds) {
+	if math.IsNaN(n) || math.IsInf(n, 0) {
 		return failure(s.Value.Start(), diag.RHost, fmt.Errorf("timer duration out of range"))
 	}
-	i.timerDelay = time.Duration(int64(max(0, n))) * time.Millisecond
+	i.timerDelay = time.Duration(int64(max(0, min(10000, n)))) * time.Millisecond
 	return nil
 }
 

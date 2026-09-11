@@ -388,7 +388,8 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
   Numeric timer commands now use typed delays, with per-run reset, expression
   evaluation, ignored nonnumeric values, loop/call ordering and positioned
-  failures. Recorded ordinary local declarations have timing coverage;
+  failures. The ten-second cap includes large real expressions; fractional
+  controls support whole-millisecond truncation. Ordinary local declarations have timing coverage;
   other configuration/declaration combinations remain unqualified.
 
 - [x] 15.4 Implement pause and debug/breakpoint commands through typed `Host.Breakpoint` events with non-blocking default headless behavior.

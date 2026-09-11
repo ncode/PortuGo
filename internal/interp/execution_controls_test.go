@@ -50,6 +50,7 @@ func TestTimerHost(t *testing.T) {
 		{"ignored types", "timer 2\nescreva(\"A\")\ntimer \"off\"\ntimer verdadeiro\nescreva(\"B\")\ntimer 0", []string{"", "A", "A", "A", "AB"}},
 		{"negative", "timer 2\nescreva(\"A\")\ntimer -1\nescreva(\"B\")", []string{"", "A"}},
 		{"fraction", "timer 2\nescreva(\"A\")\ntimer 0.5\nescreva(\"B\")", []string{"", "A"}},
+		{"fraction below one", "timer 2\nescreva(\"A\")\ntimer 0.9\nescreva(\"B\")", []string{"", "A"}},
 		{"conditional", "timer 2\nescreva(\"A\")\nse verdadeiro entao\nescreva(\"B\")\nfimse\nescreva(\"C\")\ntimer 0", []string{"", "A", "A", "AB", "ABC"}},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
@@ -167,7 +168,6 @@ func TestTimerResetAndFailures(t *testing.T) {
 	}{
 		{"host failure", "timer 2\nescreva(\"A\")\nescreva(\"B\")", "escreva(\"A\")", "A", diag.RHost, 2, 2},
 		{"no value", "escreva(\"A\")\ntimer abs()\nescreva(\"B\")", "abs()", "A", diag.EParse, 0, 0},
-		{"overflow", "timer 9223372036855", "9223372036855", "", diag.RHost, 0, 0},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			src := "algoritmo \"failure\"\ninicio\n" + tt.body + "\nfimalgoritmo"
@@ -212,7 +212,10 @@ func TestTimerFractionalBoundaries(t *testing.T) {
 		want    time.Duration
 	}{
 		{"2.9", 2 * time.Millisecond},
-		{"9223372036854.5", 9223372036854 * time.Millisecond},
+		{"30000", 10 * time.Second},
+		{"2147483648", 10 * time.Second},
+		{"9223372036855", 10 * time.Second},
+		{"9223372036854.5", 10 * time.Second},
 	} {
 		p, info := analyzed(t, "algoritmo \"timer boundary\"\ninicio\ntimer "+tt.literal+"\nfimalgoritmo")
 		var out bytes.Buffer

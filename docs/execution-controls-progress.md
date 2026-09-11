@@ -1,8 +1,8 @@
 # Timer and breakpoint recordings
 
-This slice adds 49 synthetic recordings. Twenty-six accepted transcripts and
+This slice adds 58 synthetic recordings. Twenty-six accepted transcripts and
 three positioned failures have exact implementation matches, bringing the
-corpus to 1,450 verified recordings and 106 recorded cases pending verification.
+corpus to 1,450 verified recordings and 115 recorded cases pending verification.
 Sources, program-only panels and thirteen reviewed diagnostic-window crops are
 linked by SHA-256. Diagnostic text is labeled as a manual transcription.
 
@@ -19,11 +19,17 @@ Half-second controls separately qualify calls, local declaration grouping,
 interrupted loops and choice branches. Timer state, argument evaluation,
 host errors, duration guards and frame cleanup have deterministic tests.
 
-Ten new elapsed-time recordings remain pending exact replay because wall-clock
+Nineteen new elapsed-time recordings remain pending exact replay because wall-clock
 values vary. Ten other rejections retain output emitted before a later syntax
 or semantic error; the implementation's earlier diagnostics still differ.
 Those prefixes are preserved, and the cases remain pending. No clock values or
 earlier output are removed to make replay pass.
+
+Additional controls pin the 10,000-millisecond cap, including inputs of 30,000,
+2,147,483,648 and 9,223,372,036,855. Repeated `0.9`-millisecond commands track the
+zero-delay control, supporting whole-millisecond truncation. Integer and
+half-integer controls also show why short wall-clock measurements cannot be
+treated as exact host-call traces: scheduling quantizes their observed delays.
 
 Subprogram timing is qualified for the recorded ordinary local-variable forms.
 Other configuration/declaration combinations, file input, remaining original

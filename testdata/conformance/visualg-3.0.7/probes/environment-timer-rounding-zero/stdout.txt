@@ -1,0 +1,6 @@
+
+Cronômetro iniciado.
+
+Cronômetro terminado. Tempo decorrido: 203 ms.
+ 100
+DONE

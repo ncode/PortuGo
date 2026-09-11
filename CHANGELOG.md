@@ -4,7 +4,8 @@
 
 - Add numeric timer commands, conditional debug breakpoints and pause commands.
   Route delays and pauses through the host, preserve recorded loop and call
-  timing, reset timer state per run and report positioned host failures.
+  timing, clamp delays to ten seconds, reset timer state per run and report
+  positioned host failures.
 
 - Add typed echo settings and chronometer commands with per-run state, injected
   clocks, recorded elapsed-time text, canonical formatting and positioned host

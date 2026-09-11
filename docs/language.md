@@ -559,10 +559,10 @@ milliseconds. Zero, negative values and positive fractions below one millisecond
 disable it. Character and logical values preserve the current delay; an absent
 value receives `P001`. Remaining line syntax is ignored. Bare `timer` and
 undeclared modes such as `timer on`/`timer off` receive `P001`.
-The implementation truncates other positive fractions and rejects durations
-beyond the host's representable range with `R008`; those numeric boundary rules
-are project guards, not exact reference timing claims. Timer state resets to
-zero for each run.
+Positive fractions are truncated to whole milliseconds, and values above
+10,000 milliseconds are clamped to 10,000. The cap also applies to large real
+values outside the 32-bit integer range. Nonfinite values receive `R008` as a
+project guard. Timer state resets to zero for each run.
 
 Delays use `Host.Delay` after ordinary commands. A timer change applies its new
 duration immediately. Chronometer sampling precedes that command's delay.

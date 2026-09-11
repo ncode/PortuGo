@@ -1,0 +1,9 @@
+Início da execução
+
+Cronômetro iniciado.
+
+Cronômetro terminado. Tempo decorrido: 188 ms.
+ 100
+DONE
+
+Fim da execução.

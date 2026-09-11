@@ -1539,7 +1539,16 @@
         "environment-timed-while-break",
         "environment-timed-switch",
         "environment-timed-one-local",
-        "environment-timed-separate-locals"
+        "environment-timed-separate-locals",
+        "environment-timer-upper-bound",
+        "environment-timer-real-delay",
+        "environment-timer-large-delay",
+        "environment-timer-enormous-delay",
+        "environment-timer-fraction-loop",
+        "environment-timer-rounding-zero",
+        "environment-timer-rounding-one",
+        "environment-timer-rounding-one-half",
+        "environment-timer-rounding-two-half"
       ]
     },
     {
@@ -76717,6 +76726,366 @@
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-separate-locals/stdout.txt",
             "sha256": "0cb40cab1ec7dd241f0d573f72be515d128287c942d137346ba9588a2ba661df"
+          }
+        }
+      }
+    },
+    {
+      "id": "environment-timer-upper-bound",
+      "ownerGroup": 15,
+      "tasks": [
+        "15.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-upper-bound/source.alg",
+        "sha256": "fabbe48da521f126141539c39da8142a464da19879c3e11f221df02e6d2f966d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T11:54:50.0210189Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-upper-bound/raw.txt",
+          "sha256": "a6b514906aadf2cb5c8e1e5c6406a99708d69ad99858d6a43058287a2525980d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-upper-bound/stdout.txt",
+          "sha256": "d69954e33fa8d782e7f08cf73b40418d6c1dee1e3446b0f5d4ce930bde47f448"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-upper-bound/stdout.txt",
+            "sha256": "d69954e33fa8d782e7f08cf73b40418d6c1dee1e3446b0f5d4ce930bde47f448"
+          }
+        }
+      }
+    },
+    {
+      "id": "environment-timer-real-delay",
+      "ownerGroup": 15,
+      "tasks": [
+        "15.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-real-delay/source.alg",
+        "sha256": "cc3a1344881ad9da5683ddae3eb617676b1363f4909403475a8ed968f529934c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T11:57:47.5019180Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-real-delay/raw.txt",
+          "sha256": "e0c42afa368617b2c41dd9dcc26cba61fd7366fecf37885b4cc9cbd0ddca5d8c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-real-delay/stdout.txt",
+          "sha256": "e8f8e2189046a49a165a3018575081d60c1c2e5cbbe0d599b724898fa55dfc9f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-real-delay/stdout.txt",
+            "sha256": "e8f8e2189046a49a165a3018575081d60c1c2e5cbbe0d599b724898fa55dfc9f"
+          }
+        }
+      }
+    },
+    {
+      "id": "environment-timer-large-delay",
+      "ownerGroup": 15,
+      "tasks": [
+        "15.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-large-delay/source.alg",
+        "sha256": "4308b2e372a78b208e0a76eed94cc56971b2b9689acb68039ba39216a6f9c8a4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T11:58:08.0267752Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-large-delay/raw.txt",
+          "sha256": "0fa79b324a4d1baa454c7b97d420c52230d5a63309c3f2579ecbe6948c9ee8d7"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-large-delay/stdout.txt",
+          "sha256": "a9a3f387ce55b839d5ee0b4273bd74847be737cfc675708ca9827c3a72f7b5ee"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-large-delay/stdout.txt",
+            "sha256": "a9a3f387ce55b839d5ee0b4273bd74847be737cfc675708ca9827c3a72f7b5ee"
+          }
+        }
+      }
+    },
+    {
+      "id": "environment-timer-enormous-delay",
+      "ownerGroup": 15,
+      "tasks": [
+        "15.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-enormous-delay/source.alg",
+        "sha256": "03e50acd6f5ac303aebc80338eec26451fc649b1b99c03b7edabbb972d302ace"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T11:58:27.1567318Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-enormous-delay/raw.txt",
+          "sha256": "162872a36d5103cd056677b087ba139775df5f7c691e149c866ebc45eb2bf7d1"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-enormous-delay/stdout.txt",
+          "sha256": "e1571c2214af9bbb173551e937b2176f828c3037cfab919ecfc2473f2e1f24fc"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-enormous-delay/stdout.txt",
+            "sha256": "e1571c2214af9bbb173551e937b2176f828c3037cfab919ecfc2473f2e1f24fc"
+          }
+        }
+      }
+    },
+    {
+      "id": "environment-timer-fraction-loop",
+      "ownerGroup": 15,
+      "tasks": [
+        "15.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-fraction-loop/source.alg",
+        "sha256": "10e6fac240f22500687fef1efe6f9ef9bb765ed8fc549d7c0fc980e77a83014e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T12:00:40.4780679Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-fraction-loop/raw.txt",
+          "sha256": "0aa419d9b59b745d8a88613441728c28560d7c879e949f73ffdddddaf376afab"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-fraction-loop/stdout.txt",
+          "sha256": "40300a95d6a4af292ae8e63ed20c67d80b4f399139df752d24648e20de7ee9ca"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-fraction-loop/stdout.txt",
+            "sha256": "40300a95d6a4af292ae8e63ed20c67d80b4f399139df752d24648e20de7ee9ca"
+          }
+        }
+      }
+    },
+    {
+      "id": "environment-timer-rounding-zero",
+      "ownerGroup": 15,
+      "tasks": [
+        "15.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-zero/source.alg",
+        "sha256": "d2a90ca6e707f7104d008f7b5ffbcbdf0373c0c4bea57970bfd864923658539a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T12:02:39.3343681Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-zero/raw.txt",
+          "sha256": "3271211c8afe01c4822ea9c28a80d7b6d3d7a0f460870fce1ab544f326c4905f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-zero/stdout.txt",
+          "sha256": "f4eef1076f5260a0d2137eb8734610e37a6ca67cf5f4fbd4f18dd470fad9de1d"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-zero/stdout.txt",
+            "sha256": "f4eef1076f5260a0d2137eb8734610e37a6ca67cf5f4fbd4f18dd470fad9de1d"
+          }
+        }
+      }
+    },
+    {
+      "id": "environment-timer-rounding-one",
+      "ownerGroup": 15,
+      "tasks": [
+        "15.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one/source.alg",
+        "sha256": "0e610b6ba313f18bd2684d2576bd12874bcfb4d42b7a2960a1db5cda79a63f65"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T12:02:49.5136313Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one/raw.txt",
+          "sha256": "c6bf3540f9aaefed8bcc689a417c698b35e51c56752f74189e141ced5c139000"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one/stdout.txt",
+          "sha256": "e67c97557a29ee4df5abda96d133901787f4efa447ba8387a989989ada73f348"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one/stdout.txt",
+            "sha256": "e67c97557a29ee4df5abda96d133901787f4efa447ba8387a989989ada73f348"
+          }
+        }
+      }
+    },
+    {
+      "id": "environment-timer-rounding-one-half",
+      "ownerGroup": 15,
+      "tasks": [
+        "15.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one-half/source.alg",
+        "sha256": "4858935d25f4855af9fa17b935777fcc17fdd5840b034468a0afe1100928eb17"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T12:02:59.6497380Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one-half/raw.txt",
+          "sha256": "79f2bbede7afec8df04b6b354a655c92283bba5dd30b03dc2f78616fed88b9b7"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one-half/stdout.txt",
+          "sha256": "cb826d26c1a24448bc4a96dbeae014c8612dd957e0b23b6eff7cb7511599fefa"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one-half/stdout.txt",
+            "sha256": "cb826d26c1a24448bc4a96dbeae014c8612dd957e0b23b6eff7cb7511599fefa"
+          }
+        }
+      }
+    },
+    {
+      "id": "environment-timer-rounding-two-half",
+      "ownerGroup": 15,
+      "tasks": [
+        "15.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-two-half/source.alg",
+        "sha256": "71d6e03925078a5cc35d21cad5144824d5857a7aaf20aef374c3271d26de5ba7"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T12:03:09.9340247Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-two-half/raw.txt",
+          "sha256": "eeea29b7b6945218fcdb61a687c6e98f33202da78873d0dc8d1962bfa8512054"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-two-half/stdout.txt",
+          "sha256": "f56a265fb3201b1d02f0da7bcb9c6be36f1b101a6b7f7f2160b7475f48c38616"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-two-half/stdout.txt",
+            "sha256": "f56a265fb3201b1d02f0da7bcb9c6be36f1b101a6b7f7f2160b7475f48c38616"
           }
         }
       }
