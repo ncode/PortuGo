@@ -357,6 +357,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 15.6 Implement chronometer start/query/reset/stop semantics through `Host.Now`, including deterministic elapsed calculations and clock-edge cases.
 - [x] 15.7 Implement clear-screen and color/display operations through `Host.ClearScreen` and `Host.SetDisplay`, preserving call order and making UI-only default-headless effects no-ops.
 - [ ] 15.8 Implement every other oracle-confirmed host command with a typed operation and regression evidence; do not add generic string-based host dispatch.
+
+  Console configuration now uses `Host.UseConsole`, with 16 recorded probes
+  covering accepted headers and ignored tails, misplaced directives, local
+  configuration, and no-value expressions. Host ordering, failures, and canonical
+  formatting have regression coverage. Other environment commands remain pending.
+
 - [ ] 15.9 Return positioned `R008` for host failures and validate that headless execution emits no accidental terminal escapes, blocks, or platform-specific errors.
 - [ ] 15.10 Add fake clock/host tables, CLI headless fixtures, canonical-print coverage, and an example demonstrating portable environment-command behavior.
 - [ ] 15.11 Update `docs/language.md` and `CHANGELOG.md` with all environment commands, host effects, headless deviations, timing units, and failures.

@@ -98,7 +98,7 @@ func (i *Interpreter) callProcedure(call *ast.CallExpr) (err error) {
 	if !ok {
 		return fmt.Errorf("%q is not a procedure", call.Name.Text)
 	}
-	_, err = i.callSub(proc.Params, proc.Consts, proc.Locals, proc.Body, runtime.Type{Kind: runtime.VoidType}, call.Args)
+	_, err = i.callSub(proc.Params, proc.Console, proc.Consts, proc.Locals, proc.Body, runtime.Type{Kind: runtime.VoidType}, call.Args)
 	return err
 }
 
@@ -107,10 +107,10 @@ func (i *Interpreter) callUserFunction(fn *ast.FunctionDecl, args []ast.Expr) (r
 	if !ok {
 		return runtime.Value{}, failure(fn.Start(), diag.RType, fmt.Errorf("missing return type"))
 	}
-	return i.callSub(fn.Params, fn.Consts, fn.Locals, fn.Body, b.Type, args)
+	return i.callSub(fn.Params, fn.Console, fn.Consts, fn.Locals, fn.Body, b.Type, args)
 }
 
-func (i *Interpreter) callSub(params []ast.Param, consts []ast.ConstDecl, locals []ast.VarDecl, body []ast.Stmt, retType runtime.Type, args []ast.Expr) (runtime.Value, error) {
+func (i *Interpreter) callSub(params []ast.Param, console []ast.ConsoleStmt, consts []ast.ConstDecl, locals []ast.VarDecl, body []ast.Stmt, retType runtime.Type, args []ast.Expr) (runtime.Value, error) {
 	if i.calls == maxCalls {
 		return runtime.Value{}, fmt.Errorf("active call limit exceeded")
 	}
@@ -177,6 +177,9 @@ func (i *Interpreter) callSub(params []ast.Param, consts []ast.ConstDecl, locals
 	i.depth = 0
 	i.calls++
 	defer func() { i.env = outer; i.depth = depth; i.result = outerResult; i.calls-- }()
+	if err := i.configureConsole(console); err != nil {
+		return runtime.Value{}, err
+	}
 	if err := i.defineConsts(consts); err != nil {
 		return runtime.Value{}, err
 	}

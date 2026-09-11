@@ -41,6 +41,7 @@ func (p *parser) parseProgram() *ast.Program {
 		return prog
 	}
 	prog.Name = p.advance().Text
+	prog.Console = p.parseConsole()
 	prog.Consts = p.parseConstBlock()
 	prog.Types = p.parseTypeBlock()
 	if len(p.diags) != 0 {
@@ -62,6 +63,15 @@ func (p *parser) parseProgram() *ast.Program {
 	prog.Body = p.parseStmtList(stopSet(token.FIMALGORITMO))
 	p.expect(token.FIMALGORITMO, "expected fimalgoritmo")
 	return prog
+}
+
+func (p *parser) parseConsole() []ast.ConsoleStmt {
+	var settings []ast.ConsoleStmt
+	for p.peek().Kind == token.DOS {
+		settings = append(settings, ast.ConsoleStmt{At: p.advance().Pos})
+		p.skipLine()
+	}
+	return settings
 }
 
 func (p *parser) parseConstBlock() []ast.ConstDecl {
@@ -198,6 +208,7 @@ func (p *parser) parseProcedure() *ast.ProcedureDecl {
 	name := p.expect(token.IDENT, "expected procedure name")
 	params := p.parseParamList()
 	decl := &ast.ProcedureDecl{At: start.Pos, Name: name, Params: params}
+	decl.Console = p.parseConsole()
 	decl.Consts = p.parseConstBlock()
 	decl.Types = p.parseTypeBlock()
 	if len(p.diags) != 0 {
@@ -219,6 +230,7 @@ func (p *parser) parseFunction() *ast.FunctionDecl {
 	p.expect(token.COLON, "expected ':' before function return type")
 	ret := p.parseCallableType()
 	decl := &ast.FunctionDecl{At: start.Pos, Name: name, Params: params, Return: ret}
+	decl.Console = p.parseConsole()
 	decl.Consts = p.parseConstBlock()
 	decl.Types = p.parseTypeBlock()
 	if len(p.diags) != 0 {
@@ -294,6 +306,10 @@ func (p *parser) parseStmt() ast.Stmt {
 	}
 	defer func() { p.depth-- }()
 	switch p.peek().Kind {
+	case token.DOS:
+		stmt := &ast.ConsoleStmt{At: p.advance().Pos}
+		p.skipLine()
+		return stmt
 	case token.IDENT:
 		return p.parseIdentStmt()
 	case token.SE:

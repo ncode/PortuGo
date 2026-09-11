@@ -94,7 +94,13 @@ func (s *scanner) scanIdent(start int) {
 		s.advance()
 	}
 	text := s.src[start:s.offset]
-	s.emit(token.Lookup(text), text, token.Pos(start))
+	kind := token.Lookup(text)
+	leading := len(s.tokens) == 0 || s.tokens[len(s.tokens)-1].Kind == token.NEWLINE
+	s.emit(kind, text, token.Pos(start))
+	if kind == token.DOS && leading {
+		// Configuration directives ignore the rest of their physical line.
+		s.skipLine()
+	}
 }
 
 func (s *scanner) scanNumber(start int) {

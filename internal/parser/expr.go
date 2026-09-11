@@ -59,7 +59,7 @@ func (p *parser) parsePrimary() ast.Expr {
 			return p.parseCall()
 		}
 		return p.parseDesignator()
-	case token.LIMPATELA, token.MUDACOR:
+	case token.LIMPATELA, token.MUDACOR, token.DOS:
 		if p.peekN(1).Kind == token.LPAREN {
 			p.parseCall() // The reference consumes this syntax without evaluating it.
 		} else {

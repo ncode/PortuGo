@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add `dos` console configuration with ignored line tails, repeated directives,
+  subprogram configuration, typed host calls, headless output, and positioned
+  failures that preserve preceding output. Preserve directives through formatting.
+
 - Match logical ordering and Windows-1252 character ordering. Preserve mixed
   comparisons' concrete values and logical assignment/condition category,
   including changed logical storage, reference parameters, positioned consumer

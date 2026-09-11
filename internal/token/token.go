@@ -40,6 +40,7 @@ const (
 	DOTDOT
 
 	ALGORITMO
+	DOS
 	CONST
 	TIPO
 	REGISTRO
@@ -99,6 +100,7 @@ type Token struct {
 
 var keywords = map[string]Kind{
 	"algoritmo":       ALGORITMO,
+	"dos":             DOS,
 	"const":           CONST,
 	"tipo":            TIPO,
 	"registro":        REGISTRO,
@@ -173,7 +175,7 @@ var kindNames = map[Kind]string{
 	FIMENQUANTO: "fimenquanto", REPITA: "repita", ATE: "ate", PARA: "para", PASSO: "passo",
 	FIMPARA: "fimpara", INTERROMPA: "interrompa", LEIA: "leia", ESCREVA: "escreva",
 	ESCREVAL: "escreval", VERDADEIRO: "verdadeiro", FALSO: "falso", E: "e", OU: "ou",
-	LIMPATELA: "limpatela", MUDACOR: "mudacor",
+	LIMPATELA: "limpatela", MUDACOR: "mudacor", DOS: "dos",
 	NAO: "nao", XOU: "xou", MOD: "mod",
 	NEWLINE: "NEWLINE",
 }

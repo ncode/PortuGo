@@ -88,6 +88,9 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) []diag.Diagnostic 
 	i.env = newEnv(nil)
 	i.global = i.env
 	i.subs = make(map[token.Pos]ast.Subprogram)
+	if err := i.configureConsole(prog.Console); err != nil {
+		return diagnostics(err, pos, diag.RHost)
+	}
 	if err := i.defineConsts(prog.Consts); err != nil {
 		return diagnostics(err, pos, diag.RType)
 	}

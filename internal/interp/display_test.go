@@ -31,6 +31,59 @@ func (h *displayHost) SetDisplay(state DisplayState) error {
 	return h.err
 }
 
+func (h *displayHost) UseConsole() error {
+	h.events = append(h.events, "console:"+h.out.String())
+	return h.err
+}
+
+func TestConsoleConfiguration(t *testing.T) {
+	src := "algoritmo \"console\"\ndos\ndos\ninicio\nescreval(\"BODY\")\nfimalgoritmo"
+	p, info := analyzed(t, src)
+	var out bytes.Buffer
+	h := &displayHost{out: &out}
+	i := New(Options{Output: &out, Host: h})
+	for range 2 {
+		out.Reset()
+		h.events = nil
+		if ds := i.Run(p, info); len(ds) != 0 || out.String() != "BODY\n" || !reflect.DeepEqual(h.events, []string{"console:", "console:"}) {
+			t.Fatalf("configuration: %v, events %q, output %q", ds, h.events, &out)
+		}
+	}
+	out.Reset()
+	h.events = nil
+	h.err = errors.New("private host details")
+	ds := i.Run(p, info)
+	if len(ds) != 1 || ds[0].Code != diag.RHost || ds[0].Pos != token.Pos(strings.Index(src, "dos")) || !errors.Is(ds[0], h.err) || strings.Contains(ds[0].Error(), h.err.Error()) || out.Len() != 0 || len(h.events) != 1 {
+		t.Fatalf("configuration failure: %v, events %q, output %q", ds, h.events, &out)
+	}
+}
+
+func TestLocalConsoleConfiguration(t *testing.T) {
+	p, info := analyzed(t, `algoritmo "local console"
+procedimento p
+dos
+inicio
+escreval("P")
+fimprocedimento
+funcao f: inteiro
+dos
+inicio
+retorne 7
+fimfuncao
+inicio
+escreval("BEFORE")
+p
+p
+escreval(f)
+fimalgoritmo`)
+	var out bytes.Buffer
+	h := &displayHost{out: &out}
+	want := []string{"console:BEFORE\n", "console:BEFORE\nP\n", "console:BEFORE\nP\nP\n"}
+	if ds := New(Options{Output: &out, Host: h}).Run(p, info); len(ds) != 0 || !reflect.DeepEqual(h.events, want) || out.String() != "BEFORE\nP\nP\n 7\n" {
+		t.Fatalf("local configuration: %v, events %q, output %q", ds, h.events, &out)
+	}
+}
+
 func TestDisplayHostOrder(t *testing.T) {
 	src := `algoritmo "display"
 funcao mark(s: caractere): caractere
@@ -88,6 +141,7 @@ func TestDisplayKeywordsHaveNoValue(t *testing.T) {
 inicio
 escreval("discarded",limpatela)
 escreval(mudacor("amarelo","frente"))
+escreval(dos)
 escreval("DONE")
 fimalgoritmo`)
 	var out bytes.Buffer

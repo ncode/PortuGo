@@ -582,6 +582,21 @@ limit and then left padding. These rules describe the recorded output profile.
 
 ## Display commands
 
+`dos` requests console display in the configuration section, immediately after
+the program or subprogram header and before declarations. Repeated directives
+are accepted. The remainder of its physical line is ignored, including `on`,
+`off`, apparent code, and an unmatched quote; these are not evaluated options.
+Canonical formatting emits bare `dos` lines. A directive after `var` produces
+`P001`. In an executable body, it produces `P001` when reached and preserves
+preceding output. In an expression, `dos` produces no value and has no host effect.
+
+Each configuration directive calls `Host.UseConsole`, before global declarations
+or before local declarations on each subprogram call. The default headless host
+keeps the supplied output writer and performs no UI action. Injected failures
+produce `R008` at the directive, retain the underlying error without rendering
+its details, and stop execution. The [console recording report](console-directives-progress.md)
+distinguishes recorded behavior from the injected host contract.
+
 `limpatela` requests one screen clear. It preserves the program's captured text
 output. `mudacor(color, target)` selects a foreground (`"frente"`) or background
 (`"fundos"`, plural) color from character expressions, evaluated left to right.
@@ -904,7 +919,8 @@ successful result for the same unchanged AST and returns positioned diagnostics.
 Nil input/output mean empty input and discarded output; the working directory
 resolves at construction. Hosts and randomness can be injected. The default
 headless host uses real time and silent, nonblocking UI operations. Display
-commands expose typed foreground/background color changes and screen clears;
+commands expose typed console configuration, foreground/background color changes,
+and screen clears;
 other language host commands remain pending reference qualification.
 
 ## Out Of Scope

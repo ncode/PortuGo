@@ -48,6 +48,25 @@ func TestScanGolden(t *testing.T) {
 	}
 }
 
+func TestConsoleLineTail(t *testing.T) {
+	file, tokens, ds := Scan("console.alg", "  DoS \"unterminated\r\nescreval(dos)\n")
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	want := []token.Kind{token.DOS, token.NEWLINE, token.ESCREVAL, token.LPAREN, token.DOS, token.RPAREN, token.NEWLINE, token.EOF}
+	if len(tokens) != len(want) {
+		t.Fatalf("tokens = %v, want %v", tokens, want)
+	}
+	for n, kind := range want {
+		if tokens[n].Kind != kind {
+			t.Fatalf("token %d = %v, want %v", n, tokens[n], kind)
+		}
+	}
+	if tokens[0].Pos != 2 || tokens[0].Text != "DoS" || file.Position(tokens[2].Pos).Line != 2 || tokens[4].Kind.String() != "dos" {
+		t.Fatalf("directive lost spelling or positions: %v", tokens)
+	}
+}
+
 func TestExponentTokenBoundaries(t *testing.T) {
 	for _, tt := range []struct{ source, want string }{
 		{"1e-2", "NUMBER 1e @0\n- - @2\nNUMBER 2 @3"},

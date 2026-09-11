@@ -48,6 +48,7 @@ type DisplayState struct {
 
 // Host implements the interpreter's typed environment operations.
 type Host interface {
+	UseConsole() error
 	Delay(time.Duration) error
 	Breakpoint(Breakpoint) error
 	ClearScreen() error
@@ -57,6 +58,9 @@ type Host interface {
 
 // HeadlessHost uses real time and nonblocking, silent UI operations.
 type HeadlessHost struct{}
+
+// UseConsole is a no-op because headless output already uses the supplied writer.
+func (HeadlessHost) UseConsole() error { return nil }
 
 // Delay waits for duration.
 func (HeadlessHost) Delay(duration time.Duration) error { time.Sleep(duration); return nil }

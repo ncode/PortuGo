@@ -159,6 +159,10 @@ func (h *recordingHost) ClearScreen() error {
 	h.events = append(h.events, hostEvent{Operation: "clearScreen"})
 	return nil
 }
+func (h *recordingHost) UseConsole() error {
+	h.events = append(h.events, hostEvent{Operation: "console"})
+	return nil
+}
 func (h *recordingHost) SetDisplay(s interp.DisplayState) error {
 	h.events = append(h.events, hostEvent{Operation: "display", Display: &s})
 	return nil

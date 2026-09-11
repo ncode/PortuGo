@@ -279,6 +279,9 @@ func (c *checker) checkStmts(stmts []ast.Stmt) {
 
 func (c *checker) checkStmt(stmt ast.Stmt) {
 	switch s := stmt.(type) {
+	case *ast.ConsoleStmt:
+		// A directive reached in an executable body fails at runtime.
+		return
 	case *ast.AssignStmt:
 		if sym, ok := c.assignmentProcedure(s.Target); ok {
 			c.error(sym.pos, diag.ECall, "%q is a procedure in statement context", sym.name)

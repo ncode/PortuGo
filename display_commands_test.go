@@ -28,6 +28,9 @@ func TestRecordedDisplayCommands(t *testing.T) {
 		"display-context-background-spaces", "display-context-unknown-color-after-yellow",
 		"display-context-unknown-color-background", "display-context-clear-value-effects",
 		"display-context-color-bare-value", "display-context-color-value-unknown", "display-context-clear-value-unknown",
+		"console-control", "console-header", "console-repeated", "console-switch",
+		"console-off", "console-unknown", "console-number", "console-text", "console-tail", "console-unclosed",
+		"console-case", "console-expression", "console-local",
 	}
 	for n := range 19 {
 		ids = append(ids, fmt.Sprintf("display-palette-%d", n))
@@ -70,6 +73,9 @@ func TestDisplayCommandDiagnostics(t *testing.T) {
 		{"display-context-color-second-next-line", diag.EParse, 3, ""},
 		{"display-context-color-missing-target", diag.ETypeMismatch, 3, ""},
 		{"display-context-color-unknown-invalid", diag.ETypeMismatch, 3, ""},
+		{"console-after-var", diag.EParse, 3, ""},
+		{"console-body", diag.EParse, 3, ""},
+		{"console-body-prefix", diag.EParse, 4, "BEFORE\n"},
 	} {
 		t.Run(tt.id, func(t *testing.T) {
 			src, err := source.ReadFile(filepath.Join("testdata/conformance/visualg-3.0.7/probes", tt.id, "source.alg"))
