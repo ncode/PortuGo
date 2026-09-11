@@ -279,8 +279,19 @@ func (c *checker) checkStmts(stmts []ast.Stmt) {
 
 func (c *checker) checkStmt(stmt ast.Stmt) {
 	switch s := stmt.(type) {
-	case *ast.EchoStmt, *ast.ChronometerStmt:
+	case *ast.EchoStmt, *ast.ChronometerStmt, *ast.PauseStmt:
 		return
+	case *ast.TimerStmt:
+		before := len(c.diags)
+		c.expr(s.Value)
+		if len(c.diags) > before {
+			if c.diags[before].Code == diag.EUndeclared {
+				c.diags[before].Code = diag.EParse
+			}
+			c.diags = c.diags[:before+1]
+		}
+	case *ast.DebugStmt:
+		c.requireBool(s.Cond)
 	case *ast.RandomInputStmt:
 		for _, arg := range s.Args {
 			before := len(c.diags)

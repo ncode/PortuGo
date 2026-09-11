@@ -320,6 +320,28 @@ func (p *parser) parseStmt() ast.Stmt {
 		return p.parseEcho()
 	case token.CRONOMETRO:
 		return p.parseChronometer()
+	case token.TIMER:
+		s := &ast.TimerStmt{At: p.advance().Pos}
+		if p.atLineEnd() {
+			p.error(token.Token{Pos: s.At}, "expected timer value")
+			return s
+		}
+		s.Value = p.parseExpr(0)
+		p.skipLine()
+		return s
+	case token.PAUSA:
+		s := &ast.PauseStmt{At: p.advance().Pos}
+		p.skipLine()
+		return s
+	case token.DEBUG:
+		s := &ast.DebugStmt{At: p.advance().Pos}
+		if p.atLineEnd() {
+			p.error(token.Token{Pos: s.At}, "expected debug condition")
+			return s
+		}
+		s.Cond = p.parseExpr(0)
+		p.skipLine()
+		return s
 	case token.IDENT:
 		return p.parseIdentStmt()
 	case token.SE:

@@ -554,6 +554,35 @@ positioned `R008`; underlying error details are not rendered. See
 [the environment recordings](environment-controls-progress.md) for evidence
 and the distinction between elapsed-time samples and deterministic replay.
 
+`timer expression` evaluates one expression and selects a delay in whole
+milliseconds. Zero, negative values and positive fractions below one millisecond
+disable it. Character and logical values preserve the current delay; an absent
+value receives `P001`. Remaining line syntax is ignored. Bare `timer` and
+undeclared modes such as `timer on`/`timer off` receive `P001`.
+The implementation truncates other positive fractions and rejects durations
+beyond the host's representable range with `R008`; those numeric boundary rules
+are project guards, not exact reference timing claims. Timer state resets to
+zero for each run.
+
+Delays use `Host.Delay` after ordinary commands. A timer change applies its new
+duration immediately. Chronometer sampling precedes that command's delay.
+Conditional headers delay before their selected body; loop conditions and
+iterations retain their own delays. An interrupted loop skips its closing
+condition. Recorded subprogram entry adds two intervals; a nonempty local
+variable section adds one interval plus one per declaration line, regardless
+of how many names that line declares. Declaration formatting can therefore
+change elapsed time; wall-clock output is not an exact canonical-replay promise.
+Unrecorded configuration and declaration combinations remain unqualified.
+
+`pausa` requests one `Host.Breakpoint` at its source position; apparent call
+syntax and other tails are ignored. `debug logical-expression` requests one
+breakpoint only when true and ignores trailing syntax. Missing conditions
+receive `P001`, while nonlogical conditions receive `E001`. The default headless
+host continues immediately; it does not wait for a keypress. Expression forms
+`timer()`, `debug()` and `pausa()` produce no value or host action. Host delay or
+breakpoint failures report positioned `R008`, preserve preceding output and
+hide underlying operational details. See [execution controls](execution-controls-progress.md).
+
 Numeric input ignores leading ASCII spaces and accepts a sign and decimal
 exponent. Malformed text retains the unsigned mantissa before decimal and
 exponent scaling: `1.5x`, `-1.5x`, and `1.5 ` each produce `15`. Empty input
@@ -1021,7 +1050,7 @@ resolves at construction. Hosts and randomness can be injected. The default
 headless host uses real time and silent, nonblocking UI operations. Display
 commands expose typed console configuration, foreground/background color changes,
 screen clears and echo settings. Chronometer commands use the host clock;
-other language host commands remain pending reference qualification.
+timer and breakpoint commands use typed delay and pause requests.
 
 ## Out Of Scope
 

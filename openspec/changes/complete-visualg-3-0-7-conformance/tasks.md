@@ -384,8 +384,14 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 - [ ] 15.1 Add failing parser/sema/runtime fixtures and fake-host call traces for timer/delay, pause, debug/breakpoint, echo, chronometer, clear-screen, color/display, invalid arguments, host failures, clock regressions, and every additional command discovered by the oracle inventory.
 - [ ] 15.2 Add typed environment statement nodes, tokens, parser productions, printer output, and semantic validation for all recorded environment commands not completed in earlier groups.
-- [ ] 15.3 Implement timer/delay units, argument evaluation, ordering, and failure behavior through `Host.Delay` without direct sleeps in interpreter logic.
-- [ ] 15.4 Implement pause and debug/breakpoint commands through typed `Host.Breakpoint` events with non-blocking default headless behavior.
+- [x] 15.3 Implement timer/delay units, argument evaluation, ordering, and failure behavior through `Host.Delay` without direct sleeps in interpreter logic.
+
+  Numeric timer commands now use typed delays, with per-run reset, expression
+  evaluation, ignored nonnumeric values, loop/call ordering and positioned
+  failures. Recorded ordinary local declarations have timing coverage;
+  other configuration/declaration combinations remain unqualified.
+
+- [x] 15.4 Implement pause and debug/breakpoint commands through typed `Host.Breakpoint` events with non-blocking default headless behavior.
 - [ ] 15.5 Complete echo commands and state transitions not owned by `arquivo` or random-input groups, including oracle-confirmed output text.
 
   Typed on/off requests preserve recorded console and random-input transcripts.

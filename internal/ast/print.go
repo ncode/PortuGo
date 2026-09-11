@@ -146,6 +146,12 @@ func (p *printer) printStmt(stmt Stmt) {
 		} else {
 			p.line("cronometro on")
 		}
+	case *TimerStmt:
+		p.line("timer %s", exprString(s.Value))
+	case *PauseStmt:
+		p.line("pausa")
+	case *DebugStmt:
+		p.line("debug %s", exprString(s.Cond))
 	case *RandomInputStmt:
 		if s.Off {
 			p.line("aleatorio off")

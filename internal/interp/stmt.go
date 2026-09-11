@@ -24,7 +24,28 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		return ctrl, err
 	}
 	defer func() { err = failure(stmt.Start(), diag.RType, err) }()
+	// Control-flow headers delay before their bodies. Other commands delay
+	// after their effects, including a timer change's newly selected duration.
+	switch stmt.(type) {
+	case *ast.IfStmt, *ast.SwitchStmt, *ast.WhileStmt, *ast.RepeatStmt, *ast.ForStmt:
+	default:
+		defer func() {
+			if err == nil {
+				err = i.delay(stmt.Start())
+			}
+		}()
+	}
 	switch s := stmt.(type) {
+	case *ast.TimerStmt:
+		return control{}, i.execTimer(s)
+	case *ast.PauseStmt:
+		return control{}, i.breakpoint(s.At)
+	case *ast.DebugStmt:
+		condition, err := i.evalBool(s.Cond)
+		if err != nil || !condition {
+			return control{}, err
+		}
+		return control{}, i.breakpoint(s.At)
 	case *ast.EchoStmt:
 		return control{}, i.execEcho(s)
 	case *ast.ChronometerStmt:
@@ -48,6 +69,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		if err != nil {
 			return control{}, err
 		}
+		if err := i.delay(s.At); err != nil {
+			return control{}, err
+		}
 		if cond {
 			return i.execStmts(s.Then)
 		}
@@ -55,6 +79,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 	case *ast.SwitchStmt:
 		x, err := i.eval(s.X)
 		if err != nil {
+			return control{}, err
+		}
+		if err := i.delay(s.At); err != nil {
 			return control{}, err
 		}
 		if x.Kind == runtime.RealValue {
@@ -84,6 +111,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 			if err != nil {
 				return control{}, err
 			}
+			if err := i.delay(s.At); err != nil {
+				return control{}, err
+			}
 			if !cond {
 				return control{}, nil
 			}
@@ -96,6 +126,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 			}
 		}
 	case *ast.RepeatStmt:
+		if err := i.delay(s.At); err != nil {
+			return control{}, err
+		}
 		for {
 			if err := i.charge(s.Start()); err != nil {
 				return control{}, err
@@ -109,6 +142,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 			}
 			cond, err := i.evalBool(s.Cond)
 			if err != nil {
+				return control{}, err
+			}
+			if err := i.delay(s.At); err != nil {
 				return control{}, err
 			}
 			if cond {
@@ -181,17 +217,23 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 		if err := assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: cur}); err != nil {
 			return control{}, err
 		}
+		if err := i.delay(s.At); err != nil {
+			return control{}, err
+		}
 		ctrl, err := i.execStmts(s.Body)
 		if err != nil {
 			return control{}, err
 		}
 		if ctrl.kind == breakControl {
 			final = min(cell.Value.Int, to)
-			break
+			return control{}, assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final})
 		}
 		// VisuAlg caps the exposed exit value at the terminal bound, even
 		// for descending loops. Body assignments do not change progression.
 		final = min(cur+step, to)
 	}
-	return control{}, assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final})
+	if err := assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final}); err != nil {
+		return control{}, err
+	}
+	return control{}, i.delay(s.At)
 }

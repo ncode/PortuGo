@@ -8,6 +8,7 @@ import (
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/portugol-go/internal/token"
 )
 
 func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err error) {
@@ -74,7 +75,7 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 	if !ok {
 		return runtime.Value{}, fmt.Errorf("%q is not a function", call.Name.Text)
 	}
-	return i.callUserFunction(fn, call.Args)
+	return i.callUserFunction(fn, call.Args, call.Start())
 }
 
 func (i *Interpreter) callProcedure(call *ast.CallExpr) (err error) {
@@ -98,19 +99,19 @@ func (i *Interpreter) callProcedure(call *ast.CallExpr) (err error) {
 	if !ok {
 		return fmt.Errorf("%q is not a procedure", call.Name.Text)
 	}
-	_, err = i.callSub(proc.Params, proc.Console, proc.Consts, proc.Locals, proc.Body, runtime.Type{Kind: runtime.VoidType}, call.Args)
+	_, err = i.callSub(call.Start(), proc.Params, proc.Console, proc.Consts, proc.Locals, proc.Body, runtime.Type{Kind: runtime.VoidType}, call.Args)
 	return err
 }
 
-func (i *Interpreter) callUserFunction(fn *ast.FunctionDecl, args []ast.Expr) (runtime.Value, error) {
+func (i *Interpreter) callUserFunction(fn *ast.FunctionDecl, args []ast.Expr, at token.Pos) (runtime.Value, error) {
 	b, ok := i.info.Binding(fn.Name)
 	if !ok {
 		return runtime.Value{}, failure(fn.Start(), diag.RType, fmt.Errorf("missing return type"))
 	}
-	return i.callSub(fn.Params, fn.Console, fn.Consts, fn.Locals, fn.Body, b.Type, args)
+	return i.callSub(at, fn.Params, fn.Console, fn.Consts, fn.Locals, fn.Body, b.Type, args)
 }
 
-func (i *Interpreter) callSub(params []ast.Param, console []ast.ConsoleStmt, consts []ast.ConstDecl, locals []ast.VarDecl, body []ast.Stmt, retType runtime.Type, args []ast.Expr) (runtime.Value, error) {
+func (i *Interpreter) callSub(at token.Pos, params []ast.Param, console []ast.ConsoleStmt, consts []ast.ConstDecl, locals []ast.VarDecl, body []ast.Stmt, retType runtime.Type, args []ast.Expr) (runtime.Value, error) {
 	if i.calls == maxCalls {
 		return runtime.Value{}, fmt.Errorf("active call limit exceeded")
 	}
@@ -183,8 +184,22 @@ func (i *Interpreter) callSub(params []ast.Param, console []ast.ConsoleStmt, con
 	if err := i.defineConsts(consts); err != nil {
 		return runtime.Value{}, err
 	}
+	if len(locals) != 0 {
+		if err := i.delay(at); err != nil {
+			return runtime.Value{}, err
+		}
+	}
 	for _, decl := range locals {
 		if err := i.defineVars(decl); err != nil {
+			return runtime.Value{}, err
+		}
+		if err := i.delay(decl.At); err != nil {
+			return runtime.Value{}, err
+		}
+	}
+	// The recorded subprogram entry contributes two timer intervals.
+	for range 2 {
+		if err := i.delay(at); err != nil {
 			return runtime.Value{}, err
 		}
 	}

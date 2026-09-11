@@ -45,6 +45,9 @@ const (
 	ALEATORIO
 	ECO
 	CRONOMETRO
+	TIMER
+	PAUSA
+	DEBUG
 	CONST
 	TIPO
 	REGISTRO
@@ -109,6 +112,9 @@ var keywords = map[string]Kind{
 	"aleatorio":       ALEATORIO,
 	"eco":             ECO,
 	"cronometro":      CRONOMETRO,
+	"timer":           TIMER,
+	"pausa":           PAUSA,
+	"debug":           DEBUG,
 	"const":           CONST,
 	"tipo":            TIPO,
 	"registro":        REGISTRO,
@@ -186,6 +192,7 @@ var kindNames = map[Kind]string{
 	LIMPATELA: "limpatela", MUDACOR: "mudacor", DOS: "dos", RAND: "rand",
 	ALEATORIO: "aleatorio",
 	ECO:       "eco", CRONOMETRO: "cronometro",
+	TIMER: "timer", PAUSA: "pausa", DEBUG: "debug",
 	NAO: "nao", XOU: "xou", MOD: "mod",
 	NEWLINE: "NEWLINE",
 }

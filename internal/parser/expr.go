@@ -68,7 +68,7 @@ func (p *parser) parsePrimary() ast.Expr {
 	case token.ECO:
 		p.error(tok, "eco is a statement")
 		fallthrough
-	case token.LIMPATELA, token.MUDACOR, token.DOS, token.ALEATORIO, token.CRONOMETRO:
+	case token.LIMPATELA, token.MUDACOR, token.DOS, token.ALEATORIO, token.CRONOMETRO, token.TIMER, token.PAUSA, token.DEBUG:
 		if p.peekN(1).Kind == token.LPAREN {
 			p.parseCall() // The reference consumes this syntax without evaluating it.
 		} else {

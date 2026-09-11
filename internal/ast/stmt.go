@@ -42,6 +42,30 @@ type ChronometerStmt struct {
 func (*ChronometerStmt) stmtNode()          {}
 func (s *ChronometerStmt) Start() token.Pos { return s.At }
 
+// TimerStmt sets the delay after each executed command.
+type TimerStmt struct {
+	At    token.Pos
+	Value Expr
+}
+
+func (*TimerStmt) stmtNode()          {}
+func (s *TimerStmt) Start() token.Pos { return s.At }
+
+// PauseStmt requests a host breakpoint.
+type PauseStmt struct{ At token.Pos }
+
+func (*PauseStmt) stmtNode()          {}
+func (s *PauseStmt) Start() token.Pos { return s.At }
+
+// DebugStmt requests a host breakpoint when Cond is true.
+type DebugStmt struct {
+	At   token.Pos
+	Cond Expr
+}
+
+func (*DebugStmt) stmtNode()          {}
+func (s *DebugStmt) Start() token.Pos { return s.At }
+
 // AssignStmt assigns to a variable or indexed vector element.
 type AssignStmt struct {
 	At     token.Pos

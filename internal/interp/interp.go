@@ -40,6 +40,7 @@ type Interpreter struct {
 	randomInput        randomInputState
 	chronometerStart   time.Time
 	chronometerRunning bool
+	timerDelay         time.Duration
 }
 
 // New resolves defaults once and owns the buffered input for subsequent runs.
@@ -83,6 +84,7 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) []diag.Diagnostic 
 	i.randomInput = randomInputState{}
 	i.chronometerStart = time.Time{}
 	i.chronometerRunning = false
+	i.timerDelay = 0
 	pos := token.NoPos
 	if prog != nil {
 		pos = prog.At
