@@ -65,7 +65,10 @@ func (p *parser) parsePrimary() ast.Expr {
 		return p.parseDesignator()
 	case token.RAND:
 		return &ast.IdentExpr{Name: p.advance()}
-	case token.LIMPATELA, token.MUDACOR, token.DOS, token.ALEATORIO:
+	case token.ECO:
+		p.error(tok, "eco is a statement")
+		fallthrough
+	case token.LIMPATELA, token.MUDACOR, token.DOS, token.ALEATORIO, token.CRONOMETRO:
 		if p.peekN(1).Kind == token.LPAREN {
 			p.parseCall() // The reference consumes this syntax without evaluating it.
 		} else {

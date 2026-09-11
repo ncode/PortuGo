@@ -279,6 +279,8 @@ func (c *checker) checkStmts(stmts []ast.Stmt) {
 
 func (c *checker) checkStmt(stmt ast.Stmt) {
 	switch s := stmt.(type) {
+	case *ast.EchoStmt, *ast.ChronometerStmt:
+		return
 	case *ast.RandomInputStmt:
 		for _, arg := range s.Args {
 			before := len(c.diags)

@@ -7,6 +7,7 @@ import (
 	"math/rand/v2"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
@@ -18,25 +19,27 @@ import (
 
 // Interpreter is an instantiable tree-walking Portugol evaluator.
 type Interpreter struct {
-	in           *bufio.Reader
-	out          io.Writer
-	writeNewline bool
-	writeBytes   int
-	lib          *stdlib.Library
-	env          *env
-	subs         map[token.Pos]ast.Subprogram
-	global       *env
-	info         *sema.Info
-	program      *ast.Program
-	options      Options
-	initErr      error
-	steps        uint64
-	depth, calls int
-	result       *runtime.Cell
-	results      []runtime.Value
-	operands     []runtime.Value
-	evalFrames   int
-	randomInput  randomInputState
+	in                 *bufio.Reader
+	out                io.Writer
+	writeNewline       bool
+	writeBytes         int
+	lib                *stdlib.Library
+	env                *env
+	subs               map[token.Pos]ast.Subprogram
+	global             *env
+	info               *sema.Info
+	program            *ast.Program
+	options            Options
+	initErr            error
+	steps              uint64
+	depth, calls       int
+	result             *runtime.Cell
+	results            []runtime.Value
+	operands           []runtime.Value
+	evalFrames         int
+	randomInput        randomInputState
+	chronometerStart   time.Time
+	chronometerRunning bool
 }
 
 // New resolves defaults once and owns the buffered input for subsequent runs.
@@ -78,6 +81,8 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) []diag.Diagnostic 
 	i.operands = nil
 	i.evalFrames = 0
 	i.randomInput = randomInputState{}
+	i.chronometerStart = time.Time{}
+	i.chronometerRunning = false
 	pos := token.NoPos
 	if prog != nil {
 		pos = prog.At

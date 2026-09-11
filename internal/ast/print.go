@@ -5,6 +5,8 @@ import (
 	"io"
 	"strconv"
 	"strings"
+
+	"github.com/ncode/portugol-go/internal/token"
 )
 
 // Fprint writes a deterministic source-like representation of prog.
@@ -132,6 +134,18 @@ func (p *printer) printStmt(stmt Stmt) {
 	switch s := stmt.(type) {
 	case *ConsoleStmt:
 		p.line("dos")
+	case *EchoStmt:
+		if s.Mode.Kind == token.IDENT {
+			p.line("eco %s", strings.ToLower(s.Mode.Text))
+		} else {
+			p.line("eco")
+		}
+	case *ChronometerStmt:
+		if s.Off {
+			p.line("cronometro off")
+		} else {
+			p.line("cronometro on")
+		}
 	case *RandomInputStmt:
 		if s.Off {
 			p.line("aleatorio off")

@@ -316,6 +316,10 @@ func (p *parser) parseStmt() ast.Stmt {
 		return &ast.CallStmt{Call: call}
 	case token.ALEATORIO:
 		return p.parseRandomInput()
+	case token.ECO:
+		return p.parseEcho()
+	case token.CRONOMETRO:
+		return p.parseChronometer()
 	case token.IDENT:
 		return p.parseIdentStmt()
 	case token.SE:

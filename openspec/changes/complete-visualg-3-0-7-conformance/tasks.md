@@ -387,7 +387,18 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 15.3 Implement timer/delay units, argument evaluation, ordering, and failure behavior through `Host.Delay` without direct sleeps in interpreter logic.
 - [ ] 15.4 Implement pause and debug/breakpoint commands through typed `Host.Breakpoint` events with non-blocking default headless behavior.
 - [ ] 15.5 Complete echo commands and state transitions not owned by `arquivo` or random-input groups, including oracle-confirmed output text.
-- [ ] 15.6 Implement chronometer start/query/reset/stop semantics through `Host.Now`, including deterministic elapsed calculations and clock-edge cases.
+
+  Typed on/off requests preserve recorded console and random-input transcripts.
+  Bare and ignored-tail forms have headless and canonical-print coverage.
+  File-input interactions and the GUI state of ignored tails remain unqualified.
+
+- [x] 15.6 Implement chronometer start/query/reset/stop semantics through `Host.Now`, including deterministic elapsed calculations and clock-edge cases.
+
+  Recorded start, restart, stop, inactive stop and expression forms have typed
+  syntax and fake-clock coverage through elapsed times beyond one minute.
+  Exact whole-second formatting is documented as an implementation boundary;
+  variable elapsed-time recordings remain pending exact replay.
+
 - [x] 15.7 Implement clear-screen and color/display operations through `Host.ClearScreen` and `Host.SetDisplay`, preserving call order and making UI-only default-headless effects no-ops.
 - [ ] 15.8 Implement every other oracle-confirmed host command with a typed operation and regression evidence; do not add generic string-based host dispatch.
 

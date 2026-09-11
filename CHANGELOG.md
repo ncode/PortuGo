@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add typed echo settings and chronometer commands with per-run state, injected
+  clocks, recorded elapsed-time text, canonical formatting and positioned host
+  failures. Preserve console input echo in the deterministic headless profile.
+
 - Add command-form random input with evaluated bounds, bounded real precision,
   generated text, console transitions, per-run reset and guarded source failures.
   Replace the legacy callable `aleatorio` API with recorded no-value behavior.

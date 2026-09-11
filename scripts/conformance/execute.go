@@ -139,6 +139,7 @@ type hostEvent struct {
 	Duration  time.Duration        `json:"duration,omitempty"`
 	Pos       token.Pos            `json:"pos,omitempty"`
 	Display   *interp.DisplayState `json:"display,omitempty"`
+	Echo      *bool                `json:"echo,omitempty"`
 }
 
 type recordingHost struct {
@@ -165,6 +166,10 @@ func (h *recordingHost) UseConsole() error {
 }
 func (h *recordingHost) SetDisplay(s interp.DisplayState) error {
 	h.events = append(h.events, hostEvent{Operation: "display", Display: &s})
+	return nil
+}
+func (h *recordingHost) SetEcho(enabled bool) error {
+	h.events = append(h.events, hostEvent{Operation: "echo", Echo: &enabled})
 	return nil
 }
 func (h *recordingHost) Now() time.Time {

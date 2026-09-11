@@ -24,6 +24,24 @@ type RandomInputStmt struct {
 func (*RandomInputStmt) stmtNode()          {}
 func (s *RandomInputStmt) Start() token.Pos { return s.At }
 
+// EchoStmt carries an explicit on/off setting, or a zero Mode for an ignored tail.
+type EchoStmt struct {
+	At   token.Pos
+	Mode token.Token
+}
+
+func (*EchoStmt) stmtNode()          {}
+func (s *EchoStmt) Start() token.Pos { return s.At }
+
+// ChronometerStmt starts or stops elapsed-time reporting.
+type ChronometerStmt struct {
+	At  token.Pos
+	Off bool
+}
+
+func (*ChronometerStmt) stmtNode()          {}
+func (s *ChronometerStmt) Start() token.Pos { return s.At }
+
 // AssignStmt assigns to a variable or indexed vector element.
 type AssignStmt struct {
 	At     token.Pos

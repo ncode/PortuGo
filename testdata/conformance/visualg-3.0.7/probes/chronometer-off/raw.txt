@@ -1,0 +1,6 @@
+Início da execução
+
+O cronômetro não foi iniciado.
+DONE
+
+Fim da execução.

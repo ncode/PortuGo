@@ -15,7 +15,7 @@ import (
 func TestObservationAdapter(t *testing.T) {
 	dir := t.TempDir()
 	src := filepath.Join(dir, "source.alg")
-	if err := os.WriteFile(src, []byte("algoritmo \"state\"\ndos\nvar x: inteiro\ninicio\nx <- 7\nescreval(x)\nfimalgoritmo"), 0600); err != nil {
+	if err := os.WriteFile(src, []byte("algoritmo \"state\"\ndos\nvar x: inteiro\ninicio\neco off\neco on\nx <- 7\nescreval(x)\nfimalgoritmo"), 0600); err != nil {
 		t.Fatal(err)
 	}
 	state, host := filepath.Join(dir, "state.json"), filepath.Join(dir, "host.json")
@@ -24,7 +24,7 @@ func TestObservationAdapter(t *testing.T) {
 	if status != 0 || out.String() != " 7\n" || stderr.Len() != 0 {
 		t.Fatalf("status %d, streams %q %q", status, &out, &stderr)
 	}
-	for path, want := range map[string]string{state: "{\"x\":7}\n", host: "[{\"operation\":\"console\"}]\n"} {
+	for path, want := range map[string]string{state: "{\"x\":7}\n", host: "[{\"operation\":\"console\"},{\"operation\":\"echo\",\"echo\":false},{\"operation\":\"echo\",\"echo\":true}]\n"} {
 		data, err := os.ReadFile(path)
 		if err != nil || string(data) != want {
 			t.Fatalf("observation %s: %q (%v)", filepath.Base(path), data, err)

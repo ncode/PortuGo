@@ -53,6 +53,7 @@ type Host interface {
 	Breakpoint(Breakpoint) error
 	ClearScreen() error
 	SetDisplay(DisplayState) error
+	SetEcho(bool) error
 	Now() time.Time
 }
 
@@ -73,6 +74,9 @@ func (HeadlessHost) ClearScreen() error { return nil }
 
 // SetDisplay is a no-op in headless execution.
 func (HeadlessHost) SetDisplay(DisplayState) error { return nil }
+
+// SetEcho does not alter the deterministic console transcript.
+func (HeadlessHost) SetEcho(bool) error { return nil }
 
 // Now returns the system clock.
 func (HeadlessHost) Now() time.Time { return time.Now() }

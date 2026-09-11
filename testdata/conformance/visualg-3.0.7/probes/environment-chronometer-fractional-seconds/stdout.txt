@@ -1,0 +1,6 @@
+
+Cronômetro iniciado.
+STEP
+
+Cronômetro terminado. Tempo decorrido: 2 segundo(s) e 422 ms.
+DONE

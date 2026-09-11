@@ -1,0 +1,3 @@
+
+O cronômetro não foi iniciado.
+DONE

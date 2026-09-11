@@ -531,6 +531,29 @@ reals use ten fractional digits, logical values use `Verdadeiro` or `Falso`,
 and characters retain their exact text. Each echo ends with LF and is separate
 from `escreva`/`escreval` formatting. Real input accepts either decimal separator.
 
+`eco on` and `eco off` request a typed echo setting from the host. Both recorded
+console and random-input transcripts retain input echo around `eco off`, so the
+headless host leaves the transcript unchanged. Bare `eco`, numeric, quoted and
+unknown tails are accepted without a headless effect. The formatter retains an
+explicit `on`/`off` setting and discards other tails. `eco` cannot be a declared
+name or a value expression; those uses receive `P001`. File-input echo and the
+GUI state of ignored tails remain unqualified.
+
+`cronometro` or `cronometro on` samples the host clock, starts or restarts the
+chronometer and writes `\nCronômetro iniciado.\n`. `cronometro off` stops it and
+writes a blank line followed by `Cronômetro terminado. Tempo decorrido: ` and
+the elapsed duration. Whole milliseconds are reported as `16 ms.`,
+`2 segundo(s) e 47 ms.`, or `0 segundo(s).`; exact seconds use `2 segundo(s).`.
+Durations beyond one minute still use seconds, as in the recorded
+`72 segundo(s) e 141 ms.`. Every message ends with LF. An inactive stop writes
+`\nO cronômetro não foi iniciado.\n` without reading the clock. State resets for
+each run. Explicit modes ignore remaining line tails; other modes receive
+`P001`. Expression-form `cronometro()` produces no value and has no clock effect.
+Clock regressions, echo-host failures and chronometer output failures receive
+positioned `R008`; underlying error details are not rendered. See
+[the environment recordings](environment-controls-progress.md) for evidence
+and the distinction between elapsed-time samples and deterministic replay.
+
 Numeric input ignores leading ASCII spaces and accepts a sign and decimal
 exponent. Malformed text retains the unsigned mantissa before decimal and
 exponent scaling: `1.5x`, `-1.5x`, and `1.5 ` each produce `15`. Empty input
@@ -997,7 +1020,7 @@ Nil input/output mean empty input and discarded output; the working directory
 resolves at construction. Hosts and randomness can be injected. The default
 headless host uses real time and silent, nonblocking UI operations. Display
 commands expose typed console configuration, foreground/background color changes,
-and screen clears;
+screen clears and echo settings. Chronometer commands use the host clock;
 other language host commands remain pending reference qualification.
 
 ## Out Of Scope

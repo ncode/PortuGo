@@ -43,6 +43,8 @@ const (
 	DOS
 	RAND
 	ALEATORIO
+	ECO
+	CRONOMETRO
 	CONST
 	TIPO
 	REGISTRO
@@ -105,6 +107,8 @@ var keywords = map[string]Kind{
 	"dos":             DOS,
 	"rand":            RAND,
 	"aleatorio":       ALEATORIO,
+	"eco":             ECO,
+	"cronometro":      CRONOMETRO,
 	"const":           CONST,
 	"tipo":            TIPO,
 	"registro":        REGISTRO,
@@ -181,7 +185,8 @@ var kindNames = map[Kind]string{
 	ESCREVAL: "escreval", VERDADEIRO: "verdadeiro", FALSO: "falso", E: "e", OU: "ou",
 	LIMPATELA: "limpatela", MUDACOR: "mudacor", DOS: "dos", RAND: "rand",
 	ALEATORIO: "aleatorio",
-	NAO:       "nao", XOU: "xou", MOD: "mod",
+	ECO:       "eco", CRONOMETRO: "cronometro",
+	NAO: "nao", XOU: "xou", MOD: "mod",
 	NEWLINE: "NEWLINE",
 }
 
