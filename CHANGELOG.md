@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Pin an independent inventory of 28 documented builtins to a recorded reference
+  program and check semantic binding, runtime results and formatting. Record
+  rejection of the `pot` candidate and pending `div(...)` value behavior.
+
 - Preserve intermediate operands in recorded mixed logical/comparison reductions,
   including enclosing arithmetic and function calls. Bound retained storage and
   release it after each outer evaluation or failure.

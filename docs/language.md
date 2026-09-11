@@ -656,6 +656,12 @@ The [display example](../examples/display.alg) demonstrates portable output.
 
 ## Built-ins
 
+The [independent builtin inventory](builtin-inventory-progress.md) records 28
+documented names with semantic-binding, reference-output and formatting checks.
+The additional `pot` candidate is rejected with `E002`. The accepted no-value
+`div(...)` expression form remains pending; its infix operator form is supported.
+Shared descriptor and signature/domain agreement work is still in progress.
+
 Numeric built-ins include `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`,
 `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`,
 `sen`, `tan`, `randi`, and the current legacy `aleatorio` forms. The reference

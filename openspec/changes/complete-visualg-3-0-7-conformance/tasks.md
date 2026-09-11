@@ -295,6 +295,13 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 ## 11. Unified Built-in Registry and Numeric Functions
 
 - [ ] 11.1 Add failing catalog completeness/drift tests against the independent reference inventory and numeric signature/domain tables; prove that removing a required name from both sema and runtime still fails validation.
+
+  An independent 28-name inventory from the distributed function guide now has
+  recorded execution, semantic-binding and formatting coverage. Removing
+  `arccos` from both semantic recognition and runtime dispatch makes the inventory
+  test fail. The rejected `pot` candidate is verified; the accepted no-value
+  `div(...)` candidate stays pending. Descriptor signature/domain drift coverage
+  remains part of the following registry work.
 - [ ] 11.2 Define immutable built-in descriptors and registry construction checks for duplicate aliases, incomplete signatures, parameter modes, result rules, domains, and missing evaluators.
 - [ ] 11.3 Replace semantic built-in switches and name lists with descriptor-driven binding, arity, argument, mode, and result-type analysis.
 - [ ] 11.4 Replace runtime built-in name maps and switches with descriptor lookup and evaluator dispatch while preserving per-interpreter state.

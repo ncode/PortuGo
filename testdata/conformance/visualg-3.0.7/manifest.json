@@ -1522,7 +1522,9 @@
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Authoritative built-in catalog",
       "probes": [
-        "catalog-div-candidate"
+        "catalog-div-candidate",
+        "catalog-documented-functions",
+        "catalog-pot-candidate"
       ]
     },
     {
@@ -70697,6 +70699,107 @@
         },
         "tests": [
           "comparisons_test.go#TestRecordedComparisonRejection"
+        ]
+      }
+    },
+    {
+      "id": "catalog-documented-functions",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.1"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/catalog-documented-functions/source.alg",
+        "sha256": "dfdba51d706ca62f647eaf6a8aa6f646aa8b114534ddf1fb46e699714e9094a5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T08:57:34.3250679Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/catalog-documented-functions/raw.txt",
+          "sha256": "53dc04373d59754320d790a5633a9ba736d2a8317046436a8a907cd46c066814"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/catalog-documented-functions/stdout.txt",
+          "sha256": "8f6acd6bbd1d393ac59d8b5fa4ccdefaa9878d7410cc53a1176c2437ee275193"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/catalog-documented-functions/stdout.txt",
+            "sha256": "8f6acd6bbd1d393ac59d8b5fa4ccdefaa9878d7410cc53a1176c2437ee275193"
+          }
+        },
+        "tests": [
+          "builtin_inventory_test.go#TestIndependentBuiltinInventory"
+        ]
+      }
+    },
+    {
+      "id": "catalog-pot-candidate",
+      "ownerGroup": 11,
+      "tasks": [
+        "11.1"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/catalog-pot-candidate/source.alg",
+        "sha256": "2f9fba43636299c8f6e9085d80abc26d963ad4a9a8d227f4ae987eb339b5ba26"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-11T08:57:44.6274334Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/catalog-pot-candidate/transcription.txt",
+          "sha256": "580317eba36630b5949f3d3113a6c31268b14b39d8e8bd09741539e476ec5b82"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/catalog-pot-candidate/transcription.txt",
+          "sha256": "580317eba36630b5949f3d3113a6c31268b14b39d8e8bd09741539e476ec5b82"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/catalog-pot-candidate/screenshot.png",
+          "sha256": "9330eb7e79413de86a39047672938517b76338615799671ec33760918809fb1e"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/catalog-pot-candidate/transcription.txt",
+          "sha256": "580317eba36630b5949f3d3113a6c31268b14b39d8e8bd09741539e476ec5b82"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E002",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "builtin_inventory_test.go#TestRejectedBuiltinInventoryCandidate"
         ]
       }
     }
