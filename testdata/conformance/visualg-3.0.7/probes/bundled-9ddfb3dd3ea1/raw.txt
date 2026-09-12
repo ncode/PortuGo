@@ -1,0 +1,8 @@
+Início da execução
+Este programa calcula o menor de três números digitados.
+Qual o primeiro valor ? 3.0000000000
+Qual o segundo valor ? 1.0000000000
+Qual o terceiro valor ? 2.0000000000
+O menor valor digitado foi :  1
+
+Fim da execução.

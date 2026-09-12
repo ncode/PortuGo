@@ -1,0 +1,9 @@
+Início da execução
+Informe um numero: 1.5000000000
+Informe outro numero: 2.5000000000
+ 1.5
+ 2.5
+ 2.5
+ 1.5
+
+Fim da execução.

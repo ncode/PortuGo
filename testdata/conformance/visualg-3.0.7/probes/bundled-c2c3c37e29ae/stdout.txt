@@ -1,0 +1,4 @@
+ 
+Digite um numero em binário: 1010
+ 
+O resultado é:  10

@@ -1,0 +1,16 @@
+Início da execução
+Cálcular os passos de um Caracol
+================================
+ 
+Sobe =  1.5
+Sobe =  3
+Sobe =  4.5
+Sobe =  6
+Sobe =  7.5
+Sobe =  9
+Sobe =  10.5
+ 
+O Caracol levou  7 dias
+ 
+
+Fim da execução.

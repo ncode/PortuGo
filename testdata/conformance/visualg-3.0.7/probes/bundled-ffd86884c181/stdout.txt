@@ -1,0 +1,9 @@
+*** Menu ***
+1 - Inclusão
+2 - Consulta
+3 - Exclusão
+4 - Alterar
+5 - Listagem
+6 - Finalizar
+  
+Digite a opção:6

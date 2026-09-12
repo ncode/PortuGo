@@ -1,0 +1,2 @@
+Entre com o nome de um time de futebol:TIME
+É de outro estado.

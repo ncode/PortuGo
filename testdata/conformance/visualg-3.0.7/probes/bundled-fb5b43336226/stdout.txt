@@ -1,0 +1,3 @@
+Programa de Conversão Decimal para Hexadecimal
+Entre com um número inteiro:255
+A representação hexadecimal de 255 é FFh

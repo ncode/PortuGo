@@ -1,0 +1,6 @@
+Início da execução
+Número : 5
+Taxa : 2
+Combinação de 5 elementos 2 a 2 = 10
+
+Fim da execução.

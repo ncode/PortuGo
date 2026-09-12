@@ -1,0 +1,8 @@
+Início da execução
+DIGITE UM CPF ou S pra sair: 00000000000
+ 
+CPF NÃO É VERDADEIRO !!! - TECLE <ENTER>
+Falso
+DIGITE UM CPF ou S pra sair: S
+
+Fim da execução.

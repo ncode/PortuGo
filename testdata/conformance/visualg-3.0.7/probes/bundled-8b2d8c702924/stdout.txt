@@ -1,0 +1,11 @@
+ 
+ ============================================== 
+QUANTOS NUMEROS (1-10): 1
+Digite o destaque: 0
+ 
+A SEQUENCIA É 
+ 9 
+O NUMERO DE REPETIÇÕES FOI:  0
+ 
+RESTOU A SEQUENCIA: 
+ 9

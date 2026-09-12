@@ -1,0 +1,43 @@
+Início da execução
+Se 'A' for Diferente de 'B' então  1 <>  3
+Se 'A' for Menor quê 'B' então é:  1 <   3
+Se 'A' for Menor ou Igual à 'B':=  1 <=  3
+
+Se 'A' for Diferente de 'B' então  2 <>  9
+Se 'A' for Menor quê 'B' então é:  2 <   9
+Se 'A' for Menor ou Igual à 'B':=  2 <=  9
+
+Se 'A' for Diferente de 'B' então  3 <>  7
+Se 'A' for Menor quê 'B' então é:  3 <   7
+Se 'A' for Menor ou Igual à 'B':=  3 <=  7
+
+Se 'A' for Diferente de 'B' então  4 <>  1
+Se 'A' for Maior quê 'B' então é:  4 >   1
+Se 'A' for Maior ou Igual à 'B':=  4 >=  1
+
+Se 'A' for Diferente de 'B' então  5 <> 10
+Se 'A' for Menor quê 'B' então é:  5 <  10
+Se 'A' for Menor ou Igual à 'B':=  5 <= 10
+
+Se 'A' for Diferente de 'B' então  6 <> 10
+Se 'A' for Menor quê 'B' então é:  6 <  10
+Se 'A' for Menor ou Igual à 'B':=  6 <= 10
+
+Se 'A' for Diferente de 'B' então  7 <>  3
+Se 'A' for Maior quê 'B' então é:  7 >   3
+Se 'A' for Maior ou Igual à 'B':=  7 >=  3
+
+Se 'A' for Igual à 'B' então será  8 =   8
+Se 'A' for Menor ou Igual à 'B':=  8 <=  8
+Se 'A' for Maior ou Igual à 'B':=  8 >=  8
+
+Se 'A' for Diferente de 'B' então  9 <>  3
+Se 'A' for Maior quê 'B' então é:  9 >   3
+Se 'A' for Maior ou Igual à 'B':=  9 >=  3
+
+Se 'A' for Diferente de 'B' então 10 <>  8
+Se 'A' for Maior quê 'B' então é: 10 >   8
+Se 'A' for Maior ou Igual à 'B':= 10 >=  8
+
+
+Fim da execução.

@@ -1,0 +1,13 @@
+Início da execução
+Digite o Nome do Aluno: ALUNO
+
+Digite a 1ª nota: 8.0000000000
+Digite a 2ª nota: 7.0000000000
+Digite a 3ª nota: 6.0000000000
+Digite a 4ª nota: 9.0000000000
+
+ 7.5
+
+O aprovou 
+
+Fim da execução.

@@ -1,0 +1,5 @@
+Início da execução
+Entre com a nota do aluno:6
+Em final.
+
+Fim da execução.

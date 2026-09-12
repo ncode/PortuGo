@@ -1,0 +1,2 @@
+Entre com um número inteiro :13
+A representação binária de 13 é 1101

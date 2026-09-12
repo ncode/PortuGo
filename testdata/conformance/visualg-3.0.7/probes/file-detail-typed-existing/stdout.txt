@@ -1,0 +1,5 @@
+café €
+1.2500000000
+Verdadeiro
+VALUES:café €: 1.25: VERDADEIRO
+DONE

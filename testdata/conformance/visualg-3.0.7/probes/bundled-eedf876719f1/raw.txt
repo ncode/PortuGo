@@ -1,0 +1,16 @@
+Início da execução
+Digite 3 numeros inteiro!
+Primeiro numero: 3.0000000000
+Segundo numero: 1.0000000000
+Terceiro numero: 2.0000000000
+ESCOLHA AS OPÇOES ABAIXO
+1 - ORDEM CRESCENTE
+2 - ORDEM DECRESCENTE
+3 - ORDEM DE ENTRADA
+Digite: 1
+ORDEM ALFABÉTICA CRESCENTE !!!
+ 1 VALOR  1
+ 2 VALOR  2
+ 3 VALOR  3
+
+Fim da execução.

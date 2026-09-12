@@ -1,0 +1,6 @@
+Início da execução
+Deseja até que número primo: 25
+ 
+ 1 ,  2 ,  3 ,  5 ,  7 ,  11 ,  13 ,  17 ,  19 ,  23 
+
+Fim da execução.

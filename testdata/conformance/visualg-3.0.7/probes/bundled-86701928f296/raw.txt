@@ -1,0 +1,15 @@
+Início da execução
+    1   83
+    2   97
+    3   39
+    4   95
+    5   39
+    6   16
+    7   92
+    8   61
+    9   85
+   10   67
+Entre com o valor de busca (ESC termina) :-1
+Nao achei.
+
+Fim da execução.

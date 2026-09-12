@@ -1,0 +1,8 @@
+   MENU   
+1-INCLUSÃO
+2-CONSULTA
+3-EXCLUSÃO
+4-ALTERAÇÃO
+5-FINALIZAR
+ 
+Digite a opção:5

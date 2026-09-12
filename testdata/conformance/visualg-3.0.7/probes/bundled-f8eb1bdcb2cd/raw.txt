@@ -1,0 +1,6 @@
+Início da execução
+Digite um numero maior que um : 9.0000000000
+A raiz quadrada calculada de    9.00000 é    3.00000
+A função raiz quadrada de    9.00000 é    3.00000
+
+Fim da execução.
