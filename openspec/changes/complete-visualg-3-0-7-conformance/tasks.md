@@ -422,7 +422,14 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 ## 13. Injected Randomness, Rand, Randi, and Random-Input Command
 
-- [ ] 13.1 Add failing deterministic-fake and property tests for `rand`, `randi`, aliases, each arity, inclusive/exclusive boundaries, reversed/empty/overflowing ranges, generator consumption, and command-form random input transitions.
+- [x] 13.1 Add failing deterministic-fake and property tests for `rand`, `randi`, aliases, each arity, inclusive/exclusive boundaries, reversed/empty/overflowing ranges, generator consumption, and command-form random input transitions.
+
+  Deterministic source tables cover both builtin arities, accepted domains,
+  invalid ranges, source draw counts, and signed-boundary widths. Random-input
+  fixtures cover empty, reversed, overflow and precision ranges plus console,
+  file and REPL transitions; the full signed-32-bit reversed range now has an
+  explicit interpreter regression. The independent inventory contains no
+  confirmed aliases.
 - [x] 13.2 Finish per-interpreter `RandomSource` plumbing through the builtin library and input controller with deterministic recording fakes and no global mutable generator.
 - [x] 13.3 Implement descriptor signatures and exact oracle value domains/result types for `rand`, `randi`, and every confirmed alias without promising an exact reference sequence.
 

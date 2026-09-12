@@ -50,3 +50,19 @@ func TestRandomInputRejectsUnrepresentableIntegerRangeBeforeDraw(t *testing.T) {
 		t.Fatalf("unrepresentable integer range: diagnostics=%v output=%q bounds=%v", ds, out.String(), r.bounds)
 	}
 }
+
+func TestRandomInputSwapsReversedFullSigned32Bounds(t *testing.T) {
+	src := "algoritmo \"reversed range\"\nvar\nlow, high, value: inteiro\ninicio\nlow <- 2147483647\nhigh <- -2147483647 - 1\naleatorio low, high\nleia(value)\nescreval(value)\nfimalgoritmo"
+	p, info := analyzed(t, src)
+	r := &scriptedRandom{}
+	var out bytes.Buffer
+	if ds := New(Options{Random: r, Output: &out}).Run(p, info); len(ds) != 0 {
+		t.Fatalf("reversed full signed-32 range: %v", ds)
+	}
+	if out.String() != "2147483647\n 2147483647\n" {
+		t.Fatalf("reversed full signed-32 output=%q", out.String())
+	}
+	if len(r.bounds) != 1 || r.bounds[0] != 1<<32 {
+		t.Fatalf("reversed full signed-32 bounds=%v", r.bounds)
+	}
+}
