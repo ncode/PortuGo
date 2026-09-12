@@ -483,7 +483,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [x] 16.6 Recover to a clean primary prompt after decoding, syntax, semantic, runtime, resource-limit, or host diagnostics; reset each submitted program's budget without consuming the next program's buffered input.
 - [ ] 16.7 Verify `leia`, `arquivo`, random-input mode, echo, and environment commands consume only their intended shared input and leave the next REPL program intact.
 - [ ] 16.8 Complete formatter coverage for every confirmed AST form from groups 4–15, retaining the group 4 comments/anchors and ignored suffixes across declarations, calls, environment commands, and any accepted ranges/records.
-- [ ] 16.9 Add formatter standard-output, check, in-place, idempotence, malformed-no-overwrite, and parse-print-parse subprocess tests.
+- [x] 16.9 Add formatter standard-output, check, in-place, idempotence, malformed-no-overwrite, and parse-print-parse subprocess tests.
 - [ ] 16.10 Update REPL/formatter documentation, `docs/language.md`, examples, and `CHANGELOG.md` with submission, blank-line, recovery, shared-input, and formatting behavior.
 - [ ] 16.11 Run focused REPL/parser/printer/CLI tests and then the full build, lint, ordinary, race, fuzz smoke, and strict OpenSpec suites.
 - [x] 16.12 Mark every completed 16.x task immediately, commit the focused tooling changes, push the next stacked branch, and open its draft PR before group 17.

@@ -9,6 +9,11 @@
   including empty declaration sections and conditional/default branches, nested
   block terminators, header/directive notes and decoded Windows-1252 text.
 
+- Add `fmt --check` and `fmt -w`, comparing original encoded bytes and validating
+  complete canonical output before replacement. Preserve permissions, symlinks,
+  and malformed files; cover stdout, exit statuses and repeated formatting in
+  subprocess tests.
+
 - Add explicit project-test trace mappings for AST positions, canonical printing
   and formatter modes while retaining their unfinished implementation status.
 
