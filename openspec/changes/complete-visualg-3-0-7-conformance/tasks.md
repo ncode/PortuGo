@@ -294,7 +294,12 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
 
 ## 8. Expressions, Precedence, Coercion, Comparison, and Choice Matching
 
-- [ ] 8.1 Add failing oracle-table tests for every unary/binary operator, ambiguous precedence and associativity, numeric coercion/result types, eager or short-circuit side effects, boolean/string comparisons, evaluation order, and ordinary `escolha` labels.
+- [x] 8.1 Add failing oracle-table tests for every unary/binary operator, ambiguous precedence and associativity, numeric coercion/result types, eager or short-circuit side effects, boolean/string comparisons, evaluation order, and ordinary `escolha` labels.
+
+  The recorded expression tables and table-driven regressions cover the
+  accepted arithmetic, logical, comparison, precedence, coercion, evaluation,
+  and ordinary choice-label cases. The unresolved operand matrix remains
+  tracked under 8.3 and 8.4.
 - [x] 8.2 Rebuild precedence parsing and operator alias recognition from the committed oracle table, including parentheses and all unary forms.
 
   Logical operators bind more tightly than comparisons; `ou` and `xou` share
@@ -319,17 +324,44 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   powers report positioned errors; recorded nonnumeric power, unary minus,
   division, and numeric unary plus are covered. Additional operand combinations
   and the remaining domain cases are pending.
-- [ ] 8.5 Implement logical operand evaluation order and short-circuit/eager behavior with side-effect tests that pin the oracle result.
+- [x] 8.5 Implement logical operand evaluation order and short-circuit/eager behavior with side-effect tests that pin the oracle result.
+
+  The recorded logical-evaluation program proves both `e` and `ou` evaluate
+  their right operand, and the focused logical/comparison tables preserve the
+  resulting values and diagnostics.
 - [x] 8.6 Implement numeric, logical, and character comparison compatibility, ordering, case/accent behavior, and positioned rejection of unsupported pairs.
   Ninety-five recorded comparison probes cover scalar pairs, Windows-1252 ordering,
   retained values, logical storage and reference arguments, consumer errors,
   record/vector boundaries, and generic/numeric-domain absence. Undefined
   two-absent-operand output remains a positioned project guard.
-- [ ] 8.7 Guarantee one-time oracle-ordered evaluation for binary operands, indices, statement expressions, and ordinary case labels.
-- [ ] 8.8 Evaluate an `escolha` selector once, choose the first matching ordinary label, prevent fall-through, and execute `outrocaso` only after no match.
+- [x] 8.7 Guarantee one-time oracle-ordered evaluation for binary operands, indices, statement expressions, and ordinary case labels.
+
+  Evaluation-order fixtures cover binary operands, designator indices,
+  statement expressions, range bounds, and unmatched or overlapping labels;
+  the interpreter guard also verifies that completed expressions do not retain
+  stale operand state.
+- [x] 8.8 Evaluate an `escolha` selector once, choose the first matching ordinary label, prevent fall-through, and execute `outrocaso` only after no match.
+
+  Choice tables cover single and comma-separated labels, inclusive ranges,
+  selector truncation, dynamic bounds, first-match stopping, no-match fallback,
+  and the accepted text/logical cases.
 - [ ] 8.9 Add parser goldens, semantic diagnostic tables, runtime `.out`/`.err` fixtures, and an example that makes precedence/coercion/comparison choices observable.
-- [ ] 8.10 Update `docs/language.md` and `CHANGELOG.md` with the empirical precedence table, coercion matrix, logical evaluation, comparison, and `escolha` rules.
-- [ ] 8.11 Run focused expression/parser/sema/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+
+  Parser printer tests, positioned semantic tables, recorded runtime output and
+  diagnostic fixtures, and the arithmetic, comparison, logical, and choice
+  examples are present. The repository has no `.err` fixture convention yet,
+  so this evidence task remains open until those diagnostics are captured in
+  the runtime fixture format.
+- [x] 8.10 Update `docs/language.md` and `CHANGELOG.md` with the empirical precedence table, coercion matrix, logical evaluation, comparison, and `escolha` rules.
+
+  The language reference and changelog record the precedence, retained-value
+  coercion, eager logical evaluation, comparison, and choice-selection rules;
+  unresolved matrix and domain qualifications remain called out as pending.
+- [x] 8.11 Run focused expression/parser/sema/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+
+  Focused expression, parser, semantic, interpreter, and choice tests plus the
+  complete local quality suite, strict OpenSpec validation, and fuzz smoke
+  checks pass at the stacked branch head.
 - [ ] 8.12 Mark every completed 8.x task immediately, commit the focused expression changes, push the next stacked branch, and open its draft PR before group 9.
 
 ## 9. Repeat Forms, Case Ranges, Return/Break, and Overflow-Safe For Loops
