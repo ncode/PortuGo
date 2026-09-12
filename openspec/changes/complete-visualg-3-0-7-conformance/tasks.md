@@ -286,7 +286,11 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   dimension order, accepted sizes, project guards, and positioned defensive
   failures.
 - [x] 7.11 Run focused semantic/runtime vector tests and then the full build, lint, ordinary, race, malformed-size, and strict OpenSpec suites.
-- [ ] 7.12 Mark every completed 7.x task immediately, commit the focused vector changes, push the next stacked branch, and open its draft PR before group 8.
+- [x] 7.12 Mark every completed 7.x task immediately, commit the focused vector changes, push the next stacked branch, and open its draft PR before group 8.
+
+  The completed vector layers are committed and published as a ready stacked
+  PR (#96) with a sanitized description; this repository uses ready PRs for
+  the handoff instead of draft status.
 
 ## 8. Expressions, Precedence, Coercion, Comparison, and Choice Matching
 
@@ -393,7 +397,11 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   Focused source, I/O, semantic, interpreter, and CLI tests plus the complete
   local quality suite, strict OpenSpec validation, fuzz smoke checks, and
   supported-platform validation all pass at the stacked branch head.
-- [ ] 10.12 Mark every completed 10.x task immediately, commit the focused I/O changes, push the next stacked branch, and open its draft PR before group 11.
+- [x] 10.12 Mark every completed 10.x task immediately, commit the focused I/O changes, push the next stacked branch, and open its draft PR before group 11.
+
+  The completed I/O layers are committed and published as a ready stacked PR
+  (#97) with a sanitized description; this repository uses ready PRs for the
+  handoff instead of draft status.
 
 ## 11. Unified Built-in Registry and Numeric Functions
 
