@@ -522,7 +522,14 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 ## 17. Implementation Acceptance, Documentation, and Release Handoff
 
-- [ ] 17.1 Add failing implementation-acceptance tests for pending behavior, mismatches, stale traces, unsupported examples, unpositioned errors, and missing quality results. Test release task-completion checks separately with synthetic complete/incomplete task lists so tests can pass before their own reporting/handoff tasks finish.
+- [x] 17.1 Add failing implementation-acceptance tests for pending behavior, mismatches, stale traces, unsupported examples, unpositioned errors, and missing quality results. Test release task-completion checks separately with synthetic complete/incomplete task lists so tests can pass before their own reporting/handoff tasks finish.
+
+  Acceptance regressions cover pending probes and accepted examples, stale
+  requirement/task/test links, missing tests, deterministic replay mismatches,
+  unpositioned diagnostics, and absent or invalid candidate-specific quality
+  evidence. Synthetic release candidates verify that unfinished reporting and
+  handoff tasks permit behavioral acceptance but prevent release approval.
+  Full implementation acceptance and release handoff remain incomplete.
 - [ ] 17.2 Complete bidirectional trace links for every OpenSpec requirement, `[VERIFICAR]`, original checklist item, audited defect, discovered official feature, implementation test, and bundled example with no stale IDs.
 
   AST positions, canonical printing and formatter modes now have explicit

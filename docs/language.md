@@ -1213,3 +1213,5 @@ See [development checks](development.md) and the
 [quality baseline](quality-baseline.md) for commands and measured coverage.
 Conformance replay requires positive diagnostic lines and columns, including
 when a recording constrains the line without fixing an exact column.
+Final acceptance requires quality evidence for the candidate commit; the
+separate release gate also requires completed implementation and handoff tasks.

@@ -10,6 +10,11 @@
   at EOF. Expand frontend fuzz and subprocess checks for encoded/truncated input,
   retained token text, formatting idempotence and controlled size/depth rejection.
 
+- Require candidate-specific local quality evidence for implementation acceptance
+  and add a separate release gate for completed implementation and handoff tasks.
+  Reject malformed or duplicate task checkboxes and cover acceptance failures
+  with isolated synthetic candidates, without claiming release readiness.
+
 - Reject replayed diagnostics with a zero line or column during conformance
   validation, including recordings that intentionally omit an exact column.
 

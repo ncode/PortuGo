@@ -67,5 +67,57 @@ Replayed diagnostics must carry a positive source line and column. An omitted
 expected column permits any positive column; it never permits an unpositioned
 error to count as a matching rejection.
 
+Final acceptance also requires local quality results for the exact candidate
+commit. Keep the report and its evidence outside the checkout, then run:
+
+```sh
+go run ./scripts/conformance validate --mode implementation-acceptance --base origin/main --quality /path/to/private-results/quality.json
+go run ./scripts/conformance validate --mode release --base origin/main --quality /path/to/private-results/quality.json
+```
+
+Both modes require a clean checkout, including untracked and ignored files, and
+build and replay that checkout themselves; `--candidate` cannot override it.
+Results from another commit fail, so regenerate the evidence after a merge,
+rebase or archive commit. Evidence and incremental modes retain their existing
+requirements and do not require this report.
+
+The version-1 report has this shape (the abbreviated result list is not valid
+for acceptance):
+
+```json
+{
+  "version": 1,
+  "commit": "<full candidate commit ID>",
+  "results": [
+    {
+      "check": "build",
+      "status": "pass",
+      "evidence": {"path": "build.txt", "sha256": "<SHA-256 of evidence bytes>"}
+    }
+  ]
+}
+```
+
+Required check IDs are `build`, `gofmt`, `vet`, `staticcheck`, `golangci-lint`,
+`tests`, `race`, `windows`, `macos`, `linux`, `fuzz-lexer`, `fuzz-parser`, and
+`openspec`. Each must occur exactly once with status `pass` and a nonempty,
+hash-matching evidence file. Evidence paths are relative to the report directory;
+parent traversal and symlinks are rejected. Unknown fields, unknown checks,
+duplicate checks, missing results and failed or skipped results fail acceptance.
+
+These are trusted local result records, not independent attestations. Record
+the actual commands, toolchain/platform, exit status and result in each evidence
+file, including successful commands with empty output. Platform results must
+cover both supported Go versions, and each fuzz campaign must run for 30 seconds.
+Preserve raw operational evidence privately; publish only reviewed, sanitized
+evidence, with hashes recalculated for its published bytes.
+
+Implementation acceptance reports remaining task IDs on stderr without making
+its own future reporting or handoff a prerequisite. Release mode additionally
+requires every task checkbox complete; malformed or duplicate task entries fail.
+Archive creation and tag creation remain later operations, never prerequisites
+for either command. Passing synthetic regression tests does not qualify the
+current implementation or complete the release handoff.
+
 See the [baseline quality report](quality-baseline.md) for measured coverage,
 checks actually executed, and outstanding conformance work.

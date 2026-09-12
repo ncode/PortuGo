@@ -51,7 +51,8 @@ func run(args []string, out, stderr io.Writer) (status int) {
 	flags.SetOutput(stderr)
 	root := flags.String("root", ".", "repository root")
 	name := flags.String("manifest", "testdata/conformance/visualg-3.0.7/manifest.json", "manifest path relative to root")
-	mode := flags.String("mode", "evidence", "evidence, incremental, or implementation-acceptance")
+	mode := flags.String("mode", "evidence", "evidence, incremental, implementation-acceptance, or release")
+	quality := flags.String("quality", "", "local quality results JSON for implementation acceptance or release")
 	candidate := flags.String("candidate", "", "CLI executable; default builds the current checkout")
 	previous := flags.String("previous", "", "previous manifest path relative to root, for downgrade validation")
 	base := flags.String("base", "", "Git ref containing the previous manifest, for downgrade validation")
@@ -134,8 +135,29 @@ func run(args []string, out, stderr io.Writer) (status int) {
 		}
 		old = value
 	}
-	if err := validate(rootPath, m, *mode, old); err != nil {
+	validationMode := *mode
+	if validationMode == "release" {
+		validationMode = "implementation-acceptance"
+	}
+	if err := validate(rootPath, m, validationMode, old); err != nil {
 		return fail(err)
+	}
+	if validationMode == "implementation-acceptance" {
+		if err := validateQuality(rootPath, *quality, *candidate); err != nil {
+			return fail(err)
+		}
+		incomplete, err := incompleteTasks(rootPath, m.TasksPath)
+		if err != nil {
+			return fail(err)
+		}
+		if len(incomplete) != 0 {
+			if *mode == "release" {
+				return fail(fmt.Errorf("incomplete release tasks: %v", incomplete))
+			}
+			if _, err := fmt.Fprintf(stderr, "Remaining implementation/handoff tasks: %v\n", incomplete); err != nil {
+				return 1
+			}
+		}
 	}
 	executable := *candidate
 	needsObserver := false
