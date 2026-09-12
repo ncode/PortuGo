@@ -1,10 +1,11 @@
 # File-input recordings
 
 This slice retains 42 synthetic reference recordings: 29 accepted programs and
-13 positioned rejections. Forty have matching implementation tests. Two accepted
-missing-parent-directory cases remain pending: the reference silently continues
-without creating a file, while the project's positioned file-error guard reports
-`R008`. No successful reference outcome is relabeled as a rejection.
+13 positioned rejections. All 42 have matching implementation tests. The two
+missing-parent-directory recordings now continue without creating a file,
+including a program with no reads and one that consumes and echoes console
+input. Original and formatted sources retain the exact recorded output and
+file absence. No successful reference outcome is relabeled as a rejection.
 
 The controls cover literal configuration syntax, repeated and local directives,
 relative and nested paths, Windows-1252 text, LF/CRLF and unterminated input,
@@ -32,12 +33,19 @@ manifest validation and CLI replay, with regressions for unexpected files and
 conflicting inventories.
 
 Undefined Windows-1252 bytes, unrepresentable recording characters, host file
-errors and resource limits have separate project guards. Unreadable-path
-compatibility and the missing-parent difference remain unfinished; these tests
-do not establish full file-system or full-language conformance.
+errors and resource limits have separate project guards. Missing parents leave
+file input inactive; temporary-filesystem regressions also check random input
+followed by console input, exhausted-console diagnostics, both path separators,
+and closure of a replaced file without flushing an unfinished recording block.
+REPL transcripts verify that these modes leave the next submission intact.
+These interaction checks are project regressions, not additional reference
+recordings. Unreadable-path compatibility remains unfinished; these tests do
+not establish full file-system or full-language conformance.
 
-Validation includes local build, tests, race detection, vet, staticcheck, lint,
-both fuzz targets, strict OpenSpec validation and CLI replay of all 1,490 verified
-recordings. Native Windows build, vet, both fuzz targets and 3,671 tests pass,
-including the same 1,490 replays. The evidence gate still reports three unmapped
-requirements and thirteen original examples; its requirements are unchanged.
+Earlier file-input validation included local build, tests, race detection, vet,
+staticcheck, lint, both fuzz targets, strict OpenSpec validation and CLI replay
+of all 1,490 verified recordings. Native Windows build, vet, both fuzz targets
+and 3,671 tests passed,
+including the same 1,490 replays. At that stage, the evidence gate reported three
+unmapped requirements and thirteen original examples; its requirements are
+unchanged.

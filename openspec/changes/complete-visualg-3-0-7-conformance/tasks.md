@@ -416,17 +416,21 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 - [ ] 14.1 Add failing temporary-filesystem fixtures for relative and nested paths, existing/missing/unreadable/empty/exhausted files, CP1252 bytes, mixed value types, fallback recording, generated files, echo combinations, cleanup, and positioned failures.
 
-  Forty-two file-input observations cover 40 matching cases, including literal
-  syntax, local selection, encoding, line boundaries and failure buffering.
-  Unreadable-path reference behavior still needs qualification.
+  All 42 file-input observations now match, including literal syntax, local
+  selection, encoding, line boundaries, failure buffering and missing-parent
+  continuation. Temporary-filesystem regressions also cover inactive file mode,
+  random/console transitions and replacement cleanup. Unreadable-path reference
+  behavior still needs qualification, so this broader task remains pending.
 - [x] 14.2 Add typed AST, parser, canonical-printer, and semantic rules for every oracle-confirmed `arquivo` form and path expression.
 - [x] 14.3 Resolve relative file paths against `interp.Options.WorkingDir`, reject invalid resolution safely, and keep tests isolated in temporary directories.
 - [x] 14.4 Implement the file-input mode with shared buffering and the exact Windows-1252, newline, token/line, conversion, and consecutive-read behavior.
 - [ ] 14.5 Implement oracle behavior for missing, unreadable, empty, and exhausted files, including transitions to console or random input where recorded.
 
   Ordinary missing, empty and exhausted files and random transitions match.
-  Two missing-parent-directory recordings continue silently in the reference;
-  the documented `R008` guard still differs and those entries remain pending.
+  Both missing-parent-directory recordings now continue without creating a
+  file and retain their exact output before and after formatting. Other file
+  errors retain positioned guards; unreadable-path compatibility still needs
+  reference qualification before this broader task can be completed.
 - [x] 14.6 Implement fallback recording and generated-file byte behavior, including exclusive creation, recorded 128-byte buffering, replacement and partial-failure cleanup; validate each input conversion and encoding before changing its recording buffer.
 
   Reference controls establish partial flushed prefixes rather than whole-file

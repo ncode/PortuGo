@@ -18,6 +18,11 @@
 - Reject replayed diagnostics with a zero line or column during conformance
   validation, including recordings that intentionally omit an exact column.
 
+- Continue execution when an `arquivo` parent directory is missing, preserving
+  console or random input without creating directories or a recording. Match
+  both recorded continuation cases and retain positioned guards for other
+  file failures.
+
 - Preserve bare return and call syntax during formatting, including bare `pi`
   statements, and use canonical operator spellings. Normalize repeated carriage
   returns before LF in ignored suffixes in one pass, retaining standalone

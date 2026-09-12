@@ -55,9 +55,6 @@ func TestRecordedFileInput(t *testing.T) {
 		if !strings.HasPrefix(p.ID, "file-") || !p.Evidence.Accepted {
 			continue
 		}
-		if strings.Contains(p.ID, "missing-parent") {
-			continue // The documented file-error guard differs from this reference case.
-		}
 		count++
 		t.Run(p.ID, func(t *testing.T) {
 			src, err := source.Decode(read(p.Source.Path))
@@ -114,7 +111,7 @@ func TestRecordedFileInput(t *testing.T) {
 			}
 		})
 	}
-	if count < 25 {
+	if count != 29 {
 		t.Fatal("missing file-input recordings")
 	}
 }

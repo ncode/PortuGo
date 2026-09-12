@@ -561,9 +561,9 @@ at that statement, preserving preceding output.
 
 Relative filenames resolve against `interp.Options.WorkingDir`, which defaults
 to the process working directory. Both slash and backslash separate nested
-path components. Parent directories must already exist. Native absolute paths
-and filesystem permissions follow the host; Windows drive paths are rejected
-on other hosts. Tests supply temporary working directories.
+path components. Parent directories are never created automatically. Native
+absolute paths and filesystem permissions follow the host; Windows drive paths
+are rejected on other hosts. Tests supply temporary working directories.
 
 Existing files supply Windows-1252 lines to `leia`. LF ends a line, CR bytes are
 discarded, and a final unterminated line is consumed once. An initially empty
@@ -571,10 +571,15 @@ file supplies one empty line before subsequent reads fall back to the existing
 console stream. Exhausted files are closed and left unchanged. File values use
 the same conversions and echo as console input, including around `eco off`.
 
-A missing file is created when its directive is processed, even if no input is
-read. Console input is buffered as Windows-1252 with CRLF after each successfully
-converted value: integers use decimal text, reals ten fractional digits and
-logical values `Verdadeiro`/`Falso`. Character recording preserves the complete
+A missing file in an existing directory is created when its directive is
+processed, even if no input is read. If its parent directory is missing, the
+directive leaves file input inactive and execution continues without creating
+a file. Later reads use console or enabled random input, retaining ordinary
+input echo.
+
+For a created recording, console input is buffered as Windows-1252 with CRLF
+after each successfully converted value: integers use decimal text, reals ten
+fractional digits and logical values `Verdadeiro`/`Falso`. Character recording preserves the complete
 entered line even when the stored variable is limited to 255 characters.
 Each full 128-byte block is flushed immediately; successful completion flushes
 the remaining bytes. Failure or a replacement directive discards the unfinished
@@ -591,10 +596,9 @@ Undefined Windows-1252 bytes and unrepresentable output characters also receive
 `R008` as project guards; those byte cases are not claimed as reference matches.
 Encoding is checked before buffering a line. Oversized input lines receive `R003`; exhausted
 headless console input still reports `R004` at the consuming destination.
-Missing parent directories receive `R008` as an explicit project guard. Two
-reference recordings silently continue without creating the requested file;
-they remain pending compatibility verification rather than being reported as
-matches. See [the file-input recordings](file-input-progress.md).
+The missing-parent fallback is verified both without input and with a console
+read. Other file errors retain `R008`; unreadable-path reference compatibility
+remains unqualified. See [the file-input recordings](file-input-progress.md).
 
 `eco on` and `eco off` request a typed echo setting from the host. Both recorded
 console and random-input transcripts retain input echo around `eco off`, so the

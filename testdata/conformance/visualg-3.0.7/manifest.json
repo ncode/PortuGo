@@ -79299,7 +79299,7 @@
         ]
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
@@ -79309,7 +79309,13 @@
           "absent": [
             "data/file-input-data.txt"
           ]
-        }
+        },
+        "tests": [
+          "file_input_test.go#TestRecordedFileInput",
+          "internal/interp/file_input_test.go#TestMissingParentInputModes",
+          "internal/interp/file_input_test.go#TestMissingParentClearsPreviousFile",
+          "internal/repl/input_modes_test.go#TestInputModesPreserveNextSubmission"
+        ]
       }
     },
     {
@@ -79758,7 +79764,7 @@
         ]
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
@@ -79768,7 +79774,13 @@
           "absent": [
             "data/record.txt"
           ]
-        }
+        },
+        "tests": [
+          "file_input_test.go#TestRecordedFileInput",
+          "internal/interp/file_input_test.go#TestMissingParentInputModes",
+          "internal/interp/file_input_test.go#TestMissingParentClearsPreviousFile",
+          "internal/repl/input_modes_test.go#TestInputModesPreserveNextSubmission"
+        ]
       }
     },
     {

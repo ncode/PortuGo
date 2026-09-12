@@ -42,6 +42,9 @@ func (i *Interpreter) configureFile(s *ast.FileInputStmt) error {
 	if recording {
 		// Exclusive creation cannot overwrite a file appearing after the read attempt.
 		f, err = os.OpenFile(name, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o600)
+		if errors.Is(err, os.ErrNotExist) {
+			return nil // A missing parent leaves console or random input active.
+		}
 	}
 	if err != nil {
 		return diag.Diagnostic{Code: diag.RHost, Pos: s.At, Message: "cannot open input file", Cause: err}
