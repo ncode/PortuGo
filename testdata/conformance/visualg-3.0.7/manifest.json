@@ -822,7 +822,12 @@
         "declaration-semicolon-comment",
         "choice-range-next-line-selected",
         "rand-suffix-number-control",
-        "rand-suffix-assignment-line"
+        "rand-suffix-assignment-line",
+        "source-suffix-unterminated-next-line",
+        "source-suffix-unterminated-same-line",
+        "source-suffix-invalid-symbols",
+        "source-suffix-unclosed-block",
+        "source-suffix-notes"
       ]
     },
     {
@@ -80138,6 +80143,237 @@
         },
         "tests": [
           "file_input_test.go#TestRecordedFileInputDiagnostics"
+        ]
+      }
+    },
+    {
+      "id": "source-suffix-unterminated-next-line",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unterminated-next-line/source.alg",
+        "sha256": "4efb6e9dbaf0e7b8ea461bbc4979f620485376883837f424127e326b21fb437d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T13:40:31.2812638Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unterminated-next-line/raw.txt",
+          "sha256": "f571361cd12b96067836e58c17838ed0b9d4c3598e3b39c4495f4c3b82cbf489"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unterminated-next-line/stdout.txt",
+          "sha256": "578fe4610847d4812493928762cea185a366979343fc84bf79e6c0564a05c0de"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unterminated-next-line/stdout.txt",
+            "sha256": "578fe4610847d4812493928762cea185a366979343fc84bf79e6c0564a05c0de"
+          }
+        },
+        "tests": [
+          "source_suffix_test.go#TestRecordedIgnoredSuffixes",
+          "internal/parser/suffix_test.go#TestIgnoredSuffixRoundTrip"
+        ]
+      }
+    },
+    {
+      "id": "source-suffix-unterminated-same-line",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unterminated-same-line/source.alg",
+        "sha256": "a58632fd1ba2d34aaaeea125435354f912dd572c3fb6f9ee75ee8c19ad469890"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-11T13:40:41.5949276Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unterminated-same-line/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unterminated-same-line/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unterminated-same-line/screenshot.png",
+          "sha256": "aaca218a8b30b2df91f351d09fa85d3774292074b7685da897dfb307d31c1d31"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unterminated-same-line/transcription.txt",
+          "sha256": "dd91458bb358404f59f97830ad2e378a30332f1e21149d1575b2f3351e736fc8"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unterminated-same-line/stdout.txt",
+            "sha256": "578fe4610847d4812493928762cea185a366979343fc84bf79e6c0564a05c0de"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "source-suffix-invalid-symbols",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-invalid-symbols/source.alg",
+        "sha256": "f13a1cfca95a8111d7f11eb1b97cbeb6eff7ac240d824e0f0e7475ff1dbad884"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T13:40:51.9311001Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-invalid-symbols/raw.txt",
+          "sha256": "f571361cd12b96067836e58c17838ed0b9d4c3598e3b39c4495f4c3b82cbf489"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-invalid-symbols/stdout.txt",
+          "sha256": "578fe4610847d4812493928762cea185a366979343fc84bf79e6c0564a05c0de"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-invalid-symbols/stdout.txt",
+            "sha256": "578fe4610847d4812493928762cea185a366979343fc84bf79e6c0564a05c0de"
+          }
+        },
+        "tests": [
+          "source_suffix_test.go#TestRecordedIgnoredSuffixes",
+          "internal/parser/suffix_test.go#TestIgnoredSuffixRoundTrip"
+        ]
+      }
+    },
+    {
+      "id": "source-suffix-unclosed-block",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unclosed-block/source.alg",
+        "sha256": "eef4650bb04a76fd791042739c0135e5ddcd09f1e416c97cde2b6a9164120937"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T13:41:02.1594385Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unclosed-block/raw.txt",
+          "sha256": "f571361cd12b96067836e58c17838ed0b9d4c3598e3b39c4495f4c3b82cbf489"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unclosed-block/stdout.txt",
+          "sha256": "578fe4610847d4812493928762cea185a366979343fc84bf79e6c0564a05c0de"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-unclosed-block/stdout.txt",
+            "sha256": "578fe4610847d4812493928762cea185a366979343fc84bf79e6c0564a05c0de"
+          }
+        },
+        "tests": [
+          "source_suffix_test.go#TestRecordedIgnoredSuffixes",
+          "internal/parser/suffix_test.go#TestIgnoredSuffixRoundTrip"
+        ]
+      }
+    },
+    {
+      "id": "source-suffix-notes",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-notes/source.alg",
+        "sha256": "b825c56e940bbc1b4a1f5270c8af190560e2175c8fdb6da7d761abf1b643175b"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-11T13:41:12.3090797Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-notes/raw.txt",
+          "sha256": "f571361cd12b96067836e58c17838ed0b9d4c3598e3b39c4495f4c3b82cbf489"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-notes/stdout.txt",
+          "sha256": "578fe4610847d4812493928762cea185a366979343fc84bf79e6c0564a05c0de"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/source-suffix-notes/stdout.txt",
+            "sha256": "578fe4610847d4812493928762cea185a366979343fc84bf79e6c0564a05c0de"
+          }
+        },
+        "tests": [
+          "source_suffix_test.go#TestRecordedIgnoredSuffixes",
+          "internal/parser/suffix_test.go#TestIgnoredSuffixRoundTrip"
         ]
       }
     }

@@ -12,6 +12,7 @@ type Program struct {
 	Globals []VarDecl
 	Subs    []Subprogram
 	Body    []Stmt
+	Suffix  token.Token // Opaque decoded source immediately after fimalgoritmo.
 }
 
 // ConstDecl binds an expression once when its declaration section is entered.

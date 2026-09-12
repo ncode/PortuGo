@@ -112,6 +112,12 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   rejecting repeated or misplaced delimiters. The original bundled mean
   example matches its recording; other physical-line rules remain pending.
 
+  Four new completed recordings verify that later physical lines after
+  `fimalgoritmo` are opaque, even with malformed literals, symbols or blocks.
+  The scanner retains their decoded text for idempotent printing. A fifth
+  recording rejects an unmatched quote on the terminator's own line; its
+  diagnostic code and execution phase still differ and remain pending.
+
 - [ ] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
 - [ ] 4.8 Add structural and newline synchronization that collects independent parser diagnostics without panics, duplicate errors, or infinite loops.
 
@@ -120,6 +126,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Broader structural and execution-phase recovery differences remain pending.
 - [x] 4.9 Enforce source-size and syntax/AST-traversal limits from design decision 10 across source loading, parsing, analysis, and printing, reserving `E900`; cover flat expression chains and exact boundary/one-beyond cases before recursion or allocation.
 - [ ] 4.10 Extend canonical printing and round-trip tests to retain every comment exactly once with its anchor and suffix, comparing comment content/order as well as AST structure and idempotence.
+
+  The post-termination suffix now survives formatting, including same-line
+  notes and CP1252 text, with only CRLF-to-LF normalization. Interior comments
+  and their anchors remain pending; this partial slice does not complete 4.7
+  or 4.10.
 - [ ] 4.11 Expand lexer/parser fuzz and subprocess adversarial cases with newline, encoding, comment, literal, deep-nesting, truncation, and oversized inputs; assert controlled limit diagnostics and fail on watchdog expiration.
 - [ ] 4.12 Update `docs/language.md`, grammar examples, and `CHANGELOG.md` with spellings, newline rules, retained comments/suffixes, source/depth limits, and breaking rejections.
 - [ ] 4.13 Run focused source/lexer/parser/sema/printer tests and fuzz smoke tests, then the full build, lint, ordinary, race, incremental corpus, and strict OpenSpec suites.

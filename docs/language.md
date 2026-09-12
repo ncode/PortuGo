@@ -45,8 +45,16 @@ the next physical line to retain independent later errors.
 
 The `var` block may be omitted or left empty. Top-level `procedimento` and
 `funcao` declarations must appear before `inicio`. Recorded words and statements
-after `fimalgoritmo` are ignored during execution. Formatting currently discards
-that suffix; preserving its text remains pending.
+after `fimalgoritmo` are ignored during execution. Later physical lines are
+opaque, including unclosed strings, invalid symbols and unfinished blocks.
+Formatting retains the complete decoded suffix immediately after the terminator,
+including same-line comments and whitespace; only CRLF is normalized to LF.
+See the [ignored-suffix example](../examples/ignored_suffix.alg).
+
+The terminator's own line still receives lexical validation. An unmatched quote
+on that line produces a reference syntax error after preceding output. The CLI
+currently reports `L001` before execution for that case; its diagnostic code and
+execution phase remain explicitly pending in the corpus.
 
 An optional `;` may end a `var` line or a scalar/vector declaration, including
 local declarations and an empty `var` block. It must be on that physical line

@@ -97,6 +97,7 @@ const (
 	XOU
 	MOD
 	NEWLINE
+	SUFFIX // Opaque source following the program terminator.
 )
 
 // Token is one item in the source stream.
@@ -198,6 +199,7 @@ var kindNames = map[Kind]string{
 	TIMER: "timer", PAUSA: "pausa", DEBUG: "debug",
 	NAO: "nao", XOU: "xou", MOD: "mod",
 	NEWLINE: "NEWLINE",
+	SUFFIX:  "SUFFIX",
 }
 
 // Lookup returns the keyword kind for ident, or IDENT.

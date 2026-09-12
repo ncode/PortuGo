@@ -99,6 +99,14 @@ The parser SHALL recognize the oracle-confirmed VisuAlg 3.0.7 program header, de
 - **WHEN** non-comment, non-whitespace source appears after `fimalgoritmo`
 - **THEN** the parser accepts or diagnoses it exactly as established by the post-termination oracle probes
 
+#### Scenario: Ignore malformed text on later lines
+- **WHEN** an otherwise valid program has an unclosed string, invalid symbols or an unfinished block on physical lines after its terminator
+- **THEN** those lines do not affect execution and formatting retains their decoded text without interpreting it
+
+#### Scenario: Validate the terminator's own line
+- **WHEN** an unmatched quote follows `fimalgoritmo` on the same physical line
+- **THEN** the reference reports a syntax error on that line after preceding program output; this outcome remains distinct from ignored later lines
+
 ### Requirement: Ordered and positioned syntax
 The syntax tree SHALL preserve source order for declarations, subprograms, statements, case labels, arguments, dimensions, and record fields. Every node and designator SHALL carry a source position sufficient to report an error at the construct responsible for it.
 

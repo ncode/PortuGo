@@ -26,7 +26,13 @@ func Fprint(w io.Writer, prog *Program) error {
 	p.indent++
 	p.printStmts(prog.Body)
 	p.indent--
-	p.line("fimalgoritmo")
+	if p.err == nil {
+		suffix := strings.ReplaceAll(prog.Suffix.Text, "\r\n", "\n")
+		if suffix == "" {
+			suffix = "\n"
+		}
+		_, p.err = fmt.Fprintf(w, "fimalgoritmo%s", suffix)
+	}
 	return p.err
 }
 

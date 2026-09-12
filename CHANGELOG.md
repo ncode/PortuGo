@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Preserve opaque text after `fimalgoritmo` during formatting and ignore malformed
+  source on later physical lines. Keep lexical validation on the terminator's
+  own line; its recorded diagnostic-phase difference remains pending.
+
 - Retain EOF source positions when parser recovery reports additional missing
   expressions or delimiters. Record eleven more original bundled examples,
   verify the record-menu exit path and game type rejection, and retain remaining

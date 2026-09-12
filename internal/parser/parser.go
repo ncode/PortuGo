@@ -62,6 +62,9 @@ func (p *parser) parseProgram() *ast.Program {
 	}
 	prog.Body = p.parseStmtList(stopSet(token.FIMALGORITMO))
 	p.expect(token.FIMALGORITMO, "expected fimalgoritmo")
+	if p.peek().Kind == token.SUFFIX {
+		prog.Suffix = p.advance()
+	}
 	return prog
 }
 

@@ -21,17 +21,22 @@ func Scan(filename, src string) (*token.File, []token.Token, []diag.Diagnostic) 
 }
 
 type scanner struct {
-	src       string
-	file      *token.File
-	offset    int
-	tokens    []token.Token
-	diags     []diag.Diagnostic
-	lineStart bool
+	src        string
+	file       *token.File
+	offset     int
+	tokens     []token.Token
+	diags      []diag.Diagnostic
+	lineStart  bool
+	endProgram int
+	endTokens  int
 }
 
 func (s *scanner) scan() {
 	for {
 		s.skipSpaceAndComments()
+		if s.endProgram != 0 && (s.lineStart || s.offset == len(s.src)) {
+			s.scanSuffix()
+		}
 		if s.offset >= len(s.src) {
 			s.emit(token.EOF, "", token.Pos(s.offset))
 			return
@@ -67,6 +72,9 @@ func (s *scanner) skipSpaceAndComments() {
 			s.file.AddLine(s.offset)
 			s.lineStart = true
 			s.emit(token.NEWLINE, s.src[start:s.offset], token.Pos(start))
+			if s.endProgram != 0 {
+				return
+			}
 		case '/', '*':
 			if !s.lineStart && (r != '/' || s.peekNext() != '/') {
 				return
@@ -97,10 +105,29 @@ func (s *scanner) scanIdent(start int) {
 	kind := token.Lookup(text)
 	leading := len(s.tokens) == 0 || s.tokens[len(s.tokens)-1].Kind == token.NEWLINE
 	s.emit(kind, text, token.Pos(start))
+	if kind == token.FIMALGORITMO && s.endProgram == 0 {
+		// The terminator's own line still receives lexical validation.
+		s.endProgram, s.endTokens = s.offset, len(s.tokens)
+	}
 	if kind == token.DOS && leading {
 		// Configuration directives ignore the rest of their physical line.
 		s.skipLine()
 	}
+}
+
+func (s *scanner) scanSuffix() {
+	// Retain every decoded byte after the terminator, but do not tokenize
+	// later physical lines: even malformed literals there are ignored.
+	s.tokens = s.tokens[:s.endTokens]
+	if s.endProgram < len(s.src) {
+		s.emit(token.SUFFIX, s.src[s.endProgram:], token.Pos(s.endProgram))
+	}
+	for i := s.offset; i < len(s.src); i++ {
+		if s.src[i] == '\n' {
+			s.file.AddLine(i + 1)
+		}
+	}
+	s.offset, s.endProgram = len(s.src), 0
 }
 
 func (s *scanner) scanNumber(start int) {

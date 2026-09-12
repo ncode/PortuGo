@@ -96,6 +96,9 @@ func TestRecordedLineEndings(t *testing.T) {
 			if tok.Kind == token.NEWLINE {
 				text = "\n"
 			}
+			if tok.Kind == token.SUFFIX {
+				text = strings.ReplaceAll(text, "\r\n", "\n")
+			}
 			pos := file.Position(tok.Pos)
 			fmt.Fprintf(&got, "%s %q @%d:%d\n", tok.Kind, text, pos.Line, pos.Column)
 		}

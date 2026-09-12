@@ -41,7 +41,7 @@ func TestScanGolden(t *testing.T) {
 		"NUMBER \"3\" @4:6",
 		"NEWLINE \"\\n\" @4:7",
 		"fimalgoritmo \"fimalgoritmo\" @5:1",
-		"NEWLINE \"\\n\" @5:13",
+		"SUFFIX \"\\n\" @5:13",
 	}, "\n")
 	if got != want {
 		t.Fatalf("tokens mismatch\nwant:\n%s\n\ngot:\n%s", want, got)
