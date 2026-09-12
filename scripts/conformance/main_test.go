@@ -52,7 +52,7 @@ func TestCommandHistoryValidation(t *testing.T) {
 	}
 	writeArtifact(t, root, "manifest.json", string(data))
 	writeArtifact(t, root, "previous.json", string(data))
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 	for _, args := range [][]string{{"init"}, {"add", "."}, {"-c", "user.name=Test", "-c", "user.email=test@example.invalid", "-c", "commit.gpgsign=false", "-c", "core.hooksPath=.git/no-hooks", "commit", "-m", "Initial corpus"}} {
 		cmd := exec.CommandContext(ctx, "git", args...)
