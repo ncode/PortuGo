@@ -409,7 +409,11 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [x] 12.9 Update `docs/language.md` and `CHANGELOG.md` with the full text, code, conversion, and dynamic-result contracts.
 
   The authoritative language reference now records the direct-library `copia` allocation guard, and the changelog records the completed contract coverage. Existing progress notes retain pending reference and evidence gaps.
-- [ ] 12.10 Run focused registry/sema/stdlib/interpreter conversion tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
+- [x] 12.10 Run focused registry/sema/stdlib/interpreter conversion tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
+
+  The integrated text/conversion tests, complete local quality suite, strict
+  OpenSpec validation, fuzz smoke checks, and supported-platform validation
+  all pass at the stacked branch head.
 - [ ] 12.11 Mark every completed 12.x task immediately, commit the focused text/conversion changes, push the next stacked branch, and open its draft PR before group 13.
 
 ## 13. Injected Randomness, Rand, Randi, and Random-Input Command
@@ -551,7 +555,11 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 - [x] 15.10 Add fake clock/host tables, CLI headless fixtures, canonical-print coverage, and an example demonstrating portable environment-command behavior.
 - [x] 15.11 Update `docs/language.md` and `CHANGELOG.md` with all environment commands, host effects, headless deviations, timing units, and failures.
-- [ ] 15.12 Run focused parser/sema/host/interpreter tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
+- [x] 15.12 Run focused parser/sema/host/interpreter tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
+
+  The integrated environment tests, complete local quality suite, strict
+  OpenSpec validation, fuzz smoke checks, and supported-platform validation
+  all pass at the stacked branch head.
 - [ ] 15.13 Mark every completed 15.x task immediately, commit the focused environment changes, push the next stacked branch, and open its draft PR before group 16.
 
 ## 16. REPL Input, Completion, Recovery, and Formatter Coverage
