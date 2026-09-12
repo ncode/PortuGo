@@ -385,12 +385,29 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   selector combined with a function bound still exposes a reference control-flow
   difference, so this task remains open. A malformed `ate` line in an unselected
   case body is now retained and reports `P001` only when that body executes.
-- [ ] 9.7 Apply recorded result updates without exiting nested conditions, choices, or loops; propagate break control to the exact innermost-loop boundary.
-- [ ] 9.8 Implement `para` bound/step evaluation timing, negative and zero-step behavior, mutation rules, and overflow-safe termination at integer limits.
-- [ ] 9.9 Return `R005` or `R006` for runtime-only invalid return/loop state with positions and no panic.
+- [x] 9.7 Apply recorded result updates without exiting nested conditions, choices, or loops; propagate break control to the exact innermost-loop boundary.
+
+  Recorded finite return cases cover nested conditions, choices, loops, and
+  exact break propagation through the existing function-return regressions.
+- [x] 9.8 Implement `para` bound/step evaluation timing, negative and zero-step behavior, mutation rules, and overflow-safe termination at integer limits.
+
+  The four accepted `para` probes cover bound/step timing, descending and
+  empty loops, mutation, and interruption. Progression now detects signed
+  integer overflow and stops at the terminal bound instead of wrapping.
+- [x] 9.9 Return `R005` or `R006` for runtime-only invalid return/loop state with positions and no panic.
+
+  Runtime-limit regressions assert positioned `R005` call-depth and `R006`
+  step-budget diagnostics under a subprocess watchdog.
 - [ ] 9.10 Add parser goldens, semantic diagnostic tables, runtime `.out`/`.err` fixtures, and examples for ranges, repeat variants, and descending boundary-safe loops.
-- [ ] 9.11 Update `docs/language.md` and `CHANGELOG.md` with repeat, ranges, return, break, and exact `para` semantics.
-- [ ] 9.12 Run focused control-flow tests and then the full build, lint, ordinary, race, malformed/overflow, and strict OpenSpec suites.
+- [x] 9.11 Update `docs/language.md` and `CHANGELOG.md` with repeat, ranges, return, break, and exact `para` semantics.
+
+  The language reference and changelog record the verified repeat, range,
+  return, break, and `para` exit and overflow behavior.
+- [x] 9.12 Run focused control-flow tests and then the full build, lint, ordinary, race, malformed/overflow, and strict OpenSpec suites.
+
+  Focused control-flow regressions and the complete quality suite pass,
+  including build, formatting, vet, static analysis, lint, ordinary and race
+  tests, strict OpenSpec validation, and both fuzz smoke runs.
 - [ ] 9.13 Mark every completed 9.x task immediately, commit the focused control-flow changes, push the next stacked branch, and open its draft PR before group 10.
 
 ## 10. CP1252, Input Parsing, Output Formatting, and I/O Validation

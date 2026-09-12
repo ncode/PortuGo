@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Stop `para` progression at the terminal bound when its next signed integer
+  value would overflow, and keep `R005`/`R006` runtime-limit diagnostics tied to
+  the attempted call or loop position.
+
 - Accept the recorded no-value `div(...)` candidate expression while keeping
   `DIV` as the infix integer-division operator and excluding the candidate from
   the documented built-in catalog.

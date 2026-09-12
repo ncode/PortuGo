@@ -214,7 +214,7 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 		return control{}, fmt.Errorf("para passo cannot be zero")
 	}
 	final := from
-	for cur := from; (step > 0 && cur <= to) || (step < 0 && cur >= to); cur += step {
+	for cur := from; (step > 0 && cur <= to) || (step < 0 && cur >= to); {
 		if err := i.charge(s.Start()); err != nil {
 			return control{}, err
 		}
@@ -234,10 +234,26 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 		}
 		// VisuAlg caps the exposed exit value at the terminal bound, even
 		// for descending loops. Body assignments do not change progression.
-		final = min(cur+step, to)
+		next, ok := advanceFor(cur, step)
+		if !ok {
+			// The mathematical next value is outside the integer domain. It
+			// cannot produce another iteration, so expose the terminal bound
+			// instead of wrapping and re-entering the loop.
+			final = to
+			break
+		}
+		final = min(next, to)
+		cur = next
 	}
 	if err := assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final}); err != nil {
 		return control{}, err
 	}
 	return control{}, i.delay(s.At)
+}
+
+func advanceFor(value, step int64) (int64, bool) {
+	if step > 0 && value > math.MaxInt64-step || step < 0 && value < math.MinInt64-step {
+		return 0, false
+	}
+	return value + step, true
 }
