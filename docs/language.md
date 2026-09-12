@@ -1197,6 +1197,12 @@ headless host uses real time and silent, nonblocking UI operations. Display
 commands expose typed console configuration, foreground/background color changes,
 screen clears and echo settings. Chronometer commands use the host clock;
 timer and breakpoint commands use typed delay and pause requests.
+Failures from these host operations return `R008` at the triggering command,
+retain preceding output, and keep underlying error details out of rendered
+diagnostics. [Host-failure tests](display-commands-progress.md#injected-host-failures)
+cover this boundary separately from the remaining reference rejection-order
+and elapsed-time differences. Headless UI commands require no interactive
+continuation; requested timer delays still wait.
 
 ## Out Of Scope
 

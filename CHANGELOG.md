@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Trace the existing console, echo, timer, breakpoint and chronometer failure
+  tests alongside display failures, completing the positioned host-error and
+  headless execution coverage. Correct the historical file-input echo note;
+  variable timing and source-level rejection-order cases remain pending.
+
 - Reject a second command after parenthesized output on the same physical
   line, including semicolon-separated commands, lone trailing semicolons and
   same-line program terminators, with positioned `P001` before execution.

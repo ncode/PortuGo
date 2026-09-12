@@ -44,3 +44,22 @@ editor. `TestDisplayHostFailures` checks `R008` at the original command,
 preserved output and cause, suppressed operational error details, stopped later
 effects, and successful interpreter reuse after failure. This project contract
 does not substitute for file, clock, encoding, or other reference recordings.
+
+The same project record now links the existing tests for the other fallible
+typed host operations: `TestConsoleConfiguration`, `TestEchoHost`,
+`TestTimerResetAndFailures`, and `TestBreakpointHost`. They check console,
+echo, delay, and pause/debug failures at their source positions while stopping
+later effects and retaining preceding output and inspectable causes.
+`TestTimerCallFailureRestoresFrame` checks cleanup when a delay fails during
+subprogram entry. `TestChronometerResetAndFailures` covers clock regression,
+per-run reset, and output failure; `TestDiagnosticContract` checks that
+rendered diagnostics omit underlying error details.
+
+Headless behavior is also exercised through bounded CLI replay of recorded
+programs, including `console-header`, `echo-command-on`, `echo-command-off`,
+`execution-pause-bare`, `execution-debug-true`, `display-clear-bare`,
+`display-color-foreground`, and `environment-timer-straight`. Each uses a
+five-second failure deadline and exact output comparison. UI operations add no
+terminal escapes and require no interactive continuation; requested timer
+delays still wait. This closes task 15.9 without changing recorded expectations
+or qualifying pending elapsed-time and source-level rejection-order cases.

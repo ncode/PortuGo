@@ -493,7 +493,8 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
   Typed on/off requests preserve recorded console and random-input transcripts.
   Bare and ignored-tail forms have headless and canonical-print coverage.
-  File-input interactions and the GUI state of ignored tails remain unqualified.
+  The verified `file-detail-echo-off` recording also preserves file-input echo.
+  The GUI state of ignored tails remains unqualified.
 
 - [x] 15.6 Implement chronometer start/query/reset/stop semantics through `Host.Now`, including deterministic elapsed calculations and clock-edge cases.
 
@@ -514,7 +515,15 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   configuration, and no-value expressions. Host ordering, failures, and canonical
   formatting have regression coverage. Other environment commands remain pending.
 
-- [ ] 15.9 Return positioned `R008` for host failures and validate that headless execution emits no accidental terminal escapes, blocks, or platform-specific errors.
+- [x] 15.9 Return positioned `R008` for host failures and validate that headless execution emits no accidental terminal escapes, blocks, or platform-specific errors.
+
+  Existing [host-failure tests](../../../docs/display-commands-progress.md#injected-host-failures)
+  cover every fallible typed host operation, positioned diagnostics, retained
+  output and causes, safe error rendering, and call-frame cleanup. Bounded CLI
+  replay verifies silent UI effects without waiting for interactive input.
+  Requested timer delays still wait; variable elapsed-time recordings and
+  source-level rejection timing remain pending.
+
 - [ ] 15.10 Add fake clock/host tables, CLI headless fixtures, canonical-print coverage, and an example demonstrating portable environment-command behavior.
 - [ ] 15.11 Update `docs/language.md` and `CHANGELOG.md` with all environment commands, host effects, headless deviations, timing units, and failures.
 - [ ] 15.12 Run focused parser/sema/host/interpreter tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.

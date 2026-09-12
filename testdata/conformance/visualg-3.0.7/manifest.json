@@ -10642,7 +10642,14 @@
       "implementation": {
         "state": "verified",
         "tests": [
-          "internal/interp/display_test.go#TestDisplayHostFailures"
+          "internal/interp/display_test.go#TestDisplayHostFailures",
+          "internal/interp/display_test.go#TestConsoleConfiguration",
+          "internal/interp/environment_test.go#TestEchoHost",
+          "internal/interp/environment_test.go#TestChronometerResetAndFailures",
+          "internal/interp/execution_controls_test.go#TestTimerResetAndFailures",
+          "internal/interp/execution_controls_test.go#TestTimerCallFailureRestoresFrame",
+          "internal/interp/execution_controls_test.go#TestBreakpointHost",
+          "internal/diag/diag_test.go#TestDiagnosticContract"
         ]
       }
     },
