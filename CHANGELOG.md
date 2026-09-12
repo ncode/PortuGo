@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Record nine call-form controls and verify seven supplied-argument or
+  parameterless cases through original and formatted execution. Keep two
+  empty numeric-argument early-completion cases pending without inferring
+  missing-argument defaults.
+
 - Trace the existing console, echo, timer, breakpoint and chronometer failure
   tests alongside display failures, completing the positioned host-error and
   headless execution coverage. Correct the historical file-input echo note;

@@ -501,6 +501,13 @@ line; function argument-count errors point to the call. Empty-argument edge
 cases and integer operators after numeric reference conversion remain under
 validation.
 
+The [call-form controls](empty-call-progress.md) verify supplied arguments for
+all four scalar value types and numeric `var` parameters, including parameter
+mutation and return to the caller. Two empty numeric-argument recordings enter
+the procedure body but complete execution before printing the parameter or
+returning to the caller. These calls remain rejected by the implementation;
+the observations do not establish a general zero-default rule.
+
 ## Function Results
 
 `retorne <expression>` updates the active function's result and execution
