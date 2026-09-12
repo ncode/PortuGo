@@ -260,7 +260,14 @@ Statements on subsequent lines still execute. After a complete statement,
 See [the comment example](../examples/comment_lines.alg).
 
 Thirty-one recorded cases cover these forms, quoted delimiters, and formatting
-without changing execution. Comments are currently discarded when formatting.
+without changing execution. Formatting retains decoded comment text in source
+order, including leading and same-line comments, empty declaration sections,
+comment-only branches and comments before block terminators. Indentation and
+line endings are normalized; ignored text after `fimalgoritmo` remains opaque.
+Multiline expressions, declaration headers and argument lists containing
+internal comments retain their token spellings and line breaks, with normalized
+indentation, so comments cannot hide following tokens or merge together.
+See [the comment-preservation example](../examples/comment_anchors.alg).
 The reference's handling of comments within incomplete expressions and the
 remaining syntax-recovery behavior are still pending.
 

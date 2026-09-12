@@ -5,6 +5,10 @@
 - Preserve original-byte source positions through UTF-8 BOM removal and
   Windows-1252 decoding, including CLI and REPL diagnostics at every stage.
 
+- Preserve positioned comments through lexing, parsing and canonical printing,
+  including empty declaration sections and conditional/default branches, nested
+  block terminators, header/directive notes and decoded Windows-1252 text.
+
 - Add explicit project-test trace mappings for AST positions, canonical printing
   and formatter modes while retaining their unfinished implementation status.
 

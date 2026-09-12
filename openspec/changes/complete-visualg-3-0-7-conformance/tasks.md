@@ -77,10 +77,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 ## 4. Newline-Aware Lexing, Strict Grammar, Recovery, and Printing
 
 - [ ] 4.1 Add failing lexer/parser/printer goldens for CRLF/LF, comment contents and anchors, CP1252 comments, strict vocabulary/literals, recovery, ignored suffixes, and source/depth limit boundaries.
-- [ ] 4.2 Preserve positioned physical newline and comment tokens through decoding and lexing with original-byte mapping; comments must not consume their terminating newline.
+- [x] 4.2 Preserve positioned physical newline and comment tokens through decoding and lexing with original-byte mapping; comments must not consume their terminating newline.
   Original-byte mapping now survives BOM removal and Windows-1252 decoding,
-  including physical newline, EOF, and ignored-suffix positions. Interior
-  comment tokens and their anchors remain pending in the formatter slice.
+  including physical newline, EOF, ignored-suffix and interior-comment spans.
+  The comment regression checks mapped CP1252 bytes through canonical printing;
+  separate lexer tables verify that each comment leaves its newline intact.
 - [ ] 4.3 Implement the oracle-recorded identifier character set, case-preserving token text, locale-independent canonical matching, and rejection of unsupported identifier forms.
 - [ ] 4.4 Replace the keyword table with the complete oracle-recorded command vocabulary, accented and unaccented spellings, aliases, and non-reserved lookalikes.
 
@@ -121,7 +122,13 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   recording rejects an unmatched quote on the terminator's own line; its
   diagnostic code and execution phase still differ and remain pending.
 
-- [ ] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
+- [x] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
+
+  Comment spans and physical newlines now survive lexing and parsing. The AST
+  retains empty sections/branches and block boundaries, while decoded fragments
+  preserve internal comments in multiline expressions, declarations and calls.
+  Byte goldens compare comment contents/order/anchors and syntax across two
+  formatting passes, including CP1252 text and separator-only comment lines.
 - [ ] 4.8 Add structural and newline synchronization that collects independent parser diagnostics without panics, duplicate errors, or infinite loops.
 
   Recovery now retains the final source position after consuming EOF. A
@@ -131,12 +138,12 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 - [ ] 4.10 Extend canonical printing and round-trip tests to retain every comment exactly once with its anchor and suffix, comparing comment content/order as well as AST structure and idempotence.
 
   The post-termination suffix now survives formatting, including same-line
-  notes and CP1252 text, with only CRLF-to-LF normalization. Interior comments
-  and their anchors remain pending; this partial slice does not complete 4.7
-  or 4.10.
+  notes and CP1252 text. Interior comments now retain their anchors and distinct
+  contents across round trips. A repeated-carriage-return suffix edge case still
+  needs an idempotent normalization rule before this task is complete.
 - [ ] 4.11 Expand lexer/parser fuzz and subprocess adversarial cases with newline, encoding, comment, literal, deep-nesting, truncation, and oversized inputs; assert controlled limit diagnostics and fail on watchdog expiration.
 - [ ] 4.12 Update `docs/language.md`, grammar examples, and `CHANGELOG.md` with spellings, newline rules, retained comments/suffixes, source/depth limits, and breaking rejections.
-- [ ] 4.13 Run focused source/lexer/parser/sema/printer tests and fuzz smoke tests, then the full build, lint, ordinary, race, incremental corpus, and strict OpenSpec suites.
+- [x] 4.13 Run focused source/lexer/parser/sema/printer tests and fuzz smoke tests, then the full build, lint, ordinary, race, incremental corpus, and strict OpenSpec suites.
 - [x] 4.14 Mark every completed 4.x task immediately, commit the focused grammar changes, push the next stacked branch, and open its draft PR before group 5.
 
 ## 5. Declaration and Call Compatibility

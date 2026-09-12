@@ -97,7 +97,8 @@ const (
 	XOU
 	MOD
 	NEWLINE
-	SUFFIX // Opaque source following the program terminator.
+	COMMENT // A physical-line comment, excluding its terminating newline.
+	SUFFIX  // Opaque source following the program terminator.
 )
 
 // Token is one item in the source stream.
@@ -105,6 +106,7 @@ type Token struct {
 	Kind Kind
 	Text string
 	Pos  Pos
+	Raw  string // Decoded spelling and whitespace since the preceding token.
 }
 
 var keywords = map[string]Kind{
@@ -199,6 +201,7 @@ var kindNames = map[Kind]string{
 	TIMER: "timer", PAUSA: "pausa", DEBUG: "debug",
 	NAO: "nao", XOU: "xou", MOD: "mod",
 	NEWLINE: "NEWLINE",
+	COMMENT: "COMMENT",
 	SUFFIX:  "SUFFIX",
 }
 
