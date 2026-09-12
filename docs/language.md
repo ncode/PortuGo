@@ -1028,6 +1028,12 @@ output statement without evaluating those arguments. Use bare `rand` for random
 fractions and `randi(n)` for exclusive-upper-bound integers. Neither API promises
 the reference's exact seeds or sequences.
 
+Recorded generated-input samples use explicit [domain replay contracts](random-replay-contracts.md).
+These check the exact input echo and repeated output representation, inclusive
+bounds, fractional grid and sample count for original and formatted programs.
+Reference observation bytes are retained; only the generated sample values may
+differ between runs. Unqualified output comparisons remain byte-exact.
+
 Missing random sources, invalid draws and unrepresentable random-input ranges
 return positioned `R004` without assigning or echoing the failed read. Builtin
 random failures continue using `R007`. File-input interaction and extreme bound

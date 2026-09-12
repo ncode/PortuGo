@@ -36,6 +36,11 @@ Each deterministic probe SHALL store the source bytes, input bytes, normalized o
 - **WHEN** the reference behavior can only be observed through the VisuAlg interface
 - **THEN** the probe contains both a screenshot and a reviewable transcription linked from the manifest
 
+#### Scenario: Replay generated-input samples
+- **WHEN** an accepted random-input recording declares a reviewed domain contract
+- **THEN** validation preserves the recorded bytes and verifies its type, inclusive domain, precision grid, sample count and exact echo/output formatting; replay applies the same checks to the implementation without comparing generator sequences
+- **AND** unqualified stdout and every other observation channel retain their exact comparisons
+
 ### Requirement: Requirement traceability
 The conformance manifest SHALL trace every OpenSpec requirement, every `[VERIFICAR]` item, every item in the original compatibility checklist, every audited defect, every feature discovered in the official release, and every bundled `.alg` example to its evidence, owning implementation tasks, and implementation state. Evidence and implementation states SHALL be independent. Recorded behavior awaiting implementation SHALL identify its future owning tasks without claiming nonexistent tests. Verified behavior SHALL identify existing tests and pass replay on the current checkout. Non-applicability SHALL require an explicit, reviewed rationale; project-specific tooling and safeguards SHALL have project tests and a rationale for the absence of reference probes. Validation SHALL fail when a link required for the selected phase is absent or stale.
 

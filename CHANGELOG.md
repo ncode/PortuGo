@@ -23,6 +23,11 @@
   input, echo and environment commands, including recovery after file errors
   and independent input for the next submitted program.
 
+- Qualify seventeen generated-input recordings with explicit numeric/text domain
+  contracts, exact echo/output formatting, precision grids and sample counts.
+  Validate original and formatted programs with forced endpoints and multiple
+  seeds while preserving recorded evidence and exact deterministic comparisons.
+
 - Add explicit project-test trace mappings for AST positions, canonical printing
   and formatter modes while retaining their unfinished implementation status.
 

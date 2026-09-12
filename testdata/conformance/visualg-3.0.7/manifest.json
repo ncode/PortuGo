@@ -71080,14 +71080,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-input-fixed-real/stdout.txt",
             "sha256": "cdd05329edb2953a25c9aaab525f9e17bc4facbdc86b338ad78efb11d5a2b649"
+          },
+          "randomInput": {
+            "kind": "real",
+            "minimum": 2000,
+            "maximum": 2999,
+            "decimals": 3,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -71335,14 +71349,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-range-zero-bound/stdout.txt",
             "sha256": "e24b1ce09e88503ee78a244c90cdd9c8598276e66b6a1466b0deb6e10e16d4af"
+          },
+          "randomInput": {
+            "kind": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "decimals": 0,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -71418,14 +71446,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-range-fraction-precision/stdout.txt",
             "sha256": "ffc9fcd7a1ac514214a69f2956f015a7fb8af8ca1b7d4b789c80e90c17ba20ca"
+          },
+          "randomInput": {
+            "kind": "real",
+            "minimum": 2750,
+            "maximum": 3749,
+            "decimals": 3,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -71544,14 +71586,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-range-fractional-precision/stdout.txt",
             "sha256": "310b0e7ba0edcae2bbca3d6d94e68482acf86af5750cbfc674a2970f039a2d5b"
+          },
+          "randomInput": {
+            "kind": "real",
+            "minimum": 20,
+            "maximum": 29,
+            "decimals": 1,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -71584,14 +71640,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-range-large-precision/stdout.txt",
             "sha256": "d635b3135f374d221845b53d343dbd0ed37da211a3bfaa15910f49bb25781bd2"
+          },
+          "randomInput": {
+            "kind": "real",
+            "minimum": 200000,
+            "maximum": 299999,
+            "decimals": 5,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -71624,14 +71694,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-range-expression-bound/stdout.txt",
             "sha256": "3e527599ba37abe88eaaf2430f13d051573a868af40e44dcb2d36a83ba9d5936"
+          },
+          "randomInput": {
+            "kind": "integer",
+            "minimum": 7,
+            "maximum": 8,
+            "decimals": 0,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -71823,14 +71907,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-range-on-reset/stdout.txt",
             "sha256": "df60389f08b96bde82804f5f869cc873ec114d862d23dff34754dd8c65aacb64"
+          },
+          "randomInput": {
+            "kind": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "decimals": 0,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -71863,14 +71961,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-range-reversed/stdout.txt",
             "sha256": "6e736b8df0485818a7f73917221cdcba44369a396cee27cf910cb74ee9a45ad1"
+          },
+          "randomInput": {
+            "kind": "integer",
+            "minimum": 3,
+            "maximum": 9,
+            "decimals": 0,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -71961,14 +72073,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-range-text/stdout.txt",
             "sha256": "de57874339198220d2731ea55c354c4ee2e7026aa5ff2edca05281917531097f"
+          },
+          "randomInput": {
+            "kind": "text",
+            "minimum": 0,
+            "maximum": 0,
+            "decimals": 0,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -72418,14 +72544,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-value-real-grid/stdout.txt",
             "sha256": "b737cb4c65b866c835e81a8b7457ef93dec0690d6c2f1c05a1ea85be37c64485"
+          },
+          "randomInput": {
+            "kind": "real",
+            "minimum": 2000,
+            "maximum": 2999,
+            "decimals": 3,
+            "samples": 8,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -72544,14 +72684,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-value-single-bound/stdout.txt",
             "sha256": "d77d16a74545351b3d701a874fab66a765a70e49a4fdf30a8fdf321f8c26396a"
+          },
+          "randomInput": {
+            "kind": "integer",
+            "minimum": 7,
+            "maximum": 100,
+            "decimals": 0,
+            "samples": 8,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -72584,14 +72738,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-value-single-negative/stdout.txt",
             "sha256": "94459d0d755195c16274a4e8986264653a2929781abb35839ef564e547742966"
+          },
+          "randomInput": {
+            "kind": "integer",
+            "minimum": -3,
+            "maximum": 100,
+            "decimals": 0,
+            "samples": 8,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -72624,14 +72792,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-value-on-integer/stdout.txt",
             "sha256": "3a17c7768ace582854134330af000d6310f55b20794176fbe6203114bdd50469"
+          },
+          "randomInput": {
+            "kind": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "decimals": 0,
+            "samples": 8,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -72664,14 +72846,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-value-on-real/stdout.txt",
             "sha256": "69dedc6aaf2f2565d3444bdc50947e2755c750f99d9d55e833e21575bdfca3e8"
+          },
+          "randomInput": {
+            "kind": "real",
+            "minimum": 0,
+            "maximum": 100,
+            "decimals": 0,
+            "samples": 8,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -72790,14 +72986,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-value-precision-six/stdout.txt",
             "sha256": "d1fd217b62f24e29d4f6bbfd094291e1f764be8a82d5ee269bd3bd2a99a5c405"
+          },
+          "randomInput": {
+            "kind": "real",
+            "minimum": 200000,
+            "maximum": 299999,
+            "decimals": 5,
+            "samples": 8,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -72830,14 +73040,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-value-precision-seven/stdout.txt",
             "sha256": "a2973be34ffc4fe03d7f783c5bda5d3d346126d44e82eb881dc676e9889998a8"
+          },
+          "randomInput": {
+            "kind": "real",
+            "minimum": 200000,
+            "maximum": 299999,
+            "decimals": 5,
+            "samples": 8,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {
@@ -72870,14 +73094,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/random-value-precision-large/stdout.txt",
             "sha256": "6c83306fc31f093d243789f6a4f2396334e4d37ea24895ed55773a9afa5e0dac"
+          },
+          "randomInput": {
+            "kind": "real",
+            "minimum": 200000,
+            "maximum": 299999,
+            "decimals": 5,
+            "samples": 8,
+            "review": {
+              "reason": "Qualify generated input by its recorded domain, precision grid, sample count and exact echo/output pair formatting; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
       }
     },
     {

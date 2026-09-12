@@ -21,6 +21,8 @@ func TestReplayChild(t *testing.T) {
 		fmt.Print(" 1\n")
 	case "mismatch":
 		fmt.Print("1\n")
+	case "random-input":
+		fmt.Print("2.8470000000\n 2.847\n")
 	case "reject":
 		fmt.Fprintln(os.Stderr, "source.alg:4:2: E004: invalid call")
 		os.Exit(1)
