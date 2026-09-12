@@ -494,7 +494,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   other configuration/declaration combinations remain unqualified.
 
 - [x] 15.4 Implement pause and debug/breakpoint commands through typed `Host.Breakpoint` events with non-blocking default headless behavior.
-- [ ] 15.5 Complete echo commands and state transitions not owned by `arquivo` or random-input groups, including oracle-confirmed output text.
+- [x] 15.5 Complete echo commands and state transitions not owned by `arquivo` or random-input groups, including oracle-confirmed output text.
 
   Typed on/off requests preserve recorded console and random-input transcripts.
   Bare and ignored-tail forms have headless and canonical-print coverage.
@@ -529,8 +529,8 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   Requested timer delays still wait; variable elapsed-time recordings and
   source-level rejection timing remain pending.
 
-- [ ] 15.10 Add fake clock/host tables, CLI headless fixtures, canonical-print coverage, and an example demonstrating portable environment-command behavior.
-- [ ] 15.11 Update `docs/language.md` and `CHANGELOG.md` with all environment commands, host effects, headless deviations, timing units, and failures.
+- [x] 15.10 Add fake clock/host tables, CLI headless fixtures, canonical-print coverage, and an example demonstrating portable environment-command behavior.
+- [x] 15.11 Update `docs/language.md` and `CHANGELOG.md` with all environment commands, host effects, headless deviations, timing units, and failures.
 - [ ] 15.12 Run focused parser/sema/host/interpreter tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
 - [ ] 15.13 Mark every completed 15.x task immediately, commit the focused environment changes, push the next stacked branch, and open its draft PR before group 16.
 

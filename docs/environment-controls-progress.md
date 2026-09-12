@@ -41,3 +41,10 @@ now have [deterministic replay](deterministic-qualification.md); variable
 elapsed-time recordings and rejection-order differences remain pending.
 The existing [host-failure coverage](display-commands-progress.md#injected-host-failures)
 now traces the complete typed host error boundary separately from those gaps.
+
+The environment-command handoff is now covered by the existing typed host
+tables, headless CLI fixtures, canonical-printer checks and the portable
+environment example. Echo on/off, ignored tails, file-input echo and the
+recorded console/random transitions have focused execution coverage. Remaining
+work is limited to the other oracle commands and the explicitly pending timing
+and GUI qualifications.

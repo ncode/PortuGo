@@ -12,6 +12,10 @@
   headless execution coverage. Correct the historical file-input echo note;
   variable timing and source-level rejection-order cases remain pending.
 
+- Complete the environment echo handoff with typed host tables, headless
+  fixtures, canonical printing and the portable example. Remaining environment
+  commands and explicitly pending timing or GUI qualifications stay open.
+
 - Reject a second command after parenthesized output on the same physical
   line, including semicolon-separated commands, lone trailing semicolons and
   same-line program terminators, with positioned `P001` before execution.
