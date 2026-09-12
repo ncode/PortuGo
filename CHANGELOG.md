@@ -28,6 +28,11 @@
   Validate original and formatted programs with forced endpoints and multiple
   seeds while preserving recorded evidence and exact deterministic comparisons.
 
+- Qualify ten existing reference probes with focused tests: ignored suffixes,
+  reference-parameter type changes, five syntax rejections before output, and
+  three chronometer transcripts replayed under explicit zero-elapsed-time
+  conditions. Preserve all original recordings.
+
 - Add explicit project-test trace mappings for AST positions, canonical printing
   and formatter modes while retaining their unfinished implementation status.
 

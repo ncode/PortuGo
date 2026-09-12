@@ -4441,13 +4441,20 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/post-terminator-broken-string/stdout.txt",
             "sha256": "c26de83abdc9496cd1301470918ec39ecca1cf389ef0ae1c6504da1800d1c431"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedDeterministicFollowups"
+        ],
+        "review": {
+          "reason": "Exact recorded output passes for the original source and canonical formatting, with no diagnostics.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -4901,7 +4908,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -4914,6 +4921,13 @@
               "line": 3
             }
           ]
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedSyntaxRejectionsBeforeOutput"
+        ],
+        "review": {
+          "reason": "Recorded rejection line and partial output confirm failure before any program output. This mapping applies only to this exact source; broader execution-phase behavior remains pending.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -5011,7 +5025,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -5024,6 +5038,13 @@
               "line": 3
             }
           ]
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedSyntaxRejectionsBeforeOutput"
+        ],
+        "review": {
+          "reason": "Recorded rejection line and partial output confirm failure before any program output. This mapping applies only to this exact source; broader execution-phase behavior remains pending.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -6074,7 +6095,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -6087,6 +6108,13 @@
               "line": 5
             }
           ]
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedSyntaxRejectionsBeforeOutput"
+        ],
+        "review": {
+          "reason": "Recorded rejection line and partial output confirm failure before any program output. This mapping applies only to this exact source; broader execution-phase behavior remains pending.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -11505,7 +11533,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -11518,6 +11546,13 @@
               "line": 3
             }
           ]
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedSyntaxRejectionsBeforeOutput"
+        ],
+        "review": {
+          "reason": "Recorded rejection line and partial output confirm failure before any program output. This mapping applies only to this exact source; broader execution-phase behavior remains pending.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -12044,7 +12079,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -12057,6 +12092,13 @@
               "line": 3
             }
           ]
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedSyntaxRejectionsBeforeOutput"
+        ],
+        "review": {
+          "reason": "Recorded rejection line and partial output confirm failure before any program output. This mapping applies only to this exact source; broader execution-phase behavior remains pending.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -13781,13 +13823,20 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/reference-widening-followup/stdout.txt",
             "sha256": "75e794824d59ef1c2945533180e5e3a7564ab9e7032dfe721c16646b85e9badd"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedDeterministicFollowups"
+        ],
+        "review": {
+          "reason": "Exact recorded output passes for the original source and canonical formatting, with no diagnostics.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -74143,13 +74192,24 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/chronometer-on-off/stdout.txt",
             "sha256": "ceb58c72f38d76af91c2e2a26a8dd3eb9576e39790b8f944b64cb8bc2c45811d"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/chronometer-on-off/expected-host.json",
+            "sha256": "96242989e3dad26c3eaed5cb3dbf6d84216ddf6d2521dc25ad10ff92f16fcec6"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedZeroElapsedChronometers"
+        ],
+        "review": {
+          "reason": "Qualified at zero elapsed time through the deterministic host adapter; the host trace is a project fixture, not a captured reference trace. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -74269,13 +74329,24 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/chronometer-repeat-start/stdout.txt",
             "sha256": "da5717a1eaa3d3ee857a45c225be05648e3c7888c2f8201843eb153ef9eb1b01"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/chronometer-repeat-start/expected-host.json",
+            "sha256": "1bdea0c7aa2623a3d153305b8b47be350d8de3875866bcdf29003ca9c4b25eda"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedZeroElapsedChronometers"
+        ],
+        "review": {
+          "reason": "Qualified at zero elapsed time through the deterministic host adapter; the host trace is a project fixture, not a captured reference trace. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -74566,13 +74637,24 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/chronometer-tail/stdout.txt",
             "sha256": "ceb58c72f38d76af91c2e2a26a8dd3eb9576e39790b8f944b64cb8bc2c45811d"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/chronometer-tail/expected-host.json",
+            "sha256": "96242989e3dad26c3eaed5cb3dbf6d84216ddf6d2521dc25ad10ff92f16fcec6"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedZeroElapsedChronometers"
+        ],
+        "review": {
+          "reason": "Qualified at zero elapsed time through the deterministic host adapter; the host trace is a project fixture, not a captured reference trace. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },

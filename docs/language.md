@@ -618,6 +618,10 @@ Clock regressions, echo-host failures and chronometer output failures receive
 positioned `R008`; underlying error details are not rendered. See
 [the environment recordings](environment-controls-progress.md) for evidence
 and the distinction between elapsed-time samples and deterministic replay.
+The [qualified zero-elapsed-time probes](deterministic-qualification.md) compare
+start/stop, repeated start, and ignored tails through a fixed injected clock.
+Their host traces are project fixtures, and their reference transcripts remain
+unchanged; actual wall-clock timing is not required to reproduce zero.
 
 `timer expression` evaluates one expression and selects a delay in whole
 milliseconds. Zero, negative values and positive fractions below one millisecond

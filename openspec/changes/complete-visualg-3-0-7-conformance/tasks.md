@@ -455,6 +455,10 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   syntax and fake-clock coverage through elapsed times beyond one minute.
   Exact whole-second formatting is documented as an implementation boundary;
   variable elapsed-time recordings remain pending exact replay.
+  Three zero-elapsed-time recordings now replay through the deterministic
+  host adapter with explicit project clock-call fixtures. Original and
+  formatted programs retain exact reference output; this qualification does
+  not generalize to arbitrary wall-clock durations or other timing boundaries.
 
 - [x] 15.7 Implement clear-screen and color/display operations through `Host.ClearScreen` and `Host.SetDisplay`, preserving call order and making UI-only default-headless effects no-ops.
 - [ ] 15.8 Implement every other oracle-confirmed host command with a typed operation and regression evidence; do not add generic string-based host dispatch.
