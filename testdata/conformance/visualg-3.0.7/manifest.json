@@ -787,6 +787,7 @@
         "empty-var-section",
         "same-line-statements",
         "semicolon-statements",
+        "output-tail-comment-next-write",
         "expression-next-line",
         "post-terminator-words",
         "post-terminator-statement",
@@ -4216,7 +4217,12 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
+        "tests": [
+          "frontend_reference_test.go#TestRecordedFrontendRejections",
+          "internal/parser/recovery_test.go#TestWriteTailRecovery",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ],
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -4271,7 +4277,12 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
+        "tests": [
+          "frontend_reference_test.go#TestRecordedFrontendRejections",
+          "internal/parser/recovery_test.go#TestWriteTailRecovery",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ],
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -81625,6 +81636,49 @@
               }
             }
           ]
+        }
+      }
+    },
+    {
+      "id": "output-tail-comment-next-write",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/output-tail-comment-next-write/source.alg",
+        "sha256": "548275fb043c9c6bfbebf78b7645a8a3ebd669aa95ce53930791b7e7a2123b65"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T19:45:31.4715697Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-tail-comment-next-write/raw.txt",
+          "sha256": "8a2b04719b382de8907be158ac4c5fb22f0497104839b17dc7272ccd9231192a"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/output-tail-comment-next-write/stdout.txt",
+          "sha256": "0083d969bf9bbbff054cd18b5d5dd146ba4864d60d93903b491817177c4eb35e"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "frontend_reference_test.go#TestRecordedFrontendPrograms"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/output-tail-comment-next-write/stdout.txt",
+            "sha256": "0083d969bf9bbbff054cd18b5d5dd146ba4864d60d93903b491817177c4eb35e"
+          }
         }
       }
     }

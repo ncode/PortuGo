@@ -123,6 +123,17 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   recording rejects an unmatched quote on the terminator's own line; its
   diagnostic code and execution phase still differ and remain pending.
 
+  The two recorded same-line output cases now reject a second command after
+  parenthesized output, with or without a semicolon, using `P001` before
+  execution. LF/CRLF recovery and formatter no-replacement regressions preserve
+  following lines and accepted comments. Other production boundaries remain
+  pending.
+
+  Additional native checks confirm lone-semicolon and same-line program-end
+  rejection; ordinary regression fixtures preserve those diagnostics without
+  publishing GUI captures. A new text-output recording verifies the accepted
+  trailing-comment control with unchanged source and panel text.
+
 - [x] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
 
   Comment spans and physical newlines now survive lexing and parsing. The AST

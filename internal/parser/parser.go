@@ -582,6 +582,13 @@ func (p *parser) parseWrite() ast.Stmt {
 			p.skipLine()
 		}
 	}
+	if !p.atLineEnd() {
+		p.error(p.peek(), "expected end of line after write")
+		// Leave the program terminator for its production during recovery.
+		if p.peek().Kind != token.FIMALGORITMO {
+			p.skipLine()
+		}
+	}
 	return stmt
 }
 

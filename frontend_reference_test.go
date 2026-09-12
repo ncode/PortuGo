@@ -24,6 +24,7 @@ func TestRecordedFrontendPrograms(t *testing.T) {
 		"write-bare-newline", "write-bare-no-newline", "choice-faca", "choice-faca-accented",
 		"write-bare-comment", "choice-faca-next-line",
 		"physical-newline-lf", "physical-newline-crlf",
+		"output-tail-comment-next-write",
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)
@@ -54,6 +55,8 @@ func TestRecordedFrontendRejections(t *testing.T) {
 		{"write-no-parenthesis-string", diag.EParse, 3},
 		{"write-no-parenthesis-number", diag.EParse, 3},
 		{"write-bare-same-line", diag.EParse, 3},
+		{"same-line-statements", diag.EParse, 3},
+		{"semicolon-statements", diag.EParse, 3},
 		{"write-parentheses-next-line", diag.EParse, 4},
 		{"header-next-line-lf", diag.EParse, 1},
 		{"header-next-line-crlf", diag.EParse, 1},

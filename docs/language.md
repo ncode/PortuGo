@@ -692,6 +692,11 @@ Either command may stand alone on its physical line: bare `escreva` emits
 nothing and bare `escreval` emits one newline. Arguments require parentheses
 on that line; unparenthesized values or another command after a bare write
 produce `P001` at the write statement.
+After a parenthesized output statement, another command on the same physical
+line receives `P001` before execution, including when separated by `;`.
+A lone trailing semicolon or same-line `fimalgoritmo` is also rejected. Put
+output statements and their terminators on separate lines. Accepted trailing
+comments remain valid, and `fmt` rejects invalid source without rewriting it.
 Each statement evaluates and formats its arguments in order before emitting
 its own text. Output from functions called during that evaluation appears first.
 `escreval` requests a pending newline, which the next output statement to finish
