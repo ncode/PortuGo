@@ -472,7 +472,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [x] 11.2 Define immutable built-in descriptors and registry construction checks for duplicate aliases, incomplete signatures, parameter modes, result rules, domains, and missing evaluators.
 - [x] 11.3 Replace semantic built-in switches and name lists with descriptor-driven binding, arity, argument, mode, and result-type analysis.
 - [x] 11.4 Replace runtime built-in name maps and switches with descriptor lookup and evaluator dispatch while preserving per-interpreter state.
-- [ ] 11.5 Implement or correct all accepted candidates: `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, and `frac`, plus discovered functions/aliases. Cover `exp(base, expoente)` explicitly and reject any legacy candidate the oracle rejects.
+- [x] 11.5 Implement or correct all accepted candidates: `abs`, `arccos`, `arcsen`, `arctan`, `cos`, `cotan`, `exp`, `grauprad`, `int`, `log`, `logn`, `pi`, `quad`, `radpgrau`, `raizq`, `sen`, `tan`, and `frac`, plus discovered functions/aliases. Cover `exp(base, expoente)` explicitly and reject any legacy candidate the oracle rejects.
 
   The seven missing numeric functions and bare `pi` now match recorded values,
   result types, optional arguments, no-value results, and syntax rejections.
