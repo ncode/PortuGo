@@ -2,6 +2,22 @@
 
 ## Unreleased
 
+- Record nine call-form controls and verify seven supplied-argument or
+  parameterless cases through original and formatted execution. Keep two
+  empty numeric-argument early-completion cases pending without inferring
+  missing-argument defaults.
+
+- Trace the existing console, echo, timer, breakpoint and chronometer failure
+  tests alongside display failures, completing the positioned host-error and
+  headless execution coverage. Correct the historical file-input echo note;
+  variable timing and source-level rejection-order cases remain pending.
+
+- Reject a second command after parenthesized output on the same physical
+  line, including semicolon-separated commands, lone trailing semicolons and
+  same-line program terminators, with positioned `P001` before execution.
+  Preserve accepted comments and following-line recovery, and
+  prevent formatting from rewriting these invalid programs into valid ones.
+
 - Allow 30-second test watchdogs for full-size encoded-source decoding and
   formatter boundary checks under race instrumentation. Keep five-second
   limits for smaller adversarial cases and fail every watchdog expiration.

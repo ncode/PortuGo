@@ -95,6 +95,15 @@ The parser SHALL recognize the oracle-confirmed VisuAlg 3.0.7 program header, de
 - **WHEN** a `var` line or a scalar/vector declaration has one trailing semicolon followed only by whitespace or a comment
 - **THEN** it is accepted and formats without the semicolon, while repeated semicolons, another declaration after it, or a semicolon on its own line receive `P001` on that line
 
+#### Scenario: Reject a second command after output
+- **WHEN** another command follows a parenthesized `escreva` or `escreval` on the same physical line, with or without a separating semicolon
+- **THEN** parsing reports `P001` on that line before execution, recovery resumes on the next physical line, and formatting rejects the program without replacing its source
+- **AND** accepted trailing comments remain valid
+
+#### Scenario: Reject delimiters after output
+- **WHEN** a lone semicolon or `fimalgoritmo` follows parenthesized output on the same physical line
+- **THEN** parsing reports `P001` on that line before execution and retains the program terminator during recovery instead of manufacturing a missing-terminator diagnostic
+
 #### Scenario: Detect text after program termination
 - **WHEN** non-comment, non-whitespace source appears after `fimalgoritmo`
 - **THEN** the parser accepts or diagnoses it exactly as established by the post-termination oracle probes

@@ -501,6 +501,13 @@ line; function argument-count errors point to the call. Empty-argument edge
 cases and integer operators after numeric reference conversion remain under
 validation.
 
+The [call-form controls](empty-call-progress.md) verify supplied arguments for
+all four scalar value types and numeric `var` parameters, including parameter
+mutation and return to the caller. Two empty numeric-argument recordings enter
+the procedure body but complete execution before printing the parameter or
+returning to the caller. These calls remain rejected by the implementation;
+the observations do not establish a general zero-default rule.
+
 ## Function Results
 
 `retorne <expression>` updates the active function's result and execution
@@ -692,6 +699,11 @@ Either command may stand alone on its physical line: bare `escreva` emits
 nothing and bare `escreval` emits one newline. Arguments require parentheses
 on that line; unparenthesized values or another command after a bare write
 produce `P001` at the write statement.
+After a parenthesized output statement, another command on the same physical
+line receives `P001` before execution, including when separated by `;`.
+A lone trailing semicolon or same-line `fimalgoritmo` is also rejected. Put
+output statements and their terminators on separate lines. Accepted trailing
+comments remain valid, and `fmt` rejects invalid source without rewriting it.
 Each statement evaluates and formats its arguments in order before emitting
 its own text. Output from functions called during that evaluation appears first.
 `escreval` requests a pending newline, which the next output statement to finish
@@ -1192,6 +1204,12 @@ headless host uses real time and silent, nonblocking UI operations. Display
 commands expose typed console configuration, foreground/background color changes,
 screen clears and echo settings. Chronometer commands use the host clock;
 timer and breakpoint commands use typed delay and pause requests.
+Failures from these host operations return `R008` at the triggering command,
+retain preceding output, and keep underlying error details out of rendered
+diagnostics. [Host-failure tests](display-commands-progress.md#injected-host-failures)
+cover this boundary separately from the remaining reference rejection-order
+and elapsed-time differences. Headless UI commands require no interactive
+continuation; requested timer delays still wait.
 
 ## Out Of Scope
 

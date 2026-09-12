@@ -29,6 +29,13 @@ func TestRecordedCallArguments(t *testing.T) {
 		"value-narrowing-positive-fraction", "value-narrowing-negative-fraction",
 		"value-widening-format", "reference-nested-write-visibility",
 		"reference-recursive-alias",
+		"call-supplied-value-integer",
+		"call-supplied-value-real",
+		"call-supplied-value-logical",
+		"call-supplied-value-character",
+		"call-supplied-reference-integer",
+		"call-supplied-reference-real",
+		"call-empty-zero-parameters",
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)

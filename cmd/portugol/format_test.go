@@ -105,9 +105,18 @@ func TestFormatterModes(t *testing.T) {
 }
 
 func TestFormatterPreservesMalformedFiles(t *testing.T) {
-	for _, name := range []string{"lexer", "parser", "depth_limit"} {
-		t.Run(name, func(t *testing.T) {
-			src, err := os.ReadFile("../../testdata/cli/" + name + ".alg")
+	for _, tt := range []struct{ name, path string }{
+		{"lexer", "../../testdata/cli/lexer.alg"},
+		{"parser", "../../testdata/cli/parser.alg"},
+		{"depth_limit", "../../testdata/cli/depth_limit.alg"},
+		{"same-line-statements", "../../testdata/conformance/visualg-3.0.7/probes/same-line-statements/source.alg"},
+		{"semicolon-statements", "../../testdata/conformance/visualg-3.0.7/probes/semicolon-statements/source.alg"},
+		{"write_trailing_semicolon", "../../testdata/check/write_trailing_semicolon.alg"},
+		{"write_no_newline_trailing_semicolon", "../../testdata/check/write_no_newline_trailing_semicolon.alg"},
+		{"write_same_line_terminator", "../../testdata/check/write_same_line_terminator.alg"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			src, err := os.ReadFile(tt.path)
 			if err != nil {
 				t.Fatal(err)
 			}

@@ -123,6 +123,17 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   recording rejects an unmatched quote on the terminator's own line; its
   diagnostic code and execution phase still differ and remain pending.
 
+  The two recorded same-line output cases now reject a second command after
+  parenthesized output, with or without a semicolon, using `P001` before
+  execution. LF/CRLF recovery and formatter no-replacement regressions preserve
+  following lines and accepted comments. Other production boundaries remain
+  pending.
+
+  Additional native checks confirm lone-semicolon and same-line program-end
+  rejection; ordinary regression fixtures preserve those diagnostics without
+  publishing GUI captures. A new text-output recording verifies the accepted
+  trailing-comment control with unchanged source and panel text.
+
 - [x] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
 
   Comment spans and physical newlines now survive lexing and parsing. The AST
@@ -170,6 +181,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Recorded numeric conversions and scalar copy-in/copy-out now match, including
   repeated destinations and type changes on return. Empty-argument edge cases
   and integer operators after a reference type change remain pending.
+  Seven additional call controls verify all scalar value types, numeric `var`
+  parameters and a parameterless call in original and formatted execution.
+  Two empty numeric-argument recordings complete after entering the body but
+  before parameter output or caller continuation; they remain pending without
+  an inferred missing-argument default. See `docs/empty-call-progress.md`.
 - [x] 5.5 Evaluate all call arguments exactly once in the oracle-confirmed order and capture reference designators before entering the callee.
 - [x] 5.6 Replace caller-derived lookup with fixed lexical bindings so globals, parameters, locals, and allowed shadowing never depend on dynamic call order.
 - [x] 5.7 Implement oracle-confirmed declaration visibility, direct recursion, mutual recursion, and independent recursive call frames.
@@ -482,7 +498,8 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
   Typed on/off requests preserve recorded console and random-input transcripts.
   Bare and ignored-tail forms have headless and canonical-print coverage.
-  File-input interactions and the GUI state of ignored tails remain unqualified.
+  The verified `file-detail-echo-off` recording also preserves file-input echo.
+  The GUI state of ignored tails remains unqualified.
 
 - [x] 15.6 Implement chronometer start/query/reset/stop semantics through `Host.Now`, including deterministic elapsed calculations and clock-edge cases.
 
@@ -503,7 +520,15 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   configuration, and no-value expressions. Host ordering, failures, and canonical
   formatting have regression coverage. Other environment commands remain pending.
 
-- [ ] 15.9 Return positioned `R008` for host failures and validate that headless execution emits no accidental terminal escapes, blocks, or platform-specific errors.
+- [x] 15.9 Return positioned `R008` for host failures and validate that headless execution emits no accidental terminal escapes, blocks, or platform-specific errors.
+
+  Existing [host-failure tests](../../../docs/display-commands-progress.md#injected-host-failures)
+  cover every fallible typed host operation, positioned diagnostics, retained
+  output and causes, safe error rendering, and call-frame cleanup. Bounded CLI
+  replay verifies silent UI effects without waiting for interactive input.
+  Requested timer delays still wait; variable elapsed-time recordings and
+  source-level rejection timing remain pending.
+
 - [ ] 15.10 Add fake clock/host tables, CLI headless fixtures, canonical-print coverage, and an example demonstrating portable environment-command behavior.
 - [ ] 15.11 Update `docs/language.md` and `CHANGELOG.md` with all environment commands, host effects, headless deviations, timing units, and failures.
 - [ ] 15.12 Run focused parser/sema/host/interpreter tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.

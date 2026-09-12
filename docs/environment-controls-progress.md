@@ -1,5 +1,9 @@
 # Echo and chronometer recordings
 
+This is a historical snapshot of the original slice. Its counts and completion
+statements describe that point in development; current behavior is documented
+in the [language reference](language.md).
+
 This slice adds 24 synthetic recordings: ten echo controls, ten chronometer
 controls and four elapsed-time samples. Eighteen recordings have exact
 implementation matches: twelve accepted outputs, including two earlier echo
@@ -28,3 +32,12 @@ their wall-clock values vary. Four of them use numeric timer commands to create
 bounded intervals; timer implementation is a following slice. No elapsed values
 are removed or normalized to make the conformance replay pass. Pause, debug,
 timer, file input and the complete conformance gate remain unfinished.
+
+Later slices implemented the recorded timer, pause/debug and file-input
+behavior. `file-detail-echo-off` now verifies retained file-input echo and
+unchanged input bytes through original and formatted execution. The GUI state
+of ignored echo tails remains unqualified. Three zero-elapsed-time recordings
+now have [deterministic replay](deterministic-qualification.md); variable
+elapsed-time recordings and rejection-order differences remain pending.
+The existing [host-failure coverage](display-commands-progress.md#injected-host-failures)
+now traces the complete typed host error boundary separately from those gaps.
