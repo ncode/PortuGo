@@ -810,7 +810,8 @@ The [display example](../examples/display.alg) demonstrates portable output.
 The [independent builtin inventory](builtin-inventory-progress.md) records 28
 documented names with semantic-binding, reference-output and formatting checks.
 The additional `pot` candidate is rejected with `E002`. The accepted no-value
-`div(...)` expression form remains pending; its infix operator form is supported.
+`div(...)` expression form is consumed and discarded; it remains a candidate
+form rather than a documented function. Its infix operator form is supported.
 One immutable descriptor registry supplies built-in names, callable forms,
 parameter types and value modes, result rules, domain metadata and evaluators.
 Semantic analysis and execution share it. An independent table checks all 28

@@ -448,7 +448,8 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   recorded execution, semantic-binding and formatting coverage. Removing
   `arccos` from both semantic recognition and runtime dispatch makes the inventory
   test fail. The rejected `pot` candidate is verified; the accepted no-value
-  `div(...)` candidate stays pending. Independent descriptor signatures, domain
+  `div(...)` candidate is verified as a discarded expression and remains outside
+  the documented catalog. Independent descriptor signatures, domain
   absence, bindings and outputs now cover all 28 entries. Controlled omission,
   result-type, domain-metadata and evaluator mutations each fail validation.
 - [x] 11.2 Define immutable built-in descriptors and registry construction checks for duplicate aliases, incomplete signatures, parameter modes, result rules, domains, and missing evaluators.

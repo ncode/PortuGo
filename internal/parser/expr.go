@@ -64,6 +64,14 @@ func (p *parser) parsePrimary() ast.Expr {
 			return p.parseCall()
 		}
 		return p.parseDesignator()
+	case token.IDIV:
+		if p.peekN(1).Kind == token.LPAREN {
+			p.parseCall() // The reference accepts this candidate as a no-value expression.
+			return &ast.NoValueExpr{Keyword: tok}
+		}
+		p.error(tok, "expected expression")
+		p.advance()
+		return &ast.LiteralExpr{At: tok.Pos, Kind: ast.IntLiteral}
 	case token.RAND:
 		return &ast.IdentExpr{Name: p.advance()}
 	case token.ECO:

@@ -349,6 +349,9 @@ func writeArgString(arg WriteArg) string {
 func exprString(expr Expr) string {
 	switch e := expr.(type) {
 	case *NoValueExpr:
+		if e.Keyword.Kind == token.IDIV {
+			return "div()"
+		}
 		return e.Keyword.Kind.String()
 	case *LiteralExpr:
 		switch e.Kind {

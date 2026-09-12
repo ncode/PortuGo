@@ -87,3 +87,11 @@ func TestIndependentBuiltinInventory(t *testing.T) {
 func TestRejectedBuiltinInventoryCandidate(t *testing.T) {
 	checkSemanticDiagnostic(t, "testdata/conformance/visualg-3.0.7/probes/catalog-pot-candidate/source.alg", diag.EUndeclared, 3)
 }
+
+func TestAcceptedNoValueBuiltinCandidate(t *testing.T) {
+	src, err := source.ReadFile("testdata/conformance/visualg-3.0.7/probes/catalog-div-candidate/source.alg")
+	if err != nil {
+		t.Fatal(err)
+	}
+	checkFormattingPreservesExecution(t, src, nil)
+}

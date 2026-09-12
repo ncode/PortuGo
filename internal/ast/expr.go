@@ -8,7 +8,7 @@ type Expr interface {
 	Start() token.Pos
 }
 
-// NoValueExpr is a display keyword used as an expression, without a host effect.
+// NoValueExpr is a keyword expression that produces no value or host effect.
 type NoValueExpr struct{ Keyword token.Token }
 
 func (*NoValueExpr) exprNode()          {}

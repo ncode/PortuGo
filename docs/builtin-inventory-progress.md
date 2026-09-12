@@ -14,9 +14,10 @@ This catches an omission shared by both implementation layers.
 
 Two additional candidates from the command guide have separate recordings.
 `pot(2, 3)` is rejected with positioned `E002` and is covered by a regression.
-`div(8, 2)` in an output expression is accepted without producing a value; that
-expression form remains pending and is not counted as another documented
-function. The word `DIV` is already supported as an infix operator.
+`div(8, 2)` in an output expression is accepted without producing a value and
+is covered by an original and formatted execution regression. It remains a
+candidate form rather than another documented function. The word `DIV` is
+also supported as an infix operator.
 
 The shared immutable descriptor registry now covers all 28 names. Descriptors
 carry callable forms, value-parameter types, ordinary arity, optional-call and

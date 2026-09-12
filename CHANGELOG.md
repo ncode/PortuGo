@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Accept the recorded no-value `div(...)` candidate expression while keeping
+  `DIV` as the infix integer-division operator and excluding the candidate from
+  the documented built-in catalog.
+
 - Complete the recorded text, character-code, and numeric-text contract table,
   including accented case, 1-based slicing/search, CP1252 boundaries, dynamic
   conversion types, and checked `copia` allocation failures.
