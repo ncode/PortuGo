@@ -399,7 +399,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [x] 13.7 Return positioned `R007` for builtin random failures and `R004` for random-input failures with no panic or invalid source call.
 - [x] 13.8 Add repeatable runtime fixtures using scripted random values, property checks across many seeds, and an example that asserts domains rather than sequences.
 - [ ] 13.9 Update `docs/language.md` and `CHANGELOG.md` with exact random domains, modes, seeding guarantees, errors, and the explicit sequence non-goal.
-- [ ] 13.10 Run focused random/registry/input/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+- [x] 13.10 Run focused random/registry/input/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
 - [ ] 13.11 Mark every completed 13.x task immediately, commit the focused randomness changes, push the next stacked branch, and open its draft PR before group 14.
 
 ## 14. Arquivo Paths, Encoding, Exhaustion, Fallback, and Echo
