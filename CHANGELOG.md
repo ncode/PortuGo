@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Reject a second command after parenthesized output on the same physical
+  line, including semicolon-separated commands, lone trailing semicolons and
+  same-line program terminators, with positioned `P001` before execution.
+  Preserve accepted comments and following-line recovery, and
+  prevent formatting from rewriting these invalid programs into valid ones.
+
 - Allow 30-second test watchdogs for full-size encoded-source decoding and
   formatter boundary checks under race instrumentation. Keep five-second
   limits for smaller adversarial cases and fail every watchdog expiration.
