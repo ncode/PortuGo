@@ -181,6 +181,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Recorded numeric conversions and scalar copy-in/copy-out now match, including
   repeated destinations and type changes on return. Empty-argument edge cases
   and integer operators after a reference type change remain pending.
+  Seven additional call controls verify all scalar value types, numeric `var`
+  parameters and a parameterless call in original and formatted execution.
+  Two empty numeric-argument recordings complete after entering the body but
+  before parameter output or caller continuation; they remain pending without
+  an inferred missing-argument default. See `docs/empty-call-progress.md`.
 - [x] 5.5 Evaluate all call arguments exactly once in the oracle-confirmed order and capture reference designators before entering the callee.
 - [x] 5.6 Replace caller-derived lookup with fixed lexical bindings so globals, parameters, locals, and allowed shadowing never depend on dynamic call order.
 - [x] 5.7 Implement oracle-confirmed declaration visibility, direct recursion, mutual recursion, and independent recursive call frames.
