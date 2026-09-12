@@ -165,13 +165,37 @@ func copia(args []runtime.Value) (runtime.Value, bool, error) {
 	if err != nil {
 		return runtime.Value{}, true, err
 	}
-	s := []rune(args[0].Str)
-	start := max(int64(1), position) - 1
-	if n < 0 || start >= int64(len(s)) {
+	if n < 0 {
 		return runtime.Value{Kind: runtime.StringValue}, true, nil
 	}
-	end := start + min(n, int64(len(s))-start)
-	return runtime.Value{Kind: runtime.StringValue, Str: string(s[int(start):int(end)])}, true, nil
+
+	startPosition := max(int64(1), position)
+	endPosition := int64(math.MaxInt64)
+	if n <= math.MaxInt64-startPosition {
+		endPosition = startPosition + n
+	}
+	startByte := -1
+	endByte := len(args[0].Str)
+	charPosition := int64(1)
+	for byteIndex := range args[0].Str {
+		if charPosition == startPosition {
+			startByte = byteIndex
+		}
+		if startByte >= 0 && charPosition == endPosition {
+			endByte = byteIndex
+			break
+		}
+		if charPosition < math.MaxInt64 {
+			charPosition++
+		}
+	}
+	if startByte < 0 {
+		return runtime.Value{Kind: runtime.StringValue}, true, nil
+	}
+	if endByte-startByte > runtime.MaxTextBytes {
+		return runtime.Value{}, true, runtime.ErrTextSize
+	}
+	return runtime.Value{Kind: runtime.StringValue, Str: args[0].Str[startByte:endByte]}, true, nil
 }
 
 func copyIndex(v runtime.Value) (int64, error) {

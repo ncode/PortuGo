@@ -29,8 +29,10 @@ functions. These cases remain visible gaps rather than verified replays.
 The corpus contains 963 reference recordings: 912 verified and 51 pending,
 plus 16 separate project-contract records. The evidence gate still needs
 11 requirement mappings and 30 bundled-example classifications. This slice
-does not complete the builtin catalog, dynamic numeric conversion, or the
-remaining text/conversion checklist.
+does not complete the remaining text/conversion checklist. The current
+stdlib contract table separately exercises the recorded text, code, and
+conversion descriptors; no text aliases are recorded in the independent
+28-name inventory, so none are invented.
 
 ## Portable guards
 
@@ -39,5 +41,6 @@ Windows-1252 and for real substring bounds outside the signed 64-bit conversion
 range. Unpositioned reference application faults and complete desktop captures
 remain excluded. The later string-limit slice bounds language values at 255
 characters. A direct library test retains the case-conversion allocation guard
-for oversized Go values that cannot arise from those bounded language strings.
-These are portable project contracts, not invented reference diagnostics.
+for oversized Go values that cannot arise from those bounded language strings,
+and `copia` rejects an oversized selected result before materialization. These
+are portable project contracts, not invented reference diagnostics.

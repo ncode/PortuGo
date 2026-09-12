@@ -915,6 +915,9 @@ returns the first matching position, or zero for missing or empty search text.
 Search is case-sensitive. `maiusc` and `minusc` use the recorded accented case
 pairs; uppercase preserves `µ` and `ƒ` because their Unicode uppercase forms
 are outside Windows-1252. Case conversion and copying preserve empty strings.
+A direct library result whose selected text exceeds the 16 MiB project
+allocation safeguard is rejected before materialization and is reported as
+positioned `R003` by the interpreter.
 Non-finite real bounds and real bounds outside the signed 64-bit conversion
 range receive positioned `R007` as a project guard; unpositioned reference
 application faults are not treated as language diagnostics.

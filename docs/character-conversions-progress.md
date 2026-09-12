@@ -37,4 +37,6 @@ The corpus now contains 1077 reference recordings: 1027 verified and 50
 pending, plus 16 separate project-contract records. The evidence gate still
 needs 11 requirement mappings and 30 bundled-example classifications. The
 remaining catalog, conversion-alias, string, and evaluation-order work stays
-open in the conformance task list.
+open in the conformance task list. The current stdlib contract table covers
+the recorded character-code and dynamic conversion descriptors; the inventory
+contains no oracle-confirmed aliases.

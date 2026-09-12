@@ -75,7 +75,8 @@ separate; these mappings cover the project's diagnostic API.
 evaluation-depth limit, input and pending-output allocation limits, and reuse after a
 failed run. Its tests are `TestStepBudgetAndReuse`, `TestCallAndValueLimits`,
 `TestDefensiveEvaluationDepth`, `TestFormattedItemBoundary`, and
-`TestCaseConversionAllocationGuard` and `TestWriteBufferLimit`. These safeguards are project policies, not inferred
+`TestCaseConversionAllocationGuard`, `TestCopiaChecksResultSizeBeforeMaterializing`,
+and `TestWriteBufferLimit`. These safeguards are project policies, not inferred
 reference limits. Recorded programs still fail acceptance if a configured
 limit prevents their required outcome.
 

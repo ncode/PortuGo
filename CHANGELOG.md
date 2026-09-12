@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Complete the recorded text, character-code, and numeric-text contract table,
+  including accented case, 1-based slicing/search, CP1252 boundaries, dynamic
+  conversion types, and checked `copia` allocation failures.
+
 - Record nine call-form controls and verify seven supplied-argument or
   parameterless cases through original and formatted execution. Keep two
   empty numeric-argument early-completion cases pending without inferring

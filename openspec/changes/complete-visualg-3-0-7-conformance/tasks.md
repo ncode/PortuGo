@@ -386,15 +386,29 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 ## 12. Text, Character-Code, and Conversion Built-ins
 
-- [ ] 12.1 Add failing oracle tables for all text/conversion names and aliases, empty/boundary strings, 1-based slicing/search, CP1252 accents and codes, case conversion, invalid codes, numeric text forms, overflow, and dynamic `caracpnum` result types.
-- [ ] 12.2 Complete descriptors and evaluators for `copia`, `maiusc`, `minusc`, `compr`, `pos`, and every oracle-confirmed text alias.
+- [x] 12.1 Add failing oracle tables for all text/conversion names and aliases, empty/boundary strings, 1-based slicing/search, CP1252 accents and codes, case conversion, invalid codes, numeric text forms, overflow, and dynamic `caracpnum` result types.
+
+  The independent registry table and focused stdlib table cover the recorded text, code, and conversion names, including empty and boundary cases, typed dynamic results, and malformed conversion values. The inventory contains no oracle-confirmed aliases.
+- [x] 12.2 Complete descriptors and evaluators for `copia`, `maiusc`, `minusc`, `compr`, `pos`, and every oracle-confirmed text alias.
+
+  Text descriptors and evaluators are covered by the independent registry rows and recorded execution fixtures. `copia` now locates 1-based decoded-character spans without a rune-slice allocation and preserves the recorded clipping rules.
 - [x] 12.3 Implement 1-based reference bounds, empty/not-found behavior, and CP1252-aware text indexing and case conversion without UTF-8 byte or Unicode-code-point leakage.
-- [ ] 12.4 Complete descriptors and evaluators for `asc`, `carac`, all character-code aliases, and the separately recorded code tables and domain/failure behavior.
-- [ ] 12.5 Complete explicit integer, real, logical, and character conversion descriptors and evaluators with oracle decimal, sign, whitespace, range, and fallback rules.
+- [x] 12.4 Complete descriptors and evaluators for `asc`, `carac`, all character-code aliases, and the separately recorded code tables and domain/failure behavior.
+
+  The recorded Windows-1252 byte conversion and complete 0..255 character table are exercised by direct and end-to-end rows, including empty, control, extended, and unsupported values. No aliases are present in the independent inventory.
+- [x] 12.5 Complete explicit integer, real, logical, and character conversion descriptors and evaluators with oracle decimal, sign, whitespace, range, and fallback rules.
+
+  Direct and end-to-end rows cover integer narrowing, numeric-to-text output, decimal and hexadecimal classification, signs, whitespace, range boundaries, zero-prefix fallback, and malformed nonzero-prefix failures.
 - [x] 12.6 Implement dynamic numeric `caracpnum` analysis and runtime selection so integer and real results retain their reference types and invalid uses are diagnosed.
-- [ ] 12.7 Return positioned `R007` for runtime-only text/code/conversion failures and `R003` for project allocation-limit failures; check sizes before materializing results and verify no panic or partial conversion.
-- [ ] 12.8 Add catalog signature tests, byte-precise runtime tables, integration fixtures, and an example combining accented text, codes, search, slicing, and conversions.
-- [ ] 12.9 Update `docs/language.md` and `CHANGELOG.md` with the full text, code, conversion, and dynamic-result contracts.
+- [x] 12.7 Return positioned `R007` for runtime-only text/code/conversion failures and `R003` for project allocation-limit failures; check sizes before materializing results and verify no panic or partial conversion.
+
+  Recorded diagnostics cover runtime code and conversion failures. The direct `copia` guard rejects a result over the 16 MiB text allocation limit before materialization, and malformed dynamic conversion returns no partial value.
+- [x] 12.8 Add catalog signature tests, byte-precise runtime tables, integration fixtures, and an example combining accented text, codes, search, slicing, and conversions.
+
+  The existing independent registry and recorded fixtures cover every catalog descriptor; this slice adds direct byte and type rows while retaining the combined text example and character-conversion fixture.
+- [x] 12.9 Update `docs/language.md` and `CHANGELOG.md` with the full text, code, conversion, and dynamic-result contracts.
+
+  The authoritative language reference now records the direct-library `copia` allocation guard, and the changelog records the completed contract coverage. Existing progress notes retain pending reference and evidence gaps.
 - [ ] 12.10 Run focused registry/sema/stdlib/interpreter conversion tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
 - [ ] 12.11 Mark every completed 12.x task immediately, commit the focused text/conversion changes, push the next stacked branch, and open its draft PR before group 13.
 
