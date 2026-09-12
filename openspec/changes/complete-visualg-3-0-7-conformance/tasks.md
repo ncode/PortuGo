@@ -414,7 +414,13 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [x] 13.8 Add repeatable runtime fixtures using scripted random values, property checks across many seeds, and an example that asserts domains rather than sequences.
 - [x] 13.9 Update `docs/language.md` and `CHANGELOG.md` with exact random domains, modes, seeding guarantees, errors, and the explicit sequence non-goal.
 - [x] 13.10 Run focused random/registry/input/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
-- [ ] 13.11 Mark every completed 13.x task immediately, commit the focused randomness changes, push the next stacked branch, and open its draft PR before group 14.
+- [x] 13.11 Mark every completed 13.x task immediately, commit the focused randomness changes, push the next stacked branch, and open its draft PR before group 14.
+
+  The completed input-state follow-up is published ready for review in
+  [PR #83](https://github.com/ncode/PortuGo/pull/83), with its
+  [commit history](https://github.com/ncode/PortuGo/pull/83/commits) and
+  [quality checks](https://github.com/ncode/PortuGo/pull/83/checks).
+  This handoff covers the completed slice; tasks 13.1 and 13.4 remain open.
 
 ## 14. Arquivo Paths, Encoding, Exhaustion, Fallback, and Echo
 
@@ -451,7 +457,13 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [x] 14.9 Add cross-platform path tests, byte-hash integration fixtures, fake reader/writer failures, and an example that uses only temporary/sandbox-safe relative data.
 - [x] 14.10 Update `docs/language.md` and `CHANGELOG.md` with `arquivo` path, encoding, state, fallback, recording, echo, and error semantics.
 - [x] 14.11 Run focused filesystem/input/interpreter/CLI tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
-- [ ] 14.12 Mark every completed 14.x task immediately, commit the focused `arquivo` changes, push the next stacked branch, and open its draft PR before group 15.
+- [x] 14.12 Mark every completed 14.x task immediately, commit the focused `arquivo` changes, push the next stacked branch, and open its draft PR before group 15.
+
+  The completed file-input follow-ups are published ready for review in
+  [PR #80](https://github.com/ncode/PortuGo/pull/80) and
+  [PR #82](https://github.com/ncode/PortuGo/pull/82), with reviewed commits and
+  [quality checks](https://github.com/ncode/PortuGo/pull/82/checks).
+  Tasks 14.1 and 14.5 retain the constrained-replay and candidate ACL work.
 
 ## 15. Timer, Pause, Debug, Echo, Chronometer, Screen, and Color
 
