@@ -31,6 +31,6 @@ These classifications describe recorded reference outcomes; they do not claim
 that this branch already produces matching diagnostics or execution prefixes.
 The implementation state remains pending until a later slice supplies tests.
 
-The two externally stopped examples remain unclassified pending a reviewed
-execution contract. Their incomplete runs are not treated as successful or as
-reference syntax errors.
+The two [externally stopped examples](bundled-external-stop.md) have an explicit
+finite-completion exclusion. Their original sources and partial observations
+are retained; incomplete runs are not treated as successful or as syntax errors.

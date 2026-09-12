@@ -954,7 +954,9 @@
       "id": "example.f322405e9d84",
       "kind": "example",
       "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
-      "probes": []
+      "probes": [
+        "bundled-f322405e9d84"
+      ]
     },
     {
       "id": "example.b233b8edad6d",
@@ -968,7 +970,9 @@
       "id": "example.80addd4fac6d",
       "kind": "example",
       "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
-      "probes": []
+      "probes": [
+        "bundled-80addd4fac6d"
+      ]
     },
     {
       "id": "example.9ebac87530a8",
@@ -9281,6 +9285,88 @@
             "path": "testdata/conformance/visualg-3.0.7/probes/vector-zero-elements/stdout.txt",
             "sha256": "fa2dc3773e28df92221744bb2478b333da104cb7880a8f8fa5d345d4ca16fcb2"
           }
+        }
+      }
+    },
+    {
+      "id": "bundled-f322405e9d84",
+      "ownerGroup": 17,
+      "tasks": [
+        "2.12",
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f322405e9d84/source.alg",
+        "sha256": "a56a885fd885be693d8cf248068840b92ec250db98cb556c83c2b6d8db3d2a83"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "not-applicable",
+        "capturedAt": "2026-09-12T08:20:09.3525923Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f322405e9d84/panel.txt",
+          "sha256": "610870c06225327a5bf55b29bab9d7c246a9895f67bdda3268b4d6ff72f1eedb"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f322405e9d84/panel.txt",
+          "sha256": "610870c06225327a5bf55b29bab9d7c246a9895f67bdda3268b4d6ff72f1eedb"
+        },
+        "normalizer": "bytes-v1",
+        "review": {
+          "reason": "The original clock resets its hour before its outer condition can end; complete execution is excluded from the finite sweep, while timer, loop, string and display behavior remain required.",
+          "link": "docs/bundled-external-stop.md#Clock"
+        }
+      },
+      "implementation": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "The original clock resets its hour before its outer condition can end; complete execution is excluded from the finite sweep, while timer, loop, string and display behavior remain required.",
+          "link": "docs/bundled-external-stop.md#Clock"
+        }
+      }
+    },
+    {
+      "id": "bundled-80addd4fac6d",
+      "ownerGroup": 17,
+      "tasks": [
+        "2.12",
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-80addd4fac6d/source.alg",
+        "sha256": "f68a4fb3aacec2e14fcf6b339f1667d180e9b5a57cb16fa1a06229e8e72cbb63"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/bundled-80addd4fac6d/input.txt",
+        "sha256": "51c29408c180410b2270de8f9407f5c334a1ecbf5f718308e5d6d56546d163a8"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "not-applicable",
+        "capturedAt": "2026-09-12T08:20:23.3322973Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-80addd4fac6d/panel.txt",
+          "sha256": "8d4d79617483f490e9e474a35fa7143281f212f85a71ed76b5fef32b3886cc52"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-80addd4fac6d/panel.txt",
+          "sha256": "8d4d79617483f490e9e474a35fa7143281f212f85a71ed76b5fef32b3886cc52"
+        },
+        "normalizer": "bytes-v1",
+        "review": {
+          "reason": "The original menu leaves the outer exit variable unchanged and repeats after F and Enter; complete execution is excluded from the finite sweep, while input, scope, return and choice behavior remain required.",
+          "link": "docs/bundled-external-stop.md#Conversion menu"
+        }
+      },
+      "implementation": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "The original menu leaves the outer exit variable unchanged and repeats after F and Enter; complete execution is excluded from the finite sweep, while input, scope, return and choice behavior remain required.",
+          "link": "docs/bundled-external-stop.md#Conversion menu"
         }
       }
     }

@@ -3,6 +3,11 @@
 This implementation targets the VisuAlg 3.x dialect used by Apoio Informática.
 Other Portugol dialects are intentionally out of scope for v1.
 
+The finite automated example sweep excludes complete runs of the
+[two nonterminating bundled examples](bundled-external-stop.md). Their original
+sources and partial reference observations are retained. Their language features
+remain required, and a timeout is never a successful completion result.
+
 The [September 9 reference observations](reference-observations-2026-09-09.md)
 record further compatibility gaps in syntax, literals, declarations, and calls.
 Their implementation remains pending unless a corpus entry is explicitly

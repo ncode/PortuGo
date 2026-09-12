@@ -16,6 +16,7 @@ The current interpreter implements a useful VisuAlg-like subset, but its grammar
 - Match random value domains and command semantics while explicitly excluding byte-for-byte random sequences.
 - Deliver the work as focused stacked pull requests with test-first regressions, immediate task tracking, documentation and changelog updates, full oracle traceability, and final implementation acceptance. Archive and `v0.1.0` tagging follow the separate post-merge checklist in `release.md`.
 - Exclude a vendored reference executable, native compilation or a bytecode VM, an LSP, recreation of the VisuAlg GUI, and exact RNG sequence reproduction.
+- Exclude complete runs of the original endless clock and conversion menu from the finite example sweep, retaining their unchanged sources and recorded nontermination observations. Their language features remain required; timeouts are never passing runs.
 
 ## Capabilities
 

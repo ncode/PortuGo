@@ -24,6 +24,13 @@ The reference application is an interactive Windows program. Deterministic behav
 
 ## Decisions
 
+The finite example sweep excludes complete runs of `example.f322405e9d84`
+(an endless clock) and `example.80addd4fac6d` (a menu whose exit choice repeats).
+Their original sources and partial reference output are retained with hashes
+and reviewed `not-applicable` dispositions, as detailed in
+`docs/bundled-external-stop.md`. Their language features remain required.
+These exceptions do not convert a timeout into a passing replay.
+
 ### 1. Record an oracle corpus before disputed implementation
 
 The repository will store evidence under `testdata/conformance/visualg-3.0.7/`. A checked-in JSON manifest will identify the reference hashes and environment and map stable probe IDs to source, input, normalized output/error, raw-observation hashes, generated-file hashes, screenshots, specification requirements, implementation tests, checklist items, defects, and bundled examples. Probe directories will contain reduced `.alg` programs and only redistributable evidence; the reference executable and archive remain outside Git.

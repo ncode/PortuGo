@@ -159,7 +159,11 @@
     "name": "Exemplos/Cronometro.alg",
     "sha256": "a56a885fd885be693d8cf248068840b92ec250db98cb556c83c2b6d8db3d2a83",
     "bytes": 1360,
-    "disposition": "pending"
+    "disposition": "non-goal",
+    "review": {
+      "reason": "The original clock resets its hour before its outer condition can end; complete execution is excluded from the finite sweep, while timer, loop, string and display behavior remain required.",
+      "link": "docs/bundled-external-stop.md#Clock"
+    }
   },
   {
     "id": "example.b233b8edad6d",
@@ -173,7 +177,11 @@
     "name": "Exemplos/decpoutras.alg",
     "sha256": "f68a4fb3aacec2e14fcf6b339f1667d180e9b5a57cb16fa1a06229e8e72cbb63",
     "bytes": 1126,
-    "disposition": "pending"
+    "disposition": "non-goal",
+    "review": {
+      "reason": "The original menu leaves the outer exit variable unchanged and repeats after F and Enter; complete execution is excluded from the finite sweep, while input, scope, return and choice behavior remain required.",
+      "link": "docs/bundled-external-stop.md#Conversion menu"
+    }
   },
   {
     "id": "example.9ebac87530a8",

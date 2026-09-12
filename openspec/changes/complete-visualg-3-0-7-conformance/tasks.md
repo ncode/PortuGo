@@ -48,6 +48,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 - [ ] 2.10 Create reduced precedence, unary, coercion, logical evaluation, comparison, case/range, loop, interruption, evaluation-order, and overflow probe batches.
 - [ ] 2.11 Create reduced console/CP1252/arquivo/random/environment probe batches and a built-in inventory covering every name in the standard-library spec, including the seven missing numeric functions and the two-argument `exp` candidate.
 - [ ] 2.12 Record all blocking probes on the interactive Windows reference host, commit only redistributable evidence, inventory every official bundled example, and leave no required evidence unrecorded. Assign later implementations to pending owning tasks rather than inventing tests or claiming conformance.
+
+  Every original example now has an evidence classification. Two nonterminating
+  originals have a reviewed finite-completion exclusion, with unchanged source,
+  entered input and partial output retained in `docs/bundled-external-stop.md`.
+  Their language features remain required; no timeout is reported as a pass.
 - [ ] 2.13 Correct `proposal.md`, delta specs, `design.md`, `tasks.md`, `AGENTS.md`, and affected language documentation from the recordings. Replace rejected candidate features with negative coverage, remove dependent AST/layout/example obligations, preserve retired-ID dispositions, and describe corrections in `CHANGELOG.md`.
 - [ ] 2.14 Run recorder, normalizer, replay, manifest, and traceability tests plus the full quality suite and strict OpenSpec validation; require zero evidence-mode errors and zero verified regressions, and publish the remaining pending implementation inventory.
 - [x] 2.15 Mark every completed 2.x task immediately, commit the evidence and corrections, push the next stacked branch, and open its draft PR before group 3.

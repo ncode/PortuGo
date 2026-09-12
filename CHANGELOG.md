@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Document the finite-sweep exclusion for two nonterminating bundled examples,
+  retaining their original sources and partial reference observations. Validate
+  retained artifact hashes even when a reviewed exclusion applies.
+
 - Added 61 recorded syntax, literal, declaration, call, and vector probes with
   exact source/output hashes and reviewed GUI rejection evidence. Implementation
   remains pending. Corrected the draft storage specification after the reference

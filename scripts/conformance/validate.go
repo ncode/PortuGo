@@ -169,6 +169,13 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		}
 	case "not-applicable":
 		add(checkReview(root, e.Review))
+		// An exclusion does not waive integrity checks on retained observations.
+		for _, a := range []artifact{p.Source, p.Input, e.Raw, e.Normalized} {
+			if a != (artifact{}) {
+				_, err := readArtifact(root, a)
+				add(err)
+			}
+		}
 	default:
 		add(fmt.Errorf("unrecorded evidence"))
 	}
