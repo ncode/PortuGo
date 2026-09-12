@@ -78,6 +78,9 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
 - [ ] 4.1 Add failing lexer/parser/printer goldens for CRLF/LF, comment contents and anchors, CP1252 comments, strict vocabulary/literals, recovery, ignored suffixes, and source/depth limit boundaries.
 - [ ] 4.2 Preserve positioned physical newline and comment tokens through decoding and lexing with original-byte mapping; comments must not consume their terminating newline.
+  Original-byte mapping now survives BOM removal and Windows-1252 decoding,
+  including physical newline, EOF, and ignored-suffix positions. Interior
+  comment tokens and their anchors remain pending in the formatter slice.
 - [ ] 4.3 Implement the oracle-recorded identifier character set, case-preserving token text, locale-independent canonical matching, and rejection of unsupported identifier forms.
 - [ ] 4.4 Replace the keyword table with the complete oracle-recorded command vocabulary, accented and unaccented spellings, aliases, and non-reserved lookalikes.
 
@@ -295,7 +298,14 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 ## 10. CP1252, Input Parsing, Output Formatting, and I/O Validation
 
 - [ ] 10.1 Add failing byte-golden and diagnostic fixtures for CP1252 text, shared buffered reads, every scalar input form, invalid/overflowing input, exact mixed output, logical casing, decimal syntax, negative zero, width/precision boundaries, and invalid I/O statements.
-- [ ] 10.2 Consolidate BOM-aware UTF-8 and Windows-1252 decode/encode helpers with original-byte position mapping and explicit unsupported-character behavior.
+- [x] 10.2 Consolidate BOM-aware UTF-8 and Windows-1252 decode/encode helpers with original-byte position mapping and explicit unsupported-character behavior.
+  Source loading retains original bytes and a bounded decoded-position map;
+  CLI, REPL, and replay diagnostics preserve those offsets through every
+  stage. Source, file streams, and character operations share the existing
+  Windows-1252 byte/rune helpers. Source replacement of undefined bytes and
+  stream rejection of undefined or unrepresentable characters are explicit.
+  Mapping tables and subprocess regressions cover BOM, UTF-8, Windows-1252,
+  CRLF/LF, EOF, and lexical, syntax, semantic, and runtime errors.
 - [x] 10.3 Implement one interpreter-owned buffered console input controller that preserves unread data across reads, bounds token/text buffering before allocation, and charges retries to the shared execution budget.
 - [x] 10.4 Implement oracle-confirmed integer, real, logical, and character input parsing, whitespace/line consumption, retry/end-of-input behavior, and mutation only after successful conversion.
 - [x] 10.5 Implement exact `escreva`/`escreval` separation, spacing, newline, string, integer, real, logical, decimal, and negative-zero output bytes.

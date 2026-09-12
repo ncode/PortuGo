@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Preserve original-byte source positions through UTF-8 BOM removal and
+  Windows-1252 decoding, including CLI and REPL diagnostics at every stage.
+
 - Add explicit project-test trace mappings for AST positions, canonical printing
   and formatter modes while retaining their unfinished implementation status.
 

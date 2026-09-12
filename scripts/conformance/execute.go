@@ -49,11 +49,11 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 	if len(data) > 64<<10 {
 		return fail(fmt.Errorf("source exceeds replay profile"))
 	}
-	decoded, err := source.Decode(data)
+	decoded, err := source.DecodeFile(flags.Arg(0), data)
 	if err != nil {
 		return fail(err)
 	}
-	file, toks, ds := lexer.Scan(flags.Arg(0), decoded)
+	file, toks, ds := lexer.ScanFile(decoded)
 	if diag.HasErrors(ds) {
 		diag.Render(stderr, file, ds)
 		return 1

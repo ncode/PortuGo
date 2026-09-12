@@ -1022,6 +1022,15 @@ compatibility remain pending reference qualification.
 
 ## Execution diagnostics and safeguards
 
+Source positions count original file bytes. A removed UTF-8 BOM still occupies
+offsets 0–2, and Windows-1252 characters retain their single-byte positions
+after decoding. Diagnostic lines and one-based byte columns include CRLF and
+BOM bytes; valid UTF-8 keeps its original multibyte offsets. Tokens, AST nodes,
+and lexical, parser, semantic, and runtime diagnostics share this mapping,
+including EOF and ignored suffixes. REPL positions use the original bytes of
+each submitted program. Undefined Windows-1252 bytes decode as U+FFFD and
+retain their own byte positions; they do not silently disappear.
+
 Parser recovery retains the final source position after consuming EOF, so
 additional missing-expression or delimiter diagnostics stay at the end of the
 file rather than moving to line 1.
