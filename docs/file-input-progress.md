@@ -1,8 +1,8 @@
 # File-input recordings
 
 This slice retains 51 synthetic reference recordings: 38 accepted programs and
-13 positioned rejections. Forty-eight have verified implementation coverage;
-three ACL-constrained recordings remain pending generic CLI replay. The two
+13 positioned rejections. Forty-five have verified implementation coverage;
+six access-constrained recordings remain pending generic CLI replay. The two
 missing-parent-directory recordings now continue without creating a file,
 including a program with no reads and one that consumes and echoes console
 input. Original and formatted sources retain the exact recorded output and
@@ -74,9 +74,11 @@ has native reference evidence and error-classification coverage, but does not
 have an automated candidate ACL fixture. The corpus runner creates readable byte
 fixtures, so the three `file-access-denied-*` probes remain pending rather than
 treating an ordinary readable file as a faithful replay. The three
-`file-access-locked-*` probes are verified by a native Windows run of the
-focused regression and retain their recorded output and unchanged bytes. No
-interpreter file-open injection or fixture-access schema is added.
+`file-access-locked-*` probes also remain pending because the corpus runner
+cannot recreate the lock; a native Windows run of the focused regression
+exercises them and matches their recorded output and unchanged bytes, but does
+not replace required replay. No interpreter file-open injection or
+fixture-access schema is added.
 
 Earlier file-input validation included local build, tests, race detection, vet,
 staticcheck, lint, both fuzz targets, strict OpenSpec validation and CLI replay

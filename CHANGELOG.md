@@ -2,9 +2,9 @@
 
 ## Unreleased
 
-- Verify existing-file continuation under Windows sharing locks while retaining
-  the three ACL-denied probes as pending where the authorized test account can
-  bypass the temporary restriction.
+- Record native Windows validation for existing-file continuation under sharing
+  locks while retaining all six access-constrained probes as pending until the
+  corpus replay can recreate their restrictions.
 
 - Stop `para` progression at the terminal bound when its next signed integer
   value would overflow, and keep `R005`/`R006` runtime-limit diagnostics tied to
