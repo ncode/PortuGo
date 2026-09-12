@@ -23,11 +23,14 @@ func (l *Library) RandomInput(kind runtime.TypeKind, low, high float64, decimals
 	if kind != runtime.IntegerType && kind != runtime.RealType {
 		return runtime.Value{}, fmt.Errorf("unsupported random-input destination")
 	}
-	width := math.Floor(high-low) + 1
-	if !(width >= 1 && width < 0x1p64) || math.IsInf(low, 0) || math.IsInf(high, 0) || decimals < 0 || decimals > 5 {
+	width, err := randomInputWidth(low, high)
+	if err != nil || decimals < 0 || decimals > 5 {
 		return runtime.Value{}, fmt.Errorf("random-input range is not representable")
 	}
-	draw, err := l.randomUint64(uint64(width))
+	if kind == runtime.IntegerType && (low < -0x1p63 || high >= 0x1p63) {
+		return runtime.Value{}, fmt.Errorf("random-input integer is not representable")
+	}
+	draw, err := l.randomUint64(width)
 	if err != nil {
 		return runtime.Value{}, err
 	}
@@ -50,4 +53,19 @@ func (l *Library) RandomInput(kind runtime.TypeKind, low, high float64, decimals
 		return runtime.Value{}, fmt.Errorf("random-input value is not finite")
 	}
 	return runtime.Value{Kind: runtime.RealValue, Real: n}, nil
+}
+
+func randomInputWidth(low, high float64) (uint64, error) {
+	if math.IsNaN(low) || math.IsNaN(high) || math.IsInf(low, 0) || math.IsInf(high, 0) || high < low {
+		return 0, fmt.Errorf("random-input range is not representable")
+	}
+	span := high - low
+	if math.IsNaN(span) || math.IsInf(span, 0) {
+		return 0, fmt.Errorf("random-input range is not representable")
+	}
+	width := math.Floor(span) + 1
+	if !(width >= 1 && width < 0x1p64) {
+		return 0, fmt.Errorf("random-input range is not representable")
+	}
+	return uint64(width), nil
 }

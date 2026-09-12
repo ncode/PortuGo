@@ -38,3 +38,15 @@ func TestRandomInputRunReset(t *testing.T) {
 		t.Fatalf("input mode leaked between runs: diagnostics=%v output=%q", ds, out.String())
 	}
 }
+
+func TestRandomInputRejectsUnrepresentableIntegerRangeBeforeDraw(t *testing.T) {
+	src := "algoritmo \"integer range\"\nvar\nlow, high: real\nvalue: inteiro\ninicio\nlow <- 9223372036854775808\nhigh <- low\nescreva(\"before\")\naleatorio low, high\nleia(value)\nfimalgoritmo"
+	p, info := analyzed(t, src)
+	r := &scriptedRandom{}
+	var out bytes.Buffer
+	ds := New(Options{Random: r, Output: &out}).Run(p, info)
+	at := token.Pos(strings.Index(src, "value)"))
+	if len(ds) != 1 || ds[0].Code != diag.RInput || ds[0].Pos != at || out.String() != "before" || len(r.bounds) != 0 {
+		t.Fatalf("unrepresentable integer range: diagnostics=%v output=%q bounds=%v", ds, out.String(), r.bounds)
+	}
+}

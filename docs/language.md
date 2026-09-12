@@ -1050,8 +1050,12 @@ zero through `trunc(high-low)`. A real destination additionally receives a
 fraction from zero through `1-10^-digits` when digits are positive. Thus
 `aleatorio 2,2,3` can produce 2.847, and fractional lower bounds are retained:
 `aleatorio 2.75,2.75,0` produces 2.75. Integer destinations discard fractional
-parts and do not use the precision setting. `aleatorio on` restores the default
-0-through-100 range and zero additional fractional digits.
+parts and do not use the precision setting. Bounds are normalized to an
+inclusive width only after finite, ordered and overflow checks. Integer reads
+reject a range outside the signed 64-bit value domain before drawing; the full
+signed 32-bit interval is accepted by the implementation as an integer range.
+`aleatorio on` restores the default 0-through-100 range and zero additional
+fractional digits.
 
 Generated character input contains five uppercase ASCII letters. Logical reads
 continue reading the selected file or console stream while random mode is active.

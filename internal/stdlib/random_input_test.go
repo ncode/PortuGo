@@ -60,16 +60,39 @@ func TestRandomInputDomains(t *testing.T) {
 }
 
 func TestRandomInputInvalidRange(t *testing.T) {
-	for _, tt := range []struct {
-		low, high float64
-		decimals  int
-	}{
-		{math.NaN(), 1, 0}, {0, math.Inf(1), 0}, {math.Inf(-1), 0, 0},
-		{0, 0x1p64, 0}, {3, 0, 0}, {0, 1, -1}, {0, 1, 6},
+	for _, kind := range []runtime.TypeKind{runtime.IntegerType, runtime.RealType} {
+		for _, tt := range []struct {
+			low, high float64
+			decimals  int
+		}{
+			{math.NaN(), 1, 0}, {0, math.NaN(), 0},
+			{math.Inf(-1), 0, 0}, {0, math.Inf(1), 0},
+			{0, 0x1p64, 0}, {3, 0, 0}, {0, 1, -1}, {0, 1, 6},
+		} {
+			r := &recordingRandom{}
+			if _, err := New(r).RandomInput(kind, tt.low, tt.high, tt.decimals); err == nil || len(r.bounds) != 0 || r.draws != 0 {
+				t.Fatalf("invalid range accepted or consumed source: kind=%v range=%+v error=%v bounds=%v", kind, tt, err, r.bounds)
+			}
+		}
+	}
+}
+
+func TestRandomInputRejectsUnrepresentableIntegerRangeBeforeDraw(t *testing.T) {
+	for _, bounds := range [][2]float64{
+		{0x1p63, 0x1p63},
+		{math.Nextafter(-0x1p63, math.Inf(-1)), math.Nextafter(-0x1p63, math.Inf(-1))},
 	} {
 		r := &recordingRandom{}
-		if _, err := New(r).RandomInput(runtime.RealType, tt.low, tt.high, tt.decimals); err == nil || len(r.bounds) != 0 || r.draws != 0 {
-			t.Fatalf("invalid range accepted or consumed source: range=%+v error=%v bounds=%v", tt, err, r.bounds)
+		if _, err := New(r).RandomInput(runtime.IntegerType, bounds[0], bounds[1], 0); err == nil || len(r.bounds) != 0 || r.draws != 0 {
+			t.Fatalf("unrepresentable integer range accepted or consumed source: bounds=%v error=%v draws=%v", bounds, err, r.bounds)
 		}
+	}
+}
+
+func TestRandomInputAcceptsFullSigned32Range(t *testing.T) {
+	r := &recordingRandom{}
+	v, err := New(r).RandomInput(runtime.IntegerType, -0x1p31, 0x1p31-1, 0)
+	if err != nil || v.Kind != runtime.IntegerValue || v.Int != math.MaxInt32 || !slices.Equal(r.bounds, []uint64{1 << 32}) {
+		t.Fatalf("full signed-32-bit range: value=%v error=%v bounds=%v", v, err, r.bounds)
 	}
 }

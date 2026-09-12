@@ -53,6 +53,10 @@
   console source, and retained echo. Label the original recording report as
   historical while retaining the limits on extreme bounds and exact sequences.
 
+- Normalize random-input widths with finite, ordered and overflow-safe checks,
+  reject unrepresentable integer endpoints before consuming the source, and
+  cover the full signed-32-bit interval plus `randi` signed-boundary widths.
+
 - Record text-call controls and early completion after no-value conversion;
   verify explicit-zero and earlier-call controls in original and formatted
   programs. Keep persistent execution-state and diagnostic-phase gaps pending.
