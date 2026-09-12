@@ -105,6 +105,28 @@ formatting, comment preservation, source-byte mapping, and the remaining
 language and host behavior continue to require their own implementation and
 evidence. A linked requirement does not by itself mean its tasks are complete.
 
+## Syntax and formatter contracts
+
+The reference editor cannot expose this implementation's AST source spans,
+comment anchors, canonical printer, or formatter CLI modes. Their reference
+non-applicability is recorded separately from their implementation status:
+
+- `project.positioned-syntax` links `TestRecordedLineEndings` and
+  `TestRecoveryKeepsEOFPosition` as existing partial checks. Original-byte
+  mapping and positioned comment anchors remain pending under tasks 4.2 and 4.7.
+- `project.canonical-printing` links `TestFormatDepthRoundTrip` and
+  `TestIgnoredSuffixRoundTrip`. These verify bounded syntax round trips and
+  retained suffixes; interior comment preservation remains pending under 4.7
+  and 4.10.
+- `project.formatter-modes` links `TestCommandContracts` for the existing
+  standard-output mode and malformed-input/size-limit behavior. Check and
+  in-place modes and their subprocess contracts remain pending under 16.8–16.9.
+
+All three implementation states remain **pending**. These mappings complete
+their evidence classification, not their implementation. Recorded language
+probes remain required for accepted syntax and original/formatted execution;
+implementation acceptance must still reject these unfinished contracts.
+
 ## Defensive vector storage
 
 `project.vector-storage` covers invalid or inconsistent Go storage objects,

@@ -10548,25 +10548,6 @@
       }
     },
     {
-      "id": "project.canonical-printing",
-      "ownerGroup": 4,
-      "tasks": [
-        "4.7",
-        "4.10"
-      ],
-      "timeoutMS": 5000,
-      "evidence": {
-        "state": "not-applicable",
-        "review": {
-          "reason": "Canonical AST printing, comment preservation and idempotence are project tooling contracts; recorded source/output probes separately establish language behavior.",
-          "link": "docs/conformance-evidence-baseline.md#Project tooling"
-        }
-      },
-      "implementation": {
-        "state": "pending"
-      }
-    },
-    {
       "id": "project.cli-contracts",
       "ownerGroup": 3,
       "tasks": [
@@ -10607,25 +10588,6 @@
         "tests": [
           "internal/interp/display_test.go#TestDisplayHostFailures"
         ]
-      }
-    },
-    {
-      "id": "project.formatter-modes",
-      "ownerGroup": 16,
-      "tasks": [
-        "16.8",
-        "16.9"
-      ],
-      "timeoutMS": 5000,
-      "evidence": {
-        "state": "not-applicable",
-        "review": {
-          "reason": "The project formatter standard-output, check and in-place modes have no corresponding reference CLI; incomplete mode and comment behavior remains pending.",
-          "link": "docs/conformance-evidence-baseline.md#Project tooling"
-        }
-      },
-      "implementation": {
-        "state": "pending"
       }
     },
     {
@@ -10678,25 +10640,6 @@
           "internal/interp/execution_test.go#TestExecutionDiagnostics",
           "internal/interp/execution_test.go#TestRejectMissingOrStaleInfo"
         ]
-      }
-    },
-    {
-      "id": "project.positioned-syntax",
-      "ownerGroup": 4,
-      "tasks": [
-        "4.2",
-        "4.7"
-      ],
-      "timeoutMS": 5000,
-      "evidence": {
-        "state": "not-applicable",
-        "review": {
-          "reason": "AST order, source spans and comment anchors are project data structures not exposed by the reference editor; accepted grammar remains covered by recorded programs.",
-          "link": "docs/conformance-evidence-baseline.md#Project tooling"
-        }
-      },
-      "implementation": {
-        "state": "pending"
       }
     },
     {
@@ -80374,6 +80317,74 @@
         "tests": [
           "source_suffix_test.go#TestRecordedIgnoredSuffixes",
           "internal/parser/suffix_test.go#TestIgnoredSuffixRoundTrip"
+        ]
+      }
+    },
+    {
+      "id": "project.positioned-syntax",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.2",
+        "4.7"
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "AST order, source spans and comment anchors are project data structures not exposed by the reference editor; accepted grammar remains covered by recorded programs.",
+          "link": "docs/conformance-project-evidence.md#Syntax and formatter contracts"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "tests": [
+          "frontend_reference_test.go#TestRecordedLineEndings",
+          "internal/parser/recovery_test.go#TestRecoveryKeepsEOFPosition"
+        ]
+      }
+    },
+    {
+      "id": "project.canonical-printing",
+      "ownerGroup": 4,
+      "tasks": [
+        "4.7",
+        "4.10"
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "Canonical AST printing, comment preservation and idempotence are project tooling contracts; recorded source/output probes separately establish language behavior.",
+          "link": "docs/conformance-project-evidence.md#Syntax and formatter contracts"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "tests": [
+          "internal/parser/limits_test.go#TestFormatDepthRoundTrip",
+          "internal/parser/suffix_test.go#TestIgnoredSuffixRoundTrip"
+        ]
+      }
+    },
+    {
+      "id": "project.formatter-modes",
+      "ownerGroup": 16,
+      "tasks": [
+        "16.8",
+        "16.9"
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "The project formatter standard-output, check and in-place modes have no corresponding reference CLI; incomplete mode and comment behavior remains pending.",
+          "link": "docs/conformance-project-evidence.md#Syntax and formatter contracts"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "tests": [
+          "cmd/portugol/dispatch_test.go#TestCommandContracts"
         ]
       }
     }

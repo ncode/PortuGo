@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add explicit project-test trace mappings for AST positions, canonical printing
+  and formatter modes while retaining their unfinished implementation status.
+
 - Preserve opaque text after `fimalgoritmo` during formatting and ignore malformed
   source on later physical lines. Keep lexical validation on the terminator's
   own line; its recorded diagnostic-phase difference remains pending.

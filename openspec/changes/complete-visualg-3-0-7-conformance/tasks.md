@@ -475,6 +475,13 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 - [ ] 17.1 Add failing implementation-acceptance tests for pending behavior, mismatches, stale traces, unsupported examples, unpositioned errors, and missing quality results. Test release task-completion checks separately with synthetic complete/incomplete task lists so tests can pass before their own reporting/handoff tasks finish.
 - [ ] 17.2 Complete bidirectional trace links for every OpenSpec requirement, `[VERIFICAR]`, original checklist item, audited defect, discovered official feature, implementation test, and bundled example with no stale IDs.
+
+  AST positions, canonical printing and formatter modes now have explicit
+  project-specific evidence classifications, existing partial test links and
+  pending implementation states. Their reference non-applicability does not
+  waive comment/source mapping or formatter-mode work. The two externally
+  stopped examples have reviewed finite-completion exclusions, retaining their
+  unchanged sources and partial observations.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
   Forty-three original examples now match recorded output before and after
@@ -482,8 +489,10 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   contract; two accepted paths encounter CLI errors in unexecuted code. Seven
   rejected programs retain diagnostic or execution-phase differences. The latest
   eleven recordings add eight completed reference runs and three reviewed
-  rejections, including the school's input-dependent EOF diagnostic. Only
-  `Cronometro.alg` and `decpoutras.alg` still await recorded disposition.
+  rejections, including the school's input-dependent EOF diagnostic. The two
+  nonterminating original runs now have reviewed finite-completion exclusions;
+  their language features and the remaining implementation differences are
+  still required.
 
 - [ ] 17.4 Exercise the assembled source/depth/call/value/step guards, including empty infinite loops, recursive calls, flat AST chains, input retries, and cleanup, plus storage/encoding/host/filesystem adversarial cases; require controlled diagnostics and fail on a subprocess watchdog kill or accepted-example budget exhaustion.
 - [ ] 17.5 Run and archive results for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, race tests, Windows/macOS/Linux tests, and 30-second lexer and parser fuzz jobs.
