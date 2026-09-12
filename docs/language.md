@@ -433,9 +433,10 @@ match. Incompatible label types produce a positioned `E001`.
 The range separator must follow its lower expression on the same physical
 line. A missing upper expression or the unsupported `1..5` spelling produces
 `P001`. A lower bound that produces no value does not match and skips its upper
-bound; an evaluated upper bound without a value produces `P001`. A reference
-case that skips malformed syntax in an unselected body, and a no-value selector
-combined with a function bound, remain pending control-flow conformance cases.
+bound; an evaluated upper bound without a value produces `P001`. A malformed
+`ate` line in an unselected case body is retained and reports `P001` only when
+that body executes. A no-value selector combined with a function bound remains
+a pending control-flow conformance case.
 See the [choice-range example](../examples/choice_ranges.alg).
 
 `para` evaluates its bounds and step once. The default step is 1; zero is
@@ -539,7 +540,10 @@ does not apply to returns. Valued returns in procedures or the main body receive
 same physical line as `retorne`. A bare return in a function receives `E001`
 on the return line; a bare return in a procedure or the main body receives
 `E005`. The following statement or terminator is retained for analysis.
-Diagnostic ordering when a file also contains malformed syntax remains pending.
+During recovery, a standalone literal on the immediately following line is
+consumed as the malformed return continuation so the missing-value diagnostic
+remains primary. Other diagnostic ordering when a file also contains malformed
+syntax remains pending.
 
 The formatter retains a bare `retorne` without inventing an expression, even
 when analysis would reject it. Calls written as bare statements retain that

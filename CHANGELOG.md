@@ -70,6 +70,13 @@
   returns before LF in ignored suffixes in one pass, retaining standalone
   carriage returns and other opaque text.
 
+- Keep the missing-value diagnostic anchored at a bare function `retorne` when
+  a standalone literal follows on the next physical line; other malformed
+  recovery ordering remains pending.
+
+- Defer an orphan `ate` line inside a choice body until that body executes,
+  preserving the reference's selected and unselected control-flow behavior.
+
 - Preserve original-byte source positions through UTF-8 BOM removal and
   Windows-1252 decoding, including CLI and REPL diagnostics at every stage.
 

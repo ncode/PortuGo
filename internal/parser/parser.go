@@ -2,6 +2,7 @@ package parser
 
 import (
 	"strconv"
+	"strings"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
@@ -32,6 +33,7 @@ type parser struct {
 	pos       int
 	diags     []diag.Diagnostic
 	depth     int
+	caseDepth int
 	limited   bool
 }
 
@@ -403,8 +405,17 @@ func (p *parser) parseStmt() (stmt ast.Stmt) {
 		stmt := &ast.ReturnStmt{At: tok.Pos}
 		if !p.atLineEnd() {
 			stmt.Value = p.parseExpr(0)
+		} else {
+			p.discardReturnContinuation()
 		}
 		return stmt
+	case token.ATE:
+		if p.caseDepth != 0 {
+			return p.parseErrorStmt()
+		}
+		p.error(p.advance(), "expected statement")
+		p.skipLine()
+		return nil
 	case token.LEIA:
 		return p.parseRead()
 	case token.ESCREVA, token.ESCREVAL:
@@ -470,7 +481,9 @@ func (p *parser) parseSwitch() ast.Stmt {
 			}
 			p.match(token.COLON)
 			p.rememberFragment(cstart.Pos)
+			p.caseDepth++
 			body := p.parseStmtList(stopSet(token.CASO, token.OUTROCASO, token.FIMESCOLHA))
+			p.caseDepth--
 			sw.Cases = append(sw.Cases, ast.CaseClause{At: cstart.Pos, Labels: labels, Body: body})
 		case token.OUTROCASO:
 			sw.DefaultAt = p.advance().Pos
@@ -497,6 +510,34 @@ func (p *parser) parseCaseLabel() ast.CaseLabel {
 		}
 	}
 	return label
+}
+
+func (p *parser) discardReturnContinuation() {
+	if p.pos >= len(p.tokens) || p.tokens[p.pos].Kind != token.NEWLINE {
+		return
+	}
+	i := p.pos + 1
+	if i >= len(p.tokens) {
+		return
+	}
+	switch p.tokens[i].Kind {
+	case token.NUMBER, token.STRING, token.LPAREN, token.ADD, token.SUB, token.NAO, token.VERDADEIRO, token.FALSO:
+	default:
+		return
+	}
+	for i < len(p.tokens) && p.tokens[i].Kind != token.NEWLINE && p.tokens[i].Kind != token.EOF {
+		i++
+	}
+	p.pos = i
+}
+
+func (p *parser) parseErrorStmt() ast.Stmt {
+	at := p.advance()
+	parts := []string{at.Text}
+	for !p.atLineEnd() {
+		parts = append(parts, p.advance().Text)
+	}
+	return &ast.ErrorStmt{At: at.Pos, Text: strings.Join(parts, " ")}
 }
 
 func (p *parser) parseWhile() ast.Stmt {

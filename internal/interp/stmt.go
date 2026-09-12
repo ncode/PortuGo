@@ -36,6 +36,8 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		}()
 	}
 	switch s := stmt.(type) {
+	case *ast.ErrorStmt:
+		return control{}, failure(s.At, diag.EParse, fmt.Errorf("%s", s.Text))
 	case *ast.TimerStmt:
 		return control{}, i.execTimer(s)
 	case *ast.PauseStmt:

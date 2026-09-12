@@ -51,6 +51,7 @@ func TestRecordedChoiceRanges(t *testing.T) {
 		"choice-selector-signed-boundary", "choice-selector-unsigned-boundary",
 		"choice-selector-negative-boundary", "choice-selector-large-equal",
 		"choice-selector-negative-fraction", "choice-selector-negative-fraction-range",
+		"choice-range-next-line",
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)

@@ -152,6 +152,8 @@ func (p *printer) printStmt(stmt Stmt) {
 		}
 	}
 	switch s := stmt.(type) {
+	case *ErrorStmt:
+		p.line("%s", s.Text)
 	case *FileInputStmt:
 		p.line("arquivo \"%s\"", s.Path)
 	case *ConsoleStmt:

@@ -61,6 +61,7 @@ func TestRecordedReturnRejections(t *testing.T) {
 		{"function-incompatible-return", diag.ETypeMismatch, 4},
 		{"function-name-assignment-result", diag.EUndeclared, 4},
 		{"return-integer-valued-real", diag.ETypeMismatch, 6},
+		{"return-value-next-line", diag.ETypeMismatch, 4},
 	} {
 		t.Run(tt.id, func(t *testing.T) {
 			path := filepath.Join("testdata/conformance/visualg-3.0.7/probes", tt.id, "source.alg")

@@ -61,7 +61,10 @@ func TestReturnValueDoesNotCrossLine(t *testing.T) {
 	}
 	// The following line is also invalid; inspect recovery without fixing the
 	// precedence between syntax diagnostics and the earlier missing value here.
-	prog, _ := Parse(tokens)
+	prog, parseDiags := Parse(tokens)
+	if len(parseDiags) != 0 {
+		t.Fatalf("parse diagnostics = %v, want semantic missing-return diagnostic", parseDiags)
+	}
 	if prog == nil || len(prog.Subs) != 1 {
 		t.Fatal("missing function after recovery")
 	}

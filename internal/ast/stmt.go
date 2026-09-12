@@ -17,6 +17,15 @@ type Stmt interface {
 	Start() token.Pos
 }
 
+// ErrorStmt retains a recoverable syntax error until its branch executes.
+type ErrorStmt struct {
+	At   token.Pos
+	Text string
+}
+
+func (*ErrorStmt) stmtNode()          {}
+func (s *ErrorStmt) Start() token.Pos { return s.At }
+
 // ConsoleStmt requests console display in the program configuration section.
 type ConsoleStmt struct{ At token.Pos }
 
