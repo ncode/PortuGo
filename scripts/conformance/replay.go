@@ -210,6 +210,9 @@ func compareDiagnostics(stderr string, want []diagnostic) error {
 		if err != nil {
 			return err
 		}
+		if lineNo < 1 || column < 1 {
+			return fmt.Errorf("unpositioned diagnostic output")
+		}
 		got = append(got, diagnostic{Code: match[3], Line: lineNo, Column: column})
 	}
 	if len(got) != len(want) {

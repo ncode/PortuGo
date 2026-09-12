@@ -55,9 +55,6 @@ func TestRecordedFileInput(t *testing.T) {
 		if !strings.HasPrefix(p.ID, "file-") || !p.Evidence.Accepted {
 			continue
 		}
-		if strings.Contains(p.ID, "missing-parent") {
-			continue // The documented file-error guard differs from this reference case.
-		}
 		count++
 		t.Run(p.ID, func(t *testing.T) {
 			src, err := source.Decode(read(p.Source.Path))
@@ -87,6 +84,13 @@ func TestRecordedFileInput(t *testing.T) {
 						t.Fatal(err)
 					}
 				}
+				restore := func() {}
+				switch {
+				case strings.HasPrefix(p.ID, "file-access-denied-"):
+					restore = restrictFileRead(t, filepath.Join(dir, "input.txt"), "denied")
+				case strings.HasPrefix(p.ID, "file-access-locked-"):
+					restore = restrictFileRead(t, filepath.Join(dir, "input.txt"), "locked")
+				}
 				var out bytes.Buffer
 				i := interp.New(interp.Options{WorkingDir: dir, Input: bytes.NewReader(read(p.Input.Path)), Output: &out})
 				if ds := i.Run(prog, info); len(ds) != 0 {
@@ -96,6 +100,7 @@ func TestRecordedFileInput(t *testing.T) {
 				if !bytes.Equal(out.Bytes(), read(want.Stdout.Path)) {
 					t.Fatalf("formatted=%v: stdout=%q, want %q", formatted, &out, read(want.Stdout.Path))
 				}
+				restore()
 				for _, f := range want.Generated {
 					if !bytes.Equal(read(filepath.Join(dir, f.Path)), read(f.Content.Path)) {
 						t.Fatalf("formatted=%v: file %s differs from recorded bytes", formatted, f.Path)
@@ -114,7 +119,7 @@ func TestRecordedFileInput(t *testing.T) {
 			}
 		})
 	}
-	if count < 25 {
+	if count != 38 {
 		t.Fatal("missing file-input recordings")
 	}
 }

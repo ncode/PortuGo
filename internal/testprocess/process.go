@@ -18,11 +18,17 @@ const MaxSourceBytes = 64 << 10
 // Run executes the selected test body in a child process with a five-second limit.
 func Run(t *testing.T, body func()) {
 	t.Helper()
+	RunWithTimeout(t, 5*time.Second, body)
+}
+
+// RunWithTimeout executes the selected test body in a child process with the given limit.
+func RunWithTimeout(t *testing.T, timeout time.Duration, body func()) {
+	t.Helper()
 	if os.Getenv("PORTUGOL_TEST_CHILD") == t.Name() {
 		body()
 		return
 	}
-	if err := run(t.Name(), 5*time.Second, ""); err != nil {
+	if err := run(t.Name(), timeout, ""); err != nil {
 		t.Fatal(err)
 	}
 }

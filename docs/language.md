@@ -561,9 +561,9 @@ at that statement, preserving preceding output.
 
 Relative filenames resolve against `interp.Options.WorkingDir`, which defaults
 to the process working directory. Both slash and backslash separate nested
-path components. Parent directories must already exist. Native absolute paths
-and filesystem permissions follow the host; Windows drive paths are rejected
-on other hosts. Tests supply temporary working directories.
+path components. Parent directories are never created automatically. Native
+absolute paths and filesystem permissions follow the host; Windows drive paths
+are rejected on other hosts. Tests supply temporary working directories.
 
 Existing files supply Windows-1252 lines to `leia`. LF ends a line, CR bytes are
 discarded, and a final unterminated line is consumed once. An initially empty
@@ -571,30 +571,44 @@ file supplies one empty line before subsequent reads fall back to the existing
 console stream. Exhausted files are closed and left unchanged. File values use
 the same conversions and echo as console input, including around `eco off`.
 
-A missing file is created when its directive is processed, even if no input is
-read. Console input is buffered as Windows-1252 with CRLF after each successfully
-converted value: integers use decimal text, reals ten fractional digits and
-logical values `Verdadeiro`/`Falso`. Character recording preserves the complete
+A missing file in an existing directory is created when its directive is
+processed, even if no input is read. If its parent directory is missing, the
+directive leaves file input inactive and execution continues without creating
+a file. Later reads use console or enabled random input, retaining ordinary
+input echo.
+
+An existing regular file that cannot be opened because read access is denied
+or Windows reports a sharing violation also leaves file input inactive. Its
+bytes remain unchanged; execution continues even without a `leia`, and later
+reads use console or enabled random input. These observations cover an explicit
+read-data denial and a read/write file handle with sharing disabled, not every
+path, lock or ACL configuration.
+
+For a created recording, console input is buffered as Windows-1252 with CRLF
+after each successfully converted value: integers use decimal text, reals ten
+fractional digits and logical values `Verdadeiro`/`Falso`. Character recording preserves the complete
 entered line even when the stored variable is limited to 255 characters.
 Each full 128-byte block is flushed immediately; successful completion flushes
 the remaining bytes. Failure or a replacement directive discards the unfinished
 block, leaving the file and its already flushed prefix. A replaced short
 recording therefore remains an empty file. A subprogram's file selection
 persists after returning and is reapplied when that subprogram is called again.
-Random input leaves an existing file's next
-line untouched; generated values are recorded when creating a missing file.
+Generated numeric and character input leaves an existing file's next line
+untouched; generated values are recorded when creating a missing file. Logical
+destinations continue reading the selected file, including while random input
+is enabled, and use console input after that file is exhausted.
 Disabling random input resumes the selected file or console source.
 
-Files close on normal completion and failure. Path, open, read, write and close
-errors report `R008` at `arquivo`, without rendering underlying host paths.
+Files close on normal completion and failure. Other path, open, read, write and
+close errors report `R008` at `arquivo`, without rendering underlying host paths.
 Undefined Windows-1252 bytes and unrepresentable output characters also receive
 `R008` as project guards; those byte cases are not claimed as reference matches.
 Encoding is checked before buffering a line. Oversized input lines receive `R003`; exhausted
 headless console input still reports `R004` at the consuming destination.
-Missing parent directories receive `R008` as an explicit project guard. Two
-reference recordings silently continue without creating the requested file;
-they remain pending compatibility verification rather than being reported as
-matches. See [the file-input recordings](file-input-progress.md).
+The missing-parent fallback is verified both without input and with a console
+read. Access-denial and sharing-lock recordings have platform filesystem
+regressions; generic CLI replay cannot recreate their access restrictions and
+keeps those six probes pending. See [the file-input recordings](file-input-progress.md).
 
 `eco on` and `eco off` request a typed echo setting from the host. Both recorded
 console and random-input transcripts retain input echo around `eco off`, so the
@@ -909,6 +923,13 @@ Codes 0–31, 127, and 255 produce a space; `carac()` also produces a space.
 Out-of-domain integers produce no value. A no-value argument is treated as zero.
 Real, character, and logical arguments receive `E001`; extra arguments receive
 `P001`.
+Recorded no-value conversions followed by user-function calls expose additional
+reference execution state that is not implemented. Some programs finish before
+later output and a deliberate domain error, even when `carac(abs())` was stored
+in an earlier assignment. An explicit zero and a call before an absent `copia`
+bound are verified controls. These observations do not establish a general
+state-reset rule; see [text argument-order gaps](text-argument-order-gaps.md).
+
 The two code functions are not inverses: `carac(128)` is `"Ç"`, whose `asc`
 value is 199. No-value results in output use the discard-and-continue behavior
 described below. Ordinary Unicode casing outside the reference repertoire
@@ -1004,7 +1025,7 @@ injection behavior; they do not promise reference seed or sequence compatibility
 See [random fraction recordings](random-fraction-progress.md).
 
 `aleatorio` is a reserved input command. `aleatorio on` enables generated input;
-`aleatorio off` returns subsequent reads to console input. A bare command is
+`aleatorio off` resumes the selected file or console input. A bare command is
 rejected with `P001`. Numeric bounds accept expressions: `aleatorio low, high`
 selects an inclusive integer range, swapping reversed endpoints. A single bound
 sets the lower endpoint and leaves the upper endpoint at 100. This differs from
@@ -1021,10 +1042,13 @@ parts and do not use the precision setting. `aleatorio on` restores the default
 0-through-100 range and zero additional fractional digits.
 
 Generated character input contains five uppercase ASCII letters. Logical reads
-continue consuming console input while random mode is active. The ordinary
-console transcript includes generated input in the same representation as typed
-input. Input modes reset for every `Interpreter.Run`; all random operations use
-the same per-interpreter source. Bounds are evaluated when the command executes.
+continue reading the selected file or console stream while random mode is active.
+The ordinary console transcript includes generated input in the same
+representation as typed input. Input modes reset for every `Interpreter.Run`;
+all random operations use the same per-interpreter source. Bounds are evaluated
+when the command executes.
+Embedders can supply a seeded `RandomSource` for repeatable implementation tests;
+the default source does not promise a fixed seed or repeatable sequence.
 
 The old callable random API has been removed: the reference treats `aleatorio`,
 `aleatorio()`, and calls with arguments as no-value expressions, discarding the
@@ -1040,8 +1064,11 @@ differ between runs. Unqualified output comparisons remain byte-exact.
 
 Missing random sources, invalid draws and unrepresentable random-input ranges
 return positioned `R004` without assigning or echoing the failed read. Builtin
-random failures continue using `R007`. File-input interaction and extreme bound
-compatibility remain pending reference qualification.
+random failures continue using `R007`. Recorded file-input transitions preserve
+unread file lines during generated reads, resume the selected source when random
+mode is disabled, and record generated values when creating a missing file.
+Extreme bound compatibility remains pending reference qualification; ordinary
+range and input-state coverage does not establish exact reference draw counts.
 
 ## Execution diagnostics and safeguards
 
@@ -1077,7 +1104,8 @@ submitted buffer and permit another program; each program gets a fresh budget.
 Each submission also resets file and generated-input modes. A program's
 `arquivo` reads or records only its requested input and closes the file before
 the next prompt; exhaustion resumes the shared console stream. Generated input
-does not consume following source, and `aleatorio off` resumes console input.
+does not consume following source, and `aleatorio off` resumes the selected file
+or console input.
 Headless echo, pause, debug, display, timer, and chronometer commands do not
 consume REPL source or input lines. A file-input failure preserves the next
 submission and contributes to the session's failure status.
@@ -1200,9 +1228,18 @@ substitute for language recordings or establish complete reference conformance.
 Runtime fixture output is compared byte for byte, including decimal separators,
 whitespace, and newlines. Git preserves committed fixture bytes on every
 platform, including Windows. Lexer/parser fuzz tests use a 64 KiB generated-source
-profile and adversarial cases have failing subprocess watchdogs. This profile
-is the smaller generated-input test profile. The source, traversal, and
-execution safeguards above also apply to ordinary use.
+profile and adversarial cases have failing subprocess watchdogs. Fuzzing checks
+lossless token text, bounded original-byte positions and canonical printing
+idempotence, including BOM, Windows-1252, newline, comment and literal inputs.
+Subprocess cases cover every byte truncation of encoded programs, deep nesting,
+flat expressions and the exact source-size boundary plus one byte. Syntax and
+AST limit diagnostics use point spans, including at EOF, without extending beyond source.
+The smaller generated-input test profile does not replace the source, traversal,
+and execution safeguards above, which also apply to ordinary use.
 
 See [development checks](development.md) and the
 [quality baseline](quality-baseline.md) for commands and measured coverage.
+Conformance replay requires positive diagnostic lines and columns, including
+when a recording constrains the line without fixing an exact column.
+Final acceptance requires quality evidence for the candidate commit; the
+separate release gate also requires completed implementation and handoff tasks.

@@ -2,6 +2,41 @@
 
 ## Unreleased
 
+- Allow 30-second test watchdogs for full-size encoded-source decoding and
+  formatter boundary checks under race instrumentation. Keep five-second
+  limits for smaller adversarial cases and fail every watchdog expiration.
+
+- Keep syntax and AST resource-limit diagnostic spans within the source, including
+  at EOF. Expand frontend fuzz and subprocess checks for encoded/truncated input,
+  retained token text, formatting idempotence and controlled size/depth rejection.
+
+- Require candidate-specific local quality evidence for implementation acceptance
+  and add a separate release gate for completed implementation and handoff tasks.
+  Reject malformed or duplicate task checkboxes and cover acceptance failures
+  with isolated synthetic candidates, without claiming release readiness.
+
+- Reject replayed diagnostics with a zero line or column during conformance
+  validation, including recordings that intentionally omit an exact column.
+
+- Continue from an existing regular `arquivo` file when read access is denied
+  or Windows reports a sharing violation, preserving its bytes and console or
+  generated input. Add nine reference controls, including logical file input
+  during random mode, and platform filesystem regressions. Six access-constrained
+  probes remain pending generic CLI replay.
+
+- Continue execution when an `arquivo` parent directory is missing, preserving
+  console or random input without creating directories or a recording. Match
+  both recorded continuation cases and retain positioned guards for other
+  file failures.
+
+- Document verified random-input state, restoration of the selected file or
+  console source, and retained echo. Label the original recording report as
+  historical while retaining the limits on extreme bounds and exact sequences.
+
+- Record text-call controls and early completion after no-value conversion;
+  verify explicit-zero and earlier-call controls in original and formatted
+  programs. Keep persistent execution-state and diagnostic-phase gaps pending.
+
 - Preserve bare return and call syntax during formatting, including bare `pi`
   statements, and use canonical operator spellings. Normalize repeated carriage
   returns before LF in ignored suffixes in one pass, retaining standalone

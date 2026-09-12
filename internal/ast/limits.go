@@ -65,7 +65,7 @@ func (c *limitChecker) enter(pos token.Pos, depth int) bool {
 		return false
 	}
 	if depth > MaxDepth {
-		c.failure = &diag.Diagnostic{Code: diag.EResource, Pos: pos, End: pos + 1, Message: "AST traversal depth limit exceeded"}
+		c.failure = &diag.Diagnostic{Code: diag.EResource, Pos: pos, End: pos, Message: "AST traversal depth limit exceeded"}
 		return false
 	}
 	return true

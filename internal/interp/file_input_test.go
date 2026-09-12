@@ -6,12 +6,43 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
+	"syscall"
 	"testing"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
+	"github.com/ncode/portugol-go/internal/token"
 )
+
+func TestUnavailableFileRead(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{"permission", os.ErrPermission, true},
+		{"native access denial", syscall.Errno(5), runtime.GOOS == "windows"},
+		{"sharing violation", syscall.Errno(32), runtime.GOOS == "windows"},
+		{"missing", os.ErrNotExist, false},
+		{"closed", os.ErrClosed, false},
+		{"other failure", errors.New("file failure"), false},
+		{"success", nil, false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := unavailableFileRead(tt.err); got != tt.want {
+				t.Fatalf("unavailable=%v, want %v", got, tt.want)
+			}
+			if tt.err != nil {
+				err := &os.PathError{Op: "open", Path: "input.txt", Err: tt.err}
+				if got := unavailableFileRead(err); got != tt.want {
+					t.Fatalf("wrapped unavailable=%v, want %v", got, tt.want)
+				}
+			}
+		})
+	}
+}
 
 func TestFileInputCleanupAndReset(t *testing.T) {
 	for _, fail := range []bool{false, true} {
@@ -55,7 +86,7 @@ func TestFileInputCleanupAndReset(t *testing.T) {
 }
 
 func TestFileInputFailures(t *testing.T) {
-	for _, path := range []string{"", "bad\x00name", "missing/data.txt", "."} {
+	for _, path := range []string{"", "bad\x00name", "."} {
 		t.Run(path, func(t *testing.T) {
 			i := New(Options{WorkingDir: t.TempDir()})
 			err := i.configureFile(&ast.FileInputStmt{At: 19, Path: path})
@@ -129,6 +160,85 @@ func TestFileInputFailures(t *testing.T) {
 				if err != nil || string(data) != "7\r\n" {
 					t.Fatalf("failed write changed existing bytes: %q, %v", data, err)
 				}
+			}
+		})
+	}
+}
+
+func TestMissingParentInputModes(t *testing.T) {
+	for _, path := range []string{"missing/data.txt", `missing\data.txt`} {
+		for _, tt := range []struct {
+			name, body, input, want string
+			code                    diag.Code
+		}{
+			{name: "console", body: "leia(x)", input: "7\n", want: "7\n"},
+			{name: "random then console", body: "aleatorio 7,7\nleia(x)\naleatorio off\nleia(x)", input: "9\n", want: "7\n9\n"},
+			{name: "exhausted console", body: "leia(x)", code: diag.RInput},
+		} {
+			t.Run(path+"/"+tt.name, func(t *testing.T) {
+				dir := t.TempDir()
+				src := "algoritmo \"missing parent\"\narquivo \"" + path + "\"\nvar x: inteiro\ninicio\n" + tt.body + "\nfimalgoritmo"
+				p, info := analyzed(t, src)
+				var out bytes.Buffer
+				i := New(Options{WorkingDir: dir, Input: strings.NewReader(tt.input), Output: &out, Random: &scriptedRandom{}})
+				ds := i.Run(p, info)
+				if tt.code == "" && len(ds) != 0 || tt.code != "" && (len(ds) != 1 || ds[0].Code != tt.code || ds[0].Pos != token.Pos(strings.Index(src, "x)"))) {
+					t.Fatalf("diagnostics=%v, want %q at input destination", ds, tt.code)
+				}
+				if out.String() != tt.want {
+					t.Fatalf("output=%q, want %q", &out, tt.want)
+				}
+				entries, err := os.ReadDir(dir)
+				if err != nil || len(entries) != 0 {
+					t.Fatalf("missing-parent selection created filesystem entries: %v, %v", entries, err)
+				}
+			})
+		}
+	}
+}
+
+func TestMissingParentClearsPreviousFile(t *testing.T) {
+	for _, existing := range []bool{false, true} {
+		t.Run(map[bool]string{false: "recording", true: "reading"}[existing], func(t *testing.T) {
+			dir := t.TempDir()
+			name := filepath.Join(dir, "previous.txt")
+			want := ""
+			if existing {
+				want = "3\r\n"
+				if err := os.WriteFile(name, []byte(want), 0o600); err != nil {
+					t.Fatal(err)
+				}
+			}
+			i := New(Options{WorkingDir: dir, Input: strings.NewReader("7\n")})
+			if err := i.configureFile(&ast.FileInputStmt{At: 11, Path: "previous.txt"}); err != nil {
+				t.Fatal(err)
+			}
+			t.Cleanup(func() { _ = i.closeInputFile(false) })
+			previous := i.fileInput.file
+			if !existing {
+				if err := i.recordInput("pending"); err != nil {
+					t.Fatal(err)
+				}
+			}
+			if err := i.configureFile(&ast.FileInputStmt{At: 23, Path: "missing/data.txt"}); err != nil {
+				t.Fatal(err)
+			}
+			if i.fileInput.file != nil || i.fileInput.reader != nil || i.fileInput.writer != nil {
+				t.Fatal("missing-parent selection retained the previous file state")
+			}
+			// Stat can expose a native invalid-handle error after close on Windows.
+			if _, err := previous.Read(make([]byte, 1)); !errors.Is(err, os.ErrClosed) {
+				t.Fatalf("previous handle remains open: %v", err)
+			}
+			if line, err := i.readLine(29); err != nil || line != "7" {
+				t.Fatalf("console fallback=%q, %v", line, err)
+			}
+			if err := i.recordInput("7"); err != nil {
+				t.Fatal(err)
+			}
+			data, err := os.ReadFile(name)
+			if err != nil || string(data) != want {
+				t.Fatalf("previous file=%q, %v; want %q", data, err, want)
 			}
 		})
 	}

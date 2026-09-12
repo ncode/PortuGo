@@ -46,7 +46,20 @@ func TestInputModesPreserveNextSubmission(t *testing.T) {
 			input: "42\n", output: "\nO cronômetro não foi iniciado.\n\nCronômetro iniciado.\n42\n 42\n",
 		},
 		{
-			name: "file failure", header: "arquivo \"missing/data.txt\"\n",
+			name: "missing parent without input", header: "arquivo \"missing/data.txt\"\n",
+			body: "escreval(\"DONE\")", output: "DONE\n",
+		},
+		{
+			name: "missing parent console", header: "arquivo \"missing/data.txt\"\n",
+			body: "leia(x)\nescreval(x)", input: "42\n", output: "42\n 42\n",
+		},
+		{
+			name: "missing parent random then console", header: "arquivo \"missing/data.txt\"\n",
+			body:  "aleatorio 7, 7\nleia(x)\naleatorio off\nleia(x)\nescreval(x)",
+			input: "42\n", output: "7\n42\n 42\n",
+		},
+		{
+			name: "file failure", header: "arquivo \".\"\n",
 			body: "leia(x)", diagnostic: "R008",
 		},
 	} {
@@ -85,6 +98,8 @@ func TestInputModesPreserveNextSubmission(t *testing.T) {
 				if err := os.Rename(path, path+".saved"); err != nil {
 					t.Fatal(err) // Also checks closed handles on Windows.
 				}
+			} else if entries, err := os.ReadDir(dir); err != nil || len(entries) != 0 {
+				t.Errorf("unexpected filesystem entries: %v, %v", entries, err)
 			}
 		})
 	}

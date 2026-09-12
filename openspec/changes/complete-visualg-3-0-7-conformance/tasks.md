@@ -145,7 +145,13 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   normalize in one pass, including comments, fragments and opaque suffixes;
   standalone carriage returns remain intact. Syntax and comment comparisons
   verify the result independently of original-byte positions.
-- [ ] 4.11 Expand lexer/parser fuzz and subprocess adversarial cases with newline, encoding, comment, literal, deep-nesting, truncation, and oversized inputs; assert controlled limit diagnostics and fail on watchdog expiration.
+- [x] 4.11 Expand lexer/parser fuzz and subprocess adversarial cases with newline, encoding, comment, literal, deep-nesting, truncation, and oversized inputs; assert controlled limit diagnostics and fail on watchdog expiration.
+
+  Fuzzing now checks original-byte diagnostic spans, lossless token text and
+  formatting idempotence through encoded input. Subprocess checks reject hangs
+  and cover every byte truncation of mixed newline/encoding programs plus the
+  exact source-size boundary and one beyond. A minimized fuzz regression pins
+  the syntax-limit diagnostic at EOF without an out-of-range end position.
 - [ ] 4.12 Update `docs/language.md`, grammar examples, and `CHANGELOG.md` with spellings, newline rules, retained comments/suffixes, source/depth limits, and breaking rejections.
 - [x] 4.13 Run focused source/lexer/parser/sema/printer tests and fuzz smoke tests, then the full build, lint, ordinary, race, incremental corpus, and strict OpenSpec suites.
 - [x] 4.14 Mark every completed 4.x task immediately, commit the focused grammar changes, push the next stacked branch, and open its draft PR before group 5.
@@ -390,7 +396,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   reference seeds and generator-consumption counts are not promised.
 - [ ] 13.4 Implement overflow-safe bound normalization and rejection, including full integer-domain cases, while consuming random values only when the reference does.
 - [x] 13.5 Add typed AST, parser, printer, and semantic validation for command-form `aleatorio` and any oracle-confirmed range/disable companion commands.
-- [ ] 13.6 Implement random-input activation, destination conversion, bounds, echo state, and return to the prior/default input mode.
+- [x] 13.6 Implement random-input activation, destination conversion, bounds, echo state, and return to the prior/default input mode.
 
   Command-form input now has typed syntax, expression bounds, precision limited
   to five fractional digits, console transitions, subprogram state, per-run
@@ -398,29 +404,48 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   now have original/formatted regression coverage: 39 exact transcripts and
   17 reviewed domain contracts that retain exact echo/output formatting and
   recorded evidence bytes. File-input transitions and the descriptor registry
-  are covered by their owning slices. Extreme command bounds remain pending.
+  are covered by their owning slices. `file-random-logical-source` confirms that
+  logical input still reads the selected file while random mode is active.
+  File regressions compare original/formatted execution and unchanged/generated
+  bytes. Extreme command bounds and reference draw-count qualification remain
+  pending in 13.4.
 
 - [x] 13.7 Return positioned `R007` for builtin random failures and `R004` for random-input failures with no panic or invalid source call.
 - [x] 13.8 Add repeatable runtime fixtures using scripted random values, property checks across many seeds, and an example that asserts domains rather than sequences.
-- [ ] 13.9 Update `docs/language.md` and `CHANGELOG.md` with exact random domains, modes, seeding guarantees, errors, and the explicit sequence non-goal.
+- [x] 13.9 Update `docs/language.md` and `CHANGELOG.md` with exact random domains, modes, seeding guarantees, errors, and the explicit sequence non-goal.
 - [x] 13.10 Run focused random/registry/input/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
-- [ ] 13.11 Mark every completed 13.x task immediately, commit the focused randomness changes, push the next stacked branch, and open its draft PR before group 14.
+- [x] 13.11 Mark every completed 13.x task immediately, commit the focused randomness changes, push the next stacked branch, and open its draft PR before group 14.
+
+  The completed input-state follow-up is published ready for review in
+  [PR #83](https://github.com/ncode/PortuGo/pull/83), with its
+  [commit history](https://github.com/ncode/PortuGo/pull/83/commits) and
+  [quality checks](https://github.com/ncode/PortuGo/pull/83/checks).
+  This handoff covers the completed slice; tasks 13.1 and 13.4 remain open.
 
 ## 14. Arquivo Paths, Encoding, Exhaustion, Fallback, and Echo
 
 - [ ] 14.1 Add failing temporary-filesystem fixtures for relative and nested paths, existing/missing/unreadable/empty/exhausted files, CP1252 bytes, mixed value types, fallback recording, generated files, echo combinations, cleanup, and positioned failures.
 
-  Forty-two file-input observations cover 40 matching cases, including literal
-  syntax, local selection, encoding, line boundaries and failure buffering.
-  Unreadable-path reference behavior still needs qualification.
+  The 42 earlier file-input observations match, including literal syntax, local
+  selection, encoding, line boundaries, failure buffering and missing-parent
+  continuation. Nine new controls qualify readable/empty files, read-data
+  denial, sharing locks and logical file input during random mode. Platform
+  filesystem regressions cover denied/locked continuation and unchanged bytes;
+  six constrained probes remain pending because generic replay cannot recreate
+  their access restrictions. Automated candidate ACL coverage is also pending.
 - [x] 14.2 Add typed AST, parser, canonical-printer, and semantic rules for every oracle-confirmed `arquivo` form and path expression.
 - [x] 14.3 Resolve relative file paths against `interp.Options.WorkingDir`, reject invalid resolution safely, and keep tests isolated in temporary directories.
 - [x] 14.4 Implement the file-input mode with shared buffering and the exact Windows-1252, newline, token/line, conversion, and consecutive-read behavior.
 - [ ] 14.5 Implement oracle behavior for missing, unreadable, empty, and exhausted files, including transitions to console or random input where recorded.
 
   Ordinary missing, empty and exhausted files and random transitions match.
-  Two missing-parent-directory recordings continue silently in the reference;
-  the documented `R008` guard still differs and those entries remain pending.
+  Both missing-parent-directory recordings now continue without creating a
+  file and retain their exact output before and after formatting. Existing
+  regular-file read denial and Windows sharing violations now leave file mode
+  inactive, matching the new no-read, console and fixed-random observations.
+  Other failures retain positioned guards. Faithful constrained replay and
+  automated candidate ACL coverage remain pending, so this broader task stays
+  open rather than claiming every permission or path arrangement is qualified.
 - [x] 14.6 Implement fallback recording and generated-file byte behavior, including exclusive creation, recorded 128-byte buffering, replacement and partial-failure cleanup; validate each input conversion and encoding before changing its recording buffer.
 
   Reference controls establish partial flushed prefixes rather than whole-file
@@ -428,11 +453,17 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   only successful completion flushes the unfinished block. This replaces the
   earlier unqualified atomic-recording assumption.
 - [x] 14.7 Integrate input echo with file values, fallback console values, random values, formatting, and mode transitions exactly as recorded.
-- [x] 14.8 Return `R008` at the `arquivo` statement for path/open/read/write/encode/close failures and `R004` at the consuming `leia` where required by the oracle.
+- [x] 14.8 Return `R008` at the `arquivo` statement for guarded path/open/read/write/encode/close failures, retaining the recorded missing-parent and existing-file access fallback exceptions, and `R004` at the consuming `leia` where required by the oracle.
 - [x] 14.9 Add cross-platform path tests, byte-hash integration fixtures, fake reader/writer failures, and an example that uses only temporary/sandbox-safe relative data.
 - [x] 14.10 Update `docs/language.md` and `CHANGELOG.md` with `arquivo` path, encoding, state, fallback, recording, echo, and error semantics.
 - [x] 14.11 Run focused filesystem/input/interpreter/CLI tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
-- [ ] 14.12 Mark every completed 14.x task immediately, commit the focused `arquivo` changes, push the next stacked branch, and open its draft PR before group 15.
+- [x] 14.12 Mark every completed 14.x task immediately, commit the focused `arquivo` changes, push the next stacked branch, and open its draft PR before group 15.
+
+  The completed file-input follow-ups are published ready for review in
+  [PR #80](https://github.com/ncode/PortuGo/pull/80) and
+  [PR #82](https://github.com/ncode/PortuGo/pull/82), with reviewed commits and
+  [quality checks](https://github.com/ncode/PortuGo/pull/82/checks).
+  Tasks 14.1 and 14.5 retain the constrained-replay and candidate ACL work.
 
 ## 15. Timer, Pause, Debug, Echo, Chronometer, Screen, and Color
 
@@ -516,7 +547,14 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 ## 17. Implementation Acceptance, Documentation, and Release Handoff
 
-- [ ] 17.1 Add failing implementation-acceptance tests for pending behavior, mismatches, stale traces, unsupported examples, unpositioned errors, and missing quality results. Test release task-completion checks separately with synthetic complete/incomplete task lists so tests can pass before their own reporting/handoff tasks finish.
+- [x] 17.1 Add failing implementation-acceptance tests for pending behavior, mismatches, stale traces, unsupported examples, unpositioned errors, and missing quality results. Test release task-completion checks separately with synthetic complete/incomplete task lists so tests can pass before their own reporting/handoff tasks finish.
+
+  Acceptance regressions cover pending probes and accepted examples, stale
+  requirement/task/test links, missing tests, deterministic replay mismatches,
+  unpositioned diagnostics, and absent or invalid candidate-specific quality
+  evidence. Synthetic release candidates verify that unfinished reporting and
+  handoff tasks permit behavioral acceptance but prevent release approval.
+  Full implementation acceptance and release handoff remain incomplete.
 - [ ] 17.2 Complete bidirectional trace links for every OpenSpec requirement, `[VERIFICAR]`, original checklist item, audited defect, discovered official feature, implementation test, and bundled example with no stale IDs.
 
   AST positions, canonical printing and formatter modes now have explicit

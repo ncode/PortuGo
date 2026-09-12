@@ -20,8 +20,19 @@ func taskStates(root, name string) (map[string]bool, map[int]bool, error) {
 		return nil, nil, err
 	}
 	tasks, groups := make(map[string]bool), make(map[int]bool)
-	pattern := regexp.MustCompile(`(?m)^- \[([ x])\] (([0-9]+)\.[0-9]+) `)
-	for _, match := range pattern.FindAllStringSubmatch(string(data), -1) {
+	pattern := regexp.MustCompile(`^- \[([ x])\] (([0-9]+)\.[0-9]+) `)
+	for _, line := range strings.Split(string(data), "\n") {
+		line = strings.TrimSpace(line)
+		if !strings.HasPrefix(line, "- [") {
+			continue
+		}
+		match := pattern.FindStringSubmatch(line)
+		if match == nil {
+			return nil, nil, fmt.Errorf("invalid task checkbox in %s", name)
+		}
+		if _, exists := tasks[match[2]]; exists {
+			return nil, nil, fmt.Errorf("duplicate task %s", match[2])
+		}
 		group, err := strconv.Atoi(match[3])
 		if err != nil {
 			return nil, nil, err
