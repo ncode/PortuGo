@@ -1025,7 +1025,7 @@ injection behavior; they do not promise reference seed or sequence compatibility
 See [random fraction recordings](random-fraction-progress.md).
 
 `aleatorio` is a reserved input command. `aleatorio on` enables generated input;
-`aleatorio off` returns subsequent reads to console input. A bare command is
+`aleatorio off` resumes the selected file or console input. A bare command is
 rejected with `P001`. Numeric bounds accept expressions: `aleatorio low, high`
 selects an inclusive integer range, swapping reversed endpoints. A single bound
 sets the lower endpoint and leaves the upper endpoint at 100. This differs from
@@ -1042,10 +1042,13 @@ parts and do not use the precision setting. `aleatorio on` restores the default
 0-through-100 range and zero additional fractional digits.
 
 Generated character input contains five uppercase ASCII letters. Logical reads
-continue consuming console input while random mode is active. The ordinary
-console transcript includes generated input in the same representation as typed
-input. Input modes reset for every `Interpreter.Run`; all random operations use
-the same per-interpreter source. Bounds are evaluated when the command executes.
+continue reading the selected file or console stream while random mode is active.
+The ordinary console transcript includes generated input in the same
+representation as typed input. Input modes reset for every `Interpreter.Run`;
+all random operations use the same per-interpreter source. Bounds are evaluated
+when the command executes.
+Embedders can supply a seeded `RandomSource` for repeatable implementation tests;
+the default source does not promise a fixed seed or repeatable sequence.
 
 The old callable random API has been removed: the reference treats `aleatorio`,
 `aleatorio()`, and calls with arguments as no-value expressions, discarding the
@@ -1061,8 +1064,11 @@ differ between runs. Unqualified output comparisons remain byte-exact.
 
 Missing random sources, invalid draws and unrepresentable random-input ranges
 return positioned `R004` without assigning or echoing the failed read. Builtin
-random failures continue using `R007`. File-input interaction and extreme bound
-compatibility remain pending reference qualification.
+random failures continue using `R007`. Recorded file-input transitions preserve
+unread file lines during generated reads, resume the selected source when random
+mode is disabled, and record generated values when creating a missing file.
+Extreme bound compatibility remains pending reference qualification; ordinary
+range and input-state coverage does not establish exact reference draw counts.
 
 ## Execution diagnostics and safeguards
 
@@ -1098,7 +1104,8 @@ submitted buffer and permit another program; each program gets a fresh budget.
 Each submission also resets file and generated-input modes. A program's
 `arquivo` reads or records only its requested input and closes the file before
 the next prompt; exhaustion resumes the shared console stream. Generated input
-does not consume following source, and `aleatorio off` resumes console input.
+does not consume following source, and `aleatorio off` resumes the selected file
+or console input.
 Headless echo, pause, debug, display, timer, and chronometer commands do not
 consume REPL source or input lines. A file-input failure preserves the next
 submission and contributes to the session's failure status.

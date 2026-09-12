@@ -29,6 +29,10 @@
   both recorded continuation cases and retain positioned guards for other
   file failures.
 
+- Document verified random-input state, restoration of the selected file or
+  console source, and retained echo. Label the original recording report as
+  historical while retaining the limits on extreme bounds and exact sequences.
+
 - Record text-call controls and early completion after no-value conversion;
   verify explicit-zero and earlier-call controls in original and formatted
   programs. Keep persistent execution-state and diagnostic-phase gaps pending.

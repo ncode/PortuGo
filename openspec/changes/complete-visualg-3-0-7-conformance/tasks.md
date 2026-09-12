@@ -396,7 +396,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   reference seeds and generator-consumption counts are not promised.
 - [ ] 13.4 Implement overflow-safe bound normalization and rejection, including full integer-domain cases, while consuming random values only when the reference does.
 - [x] 13.5 Add typed AST, parser, printer, and semantic validation for command-form `aleatorio` and any oracle-confirmed range/disable companion commands.
-- [ ] 13.6 Implement random-input activation, destination conversion, bounds, echo state, and return to the prior/default input mode.
+- [x] 13.6 Implement random-input activation, destination conversion, bounds, echo state, and return to the prior/default input mode.
 
   Command-form input now has typed syntax, expression bounds, precision limited
   to five fractional digits, console transitions, subprogram state, per-run
@@ -404,11 +404,15 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   now have original/formatted regression coverage: 39 exact transcripts and
   17 reviewed domain contracts that retain exact echo/output formatting and
   recorded evidence bytes. File-input transitions and the descriptor registry
-  are covered by their owning slices. Extreme command bounds remain pending.
+  are covered by their owning slices. `file-random-logical-source` confirms that
+  logical input still reads the selected file while random mode is active.
+  File regressions compare original/formatted execution and unchanged/generated
+  bytes. Extreme command bounds and reference draw-count qualification remain
+  pending in 13.4.
 
 - [x] 13.7 Return positioned `R007` for builtin random failures and `R004` for random-input failures with no panic or invalid source call.
 - [x] 13.8 Add repeatable runtime fixtures using scripted random values, property checks across many seeds, and an example that asserts domains rather than sequences.
-- [ ] 13.9 Update `docs/language.md` and `CHANGELOG.md` with exact random domains, modes, seeding guarantees, errors, and the explicit sequence non-goal.
+- [x] 13.9 Update `docs/language.md` and `CHANGELOG.md` with exact random domains, modes, seeding guarantees, errors, and the explicit sequence non-goal.
 - [x] 13.10 Run focused random/registry/input/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
 - [ ] 13.11 Mark every completed 13.x task immediately, commit the focused randomness changes, push the next stacked branch, and open its draft PR before group 14.
 

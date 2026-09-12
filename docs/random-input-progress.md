@@ -1,5 +1,15 @@
 # Random input recordings
 
+The report below describes the original recording slice. Later work verified
+all 94 group-13 recordings, including seventeen varying transcripts through
+explicit [domain replay contracts](random-replay-contracts.md). Echo behavior,
+file-source restoration and recording of generated input are also covered by
+the [language reference](language.md) and linked conformance tests. Extreme
+bounds and exact reference seeds, sequences and draw counts remain outside
+these verified claims.
+
+## Original recording slice
+
 This slice adds 56 synthetic recordings and eight original bundled programs.
 Thirty-seven synthetic cases have exact implementation matches: 26 accepted
 outputs and 11 positioned rejections. The complete corpus now contains 1,403
