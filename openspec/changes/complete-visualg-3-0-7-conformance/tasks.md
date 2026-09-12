@@ -414,7 +414,11 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   The integrated text/conversion tests, complete local quality suite, strict
   OpenSpec validation, fuzz smoke checks, and supported-platform validation
   all pass at the stacked branch head.
-- [ ] 12.11 Mark every completed 12.x task immediately, commit the focused text/conversion changes, push the next stacked branch, and open its draft PR before group 13.
+- [x] 12.11 Mark every completed 12.x task immediately, commit the focused text/conversion changes, push the next stacked branch, and open its draft PR before group 13.
+
+  The completed text/conversion layers are committed and published as ready
+  stacked PRs with sanitized descriptions; this repository uses ready PRs for
+  the handoff instead of draft status.
 
 ## 13. Injected Randomness, Rand, Randi, and Random-Input Command
 
@@ -560,7 +564,11 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   The integrated environment tests, complete local quality suite, strict
   OpenSpec validation, fuzz smoke checks, and supported-platform validation
   all pass at the stacked branch head.
-- [ ] 15.13 Mark every completed 15.x task immediately, commit the focused environment changes, push the next stacked branch, and open its draft PR before group 16.
+- [x] 15.13 Mark every completed 15.x task immediately, commit the focused environment changes, push the next stacked branch, and open its draft PR before group 16.
+
+  The completed environment layers are committed and published as ready
+  stacked PRs with sanitized descriptions; this repository uses ready PRs for
+  the handoff instead of draft status.
 
 ## 16. REPL Input, Completion, Recovery, and Formatter Coverage
 
