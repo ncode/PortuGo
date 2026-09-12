@@ -354,7 +354,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 ## 10. CP1252, Input Parsing, Output Formatting, and I/O Validation
 
-- [ ] 10.1 Add failing byte-golden and diagnostic fixtures for CP1252 text, shared buffered reads, every scalar input form, invalid/overflowing input, exact mixed output, logical casing, decimal syntax, negative zero, width/precision boundaries, and invalid I/O statements.
+- [x] 10.1 Add failing byte-golden and diagnostic fixtures for CP1252 text, shared buffered reads, every scalar input form, invalid/overflowing input, exact mixed output, logical casing, decimal syntax, negative zero, width/precision boundaries, and invalid I/O statements.
+
+  The console, file, output, formatting, source-encoding, and CLI fixtures
+  cover CP1252 bytes, shared reads, scalar conversion failures, mixed output,
+  logical casing, decimal and negative-zero cases, precision boundaries, and
+  invalid I/O forms.
 - [x] 10.2 Consolidate BOM-aware UTF-8 and Windows-1252 decode/encode helpers with original-byte position mapping and explicit unsupported-character behavior.
   Source loading retains original bytes and a bounded decoded-position map;
   CLI, REPL, and replay diagnostics preserve those offsets through every
@@ -367,11 +372,27 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [x] 10.4 Implement oracle-confirmed integer, real, logical, and character input parsing, whitespace/line consumption, retry/end-of-input behavior, and mutation only after successful conversion.
 - [x] 10.5 Implement exact `escreva`/`escreval` separation, spacing, newline, string, integer, real, logical, decimal, and negative-zero output bytes.
 - [x] 10.6 Implement width and precision expression evaluation, validation, alignment, padding, rounding/truncation, sign, and overflow-width behavior.
-- [ ] 10.7 Reject invalid `leia` destinations and invalid output format arity/types/ranges during parsing or semantic analysis wherever statically knowable.
+- [x] 10.7 Reject invalid `leia` destinations and invalid output format arity/types/ranges during parsing or semantic analysis wherever statically knowable.
+
+  Semantic and parser checks reject whole-vector destinations, malformed
+  format arity, logical widths, and invalid width or precision expressions at
+  their source positions before execution.
 - [x] 10.8 Return positioned `R004` diagnostics for runtime input exhaustion/conversion failures and preserve destination values and preceding output.
-- [ ] 10.9 Add CP1252 source/input/output fixtures, CLI subprocess byte checks, fake failing readers/writers, and an example covering reference formatting.
-- [ ] 10.10 Update `docs/language.md` and `CHANGELOG.md` with exact input, output, encoding, formatting, and failure behavior.
-- [ ] 10.11 Run focused source/I/O/sema/interpreter/CLI tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
+- [x] 10.9 Add CP1252 source/input/output fixtures, CLI subprocess byte checks, fake failing readers/writers, and an example covering reference formatting.
+
+  Source-position, console/file input, interpreter I/O, formatter, and CLI
+  subprocess suites retain CP1252 bytes, exact output, fake resource failures,
+  and the recorded formatting examples.
+- [x] 10.10 Update `docs/language.md` and `CHANGELOG.md` with exact input, output, encoding, formatting, and failure behavior.
+
+  The authoritative I/O sections and changelog describe stream consumption,
+  conversion, output bytes, encoding, formatting, limits, and positioned
+  failure behavior.
+- [x] 10.11 Run focused source/I/O/sema/interpreter/CLI tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.
+
+  Focused source, I/O, semantic, interpreter, and CLI tests plus the complete
+  local quality suite, strict OpenSpec validation, fuzz smoke checks, and
+  supported-platform validation all pass at the stacked branch head.
 - [ ] 10.12 Mark every completed 10.x task immediately, commit the focused I/O changes, push the next stacked branch, and open its draft PR before group 11.
 
 ## 11. Unified Built-in Registry and Numeric Functions
