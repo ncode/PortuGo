@@ -1,0 +1,6 @@
+Início da execução
+Qual o primeiro valor? 6.0000000000
+Qual o segundo valor? 8.0000000000
+A média aritmetica é :      7.000
+
+Fim da execução.

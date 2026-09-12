@@ -1,0 +1,3 @@
+BEGIN:power-associativity
+ 64
+END:power-associativity

@@ -24,6 +24,13 @@ The reference application is an interactive Windows program. Deterministic behav
 
 ## Decisions
 
+The finite example sweep excludes complete runs of `example.f322405e9d84`
+(an endless clock) and `example.80addd4fac6d` (a menu whose exit choice repeats).
+Their original sources and partial reference output are retained with hashes
+and reviewed `not-applicable` dispositions, as detailed in
+`docs/bundled-external-stop.md`. Their language features remain required.
+These exceptions do not convert a timeout into a passing replay.
+
 ### 1. Record an oracle corpus before disputed implementation
 
 The repository will store evidence under `testdata/conformance/visualg-3.0.7/`. A checked-in JSON manifest will identify the reference hashes and environment and map stable probe IDs to source, input, normalized output/error, raw-observation hashes, generated-file hashes, screenshots, specification requirements, implementation tests, checklist items, defects, and bundled examples. Probe directories will contain reduced `.alg` programs and only redistributable evidence; the reference executable and archive remain outside Git.
@@ -104,6 +111,13 @@ type Host interface {
 
 `Breakpoint` and `DisplayState` are closed typed values that carry only oracle-confirmed options, including foreground/background color and visibility state. Newly discovered host commands extend the typed interface or these closed values only after an oracle recording. The default headless host uses the system clock and delay, makes UI-only breakpoint, clear-screen, and display operations non-blocking no-ops, and emits no terminal escape bytes. Fakes record calls and control time. Host errors become `R008` at the originating statement.
 
+The recorded display slice exposes seven RGB colors and a foreground/background
+selector through `DisplayState`; visibility remains unqualified. `limpatela`
+and `mudacor` have dedicated statement nodes. They preserve the captured text
+stream while default host effects remain no-ops. Display keywords in expression
+context use a no-value node and do not call the host. Color arguments must share
+the command's physical line, and trailing command syntax is ignored as recorded.
+
 Alternative considered: call `time`, terminal functions, and global randomness directly. That would make conformance tests slow or nondeterministic and would entangle GUI assumptions with the language runtime.
 
 ### 4. Expand the AST around ordered declarations and explicit optionality
@@ -120,11 +134,13 @@ Alternative considered: add more fields to the current `Globals`, `Subs`, and `T
 
 ### 5. Separate resolved type identity from storage locations
 
-Resolved types are immutable descriptors for the scalar and vector types accepted by the oracle. Named-type identities and record layouts are conditional on group 2 evidence; accepted records contain ordered fields with offsets and resolved field types. Vector layouts contain every lower and upper bound plus an overflow-checked flattened size. Slot accounting is performed during analysis using oracle-recorded scope and accepted aggregate rules, and execution checks the resolved sizes again before allocation.
+Resolved types are immutable descriptors for the scalar and vector types accepted by the oracle. Named-type identities and record layouts are conditional on group 2 evidence; accepted records contain ordered fields with offsets and resolved field types. Analysis retains literal vector bounds and binds named integer constants, marking dimensions that require initialization. Local constants can depend on current parameters, so those layouts resolve per declaration entry before allocation, without mutating `sema.Info`. Every allocated vector has concrete bounds and an overflow-checked flattened size. Fully literal layouts are checked during analysis; execution checks all resolved sizes again before allocation.
 
-Runtime environments bind semantic symbols to typed locations. A location can select a scalar or vector element, and a record field only if supported, without copying its container. Accepted value assignment and value parameters use one copy operation following the recorded depth rules; `var` parameters carry locations and require exact semantic type compatibility. This centralizes copying versus alias behavior and ensures index or field failure occurs before mutation.
+Runtime environments bind semantic symbols to typed locations. A location selects a scalar, vector element, or supported record field without copying its container. Value assignment and parameters use the recorded copy depth. Reference arguments capture locations once, initialize temporary parameter cells, and copy values and concrete types back in declaration order after a successful body. Failed initialization or execution does not copy parameters back.
 
-Alternative considered: represent aliases as copied `runtime.Value` instances plus write-back. Write-back fails for early returns and nested designators, evaluates indices at the wrong time, and cannot reproduce aliasing between arguments.
+Comparisons retain their temporary logical category separately from the concrete value consumed by output and arguments. Assignment can change a logical cell's concrete type; the temporary category is cleared on storage. Analysis conservatively marks affected bindings, vector elements, and record-layout fields, propagates reference copy-back edges, and rechecks with dynamic expression types. Runtime cells remain concrete and validate every consuming operation. Stored record results use empty layouts, preventing undeclared nested record storage.
+
+Alternative considered: directly alias every reference parameter to the caller's cell. That contradicts the recorded copy-in/copy-back behavior and repeated-destination ordering.
 
 ### 6. Use structured runtime diagnostics end to end
 
@@ -155,7 +171,7 @@ Alternative considered: generate one switch from another. A shared descriptor is
 
 ### 8. Model input sources as one state machine
 
-The interpreter owns one buffered input controller whose active mode is console, `arquivo`, or random input. Mode transitions retain the injected console reader and encode file exhaustion, fallback recording, and echo as states derived from oracle probes. Paths resolve against `Options.WorkingDir`; tests use temporary directories. CP1252 decoding and encoding live in shared source/text helpers so source files, `arquivo`, generated files, character-code built-ins, and output agree.
+The interpreter owns one buffered input controller whose active mode is console, `arquivo`, or random input. Mode transitions retain the injected console reader and encode file exhaustion, fallback recording, and echo as states derived from oracle probes. Paths resolve against `Options.WorkingDir`; tests use temporary directories. CP1252 decoding and encoding live in shared source/text helpers so source files, `arquivo`, generated files, character-code built-ins, and output agree. The recorded `carac` table is a separate mapping to CP1252 bytes; it is not the inverse of `asc`. Its complete 256-code regression includes control-character and drawing-character substitutions.
 
 The REPL reads program text and program input through the same buffered abstraction. It uses lexer/parser completeness, not substring matching, to submit immediately when the terminating `fimalgoritmo` token completes a program. Blank lines remain ordinary input to the incomplete-program state, and every submitted program gets a fresh semantic/runtime state while the underlying reader remains shared.
 
@@ -173,6 +189,8 @@ Alternative considered: one implementation pull request. The change spans every 
 
 These are project safeguards, with project-owned tests and a documented oracle non-applicability rationale; they are not claims about reference limits. The initial limits are 4 MiB of source per file or REPL submission, 256 levels of syntax/AST traversal or expression evaluation within a call frame, 256 active language call frames, and 16 MiB for a single text value, input token/line, or formatted item. Check source/input size during accumulation, depth before recursive descent or traversal, call depth before frame creation, and text/format sizes with checked arithmetic before allocation. Cover long flat expressions whose resulting AST is deep, declaration dependency chains, copies, concatenation, and width/precision expansion as well as visibly nested syntax. Resource limits must not turn a known accepted reference example into a silently excluded example: a hit blocks acceptance until the safeguard is deliberately revised and retested.
 
+Each vector aggregate is additionally limited to 1,048,576 scalar storage slots, including nested element layouts. This independent project safeguard prevents unbounded single allocations from otherwise representable dimension products; it is not a reference storage-limit claim. Fully literal layouts fail with `E900` during analysis and constant-dependent layouts fail with `R003` at declaration initialization, before cells are allocated. Recorded sizes through 5,001 remain accepted. Slot-boundary tests compute sizes without allocating the maximum arrays.
+
 Front-end resource failures use a new stable `E900` diagnostic at the first construct or byte exceeding the limit; reserve that code without renumbering existing codes. Runtime call depth uses `R005` at the attempted call, text/format allocation uses `R003` at the producing expression, and step exhaustion uses `R006` at the next operation. Evaluation-depth protection also uses `R003`. Stop before that operation's side effects and unwind resources normally. A size cap is checked before expanding CP1252 to decoded text, using a bounded decoded allocation; the source cap measures original bytes.
 
 A step is charged before each statement dispatch, expression evaluation, and loop iteration/back-edge, including an empty body. One counter belongs to the whole run, including subcalls and input-retry attempts; it never resets on a call and cannot overflow when unlimited. A positive `MaxSteps` permits exactly that many charged operations. Normal execution leaves it zero, so a valid infinite loop is not promised to terminate. This is a work budget, not a wall-clock timeout and cannot interrupt a blocking injected reader or host method.
@@ -187,7 +205,7 @@ Alternative considered: claim termination for every source or rely only on a pro
 
 - [Interactive Windows evidence is slow or unavailable] → Keep unresolved probes explicitly blocking, prioritize reduced probe batches early, and never substitute undocumented assumptions.
 - [Oracle evidence changes a foundational grammar or type assumption] → Finish the recorder/spec-correction group before dependent implementation and keep later PRs stacked so they can be rebased in order.
-- [The 500-slot rule has context-dependent accounting] → Record exact boundary probes for scalars, records, vectors, globals, locals, and recursion; keep accounting policy separate from overflow-safe arithmetic.
+- [The documented 500-slot rule contradicts the current executable] → Recorded vectors with up to 5001 elements are accepted. Continue probing scalars, records, vectors, globals, locals, and recursion without inventing an upper limit; keep reference restrictions separate from project resource guards and overflow-safe arithmetic.
 - [A broad `Host` interface makes simple hosts cumbersome] → Provide a complete default headless implementation and small reusable recording fake; add methods only for oracle-confirmed operations.
 - [Dynamic conversion result types complicate analysis] → Limit union-like semantic types to catalog operations proven to need them and require explicit narrowing at ordinary language boundaries.
 - [Exact output and CP1252 behavior is platform-sensitive] → Compare byte fixtures, centralize encoding and newline conversion, and run Windows, macOS, and Linux jobs.

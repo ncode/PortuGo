@@ -1,0 +1,4 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 8
+Message: O tipo de dados 'D' não foi reconhecido.
+Column: not established.

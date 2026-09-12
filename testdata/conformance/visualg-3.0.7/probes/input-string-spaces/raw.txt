@@ -1,0 +1,5 @@
+Início da execução
+one two
+OUT:[one two]
+
+Fim da execução.

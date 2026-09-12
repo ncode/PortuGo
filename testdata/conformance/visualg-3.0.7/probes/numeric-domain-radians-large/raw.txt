@@ -1,0 +1,4 @@
+Início da execução
+ 5.72957795130823E307
+
+Fim da execução.

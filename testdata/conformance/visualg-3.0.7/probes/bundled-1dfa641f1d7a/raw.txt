@@ -1,0 +1,11 @@
+Início da execução
+digite modulo 
+3
+digite x 
+9.0000000000
+MULTIPLO 0
+digite A 
+12
+MULTIPLO 0
+
+Fim da execução.

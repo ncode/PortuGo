@@ -1,0 +1,5 @@
+Início da execução
+LEFT
+RIGHT
+ 3
+Fim da execução.

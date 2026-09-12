@@ -12,29 +12,37 @@ import (
 // Scan tokenizes decoded Portugol source text.
 func Scan(filename, src string) (*token.File, []token.Token, []diag.Diagnostic) {
 	l := &scanner{
-		src:  src,
-		file: token.NewFile(filename, len(src)),
+		src:       src,
+		file:      token.NewFile(filename, len(src)),
+		lineStart: true,
 	}
 	l.scan()
 	return l.file, l.tokens, l.diags
 }
 
 type scanner struct {
-	src    string
-	file   *token.File
-	offset int
-	tokens []token.Token
-	diags  []diag.Diagnostic
+	src        string
+	file       *token.File
+	offset     int
+	tokens     []token.Token
+	diags      []diag.Diagnostic
+	lineStart  bool
+	endProgram int
+	endTokens  int
 }
 
 func (s *scanner) scan() {
 	for {
 		s.skipSpaceAndComments()
+		if s.endProgram != 0 && (s.lineStart || s.offset == len(s.src)) {
+			s.scanSuffix()
+		}
 		if s.offset >= len(s.src) {
 			s.emit(token.EOF, "", token.Pos(s.offset))
 			return
 		}
 		start := s.offset
+		s.lineStart = false
 		r := s.advance()
 		switch {
 		case isIdentStart(r):
@@ -53,37 +61,39 @@ func (s *scanner) skipSpaceAndComments() {
 	for s.offset < len(s.src) {
 		r := s.peek()
 		switch r {
-		case ' ', '\t', '\r':
+		case ' ', '\t':
 			s.advance()
-		case '\n':
-			s.advance()
-			s.file.AddLine(s.offset)
-		case '/':
-			if s.peekNext() != '/' {
-				return
-			}
-			for s.offset < len(s.src) && s.peek() != '\n' {
-				s.advance()
-			}
-		case '{':
+		case '\r', '\n':
 			start := s.offset
 			s.advance()
-			for s.offset < len(s.src) && s.peek() != '}' {
-				if s.peek() == '\n' {
-					s.advance()
-					s.file.AddLine(s.offset)
-					continue
-				}
-				s.advance()
+			if r == '\r' && !s.match('\n') {
+				continue
 			}
-			if s.offset >= len(s.src) {
-				s.error(token.Pos(start), "unterminated block comment")
+			s.file.AddLine(s.offset)
+			s.lineStart = true
+			s.emit(token.NEWLINE, s.src[start:s.offset], token.Pos(start))
+			if s.endProgram != 0 {
 				return
 			}
-			s.advance()
+		case '/', '*':
+			if !s.lineStart && (r != '/' || s.peekNext() != '/') {
+				return
+			}
+			s.skipLine()
+		case '{', '}':
+			s.skipLine()
 		default:
 			return
 		}
+	}
+}
+
+func (s *scanner) skipLine() {
+	for s.offset < len(s.src) && s.peek() != '\n' {
+		if s.peek() == '\r' && s.peekNext() == '\n' {
+			return
+		}
+		s.advance()
 	}
 }
 
@@ -92,7 +102,32 @@ func (s *scanner) scanIdent(start int) {
 		s.advance()
 	}
 	text := s.src[start:s.offset]
-	s.emit(token.Lookup(text), text, token.Pos(start))
+	kind := token.Lookup(text)
+	leading := len(s.tokens) == 0 || s.tokens[len(s.tokens)-1].Kind == token.NEWLINE
+	s.emit(kind, text, token.Pos(start))
+	if kind == token.FIMALGORITMO && s.endProgram == 0 {
+		// The terminator's own line still receives lexical validation.
+		s.endProgram, s.endTokens = s.offset, len(s.tokens)
+	}
+	if kind == token.DOS && leading {
+		// Configuration directives ignore the rest of their physical line.
+		s.skipLine()
+	}
+}
+
+func (s *scanner) scanSuffix() {
+	// Retain every decoded byte after the terminator, but do not tokenize
+	// later physical lines: even malformed literals there are ignored.
+	s.tokens = s.tokens[:s.endTokens]
+	if s.endProgram < len(s.src) {
+		s.emit(token.SUFFIX, s.src[s.endProgram:], token.Pos(s.endProgram))
+	}
+	for i := s.offset; i < len(s.src); i++ {
+		if s.src[i] == '\n' {
+			s.file.AddLine(i + 1)
+		}
+	}
+	s.offset, s.endProgram = len(s.src), 0
 }
 
 func (s *scanner) scanNumber(start int) {
@@ -106,17 +141,10 @@ func (s *scanner) scanNumber(start int) {
 		}
 	}
 	if s.offset < len(s.src) && (s.peek() == 'e' || s.peek() == 'E') {
-		save := s.offset
 		s.advance()
-		if s.peek() == '+' || s.peek() == '-' {
+		// Exponent digits are unsigned; a following sign starts an operator.
+		for s.offset < len(s.src) && unicode.IsDigit(s.peek()) {
 			s.advance()
-		}
-		if s.offset >= len(s.src) || !unicode.IsDigit(s.peek()) {
-			s.offset = save
-		} else {
-			for s.offset < len(s.src) && unicode.IsDigit(s.peek()) {
-				s.advance()
-			}
 		}
 	}
 	s.emit(token.NUMBER, s.src[start:s.offset], token.Pos(start))
@@ -128,27 +156,33 @@ func (s *scanner) scanString(start int) {
 		r := s.advance()
 		switch r {
 		case '"':
+			header := len(s.tokens) > 0 && s.tokens[len(s.tokens)-1].Kind == token.ALGORITMO
 			s.emit(token.STRING, string(text), token.Pos(start))
+			if header {
+				s.skipLine()
+			}
 			return
-		case '\n':
+		case '\r', '\n':
+			newline := s.offset - 1
+			if r == '\r' {
+				if !s.match('\n') {
+					text = append(text, r)
+					continue
+				}
+			}
 			s.file.AddLine(s.offset)
+			s.lineStart = true
 			s.error(token.Pos(start), "unterminated string literal")
+			s.emit(token.NEWLINE, s.src[newline:s.offset], token.Pos(newline))
 			return
-		case '\\':
-			if s.offset >= len(s.src) {
-				break
+		case '/':
+			if s.peek() == '/' {
+				// The reference strips // even inside a quoted value.
+				s.skipLine()
+				s.error(token.Pos(start), "unterminated string literal")
+				return
 			}
-			esc := s.advance()
-			switch esc {
-			case 'n':
-				text = append(text, '\n')
-			case 't':
-				text = append(text, '\t')
-			case '"', '\\':
-				text = append(text, esc)
-			default:
-				text = append(text, esc)
-			}
+			text = append(text, r)
 		default:
 			text = append(text, r)
 		}
@@ -183,6 +217,10 @@ func (s *scanner) scanSymbol(start int, r rune) {
 	case ',':
 		s.emit(token.COMMA, ",", token.Pos(start))
 	case ':':
+		if s.match('=') {
+			s.emit(token.ASSIGN, ":=", token.Pos(start))
+			return
+		}
 		s.emit(token.COLON, ":", token.Pos(start))
 	case ';':
 		s.emit(token.SEMI, ";", token.Pos(start))
@@ -191,7 +229,11 @@ func (s *scanner) scanSymbol(start int, r rune) {
 			s.emit(token.DOTDOT, "..", token.Pos(start))
 			return
 		}
-		s.error(token.Pos(start), "unexpected '.'")
+		if next := s.peek(); next >= '0' && next <= '9' {
+			s.error(token.Pos(start), "unexpected '.'")
+		} else {
+			s.emit(token.DOT, ".", token.Pos(start))
+		}
 	case '<':
 		switch {
 		case s.match('-'):

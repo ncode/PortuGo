@@ -1,0 +1,10 @@
+Início da execução
+
+Cronômetro iniciado.
+
+Cronômetro iniciado.
+
+Cronômetro terminado. Tempo decorrido: 0 segundo(s).
+DONE
+
+Fim da execução.

@@ -2,11 +2,78 @@ package ast
 
 import "github.com/ncode/portugol-go/internal/token"
 
+// FileInputStmt selects a literal input filename in the configuration section.
+type FileInputStmt struct {
+	At   token.Pos
+	Path string
+}
+
+func (*FileInputStmt) stmtNode()          {}
+func (s *FileInputStmt) Start() token.Pos { return s.At }
+
 // Stmt is a Portugol statement.
 type Stmt interface {
 	stmtNode()
 	Start() token.Pos
 }
+
+// ConsoleStmt requests console display in the program configuration section.
+type ConsoleStmt struct{ At token.Pos }
+
+func (*ConsoleStmt) stmtNode()          {}
+func (s *ConsoleStmt) Start() token.Pos { return s.At }
+
+// RandomInputStmt selects console input or generated input with numeric bounds.
+type RandomInputStmt struct {
+	At   token.Pos
+	Off  bool
+	Args []Expr
+}
+
+func (*RandomInputStmt) stmtNode()          {}
+func (s *RandomInputStmt) Start() token.Pos { return s.At }
+
+// EchoStmt carries an explicit on/off setting, or a zero Mode for an ignored tail.
+type EchoStmt struct {
+	At   token.Pos
+	Mode token.Token
+}
+
+func (*EchoStmt) stmtNode()          {}
+func (s *EchoStmt) Start() token.Pos { return s.At }
+
+// ChronometerStmt starts or stops elapsed-time reporting.
+type ChronometerStmt struct {
+	At  token.Pos
+	Off bool
+}
+
+func (*ChronometerStmt) stmtNode()          {}
+func (s *ChronometerStmt) Start() token.Pos { return s.At }
+
+// TimerStmt sets the delay after each executed command.
+type TimerStmt struct {
+	At    token.Pos
+	Value Expr
+}
+
+func (*TimerStmt) stmtNode()          {}
+func (s *TimerStmt) Start() token.Pos { return s.At }
+
+// PauseStmt requests a host breakpoint.
+type PauseStmt struct{ At token.Pos }
+
+func (*PauseStmt) stmtNode()          {}
+func (s *PauseStmt) Start() token.Pos { return s.At }
+
+// DebugStmt requests a host breakpoint when Cond is true.
+type DebugStmt struct {
+	At   token.Pos
+	Cond Expr
+}
+
+func (*DebugStmt) stmtNode()          {}
+func (s *DebugStmt) Start() token.Pos { return s.At }
 
 // AssignStmt assigns to a variable or indexed vector element.
 type AssignStmt struct {
@@ -37,10 +104,19 @@ type IfStmt struct {
 func (*IfStmt) stmtNode()          {}
 func (s *IfStmt) Start() token.Pos { return s.At }
 
+// CaseLabel is a single escolha value or an inclusive range when High is non-nil.
+type CaseLabel struct {
+	Low  Expr
+	High Expr
+}
+
+// Start returns the label's source position.
+func (l CaseLabel) Start() token.Pos { return l.Low.Start() }
+
 // CaseClause is one escolha branch.
 type CaseClause struct {
 	At     token.Pos
-	Values []Expr
+	Labels []CaseLabel
 	Body   []Stmt
 }
 
@@ -96,7 +172,7 @@ type BreakStmt struct {
 func (*BreakStmt) stmtNode()          {}
 func (s *BreakStmt) Start() token.Pos { return s.At }
 
-// ReturnStmt returns from a function.
+// ReturnStmt sets the function result. Value is nil when the expression is missing.
 type ReturnStmt struct {
 	At    token.Pos
 	Value Expr
@@ -130,3 +206,19 @@ type WriteStmt struct {
 
 func (*WriteStmt) stmtNode()          {}
 func (s *WriteStmt) Start() token.Pos { return s.At }
+
+// ClearStmt clears the host's display without discarding program output.
+type ClearStmt struct{ At token.Pos }
+
+func (*ClearStmt) stmtNode()          {}
+func (s *ClearStmt) Start() token.Pos { return s.At }
+
+// ColorStmt selects a foreground or background display color.
+type ColorStmt struct {
+	At     token.Pos
+	Color  Expr
+	Target Expr
+}
+
+func (*ColorStmt) stmtNode()          {}
+func (s *ColorStmt) Start() token.Pos { return s.At }

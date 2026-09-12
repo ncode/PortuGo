@@ -1,0 +1,25 @@
+STUDENT 1
+8
+7
+6
+9
+STUDENT 2
+8
+7
+6
+9
+STUDENT 3
+8
+7
+6
+9
+STUDENT 4
+8
+7
+6
+9
+STUDENT 5
+8
+7
+6
+9

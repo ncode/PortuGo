@@ -72,6 +72,12 @@ Disputed feature candidates SHALL receive recorded acceptance or rejection befor
 ### Requirement: Bundled example acceptance
 Every program bundled with the official VisuAlg 3.0.7 release SHALL be inventoried and classified as accepted, dependent on an explicit non-goal, or unusable with a recorded reason. Every accepted example SHALL parse, analyze, and run with deterministic behavior matching its recorded oracle evidence.
 
+The finite completion sweep SHALL exclude complete runs of
+`example.f322405e9d84` (endless clock) and `example.80addd4fac6d` (repeating exit
+menu), retaining their unchanged sources, inputs, partial observations and
+reviewed reasons. Their language features SHALL remain required. External
+interruption and timeouts SHALL NOT be reported as successful completion.
+
 #### Scenario: Run the accepted example sweep
 - **WHEN** final conformance validation executes all examples classified as accepted
 - **THEN** every example completes with zero deterministic output, error, and generated-file mismatches

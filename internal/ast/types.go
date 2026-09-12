@@ -6,9 +6,25 @@ import "github.com/ncode/portugol-go/internal/token"
 type Program struct {
 	At      token.Pos
 	Name    string
+	Config  []Stmt
+	Consts  []ConstDecl
+	Types   []TypeDecl
 	Globals []VarDecl
 	Subs    []Subprogram
 	Body    []Stmt
+	Suffix  token.Token // Opaque decoded source immediately after fimalgoritmo.
+}
+
+// ConstDecl binds an expression once when its declaration section is entered.
+type ConstDecl struct {
+	Name  token.Token
+	Value Expr
+}
+
+// TypeDecl defines a record or gives a name to an earlier type.
+type TypeDecl struct {
+	Name token.Token
+	Type TypeSpec
 }
 
 // VarDecl declares one or more variables with the same type.
@@ -24,13 +40,14 @@ type TypeSpec struct {
 	Name   string
 	Ranges []Range
 	Elem   *TypeSpec
+	Fields []VarDecl
 }
 
 // Range is one vector dimension bound.
 type Range struct {
 	At   token.Pos
-	Low  int64
-	High int64
+	Low  Expr
+	High Expr
 }
 
 // Param is a procedure or function parameter.
@@ -53,6 +70,9 @@ type ProcedureDecl struct {
 	At     token.Pos
 	Name   token.Token
 	Params []Param
+	Config []Stmt
+	Consts []ConstDecl
+	Types  []TypeDecl
 	Locals []VarDecl
 	Body   []Stmt
 }
@@ -67,6 +87,9 @@ type FunctionDecl struct {
 	Name   token.Token
 	Params []Param
 	Return TypeSpec
+	Config []Stmt
+	Consts []ConstDecl
+	Types  []TypeDecl
 	Locals []VarDecl
 	Body   []Stmt
 }

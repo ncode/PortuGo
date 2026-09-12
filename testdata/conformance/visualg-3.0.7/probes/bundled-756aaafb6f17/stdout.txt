@@ -1,0 +1,20 @@
+* VETOR *
+ 
+VALOR: 7
+ 
+ELEMENTO: 1
+ 
+Tudo OK !!!Falso
+ 7
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0
+ 0
+ 
+ 
+Deseja continuar <S/N> ? N

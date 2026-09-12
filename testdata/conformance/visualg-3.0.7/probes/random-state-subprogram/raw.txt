@@ -1,0 +1,5 @@
+Início da execução
+7.0000000000
+ 7
+
+Fim da execução.

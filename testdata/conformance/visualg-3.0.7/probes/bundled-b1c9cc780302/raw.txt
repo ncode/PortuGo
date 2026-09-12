@@ -1,0 +1,45 @@
+Início da execução
+Digite o codigo do  1o registro:60
+Digite o nome do  1o registro:HEGLU
+Digite o codigo do  2o registro:3
+Digite o nome do  2o registro:YUDCK
+Digite o codigo do  3o registro:49
+Digite o nome do  3o registro:QNYWK
+Digite o codigo do  4o registro:54
+Digite o nome do  4o registro:XWVRH
+Digite o codigo do  5o registro:10
+Digite o nome do  5o registro:FJVCP
+Digite o codigo do  6o registro:18
+Digite o nome do  6o registro:IPYCX
+Digite o codigo do  7o registro:42
+Digite o nome do  7o registro:KGLFO
+Digite o codigo do  8o registro:46
+Digite o nome do  8o registro:GWOMD
+Digite o codigo do  9o registro:7
+Digite o nome do  9o registro:HJYLV
+Digite o codigo do  10o registro:75
+Digite o nome do  10o registro:WDBXW
+Item - Codigo Nome
+   1 -     10 FJVCP
+   2 -     46 GWOMD
+   3 -     60 HEGLU
+   4 -      7 HJYLV
+   5 -     18 IPYCX
+   6 -     42 KGLFO
+   7 -     49 QNYWK
+   8 -     75 WDBXW
+   9 -     54 XWVRH
+  10 -      3 YUDCK
+Item - Codigo Nome
+   1 -      3 YUDCK
+   2 -      7 HJYLV
+   3 -     10 FJVCP
+   4 -     18 IPYCX
+   5 -     42 KGLFO
+   6 -     46 GWOMD
+   7 -     49 QNYWK
+   8 -     54 XWVRH
+   9 -     60 HEGLU
+  10 -     75 WDBXW
+
+Fim da execução.

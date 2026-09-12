@@ -1,0 +1,7 @@
+Início da execução
+LOWER
+UPPER
+MISS
+DONE
+
+Fim da execução.

@@ -1,0 +1,6 @@
+Manual transcription of the original GUI error screenshot.
+Title: Aviso
+Reported source line: 5
+Message: Sintaxe incorreta.
+Source line: escreval("B=[", verdadeiro:1, "][", falso:10, "][", verdadeiro:0, "]")
+Explanation: Não há explicação disponível para este problema.

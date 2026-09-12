@@ -1,0 +1,10 @@
+Início da execução
+*** CRIPTOGRAFAR ***
+
+PALAVRA : ABC
+
+CRIPTO := 4DEF
+
+DESCRIPTO := 4ABC
+
+Fim da execução.

@@ -1,0 +1,10 @@
+algoritmo "numeric choice matching"
+inicio
+escolha 2.1
+caso 2 ate 2.0
+escreval("MATCH")
+outrocaso
+escreval("MISS")
+fimescolha
+escreval("DONE")
+fimalgoritmo

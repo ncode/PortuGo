@@ -1,0 +1,24 @@
+Início da execução
+Programa de Conversão de Bases
+Da Base 10 para Binária, Octal ou Hexa
+--------------------------------------
+
+Opções
+   B - Binária
+   O - Octal
+   H - Hexa
+   F - Fim
+
+Escolha uma base : F
+Tecle ENTER para continuar
+Programa de Conversão de Bases
+Da Base 10 para Binária, Octal ou Hexa
+--------------------------------------
+
+Opções
+   B - Binária
+   O - Octal
+   H - Hexa
+   F - Fim
+
+Escolha uma base : 

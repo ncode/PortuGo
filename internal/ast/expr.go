@@ -8,6 +8,12 @@ type Expr interface {
 	Start() token.Pos
 }
 
+// NoValueExpr is a display keyword used as an expression, without a host effect.
+type NoValueExpr struct{ Keyword token.Token }
+
+func (*NoValueExpr) exprNode()          {}
+func (e *NoValueExpr) Start() token.Pos { return e.Keyword.Pos }
+
 // LiteralKind identifies the concrete literal value field.
 type LiteralKind int
 
@@ -49,6 +55,16 @@ type IndexExpr struct {
 func (*IndexExpr) exprNode()          {}
 func (e *IndexExpr) Start() token.Pos { return e.At }
 
+// FieldExpr selects a named record field.
+type FieldExpr struct {
+	At   token.Pos
+	X    Expr
+	Name token.Token
+}
+
+func (*FieldExpr) exprNode()          {}
+func (e *FieldExpr) Start() token.Pos { return e.At }
+
 // UnaryExpr applies one unary operator.
 type UnaryExpr struct {
 	Op token.Token
@@ -67,6 +83,15 @@ type BinaryExpr struct {
 
 func (*BinaryExpr) exprNode()          {}
 func (e *BinaryExpr) Start() token.Pos { return e.Op.Pos }
+
+// IsComparison reports whether the operator has the logical result category.
+func (e *BinaryExpr) IsComparison() bool {
+	switch e.Op.Kind {
+	case token.EQL, token.NEQ, token.LSS, token.GTR, token.LEQ, token.GEQ:
+		return true
+	}
+	return false
+}
 
 // CallExpr calls a function or built-in.
 type CallExpr struct {

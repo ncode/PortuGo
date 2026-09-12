@@ -13,6 +13,7 @@ const (
 	BoolValue
 	VectorValue
 	VoidValue
+	RecordValue
 )
 
 // Cell is an assignable storage location.
@@ -28,7 +29,16 @@ type Value struct {
 	Real float64
 	Str  string
 	Bool bool
-	Vec  *Vector
+	// Comparison keeps the logical assignment/condition category of a comparison
+	// without replacing an unmatched operand's concrete value.
+	Comparison bool
+	// RealFallback retains the real expression category of mixed division
+	// without replacing the right operand's concrete output value.
+	RealFallback bool
+	// NumericAbsence retains the domain origin of a VoidValue.
+	NumericAbsence bool
+	Vec            *Vector
+	Rec            *Record
 }
 
 // Zero returns the zero value for a type.
@@ -44,6 +54,8 @@ func Zero(t Type) Value {
 		return Value{Kind: BoolValue}
 	case VectorType:
 		return Value{Kind: VectorValue, Vec: NewVector(t)}
+	case RecordType:
+		return Value{Kind: RecordValue, Rec: NewRecord(t)}
 	case VoidType:
 		return Value{Kind: VoidValue}
 	default:
@@ -67,6 +79,11 @@ func (v Value) Type() Type {
 			return v.Vec.Type
 		}
 		return Type{Kind: VectorType}
+	case RecordValue:
+		if v.Rec != nil {
+			return v.Rec.Type
+		}
+		return Type{Kind: RecordType}
 	case VoidValue:
 		return Type{Kind: VoidType}
 	default:
@@ -76,6 +93,23 @@ func (v Value) Type() Type {
 
 // ConvertForAssign converts integer to real when assigning to a real cell.
 func ConvertForAssign(dst Type, v Value) (Value, error) {
+	v.RealFallback = false
+	if v.Kind == RecordValue {
+		if err := v.Rec.validate(); err != nil {
+			return Value{}, err
+		}
+	}
+	if v.Comparison {
+		if dst.Kind == BoolType {
+			if v.Kind == RecordValue {
+				// A logical cell has no declared record layout to retain.
+				return Zero(Type{Kind: RecordType}), nil
+			}
+			v.Comparison = false
+			return v, nil
+		}
+		return Value{}, fmt.Errorf("cannot assign logico to %s", dst)
+	}
 	if dst.Kind == RealType && v.Kind == IntegerValue {
 		return Value{Kind: RealValue, Real: float64(v.Int)}, nil
 	}
@@ -87,22 +121,31 @@ func ConvertForAssign(dst Type, v Value) (Value, error) {
 
 // Clone returns a deep copy of v where mutation would otherwise be observable.
 func Clone(v Value) Value {
+	if v.Kind == RecordValue && v.Rec != nil {
+		record := &Record{Type: v.Rec.Type.Clone(), Fields: make([]Cell, len(v.Rec.Fields))}
+		for n, cell := range v.Rec.Fields {
+			record.Fields[n] = Cell{Type: cell.Type.Clone(), Value: Clone(cell.Value)}
+		}
+		v.Rec = record
+		return v
+	}
 	if v.Kind != VectorValue || v.Vec == nil {
 		return v
 	}
 	vec := &Vector{
-		Type:     v.Vec.Type,
+		Type:     v.Vec.Type.Clone(),
 		Elements: make([]Cell, len(v.Vec.Elements)),
 	}
 	for i, cell := range v.Vec.Elements {
-		vec.Elements[i] = Cell{Type: cell.Type, Value: Clone(cell.Value)}
+		vec.Elements[i] = Cell{Type: cell.Type.Clone(), Value: Clone(cell.Value)}
 	}
-	return Value{Kind: VectorValue, Vec: vec}
+	v.Vec = vec
+	return v
 }
 
 // Truth returns a boolean value or an error.
 func Truth(v Value) (bool, error) {
-	if v.Kind != BoolValue {
+	if v.Kind != BoolValue && !v.Comparison {
 		return false, fmt.Errorf("expected logico, got %s", v.Type())
 	}
 	return v.Bool, nil

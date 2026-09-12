@@ -2,7 +2,6 @@ package parser
 
 import (
 	"strconv"
-	"strings"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
@@ -13,38 +12,94 @@ import (
 func Parse(tokens []token.Token) (*ast.Program, []diag.Diagnostic) {
 	p := &parser{tokens: tokens}
 	prog := p.parseProgram()
+	if p.limited {
+		return nil, p.diags
+	}
+	if ds := ast.CheckLimits(prog); len(ds) != 0 {
+		return nil, diag.Ordered(append(p.diags, ds...))
+	}
 	return prog, p.diags
 }
 
 type parser struct {
-	tokens []token.Token
-	pos    int
-	diags  []diag.Diagnostic
+	tokens  []token.Token
+	pos     int
+	diags   []diag.Diagnostic
+	depth   int
+	limited bool
 }
 
 func (p *parser) parseProgram() *ast.Program {
-	start := p.expect(token.ALGORITMO, "expected algoritmo")
-	name := ""
-	if p.peek().Kind == token.STRING {
-		name = p.advance().Text
-	} else {
-		p.error(p.peek(), "expected algorithm name string")
+	start := p.peek()
+	prog := &ast.Program{At: start.Pos}
+	if !p.match(token.ALGORITMO) {
+		p.error(start, "expected algoritmo")
+		return prog
 	}
-	prog := &ast.Program{At: start.Pos, Name: name}
+	if p.pos >= len(p.tokens) || p.tokens[p.pos].Kind != token.STRING {
+		p.error(start, "expected algorithm name string on the same line")
+		return prog
+	}
+	prog.Name = p.advance().Text
+	prog.Config = p.parseConfig()
+	prog.Consts = p.parseConstBlock()
+	prog.Types = p.parseTypeBlock()
+	if len(p.diags) != 0 {
+		return prog
+	}
 	if p.peek().Kind == token.VAR {
 		prog.Globals = p.parseVarBlock()
 	}
 	for p.peek().Kind == token.PROCEDIMENTO || p.peek().Kind == token.FUNCAO {
 		prog.Subs = append(prog.Subs, p.parseSubprogram())
+		if len(p.diags) != 0 {
+			return prog
+		}
 	}
-	p.expect(token.INICIO, "expected inicio")
+	if !p.match(token.INICIO) {
+		p.error(p.peek(), "expected inicio")
+		return prog
+	}
 	prog.Body = p.parseStmtList(stopSet(token.FIMALGORITMO))
 	p.expect(token.FIMALGORITMO, "expected fimalgoritmo")
+	if p.peek().Kind == token.SUFFIX {
+		prog.Suffix = p.advance()
+	}
 	return prog
+}
+
+func (p *parser) parseConfig() []ast.Stmt {
+	var settings []ast.Stmt
+	for p.peek().Kind == token.DOS || p.peek().Kind == token.ARQUIVO {
+		settings = append(settings, p.parseStmt())
+		if len(p.diags) != 0 {
+			break
+		}
+	}
+	return settings
+}
+
+func (p *parser) parseConstBlock() []ast.ConstDecl {
+	if !p.match(token.CONST) {
+		return nil
+	}
+	var decls []ast.ConstDecl
+	for p.peek().Kind == token.IDENT {
+		name := p.advance()
+		p.expect(token.EQL, "expected '=' after constant name")
+		value := p.parseExpr(0)
+		p.parseDeclarationSemicolon()
+		decls = append(decls, ast.ConstDecl{Name: name, Value: value})
+	}
+	if p.peek().Kind != token.VAR && p.peek().Kind != token.TIPO {
+		p.error(p.peek(), "expected var after constants")
+	}
+	return decls
 }
 
 func (p *parser) parseVarBlock() []ast.VarDecl {
 	p.expect(token.VAR, "expected var")
+	p.parseDeclarationSemicolon()
 	var decls []ast.VarDecl
 	for p.peek().Kind == token.IDENT {
 		decls = append(decls, p.parseVarDecl())
@@ -60,28 +115,55 @@ func (p *parser) parseVarDecl() ast.VarDecl {
 	}
 	p.expect(token.COLON, "expected ':' after variable name")
 	typ := p.parseType()
+	p.parseDeclarationSemicolon()
 	return ast.VarDecl{At: first.Pos, Names: names, Type: typ}
 }
 
+func (p *parser) parseDeclarationSemicolon() {
+	if p.atLineEnd() || !p.match(token.SEMI) {
+		return
+	}
+	if !p.atLineEnd() {
+		p.error(p.peek(), "expected end of line after declaration semicolon")
+		p.skipLine()
+	}
+}
+
 func (p *parser) parseType() ast.TypeSpec {
+	if !p.enter() {
+		return ast.TypeSpec{Name: "inteiro"}
+	}
+	defer func() { p.depth-- }()
 	tok := p.peek()
 	switch tok.Kind {
+	case token.IDENT:
+		p.advance()
+		return ast.TypeSpec{At: tok.Pos, Name: tok.Text}
 	case token.INTEIRO, token.REAL, token.CARACTERE, token.LOGICO:
 		p.advance()
-		return ast.TypeSpec{At: tok.Pos, Name: strings.ToLower(tok.Text)}
+		return ast.TypeSpec{At: tok.Pos, Name: tok.Kind.String()}
 	case token.VETOR:
 		p.advance()
 		p.expect(token.LBRACK, "expected '[' after vetor")
 		var ranges []ast.Range
 		for {
-			at := p.peek().Pos
-			low := p.parseBoundInt()
+			at := p.peek()
+			errors := len(p.diags)
+			low := p.parseBound()
 			p.expect(token.DOTDOT, "expected '..' in vector bound")
-			high := p.parseBoundInt()
-			ranges = append(ranges, ast.Range{At: at, Low: low, High: high})
+			high := p.parseBound()
+			lo, loLiteral := low.(*ast.LiteralExpr)
+			hi, hiLiteral := high.(*ast.LiteralExpr)
+			if len(p.diags) == errors && loLiteral && hiLiteral && hi.Int < lo.Int {
+				p.error(at, "vector upper bound is smaller than lower bound")
+			}
+			ranges = append(ranges, ast.Range{At: at.Pos, Low: low, High: high})
 			if !p.match(token.COMMA) {
 				break
 			}
+		}
+		if len(ranges) > 2 {
+			p.error(tok, "vector declarations support at most two dimensions")
 		}
 		p.expect(token.RBRACK, "expected ']' after vector bounds")
 		p.expect(token.DE, "expected de after vector bounds")
@@ -94,18 +176,29 @@ func (p *parser) parseType() ast.TypeSpec {
 	}
 }
 
-func (p *parser) parseBoundInt() int64 {
-	neg := p.match(token.SUB)
-	tok := p.expect(token.NUMBER, "expected integer bound")
-	v, err := strconv.ParseInt(tok.Text, 10, 64)
-	if err != nil {
-		p.error(tok, "expected integer bound")
-		return 0
+func (p *parser) parseBound() ast.Expr {
+	tok := p.peek()
+	if tok.Kind == token.NUMBER || tok.Kind == token.IDENT {
+		p.advance()
 	}
-	if neg {
-		return -v
+	v, err := strconv.ParseUint(tok.Text, 10, 63)
+	if tok.Kind == token.IDENT || tok.Kind == token.NUMBER && err == nil {
+		switch p.peek().Kind {
+		case token.DOTDOT, token.COMMA, token.RBRACK:
+			if tok.Kind == token.IDENT {
+				return &ast.IdentExpr{Name: tok}
+			}
+			return &ast.LiteralExpr{At: tok.Pos, Kind: ast.IntLiteral, Int: int64(v)}
+		}
 	}
-	return v
+	p.error(tok, "expected unsigned integer literal or constant bound")
+	for {
+		switch p.peek().Kind {
+		case token.DOTDOT, token.COMMA, token.RBRACK, token.DE, token.INICIO, token.EOF:
+			return &ast.LiteralExpr{At: tok.Pos, Kind: ast.IntLiteral}
+		}
+		p.advance()
+	}
 }
 
 func (p *parser) parseSubprogram() ast.Subprogram {
@@ -120,6 +213,12 @@ func (p *parser) parseProcedure() *ast.ProcedureDecl {
 	name := p.expect(token.IDENT, "expected procedure name")
 	params := p.parseParamList()
 	decl := &ast.ProcedureDecl{At: start.Pos, Name: name, Params: params}
+	decl.Config = p.parseConfig()
+	decl.Consts = p.parseConstBlock()
+	decl.Types = p.parseTypeBlock()
+	if len(p.diags) != 0 {
+		return decl
+	}
 	if p.peek().Kind == token.VAR {
 		decl.Locals = p.parseVarBlock()
 	}
@@ -134,8 +233,14 @@ func (p *parser) parseFunction() *ast.FunctionDecl {
 	name := p.expect(token.IDENT, "expected function name")
 	params := p.parseParamList()
 	p.expect(token.COLON, "expected ':' before function return type")
-	ret := p.parseType()
+	ret := p.parseCallableType()
 	decl := &ast.FunctionDecl{At: start.Pos, Name: name, Params: params, Return: ret}
+	decl.Config = p.parseConfig()
+	decl.Consts = p.parseConstBlock()
+	decl.Types = p.parseTypeBlock()
+	if len(p.diags) != 0 {
+		return decl
+	}
 	if p.peek().Kind == token.VAR {
 		decl.Locals = p.parseVarBlock()
 	}
@@ -146,7 +251,9 @@ func (p *parser) parseFunction() *ast.FunctionDecl {
 }
 
 func (p *parser) parseParamList() []ast.Param {
-	p.expect(token.LPAREN, "expected '('")
+	if !p.match(token.LPAREN) {
+		return nil
+	}
 	if p.match(token.RPAREN) {
 		return nil
 	}
@@ -159,7 +266,7 @@ func (p *parser) parseParamList() []ast.Param {
 			names = append(names, p.expect(token.IDENT, "expected parameter name"))
 		}
 		p.expect(token.COLON, "expected ':' after parameter name")
-		typ := p.parseType()
+		typ := p.parseCallableType()
 		for _, name := range names {
 			params = append(params, ast.Param{At: name.Pos, Name: name, Type: typ, ByRef: byRef})
 		}
@@ -169,6 +276,19 @@ func (p *parser) parseParamList() []ast.Param {
 	}
 	p.expect(token.RPAREN, "expected ')'")
 	return params
+}
+
+func (p *parser) parseCallableType() ast.TypeSpec {
+	typ := p.parseType()
+	if len(p.diags) != 0 {
+		return typ
+	}
+	if typ.Name == "vetor" {
+		p.error(token.Token{Pos: typ.At}, "inline vector parameter and result types are unsupported")
+	} else if token.Lookup(typ.Name) == token.IDENT {
+		p.error(token.Token{Pos: typ.At}, "named parameter and result types are unsupported")
+	}
+	return typ
 }
 
 func (p *parser) parseStmtList(stops map[token.Kind]bool) []ast.Stmt {
@@ -186,7 +306,56 @@ func (p *parser) parseStmtList(stops map[token.Kind]bool) []ast.Stmt {
 }
 
 func (p *parser) parseStmt() ast.Stmt {
+	if !p.enter() {
+		return nil
+	}
+	defer func() { p.depth-- }()
 	switch p.peek().Kind {
+	case token.ARQUIVO:
+		stmt := &ast.FileInputStmt{At: p.advance().Pos}
+		if p.atLineEnd() || p.peek().Kind != token.STRING {
+			p.error(token.Token{Pos: stmt.At}, "expected literal filename after arquivo")
+		} else {
+			stmt.Path = p.advance().Text
+		}
+		p.skipLine()
+		return stmt
+	case token.DOS:
+		stmt := &ast.ConsoleStmt{At: p.advance().Pos}
+		p.skipLine()
+		return stmt
+	case token.RAND:
+		call := &ast.CallExpr{Name: p.advance()}
+		p.skipLine()
+		return &ast.CallStmt{Call: call}
+	case token.ALEATORIO:
+		return p.parseRandomInput()
+	case token.ECO:
+		return p.parseEcho()
+	case token.CRONOMETRO:
+		return p.parseChronometer()
+	case token.TIMER:
+		s := &ast.TimerStmt{At: p.advance().Pos}
+		if p.atLineEnd() {
+			p.error(token.Token{Pos: s.At}, "expected timer value")
+			return s
+		}
+		s.Value = p.parseExpr(0)
+		p.skipLine()
+		return s
+	case token.PAUSA:
+		s := &ast.PauseStmt{At: p.advance().Pos}
+		p.skipLine()
+		return s
+	case token.DEBUG:
+		s := &ast.DebugStmt{At: p.advance().Pos}
+		if p.atLineEnd() {
+			p.error(token.Token{Pos: s.At}, "expected debug condition")
+			return s
+		}
+		s.Cond = p.parseExpr(0)
+		p.skipLine()
+		return s
 	case token.IDENT:
 		return p.parseIdentStmt()
 	case token.SE:
@@ -203,14 +372,24 @@ func (p *parser) parseStmt() ast.Stmt {
 		return &ast.BreakStmt{At: p.advance().Pos}
 	case token.RETORNE:
 		tok := p.advance()
-		return &ast.ReturnStmt{At: tok.Pos, Value: p.parseExpr(0)}
+		stmt := &ast.ReturnStmt{At: tok.Pos}
+		if !p.atLineEnd() {
+			stmt.Value = p.parseExpr(0)
+		}
+		return stmt
 	case token.LEIA:
 		return p.parseRead()
 	case token.ESCREVA, token.ESCREVAL:
 		return p.parseWrite()
+	case token.LIMPATELA:
+		s := &ast.ClearStmt{At: p.advance().Pos}
+		p.skipLine()
+		return s
+	case token.MUDACOR:
+		return p.parseColor()
 	default:
-		p.error(p.peek(), "expected statement")
-		p.advance()
+		p.error(p.advance(), "expected statement")
+		p.skipLine()
 		return nil
 	}
 }
@@ -220,10 +399,14 @@ func (p *parser) parseIdentStmt() ast.Stmt {
 		call := p.parseCall()
 		return &ast.CallStmt{Call: call}
 	}
+	if p.peekN(1).Kind != token.ASSIGN && p.peekN(1).Kind != token.LBRACK && p.peekN(1).Kind != token.DOT {
+		return &ast.CallStmt{Call: &ast.CallExpr{Name: p.advance()}}
+	}
 	target := p.parseDesignator()
 	at := target.Start()
 	p.expect(token.ASSIGN, "expected '<-' in assignment")
 	value := p.parseExpr(0)
+	p.skipLine()
 	return &ast.AssignStmt{At: at, Target: target, Value: value}
 }
 
@@ -243,18 +426,19 @@ func (p *parser) parseIf() ast.Stmt {
 func (p *parser) parseSwitch() ast.Stmt {
 	start := p.expect(token.ESCOLHA, "expected escolha")
 	x := p.parseExpr(0)
+	p.match(token.FACA)
 	sw := &ast.SwitchStmt{At: start.Pos, X: x}
 	for p.peek().Kind != token.FIMESCOLHA && p.peek().Kind != token.EOF {
 		switch p.peek().Kind {
 		case token.CASO:
 			cstart := p.advance()
-			values := []ast.Expr{p.parseExpr(0)}
+			labels := []ast.CaseLabel{p.parseCaseLabel()}
 			for p.match(token.COMMA) {
-				values = append(values, p.parseExpr(0))
+				labels = append(labels, p.parseCaseLabel())
 			}
-			p.expect(token.COLON, "expected ':' after caso")
+			p.match(token.COLON)
 			body := p.parseStmtList(stopSet(token.CASO, token.OUTROCASO, token.FIMESCOLHA))
-			sw.Cases = append(sw.Cases, ast.CaseClause{At: cstart.Pos, Values: values, Body: body})
+			sw.Cases = append(sw.Cases, ast.CaseClause{At: cstart.Pos, Labels: labels, Body: body})
 		case token.OUTROCASO:
 			p.advance()
 			p.match(token.COLON)
@@ -266,6 +450,19 @@ func (p *parser) parseSwitch() ast.Stmt {
 	}
 	p.expect(token.FIMESCOLHA, "expected fimescolha")
 	return sw
+}
+
+func (p *parser) parseCaseLabel() ast.CaseLabel {
+	label := ast.CaseLabel{Low: p.parseExpr(0)}
+	if !p.atLineEnd() && p.peek().Kind == token.ATE {
+		at := p.advance()
+		if p.atLineEnd() {
+			p.error(at, "expected range upper bound")
+		} else {
+			label.High = p.parseExpr(0)
+		}
+	}
+	return label
 }
 
 func (p *parser) parseWhile() ast.Stmt {
@@ -321,7 +518,14 @@ func (p *parser) parseRead() ast.Stmt {
 func (p *parser) parseWrite() ast.Stmt {
 	start := p.advance()
 	stmt := &ast.WriteStmt{At: start.Pos, Newline: start.Kind == token.ESCREVAL}
-	p.expect(token.LPAREN, "expected '(' after write")
+	if p.atLineEnd() {
+		return stmt
+	}
+	if !p.match(token.LPAREN) {
+		p.error(start, "expected '(' or end of line after write")
+		p.skipLine()
+		return stmt
+	}
 	if !p.match(token.RPAREN) {
 		for {
 			arg := ast.WriteArg{Expr: p.parseExpr(0)}
@@ -336,15 +540,35 @@ func (p *parser) parseWrite() ast.Stmt {
 				break
 			}
 		}
-		p.expect(token.RPAREN, "expected ')'")
+		if !p.match(token.RPAREN) {
+			p.error(p.peek(), "expected ')'")
+			p.skipLine()
+		}
 	}
 	return stmt
+}
+
+func (p *parser) skipLine() {
+	for !p.atLineEnd() {
+		p.pos++
+	}
+}
+
+func (p *parser) atLineEnd() bool {
+	return p.pos >= len(p.tokens) || p.tokens[p.pos].Kind == token.NEWLINE || p.tokens[p.pos].Kind == token.EOF
 }
 
 func (p *parser) parseDesignator() ast.Expr {
 	name := p.expect(token.IDENT, "expected identifier")
 	var expr ast.Expr = &ast.IdentExpr{Name: name}
-	for p.match(token.LBRACK) {
+	for {
+		if p.match(token.DOT) {
+			expr = &ast.FieldExpr{At: expr.Start(), X: expr, Name: p.expect(token.IDENT, "expected field name after '.'")}
+			continue
+		}
+		if !p.match(token.LBRACK) {
+			break
+		}
 		at := expr.Start()
 		var indices []ast.Expr
 		if !p.match(token.RBRACK) {
@@ -380,8 +604,9 @@ func (p *parser) match(kind token.Kind) bool {
 
 func (p *parser) advance() token.Token {
 	tok := p.peek()
-	if p.pos < len(p.tokens) {
-		p.pos++
+	i := p.peekIndex(0)
+	if i < len(p.tokens) {
+		p.pos = i + 1
 	}
 	return tok
 }
@@ -391,15 +616,52 @@ func (p *parser) peek() token.Token {
 }
 
 func (p *parser) peekN(n int) token.Token {
-	i := p.pos + n
+	i := p.peekIndex(n)
 	if i >= 0 && i < len(p.tokens) {
 		return p.tokens[i]
+	}
+	if len(p.tokens) != 0 {
+		// Recovery may already have consumed EOF while parsing an incomplete
+		// expression. Keep the last source position for missing delimiters.
+		return token.Token{Kind: token.EOF, Pos: p.tokens[len(p.tokens)-1].Pos}
 	}
 	return token.Token{Kind: token.EOF}
 }
 
+func (p *parser) peekIndex(n int) int {
+	i := p.pos
+	for i < len(p.tokens) {
+		if p.tokens[i].Kind != token.NEWLINE {
+			if n == 0 {
+				return i
+			}
+			n--
+		}
+		i++
+	}
+	return i
+}
+
 func (p *parser) error(tok token.Token, msg string) {
+	if p.limited {
+		return
+	}
 	p.diags = append(p.diags, diag.Diagnostic{Code: diag.EParse, Pos: tok.Pos, Message: msg})
+}
+
+func (p *parser) enter() bool {
+	if p.limited {
+		return false
+	}
+	if p.depth == ast.MaxDepth {
+		pos := p.peek().Pos
+		p.diags = append(p.diags, diag.Diagnostic{Code: diag.EResource, Pos: pos, End: pos + 1, Message: "syntax nesting limit exceeded"})
+		p.limited = true
+		p.pos = len(p.tokens)
+		return false
+	}
+	p.depth++
+	return true
 }
 
 func stopSet(kinds ...token.Kind) map[token.Kind]bool {

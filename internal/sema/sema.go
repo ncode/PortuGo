@@ -1,39 +1,65 @@
 package sema
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/portugol-go/internal/stdlib"
 	"github.com/ncode/portugol-go/internal/token"
 )
 
-// Check validates names, types, calls, loop control, and returns.
-func Check(prog *ast.Program) []diag.Diagnostic {
-	c := &checker{scope: newScope(nil)}
-	c.declareBuiltins()
-	c.checkProgram(prog)
-	return c.diags
+// Analyze resolves names, types, layouts, calls, loop control, and returns.
+func Analyze(prog *ast.Program) (*Info, []diag.Diagnostic) {
+	dynamicCells := make(map[dynamicCell]bool)
+	var info *Info
+	var c *checker
+	for pass := 0; pass < 2; pass++ {
+		info = &Info{program: prog, types: make(map[ast.Expr]runtime.Type), bindings: make(map[token.Pos]Binding), names: make(map[token.Pos]string)}
+		c = &checker{scope: newScope(nil), subs: make(map[string]symbol), info: info, dynamicCells: dynamicCells, copyBack: make(map[dynamicCell][]dynamicCell)}
+		if pass == 0 {
+			if prog == nil {
+				c.error(token.NoPos, diag.ETypeMismatch, "missing program")
+				return info, c.diags
+			}
+			if ds := ast.CheckLimits(prog); len(ds) != 0 {
+				return info, ds
+			}
+		}
+		c.declareBuiltins()
+		c.checkProgram(prog)
+		if len(dynamicCells) == 0 {
+			break
+		}
+		c.propagateDynamicCells()
+	}
+	info.valid = !diag.HasErrors(c.diags)
+	return info, diag.Ordered(c.diags)
 }
 
 type symbolKind int
 
 const (
 	varSym symbolKind = iota
+	constSym
+	typeSym
 	procSym
 	funcSym
 	builtinSym
 )
 
 type paramSig struct {
+	pos   token.Pos
 	name  string
 	typ   runtime.Type
 	byRef bool
 }
 
 type symbol struct {
+	pos    token.Pos
 	name   string
 	kind   symbolKind
 	typ    runtime.Type
@@ -43,18 +69,24 @@ type symbol struct {
 type scope struct {
 	parent *scope
 	syms   map[string]symbol
+	types  map[string]symbol
 }
 
 type checker struct {
-	scope      *scope
-	diags      []diag.Diagnostic
-	loopDepth  int
-	returnType runtime.Type
-	inFunction bool
+	info         *Info
+	scope        *scope
+	subs         map[string]symbol
+	diags        []diag.Diagnostic
+	loopDepth    int
+	returnType   runtime.Type
+	inFunction   bool
+	stopped      bool
+	dynamicCells map[dynamicCell]bool
+	copyBack     map[dynamicCell][]dynamicCell
 }
 
 func newScope(parent *scope) *scope {
-	return &scope{parent: parent, syms: make(map[string]symbol)}
+	return &scope{parent: parent, syms: make(map[string]symbol), types: make(map[string]symbol)}
 }
 
 func (s *scope) lookup(name string) (symbol, bool) {
@@ -75,33 +107,53 @@ func (s *scope) declare(sym symbol) bool {
 }
 
 func (c *checker) checkProgram(prog *ast.Program) {
+	if !c.declareConsts(prog.Consts) {
+		return
+	}
+	if !c.declareTypes(prog.Types) {
+		return
+	}
 	for _, decl := range prog.Globals {
-		c.declareVars(decl)
+		if !c.declareVars(decl) {
+			return
+		}
 	}
 	for _, sub := range prog.Subs {
 		c.declareSub(sub)
 	}
+	if diag.HasErrors(c.diags) {
+		return
+	}
 	for _, sub := range prog.Subs {
 		c.checkSub(sub)
+		if c.stopped {
+			return
+		}
 	}
 	c.checkStmts(prog.Body)
 }
 
-func (c *checker) declareVars(decl ast.VarDecl) {
-	typ := runtime.TypeFromSpec(decl.Type)
+func (c *checker) declareVars(decl ast.VarDecl) bool {
+	typ := c.resolveType(decl.Type)
+	if typ.Kind == runtime.InvalidType {
+		return false
+	}
 	c.validateType(decl.Type, typ)
 	for _, name := range decl.Names {
 		key := canon(name.Text)
-		if !c.scope.declare(symbol{name: key, kind: varSym, typ: typ}) {
+		sym := symbol{pos: name.Pos, name: key, kind: varSym, typ: typ}
+		c.recordBinding(name, sym)
+		if !c.scope.declare(sym) {
 			c.error(name.Pos, diag.ERedeclared, "redeclared identifier %q", name.Text)
 		}
 	}
+	return true
 }
 
 func (c *checker) declareSub(sub ast.Subprogram) {
 	nameTok := sub.NameToken()
 	key := canon(nameTok.Text)
-	sym := symbol{name: key}
+	sym := symbol{pos: nameTok.Pos, name: key}
 	switch d := sub.(type) {
 	case *ast.ProcedureDecl:
 		sym.kind = procSym
@@ -113,15 +165,19 @@ func (c *checker) declareSub(sub ast.Subprogram) {
 		sym.params = paramsFromAST(d.Params)
 		c.validateType(d.Return, sym.typ)
 	}
-	if !c.scope.declare(sym) {
+	c.recordBinding(nameTok, sym)
+	previous, reserved := c.scope.syms[key]
+	if _, exists := c.subs[key]; exists || reserved && previous.kind == builtinSym {
 		c.error(nameTok.Pos, diag.ERedeclared, "redeclared identifier %q", nameTok.Text)
+		return
 	}
+	c.subs[key] = sym
 }
 
 func paramsFromAST(params []ast.Param) []paramSig {
 	out := make([]paramSig, len(params))
 	for i, p := range params {
-		out[i] = paramSig{name: canon(p.Name.Text), typ: runtime.TypeFromSpec(p.Type), byRef: p.ByRef}
+		out[i] = paramSig{pos: p.Name.Pos, name: canon(p.Name.Text), typ: runtime.TypeFromSpec(p.Type), byRef: p.ByRef}
 	}
 	return out
 }
@@ -139,21 +195,34 @@ func (c *checker) checkSub(sub ast.Subprogram) {
 	case *ast.ProcedureDecl:
 		c.inFunction = false
 		c.declareParams(d.Params)
+		if !c.declareConsts(d.Consts) {
+			return
+		}
+		if !c.declareTypes(d.Types) {
+			return
+		}
 		for _, decl := range d.Locals {
-			c.declareVars(decl)
+			if !c.declareVars(decl) {
+				return
+			}
 		}
 		c.checkStmts(d.Body)
 	case *ast.FunctionDecl:
 		c.inFunction = true
 		c.returnType = runtime.TypeFromSpec(d.Return)
 		c.declareParams(d.Params)
+		if !c.declareConsts(d.Consts) {
+			return
+		}
+		if !c.declareTypes(d.Types) {
+			return
+		}
 		for _, decl := range d.Locals {
-			c.declareVars(decl)
+			if !c.declareVars(decl) {
+				return
+			}
 		}
 		c.checkStmts(d.Body)
-		if !allPathsReturn(d.Body) {
-			c.error(d.Name.Pos, diag.EReturn, "function %q may exit without retorne", d.Name.Text)
-		}
 	}
 }
 
@@ -161,7 +230,9 @@ func (c *checker) declareParams(params []ast.Param) {
 	for _, p := range params {
 		typ := runtime.TypeFromSpec(p.Type)
 		c.validateType(p.Type, typ)
-		if !c.scope.declare(symbol{name: canon(p.Name.Text), kind: varSym, typ: typ}) {
+		sym := symbol{pos: p.Name.Pos, name: canon(p.Name.Text), kind: varSym, typ: typ}
+		c.recordBinding(p.Name, sym)
+		if !c.scope.declare(sym) {
 			c.error(p.Name.Pos, diag.ERedeclared, "redeclared parameter %q", p.Name.Text)
 		}
 	}
@@ -173,29 +244,103 @@ func (c *checker) validateType(spec ast.TypeSpec, typ runtime.Type) {
 	}
 	if typ.Kind == runtime.VectorType {
 		for _, r := range spec.Ranges {
-			if r.High < r.Low {
-				c.error(r.At, diag.ETypeMismatch, "vector upper bound is smaller than lower bound")
+			if !c.checkBound(r.Low, r.At) || !c.checkBound(r.High, r.At) {
+				return
 			}
+		}
+		if spec.Elem != nil && typ.Elem != nil {
+			before := len(c.diags)
+			c.validateType(*spec.Elem, *typ.Elem)
+			if len(c.diags) != before {
+				return
+			}
+		}
+		if typ.DynamicBounds() {
+			return
+		}
+		if _, err := typ.Slots(); err != nil {
+			code := diag.ETypeMismatch
+			if errors.Is(err, runtime.ErrVectorSize) {
+				code = diag.EResource
+			}
+			c.error(spec.At, code, "%s", err)
+			return
 		}
 	}
 }
 
 func (c *checker) checkStmts(stmts []ast.Stmt) {
 	for _, stmt := range stmts {
+		if c.stopped {
+			return
+		}
 		c.checkStmt(stmt)
 	}
 }
 
 func (c *checker) checkStmt(stmt ast.Stmt) {
 	switch s := stmt.(type) {
+	case *ast.EchoStmt, *ast.ChronometerStmt, *ast.PauseStmt:
+		return
+	case *ast.TimerStmt:
+		before := len(c.diags)
+		c.expr(s.Value)
+		if len(c.diags) > before {
+			if c.diags[before].Code == diag.EUndeclared {
+				c.diags[before].Code = diag.EParse
+			}
+			c.diags = c.diags[:before+1]
+		}
+	case *ast.DebugStmt:
+		c.requireBool(s.Cond)
+	case *ast.RandomInputStmt:
+		for _, arg := range s.Args {
+			before := len(c.diags)
+			typ := c.expr(arg)
+			if len(c.diags) != before {
+				if c.diags[before].Code == diag.EUndeclared {
+					c.diags[before].Code = diag.EParse
+				}
+				c.diags = c.diags[:before+1]
+				return
+			}
+			if !isNumeric(typ) && typ.Kind != runtime.DynamicType {
+				c.error(arg.Start(), diag.EParse, "expected numeric random-input bound")
+				return
+			}
+		}
+	case *ast.ConsoleStmt, *ast.FileInputStmt:
+		// A directive reached in an executable body fails at runtime.
+		return
 	case *ast.AssignStmt:
+		if sym, ok := c.assignmentProcedure(s.Target); ok {
+			c.error(sym.pos, diag.ECall, "%q is a procedure in statement context", sym.name)
+			return
+		}
 		dst, ok := c.writable(s.Target)
+		if c.stopped {
+			return
+		}
+		if ok && dst.Kind == runtime.VectorType {
+			c.error(s.Target.Start(), diag.ETypeMismatch, "vector assignment requires an indexed target")
+			return
+		}
 		src := c.expr(s.Value)
-		if ok && !runtime.Assignable(dst, src) {
+		logicalResult := comparisonResult(s.Value)
+		if ok && logicalResult && (dst.Kind == runtime.BoolType || dst.Kind == runtime.DynamicType) {
+			if key, ok := c.cellKey(s.Target); ok {
+				c.dynamicCells[key] = true
+			}
+		}
+		if ok && !logicalResult && src.Kind != runtime.NumericType && !runtime.Assignable(dst, src) {
 			c.error(s.Value.Start(), diag.ETypeMismatch, "cannot assign %s to %s", src, dst)
 		}
 	case *ast.CallStmt:
 		c.checkCall(s.Call, true)
+	case *ast.ColorStmt:
+		if c.checkColorArg(s.Color) {
+			c.checkColorArg(s.Target)
+		}
 	case *ast.IfStmt:
 		c.requireBool(s.Cond)
 		c.checkStmts(s.Then)
@@ -203,10 +348,17 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 	case *ast.SwitchStmt:
 		x := c.expr(s.X)
 		for _, cc := range s.Cases {
-			for _, v := range cc.Values {
-				t := c.expr(v)
-				if !runtime.Assignable(x, t) && !runtime.Assignable(t, x) {
-					c.error(v.Start(), diag.ETypeMismatch, "cannot compare %s with %s", x, t)
+			for _, label := range cc.Labels {
+				mismatch := false
+				for _, expr := range []ast.Expr{label.Low, label.High} {
+					if expr == nil {
+						continue
+					}
+					t := c.expr(expr)
+					if !mismatch && x.Kind != runtime.VoidType && t.Kind != runtime.VoidType && !runtime.Assignable(x, t) && !runtime.Assignable(t, x) {
+						c.error(expr.Start(), diag.ETypeMismatch, "cannot compare %s with %s", x, t)
+						mismatch = true
+					}
 				}
 			}
 			c.checkStmts(cc.Body)
@@ -219,7 +371,7 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		c.withLoop(func() { c.checkStmts(s.Body) })
 		c.requireBool(s.Cond)
 	case *ast.ForStmt:
-		sym, ok := c.scope.lookup(canon(s.Name.Text))
+		sym, ok := c.lookup(s.Name)
 		if !ok || sym.kind != varSym {
 			c.error(s.Name.Pos, diag.EUndeclared, "undeclared loop variable %q", s.Name.Text)
 		} else if sym.typ.Kind != runtime.IntegerType {
@@ -240,7 +392,14 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			c.error(s.At, diag.EReturn, "retorne outside function")
 			return
 		}
+		if s.Value == nil {
+			c.error(s.At, diag.ETypeMismatch, "retorne requires a value")
+			return
+		}
 		t := c.expr(s.Value)
+		if c.returnType.Kind == runtime.BoolType && comparisonResult(s.Value) {
+			t = runtime.Type{Kind: runtime.BoolType}
+		}
 		if !runtime.Assignable(c.returnType, t) {
 			c.error(s.Value.Start(), diag.ETypeMismatch, "cannot return %s from %s function", t, c.returnType)
 		}
@@ -263,8 +422,11 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 	}
 }
 
-func (c *checker) expr(expr ast.Expr) runtime.Type {
+func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
+	defer func() { c.info.types[expr] = typ }()
 	switch e := expr.(type) {
+	case *ast.NoValueExpr:
+		return runtime.Type{Kind: runtime.VoidType}
 	case *ast.LiteralExpr:
 		switch e.Kind {
 		case ast.IntLiteral:
@@ -277,29 +439,46 @@ func (c *checker) expr(expr ast.Expr) runtime.Type {
 			return runtime.Type{Kind: runtime.BoolType}
 		}
 	case *ast.IdentExpr:
-		sym, ok := c.scope.lookup(canon(e.Name.Text))
+		sym, ok := c.lookupCallable(e.Name, funcSym)
 		if !ok {
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}
 		}
-		if sym.kind != varSym {
+		if sym.kind == funcSym {
+			c.checkArgs(&ast.CallExpr{Name: e.Name}, sym)
+			return sym.typ
+		}
+		if sym.kind == builtinSym {
+			if descriptor, ok := stdlib.Lookup(sym.name); ok && descriptor.Signature().Form == stdlib.Bare {
+				return c.checkCall(&ast.CallExpr{Name: e.Name}, false)
+			}
+			c.error(e.Name.Pos, diag.EParse, "expected '(' after %s", sym.name)
+			return runtime.Type{Kind: runtime.InvalidType}
+		}
+		if sym.kind != varSym && sym.kind != constSym {
 			c.error(e.Name.Pos, diag.ETypeMismatch, "%q is not a variable", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}
 		}
-		return sym.typ
+		return c.valueType(e, sym.typ)
+	case *ast.FieldExpr:
+		return c.fieldType(e)
 	case *ast.IndexExpr:
 		base := c.expr(e.X)
 		for _, idx := range e.Indices {
 			c.requireInt(idx)
 		}
+		if base.Kind == runtime.DynamicType {
+			return base
+		}
 		if base.Kind != runtime.VectorType || base.Elem == nil {
 			c.error(e.Start(), diag.ETypeMismatch, "cannot index %s", base)
 			return runtime.Type{Kind: runtime.InvalidType}
 		}
-		if len(e.Indices) != len(base.Ranges) {
+		omittedColumn := len(e.Indices) == 1 && len(base.Ranges) == 2
+		if len(e.Indices) != len(base.Ranges) && !omittedColumn {
 			c.error(e.Start(), diag.ETypeMismatch, "expected %d indices, got %d", len(base.Ranges), len(e.Indices))
 		}
-		return *base.Elem
+		return c.valueType(e, *base.Elem)
 	case *ast.UnaryExpr:
 		return c.unary(e)
 	case *ast.BinaryExpr:
@@ -312,15 +491,29 @@ func (c *checker) expr(expr ast.Expr) runtime.Type {
 
 func (c *checker) unary(e *ast.UnaryExpr) runtime.Type {
 	t := c.expr(e.X)
+	if comparisonResult(e.X) {
+		switch e.Op.Kind {
+		case token.ADD:
+			return runtime.Type{Kind: runtime.DynamicType}
+		case token.SUB:
+			return runtime.Type{Kind: runtime.VoidType}
+		}
+	}
+	if t.Kind == runtime.DynamicType {
+		return t
+	}
 	switch e.Op.Kind {
-	case token.SUB:
+	case token.ADD, token.SUB:
 		if isNumeric(t) {
 			return t
 		}
-		c.error(e.Op.Pos, diag.ETypeMismatch, "operator - requires numeric operand")
+		if e.Op.Kind == token.SUB && isScalar(t) {
+			return runtime.Type{Kind: runtime.VoidType}
+		}
+		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires numeric operand", e.Op.Text)
 	case token.NAO:
-		if t.Kind == runtime.BoolType {
-			return t
+		if t.Kind == runtime.BoolType || comparisonResult(e.X) {
+			return runtime.Type{Kind: runtime.BoolType}
 		}
 		c.error(e.Op.Pos, diag.ETypeMismatch, "operator nao requires logico operand")
 	}
@@ -330,6 +523,17 @@ func (c *checker) unary(e *ast.UnaryExpr) runtime.Type {
 func (c *checker) binary(e *ast.BinaryExpr) runtime.Type {
 	left := c.expr(e.Left)
 	right := c.expr(e.Right)
+	if !e.IsComparison() && (left.Kind == runtime.DynamicType || right.Kind == runtime.DynamicType) {
+		return runtime.Type{Kind: runtime.DynamicType}
+	}
+	if comparisonResult(e.Left) || comparisonResult(e.Right) {
+		switch e.Op.Kind {
+		case token.QUO, token.IDIV, token.REM, token.MOD:
+			// Arithmetic consumes the temporary category; check the concrete
+			// retained value and destination during execution.
+			return runtime.Type{Kind: runtime.DynamicType}
+		}
+	}
 	switch e.Op.Kind {
 	case token.ADD:
 		if left.Kind == runtime.StringType && right.Kind == runtime.StringType {
@@ -342,25 +546,71 @@ func (c *checker) binary(e *ast.BinaryExpr) runtime.Type {
 		if isNumeric(left) && isNumeric(right) {
 			return runtime.Type{Kind: runtime.RealType}
 		}
+		if isScalar(left) && isScalar(right) {
+			if e.Op.Kind == token.QUO {
+				return right
+			}
+			return runtime.Type{Kind: runtime.VoidType}
+		}
 		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires numeric operands", e.Op.Text)
-	case token.IDIV, token.REM, token.MOD:
-		if left.Kind == runtime.IntegerType && right.Kind == runtime.IntegerType {
-			return runtime.Type{Kind: runtime.IntegerType}
+	case token.IDIV:
+		if isScalar(left) && isScalar(right) {
+			return right
 		}
-		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires inteiro operands", e.Op.Text)
-	case token.EQL, token.NEQ:
-		if runtime.Assignable(left, right) || runtime.Assignable(right, left) {
+		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires scalar operands", e.Op.Text)
+	case token.REM, token.MOD:
+		if isScalar(left) && isScalar(right) && left.Kind != runtime.StringType && right.Kind != runtime.StringType {
+			if isNumeric(left) && isNumeric(right) {
+				return runtime.Type{Kind: runtime.IntegerType}
+			}
+			return right
+		}
+		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires numeric or logico operands", e.Op.Text)
+	case token.EQL, token.NEQ, token.LSS, token.GTR, token.LEQ, token.GEQ:
+		if left.Kind == runtime.VectorType || right.Kind == runtime.VectorType {
+			pos := e.Left.Start()
+			if left.Kind != runtime.VectorType {
+				pos = e.Right.Start()
+			}
+			c.error(pos, diag.EParse, "expected '[' after vector")
+			c.stopped = true
+			return runtime.Type{Kind: runtime.InvalidType}
+		}
+		if left.Kind == runtime.DynamicType || right.Kind == runtime.DynamicType {
+			return runtime.Type{Kind: runtime.DynamicType}
+		}
+		if left.Kind == runtime.VoidType && (isScalar(right) || right.Kind == runtime.RecordType) {
+			return right
+		}
+		if right.Kind == runtime.VoidType && (isScalar(left) || left.Kind == runtime.RecordType) {
+			return left
+		}
+		if left.Kind == runtime.RecordType || right.Kind == runtime.RecordType {
+			return right
+		}
+		leftCategory, rightCategory := left, right
+		if inner, ok := e.Left.(*ast.BinaryExpr); ok && inner.IsComparison() {
+			leftCategory = runtime.Type{Kind: runtime.BoolType}
+		}
+		if inner, ok := e.Right.(*ast.BinaryExpr); ok && inner.IsComparison() {
+			rightCategory = runtime.Type{Kind: runtime.BoolType}
+		}
+		if isNumeric(leftCategory) && isNumeric(rightCategory) || leftCategory.Kind == rightCategory.Kind && (leftCategory.Kind == runtime.StringType || leftCategory.Kind == runtime.BoolType) {
 			return runtime.Type{Kind: runtime.BoolType}
 		}
-		c.error(e.Op.Pos, diag.ETypeMismatch, "cannot compare %s with %s", left, right)
-	case token.LSS, token.GTR, token.LEQ, token.GEQ:
-		if (isNumeric(left) && isNumeric(right)) || (left.Kind == runtime.StringType && right.Kind == runtime.StringType) {
-			return runtime.Type{Kind: runtime.BoolType}
+		if isScalar(left) && isScalar(right) {
+			return right
 		}
-		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires comparable operands", e.Op.Text)
+		c.error(e.Op.Pos, diag.ETypeMismatch, "operator %s requires scalar operands", e.Op.Text)
 	case token.E, token.OU, token.XOU:
+		if comparisonResult(e.Left) || comparisonResult(e.Right) {
+			return runtime.Type{Kind: runtime.DynamicType}
+		}
 		if left.Kind == runtime.BoolType && right.Kind == runtime.BoolType {
 			return runtime.Type{Kind: runtime.BoolType}
+		}
+		if e.Op.Kind == token.E && isScalar(left) && isScalar(right) {
+			return right
 		}
 		c.error(e.Op.Pos, diag.ETypeMismatch, "logical operator requires logico operands")
 	}
@@ -372,21 +622,30 @@ func (c *checker) numericBinary(pos token.Pos, left, right runtime.Type) runtime
 		if left.Kind == runtime.RealType || right.Kind == runtime.RealType {
 			return runtime.Type{Kind: runtime.RealType}
 		}
+		if left.Kind == runtime.NumericType || right.Kind == runtime.NumericType {
+			return runtime.Type{Kind: runtime.NumericType}
+		}
 		return runtime.Type{Kind: runtime.IntegerType}
 	}
 	c.error(pos, diag.ETypeMismatch, "operator requires numeric operands")
 	return runtime.Type{Kind: runtime.InvalidType}
 }
 
-func (c *checker) checkCall(call *ast.CallExpr, asStmt bool) runtime.Type {
+func (c *checker) checkCall(call *ast.CallExpr, asStmt bool) (typ runtime.Type) {
+	defer func() { c.info.types[call] = typ }()
 	name := canon(call.Name.Text)
 	if ret, ok := c.builtinCallType(name, call); ok {
+		c.recordBinding(call.Name, symbol{name: name, kind: builtinSym, typ: ret})
 		if asStmt && ret.Kind != runtime.VoidType {
 			return ret
 		}
 		return ret
 	}
-	sym, ok := c.scope.lookup(name)
+	kind := funcSym
+	if asStmt {
+		kind = procSym
+	}
+	sym, ok := c.lookupCallable(call.Name, kind)
 	if !ok {
 		c.error(call.Name.Pos, diag.EUndeclared, "undeclared callable %q", call.Name.Text)
 		return runtime.Type{Kind: runtime.InvalidType}
@@ -399,22 +658,37 @@ func (c *checker) checkCall(call *ast.CallExpr, asStmt bool) runtime.Type {
 		c.error(call.Name.Pos, diag.ECall, "%q is not a function", call.Name.Text)
 		return runtime.Type{Kind: runtime.InvalidType}
 	}
-	c.checkArgs(call, sym.params)
+	c.checkArgs(call, sym)
 	return sym.typ
 }
 
-func (c *checker) checkArgs(call *ast.CallExpr, params []paramSig) {
+func (c *checker) checkArgs(call *ast.CallExpr, sym symbol) {
+	params := sym.params
+	pos := call.Name.Pos
+	if sym.kind == procSym {
+		pos = sym.pos
+	}
 	if len(call.Args) != len(params) {
-		c.error(call.Name.Pos, diag.ECall, "%q expects %d arguments, got %d", call.Name.Text, len(params), len(call.Args))
+		c.error(pos, diag.ECall, "%q expects %d arguments, got %d", call.Name.Text, len(params), len(call.Args))
 		return
 	}
 	for i, arg := range call.Args {
 		t := c.expr(arg)
-		if !runtime.Assignable(params[i].typ, t) {
-			c.error(arg.Start(), diag.ETypeMismatch, "argument %d: cannot use %s as %s", i+1, t, params[i].typ)
+		if !runtime.Assignable(params[i].typ, t) && (!isNumeric(params[i].typ) || !isNumeric(t)) {
+			argPos := arg.Start()
+			if sym.kind == procSym {
+				argPos = sym.pos
+			}
+			c.error(argPos, diag.ETypeMismatch, "argument %d: cannot use %s as %s", i+1, t, params[i].typ)
 		}
-		if params[i].byRef && !isWritableExpr(arg) {
+		if params[i].byRef && !c.isWritableExpr(arg) {
 			c.error(arg.Start(), diag.ECall, "argument %d must be assignable for var parameter", i+1)
+		}
+		if params[i].byRef && params[i].typ.Kind == runtime.BoolType {
+			if target, ok := c.cellKey(arg); ok {
+				formal := dynamicCell{id: params[i].pos}
+				c.copyBack[formal] = append(c.copyBack[formal], target)
+			}
 		}
 	}
 }
@@ -422,8 +696,8 @@ func (c *checker) checkArgs(call *ast.CallExpr, params []paramSig) {
 func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 	switch e := expr.(type) {
 	case *ast.IdentExpr:
-		sym, ok := c.scope.lookup(canon(e.Name.Text))
-		if !ok {
+		sym, ok := c.lookup(e.Name)
+		if !ok || sym.kind == funcSym || sym.kind == constSym {
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}, false
 		}
@@ -431,9 +705,14 @@ func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 			c.error(e.Name.Pos, diag.ETypeMismatch, "%q is not assignable", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}, false
 		}
-		return sym.typ, true
+		typ := c.valueType(e, sym.typ)
+		c.info.types[expr] = typ
+		return typ, true
 	case *ast.IndexExpr:
 		return c.expr(e), true
+	case *ast.FieldExpr:
+		typ := c.expr(e)
+		return typ, typ.Kind != runtime.InvalidType
 	default:
 		c.error(expr.Start(), diag.ETypeMismatch, "expression is not assignable")
 		return runtime.Type{Kind: runtime.InvalidType}, false
@@ -441,13 +720,17 @@ func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 }
 
 func (c *checker) requireBool(expr ast.Expr) {
-	if t := c.expr(expr); t.Kind != runtime.BoolType && t.Kind != runtime.InvalidType {
+	t := c.expr(expr)
+	if comparisonResult(expr) {
+		return
+	}
+	if t.Kind != runtime.BoolType && t.Kind != runtime.DynamicType && t.Kind != runtime.InvalidType {
 		c.error(expr.Start(), diag.ETypeMismatch, "expected logico, got %s", t)
 	}
 }
 
 func (c *checker) requireInt(expr ast.Expr) {
-	if t := c.expr(expr); t.Kind != runtime.IntegerType && t.Kind != runtime.InvalidType {
+	if t := c.expr(expr); t.Kind != runtime.IntegerType && t.Kind != runtime.NumericType && t.Kind != runtime.DynamicType && t.Kind != runtime.InvalidType {
 		c.error(expr.Start(), diag.ETypeMismatch, "expected inteiro, got %s", t)
 	}
 }
@@ -459,6 +742,9 @@ func (c *checker) withLoop(fn func()) {
 }
 
 func (c *checker) error(pos token.Pos, code diag.Code, format string, args ...any) {
+	if c.stopped {
+		return
+	}
 	c.diags = append(c.diags, diag.Diagnostic{Code: code, Pos: pos, Message: fmt.Sprintf(format, args...)})
 }
 
@@ -467,13 +753,22 @@ func canon(name string) string {
 }
 
 func isNumeric(t runtime.Type) bool {
-	return t.Kind == runtime.IntegerType || t.Kind == runtime.RealType
+	return t.Kind == runtime.IntegerType || t.Kind == runtime.RealType || t.Kind == runtime.NumericType
 }
 
-func isWritableExpr(expr ast.Expr) bool {
-	switch expr.(type) {
-	case *ast.IdentExpr, *ast.IndexExpr:
-		return true
+func isScalar(t runtime.Type) bool {
+	return isNumeric(t) || t.Kind == runtime.StringType || t.Kind == runtime.BoolType
+}
+
+func (c *checker) isWritableExpr(expr ast.Expr) bool {
+	switch e := expr.(type) {
+	case *ast.IdentExpr:
+		sym, ok := c.lookupCallable(e.Name, funcSym)
+		return ok && sym.kind == varSym
+	case *ast.IndexExpr:
+		return c.isWritableExpr(e.X)
+	case *ast.FieldExpr:
+		return c.isWritableExpr(e.X)
 	default:
 		return false
 	}

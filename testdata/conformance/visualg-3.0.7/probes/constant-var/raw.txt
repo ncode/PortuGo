@@ -1,0 +1,6 @@
+Início da execução
+BEGIN:constant-var
+ 3
+END:constant-var
+
+Fim da execução.

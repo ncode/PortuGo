@@ -1,0 +1,6 @@
+Início da execução
+BEGIN:record-field
+ 3
+END:record-field
+
+Fim da execução.

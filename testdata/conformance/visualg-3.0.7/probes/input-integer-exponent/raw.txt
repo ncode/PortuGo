@@ -1,0 +1,5 @@
+Início da execução
+2000
+OUT:[ 2000]
+
+Fim da execução.

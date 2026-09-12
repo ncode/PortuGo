@@ -1,0 +1,9 @@
+Início da execução
+ FALSO
+ FALSO
+ FALSO
+ FALSO
+ FALSO
+ FALSO
+
+Fim da execução.

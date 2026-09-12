@@ -1,0 +1,5 @@
+Início da execução
+-2147483648
+OUT:[ -2147483648]
+
+Fim da execução.

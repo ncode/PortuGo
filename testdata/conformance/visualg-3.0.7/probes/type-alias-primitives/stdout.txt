@@ -1,0 +1,2 @@
+ 0| 0|| FALSO
+ 7| 1.5|ok| VERDADEIRO

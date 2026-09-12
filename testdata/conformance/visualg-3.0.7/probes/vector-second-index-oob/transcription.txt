@@ -1,0 +1,4 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 6
+Message: Variável 'V[1,3]' não foi encontrada.
+Column: not established.

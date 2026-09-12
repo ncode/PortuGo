@@ -1,0 +1,11 @@
+Digite o nome do aluno: ALUNO
+Digite a Primeira nota: 8
+Digite a Segunda nota : 7
+Digite a Terceira nota: 6
+Digite a Quarta nota  : 9
+Digite a Quint nota   : 10
+ ===================== 
+ 
+A Média final é:  8
+ 
+ O Aluno ALUNO Passou !

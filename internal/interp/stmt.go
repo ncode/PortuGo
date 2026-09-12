@@ -2,8 +2,10 @@ package interp
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
 )
 
@@ -17,8 +19,39 @@ func (i *Interpreter) execStmts(stmts []ast.Stmt) (control, error) {
 	return control{}, nil
 }
 
-func (i *Interpreter) execStmt(stmt ast.Stmt) (control, error) {
+func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
+	if err := i.charge(stmt.Start()); err != nil {
+		return ctrl, err
+	}
+	defer func() { err = failure(stmt.Start(), diag.RType, err) }()
+	// Control-flow headers delay before their bodies. Other commands delay
+	// after their effects, including a timer change's newly selected duration.
+	switch stmt.(type) {
+	case *ast.IfStmt, *ast.SwitchStmt, *ast.WhileStmt, *ast.RepeatStmt, *ast.ForStmt:
+	default:
+		defer func() {
+			if err == nil {
+				err = i.delay(stmt.Start())
+			}
+		}()
+	}
 	switch s := stmt.(type) {
+	case *ast.TimerStmt:
+		return control{}, i.execTimer(s)
+	case *ast.PauseStmt:
+		return control{}, i.breakpoint(s.At)
+	case *ast.DebugStmt:
+		condition, err := i.evalBool(s.Cond)
+		if err != nil || !condition {
+			return control{}, err
+		}
+		return control{}, i.breakpoint(s.At)
+	case *ast.EchoStmt:
+		return control{}, i.execEcho(s)
+	case *ast.ChronometerStmt:
+		return control{}, i.execChronometer(s)
+	case *ast.RandomInputStmt:
+		return control{}, i.execRandomInput(s)
 	case *ast.AssignStmt:
 		cell, err := i.lvalue(s.Target)
 		if err != nil {
@@ -36,6 +69,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (control, error) {
 		if err != nil {
 			return control{}, err
 		}
+		if err := i.delay(s.At); err != nil {
+			return control{}, err
+		}
 		if cond {
 			return i.execStmts(s.Then)
 		}
@@ -45,17 +81,22 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (control, error) {
 		if err != nil {
 			return control{}, err
 		}
+		if err := i.delay(s.At); err != nil {
+			return control{}, err
+		}
+		if x.Kind == runtime.RealValue {
+			x.Real = math.Trunc(x.Real)
+			if x.Real < math.MinInt32 || x.Real > math.MaxInt32 {
+				x = runtime.Value{Kind: runtime.VoidValue}
+			}
+		}
 		for _, cc := range s.Cases {
-			for _, expr := range cc.Values {
-				v, err := i.eval(expr)
+			for _, label := range cc.Labels {
+				match, err := i.matchesCase(x, label)
 				if err != nil {
 					return control{}, err
 				}
-				eq, err := equalValues(x, v)
-				if err != nil {
-					return control{}, err
-				}
-				if eq {
+				if match {
 					return i.execStmts(cc.Body)
 				}
 			}
@@ -63,8 +104,14 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (control, error) {
 		return i.execStmts(s.Default)
 	case *ast.WhileStmt:
 		for {
+			if err := i.charge(s.Start()); err != nil {
+				return control{}, err
+			}
 			cond, err := i.evalBool(s.Cond)
 			if err != nil {
+				return control{}, err
+			}
+			if err := i.delay(s.At); err != nil {
 				return control{}, err
 			}
 			if !cond {
@@ -77,12 +124,15 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (control, error) {
 			if ctrl.kind == breakControl {
 				return control{}, nil
 			}
-			if ctrl.kind != noControl {
-				return ctrl, nil
-			}
 		}
 	case *ast.RepeatStmt:
+		if err := i.delay(s.At); err != nil {
+			return control{}, err
+		}
 		for {
+			if err := i.charge(s.Start()); err != nil {
+				return control{}, err
+			}
 			ctrl, err := i.execStmts(s.Body)
 			if err != nil {
 				return control{}, err
@@ -90,11 +140,11 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (control, error) {
 			if ctrl.kind == breakControl {
 				return control{}, nil
 			}
-			if ctrl.kind != noControl {
-				return ctrl, nil
-			}
 			cond, err := i.evalBool(s.Cond)
 			if err != nil {
+				return control{}, err
+			}
+			if err := i.delay(s.At); err != nil {
 				return control{}, err
 			}
 			if cond {
@@ -104,38 +154,56 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (control, error) {
 	case *ast.ForStmt:
 		return i.execFor(s)
 	case *ast.BreakStmt:
-		return control{kind: breakControl}, nil
+		return control{kind: breakControl, at: s.Start()}, nil
 	case *ast.ReturnStmt:
+		if i.result == nil {
+			return control{}, failure(s.Start(), diag.RCall, fmt.Errorf("retorne outside function"))
+		}
 		v, err := i.eval(s.Value)
 		if err != nil {
 			return control{}, err
 		}
-		return control{kind: returnControl, value: v}, nil
+		if i.result.Type.Kind == runtime.BoolType && v.Comparison {
+			v = runtime.Value{Kind: runtime.BoolValue, Bool: v.Bool}
+		}
+		return control{}, failure(s.Start(), diag.ETypeMismatch, assign(i.result, v))
 	case *ast.ReadStmt:
 		return control{}, i.execRead(s)
 	case *ast.WriteStmt:
 		return control{}, i.execWrite(s)
+	case *ast.ConsoleStmt:
+		return control{}, failure(s.At, diag.EParse, fmt.Errorf("dos outside the configuration section"))
+	case *ast.FileInputStmt:
+		return control{}, failure(s.At, diag.EParse, fmt.Errorf("arquivo outside the configuration section"))
+	case *ast.ClearStmt:
+		if err := i.options.Host.ClearScreen(); err != nil {
+			return control{}, diag.Diagnostic{Code: diag.RHost, Pos: s.Start(), Message: "cannot clear display", Cause: err}
+		}
+		return control{}, nil
+	case *ast.ColorStmt:
+		return control{}, i.execColor(s)
 	default:
 		return control{}, fmt.Errorf("unsupported statement %T", stmt)
 	}
 }
 
-func (i *Interpreter) execFor(s *ast.ForStmt) (control, error) {
-	cell, err := lookupCell(i.env, s.Name.Text)
+func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
+	defer func() { err = failure(s.Start(), diag.RLoop, err) }()
+	cell, err := i.lookupCell(s.Name)
 	if err != nil {
 		return control{}, err
 	}
-	from, err := i.evalInt(s.From)
+	from, err := i.evalInt(s.From, diag.EParse)
 	if err != nil {
 		return control{}, err
 	}
-	to, err := i.evalInt(s.To)
+	to, err := i.evalInt(s.To, diag.EParse)
 	if err != nil {
 		return control{}, err
 	}
 	step := int64(1)
 	if s.Step != nil {
-		step, err = i.evalInt(s.Step)
+		step, err = i.evalInt(s.Step, diag.EParse)
 		if err != nil {
 			return control{}, err
 		}
@@ -143,8 +211,15 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (control, error) {
 	if step == 0 {
 		return control{}, fmt.Errorf("para passo cannot be zero")
 	}
+	final := from
 	for cur := from; (step > 0 && cur <= to) || (step < 0 && cur >= to); cur += step {
+		if err := i.charge(s.Start()); err != nil {
+			return control{}, err
+		}
 		if err := assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: cur}); err != nil {
+			return control{}, err
+		}
+		if err := i.delay(s.At); err != nil {
 			return control{}, err
 		}
 		ctrl, err := i.execStmts(s.Body)
@@ -152,11 +227,15 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (control, error) {
 			return control{}, err
 		}
 		if ctrl.kind == breakControl {
-			return control{}, nil
+			final = min(cell.Value.Int, to)
+			return control{}, assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final})
 		}
-		if ctrl.kind != noControl {
-			return ctrl, nil
-		}
+		// VisuAlg caps the exposed exit value at the terminal bound, even
+		// for descending loops. Body assignments do not change progression.
+		final = min(cur+step, to)
 	}
-	return control{}, nil
+	if err := assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final}); err != nil {
+		return control{}, err
+	}
+	return control{}, i.delay(s.At)
 }

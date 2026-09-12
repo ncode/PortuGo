@@ -11,20 +11,28 @@ Defines reference-compatible input, output, file-backed execution, random-input 
 - **WHEN** one `leia` statement receives multiple compatible destinations and the input contains the required values across oracle-supported whitespace or line boundaries
 - **THEN** each destination receives the corresponding converted value in order and unread input remains available
 
+#### Scenario: Preserve console lines and typed echo
+- **WHEN** destinations receive recorded console input lines, including spaces and empty character values
+- **THEN** each destination consumes one complete line, character text is preserved, and successful input echoes use plain integers, ten fractional digits for reals, `Verdadeiro`/`Falso` for logical values, or the exact character text, followed by LF
+
 #### Scenario: Reach console end of input
 - **WHEN** execution needs another value after the injected console input is exhausted
 - **THEN** it returns the positioned input diagnostic or reference-compatible fallback behavior without blocking an explicitly headless run
 
 ### Requirement: Input value conversion
-Input SHALL reproduce the reference syntax and range rules for integers, reals, logical values, and character values, including accepted decimal separators, boolean spellings and casing, leading signs, surrounding whitespace, and overflow. Invalid input SHALL follow the reference retry or failure behavior and SHALL not partially mutate the destination.
+Input SHALL reproduce the reference syntax and range rules for integers, reals, logical values, and character values, including accepted decimal separators, boolean spellings and casing, leading signs, surrounding whitespace, and overflow. Completed conversions SHALL replace the destination with the recorded result, including zero or an unsigned mantissa produced from malformed text. Read failures and project range guards SHALL preserve the prior value.
 
 #### Scenario: Read a real value
 - **WHEN** input uses a decimal spelling accepted by the reference for a real destination
 - **THEN** the destination receives the same numeric value
 
-#### Scenario: Reject an overflowing integer
-- **WHEN** input text exceeds the reference integer range
-- **THEN** the destination retains its prior value and the reference-compatible retry or positioned input diagnostic occurs
+#### Scenario: Apply recorded scalar conversions
+- **WHEN** console input contains malformed numeric text, an integer requiring narrowing, or logical text
+- **THEN** malformed numbers retain the unsigned mantissa before scaling or become zero without digits, integers truncate and narrow to signed 32-bit values, and logical input is true exactly when its first character is `v` or `V`
+
+#### Scenario: Guard an unsupported numeric conversion
+- **WHEN** the headless runtime encounters input exhaustion, a number outside the finite real range, or integer conversion outside the signed 64-bit range before narrowing
+- **THEN** it reports positioned `R004` as a project guard and retains the destination and preceding output
 
 ### Requirement: Exact output rendering
 `escreva` and `escreval` SHALL reproduce VisuAlg 3.0.7 item separation, implicit spaces, newline placement, logical casing, integer and real rendering, decimal separator, negative zero handling, and string output. Output SHALL be written in argument order without host-language formatting leakage.
@@ -37,16 +45,46 @@ Input SHALL reproduce the reference syntax and range rules for integers, reals, 
 - **WHEN** equivalent items are emitted once with `escreva` and once with `escreval`
 - **THEN** the only newline differences are those observed in VisuAlg 3.0.7
 
+#### Scenario: Nested writes during argument evaluation
+- **WHEN** a function called by an output item or its format expression performs another output statement
+- **THEN** the nested statement emits before the outer statement's buffered items, and the next output statement to finish consumes any pending newline requested by `escreval`, including when that finishing statement is `escreva`
+
+#### Scenario: Replay the recorded portable output profile
+- **WHEN** selected 2026-09-07 `en-US` reference observations run through the portable CLI
+- **THEN** program output uses decimal dots, numeric and logical leading spaces, and uppercase logical values, with only fixed reference UI notices removed and CRLF converted to LF for comparison; other locale behavior remains pending evidence
+
 ### Requirement: Width and precision formatting
+Default real rendering SHALL use 15 significant digits, discard the sign of zero, and use uppercase `E` without a plus sign or leading exponent zeros when scientific notation is needed. A nonpositive width SHALL ignore the decimal-count argument.
+
 Output width and precision fields SHALL accept the expression forms and value domains supported by VisuAlg 3.0.7 and SHALL reproduce its alignment, padding, rounding, truncation, sign placement, overflow-width, and non-real precision behavior. Invalid format values SHALL produce positioned diagnostics.
+
+#### Scenario: Cap a positive field width
+- **WHEN** a character or numeric output item requests a width above 255
+- **THEN** padding uses width 255, preserving character left alignment and numeric right alignment without allocating the requested larger width
 
 #### Scenario: Format a real with width and decimals
 - **WHEN** an output item supplies valid width and decimal expressions
 - **THEN** the exact padded and rounded result matches the committed oracle bytes
 
+#### Scenario: Bound and pad decimal precision
+- **WHEN** an integer or real field requests more than 216 decimal places
+- **THEN** the count is capped at 216 before expansion, and real places beyond the recorded binary-exponent digit budget are padded with zeros
+
+#### Scenario: Round a stored binary value
+- **WHEN** positive-width fixed fields format `1.005` and `2.675` with two decimals, or the exact half `0.125`
+- **THEN** their unpadded results are `1.00`, `2.67`, and `0.13`, and fixed formatting preserves the sign of negative zero
+
+#### Scenario: Switch a large fixed field to scientific notation
+- **WHEN** a positive-width real field has absolute value at least `2^120`
+- **THEN** it uses a minimum width of 10, at most 17 fractional digits, a sign column, and a signed four-digit exponent, ignoring the decimal-count argument
+
 #### Scenario: Value exceeds requested width
 - **WHEN** a rendered value is wider than its valid requested width
 - **THEN** output expands, truncates, or fails exactly as the reference does
+
+#### Scenario: Replay recorded field formatting
+- **WHEN** the recorded width and decimal fields are applied
+- **THEN** width zero ignores decimals, positive numeric fields round decimal ties away from zero and expand as necessary, positive string fields left-align and truncate, and logical field widths are rejected before execution
 
 ### Requirement: CP1252 file and stream behavior
 Source-independent text read from or written to VisuAlg-compatible files SHALL use the oracle-confirmed Windows-1252 and newline behavior. Unsupported Unicode output SHALL follow a documented reference-compatible substitution or positioned failure rule; conversion SHALL never silently corrupt unrelated bytes.
@@ -73,6 +111,33 @@ The oracle-confirmed `arquivo` command SHALL resolve relative paths against the 
 #### Scenario: Exhaust arquivo input
 - **WHEN** the configured file contains fewer values than subsequent reads require
 - **THEN** input changes source, records fallback data, or fails exactly as the oracle evidence specifies
+
+#### Scenario: Read the recorded file line boundaries
+- **WHEN** an existing file contains LF, CRLF, an unterminated last line or no bytes
+- **THEN** LF terminates each line, CR bytes are discarded, the last unterminated line is consumed once, and an initially empty file supplies one empty value before console fallback
+- **AND** the existing file remains unchanged after fallback
+
+#### Scenario: Record a missing file
+- **WHEN** a literal configuration filename does not exist in an existing directory
+- **THEN** the file is created before ordinary execution, and converted input values are recorded in Windows-1252 with CRLF
+- **AND** integers use plain decimal text, reals ten fractional digits, and logical values `Verdadeiro` or `Falso`
+
+#### Scenario: Preserve the recorded failure and replacement buffers
+- **WHEN** a new recording reaches a full 128-byte block
+- **THEN** that block is flushed immediately, including when its final byte completes a line
+- **AND** successful completion flushes the remaining bytes, while a positioned execution failure or replacement directive discards only the unfinished block and leaves the file and its flushed prefix
+- **AND** the headless implementation closes every owned file handle on either outcome
+
+#### Scenario: Select the recorded literal filename
+- **WHEN** configuration contains repeated `arquivo` directives or a quoted filename with trailing text
+- **THEN** the last directive selects the input file, and only its first quoted filename is used
+- **AND** a subprogram's selection persists after its return and is reapplied on another call
+- **AND** unquoted, missing and parenthesized filenames receive positioned `P001`
+
+#### Scenario: Combine file input with random input and echo
+- **WHEN** random input is enabled around a selected file and later disabled
+- **THEN** generated values leave an existing file's next line unread, while a newly created recording includes generated values
+- **AND** the recorded file-input transcript retains echo around `eco off`
 
 ### Requirement: Random-input mode
 The command-form random-input facility, including `aleatorio` and any paired range or disable commands confirmed by the oracle, SHALL reproduce its activation, bounds, destination-type conversion, echo, interaction with console and `arquivo` input, and reset behavior. It SHALL match the reference value domains but need not reproduce exact sequences.
@@ -102,6 +167,15 @@ Pause, debug or breakpoint, clear-screen, color or display, clock, and every add
 #### Scenario: Clear the screen in a headless run
 - **WHEN** a valid clear-screen command executes with the default headless host
 - **THEN** execution continues without terminal escape leakage or failure and subsequent ordinary output is preserved
+
+#### Scenario: Select a recorded display color
+- **WHEN** `mudacor` receives two character expressions on the command line
+- **THEN** they are evaluated left to right, the seven recorded color names and `frente`/`fundos` targets are matched without case distinctions or whitespace trimming, and recognized pairs produce one typed host event
+- **AND** unknown names preserve display settings, trailing syntax is ignored, and host failures return positioned `R008` without rendering the underlying error details
+
+#### Scenario: Use a display keyword as a value
+- **WHEN** `limpatela` or `mudacor` occurs in an expression with or without apparent call arguments
+- **THEN** it produces no value without a host event or argument evaluation, and a containing output statement follows the recorded no-value discard rule
 
 #### Scenario: Execute a breakpoint with a fake host
 - **WHEN** a debug or pause command executes with a recording host

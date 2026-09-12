@@ -27,11 +27,15 @@ The language SHALL support the complete oracle-confirmed declaration section voc
 - **THEN** semantic or syntax analysis reports the positioned traced diagnostic without losing later independent declarations
 
 ### Requirement: Constants and declaration expressions
-If constant declarations are accepted by the reference, they SHALL be immutable, case-insensitive named values evaluated according to the recorded declaration-time expression rules. Every context that the reference permits to use a constant expression, including vector bounds, case labels, and other declarations, SHALL resolve it before execution and SHALL diagnose cycles, non-constant dependencies, overflow, and invalid types. Rejection of constant declarations SHALL NOT prohibit literal bounds or other expression forms independently accepted by the reference.
+Constants SHALL be immutable, case-insensitive named values initialized in declaration order when their section is entered. A `const` section SHALL precede a required, possibly empty `var` section. Global initializers run before the main body; local initializers run once per call after parameter setup and may read current parameters and global variables. Earlier constants and recorded built-ins are accepted; unknown/forward dependencies and cycles receive positioned syntax diagnostics. Duplicate declarations receive the recorded duplicate-name diagnostic. Integer arithmetic SHALL retain the recorded signed 32-bit wrapping behavior. Independently accepted constant-bound forms remain required; their values SHALL resolve before allocation, including during local declaration initialization. Unqualified aggregate-valued or no-value initializers SHALL NOT acquire positive support from scalar observations.
 
 #### Scenario: Use a constant in a vector bound
 - **WHEN** an integer constant is referenced by a vector bound accepted by the oracle
-- **THEN** the declared bound is resolved before runtime and is reflected in indexing and storage accounting
+- **THEN** the declared bound is resolved before allocation and is reflected in indexing and storage accounting
+
+#### Scenario: Initialize a local constant from current values
+- **WHEN** a subprogram constant reads a parameter or global variable
+- **THEN** it captures that call's current value before the body and remains unchanged until the call ends
 
 #### Scenario: Detect a cyclic constant
 - **WHEN** constant declarations depend on each other cyclically
@@ -39,6 +43,8 @@ If constant declarations are accepted by the reference, they SHALL be immutable,
 
 ### Requirement: Named types and aliases
 The language SHALL support oracle-confirmed named-type and alias declarations, resolve alias chains, preserve name identity wherever the reference distinguishes it, and detect unknown or cyclic type definitions. Assignment, parameter matching, and comparison SHALL use the resulting reference-compatible identity and compatibility rules.
+
+Recorded scalar aliases SHALL use a `tipo` section after optional `const` and before required `var`. Their names SHALL be case-insensitive and separate from variable names. Local definitions SHALL shadow global definitions without entering sibling scopes. The first definition of a duplicate name SHALL remain effective; later definitions SHALL still resolve against earlier valid types. Unknown, forward, and cyclic definitions SHALL produce positioned syntax diagnostics without recursive resolution. Scalar aliases SHALL preserve the underlying scalar representation and may be used as vector element types. Vector aliases and named parameter or result types SHALL be rejected. Alias-typed values SHALL remain compatible with recorded built-in scalar parameter forms. Record identity and aggregate compatibility SHALL require separate accepted evidence.
 
 #### Scenario: Resolve an alias chain
 - **WHEN** a variable is declared through multiple valid type aliases
@@ -48,38 +54,58 @@ The language SHALL support oracle-confirmed named-type and alias declarations, r
 - **WHEN** named types form a cycle with no concrete base type accepted by the reference
 - **THEN** analysis emits a positioned diagnostic and terminates safely
 
-### Requirement: Record types and fields
-The language SHALL support oracle-confirmed record declarations, nested records, record-typed variables, field selection, and fields whose types include named types and vectors. Field names SHALL follow the reference's case and duplicate rules, and field designators SHALL be valid wherever the selected value is valid.
+#### Scenario: Keep a local scalar alias local
+- **WHEN** a subprogram declares an alias with the same name as a global alias
+- **THEN** its local variables use the local type while the global and sibling scopes retain their own type resolution
 
-#### Scenario: Assign a nested record field
-- **WHEN** a program selects an existing field through a valid chain and assigns a compatible value
+#### Scenario: Reject a named callable header type
+- **WHEN** a parameter or function result names a scalar alias instead of a built-in type
+- **THEN** a positioned syntax diagnostic is returned before execution
+
+### Requirement: Record types and fields
+The language SHALL support recorded named records with scalar fields, including scalar aliases, grouped names, empty layouts, local definitions, record variables, and vector elements. Field lookup SHALL ignore case and select the first declaration of a repeated name. Scalar field designators SHALL be valid in assignments, input, output, and compatible scalar parameter positions. A named record used as a field type SHALL create no addressable nested field. Inline record and vector fields SHALL receive positioned syntax diagnostics. Record aliases SHALL retain distinct record identity without copied fields; missing selections through these declarations SHALL receive a positioned undeclared-field diagnostic. Named record parameter and result types SHALL be rejected.
+
+#### Scenario: Assign a scalar record field
+- **WHEN** a program selects an existing scalar field of a record variable or vector element and assigns a compatible value
 - **THEN** only the selected storage location changes
+
+#### Scenario: Reject an unaddressable nested field
+- **WHEN** a program selects a field declared with a named record type or a copied field through a record alias
+- **THEN** analysis reports the first missing field and does not invent nested storage
 
 #### Scenario: Select an unknown field
 - **WHEN** a designator names a field absent from the resolved record layout
 - **THEN** analysis reports a diagnostic at that field selection and execution is not attempted
 
 ### Requirement: Vector types and declared bounds
-The language SHALL support every oracle-confirmed vector syntax, including multiple dimensions and bounds expressed with valid declaration-time expressions. Each dimension SHALL retain its declared lower and upper bounds, including non-one and negative bounds when accepted, and indexing SHALL use those bounds rather than Go slice indices.
+The language SHALL support the recorded one- and two-dimensional vector declarations and reject a third dimension. Literal bounds SHALL be unsigned integers in nondecreasing order, including zero and positive non-one lower bounds. Signed, fractional, parenthesized, and arithmetic literal-bound forms rejected by the reference SHALL receive positioned syntax diagnostics. Bounds may instead name an earlier integer constant, including a negative or computed value. Other constant types, variables, and direct parameter names SHALL be rejected. Constant-based bounds resolve after constant initialization and before allocation, including per-call local layouts. Each allocated dimension SHALL retain its concrete lower and upper bounds, and indexing SHALL use those bounds rather than Go slice indices. Shared semantic facts SHALL remain unchanged across calls and interpreter instances.
 
 #### Scenario: Index a multidimensional vector
 - **WHEN** a vector has multiple resolved dimensions and every supplied index is within its declared dimension
 - **THEN** the selected element corresponds to the reference row and dimension ordering
 
+#### Scenario: Omit a second index
+- **WHEN** a two-dimensional vector is accessed with one index
+- **THEN** the second index is its declared lower bound, independent of prior explicit index values
+
+#### Scenario: Reject a third dimension
+- **WHEN** a vector declaration specifies three dimensions
+- **THEN** parsing returns a positioned syntax diagnostic and execution is not attempted
+
 #### Scenario: Reject an invalid dimension
 - **WHEN** a vector bound is unresolved, has an invalid type or order, or overflows during size calculation
-- **THEN** a positioned semantic diagnostic is returned and no backing storage is allocated
+- **THEN** a positioned diagnostic is returned during analysis or declaration initialization as appropriate, no backing storage is allocated, and output from prior completed operations remains visible
 
-### Requirement: Five-hundred-slot storage limit
-The implementation SHALL reproduce VisuAlg 3.0.7's 500-slot storage limit using the same oracle-recorded accounting unit, declaration scope, record treatment, vector multiplication, and boundary behavior. Slot totals SHALL be computed with overflow-safe arithmetic before allocation, and a program at the limit SHALL remain distinct from a program one slot beyond it.
+### Requirement: Reference-confirmed storage limits
+The implementation SHALL reproduce storage restrictions established by VisuAlg 3.0.7 recordings, including their accounting unit, declaration scope, record treatment, and vector multiplication. It SHALL NOT reject a program solely for exceeding the previously assumed 500-slot limit: recorded vectors with 500, 501, 5000, and 5001 elements are accepted. These observations do not establish the upper limit or accounting rules for every declaration context. Slot totals SHALL be computed with overflow-safe arithmetic before allocation; independent project resource guards SHALL be identified as such.
 
-#### Scenario: Allocate exactly the reference limit
-- **WHEN** declarations consume exactly 500 slots under the recorded accounting rules
-- **THEN** analysis and allocation succeed if and only if the reference accepts the equivalent program
+#### Scenario: Preserve recorded accepted sizes
+- **WHEN** a vector uses one of the recorded accepted sizes of 500, 501, 5000, or 5001 elements
+- **THEN** analysis and allocation succeed and the recorded final element can be assigned and read
 
-#### Scenario: Exceed the reference limit
-- **WHEN** declarations consume 501 slots or a dimension product overflows
-- **THEN** the implementation emits the positioned storage diagnostic and performs no oversized allocation
+#### Scenario: Reject unsafe or confirmed excessive storage
+- **WHEN** a dimension product overflows, exceeds a documented project resource guard, or violates a separately recorded reference restriction
+- **THEN** the implementation emits a positioned storage diagnostic before allocation and identifies the applicable restriction
 
 ### Requirement: Zero initialization
 Every variable, record field, and vector element SHALL begin with the oracle-confirmed zero value of its resolved type. Reading a valid, unassigned storage location SHALL return that value rather than an uninitialized-memory error.
@@ -100,7 +126,17 @@ Assignment SHALL require the exact reference-compatible source and destination t
 - **THEN** analysis emits a positioned type diagnostic and no partial assignment occurs
 
 ### Requirement: Aggregate copy and reference semantics
-Value assignment and value parameters SHALL copy records and vectors to the depth observed in VisuAlg 3.0.7, while `var` parameters and other oracle-confirmed aliases SHALL refer to the original storage. Nested aggregates SHALL follow the same rules without accidental sharing or accidental copying.
+Whole-vector assignment, including self-assignment and assignment to a scalar, SHALL be rejected as recorded. Element assignment remains supported. Record assignment and aggregate parameters SHALL be supported only in independently accepted forms, with copying, conversion, visibility, and copy-back matching their recordings. Nested aggregates SHALL follow the same confirmed rules without accidental sharing or copying; scalar parameter behavior SHALL NOT establish unrecorded aggregate alias behavior.
+
+Assignment between variables or vector elements of the same record definition SHALL copy field values without sharing mutable storage, including self-assignment. Existing field locations SHALL remain valid when the enclosing record is assigned, including during later argument evaluation. Distinct record definitions and record aliases SHALL remain incompatible for whole-record copying. Passing a scalar field through a compatible scalar `var` parameter SHALL preserve the recorded copy-back behavior; this SHALL NOT establish support for record-typed parameters.
+
+#### Scenario: Copy a record vector element
+- **WHEN** one record vector element is assigned to another element of the same record type and the source is subsequently modified
+- **THEN** the destination retains its copied scalar field values
+
+#### Scenario: Reject whole-vector assignment
+- **WHEN** an assignment uses a whole vector as its destination or assigns a whole vector to a scalar
+- **THEN** analysis returns a positioned type diagnostic and no partial assignment occurs
 
 #### Scenario: Mutate a value copy
 - **WHEN** a subprogram mutates a field or element received through a value parameter

@@ -5,31 +5,36 @@ import (
 	"strings"
 
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/stdlib"
 	"github.com/ncode/portugol-go/internal/token"
 )
 
 func (p *parser) parseExpr(minPrec int) ast.Expr {
+	if !p.enter() {
+		return &ast.LiteralExpr{Kind: ast.IntLiteral}
+	}
+	defer func() { p.depth-- }()
 	left := p.parseUnary()
 	for {
 		op := p.peek()
-		prec := precedence(op.Kind)
+		prec := op.Kind.BinaryPrecedence()
 		if prec < minPrec {
 			return left
 		}
 		p.advance()
-		nextMin := prec + 1
-		if op.Kind == token.POW {
-			nextMin = prec
+		right := p.parseExpr(prec + 1)
+		binary := &ast.BinaryExpr{Op: op, Left: left, Right: right}
+		left = binary
+		if binary.IsComparison() {
+			return left
 		}
-		right := p.parseExpr(nextMin)
-		left = &ast.BinaryExpr{Op: op, Left: left, Right: right}
 	}
 }
 
 func (p *parser) parseUnary() ast.Expr {
-	if p.peek().Kind == token.SUB || p.peek().Kind == token.NAO {
+	if p.peek().Kind == token.ADD || p.peek().Kind == token.SUB || p.peek().Kind == token.NAO {
 		op := p.advance()
-		return &ast.UnaryExpr{Op: op, X: p.parseExpr(7)}
+		return &ast.UnaryExpr{Op: op, X: p.parseExpr(op.Kind.UnaryPrecedence())}
 	}
 	return p.parsePrimary()
 }
@@ -39,18 +44,15 @@ func (p *parser) parsePrimary() ast.Expr {
 	switch tok.Kind {
 	case token.NUMBER:
 		p.advance()
-		if strings.ContainsAny(tok.Text, ".eE") {
-			v, err := strconv.ParseFloat(tok.Text, 64)
-			if err != nil {
-				p.error(tok, "invalid real literal")
-			}
-			return &ast.LiteralExpr{At: tok.Pos, Kind: ast.RealLiteral, Real: v}
+		if v, err := strconv.ParseInt(tok.Text, 10, 32); err == nil {
+			return &ast.LiteralExpr{At: tok.Pos, Kind: ast.IntLiteral, Int: v}
 		}
-		v, err := strconv.ParseInt(tok.Text, 10, 64)
+		// A bare exponent marker contributes zero and retains the real type.
+		v, err := strconv.ParseFloat(strings.TrimRight(tok.Text, "eE"), 64)
 		if err != nil {
-			p.error(tok, "invalid integer literal")
+			p.error(tok, "invalid real literal")
 		}
-		return &ast.LiteralExpr{At: tok.Pos, Kind: ast.IntLiteral, Int: v}
+		return &ast.LiteralExpr{At: tok.Pos, Kind: ast.RealLiteral, Real: v}
 	case token.STRING:
 		p.advance()
 		return &ast.LiteralExpr{At: tok.Pos, Kind: ast.StringLiteral, Str: tok.Text}
@@ -62,6 +64,18 @@ func (p *parser) parsePrimary() ast.Expr {
 			return p.parseCall()
 		}
 		return p.parseDesignator()
+	case token.RAND:
+		return &ast.IdentExpr{Name: p.advance()}
+	case token.ECO:
+		p.error(tok, "eco is a statement")
+		fallthrough
+	case token.LIMPATELA, token.MUDACOR, token.DOS, token.ALEATORIO, token.CRONOMETRO, token.TIMER, token.PAUSA, token.DEBUG:
+		if p.peekN(1).Kind == token.LPAREN {
+			p.parseCall() // The reference consumes this syntax without evaluating it.
+		} else {
+			p.advance()
+		}
+		return &ast.NoValueExpr{Keyword: tok}
 	case token.LPAREN:
 		p.advance()
 		expr := p.parseExpr(0)
@@ -75,7 +89,10 @@ func (p *parser) parsePrimary() ast.Expr {
 }
 
 func (p *parser) parseCall() *ast.CallExpr {
-	name := p.expect(token.IDENT, "expected call name")
+	name := p.advance()
+	if descriptor, ok := stdlib.Lookup(strings.ToLower(name.Text)); ok && descriptor.Signature().Form == stdlib.Bare {
+		p.error(name, descriptor.Name()+" does not accept parentheses")
+	}
 	call := &ast.CallExpr{Name: name}
 	p.expect(token.LPAREN, "expected '('")
 	if !p.match(token.RPAREN) {
@@ -88,25 +105,4 @@ func (p *parser) parseCall() *ast.CallExpr {
 		p.expect(token.RPAREN, "expected ')'")
 	}
 	return call
-}
-
-func precedence(kind token.Kind) int {
-	switch kind {
-	case token.OU:
-		return 1
-	case token.XOU:
-		return 2
-	case token.E:
-		return 3
-	case token.EQL, token.NEQ, token.LSS, token.GTR, token.LEQ, token.GEQ:
-		return 4
-	case token.ADD, token.SUB:
-		return 5
-	case token.MUL, token.QUO, token.IDIV, token.REM, token.MOD:
-		return 6
-	case token.POW:
-		return 8
-	default:
-		return -1
-	}
 }

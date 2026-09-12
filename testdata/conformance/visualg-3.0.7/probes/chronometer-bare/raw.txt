@@ -1,0 +1,6 @@
+Início da execução
+
+Cronômetro iniciado.
+DONE
+
+Fim da execução.

@@ -1,0 +1,42 @@
+Digite o codigo do  1o registro:70
+Digite o nome do  1o registro:FERYH
+Digite o codigo do  2o registro:82
+Digite o nome do  2o registro:OEPCV
+Digite o codigo do  3o registro:16
+Digite o nome do  3o registro:HDNHP
+Digite o codigo do  4o registro:90
+Digite o nome do  4o registro:DDGWB
+Digite o codigo do  5o registro:73
+Digite o nome do  5o registro:EYEUQ
+Digite o codigo do  6o registro:54
+Digite o nome do  6o registro:RZBWD
+Digite o codigo do  7o registro:30
+Digite o nome do  7o registro:VHYUQ
+Digite o codigo do  8o registro:22
+Digite o nome do  8o registro:NUHOT
+Digite o codigo do  9o registro:2
+Digite o nome do  9o registro:LYEJM
+Digite o codigo do  10o registro:47
+Digite o nome do  10o registro:DDLES
+Item - Codigo Nome
+   1 -     90 DDGWB
+   2 -     47 DDLES
+   3 -     73 EYEUQ
+   4 -     70 FERYH
+   5 -     16 HDNHP
+   6 -      2 LYEJM
+   7 -     22 NUHOT
+   8 -     82 OEPCV
+   9 -     54 RZBWD
+  10 -     30 VHYUQ
+Item - Codigo Nome
+   1 -      2 LYEJM
+   2 -     16 HDNHP
+   3 -     22 NUHOT
+   4 -     30 VHYUQ
+   5 -     47 DDLES
+   6 -     54 RZBWD
+   7 -     70 FERYH
+   8 -     73 EYEUQ
+   9 -     82 OEPCV
+  10 -     90 DDGWB

@@ -1,0 +1,6 @@
+Início da execução
+ 1
+ 1
+AFTER
+
+Fim da execução.

@@ -1,0 +1,9 @@
+Início da execução
+
+Cronômetro iniciado.
+B
+
+Cronômetro terminado. Tempo decorrido: 1 segundo(s) e 532 ms.
+DONE
+
+Fim da execução.

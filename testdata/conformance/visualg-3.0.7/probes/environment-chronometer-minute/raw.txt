@@ -1,0 +1,15 @@
+Início da execução
+
+Cronômetro iniciado.
+STEP
+STEP
+STEP
+STEP
+STEP
+STEP
+STEP
+
+Cronômetro terminado. Tempo decorrido: 72 segundo(s) e 141 ms.
+DONE
+
+Fim da execução.

@@ -36,9 +36,23 @@ const (
 	COMMA
 	COLON
 	SEMI
+	DOT
 	DOTDOT
 
 	ALGORITMO
+	DOS
+	ARQUIVO
+	RAND
+	ALEATORIO
+	ECO
+	CRONOMETRO
+	TIMER
+	PAUSA
+	DEBUG
+	CONST
+	TIPO
+	REGISTRO
+	FIMREGISTRO
 	VAR
 	INICIO
 	FIMALGORITMO
@@ -73,6 +87,8 @@ const (
 	LEIA
 	ESCREVA
 	ESCREVAL
+	LIMPATELA
+	MUDACOR
 	VERDADEIRO
 	FALSO
 	E
@@ -80,6 +96,8 @@ const (
 	NAO
 	XOU
 	MOD
+	NEWLINE
+	SUFFIX // Opaque source following the program terminator.
 )
 
 // Token is one item in the source stream.
@@ -91,23 +109,41 @@ type Token struct {
 
 var keywords = map[string]Kind{
 	"algoritmo":       ALGORITMO,
+	"dos":             DOS,
+	"arquivo":         ARQUIVO,
+	"rand":            RAND,
+	"aleatorio":       ALEATORIO,
+	"eco":             ECO,
+	"cronometro":      CRONOMETRO,
+	"timer":           TIMER,
+	"pausa":           PAUSA,
+	"debug":           DEBUG,
+	"const":           CONST,
+	"tipo":            TIPO,
+	"registro":        REGISTRO,
+	"fimregistro":     FIMREGISTRO,
 	"var":             VAR,
 	"inicio":          INICIO,
 	"fimalgoritmo":    FIMALGORITMO,
 	"inteiro":         INTEIRO,
 	"real":            REAL,
 	"caractere":       CARACTERE,
+	"caracter":        CARACTERE,
 	"logico":          LOGICO,
 	"vetor":           VETOR,
 	"de":              DE,
 	"procedimento":    PROCEDIMENTO,
 	"fimprocedimento": FIMPROCEDIMENTO,
 	"funcao":          FUNCAO,
+	"função":          FUNCAO,
 	"fimfuncao":       FIMFUNCAO,
+	"fimfunção":       FIMFUNCAO,
 	"retorne":         RETORNE,
 	"se":              SE,
 	"entao":           ENTAO,
+	"então":           ENTAO,
 	"senao":           SENAO,
+	"senão":           SENAO,
 	"fimse":           FIMSE,
 	"escolha":         ESCOLHA,
 	"caso":            CASO,
@@ -115,9 +151,11 @@ var keywords = map[string]Kind{
 	"fimescolha":      FIMESCOLHA,
 	"enquanto":        ENQUANTO,
 	"faca":            FACA,
+	"faça":            FACA,
 	"fimenquanto":     FIMENQUANTO,
 	"repita":          REPITA,
 	"ate":             ATE,
+	"até":             ATE,
 	"para":            PARA,
 	"passo":           PASSO,
 	"fimpara":         FIMPARA,
@@ -125,13 +163,17 @@ var keywords = map[string]Kind{
 	"leia":            LEIA,
 	"escreva":         ESCREVA,
 	"escreval":        ESCREVAL,
+	"limpatela":       LIMPATELA,
+	"mudacor":         MUDACOR,
 	"verdadeiro":      VERDADEIRO,
 	"falso":           FALSO,
 	"e":               E,
 	"ou":              OU,
 	"nao":             NAO,
+	"não":             NAO,
 	"xou":             XOU,
 	"mod":             MOD,
+	"div":             IDIV,
 }
 
 var kindNames = map[Kind]string{
@@ -139,8 +181,9 @@ var kindNames = map[Kind]string{
 	ADD: "+", SUB: "-", MUL: "*", QUO: "/", IDIV: "\\", REM: "%", POW: "^",
 	ASSIGN: "<-", EQL: "=", NEQ: "<>", LSS: "<", GTR: ">", LEQ: "<=", GEQ: ">=",
 	LPAREN: "(", RPAREN: ")", LBRACK: "[", RBRACK: "]", COMMA: ",", COLON: ":",
-	SEMI: ";", DOTDOT: "..",
-	ALGORITMO: "algoritmo", VAR: "var", INICIO: "inicio", FIMALGORITMO: "fimalgoritmo",
+	SEMI: ";", DOT: ".", DOTDOT: "..",
+	REGISTRO: "registro", FIMREGISTRO: "fimregistro",
+	ALGORITMO: "algoritmo", CONST: "const", TIPO: "tipo", VAR: "var", INICIO: "inicio", FIMALGORITMO: "fimalgoritmo",
 	INTEIRO: "inteiro", REAL: "real", CARACTERE: "caractere", LOGICO: "logico",
 	VETOR: "vetor", DE: "de", PROCEDIMENTO: "procedimento", FIMPROCEDIMENTO: "fimprocedimento",
 	FUNCAO: "funcao", FIMFUNCAO: "fimfuncao", RETORNE: "retorne", SE: "se",
@@ -149,7 +192,14 @@ var kindNames = map[Kind]string{
 	FIMENQUANTO: "fimenquanto", REPITA: "repita", ATE: "ate", PARA: "para", PASSO: "passo",
 	FIMPARA: "fimpara", INTERROMPA: "interrompa", LEIA: "leia", ESCREVA: "escreva",
 	ESCREVAL: "escreval", VERDADEIRO: "verdadeiro", FALSO: "falso", E: "e", OU: "ou",
+	LIMPATELA: "limpatela", MUDACOR: "mudacor", DOS: "dos", RAND: "rand",
+	ARQUIVO:   "arquivo",
+	ALEATORIO: "aleatorio",
+	ECO:       "eco", CRONOMETRO: "cronometro",
+	TIMER: "timer", PAUSA: "pausa", DEBUG: "debug",
 	NAO: "nao", XOU: "xou", MOD: "mod",
+	NEWLINE: "NEWLINE",
+	SUFFIX:  "SUFFIX",
 }
 
 // Lookup returns the keyword kind for ident, or IDENT.
@@ -166,4 +216,32 @@ func (k Kind) String() string {
 		return name
 	}
 	return "token(" + strconv.Itoa(int(k)) + ")"
+}
+
+// BinaryPrecedence returns the binding strength of a binary operator, or -1.
+func (k Kind) BinaryPrecedence() int {
+	switch k {
+	case EQL, NEQ, LSS, GTR, LEQ, GEQ:
+		return 4
+	case ADD, SUB, OU, XOU:
+		return 5
+	case MUL, QUO, IDIV, REM, MOD, E:
+		return 6
+	case POW:
+		return 8
+	default:
+		return -1
+	}
+}
+
+// UnaryPrecedence returns the binding strength of a unary operator, or -1.
+func (k Kind) UnaryPrecedence() int {
+	switch k {
+	case NAO:
+		return 7
+	case ADD, SUB:
+		return 9 // Unary signs bind more tightly than power.
+	default:
+		return -1
+	}
 }

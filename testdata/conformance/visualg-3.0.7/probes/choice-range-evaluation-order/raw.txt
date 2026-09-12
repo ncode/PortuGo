@@ -1,0 +1,8 @@
+Início da execução
+SELECTOR
+LOWER
+UPPER
+MATCH
+DONE
+
+Fim da execução.

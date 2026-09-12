@@ -1,0 +1,12 @@
+algoritmo "read"
+var n: inteiro
+inicio
+leia(n)
+escreval(n)
+fimalgoritmo
+42
+algoritmo "next"
+inicio
+escreval(7)
+fimalgoritmo
+:sair

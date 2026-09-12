@@ -18,7 +18,16 @@ fimalgoritmo`)
 	}
 }
 
-func TestFunctionMustReturn(t *testing.T) {
+func TestLiteralVectorAllocationGuard(t *testing.T) {
+	for _, typ := range []string{"vetor[1..1048577] de inteiro", "vetor[1..1] de vetor[1..1048577] de inteiro"} {
+		ds := checkSource(t, "algoritmo \"allocation\"\nvar\nv: "+typ+"\ninicio\nfimalgoritmo")
+		if len(ds) != 1 || ds[0].Code != diag.EResource {
+			t.Fatalf("oversized literal layout: %v", ds)
+		}
+	}
+}
+
+func TestFunctionMayFallThrough(t *testing.T) {
 	diags := checkSource(t, `algoritmo "x"
 
 funcao f(n: inteiro): inteiro
@@ -31,8 +40,8 @@ fimfuncao
 inicio
   escreval(f(1))
 fimalgoritmo`)
-	if len(diags) == 0 || diags[0].Code != diag.EReturn {
-		t.Fatalf("got diagnostics %#v, want %s", diags, diag.EReturn)
+	if len(diags) != 0 {
+		t.Fatalf("fallthrough function rejected: %v", diags)
 	}
 }
 
@@ -46,5 +55,33 @@ func checkSource(t *testing.T, src string) []diag.Diagnostic {
 	if len(parseDiags) > 0 {
 		t.Fatalf("parser diagnostics: %v", parseDiags)
 	}
-	return Check(prog)
+	_, diags := Analyze(prog)
+	return diags
+}
+
+func TestExpArguments(t *testing.T) {
+	for _, tt := range []struct {
+		expr string
+		code diag.Code
+	}{
+		{"exp(2, 3)", ""},
+		{"exp(2.0, 0.5)", ""},
+		{"exp()", ""},
+		{"exp(2)", diag.EParse},
+		{"exp(2, 3, 4)", diag.EParse},
+		{`exp("2", 3)`, ""},
+		{"exp(2, verdadeiro)", ""},
+		{"exp(arccos(2))", ""},
+	} {
+		t.Run(tt.expr, func(t *testing.T) {
+			diags := checkSource(t, "algoritmo \"exp\"\ninicio\nescreval("+tt.expr+")\nfimalgoritmo")
+			if tt.code == "" {
+				if len(diags) != 0 {
+					t.Fatalf("unexpected diagnostics: %v", diags)
+				}
+			} else if len(diags) != 1 || diags[0].Code != tt.code {
+				t.Fatalf("got diagnostics %v, want one %s", diags, tt.code)
+			}
+		})
+	}
 }

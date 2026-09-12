@@ -1,0 +1,4 @@
+Início da execução
+[0][7][-7][2147483647]
+
+Fim da execução.

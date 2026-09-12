@@ -48,6 +48,14 @@ The lexer SHALL recognize the complete VisuAlg 3.0.7 keyword and command vocabul
 - **WHEN** a word absent from the reference keyword vocabulary is used as an identifier
 - **THEN** it remains an identifier even if the current implementation previously treated it as reserved
 
+#### Scenario: Recognize the division word alias
+- **WHEN** a program uses `div` in any letter case
+- **THEN** it uses the `\` operator's precedence, operand types, and left-to-right evaluation, formats as `\`, and is rejected as a variable name with `P001` on its declaration line
+
+#### Scenario: Recognize the accented function terminator
+- **WHEN** a function ends with `fimfunção` in any letter case
+- **THEN** the function closes normally and formats with `fimfuncao`, while using the reserved word as a variable name receives `P001` on its declaration line
+
 ### Requirement: Comments and literals
 The lexer SHALL accept only the reference-confirmed comment forms and string, integer, and real literal forms. It SHALL preserve literal source text and decoded value separately, apply the reference rules for escapes, delimiters, decimal syntax, and line termination, and emit positioned diagnostics for malformed or unterminated constructs.
 
@@ -59,6 +67,23 @@ The lexer SHALL accept only the reference-confirmed comment forms and string, in
 - **WHEN** numeric source could be interpreted as a real literal, an integer followed by punctuation, or a range boundary
 - **THEN** tokenization matches the reduced oracle probe for that exact form
 
+#### Scenario: Preserve an empty exponent as real
+- **WHEN** a source literal ends with `e` or `E` without exponent digits, including `1.e`
+- **THEN** the exponent contributes zero and the literal retains real type through canonical formatting
+
+#### Scenario: End an exponent before a sign
+- **WHEN** source contains `1e-2`, `1e+2`, or `2e-3^2`
+- **THEN** the sign is an arithmetic operator after the real literal, yielding `-1`, `3`, and `-7` with the ordinary precedence rules
+
+#### Scenario: Classify a large whole-number literal
+- **WHEN** decimal digit text exceeds `2147483647` but is representable as a finite real
+- **THEN** its expression has real type, including under a unary minus
+- **AND** smaller digit-only literals have integer type, including forms with leading zeros
+
+#### Scenario: Preserve an integral real literal through formatting
+- **WHEN** a real literal with an integral value is formatted and parsed again
+- **THEN** its real type and value are preserved
+
 ### Requirement: Complete program grammar
 The parser SHALL recognize the oracle-confirmed VisuAlg 3.0.7 program header, declaration sections, subprograms, executable body, statements, and `fimalgoritmo` termination rules. Grammar variants not accepted by the reference SHALL produce diagnostics even if the earlier implementation accepted them.
 
@@ -66,9 +91,21 @@ The parser SHALL recognize the oracle-confirmed VisuAlg 3.0.7 program header, de
 - **WHEN** a program uses only reference-confirmed header, declaration, body, and termination forms
 - **THEN** parsing returns a positioned syntax tree and no syntax diagnostics
 
+#### Scenario: End a declaration line with a semicolon
+- **WHEN** a `var` line or a scalar/vector declaration has one trailing semicolon followed only by whitespace or a comment
+- **THEN** it is accepted and formats without the semicolon, while repeated semicolons, another declaration after it, or a semicolon on its own line receive `P001` on that line
+
 #### Scenario: Detect text after program termination
 - **WHEN** non-comment, non-whitespace source appears after `fimalgoritmo`
 - **THEN** the parser accepts or diagnoses it exactly as established by the post-termination oracle probes
+
+#### Scenario: Ignore malformed text on later lines
+- **WHEN** an otherwise valid program has an unclosed string, invalid symbols or an unfinished block on physical lines after its terminator
+- **THEN** those lines do not affect execution and formatting retains their decoded text without interpreting it
+
+#### Scenario: Validate the terminator's own line
+- **WHEN** an unmatched quote follows `fimalgoritmo` on the same physical line
+- **THEN** the reference reports a syntax error on that line after preceding program output; this outcome remains distinct from ignored later lines
 
 ### Requirement: Ordered and positioned syntax
 The syntax tree SHALL preserve source order for declarations, subprograms, statements, case labels, arguments, dimensions, and record fields. Every node and designator SHALL carry a source position sufficient to report an error at the construct responsible for it.

@@ -1,0 +1,6 @@
+Início da execução
+
+fallback
+VALUES::fallback
+
+Fim da execução.

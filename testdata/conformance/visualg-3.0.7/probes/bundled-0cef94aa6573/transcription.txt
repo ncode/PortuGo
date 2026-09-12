@@ -1,0 +1,4 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 9
+Message: O tipo de dados 'LITERAL' não foi reconhecido.
+Column: not established.

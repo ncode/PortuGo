@@ -1,0 +1,5 @@
+Início da execução
+EFFECT
+ VERDADEIRODONE
+
+Fim da execução.

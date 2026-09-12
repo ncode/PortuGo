@@ -1,0 +1,4 @@
+BEGIN:output-rounding-valid
+R=[3][-3][1.3][2.3]
+S=[a][abc][abc  ]
+END:output-rounding-valid

@@ -1,0 +1,17 @@
+Início da execução
+Um dia um caracol estava andando e caio em um poço
+Cálcular o tempo que ele levaria pra sair desse poço
+========================================================
+ 
+Subiu 2 mts p/dia e baixou  0.5 mts a noite, ficando  1.5 mts
+Subiu 2 mts p/dia e baixou  0.5 mts a noite, ficando  3 mts
+Subiu 2 mts p/dia e baixou  0.5 mts a noite, ficando  4.5 mts
+Subiu 2 mts p/dia e baixou  0.5 mts a noite, ficando  6 mts
+Subiu 2 mts p/dia e baixou  0.5 mts a noite, ficando  7.5 mts
+Subiu 2 mts p/dia e baixou  0.5 mts a noite, ficando  9 mts
+Subiu 2 mts p/dia e baixou  0.5 mts a noite, ficando  10.5 mts
+ 
+O Caracol levou  7 dias
+ 
+
+Fim da execução.

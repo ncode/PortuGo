@@ -1,0 +1,46 @@
+
+Digite o  1 Nome do Aluno: STUDENT 1
+Digite a  1 1ª nota: 8.0000000000
+Digite a  1 2ª nota: 7.0000000000
+Digite a  1 3ª nota: 6.0000000000
+Digite a  1 4ª nota: 9.0000000000
+
+ 7.5
+
+O aprovou 
+Digite o  2 Nome do Aluno: STUDENT 2
+Digite a  2 1ª nota: 8.0000000000
+Digite a  2 2ª nota: 7.0000000000
+Digite a  2 3ª nota: 6.0000000000
+Digite a  2 4ª nota: 9.0000000000
+
+ 7.5
+
+O aprovou 
+Digite o  3 Nome do Aluno: STUDENT 3
+Digite a  3 1ª nota: 8.0000000000
+Digite a  3 2ª nota: 7.0000000000
+Digite a  3 3ª nota: 6.0000000000
+Digite a  3 4ª nota: 9.0000000000
+
+ 7.5
+
+O aprovou 
+Digite o  4 Nome do Aluno: STUDENT 4
+Digite a  4 1ª nota: 8.0000000000
+Digite a  4 2ª nota: 7.0000000000
+Digite a  4 3ª nota: 6.0000000000
+Digite a  4 4ª nota: 9.0000000000
+
+ 7.5
+
+O aprovou 
+Digite o  5 Nome do Aluno: STUDENT 5
+Digite a  5 1ª nota: 8.0000000000
+Digite a  5 2ª nota: 7.0000000000
+Digite a  5 3ª nota: 6.0000000000
+Digite a  5 4ª nota: 9.0000000000
+
+ 7.5
+
+O aprovou 

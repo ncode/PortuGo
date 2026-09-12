@@ -1,0 +1,8 @@
+*** Menu ***
+1 - Inclusão
+2 - Consulta
+3 - Ordenar por Nome
+4 - Ordenar por Código
+5 - Finaliza
+  
+Digite a opção:5

@@ -1,0 +1,6 @@
+
+Cronômetro iniciado.
+B
+
+Cronômetro terminado. Tempo decorrido: 4 segundo(s) e 78 ms.
+DONE

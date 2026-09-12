@@ -1,0 +1,7 @@
+
+Cronômetro iniciado.
+
+Cronômetro terminado. Tempo decorrido: 16 ms.
+
+O cronômetro não foi iniciado.
+DONE

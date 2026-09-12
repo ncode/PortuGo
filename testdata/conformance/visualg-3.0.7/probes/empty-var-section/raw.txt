@@ -1,0 +1,4 @@
+Início da execução
+PASS
+
+Fim da execução.

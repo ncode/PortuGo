@@ -1,0 +1,3 @@
+BEGIN:named-type
+ 3
+END:named-type

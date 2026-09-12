@@ -1,0 +1,4 @@
+Manual transcription of the reference GUI diagnostic.
+Line: 14
+Message: Erro na atribuição de valores à variável .
+Column: not established.

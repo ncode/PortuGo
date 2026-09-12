@@ -1,0 +1,10 @@
+Início da execução
+BEGIN:for-edges
+DOWN=[ -1]
+STEP=[ 6]
+EMPTY=[ 3]
+BODY=[ 100]
+BREAK=[ 3]
+END:for-edges
+
+Fim da execução.

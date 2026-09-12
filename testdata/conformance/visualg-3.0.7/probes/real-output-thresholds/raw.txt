@@ -1,0 +1,4 @@
+Início da execução
+ 0.0001| 1E-5| 100000000000000| 1E15
+
+Fim da execução.

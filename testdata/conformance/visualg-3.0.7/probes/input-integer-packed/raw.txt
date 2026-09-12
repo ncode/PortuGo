@@ -1,0 +1,6 @@
+Início da execução
+3
+9
+OUT:[ 3, 9]
+
+Fim da execução.

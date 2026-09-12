@@ -1,0 +1,2 @@
+Digite um número:5
+O fatorial de  5 é  120

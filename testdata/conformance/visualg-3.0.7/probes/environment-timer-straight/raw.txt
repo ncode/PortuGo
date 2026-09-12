@@ -1,0 +1,6 @@
+Início da execução
+A
+B
+DONE
+
+Fim da execução.
