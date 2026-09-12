@@ -23,6 +23,10 @@
   both recorded continuation cases and retain positioned guards for other
   file failures.
 
+- Record text-call controls and early completion after no-value conversion;
+  verify explicit-zero and earlier-call controls in original and formatted
+  programs. Keep persistent execution-state and diagnostic-phase gaps pending.
+
 - Preserve bare return and call syntax during formatting, including bare `pi`
   statements, and use canonical operator spellings. Normalize repeated carriage
   returns before LF in ignored suffixes in one pass, retaining standalone

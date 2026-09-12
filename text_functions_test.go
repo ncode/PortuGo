@@ -33,6 +33,7 @@ func TestRecordedTextFunctions(t *testing.T) {
 		"text-context-copy-count-int32", "text-context-copy-count-wrap", "text-context-copy-second-no-value",
 		"text-context-copy-start-int32", "text-context-copy-start-wrap", "text-context-copy-third-no-value",
 		"text-order-arguments", "text-order-ascii-empty",
+		"text-state-code-zero-call", "text-state-copy-absent-earlier-call",
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)

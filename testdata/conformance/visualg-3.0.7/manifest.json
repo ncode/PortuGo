@@ -511,7 +511,11 @@
         "text-order-arguments",
         "text-order-bad-bound",
         "text-order-extra",
-        "text-order-no-value-code"
+        "text-order-no-value-code",
+        "text-state-code-zero-call",
+        "text-state-copy-absent-earlier-call",
+        "text-state-code-absent-stored",
+        "text-state-code-absent-tail-error"
       ]
     },
     {
@@ -1980,7 +1984,8 @@
         "string-size-constant-value",
         "string-size-constant-joined",
         "string-size-input-255",
-        "string-size-input-256"
+        "string-size-input-256",
+        "text-state-copy-absent-earlier-call"
       ]
     },
     {
@@ -2010,7 +2015,10 @@
         "code-detail-character-table",
         "code-context-ascii-no-value",
         "code-context-character-no-value",
-        "code-context-ascii-zero-character"
+        "code-context-ascii-zero-character",
+        "text-state-code-zero-call",
+        "text-state-code-absent-stored",
+        "text-state-code-absent-tail-error"
       ]
     },
     {
@@ -80740,6 +80748,176 @@
           "cmd/portugol/format_edges_test.go#TestFormatterEdgeCases",
           "cmd/portugol/format_edges_test.go#TestFormatterOperatorSpellings"
         ]
+      }
+    },
+    {
+      "id": "text-state-code-zero-call",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.4",
+        "12.8"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-zero-call/source.alg",
+        "sha256": "91fe76c8833464779cc1c7ff5f1637096f5bac86ff5b869b3634432b1a956fba"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T14:50:14.4492611Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-zero-call/raw.txt",
+          "sha256": "bd0c8df842aa1d1a7fe7d0bbd8e03402bc81fc16dbdfc29120883f0a2f65b03b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-zero-call/stdout.txt",
+          "sha256": "0e2015cc93f74ed8361da8e0db6fe0e4b7ee8ecd5e592059f0805cc2a4faa247"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-zero-call/stdout.txt",
+            "sha256": "0e2015cc93f74ed8361da8e0db6fe0e4b7ee8ecd5e592059f0805cc2a4faa247"
+          }
+        },
+        "tests": [
+          "text_functions_test.go#TestRecordedTextFunctions"
+        ]
+      }
+    },
+    {
+      "id": "text-state-copy-absent-earlier-call",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.3",
+        "12.8"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/text-state-copy-absent-earlier-call/source.alg",
+        "sha256": "ad023a36c6305c0f13c78e379319a6924235e7c73f7a63134ace4d9260a392e3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T14:50:33.0687784Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/text-state-copy-absent-earlier-call/raw.txt",
+          "sha256": "3e06a0f2baeee395409ee00416b532a5e8ad733254d8ecc5c379fe2fb9839b4c"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/text-state-copy-absent-earlier-call/stdout.txt",
+          "sha256": "fbe58741e34af34f1b59b532c8b2cf32f90eb3e1788312dd60bdbd94d72d17fb"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/text-state-copy-absent-earlier-call/stdout.txt",
+            "sha256": "fbe58741e34af34f1b59b532c8b2cf32f90eb3e1788312dd60bdbd94d72d17fb"
+          }
+        },
+        "tests": [
+          "text_functions_test.go#TestRecordedTextFunctions"
+        ]
+      }
+    },
+    {
+      "id": "text-state-code-absent-stored",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.4",
+        "12.8"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-stored/source.alg",
+        "sha256": "8b35913d839f1927ccd3e2f3ff80c25aed5739fb02bb67f8d032a602c6da1f9e"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T14:49:56.0834294Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-stored/raw.txt",
+          "sha256": "eac7495eaca2f41ec8e942cb939df9ca2c77b1a61330565d4e2ac33c5e33cc02"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-stored/stdout.txt",
+          "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-stored/stdout.txt",
+            "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
+          }
+        }
+      }
+    },
+    {
+      "id": "text-state-code-absent-tail-error",
+      "ownerGroup": 12,
+      "tasks": [
+        "12.4",
+        "12.8"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-tail-error/source.alg",
+        "sha256": "33569e71b3d6310dc12748c33b8bdf5a9989531348e957aebd3cf0a32e1e17a7"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T14:50:05.2865714Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-tail-error/raw.txt",
+          "sha256": "eac7495eaca2f41ec8e942cb939df9ca2c77b1a61330565d4e2ac33c5e33cc02"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-tail-error/stdout.txt",
+          "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "pending",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-tail-error/stdout.txt",
+            "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
+          }
+        }
       }
     }
   ]

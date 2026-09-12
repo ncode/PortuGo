@@ -913,6 +913,13 @@ Codes 0–31, 127, and 255 produce a space; `carac()` also produces a space.
 Out-of-domain integers produce no value. A no-value argument is treated as zero.
 Real, character, and logical arguments receive `E001`; extra arguments receive
 `P001`.
+Recorded no-value conversions followed by user-function calls expose additional
+reference execution state that is not implemented. Some programs finish before
+later output and a deliberate domain error, even when `carac(abs())` was stored
+in an earlier assignment. An explicit zero and a call before an absent `copia`
+bound are verified controls. These observations do not establish a general
+state-reset rule; see [text argument-order gaps](text-argument-order-gaps.md).
+
 The two code functions are not inverses: `carac(128)` is `"Ç"`, whose `asc`
 value is 199. No-value results in output use the discard-and-continue behavior
 described below. Ordinary Unicode casing outside the reference repertoire
