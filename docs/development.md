@@ -63,5 +63,9 @@ Groups 3–16 will additionally require incremental
 replay of completed groups; final acceptance rejects every pending behavior.
 Missing reference evidence is never proof of compatibility.
 
+Replayed diagnostics must carry a positive source line and column. An omitted
+expected column permits any positive column; it never permits an unpositioned
+error to count as a matching rejection.
+
 See the [baseline quality report](quality-baseline.md) for measured coverage,
 checks actually executed, and outstanding conformance work.

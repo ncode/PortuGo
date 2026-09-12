@@ -26,6 +26,9 @@ func TestReplayChild(t *testing.T) {
 	case "reject":
 		fmt.Fprintln(os.Stderr, "source.alg:4:2: E004: invalid call")
 		os.Exit(1)
+	case "unpositioned":
+		fmt.Fprintln(os.Stderr, "source.alg:4:0: E004: invalid call")
+		os.Exit(1)
 	case "hang":
 		time.Sleep(time.Hour)
 	case "flood":
@@ -54,7 +57,7 @@ func TestReplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, tt := range []struct{ source, want string }{
-		{"pass", ""}, {"mismatch", "stdout mismatch"}, {"reject", ""}, {"hang", "deadline"}, {"flood", "output limit"}, {"file", ""}, {"unexpected-file", "expected absent file"},
+		{"pass", ""}, {"mismatch", "stdout mismatch"}, {"reject", ""}, {"unpositioned", "unpositioned diagnostic"}, {"hang", "deadline"}, {"flood", "output limit"}, {"file", ""}, {"unexpected-file", "expected absent file"},
 	} {
 		t.Run(tt.source, func(t *testing.T) {
 			t.Parallel()
@@ -65,10 +68,13 @@ func TestReplay(t *testing.T) {
 			if tt.source == "hang" {
 				p.TimeoutMS = 100
 			}
-			if tt.source == "reject" {
+			if tt.source == "reject" || tt.source == "unpositioned" {
 				p.Implementation.Expected.Stdout = writeArtifact(t, root, "empty.txt", "")
 				p.Implementation.Expected.ExitCode = 1
 				p.Implementation.Expected.Diagnostics = []diagnostic{{Code: "E004", Line: 4, Column: 2}}
+				if tt.source == "unpositioned" {
+					p.Implementation.Expected.Diagnostics[0].Column = 0
+				}
 			}
 			if tt.source == "file" {
 				a := writeArtifact(t, root, "fixture.dat", "\xe9\r\n ")
@@ -134,6 +140,10 @@ func TestDiagnosticMapping(t *testing.T) {
 		{"unknown trailer", "source.alg:2:1: E001: type mismatch\nother failure\n", []diagnostic{{Code: "E001", Line: 2}}, false},
 		{"whitespace stderr", "\n", nil, false},
 		{"wrong line", "source.alg:3:1: E001: type mismatch\n", []diagnostic{{Code: "E001", Line: 2}}, false},
+		{"runtime", "source.alg:4:2: R001: invalid operation\n", []diagnostic{{Code: "R001", Line: 4}}, true},
+		{"missing position", "R001: invalid operation\n", []diagnostic{{Code: "R001", Line: 4}}, false},
+		{"zero line", "source.alg:0:2: R001: invalid operation\n", []diagnostic{{Code: "R001"}}, false},
+		{"zero column", "source.alg:4:0: R001: invalid operation\n", []diagnostic{{Code: "R001", Line: 4}}, false},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()

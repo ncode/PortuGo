@@ -10,6 +10,9 @@
   at EOF. Expand frontend fuzz and subprocess checks for encoded/truncated input,
   retained token text, formatting idempotence and controlled size/depth rejection.
 
+- Reject replayed diagnostics with a zero line or column during conformance
+  validation, including recordings that intentionally omit an exact column.
+
 - Preserve bare return and call syntax during formatting, including bare `pi`
   statements, and use canonical operator spellings. Normalize repeated carriage
   returns before LF in ignored suffixes in one pass, retaining standalone
