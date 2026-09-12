@@ -80656,10 +80656,18 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "tests": [
           "frontend_reference_test.go#TestRecordedLineEndings",
-          "internal/parser/recovery_test.go#TestRecoveryKeepsEOFPosition"
+          "internal/parser/recovery_test.go#TestRecoveryKeepsEOFPosition",
+          "internal/source/positions_test.go#TestOriginalPos",
+          "internal/source/positions_test.go#TestOriginalLinePositions",
+          "internal/lexer/source_test.go#TestScanFileOriginalPositions",
+          "cmd/portugol/source_positions_test.go#TestOriginalByteDiagnostics",
+          "internal/parser/comments_test.go#TestCommentSourceSpans",
+          "internal/parser/comments_test.go#TestCP1252CommentsRoundTrip",
+          "internal/lexer/lexer_test.go#TestCommentLinePositions",
+          "internal/lexer/lexer_test.go#TestRepeatedCRNewlineSpans"
         ]
       }
     },
@@ -80679,10 +80687,15 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "tests": [
           "internal/parser/limits_test.go#TestFormatDepthRoundTrip",
-          "internal/parser/suffix_test.go#TestIgnoredSuffixRoundTrip"
+          "internal/parser/suffix_test.go#TestIgnoredSuffixRoundTrip",
+          "internal/parser/comments_test.go#TestCommentAnchorsRoundTrip",
+          "internal/parser/comments_test.go#TestCP1252CommentsRoundTrip",
+          "internal/parser/format_forms_test.go#TestFormatterASTForms",
+          "cmd/portugol/format_edges_test.go#TestFormatterEdgeCases",
+          "cmd/portugol/format_edges_test.go#TestFormatterOperatorSpellings"
         ]
       }
     },
@@ -80697,14 +80710,23 @@
       "evidence": {
         "state": "not-applicable",
         "review": {
-          "reason": "The project formatter standard-output, check and in-place modes have no corresponding reference CLI; incomplete mode and comment behavior remains pending.",
+          "reason": "The project formatter standard-output, check and in-place modes have no corresponding reference CLI; project tests verify their byte comparisons, replacement behavior, comment preservation and exit statuses.",
           "link": "docs/conformance-project-evidence.md#Syntax and formatter contracts"
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "tests": [
-          "cmd/portugol/dispatch_test.go#TestCommandContracts"
+          "cmd/portugol/dispatch_test.go#TestCommandContracts",
+          "cmd/portugol/format_test.go#TestFormatterModes",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles",
+          "cmd/portugol/format_test.go#TestFormatterPreservesResourceLimitedFiles",
+          "cmd/portugol/format_test.go#TestFormatterFlagUsage",
+          "cmd/portugol/format_test.go#TestFormatterWriteSymlink",
+          "internal/parser/format_forms_test.go#TestFormatterASTForms",
+          "internal/parser/comments_test.go#TestCommentAnchorsRoundTrip",
+          "cmd/portugol/format_edges_test.go#TestFormatterEdgeCases",
+          "cmd/portugol/format_edges_test.go#TestFormatterOperatorSpellings"
         ]
       }
     }

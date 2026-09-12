@@ -97,8 +97,9 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Literal backslashes and backslash-quote rejection now match six recorded
   probes. Formatter round trips preserve these strings and program names.
   Twenty-nine comment cases now match recorded physical-line prefixes, quoted
-  delimiters, and `//` truncation inside strings. Comment retention, incomplete
-  expression behavior, and the remaining literal boundaries are still pending.
+  delimiters, and `//` truncation inside strings. Comment retention is covered
+  by 4.7 and 4.10; incomplete expression behavior and the remaining literal
+  boundaries are still pending.
 
   Digit-only literals now use integer type through `2147483647` and real type
   above it; real literal types survive formatter round trips. Default real
@@ -135,12 +136,15 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   truncated-call fixture pins all subsequent diagnostics to the EOF line.
   Broader structural and execution-phase recovery differences remain pending.
 - [x] 4.9 Enforce source-size and syntax/AST-traversal limits from design decision 10 across source loading, parsing, analysis, and printing, reserving `E900`; cover flat expression chains and exact boundary/one-beyond cases before recursion or allocation.
-- [ ] 4.10 Extend canonical printing and round-trip tests to retain every comment exactly once with its anchor and suffix, comparing comment content/order as well as AST structure and idempotence.
+- [x] 4.10 Extend canonical printing and round-trip tests to retain every comment exactly once with its anchor and suffix, comparing comment content/order as well as AST structure and idempotence.
 
   The post-termination suffix now survives formatting, including same-line
   notes and CP1252 text. Interior comments now retain their anchors and distinct
-  contents across round trips. A repeated-carriage-return suffix edge case still
-  needs an idempotent normalization rule before this task is complete.
+  contents across round trips. Byte goldens cover empty sections, multiline
+  constructs and environment commands. Complete carriage-return runs before LF
+  normalize in one pass, including comments, fragments and opaque suffixes;
+  standalone carriage returns remain intact. Syntax and comment comparisons
+  verify the result independently of original-byte positions.
 - [ ] 4.11 Expand lexer/parser fuzz and subprocess adversarial cases with newline, encoding, comment, literal, deep-nesting, truncation, and oversized inputs; assert controlled limit diagnostics and fail on watchdog expiration.
 - [ ] 4.12 Update `docs/language.md`, grammar examples, and `CHANGELOG.md` with spellings, newline rules, retained comments/suffixes, source/depth limits, and breaking rejections.
 - [x] 4.13 Run focused source/lexer/parser/sema/printer tests and fuzz smoke tests, then the full build, lint, ordinary, race, incremental corpus, and strict OpenSpec suites.
@@ -489,10 +493,25 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [x] 16.5 Automatically analyze and run as soon as a real terminating `fimalgoritmo` completes the accumulated program, then reset only per-program state.
 - [x] 16.6 Recover to a clean primary prompt after decoding, syntax, semantic, runtime, resource-limit, or host diagnostics; reset each submitted program's budget without consuming the next program's buffered input.
 - [x] 16.7 Verify `leia`, `arquivo`, random-input mode, echo, and environment commands consume only their intended shared input and leave the next REPL program intact.
-- [ ] 16.8 Complete formatter coverage for every confirmed AST form from groups 4–15, retaining the group 4 comments/anchors and ignored suffixes across declarations, calls, environment commands, and any accepted ranges/records.
+- [x] 16.8 Complete formatter coverage for every confirmed AST form from groups 4–15, retaining the group 4 comments/anchors and ignored suffixes across declarations, calls, environment commands, and any accepted ranges/records.
+
+  The comprehensive syntax fixture covers every current declaration, statement
+  and expression form, including records/ranges and optional call/return forms.
+  Comment goldens include multiline environment operands and ignored suffixes;
+  focused parser and CLI tests verify syntax equivalence and idempotence.
 - [x] 16.9 Add formatter standard-output, check, in-place, idempotence, malformed-no-overwrite, and parse-print-parse subprocess tests.
-- [ ] 16.10 Update REPL/formatter documentation, `docs/language.md`, examples, and `CHANGELOG.md` with submission, blank-line, recovery, shared-input, and formatting behavior.
-- [ ] 16.11 Run focused REPL/parser/printer/CLI tests and then the full build, lint, ordinary, race, fuzz smoke, and strict OpenSpec suites.
+- [x] 16.10 Update REPL/formatter documentation, `docs/language.md`, examples, and `CHANGELOG.md` with submission, blank-line, recovery, shared-input, and formatting behavior.
+
+  The language reference documents submission/recovery, shared input and per-run
+  mode reset, formatter statuses and replacement behavior, original encodings,
+  comments and line endings. The comment-anchor example and changelog accompany
+  those contracts; project evidence links their focused regression tests.
+- [x] 16.11 Run focused REPL/parser/printer/CLI tests and then the full build, lint, ordinary, race, fuzz smoke, and strict OpenSpec suites.
+
+  The combined implementation passes focused tests, build, formatting, vet,
+  staticcheck, lint, ordinary and race tests, strict OpenSpec validation and
+  both 30-second fuzz checks. Incremental replay has no failures among the
+  verified recordings; the 100 pending reference cases remain explicit.
 - [x] 16.12 Mark every completed 16.x task immediately, commit the focused tooling changes, push the next stacked branch, and open its draft PR before group 17.
 
 ## 17. Implementation Acceptance, Documentation, and Release Handoff
@@ -501,11 +520,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 17.2 Complete bidirectional trace links for every OpenSpec requirement, `[VERIFICAR]`, original checklist item, audited defect, discovered official feature, implementation test, and bundled example with no stale IDs.
 
   AST positions, canonical printing and formatter modes now have explicit
-  project-specific evidence classifications, existing partial test links and
-  pending implementation states. Their reference non-applicability does not
-  waive comment/source mapping or formatter-mode work. The two externally
-  stopped examples have reviewed finite-completion exclusions, retaining their
-  unchanged sources and partial observations.
+  project-specific evidence classifications and verified implementation states
+  linked to original-byte mapping, comment anchors, syntax round trips and
+  formatter-mode regressions. Reference non-applicability remains limited to
+  these tooling contracts; language and host differences are still pending.
+  The two externally stopped examples have reviewed finite-completion
+  exclusions, retaining their unchanged sources and partial observations.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
   Forty-three original examples now match recorded output before and after

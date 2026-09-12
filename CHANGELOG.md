@@ -33,8 +33,10 @@
   three chronometer transcripts replayed under explicit zero-elapsed-time
   conditions. Preserve all original recordings.
 
-- Add explicit project-test trace mappings for AST positions, canonical printing
-  and formatter modes while retaining their unfinished implementation status.
+- Verify the project contracts for original-byte AST positions, retained comment
+  anchors, canonical printing and formatter modes with focused regression tests.
+  Keep their project evidence separate from remaining reference language and
+  host compatibility work.
 
 - Preserve opaque text after `fimalgoritmo` during formatting and ignore malformed
   source on later physical lines. Keep lexical validation on the terminator's

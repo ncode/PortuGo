@@ -100,10 +100,10 @@ they do not claim that reference execution discovers errors at the same phase.
 The tooling requirement links now include these existing tests and the release
 phase validator. This closes eight missing trace links without exempting any
 language behavior or example. The remaining counts are tracked in the
-manifest and [example progress](bundled-examples-progress.md). In-place
-formatting, comment preservation, source-byte mapping, and the remaining
-language and host behavior continue to require their own implementation and
-evidence. A linked requirement does not by itself mean its tasks are complete.
+manifest and [example progress](bundled-examples-progress.md). The syntax and
+formatter contracts below now have focused implementation coverage. Remaining
+language and host behavior still requires its own implementation and evidence.
+A linked requirement does not by itself mean its tasks are complete.
 
 ## Syntax and formatter contracts
 
@@ -111,21 +111,36 @@ The reference editor cannot expose this implementation's AST source spans,
 comment anchors, canonical printer, or formatter CLI modes. Their reference
 non-applicability is recorded separately from their implementation status:
 
-- `project.positioned-syntax` links `TestRecordedLineEndings` and
-  `TestRecoveryKeepsEOFPosition` as existing partial checks. Original-byte
-  mapping and positioned comment anchors remain pending under tasks 4.2 and 4.7.
-- `project.canonical-printing` links `TestFormatDepthRoundTrip` and
-  `TestIgnoredSuffixRoundTrip`. These verify bounded syntax round trips and
-  retained suffixes; interior comment preservation remains pending under 4.7
-  and 4.10.
-- `project.formatter-modes` links `TestCommandContracts` for the existing
-  standard-output mode and malformed-input/size-limit behavior. Check and
-  in-place modes and their subprocess contracts remain pending under 16.8–16.9.
+- `project.positioned-syntax` links `TestOriginalPos`,
+  `TestOriginalLinePositions`, `TestScanFileOriginalPositions`, and
+  `TestOriginalByteDiagnostics` for original-byte mapping through BOM removal
+  and Windows-1252 decoding, including CLI and REPL diagnostic positions.
+  `TestCommentSourceSpans` and `TestCP1252CommentsRoundTrip` check decoded
+  comment contents against original-byte spans. `TestCommentLinePositions`
+  and `TestRepeatedCRNewlineSpans` check physical newline boundaries,
+  including malformed-string recovery and repeated carriage returns.
+- `project.canonical-printing` links `TestCommentAnchorsRoundTrip` and
+  `TestCP1252CommentsRoundTrip` for exact comment contents, order and anchors,
+  including empty sections, multiline constructs and environment commands.
+  `TestFormatterASTForms` compares syntax across formatting, while
+  `TestFormatDepthRoundTrip`, `TestIgnoredSuffixRoundTrip`,
+  `TestFormatterEdgeCases`, and `TestFormatterOperatorSpellings` cover depth
+  boundaries, opaque suffixes, optional syntax, canonical spellings and
+  idempotent line-ending normalization.
+- `project.formatter-modes` links `TestFormatterModes` for standard-output,
+  check and in-place modes, original-byte comparisons, repeated formatting,
+  and original/formatted execution. `TestFormatterPreservesMalformedFiles`
+  and `TestFormatterPreservesResourceLimitedFiles` check rejection without
+  overwriting input. `TestFormatterFlagUsage` checks invalid invocations;
+  `TestFormatterWriteSymlink` checks replacement through a symlink on supported
+  test platforms. The syntax and comment tests above also cover these modes'
+  shared canonical printer.
 
-All three implementation states remain **pending**. These mappings complete
-their evidence classification, not their implementation. Recorded language
-probes remain required for accepted syntax and original/formatted execution;
-implementation acceptance must still reject these unfinished contracts.
+All three implementation states are **verified** by focused project tests;
+their reference evidence remains **not-applicable**. These tests establish
+project tooling contracts, not reference language behavior. Recorded probes
+remain required for accepted syntax and original/formatted execution, and
+pending language or host behavior still blocks implementation acceptance.
 
 ## Defensive vector storage
 
