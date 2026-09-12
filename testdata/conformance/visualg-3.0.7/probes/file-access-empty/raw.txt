@@ -1,0 +1,9 @@
+Início da execução
+BEFORE
+0
+FIRST= 0
+7
+SECOND= 7
+AFTER
+
+Fim da execução.

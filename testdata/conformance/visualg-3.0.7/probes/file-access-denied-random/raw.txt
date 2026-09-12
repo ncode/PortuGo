@@ -1,0 +1,7 @@
+Início da execução
+BEFORE
+7
+VALUE= 7
+AFTER
+
+Fim da execução.

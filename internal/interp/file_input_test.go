@@ -6,13 +6,43 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
+	"syscall"
 	"testing"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/token"
 )
+
+func TestUnavailableFileRead(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{"permission", os.ErrPermission, true},
+		{"native access denial", syscall.Errno(5), runtime.GOOS == "windows"},
+		{"sharing violation", syscall.Errno(32), runtime.GOOS == "windows"},
+		{"missing", os.ErrNotExist, false},
+		{"closed", os.ErrClosed, false},
+		{"other failure", errors.New("file failure"), false},
+		{"success", nil, false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := unavailableFileRead(tt.err); got != tt.want {
+				t.Fatalf("unavailable=%v, want %v", got, tt.want)
+			}
+			if tt.err != nil {
+				err := &os.PathError{Op: "open", Path: "input.txt", Err: tt.err}
+				if got := unavailableFileRead(err); got != tt.want {
+					t.Fatalf("wrapped unavailable=%v, want %v", got, tt.want)
+				}
+			}
+		})
+	}
+}
 
 func TestFileInputCleanupAndReset(t *testing.T) {
 	for _, fail := range []bool{false, true} {

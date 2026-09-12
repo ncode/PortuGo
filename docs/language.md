@@ -577,6 +577,13 @@ directive leaves file input inactive and execution continues without creating
 a file. Later reads use console or enabled random input, retaining ordinary
 input echo.
 
+An existing regular file that cannot be opened because read access is denied
+or Windows reports a sharing violation also leaves file input inactive. Its
+bytes remain unchanged; execution continues even without a `leia`, and later
+reads use console or enabled random input. These observations cover an explicit
+read-data denial and a read/write file handle with sharing disabled, not every
+path, lock or ACL configuration.
+
 For a created recording, console input is buffered as Windows-1252 with CRLF
 after each successfully converted value: integers use decimal text, reals ten
 fractional digits and logical values `Verdadeiro`/`Falso`. Character recording preserves the complete
@@ -586,19 +593,22 @@ the remaining bytes. Failure or a replacement directive discards the unfinished
 block, leaving the file and its already flushed prefix. A replaced short
 recording therefore remains an empty file. A subprogram's file selection
 persists after returning and is reapplied when that subprogram is called again.
-Random input leaves an existing file's next
-line untouched; generated values are recorded when creating a missing file.
+Generated numeric and character input leaves an existing file's next line
+untouched; generated values are recorded when creating a missing file. Logical
+destinations continue reading the selected file, including while random input
+is enabled, and use console input after that file is exhausted.
 Disabling random input resumes the selected file or console source.
 
-Files close on normal completion and failure. Path, open, read, write and close
-errors report `R008` at `arquivo`, without rendering underlying host paths.
+Files close on normal completion and failure. Other path, open, read, write and
+close errors report `R008` at `arquivo`, without rendering underlying host paths.
 Undefined Windows-1252 bytes and unrepresentable output characters also receive
 `R008` as project guards; those byte cases are not claimed as reference matches.
 Encoding is checked before buffering a line. Oversized input lines receive `R003`; exhausted
 headless console input still reports `R004` at the consuming destination.
 The missing-parent fallback is verified both without input and with a console
-read. Other file errors retain `R008`; unreadable-path reference compatibility
-remains unqualified. See [the file-input recordings](file-input-progress.md).
+read. Access-denial and sharing-lock recordings have platform filesystem
+regressions; generic CLI replay cannot recreate their access restrictions and
+keeps those six probes pending. See [the file-input recordings](file-input-progress.md).
 
 `eco on` and `eco off` request a typed echo setting from the host. Both recorded
 console and random-input transcripts retain input echo around `eco off`, so the

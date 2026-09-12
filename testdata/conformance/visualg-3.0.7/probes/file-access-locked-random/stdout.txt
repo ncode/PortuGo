@@ -1,0 +1,4 @@
+BEFORE
+7
+VALUE= 7
+AFTER

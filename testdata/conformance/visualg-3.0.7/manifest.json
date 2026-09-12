@@ -1421,7 +1421,16 @@
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: CP1252 file and stream behavior",
       "probes": [
         "file-detail-typed-existing",
-        "file-detail-typed-missing"
+        "file-detail-typed-missing",
+        "file-access-readable",
+        "file-access-empty",
+        "file-access-denied-no-read",
+        "file-access-denied-console",
+        "file-access-denied-random",
+        "file-access-locked-no-read",
+        "file-access-locked-console",
+        "file-access-locked-random",
+        "file-random-logical-source"
       ]
     },
     {
@@ -80917,6 +80926,705 @@
             "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-tail-error/stdout.txt",
             "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
           }
+        }
+      }
+    },
+    {
+      "id": "file-access-readable",
+      "ownerGroup": 14,
+      "tasks": [
+        "14.1",
+        "14.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-readable/source.alg",
+        "sha256": "8880e1e71c924152089bd5709bfa4cdc30e9323d2f6fa13cf8fbc03e5de597d3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-readable/input.txt",
+        "sha256": "d0d729a093ba914dd4924b65f6012cbf992aaa930f3fbfc0e5b3b6981836bb8f"
+      },
+      "files": [
+        {
+          "path": "input.txt",
+          "content": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-readable/fixture.dat",
+            "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+          }
+        }
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T15:01:55.8789542Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-readable/raw.txt",
+          "sha256": "c122764bbe3bcc8149f97a3e3d96a492e476968e9e99b956c3a263c82d5c123b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-readable/stdout.txt",
+          "sha256": "7d05e31f5973afbca6238de76950d03554dba49cf20c58912775f8b0ae10b3a5"
+        },
+        "normalizer": "panel-v1",
+        "generated": [
+          {
+            "path": "input.txt",
+            "content": {
+              "path": "testdata/conformance/visualg-3.0.7/probes/file-access-readable/fixture.dat",
+              "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+            }
+          }
+        ],
+        "review": {
+          "reason": "Initial and final file bytes match; final bytes were read after stopping the reference process.",
+          "link": "docs/file-input-progress.md"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "file_input_test.go#TestRecordedFileInput"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-readable/stdout.txt",
+            "sha256": "7d05e31f5973afbca6238de76950d03554dba49cf20c58912775f8b0ae10b3a5"
+          },
+          "generated": [
+            {
+              "path": "input.txt",
+              "content": {
+                "path": "testdata/conformance/visualg-3.0.7/probes/file-access-readable/fixture.dat",
+                "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "file-access-empty",
+      "ownerGroup": 14,
+      "tasks": [
+        "14.1",
+        "14.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-empty/source.alg",
+        "sha256": "8880e1e71c924152089bd5709bfa4cdc30e9323d2f6fa13cf8fbc03e5de597d3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-empty/input.txt",
+        "sha256": "d0d729a093ba914dd4924b65f6012cbf992aaa930f3fbfc0e5b3b6981836bb8f"
+      },
+      "files": [
+        {
+          "path": "input.txt",
+          "content": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-empty/fixture.dat",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T15:02:09.2636067Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-empty/raw.txt",
+          "sha256": "4a6ca2e255d98f710538033c9e63fc010c28388065e4bc695f590e18d524a560"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-empty/stdout.txt",
+          "sha256": "bd71ff9abcc2638bcd59f18220b2c7bd506d42b1be68abc7afba4eae9923d6ea"
+        },
+        "normalizer": "panel-v1",
+        "generated": [
+          {
+            "path": "input.txt",
+            "content": {
+              "path": "testdata/conformance/visualg-3.0.7/probes/file-access-empty/fixture.dat",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          }
+        ],
+        "review": {
+          "reason": "Initial and final file bytes match; final bytes were read after stopping the reference process.",
+          "link": "docs/file-input-progress.md"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "file_input_test.go#TestRecordedFileInput"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-empty/stdout.txt",
+            "sha256": "bd71ff9abcc2638bcd59f18220b2c7bd506d42b1be68abc7afba4eae9923d6ea"
+          },
+          "generated": [
+            {
+              "path": "input.txt",
+              "content": {
+                "path": "testdata/conformance/visualg-3.0.7/probes/file-access-empty/fixture.dat",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "file-access-denied-no-read",
+      "ownerGroup": 14,
+      "tasks": [
+        "14.1",
+        "14.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-no-read/source.alg",
+        "sha256": "b3e99f9e1b868ba3778b8ad29a9858d75369d5243166c999e1a3407a8e938da5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-no-read/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "files": [
+        {
+          "path": "input.txt",
+          "content": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-no-read/fixture.dat",
+            "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+          }
+        }
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T15:02:17.3953022Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-no-read/raw.txt",
+          "sha256": "b6c13b88e997c746bc810fff27ffd1ca655a2eaa30e09cf461d7e58ea4c40831"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-no-read/stdout.txt",
+          "sha256": "6e57ed1b8f897df909b0346071b0ce44b7bab55f96caca6c229adce205a875b8"
+        },
+        "normalizer": "panel-v1",
+        "generated": [
+          {
+            "path": "input.txt",
+            "content": {
+              "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-no-read/fixture.dat",
+              "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+            }
+          }
+        ],
+        "review": {
+          "reason": "Initial and final file bytes match; final bytes were read after stopping the reference process and restoring the fixture access restriction. The existing file had an explicit ReadData denial (native error 5).",
+          "link": "docs/file-input-progress.md"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "tests": [
+          "file_input_test.go#TestRecordedFileInput"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-no-read/stdout.txt",
+            "sha256": "6e57ed1b8f897df909b0346071b0ce44b7bab55f96caca6c229adce205a875b8"
+          },
+          "generated": [
+            {
+              "path": "input.txt",
+              "content": {
+                "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-no-read/fixture.dat",
+                "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+              }
+            }
+          ]
+        },
+        "review": {
+          "reason": "Operating-system restriction is exercised by platform filesystem regressions. Generic CLI replay creates readable byte fixtures and cannot reproduce this access constraint; replay qualification remains pending.",
+          "link": "docs/file-input-progress.md"
+        }
+      }
+    },
+    {
+      "id": "file-access-denied-console",
+      "ownerGroup": 14,
+      "tasks": [
+        "14.1",
+        "14.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-console/source.alg",
+        "sha256": "8880e1e71c924152089bd5709bfa4cdc30e9323d2f6fa13cf8fbc03e5de597d3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-console/input.txt",
+        "sha256": "d0d729a093ba914dd4924b65f6012cbf992aaa930f3fbfc0e5b3b6981836bb8f"
+      },
+      "files": [
+        {
+          "path": "input.txt",
+          "content": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-console/fixture.dat",
+            "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+          }
+        }
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T15:02:25.8187261Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-console/raw.txt",
+          "sha256": "7555a99b7b92cc38eacba018be84a57e0633a53d840fcd0d1e8e26d29b5ed6ee"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-console/stdout.txt",
+          "sha256": "b119585973bb843fed05e383775f6282ccbda41f336eb857b5d616ca709c0c3d"
+        },
+        "normalizer": "panel-v1",
+        "generated": [
+          {
+            "path": "input.txt",
+            "content": {
+              "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-console/fixture.dat",
+              "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+            }
+          }
+        ],
+        "review": {
+          "reason": "Initial and final file bytes match; final bytes were read after stopping the reference process and restoring the fixture access restriction. The existing file had an explicit ReadData denial (native error 5).",
+          "link": "docs/file-input-progress.md"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "tests": [
+          "file_input_test.go#TestRecordedFileInput"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-console/stdout.txt",
+            "sha256": "b119585973bb843fed05e383775f6282ccbda41f336eb857b5d616ca709c0c3d"
+          },
+          "generated": [
+            {
+              "path": "input.txt",
+              "content": {
+                "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-console/fixture.dat",
+                "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+              }
+            }
+          ]
+        },
+        "review": {
+          "reason": "Operating-system restriction is exercised by platform filesystem regressions. Generic CLI replay creates readable byte fixtures and cannot reproduce this access constraint; replay qualification remains pending.",
+          "link": "docs/file-input-progress.md"
+        }
+      }
+    },
+    {
+      "id": "file-access-denied-random",
+      "ownerGroup": 14,
+      "tasks": [
+        "14.1",
+        "14.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-random/source.alg",
+        "sha256": "e6519aad547727af7e44f16b7669efb4e2ce4efaf88145f147ba561ef1557b09"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-random/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "files": [
+        {
+          "path": "input.txt",
+          "content": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-random/fixture.dat",
+            "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+          }
+        }
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T15:02:34.1675011Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-random/raw.txt",
+          "sha256": "305d340c774d89ff98fea70bf28445612e37fb81d65b105610041544975a5f19"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-random/stdout.txt",
+          "sha256": "25d8fdba15a60c094723f556fa39cb343032c38d14620edffb92800332484407"
+        },
+        "normalizer": "panel-v1",
+        "generated": [
+          {
+            "path": "input.txt",
+            "content": {
+              "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-random/fixture.dat",
+              "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+            }
+          }
+        ],
+        "review": {
+          "reason": "Initial and final file bytes match; final bytes were read after stopping the reference process and restoring the fixture access restriction. The existing file had an explicit ReadData denial (native error 5).",
+          "link": "docs/file-input-progress.md"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "tests": [
+          "file_input_test.go#TestRecordedFileInput"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-random/stdout.txt",
+            "sha256": "25d8fdba15a60c094723f556fa39cb343032c38d14620edffb92800332484407"
+          },
+          "generated": [
+            {
+              "path": "input.txt",
+              "content": {
+                "path": "testdata/conformance/visualg-3.0.7/probes/file-access-denied-random/fixture.dat",
+                "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+              }
+            }
+          ]
+        },
+        "review": {
+          "reason": "Operating-system restriction is exercised by platform filesystem regressions. Generic CLI replay creates readable byte fixtures and cannot reproduce this access constraint; replay qualification remains pending.",
+          "link": "docs/file-input-progress.md"
+        }
+      }
+    },
+    {
+      "id": "file-access-locked-no-read",
+      "ownerGroup": 14,
+      "tasks": [
+        "14.1",
+        "14.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-no-read/source.alg",
+        "sha256": "b3e99f9e1b868ba3778b8ad29a9858d75369d5243166c999e1a3407a8e938da5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-no-read/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "files": [
+        {
+          "path": "input.txt",
+          "content": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-no-read/fixture.dat",
+            "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+          }
+        }
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T15:02:42.0937805Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-no-read/raw.txt",
+          "sha256": "b6c13b88e997c746bc810fff27ffd1ca655a2eaa30e09cf461d7e58ea4c40831"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-no-read/stdout.txt",
+          "sha256": "6e57ed1b8f897df909b0346071b0ce44b7bab55f96caca6c229adce205a875b8"
+        },
+        "normalizer": "panel-v1",
+        "generated": [
+          {
+            "path": "input.txt",
+            "content": {
+              "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-no-read/fixture.dat",
+              "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+            }
+          }
+        ],
+        "review": {
+          "reason": "Initial and final file bytes match; final bytes were read after stopping the reference process and restoring the fixture access restriction. The existing file had an exclusive sharing lock (native error 32).",
+          "link": "docs/file-input-progress.md"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "tests": [
+          "file_input_test.go#TestRecordedFileInput"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-no-read/stdout.txt",
+            "sha256": "6e57ed1b8f897df909b0346071b0ce44b7bab55f96caca6c229adce205a875b8"
+          },
+          "generated": [
+            {
+              "path": "input.txt",
+              "content": {
+                "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-no-read/fixture.dat",
+                "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+              }
+            }
+          ]
+        },
+        "review": {
+          "reason": "Operating-system restriction is exercised by platform filesystem regressions. Generic CLI replay creates readable byte fixtures and cannot reproduce this access constraint; replay qualification remains pending.",
+          "link": "docs/file-input-progress.md"
+        }
+      }
+    },
+    {
+      "id": "file-access-locked-console",
+      "ownerGroup": 14,
+      "tasks": [
+        "14.1",
+        "14.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-console/source.alg",
+        "sha256": "8880e1e71c924152089bd5709bfa4cdc30e9323d2f6fa13cf8fbc03e5de597d3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-console/input.txt",
+        "sha256": "d0d729a093ba914dd4924b65f6012cbf992aaa930f3fbfc0e5b3b6981836bb8f"
+      },
+      "files": [
+        {
+          "path": "input.txt",
+          "content": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-console/fixture.dat",
+            "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+          }
+        }
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T15:02:50.4319503Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-console/raw.txt",
+          "sha256": "7555a99b7b92cc38eacba018be84a57e0633a53d840fcd0d1e8e26d29b5ed6ee"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-console/stdout.txt",
+          "sha256": "b119585973bb843fed05e383775f6282ccbda41f336eb857b5d616ca709c0c3d"
+        },
+        "normalizer": "panel-v1",
+        "generated": [
+          {
+            "path": "input.txt",
+            "content": {
+              "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-console/fixture.dat",
+              "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+            }
+          }
+        ],
+        "review": {
+          "reason": "Initial and final file bytes match; final bytes were read after stopping the reference process and restoring the fixture access restriction. The existing file had an exclusive sharing lock (native error 32).",
+          "link": "docs/file-input-progress.md"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "tests": [
+          "file_input_test.go#TestRecordedFileInput"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-console/stdout.txt",
+            "sha256": "b119585973bb843fed05e383775f6282ccbda41f336eb857b5d616ca709c0c3d"
+          },
+          "generated": [
+            {
+              "path": "input.txt",
+              "content": {
+                "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-console/fixture.dat",
+                "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+              }
+            }
+          ]
+        },
+        "review": {
+          "reason": "Operating-system restriction is exercised by platform filesystem regressions. Generic CLI replay creates readable byte fixtures and cannot reproduce this access constraint; replay qualification remains pending.",
+          "link": "docs/file-input-progress.md"
+        }
+      }
+    },
+    {
+      "id": "file-access-locked-random",
+      "ownerGroup": 14,
+      "tasks": [
+        "14.1",
+        "14.5"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-random/source.alg",
+        "sha256": "e6519aad547727af7e44f16b7669efb4e2ce4efaf88145f147ba561ef1557b09"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-random/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "files": [
+        {
+          "path": "input.txt",
+          "content": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-random/fixture.dat",
+            "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+          }
+        }
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T15:02:58.3754372Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-random/raw.txt",
+          "sha256": "305d340c774d89ff98fea70bf28445612e37fb81d65b105610041544975a5f19"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-random/stdout.txt",
+          "sha256": "25d8fdba15a60c094723f556fa39cb343032c38d14620edffb92800332484407"
+        },
+        "normalizer": "panel-v1",
+        "generated": [
+          {
+            "path": "input.txt",
+            "content": {
+              "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-random/fixture.dat",
+              "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+            }
+          }
+        ],
+        "review": {
+          "reason": "Initial and final file bytes match; final bytes were read after stopping the reference process and restoring the fixture access restriction. The existing file had an exclusive sharing lock (native error 32).",
+          "link": "docs/file-input-progress.md"
+        }
+      },
+      "implementation": {
+        "state": "pending",
+        "tests": [
+          "file_input_test.go#TestRecordedFileInput"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-random/stdout.txt",
+            "sha256": "25d8fdba15a60c094723f556fa39cb343032c38d14620edffb92800332484407"
+          },
+          "generated": [
+            {
+              "path": "input.txt",
+              "content": {
+                "path": "testdata/conformance/visualg-3.0.7/probes/file-access-locked-random/fixture.dat",
+                "sha256": "ddb5c6d217ea442d92dcdead04dade6263ea482787904ab5c50a86d142b3c07d"
+              }
+            }
+          ]
+        },
+        "review": {
+          "reason": "Operating-system restriction is exercised by platform filesystem regressions. Generic CLI replay creates readable byte fixtures and cannot reproduce this access constraint; replay qualification remains pending.",
+          "link": "docs/file-input-progress.md"
+        }
+      }
+    },
+    {
+      "id": "file-random-logical-source",
+      "ownerGroup": 14,
+      "tasks": [
+        "13.6",
+        "14.7"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-random-logical-source/source.alg",
+        "sha256": "42fa24fc9a3c3f72d4a23003b8b1ab08ca6b94833ae5d8b727d63cbda8a2a50c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/file-random-logical-source/input.txt",
+        "sha256": "582180ac540b22b5664c1a1c0151411e41c73613c2a9db0f0d85e1eea1d94bb9"
+      },
+      "files": [
+        {
+          "path": "input.txt",
+          "content": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-random-logical-source/fixture.dat",
+            "sha256": "0753d5911af256954056fdce09efbe4823b4b2045c6d8d2b34e892d6f47dc9a5"
+          }
+        }
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T15:03:11.4373470Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-random-logical-source/raw.txt",
+          "sha256": "5edfdf4c2af07a3508ce90d5cca2ca01c94290670b036dc46a28bbc1ae49c7da"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/file-random-logical-source/stdout.txt",
+          "sha256": "ef7a1c97fd1b5ce7ac2f83e866efb79784c92d97be2afba6c205c8e44bdaacff"
+        },
+        "normalizer": "panel-v1",
+        "generated": [
+          {
+            "path": "input.txt",
+            "content": {
+              "path": "testdata/conformance/visualg-3.0.7/probes/file-random-logical-source/fixture.dat",
+              "sha256": "0753d5911af256954056fdce09efbe4823b4b2045c6d8d2b34e892d6f47dc9a5"
+            }
+          }
+        ],
+        "review": {
+          "reason": "Initial and final file bytes match; final bytes were read after stopping the reference process.",
+          "link": "docs/file-input-progress.md"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "file_input_test.go#TestRecordedFileInput"
+        ],
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/file-random-logical-source/stdout.txt",
+            "sha256": "ef7a1c97fd1b5ce7ac2f83e866efb79784c92d97be2afba6c205c8e44bdaacff"
+          },
+          "generated": [
+            {
+              "path": "input.txt",
+              "content": {
+                "path": "testdata/conformance/visualg-3.0.7/probes/file-random-logical-source/fixture.dat",
+                "sha256": "0753d5911af256954056fdce09efbe4823b4b2045c6d8d2b34e892d6f47dc9a5"
+              }
+            }
+          ]
         }
       }
     }

@@ -416,11 +416,13 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 - [ ] 14.1 Add failing temporary-filesystem fixtures for relative and nested paths, existing/missing/unreadable/empty/exhausted files, CP1252 bytes, mixed value types, fallback recording, generated files, echo combinations, cleanup, and positioned failures.
 
-  All 42 file-input observations now match, including literal syntax, local
+  The 42 earlier file-input observations match, including literal syntax, local
   selection, encoding, line boundaries, failure buffering and missing-parent
-  continuation. Temporary-filesystem regressions also cover inactive file mode,
-  random/console transitions and replacement cleanup. Unreadable-path reference
-  behavior still needs qualification, so this broader task remains pending.
+  continuation. Nine new controls qualify readable/empty files, read-data
+  denial, sharing locks and logical file input during random mode. Platform
+  filesystem regressions cover denied/locked continuation and unchanged bytes;
+  six constrained probes remain pending because generic replay cannot recreate
+  their access restrictions. Automated candidate ACL coverage is also pending.
 - [x] 14.2 Add typed AST, parser, canonical-printer, and semantic rules for every oracle-confirmed `arquivo` form and path expression.
 - [x] 14.3 Resolve relative file paths against `interp.Options.WorkingDir`, reject invalid resolution safely, and keep tests isolated in temporary directories.
 - [x] 14.4 Implement the file-input mode with shared buffering and the exact Windows-1252, newline, token/line, conversion, and consecutive-read behavior.
@@ -428,9 +430,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
   Ordinary missing, empty and exhausted files and random transitions match.
   Both missing-parent-directory recordings now continue without creating a
-  file and retain their exact output before and after formatting. Other file
-  errors retain positioned guards; unreadable-path compatibility still needs
-  reference qualification before this broader task can be completed.
+  file and retain their exact output before and after formatting. Existing
+  regular-file read denial and Windows sharing violations now leave file mode
+  inactive, matching the new no-read, console and fixed-random observations.
+  Other failures retain positioned guards. Faithful constrained replay and
+  automated candidate ACL coverage remain pending, so this broader task stays
+  open rather than claiming every permission or path arrangement is qualified.
 - [x] 14.6 Implement fallback recording and generated-file byte behavior, including exclusive creation, recorded 128-byte buffering, replacement and partial-failure cleanup; validate each input conversion and encoding before changing its recording buffer.
 
   Reference controls establish partial flushed prefixes rather than whole-file
@@ -438,7 +443,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   only successful completion flushes the unfinished block. This replaces the
   earlier unqualified atomic-recording assumption.
 - [x] 14.7 Integrate input echo with file values, fallback console values, random values, formatting, and mode transitions exactly as recorded.
-- [x] 14.8 Return `R008` at the `arquivo` statement for path/open/read/write/encode/close failures and `R004` at the consuming `leia` where required by the oracle.
+- [x] 14.8 Return `R008` at the `arquivo` statement for guarded path/open/read/write/encode/close failures, retaining the recorded missing-parent and existing-file access fallback exceptions, and `R004` at the consuming `leia` where required by the oracle.
 - [x] 14.9 Add cross-platform path tests, byte-hash integration fixtures, fake reader/writer failures, and an example that uses only temporary/sandbox-safe relative data.
 - [x] 14.10 Update `docs/language.md` and `CHANGELOG.md` with `arquivo` path, encoding, state, fallback, recording, echo, and error semantics.
 - [x] 14.11 Run focused filesystem/input/interpreter/CLI tests and then the full build, lint, ordinary, race, platform, and strict OpenSpec suites.

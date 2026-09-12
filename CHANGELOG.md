@@ -18,6 +18,12 @@
 - Reject replayed diagnostics with a zero line or column during conformance
   validation, including recordings that intentionally omit an exact column.
 
+- Continue from an existing regular `arquivo` file when read access is denied
+  or Windows reports a sharing violation, preserving its bytes and console or
+  generated input. Add nine reference controls, including logical file input
+  during random mode, and platform filesystem regressions. Six access-constrained
+  probes remain pending generic CLI replay.
+
 - Continue execution when an `arquivo` parent directory is missing, preserving
   console or random input without creating directories or a recording. Match
   both recorded continuation cases and retain positioned guards for other

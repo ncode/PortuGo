@@ -7,7 +7,9 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
+	"syscall"
 	"unicode/utf8"
 
 	"github.com/ncode/portugol-go/internal/ast"
@@ -34,10 +36,14 @@ func (i *Interpreter) configureFile(s *ast.FileInputStmt) error {
 	if !filepath.IsAbs(name) {
 		name = filepath.Join(i.options.WorkingDir, name)
 	}
-	if info, err := os.Stat(name); err == nil && !info.Mode().IsRegular() {
+	info, statErr := os.Stat(name)
+	if statErr == nil && !info.Mode().IsRegular() {
 		return diag.Diagnostic{Code: diag.RHost, Pos: s.At, Message: "input file is not a regular file"}
 	}
 	f, err := os.Open(name)
+	if statErr == nil && unavailableFileRead(err) {
+		return nil // Existing unreadable files leave console or random input active.
+	}
 	recording := errors.Is(err, os.ErrNotExist)
 	if recording {
 		// Exclusive creation cannot overwrite a file appearing after the read attempt.
@@ -50,7 +56,7 @@ func (i *Interpreter) configureFile(s *ast.FileInputStmt) error {
 		return diag.Diagnostic{Code: diag.RHost, Pos: s.At, Message: "cannot open input file", Cause: err}
 	}
 	i.fileInput = fileInputState{file: f, at: s.At}
-	info, err := f.Stat()
+	info, err = f.Stat()
 	if err != nil || !info.Mode().IsRegular() {
 		closeErr := i.closeInputFile(false)
 		return diag.Diagnostic{Code: diag.RHost, Pos: s.At, Message: "input file is not a regular file", Cause: errors.Join(err, closeErr)}
@@ -61,6 +67,11 @@ func (i *Interpreter) configureFile(s *ast.FileInputStmt) error {
 		i.fileInput.reader = bufio.NewReader(f)
 	}
 	return nil
+}
+
+func unavailableFileRead(err error) bool {
+	// Windows sharing violations use error 32; that number has other meanings elsewhere.
+	return errors.Is(err, os.ErrPermission) || runtime.GOOS == "windows" && errors.Is(err, syscall.Errno(32))
 }
 
 func (i *Interpreter) closeInputFile(commit bool) error {
