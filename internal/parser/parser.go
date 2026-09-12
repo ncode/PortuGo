@@ -353,7 +353,7 @@ func (p *parser) parseStmt() (stmt ast.Stmt) {
 		p.skipLine()
 		return stmt
 	case token.RAND:
-		call := &ast.CallExpr{Name: p.advance()}
+		call := &ast.CallExpr{Name: p.advance(), Bare: true}
 		p.skipLine()
 		return &ast.CallStmt{Call: call}
 	case token.ALEATORIO:
@@ -428,7 +428,7 @@ func (p *parser) parseIdentStmt() ast.Stmt {
 		return &ast.CallStmt{Call: call}
 	}
 	if p.peekN(1).Kind != token.ASSIGN && p.peekN(1).Kind != token.LBRACK && p.peekN(1).Kind != token.DOT {
-		return &ast.CallStmt{Call: &ast.CallExpr{Name: p.advance()}}
+		return &ast.CallStmt{Call: &ast.CallExpr{Name: p.advance(), Bare: true}}
 	}
 	target := p.parseDesignator()
 	at := target.Start()

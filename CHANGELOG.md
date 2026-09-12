@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Preserve bare return and call syntax during formatting, including bare `pi`
+  statements, and use canonical operator spellings. Normalize repeated carriage
+  returns before LF in ignored suffixes in one pass, retaining standalone
+  carriage returns and other opaque text.
+
 - Preserve original-byte source positions through UTF-8 BOM removal and
   Windows-1252 decoding, including CLI and REPL diagnostics at every stage.
 

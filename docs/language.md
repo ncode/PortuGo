@@ -48,7 +48,9 @@ The `var` block may be omitted or left empty. Top-level `procedimento` and
 after `fimalgoritmo` are ignored during execution. Later physical lines are
 opaque, including unclosed strings, invalid symbols and unfinished blocks.
 Formatting retains the complete decoded suffix immediately after the terminator,
-including same-line comments and whitespace; only CRLF is normalized to LF.
+including same-line comments and whitespace. Each LF and the complete run of CR
+bytes immediately before it become one LF in a single formatting pass. CR bytes
+not followed by LF and all other opaque text remain unchanged.
 See the [ignored-suffix example](../examples/ignored_suffix.alg).
 
 The terminator's own line still receives lexical validation. An unmatched quote
@@ -531,6 +533,10 @@ same physical line as `retorne`. A bare return in a function receives `E001`
 on the return line; a bare return in a procedure or the main body receives
 `E005`. The following statement or terminator is retained for analysis.
 Diagnostic ordering when a file also contains malformed syntax remains pending.
+
+The formatter retains a bare `retorne` without inventing an expression, even
+when analysis would reject it. Calls written as bare statements retain that
+form; in particular, formatting does not turn `pi` into the rejected `pi()`.
 
 ## I/O
 

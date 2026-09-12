@@ -37,7 +37,7 @@ func Fprint(w io.Writer, prog *Program) error {
 	p.indent--
 	p.before(prog.End, 1)
 	if p.err == nil {
-		suffix := strings.ReplaceAll(prog.Suffix.Text, "\r\n", "\n")
+		suffix := normalizeLineEndings(prog.Suffix.Text)
 		if suffix == "" {
 			suffix = "\n"
 		}
@@ -257,7 +257,11 @@ func (p *printer) printStmt(stmt Stmt) {
 	case *ColorStmt:
 		p.line("mudacor(%s, %s)", exprString(s.Color), exprString(s.Target))
 	case *ReturnStmt:
-		p.line("retorne %s", exprString(s.Value))
+		if s.Value == nil {
+			p.line("retorne")
+		} else {
+			p.line("retorne %s", exprString(s.Value))
+		}
 	case *ReadStmt:
 		targets := make([]string, len(s.Targets))
 		for i, t := range s.Targets {
@@ -275,6 +279,31 @@ func (p *printer) printStmt(stmt Stmt) {
 		}
 		p.line("%s(%s)", name, strings.Join(args, ", "))
 	}
+}
+
+// normalizeLineEndings removes the complete CR run before each LF. Other CR
+// bytes are opaque text and remain unchanged; normalization is linear in length.
+func normalizeLineEndings(text string) string {
+	if !strings.Contains(text, "\r\n") {
+		return text
+	}
+	var out strings.Builder
+	out.Grow(len(text))
+	start := 0
+	for i := 0; i < len(text); i++ {
+		if text[i] != '\n' {
+			continue
+		}
+		end := i
+		for end > start && text[end-1] == '\r' {
+			end--
+		}
+		out.WriteString(text[start:end])
+		out.WriteByte('\n')
+		start = i + 1
+	}
+	out.WriteString(text[start:])
+	return out.String()
 }
 
 func typeString(t TypeSpec) string {
@@ -348,15 +377,18 @@ func exprString(expr Expr) string {
 		}
 		return exprString(e.X) + "[" + strings.Join(indices, ", ") + "]"
 	case *UnaryExpr:
-		return e.Op.Text + " " + operandString(e.X, e.Op.Kind.UnaryPrecedence())
+		return e.Op.Kind.String() + " " + operandString(e.X, e.Op.Kind.UnaryPrecedence())
 	case *BinaryExpr:
 		prec := e.Op.Kind.BinaryPrecedence()
 		leftPrec := prec
 		if e.IsComparison() {
 			leftPrec++
 		}
-		return operandString(e.Left, leftPrec) + " " + e.Op.Text + " " + operandString(e.Right, prec+1)
+		return operandString(e.Left, leftPrec) + " " + e.Op.Kind.String() + " " + operandString(e.Right, prec+1)
 	case *CallExpr:
+		if e.Bare && len(e.Args) == 0 {
+			return e.Name.Text
+		}
 		args := make([]string, len(e.Args))
 		for i, arg := range e.Args {
 			args[i] = exprString(arg)

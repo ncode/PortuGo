@@ -15,9 +15,9 @@ func TestIgnoredSuffixRoundTrip(t *testing.T) {
 		"\n@#$?\n",
 		"\nse verdadeiro entao\nescreval(\"IGNORED\")\n",
 		" // trailing note\nPlain notes: ação\n  { preserved\n",
-		"\n", "", "   ",
+		"\n", "", "   ", "\nnotes\rremain\r\r", "\n\n",
 	} {
-		for _, ending := range []string{"\n", "\r\n"} {
+		for _, ending := range []string{"\n", "\r\n", "\r\r\n", "\r\r\r\n"} {
 			src := strings.ReplaceAll("algoritmo \"Suffix\"\ninicio\nescreval(\"BODY\")\nfimalgoritmo"+suffix, "\n", ending)
 			want := "algoritmo \"Suffix\"\ninicio\n  escreval(\"BODY\")\nfimalgoritmo" + suffix
 			if suffix == "" {

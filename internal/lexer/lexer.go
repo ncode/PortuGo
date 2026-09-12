@@ -67,8 +67,12 @@ func (s *scanner) skipSpaceAndComments() {
 		case '\r', '\n':
 			start := s.offset
 			s.advance()
-			if r == '\r' && !s.match('\n') {
-				continue
+			if r == '\r' {
+				for s.match('\r') {
+				}
+				if !s.match('\n') {
+					continue
+				}
 			}
 			s.file.AddLine(s.offset)
 			s.lineStart = true
@@ -92,7 +96,9 @@ func (s *scanner) skipSpaceAndComments() {
 func (s *scanner) scanComment() {
 	start := s.offset
 	s.skipLine()
-	s.emit(token.COMMENT, s.src[start:s.offset], token.Pos(start))
+	if s.offset > start {
+		s.emit(token.COMMENT, s.src[start:s.offset], token.Pos(start))
+	}
 }
 
 func (s *scanner) scanIgnoredLine() {
@@ -105,11 +111,14 @@ func (s *scanner) scanIgnoredLine() {
 }
 
 func (s *scanner) skipLine() {
+	start := s.offset
 	for s.offset < len(s.src) && s.peek() != '\n' {
-		if s.peek() == '\r' && s.peekNext() == '\n' {
-			return
-		}
 		s.advance()
+	}
+	if s.offset < len(s.src) {
+		for s.offset > start && s.src[s.offset-1] == '\r' {
+			s.offset--
+		}
 	}
 }
 
@@ -182,8 +191,10 @@ func (s *scanner) scanString(start int) {
 		case '\r', '\n':
 			newline := s.offset - 1
 			if r == '\r' {
+				for s.match('\r') {
+				}
 				if !s.match('\n') {
-					text = append(text, r)
+					text = append(text, []rune(s.src[newline:s.offset])...)
 					continue
 				}
 			}

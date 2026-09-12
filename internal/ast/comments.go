@@ -73,7 +73,7 @@ func (p *printer) fragment(pos token.Pos) bool {
 		p.comments = p.comments[1:]
 	}
 	p.flush()
-	lines := strings.Split(strings.ReplaceAll(fragment.Text, "\r\n", "\n"), "\n")
+	lines := strings.Split(normalizeLineEndings(fragment.Text), "\n")
 	for i, line := range lines {
 		indent := p.indent
 		if i > 0 {

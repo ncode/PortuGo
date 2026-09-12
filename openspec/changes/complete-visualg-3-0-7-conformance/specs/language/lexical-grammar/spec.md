@@ -135,3 +135,7 @@ Canonical printing SHALL emit valid VisuAlg 3.0.7 source for every representable
 #### Scenario: Preserve ignored trailing notes
 - **WHEN** the reference ignores text following `fimalgoritmo`
 - **THEN** formatting retains that suffix after the terminator without interpreting it as executable syntax
+
+#### Scenario: Normalize suffix line endings idempotently
+- **WHEN** an ignored suffix contains one or more consecutive CR bytes immediately before LF
+- **THEN** one formatting pass replaces that entire run and LF with a single LF, preserves CR bytes elsewhere and all other opaque text, and a second pass produces identical bytes

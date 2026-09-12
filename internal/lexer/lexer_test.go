@@ -205,6 +205,33 @@ func TestPhysicalNewlines(t *testing.T) {
 	}
 }
 
+func TestRepeatedCRNewlineSpans(t *testing.T) {
+	for _, prefix := range []string{"inicio", "// note", "\"bad", "\"bad// note", "algoritmo \"name\""} {
+		file, tokens, _ := Scan("lines.alg", prefix+"\r\r\nnext")
+		found := false
+		for _, tok := range tokens {
+			if tok.Kind == token.NEWLINE {
+				found = true
+				if int(tok.Pos) != len(prefix) || tok.Text != "\r\r\n" {
+					t.Errorf("prefix %q: newline span = %d %q", prefix, tok.Pos, tok.Text)
+				}
+			}
+			if tok.Text == "next" {
+				if pos := file.Position(tok.Pos); pos.Line != 2 || pos.Column != 1 {
+					t.Errorf("prefix %q: next position = %v", prefix, pos)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("prefix %q: missing newline", prefix)
+		}
+	}
+	_, tokens, ds := Scan("string.alg", "\"one\r\rtwo\"")
+	if len(ds) != 0 || tokens[0].Kind != token.STRING || tokens[0].Text != "one\r\rtwo" {
+		t.Fatalf("carriage returns inside a string were changed: %v, %v", tokens, ds)
+	}
+}
+
 func TestFuzzAdversarial(t *testing.T) {
 	for _, tt := range []struct{ name, src string }{
 		{"long comment", "//" + strings.Repeat("x", testprocess.MaxSourceBytes-2)},

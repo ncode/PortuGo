@@ -15,13 +15,13 @@ import (
 )
 
 func TestCommentAnchorsRoundTrip(t *testing.T) {
-	for _, name := range []string{"empty_blocks", "declarations", "subprograms", "comment_forms", "multiline_comments", "default_semicolon_comments"} {
+	for _, name := range []string{"empty_blocks", "declarations", "subprograms", "comment_forms", "multiline_comments", "default_semicolon_comments", "environment_commands"} {
 		wantBytes, err := os.ReadFile(filepath.Join("..", "..", "testdata", "format", name+".alg"))
 		if err != nil {
 			t.Fatal(err)
 		}
 		want := string(wantBytes)
-		for _, ending := range []string{"\n", "\r\n"} {
+		for _, ending := range []string{"\n", "\r\n", "\r\r\n"} {
 			input := strings.ReplaceAll(want, "\n", ending)
 			var previous *ast.Program
 			for pass := range 2 {
@@ -42,7 +42,7 @@ func TestCommentAnchorsRoundTrip(t *testing.T) {
 				}
 				input = output.String()
 				program.Fragments = nil // Formatting trivia is checked by the byte golden.
-				program.Suffix.Text = strings.ReplaceAll(program.Suffix.Text, "\r\n", "\n")
+				program.Suffix.Text = strings.ReplaceAll(program.Suffix.Text, "\r", "")
 				clearSyntaxPositions(reflect.ValueOf(program))
 				if previous != nil && !reflect.DeepEqual(previous, program) {
 					t.Fatalf("pass %d changed syntax or comment contents/order/anchors", pass)
