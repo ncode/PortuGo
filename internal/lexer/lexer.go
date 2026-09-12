@@ -29,6 +29,7 @@ type scanner struct {
 	lineStart  bool
 	endProgram int
 	endTokens  int
+	rawOffset  int
 }
 
 func (s *scanner) scan() {
@@ -66,8 +67,12 @@ func (s *scanner) skipSpaceAndComments() {
 		case '\r', '\n':
 			start := s.offset
 			s.advance()
-			if r == '\r' && !s.match('\n') {
-				continue
+			if r == '\r' {
+				for s.match('\r') {
+				}
+				if !s.match('\n') {
+					continue
+				}
 			}
 			s.file.AddLine(s.offset)
 			s.lineStart = true
@@ -79,21 +84,41 @@ func (s *scanner) skipSpaceAndComments() {
 			if !s.lineStart && (r != '/' || s.peekNext() != '/') {
 				return
 			}
-			s.skipLine()
+			s.scanComment()
 		case '{', '}':
-			s.skipLine()
+			s.scanComment()
 		default:
 			return
 		}
 	}
 }
 
-func (s *scanner) skipLine() {
-	for s.offset < len(s.src) && s.peek() != '\n' {
-		if s.peek() == '\r' && s.peekNext() == '\n' {
-			return
-		}
+func (s *scanner) scanComment() {
+	start := s.offset
+	s.skipLine()
+	if s.offset > start {
+		s.emit(token.COMMENT, s.src[start:s.offset], token.Pos(start))
+	}
+}
+
+func (s *scanner) scanIgnoredLine() {
+	for s.offset < len(s.src) && (s.peek() == ' ' || s.peek() == '\t') {
 		s.advance()
+	}
+	if s.offset < len(s.src) && s.peek() != '\n' && (s.peek() != '\r' || s.peekNext() != '\n') {
+		s.scanComment()
+	}
+}
+
+func (s *scanner) skipLine() {
+	start := s.offset
+	for s.offset < len(s.src) && s.peek() != '\n' {
+		s.advance()
+	}
+	if s.offset < len(s.src) {
+		for s.offset > start && s.src[s.offset-1] == '\r' {
+			s.offset--
+		}
 	}
 }
 
@@ -111,7 +136,7 @@ func (s *scanner) scanIdent(start int) {
 	}
 	if kind == token.DOS && leading {
 		// Configuration directives ignore the rest of their physical line.
-		s.skipLine()
+		s.scanIgnoredLine()
 	}
 }
 
@@ -119,6 +144,7 @@ func (s *scanner) scanSuffix() {
 	// Retain every decoded byte after the terminator, but do not tokenize
 	// later physical lines: even malformed literals there are ignored.
 	s.tokens = s.tokens[:s.endTokens]
+	s.rawOffset = s.endProgram
 	if s.endProgram < len(s.src) {
 		s.emit(token.SUFFIX, s.src[s.endProgram:], token.Pos(s.endProgram))
 	}
@@ -159,14 +185,16 @@ func (s *scanner) scanString(start int) {
 			header := len(s.tokens) > 0 && s.tokens[len(s.tokens)-1].Kind == token.ALGORITMO
 			s.emit(token.STRING, string(text), token.Pos(start))
 			if header {
-				s.skipLine()
+				s.scanIgnoredLine()
 			}
 			return
 		case '\r', '\n':
 			newline := s.offset - 1
 			if r == '\r' {
+				for s.match('\r') {
+				}
 				if !s.match('\n') {
-					text = append(text, r)
+					text = append(text, []rune(s.src[newline:s.offset])...)
 					continue
 				}
 			}
@@ -259,7 +287,8 @@ func (s *scanner) scanSymbol(start int, r rune) {
 }
 
 func (s *scanner) emit(kind token.Kind, text string, pos token.Pos) {
-	s.tokens = append(s.tokens, token.Token{Kind: kind, Text: text, Pos: pos})
+	s.tokens = append(s.tokens, token.Token{Kind: kind, Text: text, Pos: pos, Raw: s.src[s.rawOffset:s.offset]})
+	s.rawOffset = s.offset
 }
 
 func (s *scanner) error(pos token.Pos, msg string) {

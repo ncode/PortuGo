@@ -97,6 +97,7 @@ func (e *BinaryExpr) IsComparison() bool {
 type CallExpr struct {
 	Name token.Token
 	Args []Expr
+	Bare bool // Statement call written without parentheses.
 }
 
 func (*CallExpr) exprNode()          {}

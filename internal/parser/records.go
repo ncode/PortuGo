@@ -5,8 +5,9 @@ import (
 	"github.com/ncode/portugol-go/internal/token"
 )
 
-func (p *parser) parseRecordType() ast.TypeSpec {
+func (p *parser) parseRecordType(header token.Pos) ast.TypeSpec {
 	start := p.expect(token.REGISTRO, "expected registro")
+	p.rememberFragment(header)
 	typ := ast.TypeSpec{At: start.Pos, Name: "registro"}
 	p.parseDeclarationSemicolon()
 	for p.peek().Kind == token.IDENT {
@@ -17,6 +18,7 @@ func (p *parser) parseRecordType() ast.TypeSpec {
 		}
 		p.expect(token.COLON, "expected ':' after field name")
 		field := p.parseType()
+		p.rememberFragment(first.Pos)
 		if field.Name == "vetor" && len(p.diags) == 0 {
 			p.error(token.Token{Pos: field.At}, "vector fields are unsupported")
 		}
@@ -25,7 +27,7 @@ func (p *parser) parseRecordType() ast.TypeSpec {
 			return typ
 		}
 	}
-	p.expect(token.FIMREGISTRO, "expected fimregistro")
+	typ.End = p.expect(token.FIMREGISTRO, "expected fimregistro").Pos
 	p.parseDeclarationSemicolon()
 	return typ
 }

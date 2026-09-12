@@ -16,9 +16,10 @@ func (p *parser) parseTypeBlock() []ast.TypeDecl {
 		p.expect(token.EQL, "expected '=' after type name")
 		var typ ast.TypeSpec
 		if p.peek().Kind == token.REGISTRO {
-			typ = p.parseRecordType()
+			typ = p.parseRecordType(name.Pos)
 		} else {
 			typ = p.parseType()
+			p.rememberFragment(name.Pos)
 		}
 		if typ.Name == "vetor" {
 			p.error(token.Token{Pos: typ.At}, "vector type aliases are unsupported")

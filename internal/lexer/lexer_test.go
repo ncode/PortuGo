@@ -53,7 +53,7 @@ func TestConsoleLineTail(t *testing.T) {
 	if len(ds) != 0 {
 		t.Fatal(ds)
 	}
-	want := []token.Kind{token.DOS, token.NEWLINE, token.ESCREVAL, token.LPAREN, token.DOS, token.RPAREN, token.NEWLINE, token.EOF}
+	want := []token.Kind{token.DOS, token.COMMENT, token.NEWLINE, token.ESCREVAL, token.LPAREN, token.DOS, token.RPAREN, token.NEWLINE, token.EOF}
 	if len(tokens) != len(want) {
 		t.Fatalf("tokens = %v, want %v", tokens, want)
 	}
@@ -62,7 +62,7 @@ func TestConsoleLineTail(t *testing.T) {
 			t.Fatalf("token %d = %v, want %v", n, tokens[n], kind)
 		}
 	}
-	if tokens[0].Pos != 2 || tokens[0].Text != "DoS" || file.Position(tokens[2].Pos).Line != 2 || tokens[4].Kind.String() != "dos" {
+	if tokens[0].Pos != 2 || tokens[0].Text != "DoS" || tokens[1].Text != "\"unterminated" || file.Position(tokens[3].Pos).Line != 2 || tokens[5].Kind.String() != "dos" {
 		t.Fatalf("directive lost spelling or positions: %v", tokens)
 	}
 }
@@ -135,10 +135,13 @@ func TestCommentLinePositions(t *testing.T) {
 			if len(ds) != 0 {
 				t.Fatalf("ending %q, prefix %q: %v", ending, comment, ds)
 			}
-			if len(tokens) != 8 || tokens[3].Kind != token.ESCREVAL {
+			if len(tokens) != 9 || tokens[2].Kind != token.COMMENT || tokens[4].Kind != token.ESCREVAL {
 				t.Fatalf("ending %q, prefix %q: tokens = %v", ending, comment, tokens)
 			}
-			if pos := file.Position(tokens[3].Pos); pos.Line != 3 || pos.Column != 3 {
+			if tokens[2].Text != comment+" comentário" || tokens[3].Kind != token.NEWLINE || tokens[3].Text != ending {
+				t.Fatalf("comment consumed or changed its physical newline: %v", tokens[2:4])
+			}
+			if pos := file.Position(tokens[4].Pos); pos.Line != 3 || pos.Column != 3 {
 				t.Fatalf("ending %q, prefix %q: position = %v, want 3:3", ending, comment, pos)
 			}
 		}
@@ -199,6 +202,33 @@ func TestPhysicalNewlines(t *testing.T) {
 	}
 	if got := strings.Join(endings, "|"); got != "\r\n|\r\n|\n|\n|\r\n" {
 		t.Fatalf("newlines = %q", endings)
+	}
+}
+
+func TestRepeatedCRNewlineSpans(t *testing.T) {
+	for _, prefix := range []string{"inicio", "// note", "\"bad", "\"bad// note", "algoritmo \"name\""} {
+		file, tokens, _ := Scan("lines.alg", prefix+"\r\r\nnext")
+		found := false
+		for _, tok := range tokens {
+			if tok.Kind == token.NEWLINE {
+				found = true
+				if int(tok.Pos) != len(prefix) || tok.Text != "\r\r\n" {
+					t.Errorf("prefix %q: newline span = %d %q", prefix, tok.Pos, tok.Text)
+				}
+			}
+			if tok.Text == "next" {
+				if pos := file.Position(tok.Pos); pos.Line != 2 || pos.Column != 1 {
+					t.Errorf("prefix %q: next position = %v", prefix, pos)
+				}
+			}
+		}
+		if !found {
+			t.Errorf("prefix %q: missing newline", prefix)
+		}
+	}
+	_, tokens, ds := Scan("string.alg", "\"one\r\rtwo\"")
+	if len(ds) != 0 || tokens[0].Kind != token.STRING || tokens[0].Text != "one\r\rtwo" {
+		t.Fatalf("carriage returns inside a string were changed: %v, %v", tokens, ds)
 	}
 }
 

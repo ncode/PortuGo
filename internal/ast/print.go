@@ -14,20 +14,30 @@ func Fprint(w io.Writer, prog *Program) error {
 	if ds := CheckLimits(prog); len(ds) != 0 {
 		return ds[0]
 	}
-	p := &printer{w: w}
+	p := &printer{w: w, comments: prog.Comments, fragments: prog.Fragments}
+	p.before(prog.At, 0)
 	p.line(`algoritmo "%s"`, prog.Name)
 	p.printStmts(prog.Config)
-	p.printDecls(prog.Consts, prog.Types, prog.Globals)
+	p.printDecls(prog.Sections, prog.Consts, prog.Types, prog.Globals)
 	for _, sub := range prog.Subs {
+		for len(p.comments) > 0 && p.comments[0].Inline && !p.comments[0].Semicolon && p.comments[0].Pos < sub.Start() && p.hasPending {
+			p.pending += " " + p.comments[0].Text
+			p.comments = p.comments[1:]
+		}
 		p.line("")
 		p.printSub(sub)
 	}
-	p.line("inicio")
+	sections := prog.Sections
+	if len(prog.Subs) != 0 {
+		sections = DeclSections{}
+	}
+	p.begin(prog.Begin, sections)
 	p.indent++
 	p.printStmts(prog.Body)
 	p.indent--
+	p.before(prog.End, 1)
 	if p.err == nil {
-		suffix := strings.ReplaceAll(prog.Suffix.Text, "\r\n", "\n")
+		suffix := normalizeLineEndings(prog.Suffix.Text)
 		if suffix == "" {
 			suffix = "\n"
 		}
@@ -37,55 +47,55 @@ func Fprint(w io.Writer, prog *Program) error {
 }
 
 type printer struct {
-	w      io.Writer
-	indent int
-	err    error
+	w          io.Writer
+	indent     int
+	err        error
+	comments   []CommentGroup
+	pending    string
+	hasPending bool
+	fragments  map[token.Pos]CommentFragment
 }
 
 func (p *printer) line(format string, args ...any) {
+	p.flush()
 	if p.err != nil {
 		return
 	}
 	if format != "" {
-		_, p.err = fmt.Fprint(p.w, strings.Repeat("  ", p.indent))
-		if p.err != nil {
-			return
-		}
-		_, p.err = fmt.Fprintf(p.w, format, args...)
-		if p.err != nil {
-			return
-		}
+		p.pending = strings.Repeat("  ", p.indent) + fmt.Sprintf(format, args...)
 	}
-	_, p.err = fmt.Fprintln(p.w)
+	p.hasPending = true
 }
 
-func (p *printer) printDecls(consts []ConstDecl, types []TypeDecl, decls []VarDecl) {
-	if len(consts) == 0 && len(types) == 0 && len(decls) == 0 {
+func (p *printer) printDecls(sections DeclSections, consts []ConstDecl, types []TypeDecl, decls []VarDecl) {
+	if len(consts) == 0 && len(types) == 0 && len(decls) == 0 && sections.Var.Kind != token.VAR && sections.Type.Kind != token.TIPO && sections.Const.Kind != token.CONST {
 		return
 	}
-	if len(consts) != 0 {
-		p.line("const")
+	if len(consts) != 0 || sections.Const.Kind == token.CONST {
+		p.section(sections.Const, "const")
 		p.indent++
 		for _, d := range consts {
-			p.line("%s = %s", d.Name.Text, exprString(d.Value))
+			p.before(d.Name.Pos, p.indent)
+			p.lineFrom(d.Name.Pos, "%s = %s", d.Name.Text, exprString(d.Value))
 		}
 		p.indent--
 	}
-	if len(types) != 0 {
-		p.line("tipo")
+	if len(types) != 0 || sections.Type.Kind == token.TIPO {
+		p.section(sections.Type, "tipo")
 		p.indent++
 		for _, d := range types {
-			p.line("%s = %s", d.Name.Text, typeString(d.Type))
+			p.before(d.Name.Pos, p.indent)
+			p.lineFrom(d.Name.Pos, "%s = %s", d.Name.Text, typeString(d.Type))
 			if d.Type.Name == "registro" {
 				p.indent++
 				p.printVars(d.Type.Fields)
 				p.indent--
-				p.line("fimregistro")
+				p.end(d.Type.End, "fimregistro")
 			}
 		}
 		p.indent--
 	}
-	p.line("var")
+	p.section(sections.Var, "var")
 	p.indent++
 	p.printVars(decls)
 	p.indent--
@@ -93,34 +103,36 @@ func (p *printer) printDecls(consts []ConstDecl, types []TypeDecl, decls []VarDe
 
 func (p *printer) printVars(decls []VarDecl) {
 	for _, d := range decls {
+		p.before(d.At, p.indent)
 		names := make([]string, len(d.Names))
 		for i, name := range d.Names {
 			names[i] = name.Text
 		}
-		p.line("%s: %s", strings.Join(names, ", "), typeString(d.Type))
+		p.lineFrom(d.At, "%s: %s", strings.Join(names, ", "), typeString(d.Type))
 	}
 }
 
 func (p *printer) printSub(sub Subprogram) {
+	p.before(sub.Start(), p.indent)
 	switch s := sub.(type) {
 	case *ProcedureDecl:
-		p.line("procedimento %s(%s)", s.Name.Text, paramsString(s.Params))
+		p.lineFrom(s.At, "procedimento %s(%s)", s.Name.Text, paramsString(s.Params))
 		p.printStmts(s.Config)
-		p.printDecls(s.Consts, s.Types, s.Locals)
-		p.line("inicio")
+		p.printDecls(s.Sections, s.Consts, s.Types, s.Locals)
+		p.begin(s.Begin, s.Sections)
 		p.indent++
 		p.printStmts(s.Body)
 		p.indent--
-		p.line("fimprocedimento")
+		p.end(s.End, "fimprocedimento")
 	case *FunctionDecl:
-		p.line("funcao %s(%s): %s", s.Name.Text, paramsString(s.Params), typeString(s.Return))
+		p.lineFrom(s.At, "funcao %s(%s): %s", s.Name.Text, paramsString(s.Params), typeString(s.Return))
 		p.printStmts(s.Config)
-		p.printDecls(s.Consts, s.Types, s.Locals)
-		p.line("inicio")
+		p.printDecls(s.Sections, s.Consts, s.Types, s.Locals)
+		p.begin(s.Begin, s.Sections)
 		p.indent++
 		p.printStmts(s.Body)
 		p.indent--
-		p.line("fimfuncao")
+		p.end(s.End, "fimfuncao")
 	}
 }
 
@@ -131,6 +143,14 @@ func (p *printer) printStmts(stmts []Stmt) {
 }
 
 func (p *printer) printStmt(stmt Stmt) {
+	p.before(stmt.Start(), p.indent)
+	switch stmt.(type) {
+	case *IfStmt, *SwitchStmt, *WhileStmt, *RepeatStmt, *ForStmt:
+	default:
+		if p.fragment(stmt.Start()) {
+			return
+		}
+	}
 	switch s := stmt.(type) {
 	case *FileInputStmt:
 		p.line("arquivo \"%s\"", s.Path)
@@ -171,21 +191,22 @@ func (p *printer) printStmt(stmt Stmt) {
 	case *CallStmt:
 		p.line("%s", exprString(s.Call))
 	case *IfStmt:
-		p.line("se %s entao", exprString(s.Cond))
+		p.lineFrom(s.At, "se %s entao", exprString(s.Cond))
 		p.indent++
 		p.printStmts(s.Then)
 		p.indent--
-		if len(s.Else) > 0 {
-			p.line("senao")
+		if len(s.Else) > 0 || s.ElseAt != 0 {
+			p.end(s.ElseAt, "senao")
 			p.indent++
 			p.printStmts(s.Else)
 			p.indent--
 		}
-		p.line("fimse")
+		p.end(s.End, "fimse")
 	case *SwitchStmt:
-		p.line("escolha %s", exprString(s.X))
+		p.lineFrom(s.At, "escolha %s", exprString(s.X))
 		p.indent++
 		for _, cc := range s.Cases {
+			p.before(cc.At, p.indent+1)
 			values := make([]string, len(cc.Labels))
 			for i, label := range cc.Labels {
 				values[i] = exprString(label.Low)
@@ -193,41 +214,42 @@ func (p *printer) printStmt(stmt Stmt) {
 					values[i] += " ate " + exprString(label.High)
 				}
 			}
-			p.line("caso %s:", strings.Join(values, ", "))
+			p.lineFrom(cc.At, "caso %s:", strings.Join(values, ", "))
 			p.indent++
 			p.printStmts(cc.Body)
 			p.indent--
 		}
-		if len(s.Default) > 0 {
-			p.line("outrocaso:")
+		if len(s.Default) > 0 || s.DefaultAt != 0 {
+			p.end(s.DefaultAt, "outrocaso:")
 			p.indent++
 			p.printStmts(s.Default)
 			p.indent--
 		}
 		p.indent--
+		p.before(s.End, p.indent+2)
 		p.line("fimescolha")
 	case *WhileStmt:
-		p.line("enquanto %s faca", exprString(s.Cond))
+		p.lineFrom(s.At, "enquanto %s faca", exprString(s.Cond))
 		p.indent++
 		p.printStmts(s.Body)
 		p.indent--
-		p.line("fimenquanto")
+		p.end(s.End, "fimenquanto")
 	case *RepeatStmt:
 		p.line("repita")
 		p.indent++
 		p.printStmts(s.Body)
 		p.indent--
-		p.line("ate %s", exprString(s.Cond))
+		p.end(s.End, "ate %s", exprString(s.Cond))
 	case *ForStmt:
 		step := ""
 		if s.Step != nil {
 			step = " passo " + exprString(s.Step)
 		}
-		p.line("para %s de %s ate %s%s faca", s.Name.Text, exprString(s.From), exprString(s.To), step)
+		p.lineFrom(s.At, "para %s de %s ate %s%s faca", s.Name.Text, exprString(s.From), exprString(s.To), step)
 		p.indent++
 		p.printStmts(s.Body)
 		p.indent--
-		p.line("fimpara")
+		p.end(s.End, "fimpara")
 	case *BreakStmt:
 		p.line("interrompa")
 	case *ClearStmt:
@@ -235,7 +257,11 @@ func (p *printer) printStmt(stmt Stmt) {
 	case *ColorStmt:
 		p.line("mudacor(%s, %s)", exprString(s.Color), exprString(s.Target))
 	case *ReturnStmt:
-		p.line("retorne %s", exprString(s.Value))
+		if s.Value == nil {
+			p.line("retorne")
+		} else {
+			p.line("retorne %s", exprString(s.Value))
+		}
 	case *ReadStmt:
 		targets := make([]string, len(s.Targets))
 		for i, t := range s.Targets {
@@ -253,6 +279,31 @@ func (p *printer) printStmt(stmt Stmt) {
 		}
 		p.line("%s(%s)", name, strings.Join(args, ", "))
 	}
+}
+
+// normalizeLineEndings removes the complete CR run before each LF. Other CR
+// bytes are opaque text and remain unchanged; normalization is linear in length.
+func normalizeLineEndings(text string) string {
+	if !strings.Contains(text, "\r\n") {
+		return text
+	}
+	var out strings.Builder
+	out.Grow(len(text))
+	start := 0
+	for i := 0; i < len(text); i++ {
+		if text[i] != '\n' {
+			continue
+		}
+		end := i
+		for end > start && text[end-1] == '\r' {
+			end--
+		}
+		out.WriteString(text[start:end])
+		out.WriteByte('\n')
+		start = i + 1
+	}
+	out.WriteString(text[start:])
+	return out.String()
 }
 
 func typeString(t TypeSpec) string {
@@ -326,15 +377,18 @@ func exprString(expr Expr) string {
 		}
 		return exprString(e.X) + "[" + strings.Join(indices, ", ") + "]"
 	case *UnaryExpr:
-		return e.Op.Text + " " + operandString(e.X, e.Op.Kind.UnaryPrecedence())
+		return e.Op.Kind.String() + " " + operandString(e.X, e.Op.Kind.UnaryPrecedence())
 	case *BinaryExpr:
 		prec := e.Op.Kind.BinaryPrecedence()
 		leftPrec := prec
 		if e.IsComparison() {
 			leftPrec++
 		}
-		return operandString(e.Left, leftPrec) + " " + e.Op.Text + " " + operandString(e.Right, prec+1)
+		return operandString(e.Left, leftPrec) + " " + e.Op.Kind.String() + " " + operandString(e.Right, prec+1)
 	case *CallExpr:
+		if e.Bare && len(e.Args) == 0 {
+			return e.Name.Text
+		}
 		args := make([]string, len(e.Args))
 		for i, arg := range e.Args {
 			args[i] = exprString(arg)

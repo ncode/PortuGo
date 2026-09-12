@@ -133,7 +133,14 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	if err != nil {
 		return err
 	}
-	if !bytes.Equal(stdout.buffer.Bytes(), wantOut) {
+	if want.RandomInput != nil {
+		if err := want.RandomInput.compare(wantOut); err != nil {
+			return fmt.Errorf("recorded random input: %w", err)
+		}
+		if err := want.RandomInput.compare(stdout.buffer.Bytes()); err != nil {
+			return fmt.Errorf("replayed random input: %w", err)
+		}
+	} else if !bytes.Equal(stdout.buffer.Bytes(), wantOut) {
 		return fmt.Errorf("stdout mismatch: got %q, expected %q", stdout.buffer.Bytes(), wantOut)
 	}
 	if err := compareDiagnostics(stderr.buffer.String(), want.Diagnostics); err != nil {

@@ -15,7 +15,6 @@ import (
 	"github.com/ncode/portugol-go/internal/repl"
 	"github.com/ncode/portugol-go/internal/sema"
 	"github.com/ncode/portugol-go/internal/source"
-	"github.com/ncode/portugol-go/internal/token"
 )
 
 func main() { os.Exit(dispatch(os.Args[1:])) }
@@ -35,13 +34,22 @@ func dispatch(args []string) int {
 	fs := flag.NewFlagSet(command, flag.ContinueOnError)
 	fs.SetOutput(os.Stderr)
 	var steps uint64
+	var formatCheck, formatWrite bool
 	if command == "run" || command == "repl" {
 		fs.Uint64Var(&steps, "max-steps", 0, "maximum execution steps (0 is unlimited)")
+	}
+	if command == "fmt" {
+		fs.BoolVar(&formatCheck, "check", false, "report whether the file is already formatted")
+		fs.BoolVar(&formatWrite, "w", false, "write formatted source back to the file")
 	}
 	if err := fs.Parse(args[1:]); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
 			return 0
 		}
+		return 2
+	}
+	if formatCheck && formatWrite {
+		fmt.Fprintln(os.Stderr, "fmt: --check and -w cannot be used together")
 		return 2
 	}
 	wantArgs := 1
@@ -78,19 +86,33 @@ func dispatch(args []string) int {
 			var d diag.Diagnostic
 			if errors.As(err, &d) {
 				d.Pos = prog.At
-				diag.Render(os.Stderr, file, []diag.Diagnostic{d})
+				diag.Render(os.Stderr, file.Positions, []diag.Diagnostic{d})
 			} else {
 				fmt.Fprintln(os.Stderr, err)
 			}
 			return 1
 		}
 		// Formatting can add syntax nesting; validate before emitting any bytes.
-		formattedFile, toks, ds := lexer.Scan(file.Name, output.data.String())
+		formattedFile, toks, ds := lexer.Scan(file.Positions.Name, output.data.String())
 		_, parseDiags := parser.Parse(toks)
 		ds = append(ds, parseDiags...)
 		if diag.HasErrors(ds) {
 			diag.Render(os.Stderr, formattedFile, ds)
 			return 1
+		}
+		if formatCheck || formatWrite {
+			if bytes.Equal(file.Original, output.data.Bytes()) {
+				return 0
+			}
+			if formatCheck {
+				fmt.Fprintf(os.Stderr, "%s: not formatted\n", fs.Arg(0))
+				return 1
+			}
+			if err := writeFormatted(fs.Arg(0), output.data.Bytes()); err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				return 1
+			}
+			return 0
 		}
 		if _, err := output.data.WriteTo(os.Stdout); err != nil {
 			fmt.Fprintln(os.Stderr, err)
@@ -99,7 +121,7 @@ func dispatch(args []string) int {
 		return 0
 	}
 	info, ds := sema.Analyze(prog)
-	diag.Render(os.Stderr, file, ds)
+	diag.Render(os.Stderr, file.Positions, ds)
 	if diag.HasErrors(ds) {
 		return 1
 	}
@@ -107,7 +129,7 @@ func dispatch(args []string) int {
 		return 0
 	}
 	ds = interp.New(options).Run(prog, info)
-	diag.Render(os.Stderr, file, ds)
+	diag.Render(os.Stderr, file.Positions, ds)
 	if diag.HasErrors(ds) {
 		return 1
 	}
@@ -127,7 +149,7 @@ func usage() {
 	fmt.Fprintln(os.Stderr, "usage: portugol <run|check|fmt> [options] file.alg | portugol repl [--max-steps N]")
 }
 
-func parsedProgram(path string) (*token.File, *ast.Program, bool, error) {
+func parsedProgram(path string) (*source.File, *ast.Program, bool, error) {
 	src, err := source.LoadFile(path)
 	if err != nil {
 		return nil, nil, false, err
@@ -135,12 +157,12 @@ func parsedProgram(path string) (*token.File, *ast.Program, bool, error) {
 	file, toks, lexDiags := lexer.ScanFile(src)
 	if diag.HasErrors(lexDiags) {
 		diag.Render(os.Stderr, file, lexDiags)
-		return file, nil, false, nil
+		return src, nil, false, nil
 	}
 	prog, parseDiags := parser.Parse(toks)
 	if diag.HasErrors(parseDiags) {
 		diag.Render(os.Stderr, file, parseDiags)
-		return file, prog, false, nil
+		return src, prog, false, nil
 	}
-	return file, prog, true, nil
+	return src, prog, true, nil
 }

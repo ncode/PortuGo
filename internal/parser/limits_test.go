@@ -19,9 +19,10 @@ func TestFormatDepthRoundTrip(t *testing.T) {
 		if len(ds) != 0 {
 			t.Fatal(ds)
 		}
-		// Source positions change with formatting; the syntax tree must not.
+		// Source positions and raw trivia change; the syntax tree must not.
 		for i := range toks {
 			toks[i].Pos = 0
+			toks[i].Raw = ""
 		}
 		prog, ds := Parse(toks)
 		if len(ds) != 0 {

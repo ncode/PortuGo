@@ -95,10 +95,11 @@ func (s *CallStmt) Start() token.Pos { return s.Call.Start() }
 
 // IfStmt is a conditional branch.
 type IfStmt struct {
-	At   token.Pos
-	Cond Expr
-	Then []Stmt
-	Else []Stmt
+	ElseAt, End token.Pos
+	At          token.Pos
+	Cond        Expr
+	Then        []Stmt
+	Else        []Stmt
 }
 
 func (*IfStmt) stmtNode()          {}
@@ -122,10 +123,11 @@ type CaseClause struct {
 
 // SwitchStmt is an escolha statement.
 type SwitchStmt struct {
-	At      token.Pos
-	X       Expr
-	Cases   []CaseClause
-	Default []Stmt
+	DefaultAt, End token.Pos
+	At             token.Pos
+	X              Expr
+	Cases          []CaseClause
+	Default        []Stmt
 }
 
 func (*SwitchStmt) stmtNode()          {}
@@ -133,6 +135,7 @@ func (s *SwitchStmt) Start() token.Pos { return s.At }
 
 // WhileStmt is an enquanto loop.
 type WhileStmt struct {
+	End  token.Pos
 	At   token.Pos
 	Cond Expr
 	Body []Stmt
@@ -143,6 +146,7 @@ func (s *WhileStmt) Start() token.Pos { return s.At }
 
 // RepeatStmt is a repita loop.
 type RepeatStmt struct {
+	End  token.Pos
 	At   token.Pos
 	Body []Stmt
 	Cond Expr
@@ -153,6 +157,7 @@ func (s *RepeatStmt) Start() token.Pos { return s.At }
 
 // ForStmt is a para loop.
 type ForStmt struct {
+	End  token.Pos
 	At   token.Pos
 	Name token.Token
 	From Expr

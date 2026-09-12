@@ -48,7 +48,9 @@ The `var` block may be omitted or left empty. Top-level `procedimento` and
 after `fimalgoritmo` are ignored during execution. Later physical lines are
 opaque, including unclosed strings, invalid symbols and unfinished blocks.
 Formatting retains the complete decoded suffix immediately after the terminator,
-including same-line comments and whitespace; only CRLF is normalized to LF.
+including same-line comments and whitespace. Each LF and the complete run of CR
+bytes immediately before it become one LF in a single formatting pass. CR bytes
+not followed by LF and all other opaque text remain unchanged.
 See the [ignored-suffix example](../examples/ignored_suffix.alg).
 
 The terminator's own line still receives lexical validation. An unmatched quote
@@ -260,7 +262,14 @@ Statements on subsequent lines still execute. After a complete statement,
 See [the comment example](../examples/comment_lines.alg).
 
 Thirty-one recorded cases cover these forms, quoted delimiters, and formatting
-without changing execution. Comments are currently discarded when formatting.
+without changing execution. Formatting retains decoded comment text in source
+order, including leading and same-line comments, empty declaration sections,
+comment-only branches and comments before block terminators. Indentation and
+line endings are normalized; ignored text after `fimalgoritmo` remains opaque.
+Multiline expressions, declaration headers and argument lists containing
+internal comments retain their token spellings and line breaks, with normalized
+indentation, so comments cannot hide following tokens or merge together.
+See [the comment-preservation example](../examples/comment_anchors.alg).
 The reference's handling of comments within incomplete expressions and the
 remaining syntax-recovery behavior are still pending.
 
@@ -525,6 +534,10 @@ on the return line; a bare return in a procedure or the main body receives
 `E005`. The following statement or terminator is retained for analysis.
 Diagnostic ordering when a file also contains malformed syntax remains pending.
 
+The formatter retains a bare `retorne` without inventing an expression, even
+when analysis would reject it. Calls written as bare statements retain that
+form; in particular, formatting does not turn `pi` into the rejected `pi()`.
+
 ## I/O
 
 `leia` consumes one complete line per destination. Character input preserves
@@ -605,6 +618,10 @@ Clock regressions, echo-host failures and chronometer output failures receive
 positioned `R008`; underlying error details are not rendered. See
 [the environment recordings](environment-controls-progress.md) for evidence
 and the distinction between elapsed-time samples and deterministic replay.
+The [qualified zero-elapsed-time probes](deterministic-qualification.md) compare
+start/stop, repeated start, and ignored tails through a fixed injected clock.
+Their host traces are project fixtures, and their reference transcripts remain
+unchanged; actual wall-clock timing is not required to reproduce zero.
 
 `timer expression` evaluates one expression and selects a delay in whole
 milliseconds. Zero, negative values and positive fractions below one millisecond
@@ -1015,6 +1032,12 @@ output statement without evaluating those arguments. Use bare `rand` for random
 fractions and `randi(n)` for exclusive-upper-bound integers. Neither API promises
 the reference's exact seeds or sequences.
 
+Recorded generated-input samples use explicit [domain replay contracts](random-replay-contracts.md).
+These check the exact input echo and repeated output representation, inclusive
+bounds, fractional grid and sample count for original and formatted programs.
+Reference observation bytes are retained; only the generated sample values may
+differ between runs. Unqualified output comparisons remain byte-exact.
+
 Missing random sources, invalid draws and unrepresentable random-input ranges
 return positioned `R004` without assigning or echoing the failed read. Builtin
 random failures continue using `R007`. File-input interaction and extreme bound
@@ -1050,6 +1073,14 @@ and reports incomplete input; `:sair` cancels the buffer and exits. Submitted
 source uses the same UTF-8, UTF-8 BOM, and Windows-1252 decoder as files.
 Lexical, syntax, semantic, runtime, and execution-budget failures clear the
 submitted buffer and permit another program; each program gets a fresh budget.
+
+Each submission also resets file and generated-input modes. A program's
+`arquivo` reads or records only its requested input and closes the file before
+the next prompt; exhaustion resumes the shared console stream. Generated input
+does not consume following source, and `aleatorio off` resumes console input.
+Headless echo, pause, debug, display, timer, and chronometer commands do not
+consume REPL source or input lines. A file-input failure preserves the next
+submission and contributes to the session's failure status.
 
 | Runtime code | Category |
 | --- | --- |
@@ -1112,6 +1143,17 @@ Formatting omits unnecessary operator parentheses while preserving precedence
 and association. The CLI checks the complete formatted source against the same
 byte and syntax limits before writing stdout. If formatting expands an accepted
 input beyond a limit, `fmt` reports `E900`, exits 1, and writes no source output.
+
+`portugol fmt file.alg` writes canonical UTF-8 source with LF line endings to
+stdout. `portugol fmt --check file.alg` writes no source and exits 0 if the
+original bytes are already canonical, or exits 1 with a message on stderr if
+formatting would change them. This comparison includes encoding, a leading BOM,
+and line endings. `portugol fmt -w file.alg` replaces the file only after the
+complete output parses successfully, preserves file permissions and symlinks,
+and produces no stdout. A second pass leaves the bytes unchanged. Malformed
+input and formatting limits exit 1 without overwriting the original; operational
+failures also exit 1. `--check` and `-w` are mutually exclusive, and invalid
+options or argument counts exit 2. Put options before the filename.
 
 Internally, `sema.Analyze` supplies immutable resolved types, vector layouts, and
 declaration/use bindings. `interp.New(Options).Run(program, info)` requires that

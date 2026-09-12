@@ -85,7 +85,11 @@ func TestCommandContracts(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			timeout := 5 * time.Second
+			if tt.name == "format output boundary" {
+				timeout = 30 * time.Second // Allow race-instrumented formatting of 4 MiB under load.
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
 			cmd := exec.CommandContext(ctx, executable, "-test.run=^TestCommandContracts$")
 			args, err := json.Marshal(append([]string{"portugol"}, tt.args...))

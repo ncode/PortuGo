@@ -181,6 +181,17 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		add(fmt.Errorf("unrecorded evidence"))
 	}
 	i := p.Implementation
+	if contract := i.Expected.RandomInput; contract != nil {
+		add(checkReview(root, &contract.Review))
+		if e.State != "recorded" || e.Accepted == nil || !*e.Accepted || p.OwnerGroup != 13 {
+			add(fmt.Errorf("random-input contract requires accepted random-input evidence"))
+		}
+		out, err := readArtifact(root, e.Normalized)
+		add(err)
+		if err == nil {
+			add(contract.compare(out))
+		}
+	}
 	switch i.State {
 	case "verified":
 		add(checkTests(root, i.Tests))

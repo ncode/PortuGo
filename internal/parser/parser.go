@@ -10,8 +10,12 @@ import (
 
 // Parse builds an AST from a token stream.
 func Parse(tokens []token.Token) (*ast.Program, []diag.Diagnostic) {
-	p := &parser{tokens: tokens}
+	original := tokens
+	tokens, comments := collectComments(tokens)
+	p := &parser{tokens: tokens, original: original}
 	prog := p.parseProgram()
+	prog.Comments = comments
+	prog.Fragments = p.fragments
 	if p.limited {
 		return nil, p.diags
 	}
@@ -22,11 +26,13 @@ func Parse(tokens []token.Token) (*ast.Program, []diag.Diagnostic) {
 }
 
 type parser struct {
-	tokens  []token.Token
-	pos     int
-	diags   []diag.Diagnostic
-	depth   int
-	limited bool
+	original  []token.Token
+	fragments map[token.Pos]ast.CommentFragment
+	tokens    []token.Token
+	pos       int
+	diags     []diag.Diagnostic
+	depth     int
+	limited   bool
 }
 
 func (p *parser) parseProgram() *ast.Program {
@@ -42,12 +48,15 @@ func (p *parser) parseProgram() *ast.Program {
 	}
 	prog.Name = p.advance().Text
 	prog.Config = p.parseConfig()
+	prog.Sections.Const = p.section(token.CONST)
 	prog.Consts = p.parseConstBlock()
+	prog.Sections.Type = p.section(token.TIPO)
 	prog.Types = p.parseTypeBlock()
 	if len(p.diags) != 0 {
 		return prog
 	}
 	if p.peek().Kind == token.VAR {
+		prog.Sections.Var = p.peek()
 		prog.Globals = p.parseVarBlock()
 	}
 	for p.peek().Kind == token.PROCEDIMENTO || p.peek().Kind == token.FUNCAO {
@@ -56,12 +65,13 @@ func (p *parser) parseProgram() *ast.Program {
 			return prog
 		}
 	}
+	prog.Begin = p.peek().Pos
 	if !p.match(token.INICIO) {
 		p.error(p.peek(), "expected inicio")
 		return prog
 	}
 	prog.Body = p.parseStmtList(stopSet(token.FIMALGORITMO))
-	p.expect(token.FIMALGORITMO, "expected fimalgoritmo")
+	prog.End = p.expect(token.FIMALGORITMO, "expected fimalgoritmo").Pos
 	if p.peek().Kind == token.SUFFIX {
 		prog.Suffix = p.advance()
 	}
@@ -89,6 +99,7 @@ func (p *parser) parseConstBlock() []ast.ConstDecl {
 		p.expect(token.EQL, "expected '=' after constant name")
 		value := p.parseExpr(0)
 		p.parseDeclarationSemicolon()
+		p.rememberFragment(name.Pos)
 		decls = append(decls, ast.ConstDecl{Name: name, Value: value})
 	}
 	if p.peek().Kind != token.VAR && p.peek().Kind != token.TIPO {
@@ -116,6 +127,7 @@ func (p *parser) parseVarDecl() ast.VarDecl {
 	p.expect(token.COLON, "expected ':' after variable name")
 	typ := p.parseType()
 	p.parseDeclarationSemicolon()
+	p.rememberFragment(first.Pos)
 	return ast.VarDecl{At: first.Pos, Names: names, Type: typ}
 }
 
@@ -212,19 +224,23 @@ func (p *parser) parseProcedure() *ast.ProcedureDecl {
 	start := p.expect(token.PROCEDIMENTO, "expected procedimento")
 	name := p.expect(token.IDENT, "expected procedure name")
 	params := p.parseParamList()
+	p.rememberFragment(start.Pos)
 	decl := &ast.ProcedureDecl{At: start.Pos, Name: name, Params: params}
 	decl.Config = p.parseConfig()
+	decl.Sections.Const = p.section(token.CONST)
 	decl.Consts = p.parseConstBlock()
+	decl.Sections.Type = p.section(token.TIPO)
 	decl.Types = p.parseTypeBlock()
 	if len(p.diags) != 0 {
 		return decl
 	}
 	if p.peek().Kind == token.VAR {
+		decl.Sections.Var = p.peek()
 		decl.Locals = p.parseVarBlock()
 	}
-	p.expect(token.INICIO, "expected inicio in procedure")
+	decl.Begin = p.expect(token.INICIO, "expected inicio in procedure").Pos
 	decl.Body = p.parseStmtList(stopSet(token.FIMPROCEDIMENTO))
-	p.expect(token.FIMPROCEDIMENTO, "expected fimprocedimento")
+	decl.End = p.expect(token.FIMPROCEDIMENTO, "expected fimprocedimento").Pos
 	return decl
 }
 
@@ -234,19 +250,23 @@ func (p *parser) parseFunction() *ast.FunctionDecl {
 	params := p.parseParamList()
 	p.expect(token.COLON, "expected ':' before function return type")
 	ret := p.parseCallableType()
+	p.rememberFragment(start.Pos)
 	decl := &ast.FunctionDecl{At: start.Pos, Name: name, Params: params, Return: ret}
 	decl.Config = p.parseConfig()
+	decl.Sections.Const = p.section(token.CONST)
 	decl.Consts = p.parseConstBlock()
+	decl.Sections.Type = p.section(token.TIPO)
 	decl.Types = p.parseTypeBlock()
 	if len(p.diags) != 0 {
 		return decl
 	}
 	if p.peek().Kind == token.VAR {
+		decl.Sections.Var = p.peek()
 		decl.Locals = p.parseVarBlock()
 	}
-	p.expect(token.INICIO, "expected inicio in function")
+	decl.Begin = p.expect(token.INICIO, "expected inicio in function").Pos
 	decl.Body = p.parseStmtList(stopSet(token.FIMFUNCAO))
-	p.expect(token.FIMFUNCAO, "expected fimfuncao")
+	decl.End = p.expect(token.FIMFUNCAO, "expected fimfuncao").Pos
 	return decl
 }
 
@@ -305,7 +325,15 @@ func (p *parser) parseStmtList(stops map[token.Kind]bool) []ast.Stmt {
 	return stmts
 }
 
-func (p *parser) parseStmt() ast.Stmt {
+func (p *parser) parseStmt() (stmt ast.Stmt) {
+	start := p.peek().Pos
+	defer func() {
+		switch stmt.(type) {
+		case nil, *ast.IfStmt, *ast.SwitchStmt, *ast.WhileStmt, *ast.RepeatStmt, *ast.ForStmt:
+		default:
+			p.rememberFragment(start)
+		}
+	}()
 	if !p.enter() {
 		return nil
 	}
@@ -325,7 +353,7 @@ func (p *parser) parseStmt() ast.Stmt {
 		p.skipLine()
 		return stmt
 	case token.RAND:
-		call := &ast.CallExpr{Name: p.advance()}
+		call := &ast.CallExpr{Name: p.advance(), Bare: true}
 		p.skipLine()
 		return &ast.CallStmt{Call: call}
 	case token.ALEATORIO:
@@ -400,7 +428,7 @@ func (p *parser) parseIdentStmt() ast.Stmt {
 		return &ast.CallStmt{Call: call}
 	}
 	if p.peekN(1).Kind != token.ASSIGN && p.peekN(1).Kind != token.LBRACK && p.peekN(1).Kind != token.DOT {
-		return &ast.CallStmt{Call: &ast.CallExpr{Name: p.advance()}}
+		return &ast.CallStmt{Call: &ast.CallExpr{Name: p.advance(), Bare: true}}
 	}
 	target := p.parseDesignator()
 	at := target.Start()
@@ -414,19 +442,23 @@ func (p *parser) parseIf() ast.Stmt {
 	start := p.expect(token.SE, "expected se")
 	cond := p.parseExpr(0)
 	p.expect(token.ENTAO, "expected entao")
+	p.rememberFragment(start.Pos)
 	thenBody := p.parseStmtList(stopSet(token.SENAO, token.FIMSE))
 	var elseBody []ast.Stmt
-	if p.match(token.SENAO) {
+	var elseAt token.Pos
+	if p.peek().Kind == token.SENAO {
+		elseAt = p.advance().Pos
 		elseBody = p.parseStmtList(stopSet(token.FIMSE))
 	}
-	p.expect(token.FIMSE, "expected fimse")
-	return &ast.IfStmt{At: start.Pos, Cond: cond, Then: thenBody, Else: elseBody}
+	end := p.expect(token.FIMSE, "expected fimse").Pos
+	return &ast.IfStmt{At: start.Pos, Cond: cond, Then: thenBody, Else: elseBody, ElseAt: elseAt, End: end}
 }
 
 func (p *parser) parseSwitch() ast.Stmt {
 	start := p.expect(token.ESCOLHA, "expected escolha")
 	x := p.parseExpr(0)
 	p.match(token.FACA)
+	p.rememberFragment(start.Pos)
 	sw := &ast.SwitchStmt{At: start.Pos, X: x}
 	for p.peek().Kind != token.FIMESCOLHA && p.peek().Kind != token.EOF {
 		switch p.peek().Kind {
@@ -437,18 +469,20 @@ func (p *parser) parseSwitch() ast.Stmt {
 				labels = append(labels, p.parseCaseLabel())
 			}
 			p.match(token.COLON)
+			p.rememberFragment(cstart.Pos)
 			body := p.parseStmtList(stopSet(token.CASO, token.OUTROCASO, token.FIMESCOLHA))
 			sw.Cases = append(sw.Cases, ast.CaseClause{At: cstart.Pos, Labels: labels, Body: body})
 		case token.OUTROCASO:
-			p.advance()
+			sw.DefaultAt = p.advance().Pos
 			p.match(token.COLON)
+			p.rememberFragment(sw.DefaultAt)
 			sw.Default = p.parseStmtList(stopSet(token.FIMESCOLHA))
 		default:
 			p.error(p.peek(), "expected caso or fimescolha")
 			p.advance()
 		}
 	}
-	p.expect(token.FIMESCOLHA, "expected fimescolha")
+	sw.End = p.expect(token.FIMESCOLHA, "expected fimescolha").Pos
 	return sw
 }
 
@@ -469,17 +503,19 @@ func (p *parser) parseWhile() ast.Stmt {
 	start := p.expect(token.ENQUANTO, "expected enquanto")
 	cond := p.parseExpr(0)
 	p.expect(token.FACA, "expected faca")
+	p.rememberFragment(start.Pos)
 	body := p.parseStmtList(stopSet(token.FIMENQUANTO))
-	p.expect(token.FIMENQUANTO, "expected fimenquanto")
-	return &ast.WhileStmt{At: start.Pos, Cond: cond, Body: body}
+	end := p.expect(token.FIMENQUANTO, "expected fimenquanto").Pos
+	return &ast.WhileStmt{At: start.Pos, Cond: cond, Body: body, End: end}
 }
 
 func (p *parser) parseRepeat() ast.Stmt {
 	start := p.expect(token.REPITA, "expected repita")
 	body := p.parseStmtList(stopSet(token.ATE))
-	p.expect(token.ATE, "expected ate")
+	end := p.expect(token.ATE, "expected ate").Pos
 	cond := p.parseExpr(0)
-	return &ast.RepeatStmt{At: start.Pos, Body: body, Cond: cond}
+	p.rememberFragment(end)
+	return &ast.RepeatStmt{At: start.Pos, Body: body, Cond: cond, End: end}
 }
 
 func (p *parser) parseFor() ast.Stmt {
@@ -494,9 +530,10 @@ func (p *parser) parseFor() ast.Stmt {
 		step = p.parseExpr(0)
 	}
 	p.expect(token.FACA, "expected faca")
+	p.rememberFragment(start.Pos)
 	body := p.parseStmtList(stopSet(token.FIMPARA))
-	p.expect(token.FIMPARA, "expected fimpara")
-	return &ast.ForStmt{At: start.Pos, Name: name, From: from, To: to, Step: step, Body: body}
+	end := p.expect(token.FIMPARA, "expected fimpara").Pos
+	return &ast.ForStmt{At: start.Pos, Name: name, From: from, To: to, Step: step, Body: body, End: end}
 }
 
 func (p *parser) parseRead() ast.Stmt {

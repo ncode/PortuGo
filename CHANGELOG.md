@@ -2,11 +2,41 @@
 
 ## Unreleased
 
+- Preserve bare return and call syntax during formatting, including bare `pi`
+  statements, and use canonical operator spellings. Normalize repeated carriage
+  returns before LF in ignored suffixes in one pass, retaining standalone
+  carriage returns and other opaque text.
+
 - Preserve original-byte source positions through UTF-8 BOM removal and
   Windows-1252 decoding, including CLI and REPL diagnostics at every stage.
 
-- Add explicit project-test trace mappings for AST positions, canonical printing
-  and formatter modes while retaining their unfinished implementation status.
+- Preserve positioned comments through lexing, parsing and canonical printing,
+  including empty declaration sections and conditional/default branches, nested
+  block terminators, header/directive notes and decoded Windows-1252 text.
+
+- Add `fmt --check` and `fmt -w`, comparing original encoded bytes and validating
+  complete canonical output before replacement. Preserve permissions, symlinks,
+  and malformed files; cover stdout, exit statuses and repeated formatting in
+  subprocess tests.
+
+- Verify shared REPL input across file reading, recording, exhaustion, generated
+  input, echo and environment commands, including recovery after file errors
+  and independent input for the next submitted program.
+
+- Qualify seventeen generated-input recordings with explicit numeric/text domain
+  contracts, exact echo/output formatting, precision grids and sample counts.
+  Validate original and formatted programs with forced endpoints and multiple
+  seeds while preserving recorded evidence and exact deterministic comparisons.
+
+- Qualify ten existing reference probes with focused tests: ignored suffixes,
+  reference-parameter type changes, five syntax rejections before output, and
+  three chronometer transcripts replayed under explicit zero-elapsed-time
+  conditions. Preserve all original recordings.
+
+- Verify the project contracts for original-byte AST positions, retained comment
+  anchors, canonical printing and formatter modes with focused regression tests.
+  Keep their project evidence separate from remaining reference language and
+  host compatibility work.
 
 - Preserve opaque text after `fimalgoritmo` during formatting and ignore malformed
   source on later physical lines. Keep lexical validation on the terminator's
