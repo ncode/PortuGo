@@ -481,7 +481,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   immediately. Source-size and host-diagnostic recovery are also covered by 16.6.
 - [x] 16.5 Automatically analyze and run as soon as a real terminating `fimalgoritmo` completes the accumulated program, then reset only per-program state.
 - [x] 16.6 Recover to a clean primary prompt after decoding, syntax, semantic, runtime, resource-limit, or host diagnostics; reset each submitted program's budget without consuming the next program's buffered input.
-- [ ] 16.7 Verify `leia`, `arquivo`, random-input mode, echo, and environment commands consume only their intended shared input and leave the next REPL program intact.
+- [x] 16.7 Verify `leia`, `arquivo`, random-input mode, echo, and environment commands consume only their intended shared input and leave the next REPL program intact.
 - [ ] 16.8 Complete formatter coverage for every confirmed AST form from groups 4–15, retaining the group 4 comments/anchors and ignored suffixes across declarations, calls, environment commands, and any accepted ranges/records.
 - [x] 16.9 Add formatter standard-output, check, in-place, idempotence, malformed-no-overwrite, and parse-print-parse subprocess tests.
 - [ ] 16.10 Update REPL/formatter documentation, `docs/language.md`, examples, and `CHANGELOG.md` with submission, blank-line, recovery, shared-input, and formatting behavior.

@@ -14,6 +14,10 @@
   and malformed files; cover stdout, exit statuses and repeated formatting in
   subprocess tests.
 
+- Verify shared REPL input across file reading, recording, exhaustion, generated
+  input, echo and environment commands, including recovery after file errors
+  and independent input for the next submitted program.
+
 - Add explicit project-test trace mappings for AST positions, canonical printing
   and formatter modes while retaining their unfinished implementation status.
 

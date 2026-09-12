@@ -1058,6 +1058,14 @@ source uses the same UTF-8, UTF-8 BOM, and Windows-1252 decoder as files.
 Lexical, syntax, semantic, runtime, and execution-budget failures clear the
 submitted buffer and permit another program; each program gets a fresh budget.
 
+Each submission also resets file and generated-input modes. A program's
+`arquivo` reads or records only its requested input and closes the file before
+the next prompt; exhaustion resumes the shared console stream. Generated input
+does not consume following source, and `aleatorio off` resumes console input.
+Headless echo, pause, debug, display, timer, and chronometer commands do not
+consume REPL source or input lines. A file-input failure preserves the next
+submission and contributes to the session's failure status.
+
 | Runtime code | Category |
 | --- | --- |
 | R001 | Type or coercion; missing semantic information |
