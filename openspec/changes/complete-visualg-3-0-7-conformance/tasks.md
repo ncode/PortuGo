@@ -590,8 +590,10 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   continuation. Nine new controls qualify readable/empty files, read-data
   denial, sharing locks and logical file input during random mode. Platform
   filesystem regressions cover denied/locked continuation and unchanged bytes;
-  six constrained probes remain pending because generic replay cannot recreate
-  their access restrictions. Automated candidate ACL coverage is also pending.
+  native Windows execution now verifies the three sharing-lock probes. The
+  three ACL-denied probes remain pending because generic replay and the
+  privileged lab account cannot recreate that restriction. Automated candidate
+  ACL coverage is also pending.
 - [x] 14.2 Add typed AST, parser, canonical-printer, and semantic rules for every oracle-confirmed `arquivo` form and path expression.
 - [x] 14.3 Resolve relative file paths against `interp.Options.WorkingDir`, reject invalid resolution safely, and keep tests isolated in temporary directories.
 - [x] 14.4 Implement the file-input mode with shared buffering and the exact Windows-1252, newline, token/line, conversion, and consecutive-read behavior.
@@ -602,9 +604,10 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   file and retain their exact output before and after formatting. Existing
   regular-file read denial and Windows sharing violations now leave file mode
   inactive, matching the new no-read, console and fixed-random observations.
-  Other failures retain positioned guards. Faithful constrained replay and
-  automated candidate ACL coverage remain pending, so this broader task stays
-  open rather than claiming every permission or path arrangement is qualified.
+  Native Windows execution verifies the sharing-lock continuation cases. Other
+  failures retain positioned guards. Faithful ACL-denied replay and automated
+  candidate ACL coverage remain pending, so this broader task stays open rather
+  than claiming every permission or path arrangement is qualified.
 - [x] 14.6 Implement fallback recording and generated-file byte behavior, including exclusive creation, recorded 128-byte buffering, replacement and partial-failure cleanup; validate each input conversion and encoding before changing its recording buffer.
 
   Reference controls establish partial flushed prefixes rather than whole-file
