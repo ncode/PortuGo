@@ -2,7 +2,7 @@ package token
 
 import "sort"
 
-// Pos is a byte offset in a decoded source file.
+// Pos is a byte offset in the original source file.
 type Pos int
 
 // NoPos is the zero value for an unknown source position.

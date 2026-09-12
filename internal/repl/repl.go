@@ -129,11 +129,11 @@ func submissionComplete(toks []token.Token) bool {
 }
 
 func runSource(src string, i *interp.Interpreter, errout io.Writer) (bool, error) {
-	decoded, err := source.Decode([]byte(src))
+	decoded, err := source.DecodeFile("<repl>", []byte(src))
 	if err != nil {
 		return false, err
 	}
-	file, toks, lexDiags := lexer.Scan("<repl>", decoded)
+	file, toks, lexDiags := lexer.ScanFile(decoded)
 	if len(lexDiags) > 0 {
 		diag.Render(errout, file, lexDiags)
 		return false, nil

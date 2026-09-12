@@ -128,11 +128,11 @@ func usage() {
 }
 
 func parsedProgram(path string) (*token.File, *ast.Program, bool, error) {
-	src, err := source.ReadFile(path)
+	src, err := source.LoadFile(path)
 	if err != nil {
 		return nil, nil, false, err
 	}
-	file, toks, lexDiags := lexer.Scan(path, src)
+	file, toks, lexDiags := lexer.ScanFile(src)
 	if diag.HasErrors(lexDiags) {
 		diag.Render(os.Stderr, file, lexDiags)
 		return file, nil, false, nil
