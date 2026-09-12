@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Allow 30-second test watchdogs for full-size encoded-source decoding and
+  formatter boundary checks under race instrumentation. Keep five-second
+  limits for smaller adversarial cases and fail every watchdog expiration.
+
+- Keep syntax and AST resource-limit diagnostic spans within the source, including
+  at EOF. Expand frontend fuzz and subprocess checks for encoded/truncated input,
+  retained token text, formatting idempotence and controlled size/depth rejection.
+
 - Preserve bare return and call syntax during formatting, including bare `pi`
   statements, and use canonical operator spellings. Normalize repeated carriage
   returns before LF in ignored suffixes in one pass, retaining standalone

@@ -5,6 +5,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/ncode/portugol-go/internal/diag"
+	"github.com/ncode/portugol-go/internal/source"
 	"github.com/ncode/portugol-go/internal/testprocess"
 	"github.com/ncode/portugol-go/internal/token"
 )
@@ -105,6 +107,10 @@ func FuzzLexer(f *testing.F) {
 		"\"unterminated\nnext",
 		"1..10 1.5 1e+2 1e-",
 		"\x00\xff\xc3",
+		"\xef\xbb\xbfalgoritmo \"a\xe7\xe3o\"\r\rinicio\r\r\nfimalgoritmo\n",
+		"algoritmo \"a\xe7\xe3o\"\r\r\ninicio\r\r\n// a\xe7\xe3o\r\r\nfimalgoritmo\n",
+		"\"broken\r\r\nnext \"broken//text\r\r\nnext",
+		"algoritmo \"x\"\ninicio\nfimalgoritmo\r\r\n\"ignored",
 	} {
 		f.Add(seed)
 	}
@@ -112,19 +118,37 @@ func FuzzLexer(f *testing.F) {
 		if len(src) > testprocess.MaxSourceBytes {
 			t.Skip("outside 64 KiB fuzz profile")
 		}
-		_, toks, _ := Scan("fuzz.alg", src)
-		if len(toks) == 0 || toks[len(toks)-1].Kind != token.EOF {
-			t.Fatal("missing final EOF token")
+		_, toks, ds := Scan("fuzz.alg", src)
+		checkScanPositions(t, src, len(src), toks, ds)
+		decoded, err := source.DecodeFile("fuzz.alg", []byte(src))
+		if err != nil {
+			t.Fatal(err)
 		}
-		for i, tok := range toks {
-			if tok.Pos < 0 || int(tok.Pos) > len(src) {
-				t.Fatalf("token position %d outside source", tok.Pos)
-			}
-			if i > 0 && tok.Pos < toks[i-1].Pos {
-				t.Fatal("token positions are not monotonic")
-			}
-		}
+		_, toks, ds = ScanFile(decoded)
+		checkScanPositions(t, decoded.Text, len(src), toks, ds)
 	})
+}
+
+func checkScanPositions(t *testing.T, decoded string, size int, tokens []token.Token, ds []diag.Diagnostic) {
+	t.Helper()
+	if len(tokens) == 0 || tokens[len(tokens)-1].Kind != token.EOF || int(tokens[len(tokens)-1].Pos) != size {
+		t.Fatal("missing EOF at the original source boundary")
+	}
+	var raw strings.Builder
+	for i, tok := range tokens {
+		if tok.Pos < 0 || int(tok.Pos) > size || i > 0 && tok.Pos < tokens[i-1].Pos {
+			t.Fatalf("token %d has an invalid source position %d", i, tok.Pos)
+		}
+		raw.WriteString(tok.Raw)
+	}
+	if raw.String() != decoded {
+		t.Fatal("raw token fragments lost or duplicated decoded source bytes")
+	}
+	for _, d := range ds {
+		if d.Code == "" || d.Pos < 0 || int(d.Pos) > size || d.End != token.NoPos && (d.End < d.Pos || int(d.End) > size) {
+			t.Fatalf("invalid diagnostic span: %s [%d,%d)", d.Code, d.Pos, d.End)
+		}
+	}
 }
 
 func TestCommentLinePositions(t *testing.T) {

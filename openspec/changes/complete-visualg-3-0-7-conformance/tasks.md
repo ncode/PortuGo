@@ -145,7 +145,13 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   normalize in one pass, including comments, fragments and opaque suffixes;
   standalone carriage returns remain intact. Syntax and comment comparisons
   verify the result independently of original-byte positions.
-- [ ] 4.11 Expand lexer/parser fuzz and subprocess adversarial cases with newline, encoding, comment, literal, deep-nesting, truncation, and oversized inputs; assert controlled limit diagnostics and fail on watchdog expiration.
+- [x] 4.11 Expand lexer/parser fuzz and subprocess adversarial cases with newline, encoding, comment, literal, deep-nesting, truncation, and oversized inputs; assert controlled limit diagnostics and fail on watchdog expiration.
+
+  Fuzzing now checks original-byte diagnostic spans, lossless token text and
+  formatting idempotence through encoded input. Subprocess checks reject hangs
+  and cover every byte truncation of mixed newline/encoding programs plus the
+  exact source-size boundary and one beyond. A minimized fuzz regression pins
+  the syntax-limit diagnostic at EOF without an out-of-range end position.
 - [ ] 4.12 Update `docs/language.md`, grammar examples, and `CHANGELOG.md` with spellings, newline rules, retained comments/suffixes, source/depth limits, and breaking rejections.
 - [x] 4.13 Run focused source/lexer/parser/sema/printer tests and fuzz smoke tests, then the full build, lint, ordinary, race, incremental corpus, and strict OpenSpec suites.
 - [x] 4.14 Mark every completed 4.x task immediately, commit the focused grammar changes, push the next stacked branch, and open its draft PR before group 5.

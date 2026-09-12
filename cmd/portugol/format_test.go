@@ -15,6 +15,11 @@ import (
 
 func commandOutput(t *testing.T, args ...string) (string, string, int) {
 	t.Helper()
+	return commandOutputWithTimeout(t, 5*time.Second, args...)
+}
+
+func commandOutputWithTimeout(t *testing.T, timeout time.Duration, args ...string) (string, string, int) {
+	t.Helper()
 	executable, err := os.Executable()
 	if err != nil {
 		t.Fatal(err)
@@ -23,7 +28,7 @@ func commandOutput(t *testing.T, args ...string) (string, string, int) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, executable, "-test.run=^TestCommandContracts$")
 	cmd.Env = append(os.Environ(), "PORTUGOL_COMMAND_ARGS="+string(encoded))
@@ -136,8 +141,12 @@ func TestFormatterPreservesResourceLimitedFiles(t *testing.T) {
 			if err := os.WriteFile(path, []byte(tt.source), 0600); err != nil {
 				t.Fatal(err)
 			}
+			timeout := 5 * time.Second
+			if tt.name == "formatted size" {
+				timeout = 30 * time.Second // Allow race-instrumented formatting of 4 MiB under load.
+			}
 			for _, flag := range []string{"--check", "-w"} {
-				out, stderr, exit := commandOutput(t, "fmt", flag, path)
+				out, stderr, exit := commandOutputWithTimeout(t, timeout, "fmt", flag, path)
 				if exit != 1 || out != "" || !strings.Contains(stderr, "E900:") {
 					t.Errorf("%s: exit=%d stdout bytes=%d stderr=%q", flag, exit, len(out), stderr)
 				}

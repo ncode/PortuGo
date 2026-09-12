@@ -2,7 +2,6 @@ package parser
 
 import (
 	"bytes"
-	"io"
 	"strings"
 	"testing"
 
@@ -12,6 +11,7 @@ import (
 	"github.com/ncode/portugol-go/internal/sema"
 	"github.com/ncode/portugol-go/internal/source"
 	"github.com/ncode/portugol-go/internal/testprocess"
+	"github.com/ncode/portugol-go/internal/token"
 )
 
 func TestPowerPrecedence(t *testing.T) {
@@ -97,6 +97,9 @@ func FuzzParser(f *testing.F) {
 		"algoritmo \"x\"\ninicio\nescolha 2\ncaso 1 ate 3, 5\nescreval(1)\nfimescolha\nfimalgoritmo",
 		"algoritmo \"x\"\ninicio\nlimpatela()\nmudacor(\"amarelo\",\"frente\", ignored)\nfimalgoritmo",
 		"\xff\x00\"",
+		"\xef\xbb\xbfalgoritmo \"a\xe7\xe3o\"\r\r\ninicio\r\r\nfimalgoritmo\n",
+		"algoritmo \"x\"\ninicio\nescreval(1 + // first\r\r\n2) // last\nfimalgoritmo\n\"ignored",
+		"algoritmo \"x\"\nvar\nprocedimento P(a: inteiro; // first\nb: inteiro)\ninicio\nfimprocedimento\ninicio\nfimalgoritmo",
 	} {
 		f.Add(seed)
 	}
@@ -104,19 +107,49 @@ func FuzzParser(f *testing.F) {
 		if len(src) > testprocess.MaxSourceBytes {
 			t.Skip("outside 64 KiB fuzz profile")
 		}
-		decoded, err := source.Decode([]byte(src))
+		decoded, err := source.DecodeFile("fuzz.alg", []byte(src))
 		if err != nil {
 			t.Fatal(err)
 		}
-		_, toks, lexDiags := lexer.Scan("fuzz.alg", decoded)
+		_, toks, lexDiags := lexer.ScanFile(decoded)
 		prog, parseDiags := Parse(toks)
-		if len(lexDiags)+len(parseDiags) == 0 {
-			sema.Analyze(prog)
-			if err := ast.Fprint(io.Discard, prog); err != nil {
-				t.Fatal(err)
-			}
+		checkDiagnosticPositions(t, len(src), lexDiags, parseDiags)
+		if len(lexDiags)+len(parseDiags) != 0 {
+			return
+		}
+		_, ds := sema.Analyze(prog)
+		checkDiagnosticPositions(t, len(src), ds)
+		var first, second bytes.Buffer
+		if err := ast.Fprint(&first, prog); err != nil {
+			t.Fatal(err)
+		}
+		_, toks, lexDiags = lexer.Scan("formatted.alg", first.String())
+		reparsed, parseDiags := Parse(toks)
+		checkDiagnosticPositions(t, first.Len(), lexDiags, parseDiags)
+		if len(lexDiags) == 0 && len(parseDiags) == 1 && parseDiags[0].Code == diag.EResource {
+			return // The CLI rejects output that exceeds a structural limit.
+		}
+		if len(lexDiags)+len(parseDiags) != 0 {
+			t.Fatal("formatting produced invalid syntax")
+		}
+		if err := ast.Fprint(&second, reparsed); err != nil {
+			t.Fatal(err)
+		}
+		if first.String() != second.String() {
+			t.Fatal("formatting is not idempotent")
 		}
 	})
+}
+
+func checkDiagnosticPositions(t *testing.T, size int, groups ...[]diag.Diagnostic) {
+	t.Helper()
+	for _, ds := range groups {
+		for _, d := range ds {
+			if d.Code == "" || d.Pos < 0 || int(d.Pos) > size || d.End != token.NoPos && (d.End < d.Pos || int(d.End) > size) {
+				t.Fatalf("invalid diagnostic span: %s [%d,%d)", d.Code, d.Pos, d.End)
+			}
+		}
+	}
 }
 
 func TestFuzzAdversarial(t *testing.T) {
@@ -128,8 +161,16 @@ func TestFuzzAdversarial(t *testing.T) {
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			testprocess.Run(t, func() {
-				_, toks, _ := lexer.Scan("adversarial.alg", tt.src)
-				Parse(toks)
+				_, toks, lexDiags := lexer.Scan("adversarial.alg", tt.src)
+				_, parseDiags := Parse(toks)
+				checkDiagnosticPositions(t, len(tt.src), lexDiags, parseDiags)
+				want := diag.EResource
+				if tt.name == "recovery delimiters" {
+					want = diag.EParse
+				}
+				if len(lexDiags) != 0 || len(parseDiags) == 0 || parseDiags[0].Code != want {
+					t.Fatalf("missing controlled %s rejection", want)
+				}
 			})
 		})
 	}

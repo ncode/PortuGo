@@ -692,7 +692,7 @@ func (p *parser) enter() bool {
 	}
 	if p.depth == ast.MaxDepth {
 		pos := p.peek().Pos
-		p.diags = append(p.diags, diag.Diagnostic{Code: diag.EResource, Pos: pos, End: pos + 1, Message: "syntax nesting limit exceeded"})
+		p.diags = append(p.diags, diag.Diagnostic{Code: diag.EResource, Pos: pos, End: pos, Message: "syntax nesting limit exceeded"})
 		p.limited = true
 		p.pos = len(p.tokens)
 		return false

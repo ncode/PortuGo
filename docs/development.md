@@ -37,9 +37,12 @@ go test ./internal/parser -run=TestFuzz -fuzz=FuzzParser -fuzztime=30s -timeout=
 The formatter check reports files without changing them. Ordinary tests run
 all committed fuzz seeds. Fuzz campaigns use a 64 KiB source profile; larger
 generated inputs are outside that profile. Adversarial lexer/parser cases run
-in child test processes with five-second watchdogs. Crashes and watchdog
-expiration fail the test. CI uploads newly discovered failing fuzz inputs;
-reduce and commit them as regression seeds after fixing the cause.
+in child test processes with five-second watchdogs. Explicit 30-second budgets
+cover full-size encoded-source decoding and selected formatter boundary checks,
+allowing race instrumentation under load. Oversized-source rejection and depth
+cases retain five seconds. Crashes and watchdog expiration fail the test, even
+if a child printed `PASS` before exiting. CI uploads newly discovered failing
+fuzz inputs; reduce and commit them as regression seeds after fixing the cause.
 
 Runtime fixtures compare exact bytes with `internal/golden`. Missing `.out`
 files fail. To intentionally regenerate those fixtures, run

@@ -1200,9 +1200,14 @@ substitute for language recordings or establish complete reference conformance.
 Runtime fixture output is compared byte for byte, including decimal separators,
 whitespace, and newlines. Git preserves committed fixture bytes on every
 platform, including Windows. Lexer/parser fuzz tests use a 64 KiB generated-source
-profile and adversarial cases have failing subprocess watchdogs. This profile
-is the smaller generated-input test profile. The source, traversal, and
-execution safeguards above also apply to ordinary use.
+profile and adversarial cases have failing subprocess watchdogs. Fuzzing checks
+lossless token text, bounded original-byte positions and canonical printing
+idempotence, including BOM, Windows-1252, newline, comment and literal inputs.
+Subprocess cases cover every byte truncation of encoded programs, deep nesting,
+flat expressions and the exact source-size boundary plus one byte. Syntax and
+AST limit diagnostics use point spans, including at EOF, without extending beyond source.
+The smaller generated-input test profile does not replace the source, traversal,
+and execution safeguards above, which also apply to ordinary use.
 
 See [development checks](development.md) and the
 [quality baseline](quality-baseline.md) for commands and measured coverage.

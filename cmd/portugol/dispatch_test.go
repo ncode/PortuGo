@@ -86,8 +86,9 @@ func TestCommandContracts(t *testing.T) {
 				t.Fatal(err)
 			}
 			timeout := 5 * time.Second
-			if tt.name == "format output boundary" {
-				timeout = 30 * time.Second // Allow race-instrumented formatting of 4 MiB under load.
+			switch tt.name {
+			case "format input boundary", "format output boundary", "format output limit":
+				timeout = 30 * time.Second // Allow race-instrumented processing of 4 MiB under load.
 			}
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
