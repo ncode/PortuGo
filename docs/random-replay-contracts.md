@@ -46,6 +46,6 @@ supported.
 
 `TestRecordedRandomInputDomains` checks all seventeen original and formatted
 programs using both forced generator endpoints and sixteen deterministic seeds.
-Contract tests reject wrong types, bounds, precision, repeated values, spacing,
-line counts, invalid specifications, and attempts to replace recorded evidence.
+Contract tests reject wrong types, bounds, precision, echo/output disagreement,
+spacing, line counts, invalid specifications, and attempts to replace recorded evidence.
 The ordinary subprocess replay uses the production CLI and its own generator.
