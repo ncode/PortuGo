@@ -386,13 +386,19 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
 ## 5. Declaration and Call Compatibility
 
-- [ ] 5.1 Add failing parser, semantic, and runtime cases for parameterless declarations, optional parentheses, bare procedure calls, invalid call contexts, recorded `var` conversions and copy-back, argument evaluation order, global lexical scope, shadowing, and recursion visibility.
+- [x] 5.1 Add failing parser, semantic, and runtime cases for parameterless declarations, optional parentheses, bare procedure calls, invalid call contexts, recorded `var` conversions and copy-back, argument evaluation order, global lexical scope, shadowing, and recursion visibility.
+
+  The call-form golden and recorded parser, semantic, and runtime fixtures
+  cover parameterless declarations, optional and bare calls, invalid call
+  contexts, scalar `var` conversion and copy-back, argument evaluation order,
+  lexical globals, allowed shadowing, and direct or mutual recursive frames.
+  Call variants without direct qualification remain pending under 5.4.
 - [x] 5.2 Parse every oracle-confirmed procedure/function declaration and call form while retaining enough syntax information for canonical printing.
 
   The call-form golden covers grouped value/reference parameters, optional and
   bare procedure calls, parenthesized calls, and function expressions through
   parse, print, and an idempotent reparsing pass. Omitted multi-parameter forms
-  that remain unqualified stay pending under 5.1 and 5.4.
+  that remain unqualified stay pending under 5.4.
 - [x] 5.3 Resolve call statements versus expression calls and ordinary designators according to the recorded ambiguity rules.
 
   Parameterless declarations, bare calls, callable-name priority, separate
