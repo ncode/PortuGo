@@ -37,8 +37,17 @@ type Value struct {
 	RealFallback bool
 	// NumericAbsence retains the domain origin of a VoidValue.
 	NumericAbsence bool
-	Vec            *Vector
-	Rec            *Record
+	// SyntaxAbsence retains a recovered malformed-output operand through arithmetic.
+	SyntaxAbsence bool
+	// ConvertedAbsence retains a generic no-value origin after an optional
+	// numeric parameter converts it to zero.
+	ConvertedAbsence bool
+	// MissingArgument marks zero storage created for an accepted empty numeric
+	// value-parameter call until the formal is assigned or propagated as a
+	// function result.
+	MissingArgument bool
+	Vec             *Vector
+	Rec             *Record
 }
 
 // Zero returns the zero value for a type.

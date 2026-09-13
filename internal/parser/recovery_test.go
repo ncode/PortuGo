@@ -61,7 +61,10 @@ func TestReturnValueDoesNotCrossLine(t *testing.T) {
 	}
 	// The following line is also invalid; inspect recovery without fixing the
 	// precedence between syntax diagnostics and the earlier missing value here.
-	prog, _ := Parse(tokens)
+	prog, parseDiags := Parse(tokens)
+	if len(parseDiags) != 0 {
+		t.Fatalf("parse diagnostics = %v, want semantic missing-return diagnostic", parseDiags)
+	}
 	if prog == nil || len(prog.Subs) != 1 {
 		t.Fatal("missing function after recovery")
 	}
@@ -120,5 +123,60 @@ func TestWriteTailRejections(t *testing.T) {
 				t.Fatalf("diagnostics = %v, want P001 on line 3", ds)
 			}
 		})
+	}
+}
+
+func TestWriteOperandLineRecovery(t *testing.T) {
+	for _, ending := range []string{"\n", "\r\n", "\r\r\n"} {
+		for _, command := range []string{"escreva", "escreval"} {
+			src := strings.Join([]string{`algoritmo "write recovery"`, "inicio", command + "(1 +", "2)", "escreval(3)", "(4)", "fimalgoritmo", ""}, ending)
+			file, tokens, ds := lexer.Scan("source.alg", src)
+			if len(ds) != 0 {
+				t.Fatal(ds)
+			}
+			prog, ds := Parse(tokens)
+			if len(ds) != 2 || ds[0].Code != diag.EParse || file.Position(ds[0].Pos).Line != 3 || ds[1].Code != diag.EParse || file.Position(ds[1].Pos).Line != 6 {
+				t.Fatalf("diagnostics = %v, want P001 on lines 3 and 6", ds)
+			}
+			if prog == nil || len(prog.Body) != 2 || file.Position(prog.Body[1].Start()).Line != 5 {
+				t.Fatal("recovery lost the following write")
+			}
+		}
+	}
+}
+
+func TestCommentTruncatedWriteRecovery(t *testing.T) {
+	for _, ending := range []string{"\n", "\r\n", "\r\r\n"} {
+		src := strings.Join([]string{`algoritmo "comment recovery"`, "inicio",
+			`escreval(1 { note } + 2)`, `escreval(3)`, `(4 + 5)`, "fimalgoritmo", ""}, ending)
+		file, tokens, ds := lexer.Scan("source.alg", src)
+		if len(ds) != 0 {
+			t.Fatal(ds)
+		}
+		prog, ds := Parse(tokens)
+		if len(ds) != 1 || ds[0].Code != diag.EParse || file.Position(ds[0].Pos).Line != 5 {
+			t.Fatalf("diagnostics = %v, want the independent error on line 5", ds)
+		}
+		if len(prog.Body) != 2 {
+			t.Fatal("recovery lost the following valid write")
+		}
+		if first, ok := prog.Body[0].(*ast.WriteStmt); !ok || file.Position(first.Unclosed).Line != 3 {
+			t.Fatal("missing deferred closing-delimiter diagnostic on line 3")
+		}
+		if _, ok := prog.Body[1].(*ast.WriteStmt); !ok {
+			t.Fatal("recovery did not preserve the write")
+		}
+	}
+}
+
+func TestRecoveredExpressionChainLimit(t *testing.T) {
+	src := "algoritmo \"recovery limit\"\ninicio\nescreval(\"" + strings.Repeat("x", 1<<16) + "\"" + strings.Repeat(" /* 1 */", 512) + ")\nfimalgoritmo\n"
+	_, tokens, ds := lexer.Scan("source.alg", src)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	prog, ds := Parse(tokens)
+	if prog != nil || len(ds) != 1 || ds[0].Code != diag.EResource {
+		t.Fatalf("uncontrolled recovery chain: %v", ds)
 	}
 }

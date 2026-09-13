@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"io"
+	"math"
 	"strconv"
 	"strings"
 	"testing"
@@ -183,6 +184,59 @@ func TestCallAndValueLimits(t *testing.T) {
 			})
 		}
 	})
+}
+
+func TestRuntimeLimitDiagnosticsArePositioned(t *testing.T) {
+	testprocess.Run(t, func() {
+		for _, tt := range []struct {
+			name, source, marker string
+			options              Options
+			code                 diag.Code
+		}{
+			{
+				name:    "step budget",
+				source:  "algoritmo \"loop\"\ninicio\nenquanto verdadeiro faca\nfimenquanto\nfimalgoritmo",
+				marker:  "enquanto",
+				options: Options{MaxSteps: 1},
+				code:    diag.RLoop,
+			},
+			{
+				name:   "call depth",
+				source: "algoritmo \"call\"\nprocedimento p()\ninicio\np()\nfimprocedimento\ninicio\np()\nfimalgoritmo",
+				marker: "p()\nfimprocedimento",
+				code:   diag.RCall,
+			},
+		} {
+			t.Run(tt.name, func(t *testing.T) {
+				p, info := analyzed(t, tt.source)
+				ds := New(tt.options).Run(p, info)
+				want := token.Pos(strings.Index(tt.source, tt.marker))
+				if len(ds) != 1 || ds[0].Code != tt.code || ds[0].Pos != want {
+					t.Fatalf("diagnostics=%v, want %s at %d", ds, tt.code, want)
+				}
+			})
+		}
+	})
+}
+
+func TestForAdvanceBoundaries(t *testing.T) {
+	for _, tt := range []struct {
+		name        string
+		value, step int64
+		want        int64
+		ok          bool
+	}{
+		{"ascending boundary", math.MaxInt64 - 1, 2, 0, false},
+		{"descending boundary", math.MinInt64 + 1, -2, 0, false},
+		{"ordinary", 4, -2, 2, true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			got, ok := advanceFor(tt.value, tt.step)
+			if got != tt.want || ok != tt.ok {
+				t.Fatalf("advanceFor(%d, %d) = (%d, %v), want (%d, %v)", tt.value, tt.step, got, ok, tt.want, tt.ok)
+			}
+		})
+	}
 }
 
 type scriptedRandom struct {

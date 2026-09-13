@@ -2,15 +2,131 @@
 
 ## Unreleased
 
-- Record nine call-form controls and verify seven supplied-argument or
-  parameterless cases through original and formatted execution. Keep two
-  empty numeric-argument early-completion cases pending without inferring
-  missing-argument defaults.
+- Reject conformance file layouts that require a path to be both a file and
+  a parent directory across input and generated destinations.
+
+- Reject duplicate conformance input destinations before replay, while allowing
+  distinct files to share content and input files to have recorded output updates.
+
+- Reject malformed diagnostic codes and invalid source positions in conformance
+  expectations before replay, while retaining optional exact columns.
+
+- Validate retained screenshots, transcriptions and generated-file evidence for
+  reviewed exclusions, including generated path containment and uniqueness.
+
+- Reject coverage downgrades that reuse a verified probe's existing review.
+  Require a new scope-correction rationale or review link in all validation
+  modes while retaining the final gate's rejection of pending work.
+
+- Reject conformance test links to helper names, methods or invalid Go test
+  signatures in every validation mode. Preserve valid test naming and imported
+  parameter forms while keeping compilation and execution as separate checks.
+
+- Document the remaining accepted bundled-example replay blockers, separating
+  varying generated output from declaration, loop and unexecuted-code errors.
+  Preserve their pending status and original reference expectations.
+
+- Verify the bundled compound-repeat rejection at its recorded source line,
+  including the same unknown-name diagnostic after formatting. Keep the
+  generated-input loop and unexecuted read-destination cases pending further
+  qualification.
+
+- Preserve earlier output when missing timer/debug arguments, unresolved timer
+  modes, or nonlogical debug values fail during execution. Verify ten recorded
+  diagnostics before and after formatting, including host-effect ordering.
+
+- Reject the recorded accented variable name and unsupported `início` body
+  opener with positioned `L001` diagnostics. Preserve accepted accented
+  keywords, statement lookalikes, and rejected source bytes during formatting.
+
+- Match recorded no-value output recovery for adjacent numeric braces and
+  C-style operator sequences, preserving operand side effects. Defer the
+  associated undeclared-name and comment-truncated delimiter errors until
+  execution, retaining earlier output and exact formatter behavior.
+- Verify six recorded record rejection controls: keep the keyword-shaped alias
+  declaration boundary positioned at `P001` when used as a variable type, and
+  report the five incompatible or duplicate-layout assignments as positioned
+  `R001` runtime diagnostics.
+
+- Qualify eight accepted timed-subprogram recordings through original and
+  formatted execution with fixed host-clock schedules. Preserve their exact
+  elapsed text and half-second delay order while leaving other variable timing
+  combinations unqualified.
+
+- Match four recorded frontend recovery cases: reserved callable names, a
+  quoted header without its keyword, a brace-truncated output expression, and
+  an unterminated quote after the program terminator. Preserve preceding output
+  for the terminator error and retain its suffix through formatting.
+
+- Reject non-ASCII procedure and function names at the declaration boundary.
+
+- Reject an output expression whose binary operand starts on the following
+  physical line, and report single-quoted text once at its opening quote.
+  Preserve following-line recovery and prevent formatting from rewriting the
+  rejected input. Verify both existing reference records.
+- Recover the recorded repeat lookalike forms: preserve an early break before
+  `fimrepita`, report `P001` when that marker is reached, and report `E002` for
+  `ate_que` and `até_que` without cascading line errors. Keep the canonical
+  repeat syntax as `repita ... ate <condition>`.
+
+- Add fixture-access replay setup for existing-file continuation under
+  unavailable reads, covering the six recorded permission-denied and
+  sharing-locked controls while restoring and checking unchanged bytes.
+
+- Match the recorded choice behavior for a numeric-domain-absent selector with
+  a direct dynamic range upper bound, including its evaluation and enclosing
+  execution stop.
+
+- Qualify generated integer input across the full signed 32-bit interval,
+  including reversed endpoints, while retaining pre-draw rejection for
+  unrepresentable bounds.
+
+- Complete recorded numeric built-in domain coverage, including finite
+  results, integer overflow, output precision, absence ordering, and positioned
+  `R007` guards. Keep undocumented callable forms outside the verified profile.
+
+- Defer recorded real-to-integer assignment failures to execution as positioned
+  `R001` diagnostics for large and exponent-form literals and duplicate aliases,
+  while retaining static rejection for exact real division.
+
+- Stop `para` progression at the terminal bound when its next signed integer
+  value would overflow, and keep `R005`/`R006` runtime-limit diagnostics tied to
+  the attempted call or loop position.
+
+- Accept the recorded no-value `div(...)` candidate expression while keeping
+  `DIV` as the infix integer-division operator and excluding the candidate from
+  the documented built-in catalog.
+
+- Complete the recorded text, character-code, and numeric-text contract table,
+  including accented case, 1-based slicing/search, CP1252 boundaries, dynamic
+  conversion types, and checked `copia` allocation failures.
+
+- Match display color argument evaluation order, preserving earlier output when
+  a later color argument fails and retaining the recorded syntax diagnostic for
+  mixed invalid color expressions.
+
+- Verify twelve recorded call-form controls through original and formatted
+  execution, including a direct zero-producing empty procedure and two
+  empty numeric function results. Keep the parenthesized one-parameter rule
+  narrow without inferring missing-argument defaults for other call forms.
 
 - Trace the existing console, echo, timer, breakpoint and chronometer failure
   tests alongside display failures, completing the positioned host-error and
   headless execution coverage. Correct the historical file-input echo note;
   variable timing and source-level rejection-order cases remain pending.
+
+- Complete the environment echo handoff with typed host tables, headless
+  fixtures, canonical printing and the portable example. Remaining environment
+  commands and explicitly pending timing or GUI qualifications stay open.
+
+- Qualify four recorded chronometer timing transcripts with explicit project
+  clock schedules, preserving elapsed text, timer-delay order, and original or
+  formatted execution. Arbitrary wall-clock durations remain unqualified.
+
+- Qualify twelve recorded timer and chronometer boundary transcripts with
+  explicit project clock schedules, covering timer ordering, the ten-second cap,
+  whole-millisecond rounding, repeated-loop delays and an interval beyond one
+  minute. Arbitrary wall-clock durations remain unqualified.
 
 - Reject a second command after parenthesized output on the same physical
   line, including semicolon-separated commands, lone trailing semicolons and
@@ -37,8 +153,8 @@
 - Continue from an existing regular `arquivo` file when read access is denied
   or Windows reports a sharing violation, preserving its bytes and console or
   generated input. Add nine reference controls, including logical file input
-  during random mode, and platform filesystem regressions. Six access-constrained
-  probes remain pending generic CLI replay.
+  during random mode, platform filesystem regressions and replay coverage for
+  the six constrained controls.
 
 - Continue execution when an `arquivo` parent directory is missing, preserving
   console or random input without creating directories or a recording. Match
@@ -49,14 +165,26 @@
   console source, and retained echo. Label the original recording report as
   historical while retaining the limits on extreme bounds and exact sequences.
 
-- Record text-call controls and early completion after no-value conversion;
-  verify explicit-zero and earlier-call controls in original and formatted
-  programs. Keep persistent execution-state and diagnostic-phase gaps pending.
+- Normalize random-input widths with finite, ordered and overflow-safe checks,
+  reject unrepresentable integer endpoints before consuming the source, and
+  cover the full signed-32-bit interval plus `randi` signed-boundary widths.
+
+- Complete recorded text-call ordering and early completion after no-value
+  conversion. Preserve nested output before deferred `E001`/`P001` diagnostics,
+  suppress unvisited extra arguments, and carry the execution state through
+  stored character values.
 
 - Preserve bare return and call syntax during formatting, including bare `pi`
   statements, and use canonical operator spellings. Normalize repeated carriage
   returns before LF in ignored suffixes in one pass, retaining standalone
   carriage returns and other opaque text.
+
+- Keep the missing-value diagnostic anchored at a bare function `retorne` when
+  a standalone literal follows on the next physical line; other malformed
+  recovery ordering remains pending.
+
+- Defer an orphan `ate` line inside a choice body until that body executes,
+  preserving the reference's selected and unselected control-flow behavior.
 
 - Preserve original-byte source positions through UTF-8 BOM removal and
   Windows-1252 decoding, including CLI and REPL diagnostics at every stage.

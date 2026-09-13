@@ -32,6 +32,29 @@ func TestObservationAdapter(t *testing.T) {
 	}
 }
 
+func TestObservationAdapterUsesClockFixture(t *testing.T) {
+	dir := t.TempDir()
+	src := filepath.Join(dir, "source.alg")
+	if err := os.WriteFile(src, []byte("algoritmo \"clock\"\ninicio\ncronometro on\ncronometro off\nfimalgoritmo"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	clock := filepath.Join(dir, "clock.json")
+	if err := os.WriteFile(clock, []byte("{\"nowMS\":[0,16]}\n"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	host := filepath.Join(dir, "host.json")
+	var out, stderr bytes.Buffer
+	status := executeProbe([]string{"--clock", clock, "--host-trace", host, src}, strings.NewReader(""), &out, &stderr)
+	want := "\nCronômetro iniciado.\n\nCronômetro terminado. Tempo decorrido: 16 ms.\n"
+	if status != 0 || out.String() != want || stderr.Len() != 0 {
+		t.Fatalf("status %d, streams %q %q", status, &out, &stderr)
+	}
+	data, err := os.ReadFile(host)
+	if err != nil || string(data) != "[{\"operation\":\"now\"},{\"operation\":\"now\"}]\n" {
+		t.Fatalf("host trace: %q (%v)", data, err)
+	}
+}
+
 func TestRecordingHost(t *testing.T) {
 	h := &recordingHost{}
 	before := h.Now()
@@ -72,5 +95,25 @@ func TestReplayObservations(t *testing.T) {
 	state = writeArtifact(t, root, "state.json", "{\"x\":2}\n")
 	if err := replayProbe(root, p, "unused", prefix, executable); err == nil || !strings.Contains(err.Error(), "observation mismatch") {
 		t.Fatalf("false state verification: %v", err)
+	}
+}
+
+func TestReplayClockFixture(t *testing.T) {
+	root, m := testManifest(t)
+	p := m.Probes[0]
+	p.TimeoutMS = 5000
+	p.Source = writeArtifact(t, root, p.Source.Path, "algoritmo \"clock\"\ninicio\ncronometro on\ncronometro off\nfimalgoritmo")
+	p.Implementation.Expected.Stdout = writeArtifact(t, root, "clock-output.txt", "\nCronômetro iniciado.\n\nCronômetro terminado. Tempo decorrido: 16 ms.\n")
+	clock := writeArtifact(t, root, "clock.json", "{\"nowMS\":[0,16]}\n")
+	host := writeArtifact(t, root, "host.json", "[{\"operation\":\"now\"},{\"operation\":\"now\"}]\n")
+	p.Implementation.Expected.Clock = &clock
+	p.Implementation.Expected.HostTrace = &host
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	prefix := []string{"-test.run=^TestReplayObserverChild$", "--"}
+	if err := replayProbe(root, p, "unused", prefix, executable); err != nil {
+		t.Fatal(err)
 	}
 }

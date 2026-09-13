@@ -41,3 +41,16 @@ now have [deterministic replay](deterministic-qualification.md); variable
 elapsed-time recordings and rejection-order differences remain pending.
 The existing [host-failure coverage](display-commands-progress.md#injected-host-failures)
 now traces the complete typed host error boundary separately from those gaps.
+
+The environment-command handoff is now covered by the existing typed host
+tables, headless CLI fixtures, canonical-printer checks and the portable
+environment example. Echo on/off, ignored tails, file-input echo and the
+recorded console/random transitions have focused execution coverage. Remaining
+work is limited to the other oracle commands and the explicitly pending timing
+and GUI qualifications.
+
+The eight accepted timed-subprogram recordings now have deterministic replay
+coverage. The focused regression runs each original and formatted source with
+the recorded elapsed value supplied by a fixed host clock, and checks the exact
+output and half-second delay sequence. Other variable elapsed-time recordings,
+configuration/declaration combinations, and GUI qualifications remain pending.

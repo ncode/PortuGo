@@ -17,15 +17,16 @@ sections, and semicolons after alias definitions are rejected. A long flat
 alias chain and AST type-depth checks cover bounded processing independently
 of the reference observations.
 
-The `type-alias-duplicate` narrowing-assignment case remains pending: the
-reference reports `R001` on assignment, while current analysis reports `E001`
-before execution. Record aliases and their identity rules remain separate
-work; scalar compatibility does not establish aggregate compatibility.
+The `type-alias-duplicate` narrowing-assignment case now reports the recorded
+`R001` at execution. Record aliases retain separate identity without scalar
+compatibility: the recorded incompatible alias-value assignments now report
+`R001` during execution. Broader aggregate alias behavior remains separate
+work.
 
 The declaration-scope requirement now links accepted constant, alias, and
 record observations together with rejected vector aliases and named callable
-headers. The record observations remain pending implementation. No evidence
-gate or implementation requirement was relaxed.
+headers. The remaining record observations stay scoped to their own declarations
+and field behavior. No evidence gate or implementation requirement was relaxed.
 
 The corpus contains 1195 reference recordings: 1147 verified and 48 pending,
 plus 16 project-contract records. The evidence gate still needs nine

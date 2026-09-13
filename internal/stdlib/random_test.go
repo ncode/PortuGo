@@ -132,3 +132,27 @@ func TestRandiDomains(t *testing.T) {
 		}
 	}
 }
+
+func TestRandiSigned32Boundaries(t *testing.T) {
+	for _, tt := range []struct {
+		name  string
+		bound int64
+		width uint64
+		want  int64
+	}{
+		{"minimum bound", math.MinInt32, 1 << 31, math.MaxInt32},
+		{"maximum bound", math.MaxInt32, math.MaxInt32, math.MaxInt32 - 1},
+		{"negative unit", -1, math.MaxUint32, -2},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			r := &recordingRandom{}
+			got, found, err := New(r).Call("randi", []runtime.Value{{Kind: runtime.IntegerValue, Int: tt.bound}})
+			if err != nil || !found || got.Kind != runtime.IntegerValue || got.Int != tt.want {
+				t.Fatalf("bound=%d result=%v found=%t error=%v", tt.bound, got, found, err)
+			}
+			if len(r.bounds) != 1 || r.bounds[0] != tt.width {
+				t.Fatalf("bound=%d source bounds=%v want %d", tt.bound, r.bounds, tt.width)
+			}
+		})
+	}
+}

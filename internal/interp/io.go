@@ -84,18 +84,41 @@ func (i *Interpreter) readLine(pos token.Pos) (string, error) {
 }
 
 func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
+	i.writeDepth++
+	defer func() { i.writeDepth-- }()
 	// Nested writes consume the newline requested by an outer escreval.
 	i.writeNewline = i.writeNewline || s.Newline
 	items := make([]string, len(s.Args))
 	buffered := 0
+	absenceIndex := -1
 	defer func() { i.writeBytes -= buffered }()
 	for index, arg := range s.Args {
 		v, err := i.eval(arg.Expr)
 		if err != nil {
 			return err
 		}
+		if v.MissingArgument {
+			if i.result == nil && len(s.Args) == 1 && v.Kind != runtime.VoidValue {
+				// The older one-argument procedure form exposes its typed zero
+				// when the absent formal is written directly.
+				v.MissingArgument = false
+			} else {
+				// The accepted empty numeric call ends normally when its absent
+				// value parameter is printed; no output from this statement or
+				// its caller continuation is committed.
+				i.halted = true
+				return nil
+			}
+		}
 		if v.Kind == runtime.VoidValue {
 			// Discard this statement without consuming a pending newline.
+			return nil
+		}
+		if v.ConvertedAbsence && absenceIndex < 0 {
+			absenceIndex = index
+		}
+		if absenceIndex >= 0 && index > absenceIndex && i.containsUserCall(arg.Expr) {
+			i.halted = true
 			return nil
 		}
 		width := int64(0)
@@ -125,6 +148,9 @@ func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
 		items[index] = text
 		buffered += len(text)
 		i.writeBytes += len(text)
+	}
+	if s.Unclosed != token.NoPos {
+		return failure(s.Unclosed, diag.EParse, fmt.Errorf("expected closing output parenthesis"))
 	}
 	for index, text := range items {
 		if _, err := io.WriteString(i.out, text); err != nil {

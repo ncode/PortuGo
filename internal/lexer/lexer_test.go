@@ -69,6 +69,25 @@ func TestConsoleLineTail(t *testing.T) {
 	}
 }
 
+func TestSingleQuotedTextRecovery(t *testing.T) {
+	for _, ending := range []string{"\n", "\r\n", "\r\r\n"} {
+		for _, text := range []string{"'text'", "''", "'unterminated", "'text with \"quotes\"'", "'text\rwith\rcarriage returns'"} {
+			src := text + ending + "escreval(7)" + ending
+			file, tokens, ds := Scan("source.alg", src)
+			if len(ds) != 1 || ds[0].Code != diag.ELexer || ds[0].Pos != 0 {
+				t.Fatalf("%q: diagnostics = %v, want one L001 at the opening quote", src, ds)
+			}
+			if tokens[0].Kind != token.NEWLINE || tokens[0].Text != ending || tokens[1].Kind != token.ESCREVAL || file.Position(tokens[1].Pos).Line != 2 {
+				t.Fatalf("%q: recovery changed newline or next statement: %v", src, tokens)
+			}
+		}
+	}
+	_, _, ds := Scan("source.alg", "'text' @")
+	if len(ds) != 2 || ds[0].Pos != 0 || ds[1].Pos != 7 {
+		t.Fatalf("recovery hid an independent invalid character: %v", ds)
+	}
+}
+
 func TestExponentTokenBoundaries(t *testing.T) {
 	for _, tt := range []struct{ source, want string }{
 		{"1e-2", "NUMBER 1e @0\n- - @2\nNUMBER 2 @3"},

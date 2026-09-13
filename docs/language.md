@@ -15,10 +15,13 @@ verified. The reference accepts vectors larger than 500 elements; the draft
 500-slot compatibility restriction has therefore been withdrawn. The recordings
 do not establish the upper storage limit in every declaration context.
 
-The [bundled example sweep](bundled-examples-progress.md) verifies 42 original
-programs against reference output, including formatting and execution. Eight supplied files have
+The [bundled example sweep](bundled-examples-progress.md) verifies 43 original
+programs against reference output, including formatting and execution. Eleven supplied files have
 recorded reference errors. Bundled-file presence alone does not establish that
 its syntax is accepted by this release.
+Seventeen accepted bundled recordings remain pending: fifteen contain generated
+output outside the current replay contract, including two syntax mismatches,
+and two recorded input paths are blocked by diagnostics in unexecuted code.
 
 ## Program Structure
 
@@ -37,7 +40,9 @@ The quoted algorithm name must follow `algoritmo` on the same physical line.
 Text after the closing quote on that line is ignored, including another quoted
 string or an unmatched quote. The executable body starts on a later line.
 A missing or misplaced header produces one `P001` diagnostic; parsing stops
-when the program header or the required main `inicio` is invalid. Formatting
+when the program header or the required main `inicio` is invalid. A leading
+quoted name without `algoritmo` is consumed before reporting the error at the
+following token; the recorded next-line `inicio` receives the diagnostic. Formatting
 emits only the algorithm name on the header line and discards ignored header text.
 LF and CRLF inputs retain equivalent token kinds, line/column positions, and
 syntax. An unrecognized statement start is diagnosed once; parsing resumes on
@@ -53,10 +58,11 @@ bytes immediately before it become one LF in a single formatting pass. CR bytes
 not followed by LF and all other opaque text remain unchanged.
 See the [ignored-suffix example](../examples/ignored_suffix.alg).
 
-The terminator's own line still receives lexical validation. An unmatched quote
-on that line produces a reference syntax error after preceding output. The CLI
-currently reports `L001` before execution for that case; its diagnostic code and
-execution phase remain explicitly pending in the corpus.
+An unmatched double quote on the terminator's own line produces `P001` when
+execution reaches the terminator, retaining preceding output. The malformed
+suffix remains intact through formatting, so formatting preserves this error
+and its execution phase. Other lexical errors in executable source still
+prevent execution.
 
 An optional `;` may end a `var` line or a scalar/vector declaration, including
 local declarations and an empty `var` block. It must be on that physical line
@@ -117,7 +123,9 @@ Parameters and function results must use built-in type names; a named type in
 either header position receives `P001`. Variables declared through an alias
 can still be passed to compatible built-in scalar parameters, including `var`
 parameters. Vector type aliases are rejected. Record declarations and their
-distinct alias behavior are described below.
+distinct alias behavior are described below. The recorded keyword-shaped record
+alias case is accepted in the `tipo` declaration boundary but receives `P001`
+when that alias is used as a variable type.
 
 Formatting preserves alias spelling, definition order, and local scopes, and
 emits the required `var` section. See the [type-alias example](../examples/type_aliases.alg)
@@ -133,13 +141,22 @@ The function terminator `fimfunção` is also reserved as a variable name;
 using it in a declaration receives `P001` on that line.
 
 These are specific accepted spellings. The recorded type spelling `lógico` is
-rejected with `P001` on its declaration line. Further vocabulary and physical-line
+rejected with `P001` on its declaration line. `início` is not an alias for
+`inicio`: the recorded program-body opener receives `L001` on that line.
+Further vocabulary and physical-line
 grammar work remains pending; see the [keyword observations](keyword-forms-progress.md).
 
 Recorded identifiers accept leading and internal underscores. Identifier
 matching ignores case: a declaration named `SoMa` can be assigned through `soma`
 and read through `SOMA`. Broader identifier character rules remain under
-validation.
+validation. Variable declarations use ASCII names; the recorded accented name
+`ação` receives one `L001` on its declaration line, before execution. This
+restriction is checked at the declaration boundary, preserving recognized
+accented keywords and the recorded `até_que` statement's `E002` behavior.
+Procedure and function declarations also use ASCII names; an accented callable
+name receives one `L001` at its declaration boundary.
+The two rejected accented forms retain their source bytes in every formatter
+mode, including `fmt -w`.
 
 Recorded real literals accept an unsigned exponent such as `1e2` and a trailing
 decimal point such as `5.`. An exponent marker without digits contributes zero
@@ -165,7 +182,9 @@ Integer addition, subtraction, multiplication, and negation wrap to signed
 minimum. Mixing a real operand into addition, subtraction, or multiplication
 uses real arithmetic. Division of the signed minimum by `-1` receives positioned
 `R002` as a project guard. The recorded real-to-integer assignment diagnostic
-behavior remains pending conformance work.
+behavior for literal, source-exponent, and duplicate-alias assignments runs at
+the assignment and reports positioned `R001`; other narrowing contexts retain
+their semantic checks.
 
 ## Records
 
@@ -192,8 +211,11 @@ copied fields. A field declared with a named record type likewise creates no
 addressable nested field. Selecting either missing field produces `E002` at
 the first failing selection; analysis stops there. Inline record fields,
 vector fields, and named record parameter/result types receive `P001`.
-Cross-type record assignments are rejected; matching their recorded runtime
-diagnostic timing remains pending.
+Cross-type record assignments remain incompatible. In the recorded controls,
+the assignment is evaluated and reports positioned `R001` at runtime for
+distinct record definitions and record aliases. Duplicate-field layouts also
+retain their first field and report the recorded `R001` when the incompatible
+assignment runs; these timings are limited to the recorded controls.
 
 ## Vectors
 
@@ -248,20 +270,24 @@ or doubled quotes. The recorded backslash forms are covered by byte-exact
 reference replay; formatting preserves their contents and program names.
 See [the literal-string example](../examples/literal_strings.alg).
 
+Single quotes do not delimit strings. Single-quoted text receives one `L001`
+at its opening quote; lexical recovery resumes after the closing quote or at
+the next physical newline.
+
 ## Comments
 
 `//` consumes the rest of its physical line. The reference also treats it as
 a comment inside quotes, so a string containing `//` is rejected as unterminated.
 Single slashes, `/*`, `*/`, and braces otherwise remain literal inside strings.
 
-Outside strings, `{` and `}` consume the rest of the line. At the first
+Outside strings, `{` and `}` normally consume the rest of the line. At the first
 non-whitespace position, `/` and `*` also consume the line, including `/*` and
 `*/`. These forms do not open multiline blocks and need no closing delimiter.
 Statements on subsequent lines still execute. After a complete statement,
 `/` and `*` retain their operator meaning; `/*` is not an inline comment there.
 See [the comment example](../examples/comment_lines.alg).
 
-Thirty-one recorded cases cover these forms, quoted delimiters, and formatting
+Recorded cases cover these forms, quoted delimiters, and formatting
 without changing execution. Formatting retains decoded comment text in source
 order, including leading and same-line comments, empty declaration sections,
 comment-only branches and comments before block terminators. Indentation and
@@ -270,8 +296,21 @@ Multiline expressions, declaration headers and argument lists containing
 internal comments retain their token spellings and line breaks, with normalized
 indentation, so comments cannot hide following tokens or merge together.
 See [the comment-preservation example](../examples/comment_anchors.alg).
-The reference's handling of comments within incomplete expressions and the
-remaining syntax-recovery behavior are still pending.
+A brace after an unfinished output argument, as in
+`escreval(1 { note } + 2)`, truncates the physical line. The missing `)` receives
+`P001` when that write executes, retaining earlier output. Formatting keeps the
+truncated source intact and preserves the diagnostic phase.
+
+A numeric token immediately followed by `{` in output instead produces no
+value: `escreval(1{ note })` emits nothing and the next statement still executes.
+An earlier operand call still runs. The adjacent operator pairs in
+`escreval(1 /* note */ + 2)` also produce no value, but `note` is evaluated;
+these are not ignored comment contents. A declared value, literal, or function
+call in that position suppresses the write after its effects. An undeclared
+name receives `E002` during execution, after earlier output. Formatting retains
+these spellings and adjacency. Other adjacent-token forms and malformed
+operator combinations remain under qualification; these observations do not
+establish a general missing-operand grammar.
 
 ## Expressions
 
@@ -408,6 +447,17 @@ Supported statements:
 
 `interrompa` outside a loop is a semantic error.
 
+The canonical repeat form is `repita ... ate <condition>`. In the recorded
+keyword-form recovery cases, `ate_que` and `até_que` remain identifier
+spellings rather than a compound terminator; a repeat using either spelling
+reports `E002` at that identifier. A `fimrepita` line is retained as a
+deferred syntax-error marker: an earlier `interrompa` can exit before it, while
+reaching the marker reports `P001` at the marker line. These spellings are
+outside the canonical syntax.
+General conditionless or infinite-repeat semantics remain pending.
+The original bundled compound-terminator example also reports `E002` on line 23
+before producing output. Formatting retains the unknown name and its rejection.
+
 After a complete assignment expression, a following parenthesized suffix or
 same-line statement is ignored. `x <- 7(1)` stores `7`; in
 `x <- 7 escreval("IGNORED")`, the write does not execute. Put subsequent statements
@@ -433,9 +483,12 @@ match. Incompatible label types produce a positioned `E001`.
 The range separator must follow its lower expression on the same physical
 line. A missing upper expression or the unsupported `1..5` spelling produces
 `P001`. A lower bound that produces no value does not match and skips its upper
-bound; an evaluated upper bound without a value produces `P001`. A reference
-case that skips malformed syntax in an unselected body, and a no-value selector
-combined with a function bound, remain pending control-flow conformance cases.
+bound; an evaluated upper bound without a value produces `P001`. A malformed
+`ate` line in an unselected case body is retained and reports `P001` only when
+that body executes. When a selector has numeric-domain absence, a direct
+dynamic upper bound (a user function or variable) is evaluated and then
+terminates enclosing execution without selecting an arm or default; literal,
+built-in, and nested bounds retain the ordinary no-match path.
 See the [choice-range example](../examples/choice_ranges.alg).
 
 `para` evaluates its bounds and step once. The default step is 1; zero is
@@ -446,7 +499,9 @@ the smaller of the next iteration value and the terminal bound. On `interrompa`,
 it is the smaller of the current body value and the terminal bound. This also
 applies to descending loops: `5 ate 1 passo -2` visits 5, 3, 1 and leaves -1;
 `1 ate 6 passo 2` visits 1, 3, 5 and leaves 6. These unusual exit rules follow
-the recorded program output; the reference GUI memory grid can disagree.
+the recorded program output; the reference GUI memory grid can disagree. If
+the next iteration value would overflow the signed integer domain, iteration
+stops at the terminal bound instead of wrapping.
 
 ## Subprogram Calls
 
@@ -497,16 +552,25 @@ Out-of-range or non-finite integer arguments fail before the body executes;
 failed call setup does not copy partially prepared parameters back.
 
 Recorded procedure argument-count and type errors point to the declaration
-line; function argument-count errors point to the call. Empty-argument edge
-cases and integer operators after numeric reference conversion remain under
-validation.
+line; function argument-count errors point to the call. One qualified empty
+call form is accepted for the recorded procedure and function cases: a
+parenthesized call with one by-value `inteiro` or `real` parameter and no
+arguments. The formal starts as absent storage. A direct one-argument
+procedure write exposes its typed zero; in composed procedure output,
+reaching the absent value ends the enclosing output after the preceding text.
+A function that returns its absent parameter propagates no value, so the
+enclosing write and following caller statement are suppressed. Bare calls,
+multi-parameter calls, other scalar types, and `var` parameters remain
+argument-count errors until separately qualified.
 
 The [call-form controls](empty-call-progress.md) verify supplied arguments for
 all four scalar value types and numeric `var` parameters, including parameter
-mutation and return to the caller. Two empty numeric-argument recordings enter
-the procedure body but complete execution before printing the parameter or
-returning to the caller. These calls remain rejected by the implementation;
-the observations do not establish a general zero-default rule.
+mutation and return to the caller. Twelve call-form recordings also cover the
+parameterless call, two composed empty numeric procedure outputs, the simple
+one-argument procedure zero, and two function no-value results. The
+implementation preserves the absent-parameter state without supplying a
+general default value; the observations do not establish an omitted-argument
+rule beyond these recorded forms.
 
 ## Function Results
 
@@ -539,7 +603,10 @@ does not apply to returns. Valued returns in procedures or the main body receive
 same physical line as `retorne`. A bare return in a function receives `E001`
 on the return line; a bare return in a procedure or the main body receives
 `E005`. The following statement or terminator is retained for analysis.
-Diagnostic ordering when a file also contains malformed syntax remains pending.
+During recovery, a standalone literal on the immediately following line is
+consumed as the malformed return continuation so the missing-value diagnostic
+remains primary. Other diagnostic ordering when a file also contains malformed
+syntax remains pending.
 
 The formatter retains a bare `retorne` without inventing an expression, even
 when analysis would reject it. Calls written as bare statements retain that
@@ -643,12 +710,23 @@ The [qualified zero-elapsed-time probes](deterministic-qualification.md) compare
 start/stop, repeated start, and ignored tails through a fixed injected clock.
 Their host traces are project fixtures, and their reference transcripts remain
 unchanged; actual wall-clock timing is not required to reproduce zero.
+Four additional recorded timer/chronometer transcripts use explicit project
+clock schedules to compare their nonzero elapsed text and host delay order.
+These schedules qualify only those recorded programs; arbitrary wall-clock
+durations remain outside the deterministic replay contract.
+Twelve further boundary transcripts cover timer ordering, the ten-second cap,
+whole-millisecond truncation, repeated-loop delay rounding, and a chronometer
+interval beyond one minute through the same explicit schedules. Other timing
+combinations remain unqualified.
 
 `timer expression` evaluates one expression and selects a delay in whole
 milliseconds. Zero, negative values and positive fractions below one millisecond
 disable it. Character and logical values preserve the current delay; an absent
 value receives `P001`. Remaining line syntax is ignored. Bare `timer` and
 undeclared modes such as `timer on`/`timer off` receive `P001`.
+These recorded argument failures are reported when the command executes,
+preserving earlier output. Name lookup errors retain operand evaluation order;
+the failed command does not request a delay or change the current timer.
 Positive fractions are truncated to whole milliseconds, and values above
 10,000 milliseconds are clamped to 10,000. The cap also applies to large real
 values outside the 32-bit integer range. Nonfinite values receive `R008` as a
@@ -662,16 +740,24 @@ condition. Recorded subprogram entry adds two intervals; a nonempty local
 variable section adds one interval plus one per declaration line, regardless
 of how many names that line declares. Declaration formatting can therefore
 change elapsed time; wall-clock output is not an exact canonical-replay promise.
-Unrecorded configuration and declaration combinations remain unqualified.
+Eight accepted recorded programs covering procedure and function calls,
+interrupted loops, a choice branch, and one or two local declaration lines are
+replayed through fixed host-clock schedules. Their elapsed text and delay order
+are part of the recorded qualification; other configuration and declaration
+combinations, and arbitrary wall-clock durations, remain unqualified.
 
 `pausa` requests one `Host.Breakpoint` at its source position; apparent call
 syntax and other tails are ignored. `debug logical-expression` requests one
 breakpoint only when true and ignores trailing syntax. Missing conditions
-receive `P001`, while nonlogical conditions receive `E001`. The default headless
+receive `P001`, while nonlogical conditions receive `E001` when executed. Earlier
+output is retained, and rejected conditions do not request a breakpoint or delay.
+The default headless
 host continues immediately; it does not wait for a keypress. Expression forms
 `timer()`, `debug()` and `pausa()` produce no value or host action. Host delay or
 breakpoint failures report positioned `R008`, preserve preceding output and
 hide underlying operational details. See [execution controls](execution-controls-progress.md).
+The ten recorded timer/debug rejection programs retain their output and
+diagnostics after canonical formatting, including missing-argument forms.
 
 Numeric input ignores leading ASCII spaces and accepts a sign and decimal
 exponent. Malformed text retains the unsigned mantissa before decimal and
@@ -704,6 +790,10 @@ line receives `P001` before execution, including when separated by `;`.
 A lone trailing semicolon or same-line `fimalgoritmo` is also rejected. Put
 output statements and their terminators on separate lines. Accepted trailing
 comments remain valid, and `fmt` rejects invalid source without rewriting it.
+In an output expression, a binary operator's operand cannot start on the next
+physical line: `escreval(1 +` followed by `2)` receives `P001` on the operator's
+line. Formatting rejects this source instead of joining its lines. Other
+multiline expression boundaries remain under qualification.
 Each statement evaluates and formats its arguments in order before emitting
 its own text. Output from functions called during that evaluation appears first.
 `escreval` requests a pending newline, which the next output statement to finish
@@ -806,7 +896,8 @@ The [display example](../examples/display.alg) demonstrates portable output.
 The [independent builtin inventory](builtin-inventory-progress.md) records 28
 documented names with semantic-binding, reference-output and formatting checks.
 The additional `pot` candidate is rejected with `E002`. The accepted no-value
-`div(...)` expression form remains pending; its infix operator form is supported.
+`div(...)` expression form is consumed and discarded; it remains a candidate
+form rather than a documented function. Its infix operator form is supported.
 One immutable descriptor registry supplies built-in names, callable forms,
 parameter types and value modes, result rules, domain metadata and evaluators.
 Semantic analysis and execution share it. An independent table checks all 28
@@ -886,8 +977,11 @@ signed 32-bit: `int(2147483648.0)` is `-2147483648`, and
 An absent numeric argument propagates through a containing numeric call,
 subject to the `exp` argument rules above. Output handles the result as
 described for `numpcarac`.
-The broader numeric domain matrix remains pending. Catalog consolidation is
-complete for the recorded names and behaviors.
+The recorded numeric domain matrix is covered by linked boundary and
+diagnostic regressions for finite results, signed 32-bit wrapping, conversion
+overflow, output precision, absence ordering, and positioned `R007` guards.
+Undocumented callable forms and unrecorded reference behavior remain outside
+the verified profile.
 
 String built-ins: `copia`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, and
 `pos`. Their recorded character repertoire is Windows-1252, decoded to UTF-8
@@ -915,6 +1009,9 @@ returns the first matching position, or zero for missing or empty search text.
 Search is case-sensitive. `maiusc` and `minusc` use the recorded accented case
 pairs; uppercase preserves `µ` and `ƒ` because their Unicode uppercase forms
 are outside Windows-1252. Case conversion and copying preserve empty strings.
+A direct library result whose selected text exceeds the 16 MiB project
+allocation safeguard is rejected before materialization and is reported as
+positioned `R003` by the interpreter.
 Non-finite real bounds and real bounds outside the signed 64-bit conversion
 range receive positioned `R007` as a project guard; unpositioned reference
 application faults are not treated as language diagnostics.
@@ -935,12 +1032,15 @@ Codes 0–31, 127, and 255 produce a space; `carac()` also produces a space.
 Out-of-domain integers produce no value. A no-value argument is treated as zero.
 Real, character, and logical arguments receive `E001`; extra arguments receive
 `P001`.
-Recorded no-value conversions followed by user-function calls expose additional
-reference execution state that is not implemented. Some programs finish before
-later output and a deliberate domain error, even when `carac(abs())` was stored
-in an earlier assignment. An explicit zero and a call before an absent `copia`
-bound are verified controls. These observations do not establish a general
-state-reset rule; see [text argument-order gaps](text-argument-order-gaps.md).
+When a generic no-value result is converted to an optional numeric text or
+character argument, the runtime retains that origin while evaluating the call.
+If a later argument invokes a user function, the outer text result and pending
+write are discarded and enclosing execution stops after that nested call. A
+literal-leading `copia` in output can stop before the later call; an assignment
+still evaluates that call before stopping. The same state survives assigning
+`carac(abs())` to a character variable, so later output and runtime failures
+are skipped. Explicit zero and a call before an absent `copia` bound retain the
+ordinary result. See [text argument-order gaps](text-argument-order-gaps.md).
 
 The two code functions are not inverses: `carac(128)` is `"Ç"`, whose `asc`
 value is 199. No-value results in output use the discard-and-continue behavior
@@ -1050,8 +1150,12 @@ zero through `trunc(high-low)`. A real destination additionally receives a
 fraction from zero through `1-10^-digits` when digits are positive. Thus
 `aleatorio 2,2,3` can produce 2.847, and fractional lower bounds are retained:
 `aleatorio 2.75,2.75,0` produces 2.75. Integer destinations discard fractional
-parts and do not use the precision setting. `aleatorio on` restores the default
-0-through-100 range and zero additional fractional digits.
+parts and do not use the precision setting. Bounds are normalized to an
+inclusive width only after finite, ordered and overflow checks. Integer reads
+reject a range outside the signed 64-bit value domain before drawing; the full
+signed 32-bit interval is accepted by the implementation as an integer range.
+`aleatorio on` restores the default 0-through-100 range and zero additional
+fractional digits.
 
 Generated character input contains five uppercase ASCII letters. Logical reads
 continue reading the selected file or console stream while random mode is active.
@@ -1079,8 +1183,10 @@ return positioned `R004` without assigning or echoing the failed read. Builtin
 random failures continue using `R007`. Recorded file-input transitions preserve
 unread file lines during generated reads, resume the selected source when random
 mode is disabled, and record generated values when creating a missing file.
-Extreme bound compatibility remains pending reference qualification; ordinary
-range and input-state coverage does not establish exact reference draw counts.
+The full signed 32-bit interval is qualified, including reversed endpoints;
+out-of-range floating-bound failures remain outside the verified profile.
+Ordinary range and input-state coverage does not establish exact reference draw
+counts.
 
 ## Execution diagnostics and safeguards
 
@@ -1235,10 +1341,36 @@ implementation. Corpus validation requires expected acceptance/rejection and
 generated files to agree with the reference, and an explicit history base to
 detect unreviewed regressions in coverage. Removing a probe, inventory entry,
 or linked task requires a reviewed retirement, even for pending behavior.
+Downgrading a verified probe requires a scope-correction review distinct from
+any review already attached to its verified state. Update the rationale or
+review link; surrounding whitespace in the rationale does not count as a new
+review. Changing only the linked document while retaining identical manifest
+review fields does not establish a new downgrade disposition. A reviewed
+downgrade still leaves the probe pending and cannot pass implementation acceptance.
 Retirement records remain in later manifests; retired IDs cannot be reused.
+Reviewed exclusions still validate hashes for every retained artifact, including
+optional screenshots, transcriptions and generated-file bytes. Retained generated
+paths must be contained and unique. Excluded runs may retain these observations
+without requiring corresponding candidate output or new captures.
 Recording verifies input-only file hashes before accepting a capture.
+Manifest validation rejects repeated input fixture destinations, including
+entries with identical bytes. Distinct destinations may share a content artifact,
+and a path may appear once as input and once as generated output to describe
+a recorded file update.
+A file destination cannot also be a parent directory of another input or
+generated destination, regardless of declaration order. Input-only files must
+retain their bytes, so a generated descendant cannot replace an input file with
+a directory. Shared directories and similar filename prefixes remain valid.
+An explicitly removed input may have an output at its former parent path;
+removal declarations still cannot make an invalid initial layout valid.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.
+Test links require Go's test-name and declaration shape: a top-level `Test`
+function whose suffix does not start with a lowercase letter, one `*testing.T`
+parameter, no results and no type parameters. Aliased and dot-imported `testing`
+names remain supported. Helpers and the `TestMain(*testing.M)` harness cannot
+serve as probe tests. Package compilation and test execution remain separate
+required checks; a valid declaration link alone does not establish coverage.
 The [project tooling evidence](conformance-project-evidence.md) separately traces
 provenance, recording, normalization, and validation tests. Those mappings do not
 substitute for language recordings or establish complete reference conformance.
@@ -1259,5 +1391,9 @@ See [development checks](development.md) and the
 [quality baseline](quality-baseline.md) for commands and measured coverage.
 Conformance replay requires positive diagnostic lines and columns, including
 when a recording constrains the line without fixing an exact column.
+Manifest diagnostic expectations use `L`, `P`, `S`, `E` or `R` followed by three
+ASCII digits, a positive line, and an omitted or zero column when the exact
+column is unconstrained. Negative expected columns are invalid. Every validation
+mode checks this metadata before replay, including for pending implementations.
 Final acceptance requires quality evidence for the candidate commit; the
 separate release gate also requires completed implementation and handoff tasks.

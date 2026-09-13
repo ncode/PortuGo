@@ -32,13 +32,13 @@ copies and metadata, invalid backing storage, vector slot boundaries, and AST
 traversal limits. Empty records count as one cell for the project allocation
 guard; this is not a measured reference storage quota.
 
-Five cases retain recorded assignment errors while current analysis reports
-a type mismatch before execution: `record-layout-copy-identity`,
-`record-boundary-duplicate-real`, `record-alias-value-alias-integer`,
-`record-alias-value-alias-copy`, and `record-name-duplicate-integer-first`.
-The keyword type-name case `record-layout-alias` also remains pending because
-its rejection occurs at a different source position. Their evidence is retained.
+The six previously pending rejection controls are now verified. The
+`record-layout-alias` control accepts the keyword-shaped alias declaration but
+reports `P001` when the alias is used for a variable type. The five assignment
+controls report positioned `R001` during execution: incompatible whole-record
+copies, record-alias value assignments, and the two duplicate-layout cases.
+Their evidence remains recorded, and no broader aggregate semantics are inferred.
 
-The corpus contains 1241 reference recordings: 1189 verified and 52 pending,
+The corpus contains 1241 reference recordings: 1195 verified and 46 pending,
 plus 16 project-contract records. Nine requirement mappings and 30
 bundled-example classifications remain missing. No evidence gate was relaxed.

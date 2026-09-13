@@ -1525,6 +1525,8 @@
         "random-range-parentheses",
         "random-range-on-reset",
         "random-range-reversed",
+        "random-boundary-full-signed32",
+        "random-boundary-full-signed32-reversed",
         "random-range-default-real",
         "random-range-text",
         "random-context-call-zero",
@@ -4354,7 +4356,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -4367,7 +4369,11 @@
               "line": 3
             }
           ]
-        }
+        },
+        "tests": [
+          "frontend_reference_test.go#TestRecordedFrontendRejections",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ]
       }
     },
     {
@@ -4628,7 +4634,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -4641,7 +4647,12 @@
               "line": 3
             }
           ]
-        }
+        },
+        "tests": [
+          "frontend_reference_test.go#TestRecordedFrontendRejections",
+          "frontend_reference_test.go#TestAccentedFormPositions",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ]
       }
     },
     {
@@ -4726,7 +4737,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -4739,7 +4750,12 @@
               "line": 2
             }
           ]
-        }
+        },
+        "tests": [
+          "frontend_reference_test.go#TestRecordedFrontendRejections",
+          "frontend_reference_test.go#TestAccentedFormPositions",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ]
       }
     },
     {
@@ -5015,7 +5031,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -5028,7 +5044,11 @@
               "line": 3
             }
           ]
-        }
+        },
+        "tests": [
+          "frontend_reference_test.go#TestRecordedFrontendRejections",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ]
       }
     },
     {
@@ -8422,7 +8442,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -8435,7 +8455,10 @@
               "line": 23
             }
           ]
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestBundledRepeatRejectsCompoundTerminator"
+        ]
       }
     },
     {
@@ -10066,14 +10089,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/catalog-div-candidate/stdout.txt",
             "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
           }
-        }
+        },
+        "tests": [
+          "builtin_inventory_test.go#TestAcceptedNoValueBuiltinCandidate"
+        ]
       }
     },
     {
@@ -11173,14 +11199,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/text-order-no-value-bound/stdout.txt",
             "sha256": "9ad1abc95f309ac35941cc1a3a5a3fc11b551a95995af243ea48fe31935b972f"
           }
-        }
+        },
+        "tests": [
+          "text_argument_order_gaps_test.go#TestRecordedTextArgumentOrderGaps"
+        ]
       }
     },
     {
@@ -11705,7 +11734,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -11718,7 +11747,13 @@
               "line": 3
             }
           ]
-        }
+        },
+        "tests": [
+          "malformed_comments_test.go#TestRecordedMalformedComments",
+          "malformed_comments_test.go#TestMalformedCommentExecutionControls",
+          "malformed_comments_test.go#TestMalformedCommentOriginalBytes",
+          "internal/parser/recovery_test.go#TestCommentTruncatedWriteRecovery"
+        ]
       }
     },
     {
@@ -11760,7 +11795,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -11773,7 +11808,12 @@
               "line": 3
             }
           ]
-        }
+        },
+        "tests": [
+          "malformed_comments_test.go#TestRecordedMalformedComments",
+          "malformed_comments_test.go#TestMalformedCommentExecutionControls",
+          "malformed_comments_test.go#TestMalformedCommentOriginalBytes"
+        ]
       }
     },
     {
@@ -12429,14 +12469,19 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/brace-inline-math/stdout.txt",
             "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
           }
-        }
+        },
+        "tests": [
+          "malformed_comments_test.go#TestRecordedMalformedComments",
+          "malformed_comments_test.go#TestMalformedCommentExecutionControls",
+          "malformed_comments_test.go#TestMalformedCommentOriginalBytes"
+        ]
       }
     },
     {
@@ -13148,14 +13193,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/procedure-empty-arguments/stdout.txt",
             "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
           }
-        }
+        },
+        "tests": [
+          "call_arguments_test.go#TestRecordedCallArguments"
+        ]
       }
     },
     {
@@ -13246,14 +13294,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/function-empty-arguments/stdout.txt",
             "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
           }
-        }
+        },
+        "tests": [
+          "call_arguments_test.go#TestRecordedCallArguments"
+        ]
       }
     },
     {
@@ -14526,14 +14577,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/function-empty-arguments-continuation/stdout.txt",
             "sha256": "76d2b0dc0c3f97e2bbf9bc62f097ca2f9f830187ecb4bc8f795f8cdc6bd243c2"
           }
-        }
+        },
+        "tests": [
+          "call_arguments_test.go#TestRecordedCallArguments"
+        ]
       }
     },
     {
@@ -19067,14 +19121,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/repeat-fimrepita/stdout.txt",
             "sha256": "bac2589259cea9f078c0733f698046d4bc495daae234e0c4b80719247d9fe00f"
           }
-        }
+        },
+        "tests": [
+          "repeat_recovery_test.go#TestRecordedRepeatFimrepitaPrefix"
+        ]
       }
     },
     {
@@ -19117,7 +19174,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -19130,7 +19187,10 @@
               "line": 5
             }
           ]
-        }
+        },
+        "tests": [
+          "repeat_recovery_test.go#TestRecordedRepeatRejectedForms"
+        ]
       }
     },
     {
@@ -19173,7 +19233,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -19186,7 +19246,10 @@
               "line": 5
             }
           ]
-        }
+        },
+        "tests": [
+          "repeat_recovery_test.go#TestRecordedRepeatRejectedForms"
+        ]
       }
     },
     {
@@ -19378,7 +19441,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -19391,7 +19454,11 @@
               "line": 2
             }
           ]
-        }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ]
       }
     },
     {
@@ -19783,7 +19850,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -19796,7 +19863,11 @@
               "line": 2
             }
           ]
-        }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ]
       }
     },
     {
@@ -20098,7 +20169,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -20111,7 +20182,10 @@
               "line": 10
             }
           ]
-        }
+        },
+        "tests": [
+          "repeat_recovery_test.go#TestRecordedRepeatRejectedForms"
+        ]
       }
     },
     {
@@ -20690,7 +20764,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -20703,7 +20777,10 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "function_returns_test.go#TestRecordedReturnRejections"
+        ]
       }
     },
     {
@@ -25126,7 +25203,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -25139,7 +25216,10 @@
               "line": 5
             }
           ]
-        }
+        },
+        "tests": [
+          "narrowing_assignment_test.go#TestRecordedRealToIntegerAssignmentDiagnostics"
+        ]
       }
     },
     {
@@ -37504,14 +37584,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/choice-range-next-line/stdout.txt",
             "sha256": "84b6d97244efcd54d2d54d51c105d8a804e602cfe1a2a4d2bd90c6fa53cd08fa"
           }
-        }
+        },
+        "tests": [
+          "choice_ranges_test.go#TestRecordedChoiceRanges"
+        ]
       }
     },
     {
@@ -39541,14 +39624,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/choice-match-no-value-selector-order/stdout.txt",
             "sha256": "6b8e8d36d042ba2f6e1e8841725ee5caed3b5cf1bf6f1428e0ffb598b992a116"
           }
-        }
+        },
+        "tests": [
+          "choice_ranges_test.go#TestRecordedChoiceRanges"
+        ]
       }
     },
     {
@@ -44102,7 +44188,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -44115,7 +44201,10 @@
               "line": 8
             }
           ]
-        }
+        },
+        "tests": [
+          "display_argument_order_test.go#TestRecordedDisplayArgumentOrder"
+        ]
       }
     },
     {
@@ -44215,7 +44304,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -44228,7 +44317,10 @@
               "line": 8
             }
           ]
-        }
+        },
+        "tests": [
+          "display_argument_order_test.go#TestRecordedDisplayArgumentOrder"
+        ]
       }
     },
     {
@@ -44270,7 +44362,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -44283,7 +44375,10 @@
               "line": 8
             }
           ]
-        }
+        },
+        "tests": [
+          "display_argument_order_test.go#TestRecordedDisplayArgumentOrder"
+        ]
       }
     },
     {
@@ -49967,7 +50062,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -49980,7 +50075,10 @@
               "line": 13
             }
           ]
-        }
+        },
+        "tests": [
+          "text_argument_order_gaps_test.go#TestRecordedTextArgumentOrderGaps"
+        ]
       }
     },
     {
@@ -50022,7 +50120,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -50035,7 +50133,10 @@
               "line": 13
             }
           ]
-        }
+        },
+        "tests": [
+          "text_argument_order_gaps_test.go#TestRecordedTextArgumentOrderGaps"
+        ]
       }
     },
     {
@@ -50111,14 +50212,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/text-order-no-value-code/stdout.txt",
             "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
           }
-        }
+        },
+        "tests": [
+          "text_argument_order_gaps_test.go#TestRecordedTextArgumentOrderGaps"
+        ]
       }
     },
     {
@@ -59119,7 +59223,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -59132,7 +59236,10 @@
               "line": 5
             }
           ]
-        }
+        },
+        "tests": [
+          "narrowing_assignment_test.go#TestRecordedRealToIntegerAssignmentDiagnostics"
+        ]
       }
     },
     {
@@ -59174,7 +59281,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -59187,7 +59294,10 @@
               "line": 5
             }
           ]
-        }
+        },
+        "tests": [
+          "narrowing_assignment_test.go#TestRecordedRealToIntegerAssignmentDiagnostics"
+        ]
       }
     },
     {
@@ -59431,7 +59541,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -59444,7 +59554,10 @@
               "line": 8
             }
           ]
-        }
+        },
+        "tests": [
+          "narrowing_assignment_test.go#TestRecordedRealToIntegerAssignmentDiagnostics"
+        ]
       }
     },
     {
@@ -61175,7 +61288,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -61188,7 +61301,10 @@
               "line": 9
             }
           ]
-        }
+        },
+        "tests": [
+          "record_types_test.go#TestRecordedRecordRejections"
+        ]
       }
     },
     {
@@ -61447,7 +61563,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -61460,7 +61576,10 @@
               "line": 14
             }
           ]
-        }
+        },
+        "tests": [
+          "record_types_test.go#TestRecordedRecordAssignmentRejections"
+        ]
       }
     },
     {
@@ -61646,7 +61765,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -61659,7 +61778,10 @@
               "line": 10
             }
           ]
-        }
+        },
+        "tests": [
+          "record_types_test.go#TestRecordedRecordAssignmentRejections"
+        ]
       }
     },
     {
@@ -62623,7 +62745,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -62636,7 +62758,10 @@
               "line": 10
             }
           ]
-        }
+        },
+        "tests": [
+          "record_types_test.go#TestRecordedRecordAssignmentRejections"
+        ]
       }
     },
     {
@@ -62678,7 +62803,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -62691,7 +62816,10 @@
               "line": 12
             }
           ]
-        }
+        },
+        "tests": [
+          "record_types_test.go#TestRecordedRecordAssignmentRejections"
+        ]
       }
     },
     {
@@ -62776,7 +62904,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -62789,7 +62917,10 @@
               "line": 12
             }
           ]
-        }
+        },
+        "tests": [
+          "record_types_test.go#TestRecordedRecordAssignmentRejections"
+        ]
       }
     },
     {
@@ -71820,6 +71951,118 @@
       }
     },
     {
+      "id": "random-boundary-full-signed32",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32/source.alg",
+        "sha256": "99ed5f22d4215054abc5af41f2da265ffe85626a355453cd8706aafc129d8cc0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T21:01:32.6336544Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32/raw.txt",
+          "sha256": "89bd7bcddc90e574b90d95004e25b09594ddc033087bd9e53c7e31a201430c5e"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32/stdout.txt",
+          "sha256": "d74f1e7a994eca8e59dca3924bfcbda3cba127152285185f4cbcb51042071b02"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32/stdout.txt",
+            "sha256": "d74f1e7a994eca8e59dca3924bfcbda3cba127152285185f4cbcb51042071b02"
+          },
+          "randomInput": {
+            "kind": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647,
+            "decimals": 0,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify the full signed 32-bit generated-input domain and endpoint normalization; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
+          }
+        },
+        "tests": [
+          "internal/stdlib/random_input_test.go#TestRandomInputRejectsUnrepresentableIntegerRangeBeforeDraw",
+          "internal/stdlib/random_input_test.go#TestRandomInputAcceptsFullSigned32Range",
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
+      }
+    },
+    {
+      "id": "random-boundary-full-signed32-reversed",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32-reversed/source.alg",
+        "sha256": "e35b9b4eeab38129e18f397a79e8b43fcd5d9987cc7de07be70eefe093d885c3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T21:01:45.8704847Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32-reversed/raw.txt",
+          "sha256": "89bd7bcddc90e574b90d95004e25b09594ddc033087bd9e53c7e31a201430c5e"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32-reversed/stdout.txt",
+          "sha256": "d74f1e7a994eca8e59dca3924bfcbda3cba127152285185f4cbcb51042071b02"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32-reversed/stdout.txt",
+            "sha256": "d74f1e7a994eca8e59dca3924bfcbda3cba127152285185f4cbcb51042071b02"
+          },
+          "randomInput": {
+            "kind": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647,
+            "decimals": 0,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify the full signed 32-bit generated-input domain and endpoint normalization; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
+          }
+        },
+        "tests": [
+          "internal/stdlib/random_input_test.go#TestRandomInputRejectsUnrepresentableIntegerRangeBeforeDraw",
+          "internal/stdlib/random_input_test.go#TestRandomInputAcceptsFullSigned32Range",
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
+      }
+    },
+    {
       "id": "random-range-variable-bound",
       "ownerGroup": 13,
       "tasks": [
@@ -74432,13 +74675,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/chronometer-repeat-stop/stdout.txt",
             "sha256": "91322064e3bd5d5e767420a756163d86b0b45a9aa8c9681bba99cbe567957f93"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/chronometer-repeat-stop/expected-clock.json",
+            "sha256": "ee187c18f1e1b8f1b060d68da4e1bd16202dc13923a7f2cc1534e79891c08a62"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/chronometer-repeat-stop/expected-host.json",
+            "sha256": "96242989e3dad26c3eaed5cb3dbf6d84216ddf6d2521dc25ad10ff92f16fcec6"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimedChronometers"
+        ],
+        "review": {
+          "reason": "Exact recorded elapsed text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -74740,13 +74998,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-milliseconds/stdout.txt",
             "sha256": "e7b531f6c6afe7dadd7e5150ed6451426f0da23715a92cc2c5350bac421a3b43"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-milliseconds/expected-clock.json",
+            "sha256": "36c2328da09a7ae333809a5864a86260b3d42e27fec5fc9c6c06c6bad7138f5f"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-milliseconds/expected-host.json",
+            "sha256": "53ab36d2ca921c47b4db4c07c3660f7f6685ca31efc419d0139f77d22c191f8d"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimedChronometers"
+        ],
+        "review": {
+          "reason": "Exact recorded elapsed text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -74780,13 +75053,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-seconds/stdout.txt",
             "sha256": "b184609aab355a821ab8dad63615ea0d61f09011a3056c1b718dbcd26ff76025"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-seconds/expected-clock.json",
+            "sha256": "c9c3d35e9ef49f80eae78dfa2c768aebe8cd174668106a70215f2154193d5f98"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-seconds/expected-host.json",
+            "sha256": "4b5d81488cdef992191b97a535e36b489bdf55568ef63173c0669e2aa48194ce"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimedChronometers"
+        ],
+        "review": {
+          "reason": "Exact recorded elapsed text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -74820,13 +75108,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-fractional-seconds/stdout.txt",
             "sha256": "cc6a9d35b757cb8a56f1846beae88014953a0adaef93c004e792bf967362eb31"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-fractional-seconds/expected-clock.json",
+            "sha256": "24bdef02d8a08ea40169103d7d2a4119120e55fd8ab7af35260efb8549cf60b5"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-fractional-seconds/expected-host.json",
+            "sha256": "84163d5915e1c87b1857bc4e0bb771c0020008ff6077cfe042b9ec24e5508856"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimedChronometers"
+        ],
+        "review": {
+          "reason": "Exact recorded elapsed text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -74860,13 +75163,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-minute/stdout.txt",
             "sha256": "b7e30d728c8cf0e3d49f3368594e6f18ef52535beba0a2ca2306ef67a1c950d4"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-minute/expected-clock.json",
+            "sha256": "5f99f4e52944e5a327e15a710a0fed1766a863c5d50d5d6603f1203c409a42ca"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-minute/expected-host.json",
+            "sha256": "606c4b897bd3cc937dee4e521062efe236e330c722837a365c0017f071a06813"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -75124,7 +75442,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75137,7 +75455,11 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75179,7 +75501,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75192,7 +75514,11 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75234,7 +75560,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75247,7 +75573,11 @@
               "line": 6
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75289,7 +75619,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75302,7 +75632,11 @@
               "line": 6
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75344,7 +75678,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75357,7 +75691,11 @@
               "line": 6
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75399,7 +75737,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75412,7 +75750,11 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75454,7 +75796,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75467,7 +75809,11 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75509,7 +75855,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75522,7 +75868,11 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75564,7 +75914,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75577,7 +75927,11 @@
               "line": 6
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75619,7 +75973,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75632,7 +75986,11 @@
               "line": 6
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -76742,13 +77100,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-clock-start/stdout.txt",
             "sha256": "132af304a46e5d05adf987cdcf2163cce7a777d901522ada583d66cb7db12db5"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-clock-start/expected-clock.json",
+            "sha256": "3b21e1980ddaeb7ae2b26e0c6bf4552ad40d3f5526d9653623abb6ab31d84f6d"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-clock-start/expected-host.json",
+            "sha256": "65dccb7546caacba38ae1f045845a030d0fbcb599da3f6fa5cb9bb309fa3422f"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -76782,13 +77155,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-clock-stop/stdout.txt",
             "sha256": "387fe42b24210b4122a303e4df41c35d1cf46753b0e0c9d442619a741b56d927"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-clock-stop/expected-clock.json",
+            "sha256": "7d5f8c747d5b1cffb221e2567ef5b02c8bf0412b93e05cadbbb646ab824ab2d6"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-clock-stop/expected-host.json",
+            "sha256": "9d9437b47fb769e0f9a8ed881312033b7508fe9c7d8b1e16d3f0ff9473df46eb"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -76822,13 +77210,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-procedure/stdout.txt",
             "sha256": "629816baf9489ffc7939b192894918f5d29fff64e5c6f6171002ab8389bac7dc"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-procedure/expected-clock.json",
+            "sha256": "160dbba09d3ebfc9a433dcd1ae0e52e3155b2f5f2b6e333b481280da79fef9ef"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-procedure/expected-host.json",
+            "sha256": "8033a971682c71d75030bcd9c240c903d8ec78c3f9e4e76db598fb400744fb49"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -76862,13 +77265,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-procedure-local/stdout.txt",
             "sha256": "24a9f311b229e25f4f6d9ac9626fc0c1742bc52a60f3abf3c0f8b71d229f8bb6"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-procedure-local/expected-clock.json",
+            "sha256": "0607cc3219d38e50e0e13b44a6997b00702fdd7c5808c6938bfc528a72eb9826"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-procedure-local/expected-host.json",
+            "sha256": "741bf535b5cdf1616951d0b8293ed069746c74ab907a08bddd5053aeca6323d7"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -76902,13 +77320,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-function/stdout.txt",
             "sha256": "eaea555b9e7decc8dc73d786f82e1cb43a029fe2df3aa5b82596718781b09383"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-function/expected-clock.json",
+            "sha256": "d0c7bc46f8b09e1c5d933aed44b18dbfa9ee866d3e72b5e9da3de903454f2332"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-function/expected-host.json",
+            "sha256": "0945e993f0897975d8dadf20a3a5f5cad838f7d459b44e1827e26956417f7946"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -76942,13 +77375,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-for-break/stdout.txt",
             "sha256": "b3ec4fc1e18f4225466ba20576c9e6d7a8f4357eb124bbc160f854c619654c96"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-for-break/expected-clock.json",
+            "sha256": "4d02f5555d798db3d25ead422a8652fa8df0046d79c94e8ae79b82508fc3d151"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-for-break/expected-host.json",
+            "sha256": "56ea03d3346456d79ca1f17e1a11ce342dbac3518c4cd3580f72f6af77705f1a"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -76982,13 +77430,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-while-break/stdout.txt",
             "sha256": "7f88bc85c8c085db0b194e8265b9632534295cc9176bcc1bd25dc95250fc98e9"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-while-break/expected-clock.json",
+            "sha256": "2e16de6467e236c6a209c9afc9d60e225135371129247b74264d60c05e4498d0"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-while-break/expected-host.json",
+            "sha256": "56ea03d3346456d79ca1f17e1a11ce342dbac3518c4cd3580f72f6af77705f1a"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77022,13 +77485,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-switch/stdout.txt",
             "sha256": "45a7d4de5edac60a941dda40c78c211d8b66383fe5af829d058d55be6896a77d"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-switch/expected-clock.json",
+            "sha256": "caf45f7b63086e894e9dd21e67652c2b0b838bb549e20bf19a1a783b478c722f"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-switch/expected-host.json",
+            "sha256": "56ea03d3346456d79ca1f17e1a11ce342dbac3518c4cd3580f72f6af77705f1a"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77062,13 +77540,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-one-local/stdout.txt",
             "sha256": "f672e2b735ddb5d743af449b1166b8a6348a8e4c75e5508df62c1e359c2334bc"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-one-local/expected-clock.json",
+            "sha256": "4351db4b66c02cb34caa5a07056c791b20c988b91c451dc3d5d21133b66bdeac"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-one-local/expected-host.json",
+            "sha256": "741bf535b5cdf1616951d0b8293ed069746c74ab907a08bddd5053aeca6323d7"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77102,13 +77595,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-separate-locals/stdout.txt",
             "sha256": "0cb40cab1ec7dd241f0d573f72be515d128287c942d137346ba9588a2ba661df"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-separate-locals/expected-clock.json",
+            "sha256": "895d47544bc1787ac2d21b5a11b06e88d47a3771d2c9783c48a637b00d2c8f64"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-separate-locals/expected-host.json",
+            "sha256": "187b897ebdeaa68fe570d19b6521f7771f632aa4ba666ec394cec041a846a23a"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77142,13 +77650,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-upper-bound/stdout.txt",
             "sha256": "d69954e33fa8d782e7f08cf73b40418d6c1dee1e3446b0f5d4ce930bde47f448"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-upper-bound/expected-clock.json",
+            "sha256": "14c6c8440c7c9f9aa5fa8c1688139ea97eb9d15d3b4210ccf9014a1057d9f1dc"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-upper-bound/expected-host.json",
+            "sha256": "26cc7270a06193c8b2bd4725471c31ed68ff3090a65786172e6c2d613b2342bb"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77182,13 +77705,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-real-delay/stdout.txt",
             "sha256": "e8f8e2189046a49a165a3018575081d60c1c2e5cbbe0d599b724898fa55dfc9f"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-real-delay/expected-clock.json",
+            "sha256": "36c88cf4ee61fdbb6b470225d33203cbd84aa710b69049bf0d607155fc28d5f7"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-real-delay/expected-host.json",
+            "sha256": "a2d9d1cba0cf743e8f5a3ed1924a6096c3e2c7b69773d049f08924fc333fcc4e"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77222,13 +77760,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-large-delay/stdout.txt",
             "sha256": "a9a3f387ce55b839d5ee0b4273bd74847be737cfc675708ca9827c3a72f7b5ee"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-large-delay/expected-clock.json",
+            "sha256": "162bbc49508f8366c8cbed277bfb865917a8db9cd799425a7f3f3dcb26a0f79e"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-large-delay/expected-host.json",
+            "sha256": "26cc7270a06193c8b2bd4725471c31ed68ff3090a65786172e6c2d613b2342bb"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77262,13 +77815,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-enormous-delay/stdout.txt",
             "sha256": "e1571c2214af9bbb173551e937b2176f828c3037cfab919ecfc2473f2e1f24fc"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-enormous-delay/expected-clock.json",
+            "sha256": "380b0a2fd578afd646c72dc76e737b96c35d6c69d898c5cc55958a327fdd20ee"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-enormous-delay/expected-host.json",
+            "sha256": "26cc7270a06193c8b2bd4725471c31ed68ff3090a65786172e6c2d613b2342bb"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77302,13 +77870,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-fraction-loop/stdout.txt",
             "sha256": "40300a95d6a4af292ae8e63ed20c67d80b4f399139df752d24648e20de7ee9ca"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-fraction-loop/expected-clock.json",
+            "sha256": "6babfb32639932e623752ead8ba0649697c56bced3981049dd943b02d9b7de92"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-fraction-loop/expected-host.json",
+            "sha256": "96242989e3dad26c3eaed5cb3dbf6d84216ddf6d2521dc25ad10ff92f16fcec6"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77342,13 +77925,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-zero/stdout.txt",
             "sha256": "f4eef1076f5260a0d2137eb8734610e37a6ca67cf5f4fbd4f18dd470fad9de1d"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-zero/expected-clock.json",
+            "sha256": "6392c0e52c6154fd5064997057382ba61b6d2a74118b238a0c3fbd293fe9bbf6"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-zero/expected-host.json",
+            "sha256": "96242989e3dad26c3eaed5cb3dbf6d84216ddf6d2521dc25ad10ff92f16fcec6"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77382,13 +77980,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one/stdout.txt",
             "sha256": "e67c97557a29ee4df5abda96d133901787f4efa447ba8387a989989ada73f348"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one/expected-clock.json",
+            "sha256": "214f469d7b84c7a9f954424089534ad1ca03f110d2c06157028a727a0bd2d7d0"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one/expected-host.json",
+            "sha256": "9a2c1701fe205c082825c8d8a9d77bf2fe5fff58757b09ab3af483bcf9b8dbbb"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77422,13 +78035,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one-half/stdout.txt",
             "sha256": "cb826d26c1a24448bc4a96dbeae014c8612dd957e0b23b6eff7cb7511599fefa"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one-half/expected-clock.json",
+            "sha256": "fd4943b7bf37fe322869dbc4732297d97f9009be39c4789ad98dab5962000dbf"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one-half/expected-host.json",
+            "sha256": "9a2c1701fe205c082825c8d8a9d77bf2fe5fff58757b09ab3af483bcf9b8dbbb"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77462,13 +78090,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-two-half/stdout.txt",
             "sha256": "f56a265fb3201b1d02f0da7bcb9c6be36f1b101a6b7f7f2160b7475f48c38616"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-two-half/expected-clock.json",
+            "sha256": "42160f477a209e30e36a30975ec4b47ecb1af1f35dba21f7a73c113490515f52"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-two-half/expected-host.json",
+            "sha256": "d4f95751b782497206868506d118468fe28a87bf3f113bf130cb3973f3e6ddfd"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -80556,7 +81199,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -80569,7 +81212,12 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "source_suffix_test.go#TestRecordedMalformedTerminatorSuffix",
+          "internal/lexer/source_test.go#TestMalformedSuffixOriginalPositions",
+          "internal/parser/suffix_test.go#TestSuffixDoesNotHideEarlierErrors"
+        ]
       }
     },
     {
@@ -80913,14 +81561,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-stored/stdout.txt",
             "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
           }
-        }
+        },
+        "tests": [
+          "text_argument_order_gaps_test.go#TestRecordedTextArgumentOrderGaps"
+        ]
       }
     },
     {
@@ -80954,14 +81605,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-tail-error/stdout.txt",
             "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
           }
-        }
+        },
+        "tests": [
+          "text_argument_order_gaps_test.go#TestRecordedTextArgumentOrderGaps"
+        ]
       }
     },
     {
@@ -81139,6 +81793,10 @@
         }
       ],
       "timeoutMS": 5000,
+      "fixtureAccess": {
+        "path": "input.txt",
+        "mode": "unavailable"
+      },
       "evidence": {
         "state": "recorded",
         "accepted": true,
@@ -81167,9 +81825,10 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "tests": [
-          "file_input_test.go#TestRecordedFileInput"
+          "file_input_test.go#TestRecordedFileInput",
+          "scripts/conformance/replay_test.go#TestReplayAppliesFixtureAccess"
         ],
         "expected": {
           "exitCode": 0,
@@ -81188,7 +81847,7 @@
           ]
         },
         "review": {
-          "reason": "Operating-system restriction is exercised by platform filesystem regressions. Generic CLI replay creates readable byte fixtures and cannot reproduce this access constraint; replay qualification remains pending.",
+          "reason": "The replay harness makes the existing fixture unavailable, restores it before byte checks, and compares the recorded continuation and unchanged bytes. Platform regressions separately classify native access-denied and sharing-failure errors.",
           "link": "docs/file-input-progress.md"
         }
       }
@@ -81218,6 +81877,10 @@
         }
       ],
       "timeoutMS": 5000,
+      "fixtureAccess": {
+        "path": "input.txt",
+        "mode": "unavailable"
+      },
       "evidence": {
         "state": "recorded",
         "accepted": true,
@@ -81246,9 +81909,10 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "tests": [
-          "file_input_test.go#TestRecordedFileInput"
+          "file_input_test.go#TestRecordedFileInput",
+          "scripts/conformance/replay_test.go#TestReplayAppliesFixtureAccess"
         ],
         "expected": {
           "exitCode": 0,
@@ -81267,7 +81931,7 @@
           ]
         },
         "review": {
-          "reason": "Operating-system restriction is exercised by platform filesystem regressions. Generic CLI replay creates readable byte fixtures and cannot reproduce this access constraint; replay qualification remains pending.",
+          "reason": "The replay harness makes the existing fixture unavailable, restores it before byte checks, and compares the recorded continuation and unchanged bytes. Platform regressions separately classify native access-denied and sharing-failure errors.",
           "link": "docs/file-input-progress.md"
         }
       }
@@ -81297,6 +81961,10 @@
         }
       ],
       "timeoutMS": 5000,
+      "fixtureAccess": {
+        "path": "input.txt",
+        "mode": "unavailable"
+      },
       "evidence": {
         "state": "recorded",
         "accepted": true,
@@ -81325,9 +81993,10 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "tests": [
-          "file_input_test.go#TestRecordedFileInput"
+          "file_input_test.go#TestRecordedFileInput",
+          "scripts/conformance/replay_test.go#TestReplayAppliesFixtureAccess"
         ],
         "expected": {
           "exitCode": 0,
@@ -81346,7 +82015,7 @@
           ]
         },
         "review": {
-          "reason": "Operating-system restriction is exercised by platform filesystem regressions. Generic CLI replay creates readable byte fixtures and cannot reproduce this access constraint; replay qualification remains pending.",
+          "reason": "The replay harness makes the existing fixture unavailable, restores it before byte checks, and compares the recorded continuation and unchanged bytes. Platform regressions separately classify native access-denied and sharing-failure errors.",
           "link": "docs/file-input-progress.md"
         }
       }
@@ -81376,6 +82045,10 @@
         }
       ],
       "timeoutMS": 5000,
+      "fixtureAccess": {
+        "path": "input.txt",
+        "mode": "unavailable"
+      },
       "evidence": {
         "state": "recorded",
         "accepted": true,
@@ -81404,9 +82077,10 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "tests": [
-          "file_input_test.go#TestRecordedFileInput"
+          "file_input_test.go#TestRecordedFileInput",
+          "scripts/conformance/replay_test.go#TestReplayAppliesFixtureAccess"
         ],
         "expected": {
           "exitCode": 0,
@@ -81425,7 +82099,7 @@
           ]
         },
         "review": {
-          "reason": "Operating-system restriction is exercised by platform filesystem regressions. Generic CLI replay creates readable byte fixtures and cannot reproduce this access constraint; replay qualification remains pending.",
+          "reason": "The replay harness makes the existing fixture unavailable, restores it before byte checks, and compares the recorded continuation and unchanged bytes. Platform regressions separately classify native access-denied and sharing-failure errors.",
           "link": "docs/file-input-progress.md"
         }
       }
@@ -81455,6 +82129,10 @@
         }
       ],
       "timeoutMS": 5000,
+      "fixtureAccess": {
+        "path": "input.txt",
+        "mode": "unavailable"
+      },
       "evidence": {
         "state": "recorded",
         "accepted": true,
@@ -81483,9 +82161,10 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "tests": [
-          "file_input_test.go#TestRecordedFileInput"
+          "file_input_test.go#TestRecordedFileInput",
+          "scripts/conformance/replay_test.go#TestReplayAppliesFixtureAccess"
         ],
         "expected": {
           "exitCode": 0,
@@ -81504,7 +82183,7 @@
           ]
         },
         "review": {
-          "reason": "Operating-system restriction is exercised by platform filesystem regressions. Generic CLI replay creates readable byte fixtures and cannot reproduce this access constraint; replay qualification remains pending.",
+          "reason": "The replay harness makes the existing fixture unavailable, restores it before byte checks, and compares the recorded continuation and unchanged bytes. Platform regressions separately classify native access-denied and sharing-failure errors.",
           "link": "docs/file-input-progress.md"
         }
       }
@@ -81534,6 +82213,10 @@
         }
       ],
       "timeoutMS": 5000,
+      "fixtureAccess": {
+        "path": "input.txt",
+        "mode": "unavailable"
+      },
       "evidence": {
         "state": "recorded",
         "accepted": true,
@@ -81562,9 +82245,10 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "tests": [
-          "file_input_test.go#TestRecordedFileInput"
+          "file_input_test.go#TestRecordedFileInput",
+          "scripts/conformance/replay_test.go#TestReplayAppliesFixtureAccess"
         ],
         "expected": {
           "exitCode": 0,
@@ -81583,7 +82267,7 @@
           ]
         },
         "review": {
-          "reason": "Operating-system restriction is exercised by platform filesystem regressions. Generic CLI replay creates readable byte fixtures and cannot reproduce this access constraint; replay qualification remains pending.",
+          "reason": "The replay harness makes the existing fixture unavailable, restores it before byte checks, and compares the recorded continuation and unchanged bytes. Platform regressions separately classify native access-denied and sharing-failure errors.",
           "link": "docs/file-input-progress.md"
         }
       }
@@ -81736,7 +82420,7 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
@@ -81744,10 +82428,9 @@
             "sha256": "76d2b0dc0c3f97e2bbf9bc62f097ca2f9f830187ecb4bc8f795f8cdc6bd243c2"
           }
         },
-        "review": {
-          "reason": "The reference completes after BEFORE and BODY without the parameter output or caller continuation; no general omitted-argument rule is established.",
-          "link": "docs/empty-call-progress.md"
-        }
+        "tests": [
+          "call_arguments_test.go#TestRecordedCallArguments"
+        ]
       }
     },
     {
@@ -81823,7 +82506,7 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
@@ -81831,10 +82514,9 @@
             "sha256": "76d2b0dc0c3f97e2bbf9bc62f097ca2f9f830187ecb4bc8f795f8cdc6bd243c2"
           }
         },
-        "review": {
-          "reason": "The reference completes after BEFORE and BODY without the parameter output or caller continuation; no general omitted-argument rule is established.",
-          "link": "docs/empty-call-progress.md"
-        }
+        "tests": [
+          "call_arguments_test.go#TestRecordedCallArguments"
+        ]
       }
     },
     {

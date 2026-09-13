@@ -4,7 +4,10 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"maps"
 	"net/url"
+	"regexp"
+	"slices"
 	"strings"
 	"time"
 )
@@ -89,8 +92,11 @@ func validate(root string, m manifest, mode string, previous *manifest) error {
 				}
 			}
 			if exists && old.Implementation.State == "verified" && p.Implementation.State != "verified" {
-				if err := checkReview(root, p.Implementation.Review); err != nil {
+				before, after := old.Implementation.Review, p.Implementation.Review
+				if err := checkReview(root, after); err != nil {
 					add(fmt.Errorf("unreviewed downgrade of %s: %w", old.ID, err))
+				} else if before != nil && strings.TrimSpace(before.Reason) == strings.TrimSpace(after.Reason) && before.Link == after.Link {
+					add(fmt.Errorf("unreviewed downgrade of %s: prior review reused without a scope correction", old.ID))
 				}
 			}
 		}
@@ -133,6 +139,25 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 	if p.TimeoutMS < 1 || p.TimeoutMS > 30000 {
 		add(fmt.Errorf("replay budget must be 1..30000 milliseconds"))
 	}
+	if access := p.FixtureAccess; access != nil {
+		if access.Mode != "unavailable" {
+			add(fmt.Errorf("unsupported fixture access mode %q", access.Mode))
+		}
+		add(func() error {
+			_, err := safePath(root, access.Path)
+			return err
+		}())
+		declared := false
+		for _, file := range p.Files {
+			if file.Path == access.Path {
+				declared = true
+				break
+			}
+		}
+		if !declared {
+			add(fmt.Errorf("fixture access path %s is not an input file", access.Path))
+		}
+	}
 	if p.Evidence.State != "not-applicable" {
 		for _, a := range []artifact{p.Source, p.Input} {
 			_, err := readArtifact(root, a)
@@ -162,12 +187,6 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		if e.GUIOnly && (e.Screenshot == nil || e.Transcription == nil) {
 			add(fmt.Errorf("GUI evidence requires screenshot and transcription"))
 		}
-		for _, a := range []*artifact{e.Screenshot, e.Transcription} {
-			if a != nil {
-				_, err := readArtifact(root, *a)
-				add(err)
-			}
-		}
 	case "not-applicable":
 		add(checkReview(root, e.Review))
 		// An exclusion does not waive integrity checks on retained observations.
@@ -179,6 +198,12 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		}
 	default:
 		add(fmt.Errorf("unrecorded evidence"))
+	}
+	for _, a := range []*artifact{e.Screenshot, e.Transcription} {
+		if a != nil {
+			_, err := readArtifact(root, *a)
+			add(err)
+		}
 	}
 	i := p.Implementation
 	if contract := i.Expected.RandomInput; contract != nil {
@@ -213,6 +238,12 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 	for _, link := range i.Tests {
 		add(checkLink(root, link, true))
 	}
+	diagnosticCode := regexp.MustCompile(`^[LPSER][0-9]{3}$`)
+	for _, d := range i.Expected.Diagnostics {
+		if !diagnosticCode.MatchString(d.Code) || d.Line < 1 || d.Column < 0 {
+			add(fmt.Errorf("invalid diagnostic expectation: %+v", d))
+		}
+	}
 	if e.State == "recorded" {
 		out, err := readArtifact(root, i.Expected.Stdout)
 		add(err)
@@ -229,7 +260,28 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			add(fmt.Errorf("reference disposition requires rejection with exit status 1 and mapped diagnostics"))
 		}
 	}
+	inputs := make(map[string]bool)
+	for _, file := range p.Files {
+		if inputs[file.Path] {
+			add(fmt.Errorf("duplicate input path %s", file.Path))
+		}
+		inputs[file.Path] = true
+	}
+	destinations := maps.Clone(inputs)
+	for _, file := range i.Expected.Generated {
+		destinations[file.Path] = true
+	}
 	for _, file := range append(append([]generatedFile(nil), p.Files...), i.Expected.Generated...) {
+		parents := destinations
+		if slices.Contains(i.Expected.Absent, file.Path) {
+			// Declared removals still must fit the initial layout.
+			parents = inputs
+		}
+		for end := strings.LastIndexByte(file.Path, '/'); end >= 0; end = strings.LastIndexByte(file.Path[:end], '/') {
+			if parents[file.Path[:end]] {
+				add(fmt.Errorf("file path is both file and directory: %s", file.Path[:end]))
+			}
+		}
 		_, err := safePath(root, file.Path)
 		add(err)
 		_, err = readArtifact(root, file.Content)
@@ -251,6 +303,17 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			}
 		}
 	}
+	generated := make(map[string]string)
+	for _, file := range e.Generated {
+		if _, exists := generated[file.Path]; exists {
+			add(fmt.Errorf("duplicate generated reference path %s", file.Path))
+		}
+		_, err := safePath(root, file.Path)
+		add(err)
+		_, err = readArtifact(root, file.Content)
+		add(err)
+		generated[file.Path] = file.Content.SHA256
+	}
 	if e.State == "recorded" {
 		absent := make(map[string]bool)
 		for _, name := range e.Absent {
@@ -265,17 +328,6 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			}
 			delete(absent, name)
 		}
-		generated := make(map[string]string)
-		for _, file := range e.Generated {
-			if _, exists := generated[file.Path]; exists {
-				add(fmt.Errorf("duplicate generated reference path %s", file.Path))
-			}
-			_, err := safePath(root, file.Path)
-			add(err)
-			_, err = readArtifact(root, file.Content)
-			add(err)
-			generated[file.Path] = file.Content.SHA256
-		}
 		if len(e.Generated) != len(i.Expected.Generated) {
 			add(fmt.Errorf("generated reference inventory differs from replay expectation"))
 		}
@@ -287,7 +339,7 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			delete(generated, file.Path)
 		}
 	}
-	for _, a := range []*artifact{i.Expected.State, i.Expected.HostTrace} {
+	for _, a := range []*artifact{i.Expected.State, i.Expected.HostTrace, i.Expected.Clock} {
 		if a != nil {
 			_, err := readArtifact(root, *a)
 			add(err)

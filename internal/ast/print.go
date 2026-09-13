@@ -152,6 +152,8 @@ func (p *printer) printStmt(stmt Stmt) {
 		}
 	}
 	switch s := stmt.(type) {
+	case *ErrorStmt:
+		p.line("%s", s.Text)
 	case *FileInputStmt:
 		p.line("arquivo \"%s\"", s.Path)
 	case *ConsoleStmt:
@@ -239,7 +241,9 @@ func (p *printer) printStmt(stmt Stmt) {
 		p.indent++
 		p.printStmts(s.Body)
 		p.indent--
-		p.end(s.End, "ate %s", exprString(s.Cond))
+		if s.Cond != nil {
+			p.end(s.End, "ate %s", exprString(s.Cond))
+		}
 	case *ForStmt:
 		step := ""
 		if s.Step != nil {
@@ -346,7 +350,15 @@ func writeArgString(arg WriteArg) string {
 
 func exprString(expr Expr) string {
 	switch e := expr.(type) {
+	case *RecoveryExpr:
+		if len(e.Operands) == 2 {
+			return exprString(e.Operands[0]) + " /* " + exprString(e.Operands[1]) + " */"
+		}
+		return e.Text
 	case *NoValueExpr:
+		if e.Keyword.Kind == token.IDIV {
+			return "div()"
+		}
 		return e.Keyword.Kind.String()
 	case *LiteralExpr:
 		switch e.Kind {

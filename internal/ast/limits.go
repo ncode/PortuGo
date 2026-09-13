@@ -170,6 +170,8 @@ func (c *limitChecker) expr(expr Expr, depth int) {
 		return
 	}
 	switch e := expr.(type) {
+	case *RecoveryExpr:
+		c.exprs(e.Operands, depth+1)
 	case *UnaryExpr:
 		c.expr(e.X, depth+1)
 	case *BinaryExpr:

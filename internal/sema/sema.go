@@ -80,6 +80,7 @@ type checker struct {
 	loopDepth    int
 	returnType   runtime.Type
 	inFunction   bool
+	deferLookup  diag.Code
 	stopped      bool
 	dynamicCells map[dynamicCell]bool
 	copyBack     map[dynamicCell][]dynamicCell
@@ -284,7 +285,10 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		return
 	case *ast.TimerStmt:
 		before := len(c.diags)
+		previous := c.deferLookup
+		c.deferLookup = diag.EParse
 		c.expr(s.Value)
+		c.deferLookup = previous
 		if len(c.diags) > before {
 			if c.diags[before].Code == diag.EUndeclared {
 				c.diags[before].Code = diag.EParse
@@ -292,7 +296,7 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			c.diags = c.diags[:before+1]
 		}
 	case *ast.DebugStmt:
-		c.requireBool(s.Cond)
+		c.expr(s.Cond) // The executed command validates the logical value.
 	case *ast.RandomInputStmt:
 		for _, arg := range s.Args {
 			before := len(c.diags)
@@ -332,14 +336,17 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 				c.dynamicCells[key] = true
 			}
 		}
-		if ok && !logicalResult && src.Kind != runtime.NumericType && !runtime.Assignable(dst, src) {
+		realToInteger := ok && dst.Kind == runtime.IntegerType && src.Kind == runtime.RealType && containsRealLiteral(s.Value)
+		// Recorded incompatible record destinations report their failure during
+		// execution, where the runtime validates the concrete record layout.
+		if ok && dst.Kind != runtime.RecordType && !logicalResult && !realToInteger && src.Kind != runtime.NumericType && !runtime.Assignable(dst, src) {
 			c.error(s.Value.Start(), diag.ETypeMismatch, "cannot assign %s to %s", src, dst)
 		}
 	case *ast.CallStmt:
 		c.checkCall(s.Call, true)
 	case *ast.ColorStmt:
-		if c.checkColorArg(s.Color) {
-			c.checkColorArg(s.Target)
+		if c.checkColorArg(s.Color, false) {
+			c.checkColorArg(s.Target, c.containsUserCall(s.Color))
 		}
 	case *ast.IfStmt:
 		c.requireBool(s.Cond)
@@ -369,7 +376,9 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		c.withLoop(func() { c.checkStmts(s.Body) })
 	case *ast.RepeatStmt:
 		c.withLoop(func() { c.checkStmts(s.Body) })
-		c.requireBool(s.Cond)
+		if s.Cond != nil {
+			c.requireBool(s.Cond)
+		}
 	case *ast.ForStmt:
 		sym, ok := c.lookup(s.Name)
 		if !ok || sym.kind != varSym {
@@ -425,6 +434,14 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 	defer func() { c.info.types[expr] = typ }()
 	switch e := expr.(type) {
+	case *ast.RecoveryExpr:
+		previous := c.deferLookup
+		c.deferLookup = diag.EUndeclared
+		for _, operand := range e.Operands {
+			c.expr(operand)
+		}
+		c.deferLookup = previous
+		return runtime.Type{Kind: runtime.DynamicType}
 	case *ast.NoValueExpr:
 		return runtime.Type{Kind: runtime.VoidType}
 	case *ast.LiteralExpr:
@@ -441,11 +458,18 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 	case *ast.IdentExpr:
 		sym, ok := c.lookupCallable(e.Name, funcSym)
 		if !ok {
+			if c.deferLookup != "" {
+				if c.info.deferred == nil {
+					c.info.deferred = make(map[token.Pos]diag.Diagnostic)
+				}
+				c.info.deferred[e.Name.Pos] = diag.Diagnostic{Code: c.deferLookup, Pos: e.Name.Pos, Message: fmt.Sprintf("undeclared identifier %q", e.Name.Text)}
+				return runtime.Type{Kind: runtime.DynamicType}
+			}
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}
 		}
 		if sym.kind == funcSym {
-			c.checkArgs(&ast.CallExpr{Name: e.Name}, sym)
+			c.checkArgs(&ast.CallExpr{Name: e.Name, Bare: true}, sym)
 			return sym.typ
 		}
 		if sym.kind == builtinSym {
@@ -668,7 +692,9 @@ func (c *checker) checkArgs(call *ast.CallExpr, sym symbol) {
 	if sym.kind == procSym {
 		pos = sym.pos
 	}
-	if len(call.Args) != len(params) {
+	emptyNumericValue := !call.Bare && len(call.Args) == 0 && len(params) == 1 &&
+		!params[0].byRef && (params[0].typ.Kind == runtime.IntegerType || params[0].typ.Kind == runtime.RealType)
+	if len(call.Args) != len(params) && !emptyNumericValue {
 		c.error(pos, diag.ECall, "%q expects %d arguments, got %d", call.Name.Text, len(params), len(call.Args))
 		return
 	}
@@ -716,6 +742,19 @@ func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 	default:
 		c.error(expr.Start(), diag.ETypeMismatch, "expression is not assignable")
 		return runtime.Type{Kind: runtime.InvalidType}, false
+	}
+}
+
+func containsRealLiteral(expr ast.Expr) bool {
+	switch e := expr.(type) {
+	case *ast.LiteralExpr:
+		return e.Kind == ast.RealLiteral
+	case *ast.UnaryExpr:
+		return containsRealLiteral(e.X)
+	case *ast.BinaryExpr:
+		return containsRealLiteral(e.Left) || containsRealLiteral(e.Right)
+	default:
+		return false
 	}
 }
 

@@ -17,6 +17,15 @@ type Stmt interface {
 	Start() token.Pos
 }
 
+// ErrorStmt retains a recoverable syntax error until its branch executes.
+type ErrorStmt struct {
+	At   token.Pos
+	Text string
+}
+
+func (*ErrorStmt) stmtNode()          {}
+func (s *ErrorStmt) Start() token.Pos { return s.At }
+
 // ConsoleStmt requests console display in the program configuration section.
 type ConsoleStmt struct{ At token.Pos }
 
@@ -144,7 +153,8 @@ type WhileStmt struct {
 func (*WhileStmt) stmtNode()          {}
 func (s *WhileStmt) Start() token.Pos { return s.At }
 
-// RepeatStmt is a repita loop.
+// RepeatStmt is a repita loop. Cond is nil only for a recovered fimrepita
+// marker whose syntax error is deferred until the marker is reached.
 type RepeatStmt struct {
 	End  token.Pos
 	At   token.Pos
@@ -204,9 +214,10 @@ type WriteArg struct {
 
 // WriteStmt writes expressions to stdout.
 type WriteStmt struct {
-	At      token.Pos
-	Newline bool
-	Args    []WriteArg
+	Unclosed token.Pos // Comment that removed the closing delimiter; checked during execution.
+	At       token.Pos
+	Newline  bool
+	Args     []WriteArg
 }
 
 func (*WriteStmt) stmtNode()          {}

@@ -61,3 +61,18 @@ func TestTypeDeclarationTraversalLimits(t *testing.T) {
 		})
 	}
 }
+
+func TestRecoveryOperandTraversalLimit(t *testing.T) {
+	var expr ast.Expr = &ast.LiteralExpr{At: 1, Kind: ast.IntLiteral, Int: 1}
+	for range ast.MaxDepth {
+		expr = &ast.RecoveryExpr{At: 1, Text: "1", Operands: []ast.Expr{expr}}
+	}
+	prog := &ast.Program{Body: []ast.Stmt{&ast.WriteStmt{At: 1, Args: []ast.WriteArg{{Expr: expr}}}}}
+	var out bytes.Buffer
+	err := ast.Fprint(&out, prog)
+	info, ds := sema.Analyze(prog)
+	var d diag.Diagnostic
+	if !errors.As(err, &d) || d.Code != diag.EResource || out.Len() != 0 || len(ds) != 1 || ds[0].Code != diag.EResource || info.ValidFor(prog) {
+		t.Fatalf("unprotected recovery operands: %v %v", err, ds)
+	}
+}

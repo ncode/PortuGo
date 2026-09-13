@@ -72,12 +72,13 @@ func dispatch(args []string) int {
 		}
 		return 0
 	}
-	file, prog, ok, err := parsedProgram(fs.Arg(0))
+	file, prog, ok, ds, err := parsedProgram(fs.Arg(0))
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return 1
 	}
 	if !ok {
+		diag.Render(os.Stderr, file.Positions, ds)
 		return 1
 	}
 	if command == "fmt" {
@@ -149,20 +150,18 @@ func usage() {
 	fmt.Fprintln(os.Stderr, "usage: portugol <run|check|fmt> [options] file.alg | portugol repl [--max-steps N]")
 }
 
-func parsedProgram(path string) (*source.File, *ast.Program, bool, error) {
+func parsedProgram(path string) (*source.File, *ast.Program, bool, []diag.Diagnostic, error) {
 	src, err := source.LoadFile(path)
 	if err != nil {
-		return nil, nil, false, err
+		return nil, nil, false, nil, err
 	}
-	file, toks, lexDiags := lexer.ScanFile(src)
+	_, toks, lexDiags := lexer.ScanFile(src)
 	if diag.HasErrors(lexDiags) {
-		diag.Render(os.Stderr, file, lexDiags)
-		return src, nil, false, nil
+		return src, nil, false, lexDiags, nil
 	}
 	prog, parseDiags := parser.Parse(toks)
 	if diag.HasErrors(parseDiags) {
-		diag.Render(os.Stderr, file, parseDiags)
-		return src, prog, false, nil
+		return src, prog, false, parseDiags, nil
 	}
-	return src, prog, true, nil
+	return src, prog, true, nil, nil
 }

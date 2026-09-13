@@ -23,6 +23,7 @@ type Interpreter struct {
 	out                io.Writer
 	writeNewline       bool
 	writeBytes         int
+	writeDepth         int
 	lib                *stdlib.Library
 	env                *env
 	subs               map[token.Pos]ast.Subprogram
@@ -33,6 +34,7 @@ type Interpreter struct {
 	initErr            error
 	steps              uint64
 	depth, calls       int
+	halted             bool
 	result             *runtime.Cell
 	results            []runtime.Value
 	operands           []runtime.Value
@@ -82,6 +84,7 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) (ds []diag.Diagnos
 	}()
 	i.writeNewline = false
 	i.writeBytes = 0
+	i.writeDepth = 0
 	i.program = nil
 	i.global = nil
 	i.result = nil
@@ -105,6 +108,7 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) (ds []diag.Diagnos
 	i.info = info
 	i.program = prog
 	i.steps, i.depth, i.calls = 0, 0, 0
+	i.halted = false
 	i.env = newEnv(nil)
 	i.global = i.env
 	i.subs = make(map[token.Pos]ast.Subprogram)
@@ -132,6 +136,9 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) (ds []diag.Diagnos
 	}
 	switch ctrl.kind {
 	case noControl:
+		if !i.halted && prog.Suffix.Kind == token.INVALID_SUFFIX {
+			return []diag.Diagnostic{{Code: diag.EParse, Pos: prog.End, Message: "unterminated string after fimalgoritmo"}}
+		}
 		return nil
 	case breakControl:
 		return diagnostics(fmt.Errorf("interrompa outside loop"), ctrl.at, diag.RLoop)

@@ -8,11 +8,23 @@ type Expr interface {
 	Start() token.Pos
 }
 
-// NoValueExpr is a display keyword used as an expression, without a host effect.
+// NoValueExpr is a keyword expression that produces no value or host effect.
 type NoValueExpr struct{ Keyword token.Token }
 
 func (*NoValueExpr) exprNode()          {}
 func (e *NoValueExpr) Start() token.Pos { return e.Keyword.Pos }
+
+// RecoveryExpr evaluates the retained operands of an observed malformed output
+// expression before producing no value. Text retains an incomplete numeric token;
+// paired-operator recovery instead carries its two operands.
+type RecoveryExpr struct {
+	At       token.Pos
+	Text     string
+	Operands []Expr
+}
+
+func (*RecoveryExpr) exprNode()          {}
+func (e *RecoveryExpr) Start() token.Pos { return e.At }
 
 // LiteralKind identifies the concrete literal value field.
 type LiteralKind int

@@ -11,6 +11,9 @@ import (
 
 func (i *Interpreter) execStmts(stmts []ast.Stmt) (control, error) {
 	for _, stmt := range stmts {
+		if i.halted {
+			return control{}, nil
+		}
 		ctrl, err := i.execStmt(stmt)
 		if err != nil || ctrl.kind != noControl {
 			return ctrl, err
@@ -36,6 +39,8 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		}()
 	}
 	switch s := stmt.(type) {
+	case *ast.ErrorStmt:
+		return control{}, failure(s.At, diag.EParse, fmt.Errorf("%s", s.Text))
 	case *ast.TimerStmt:
 		return control{}, i.execTimer(s)
 	case *ast.PauseStmt:
@@ -60,6 +65,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		v, err := i.eval(s.Value)
 		if err != nil {
 			return control{}, err
+		}
+		if i.halted {
+			return control{}, nil
 		}
 		return control{}, assign(cell, v)
 	case *ast.CallStmt:
@@ -96,6 +104,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 				if err != nil {
 					return control{}, err
 				}
+				if i.halted {
+					return control{}, nil
+				}
 				if match {
 					return i.execStmts(cc.Body)
 				}
@@ -121,6 +132,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 			if err != nil {
 				return control{}, err
 			}
+			if i.halted {
+				return control{}, nil
+			}
 			if ctrl.kind == breakControl {
 				return control{}, nil
 			}
@@ -137,18 +151,23 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 			if err != nil {
 				return control{}, err
 			}
+			if i.halted {
+				return control{}, nil
+			}
 			if ctrl.kind == breakControl {
 				return control{}, nil
 			}
-			cond, err := i.evalBool(s.Cond)
-			if err != nil {
-				return control{}, err
-			}
-			if err := i.delay(s.At); err != nil {
-				return control{}, err
-			}
-			if cond {
-				return control{}, nil
+			if s.Cond != nil {
+				cond, err := i.evalBool(s.Cond)
+				if err != nil {
+					return control{}, err
+				}
+				if err := i.delay(s.At); err != nil {
+					return control{}, err
+				}
+				if cond {
+					return control{}, nil
+				}
 			}
 		}
 	case *ast.ForStmt:
@@ -212,7 +231,7 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 		return control{}, fmt.Errorf("para passo cannot be zero")
 	}
 	final := from
-	for cur := from; (step > 0 && cur <= to) || (step < 0 && cur >= to); cur += step {
+	for cur := from; (step > 0 && cur <= to) || (step < 0 && cur >= to); {
 		if err := i.charge(s.Start()); err != nil {
 			return control{}, err
 		}
@@ -226,16 +245,35 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 		if err != nil {
 			return control{}, err
 		}
+		if i.halted {
+			return control{}, nil
+		}
 		if ctrl.kind == breakControl {
 			final = min(cell.Value.Int, to)
 			return control{}, assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final})
 		}
 		// VisuAlg caps the exposed exit value at the terminal bound, even
 		// for descending loops. Body assignments do not change progression.
-		final = min(cur+step, to)
+		next, ok := advanceFor(cur, step)
+		if !ok {
+			// The mathematical next value is outside the integer domain. It
+			// cannot produce another iteration, so expose the terminal bound
+			// instead of wrapping and re-entering the loop.
+			final = to
+			break
+		}
+		final = min(next, to)
+		cur = next
 	}
 	if err := assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final}); err != nil {
 		return control{}, err
 	}
 	return control{}, i.delay(s.At)
+}
+
+func advanceFor(value, step int64) (int64, bool) {
+	if step > 0 && value > math.MaxInt64-step || step < 0 && value < math.MinInt64-step {
+		return 0, false
+	}
+	return value + step, true
 }

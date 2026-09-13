@@ -25,11 +25,18 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 		}
 		signature := descriptor.Signature()
 		exprs := call.Args
-		if signature.Rule == stdlib.PowerCall {
+		if signature.Rule == stdlib.PowerCall || signature.Rule == stdlib.TextCall {
 			exprs = exprs[:min(len(exprs), signature.Arity)]
 		}
 		args := make([]runtime.Value, len(exprs))
+		absenceIndex := -1
+		laterUserCall := false
+		firstUserCall := len(exprs) != 0 && i.containsUserCall(exprs[0])
 		for idx, arg := range exprs {
+			if signature.Rule == stdlib.TextCall && absenceIndex >= 0 && i.writeDepth > 0 && !firstUserCall && i.containsUserCall(arg) {
+				i.halted = true
+				return runtime.Value{Kind: runtime.VoidValue}, nil
+			}
 			v, err := i.eval(arg)
 			if err != nil {
 				return runtime.Value{}, err
@@ -39,7 +46,10 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 				parameter = signature.Parameters[idx]
 			}
 			if v.Kind == runtime.VoidValue && parameter.AbsenceAsZero {
-				v = runtime.Value{Kind: runtime.IntegerValue}
+				if !v.NumericAbsence {
+					absenceIndex = idx
+				}
+				v = runtime.Value{Kind: runtime.IntegerValue, ConvertedAbsence: !v.NumericAbsence}
 			}
 			if parameter.Type == runtime.StringType && v.Kind != runtime.StringValue {
 				return runtime.Value{}, failure(arg.Start(), diag.ETypeMismatch, fmt.Errorf("expected caractere argument"))
@@ -50,6 +60,9 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 			if parameter.Type == runtime.IntegerType && v.Kind != runtime.IntegerValue {
 				return runtime.Value{}, failure(arg.Start(), diag.ETypeMismatch, fmt.Errorf("expected inteiro argument"))
 			}
+			if signature.Rule == stdlib.TextCall && absenceIndex >= 0 && idx > absenceIndex && i.containsUserCall(arg) {
+				laterUserCall = true
+			}
 			stopOnScalar := signature.Rule == stdlib.PowerCall || signature.NonNumericAbsent && !signature.ArityFirst
 			if v.Kind == runtime.VoidValue || stopOnScalar && (v.Kind == runtime.StringValue || v.Kind == runtime.BoolValue) {
 				// An absent numeric exponent consumes one trailing expression.
@@ -57,6 +70,10 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 					if _, err := i.eval(call.Args[signature.Arity]); err != nil {
 						return runtime.Value{}, err
 					}
+				}
+				if signature.Rule == stdlib.TextCall && laterUserCall {
+					i.halted = true
+					return runtime.Value{Kind: runtime.VoidValue}, nil
 				}
 				if v.Kind == runtime.VoidValue && !signature.ClearsNumericAbsence() {
 					return v, nil
@@ -70,9 +87,26 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 		if signature.Rule == stdlib.PowerCall && len(call.Args) != 0 && len(call.Args) != signature.Arity {
 			return runtime.Value{}, failure(call.Start(), diag.EParse, fmt.Errorf("expected ')' after numeric argument"))
 		}
+		if signature.Rule == stdlib.TextCall {
+			if len(call.Args) != signature.Arity {
+				return runtime.Value{}, failure(call.Start(), diag.EParse, fmt.Errorf("expected ')' after text arguments"))
+			}
+			if laterUserCall {
+				i.halted = true
+				return runtime.Value{Kind: runtime.VoidValue}, nil
+			}
+		}
 		if v, ok, err := i.lib.Call(b.Name, args); ok {
 			if errors.Is(err, runtime.ErrTextSize) {
 				return v, failure(call.Start(), diag.RStorage, err)
+			}
+			if v.Kind == runtime.StringValue && (signature.Rule == stdlib.CharacterCall || signature.Rule == stdlib.TextCall) {
+				for _, arg := range args {
+					if arg.ConvertedAbsence {
+						v.ConvertedAbsence = true
+						break
+					}
+				}
 			}
 			return v, failure(call.Start(), diag.RBuiltin, err)
 		}
@@ -85,7 +119,46 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 	if !ok {
 		return runtime.Value{}, fmt.Errorf("%q is not a function", call.Name.Text)
 	}
-	return i.callUserFunction(fn, call.Args, call.Start())
+	return i.callUserFunction(fn, call)
+}
+
+func (i *Interpreter) containsUserCall(expr ast.Expr) bool {
+	switch e := expr.(type) {
+	case *ast.RecoveryExpr:
+		for _, operand := range e.Operands {
+			if i.containsUserCall(operand) {
+				return true
+			}
+		}
+	case *ast.CallExpr:
+		if binding, ok := i.info.Binding(e.Name); ok && !binding.Builtin {
+			return true
+		}
+		for _, arg := range e.Args {
+			if i.containsUserCall(arg) {
+				return true
+			}
+		}
+	case *ast.IdentExpr:
+		binding, ok := i.info.Binding(e.Name)
+		return ok && !binding.Builtin && i.subs[binding.ID] != nil
+	case *ast.IndexExpr:
+		if i.containsUserCall(e.X) {
+			return true
+		}
+		for _, index := range e.Indices {
+			if i.containsUserCall(index) {
+				return true
+			}
+		}
+	case *ast.FieldExpr:
+		return i.containsUserCall(e.X)
+	case *ast.UnaryExpr:
+		return i.containsUserCall(e.X)
+	case *ast.BinaryExpr:
+		return i.containsUserCall(e.Left) || i.containsUserCall(e.Right)
+	}
+	return false
 }
 
 func (i *Interpreter) callProcedure(call *ast.CallExpr) (err error) {
@@ -109,23 +182,28 @@ func (i *Interpreter) callProcedure(call *ast.CallExpr) (err error) {
 	if !ok {
 		return fmt.Errorf("%q is not a procedure", call.Name.Text)
 	}
-	_, err = i.callSub(call.Start(), proc.Params, proc.Config, proc.Consts, proc.Locals, proc.Body, runtime.Type{Kind: runtime.VoidType}, call.Args)
+	_, err = i.callSub(call.Start(), proc.Params, proc.Config, proc.Consts, proc.Locals, proc.Body, runtime.Type{Kind: runtime.VoidType}, call.Args, !call.Bare)
 	return err
 }
 
-func (i *Interpreter) callUserFunction(fn *ast.FunctionDecl, args []ast.Expr, at token.Pos) (runtime.Value, error) {
+func (i *Interpreter) callUserFunction(fn *ast.FunctionDecl, call *ast.CallExpr) (runtime.Value, error) {
 	b, ok := i.info.Binding(fn.Name)
 	if !ok {
 		return runtime.Value{}, failure(fn.Start(), diag.RType, fmt.Errorf("missing return type"))
 	}
-	return i.callSub(at, fn.Params, fn.Config, fn.Consts, fn.Locals, fn.Body, b.Type, args)
+	return i.callSub(call.Start(), fn.Params, fn.Config, fn.Consts, fn.Locals, fn.Body, b.Type, call.Args, !call.Bare)
 }
 
-func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stmt, consts []ast.ConstDecl, locals []ast.VarDecl, body []ast.Stmt, retType runtime.Type, args []ast.Expr) (runtime.Value, error) {
+func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stmt, consts []ast.ConstDecl, locals []ast.VarDecl, body []ast.Stmt, retType runtime.Type, args []ast.Expr, allowEmptyNumericValue bool) (runtime.Value, error) {
 	if i.calls == maxCalls {
 		return runtime.Value{}, fmt.Errorf("active call limit exceeded")
 	}
-	if len(args) != len(params) {
+	emptyNumericValue := allowEmptyNumericValue && len(args) == 0 && len(params) == 1 && !params[0].ByRef
+	if emptyNumericValue {
+		binding, ok := i.info.Binding(params[0].Name)
+		emptyNumericValue = ok && (binding.Type.Kind == runtime.IntegerType || binding.Type.Kind == runtime.RealType)
+	}
+	if len(args) != len(params) && !emptyNumericValue {
 		return runtime.Value{}, fmt.Errorf("expected %d arguments, got %d", len(params), len(args))
 	}
 	outer := i.env
@@ -137,6 +215,11 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 			return runtime.Value{}, failure(param.Name.Pos, diag.RType, fmt.Errorf("missing parameter layout"))
 		}
 		typ := b.Type
+		if idx >= len(args) {
+			cell := callEnv.define(b.ID, typ)
+			cell.Value.MissingArgument = true
+			continue
+		}
 		var v runtime.Value
 		var caller *runtime.Cell
 		var err error
@@ -221,6 +304,11 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 		return runtime.Value{}, failure(ctrl.at, diag.RLoop, fmt.Errorf("interrompa outside loop"))
 	}
 	if retType.Kind != runtime.VoidType {
+		if result.Value.MissingArgument {
+			// A function that returns its absent value parameter propagates no
+			// value to the enclosing expression.
+			result.Value = runtime.Value{Kind: runtime.VoidValue, MissingArgument: true}
+		}
 		i.results[callDepth] = runtime.Clone(result.Value)
 	}
 	// The reference copies parameters back in declaration order, including their

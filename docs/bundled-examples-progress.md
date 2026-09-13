@@ -81,10 +81,44 @@ manual transcriptions:
 
 The two malformed headers and the unrecognized type now have matching positioned
 parser regressions. The game example now also has a matching type rejection.
-The other seven rejection mappings remain pending. The
+The bundled compound-repeat spelling now also has a matching `E002` on line 23,
+before any output. Original and formatted source retain the unknown-identifier
+rejection; formatting does not make the spelling an accepted terminator.
+The other six rejection mappings remain pending. The
 reference may execute a prefix before discovering malformed syntax or an invalid
 assignment, while CLI analysis reports errors before execution and may collect
 more than one diagnostic.
+
+The latest bounded grammar audit keeps these two accepted recordings pending:
+
+| Corpus ID | Remaining qualification |
+| --- | --- |
+| `bundled-3b4c69f65b60` | Generated input precedes a counted loop with no upper bound. The CLI rejects the header; the recording alone establishes neither a portable random transcript nor the omitted-bound rule. |
+| `bundled-54f1e50d1c02` | The recorded menu exit avoids a procedure with an undeclared read destination. The CLI rejects that unused body. Selected and unselected read controls are still needed before changing diagnostic timing. |
+
+These observations do not justify adding a default loop bound or generally
+suppressing diagnostics in unexecuted subprograms.
+
+A replay audit of all seventeen pending accepted programs found no additional
+byte-exact matches. Thirteen finish without diagnostics but produce different
+generated values. Successful local completion alone does not qualify their
+output or every branch.
+
+The other four fail before producing output:
+
+| Case | Current CLI rejection | Pending behavior |
+| --- | --- | --- |
+| Counted-loop form | `P001`, lines 23 and 24 | Missing counted-loop upper bound, after generated input. |
+| Declaration order | `P001`, line 20 | The global `var` section follows the procedures rather than immediately following the record type. Generated output also needs qualification. |
+| Unexecuted read | `E002`, line 157 | An undeclared read destination in a procedure avoided by the recorded menu exit. |
+| Unselected break | `E006`, line 69 | An out-of-loop `interrompa` in the branch avoided by the recorded valid input. |
+
+These CLI diagnostics are mismatch observations, not replacement reference
+expectations: all seventeen recordings are accepted by the reference. The
+existing [generated-input contract](random-replay-contracts.md) covers only
+group-13 echo/output pairs. It cannot qualify the bundled programs' generated
+tables, sorting, searches or mixed input/output transcripts. Their sources and
+expected output remain unchanged, and all seventeen remain pending.
 
 The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
 recording therefore remains pending; the retained diagnostic and preceding output

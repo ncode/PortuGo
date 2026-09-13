@@ -19,11 +19,21 @@ Half-second controls separately qualify calls, local declaration grouping,
 interrupted loops and choice branches. Timer state, argument evaluation,
 host errors, duration guards and frame cleanup have deterministic tests.
 
-Nineteen new elapsed-time recordings remain pending exact replay because wall-clock
-values vary. Ten other rejections retain output emitted before a later syntax
-or semantic error; the implementation's earlier diagnostics still differ.
-Those prefixes are preserved, and the cases remain pending. No clock values or
-earlier output are removed to make replay pass.
+The twelve remaining elapsed-time recordings now replay through explicit project
+clock schedules, preserving their reference timing text and timer-delay order.
+Ten other rejections now retain output emitted before a later syntax or type
+error. Missing timer/debug arguments, unresolved timer modes, and nonlogical
+debug conditions are diagnosed when their commands execute. The unchanged
+recordings compare exact `BEFORE`/`STEP` prefixes, diagnostic code and line,
+and exit status. No clock values or earlier output are removed to make replay
+pass.
+
+`TestRecordedDeferredExecutionCommands` runs all ten original and formatted
+programs through the typed host harness, verifies that no delay or breakpoint
+is requested, and checks formatter idempotence. Additional ordering regressions
+start with an active timer and preserve function effects before an unresolved
+timer operand; the failing command adds no host action. The generic CLI replay
+needs no clock fixture for these programs because their delays remain zero.
 
 Additional controls pin the 10,000-millisecond cap, including inputs of 30,000,
 2,147,483,648 and 9,223,372,036,855. Repeated `0.9`-millisecond commands track the
@@ -31,6 +41,22 @@ zero-delay control, supporting whole-millisecond truncation. Integer and
 half-integer controls also show why short wall-clock measurements cannot be
 treated as exact host-call traces: scheduling quantizes their observed delays.
 
-Subprogram timing is qualified for the recorded ordinary local-variable forms.
+Subprogram timing is now qualified for eight accepted recorded forms spanning
+procedure and function calls, interrupted loops, a choice branch, and one or
+two local declaration lines. Their original and formatted sources replay with
+fixed host-clock schedules, exact elapsed output, and the expected delay order.
 Other configuration/declaration combinations, file input, remaining original
 examples and the full conformance gate are still unfinished.
+
+The newly qualified elapsed-time controls are `environment-timer-clock-start`,
+`environment-timer-clock-stop`, `environment-timer-upper-bound`,
+`environment-timer-real-delay`, `environment-timer-large-delay`,
+`environment-timer-enormous-delay`, `environment-timer-fraction-loop`,
+`environment-timer-rounding-zero`, `environment-timer-rounding-one`,
+`environment-timer-rounding-one-half`, `environment-timer-rounding-two-half`,
+and `environment-chronometer-minute`. Their reference elapsed values are
+supplied to the deterministic host adapter as project clock fixtures;
+arbitrary wall-clock measurements remain pending.
+
+The manifest contains 1,648 reference recordings: 1,624 verified and 24 pending,
+plus 19 verified project contracts and two explicit exclusions (1,669 total).

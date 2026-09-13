@@ -31,8 +31,25 @@ func (i *Interpreter) matchesCase(selector runtime.Value, label ast.CaseLabel) (
 	if high.Kind == runtime.VoidValue {
 		return false, failure(label.High.Start(), diag.EParse, fmt.Errorf("expected range upper value"))
 	}
+	if selector.NumericAbsence && i.dynamicChoiceBound(label.High) {
+		i.halted = true
+		return false, nil
+	}
 	x, xNumeric := asFloat(selector)
 	lo, loNumeric := asFloat(low)
 	hi, hiNumeric := asFloat(high)
 	return xNumeric && loNumeric && hiNumeric && lo <= x && x <= hi, nil
+}
+
+func (i *Interpreter) dynamicChoiceBound(expr ast.Expr) bool {
+	switch e := expr.(type) {
+	case *ast.IdentExpr:
+		binding, ok := i.info.Binding(e.Name)
+		return ok && !binding.Builtin
+	case *ast.CallExpr:
+		binding, ok := i.info.Binding(e.Name)
+		return ok && !binding.Builtin
+	default:
+		return false
+	}
 }

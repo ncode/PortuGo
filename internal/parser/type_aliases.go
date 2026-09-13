@@ -11,7 +11,7 @@ func (p *parser) parseTypeBlock() []ast.TypeDecl {
 	}
 	p.parseDeclarationSemicolon()
 	var decls []ast.TypeDecl
-	for p.peek().Kind == token.IDENT {
+	for isTypeDeclarationName(p.peek(), p.peekN(1)) {
 		name := p.advance()
 		p.expect(token.EQL, "expected '=' after type name")
 		var typ ast.TypeSpec
@@ -33,4 +33,14 @@ func (p *parser) parseTypeBlock() []ast.TypeDecl {
 		p.error(p.peek(), "expected var after types")
 	}
 	return decls
+}
+
+func isTypeDeclarationName(name, next token.Token) bool {
+	if name.Kind == token.IDENT {
+		return true
+	}
+	// The recorded alias spelling "E" lexes as the logical conjunction
+	// keyword. In a type declaration, the following '=' disambiguates it
+	// from an expression and preserves the reference's declaration boundary.
+	return name.Kind == token.E && next.Kind == token.EQL
 }

@@ -1,6 +1,7 @@
 package portugol_test
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -49,9 +50,13 @@ func TestRecordedFrontendRejections(t *testing.T) {
 	}{
 		{"leading-decimal-point", diag.ELexer, 3},
 		{"unterminated-string", diag.ELexer, 3},
+		{"single-quoted-string", diag.ELexer, 3},
+		{"expression-next-line", diag.EParse, 3},
 		{"single-slash-inline", diag.EParse, 3},
 		{"single-star-inline", diag.EParse, 3},
 		{"logical-type-accented", diag.EParse, 3},
+		{"accented-identifier", diag.ELexer, 3},
+		{"accented-keywords", diag.ELexer, 2},
 		{"write-no-parenthesis-string", diag.EParse, 3},
 		{"write-no-parenthesis-number", diag.EParse, 3},
 		{"write-bare-same-line", diag.EParse, 3},
@@ -116,5 +121,60 @@ func TestRecordedLineEndings(t *testing.T) {
 			t.Fatalf("%s changed positioned token kinds or syntax", id)
 		}
 		want = got.String()
+	}
+}
+
+func TestAccentedFormPositions(t *testing.T) {
+	for _, tt := range []struct {
+		id, spelling string
+		line         int
+	}{
+		{"accented-identifier", "ação", 3},
+		{"accented-keywords", "início", 2},
+	} {
+		t.Run(tt.id, func(t *testing.T) {
+			original, err := os.ReadFile(filepath.Join("testdata/conformance/visualg-3.0.7/probes", tt.id, "source.alg"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			decoded, err := source.DecodeFile("source.alg", original)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, variant := range []struct {
+				data     []byte
+				spelling string
+			}{
+				{original, tt.spelling},
+				{[]byte(decoded.Text), tt.spelling},
+				{[]byte("\ufeff" + strings.ToUpper(decoded.Text)), strings.ToUpper(tt.spelling)},
+			} {
+				file, err := source.DecodeFile("source.alg", variant.data)
+				if err != nil {
+					t.Fatal(err)
+				}
+				positions, tokens, ds := lexer.ScanFile(file)
+				if len(ds) != 0 {
+					t.Fatalf("tokenization changed: %v", ds)
+				}
+				_, ds = parser.Parse(tokens)
+				if len(ds) != 1 || ds[0].Code != diag.ELexer || positions.Position(ds[0].Pos).Line != tt.line {
+					t.Fatalf("diagnostics = %v, want L001 on line %d", ds, tt.line)
+				}
+				var found bool
+				for _, tok := range tokens {
+					if tok.Pos == ds[0].Pos && tok.Text == variant.spelling {
+						found = true
+					}
+				}
+				wantPos := 0
+				for _, line := range bytes.SplitAfter(variant.data, []byte("\n"))[:tt.line-1] {
+					wantPos += len(line)
+				}
+				if !found || int(ds[0].Pos) != wantPos {
+					t.Fatal("diagnostic lost the original token spelling or byte position")
+				}
+			}
+		})
 	}
 }

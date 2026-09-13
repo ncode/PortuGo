@@ -1,6 +1,6 @@
 # Generated-input replay contracts
 
-Seventeen recorded `aleatorio` programs print a generated value twice: first
+Nineteen recorded `aleatorio` programs print a generated value twice: first
 the `leia` echo, then `escreval(value)`. Their values vary between executions.
 The original source, raw observation, normalized observation and hashes remain
 unchanged. Replay qualifies the documented domains without promising matching
@@ -40,11 +40,12 @@ supported.
 | `random-value-on-real` | 0..100 whole reals | 0 | 8 |
 | `random-range-expression-bound` | 7..8 integers | 0 | 1 |
 | `random-range-reversed` | 3..9 integers | 0 | 1 |
+| `random-boundary-full-signed32`, `random-boundary-full-signed32-reversed` | -2147483648..2147483647 integers | 0 | 1, 1 |
 | `random-value-single-bound` | 7..100 integers | 0 | 8 |
 | `random-value-single-negative` | -3..100 integers | 0 | 8 |
 | `random-range-text` | Five uppercase ASCII letters | — | 1 |
 
-`TestRecordedRandomInputDomains` checks all seventeen original and formatted
+`TestRecordedRandomInputDomains` checks all nineteen original and formatted
 programs using both forced generator endpoints and sixteen deterministic seeds.
 Contract tests reject wrong types, bounds, precision, echo/output disagreement,
 spacing, line counts, invalid specifications, and attempts to replace recorded evidence.

@@ -14,9 +14,10 @@ This catches an omission shared by both implementation layers.
 
 Two additional candidates from the command guide have separate recordings.
 `pot(2, 3)` is rejected with positioned `E002` and is covered by a regression.
-`div(8, 2)` in an output expression is accepted without producing a value; that
-expression form remains pending and is not counted as another documented
-function. The word `DIV` is already supported as an infix operator.
+`div(8, 2)` in an output expression is accepted without producing a value and
+is covered by an original and formatted execution regression. It remains a
+candidate form rather than another documented function. The word `DIV` is
+also supported as an infix operator.
 
 The shared immutable descriptor registry now covers all 28 names. Descriptors
 carry callable forms, value-parameter types, ordinary arity, optional-call and
@@ -38,9 +39,11 @@ Four controlled mutations fail validation: omitting `arccos`, changing the
 the sine evaluator. The omission affects semantic and runtime recognition
 together, so the independent inventory remains necessary.
 
-The broader numeric domain matrix and undocumented callable forms remain
-pending. Catalog agreement does not qualify reference behavior that has not
-been recorded.
+The recorded numeric domain matrix is covered by linked boundary and
+diagnostic regressions for finite results, signed 32-bit wrapping, conversion
+overflow, output precision, absence ordering, and positioned `R007` guards.
+Undocumented callable forms and unrecorded reference behavior remain outside
+the verified profile.
 
 Published evidence contains synthetic source, two program-only output panels,
 one reviewed diagnostic crop and a labeled transcription. The original document

@@ -20,6 +20,9 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 	if err := i.charge(expr.Start()); err != nil {
 		return value, err
 	}
+	if d, ok := i.info.DeferredDiagnostic(expr.Start()); ok {
+		return value, d
+	}
 	typ, ok := i.info.TypeOf(expr)
 	if !ok {
 		return value, failure(expr.Start(), diag.RType, fmt.Errorf("missing expression type"))
@@ -52,6 +55,13 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 		}
 	}()
 	switch e := expr.(type) {
+	case *ast.RecoveryExpr:
+		for _, operand := range e.Operands {
+			if _, err := i.eval(operand); err != nil {
+				return runtime.Value{}, err
+			}
+		}
+		return runtime.Value{Kind: runtime.VoidValue, SyntaxAbsence: true}, nil
 	case *ast.NoValueExpr:
 		return runtime.Value{Kind: runtime.VoidValue}, nil
 	case *ast.LiteralExpr:
@@ -61,7 +71,7 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 		return literalValue(e), nil
 	case *ast.IdentExpr:
 		if binding, ok := i.info.Binding(e.Name); ok && (binding.Builtin || i.subs[binding.ID] != nil) {
-			return i.callFunction(&ast.CallExpr{Name: e.Name})
+			return i.callFunction(&ast.CallExpr{Name: e.Name, Bare: true})
 		}
 		cell, err := i.lookupCell(e.Name)
 		if err != nil {
@@ -176,6 +186,9 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 			i.operands = i.operands[:last]
 		}
 	}()
+	if left.SyntaxAbsence || right.SyntaxAbsence {
+		return runtime.Value{Kind: runtime.VoidValue, SyntaxAbsence: true}, nil
+	}
 	switch e.Op.Kind {
 	case token.ADD:
 		if left.Kind == runtime.StringValue && right.Kind == runtime.StringValue {

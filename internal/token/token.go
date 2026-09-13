@@ -14,6 +14,7 @@ const (
 	IDENT
 	NUMBER
 	STRING
+	ABSENT_NUMBER // Numeric token immediately truncated by an adjacent brace.
 
 	ADD
 	SUB
@@ -97,8 +98,9 @@ const (
 	XOU
 	MOD
 	NEWLINE
-	COMMENT // A physical-line comment, excluding its terminating newline.
-	SUFFIX  // Opaque source following the program terminator.
+	COMMENT        // A physical-line comment, excluding its terminating newline.
+	SUFFIX         // Opaque source following the program terminator.
+	INVALID_SUFFIX // Suffix with an unterminated quote on the terminator's line.
 )
 
 // Token is one item in the source stream.
@@ -179,7 +181,7 @@ var keywords = map[string]Kind{
 }
 
 var kindNames = map[Kind]string{
-	ILLEGAL: "ILLEGAL", EOF: "EOF", IDENT: "IDENT", NUMBER: "NUMBER", STRING: "STRING",
+	ILLEGAL: "ILLEGAL", EOF: "EOF", IDENT: "IDENT", NUMBER: "NUMBER", STRING: "STRING", ABSENT_NUMBER: "ABSENT_NUMBER",
 	ADD: "+", SUB: "-", MUL: "*", QUO: "/", IDIV: "\\", REM: "%", POW: "^",
 	ASSIGN: "<-", EQL: "=", NEQ: "<>", LSS: "<", GTR: ">", LEQ: "<=", GEQ: ">=",
 	LPAREN: "(", RPAREN: ")", LBRACK: "[", RBRACK: "]", COMMA: ",", COLON: ":",
@@ -200,9 +202,10 @@ var kindNames = map[Kind]string{
 	ECO:       "eco", CRONOMETRO: "cronometro",
 	TIMER: "timer", PAUSA: "pausa", DEBUG: "debug",
 	NAO: "nao", XOU: "xou", MOD: "mod",
-	NEWLINE: "NEWLINE",
-	COMMENT: "COMMENT",
-	SUFFIX:  "SUFFIX",
+	NEWLINE:        "NEWLINE",
+	COMMENT:        "COMMENT",
+	SUFFIX:         "SUFFIX",
+	INVALID_SUFFIX: "INVALID_SUFFIX",
 }
 
 // Lookup returns the keyword kind for ident, or IDENT.

@@ -115,7 +115,7 @@ Every variable, record field, and vector element SHALL begin with the oracle-con
 - **THEN** it observes the reference zero values for their resolved types
 
 ### Requirement: Assignment compatibility and coercion
-Assignment SHALL require the exact reference-compatible source and destination types and SHALL apply only oracle-confirmed implicit coercions. Incompatible scalar, aggregate, named-type, field, and vector assignments SHALL be rejected before execution when statically knowable, and the assigned expression SHALL be evaluated once.
+Assignment SHALL require the exact reference-compatible source and destination types and SHALL apply only oracle-confirmed implicit coercions. Incompatible scalar, aggregate, named-type, field, and vector assignments SHALL be rejected before execution when statically knowable, except where a recorded control establishes runtime rejection timing. In those controls, the assigned expression SHALL be evaluated once and the positioned runtime diagnostic SHALL match the recording.
 
 #### Scenario: Apply an accepted numeric coercion
 - **WHEN** a value is assigned across a numeric type boundary accepted by the reference
@@ -124,6 +124,10 @@ Assignment SHALL require the exact reference-compatible source and destination t
 #### Scenario: Reject an incompatible aggregate assignment
 - **WHEN** a record or vector value is assigned to a destination that is not reference-compatible
 - **THEN** analysis emits a positioned type diagnostic and no partial assignment occurs
+
+#### Scenario: Preserve recorded record rejection timing
+- **WHEN** one of the recorded duplicate-layout or incompatible record-assignment controls is executed
+- **THEN** the assignment reaches execution and reports the positioned `R001` diagnostic recorded for that control, with no output from the rejected program
 
 ### Requirement: Aggregate copy and reference semantics
 Whole-vector assignment, including self-assignment and assignment to a scalar, SHALL be rejected as recorded. Element assignment remains supported. Record assignment and aggregate parameters SHALL be supported only in independently accepted forms, with copying, conversion, visibility, and copy-back matching their recordings. Nested aggregates SHALL follow the same confirmed rules without accidental sharing or copying; scalar parameter behavior SHALL NOT establish unrecorded aggregate alias behavior.

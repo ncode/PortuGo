@@ -12,6 +12,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 )
 
 func taskStates(root, name string) (map[string]bool, map[int]bool, error) {
@@ -72,6 +74,9 @@ func checkLink(root, link string, test bool) error {
 		}
 		for _, decl := range file.Decls {
 			if fn, ok := decl.(*ast.FuncDecl); ok && fn.Recv == nil && fn.Name.Name == anchor {
+				if !isTestFunction(fn) {
+					return fmt.Errorf("invalid test link %s: not a Go test function", link)
+				}
 				return nil
 			}
 		}
@@ -83,6 +88,36 @@ func checkLink(root, link string, test bool) error {
 		}
 	}
 	return fmt.Errorf("stale trace link %s", link)
+}
+
+// isTestFunction applies Go test discovery's name and declaration checks.
+// Package compilation still validates imports and resolves the parameter type.
+func isTestFunction(fn *ast.FuncDecl) bool {
+	suffix, ok := strings.CutPrefix(fn.Name.Name, "Test")
+	if !ok || fn.Recv != nil {
+		return false
+	}
+	if suffix != "" {
+		r, _ := utf8.DecodeRuneInString(suffix)
+		if unicode.IsLower(r) {
+			return false
+		}
+	}
+	if fn.Type.TypeParams.NumFields() != 0 || fn.Type.Results.NumFields() != 0 || fn.Type.Params.NumFields() != 1 {
+		return false
+	}
+	ptr, ok := fn.Type.Params.List[0].Type.(*ast.StarExpr)
+	if !ok {
+		return false
+	}
+	switch typ := ptr.X.(type) {
+	case *ast.Ident:
+		return typ.Name == "T"
+	case *ast.SelectorExpr:
+		return typ.Sel.Name == "T"
+	default:
+		return false
+	}
 }
 
 func checkTests(root string, tests []string) error {

@@ -314,3 +314,22 @@ production source; the completed name-boundary evidence then passes a fresh
 826-test run with all 215 reference replays. All 79 transported files match
 locally before this validation note. The evidence gate reports 93 missing
 mappings (32 requirements and 61 examples), with no other errors.
+
+The empty-argument subprogram follow-up now verifies three additional accepted
+records through the original and formatted execution regression. A simple
+one-argument numeric procedure exposes its typed zero; a one-argument numeric
+function propagates no value when that absent parameter is returned, preserving
+the recorded body output and caller stop. Bare, multi-parameter, and other
+omitted-argument forms remain pending.
+
+The record-rejection follow-up now verifies six previously pending recorded
+controls. One keyword-shaped alias use reports `P001` at its variable
+declaration, while five incompatible or duplicate-layout assignments report
+positioned `R001` during execution. The evidence remains recorded and broader
+aggregate semantics remain pending.
+
+The timed-subprogram follow-up now verifies eight accepted elapsed-time
+recordings through original and formatted execution. Fixed host-clock schedules
+preserve each recorded elapsed message and half-second delay order across
+procedure/function calls, interrupted loops, a choice branch, and local
+declaration layouts. Other variable timing combinations remain pending.

@@ -148,6 +148,34 @@ func TestManifestValidation(t *testing.T) {
 	}
 }
 
+func TestManifestValidatesFixtureAccess(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	a := writeArtifact(t, root, "fixture.dat", "original")
+	m.Probes[0].Files = []generatedFile{{Path: "input.dat", Content: a}}
+	m.Probes[0].FixtureAccess = &fixtureAccess{Path: "input.dat", Mode: "unavailable"}
+	if err := validate(root, m, "evidence", nil); err != nil {
+		t.Fatal(err)
+	}
+	for _, tt := range []struct {
+		name, mode, path, want string
+	}{
+		{name: "unknown mode", mode: "locked", path: "input.dat", want: "fixture access mode"},
+		{name: "undeclared file", mode: "unavailable", path: "other.dat", want: "input file"},
+		{name: "unsafe path", mode: "unavailable", path: "../input.dat", want: "unsafe path"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			copy := m
+			copy.Probes = append([]probe(nil), m.Probes...)
+			copy.Probes[0].FixtureAccess = &fixtureAccess{Path: tt.path, Mode: tt.mode}
+			err := validate(root, copy, "evidence", nil)
+			if err == nil || !strings.Contains(err.Error(), tt.want) {
+				t.Fatalf("error = %v, want %q", err, tt.want)
+			}
+		})
+	}
+}
+
 func TestManifestPreservesVerifiedHistory(t *testing.T) {
 	t.Parallel()
 	root, m := testManifest(t)

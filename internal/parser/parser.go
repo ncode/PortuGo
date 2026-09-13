@@ -2,6 +2,8 @@ package parser
 
 import (
 	"strconv"
+	"strings"
+	"unicode"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
@@ -26,19 +28,40 @@ func Parse(tokens []token.Token) (*ast.Program, []diag.Diagnostic) {
 }
 
 type parser struct {
-	original  []token.Token
-	fragments map[token.Pos]ast.CommentFragment
-	tokens    []token.Token
-	pos       int
-	diags     []diag.Diagnostic
-	depth     int
-	limited   bool
+	original      []token.Token
+	fragments     map[token.Pos]ast.CommentFragment
+	tokens        []token.Token
+	pos           int
+	diags         []diag.Diagnostic
+	depth         int
+	caseDepth     int
+	writeExpr     bool
+	recoveryPair  bool
+	writeRecovery bool
+	limited       bool
 }
 
 func (p *parser) parseProgram() *ast.Program {
 	start := p.peek()
 	prog := &ast.Program{At: start.Pos}
 	if !p.match(token.ALGORITMO) {
+		if p.peek().Kind == token.FUNCAO || p.peek().Kind == token.PROCEDIMENTO {
+			// Some recorded library fragments begin with subprograms and have no
+			// algorithm body. Parse their declarations far enough to report a
+			// declaration error at its source position; a complete fragment still
+			// receives the required-header diagnostic below.
+			for p.peek().Kind == token.PROCEDIMENTO || p.peek().Kind == token.FUNCAO {
+				prog.Subs = append(prog.Subs, p.parseSubprogram())
+				if len(p.diags) != 0 {
+					return prog
+				}
+			}
+			p.error(p.peek(), "expected algoritmo")
+			return prog
+		}
+		if p.match(token.STRING) {
+			start = p.peek()
+		}
 		p.error(start, "expected algoritmo")
 		return prog
 	}
@@ -67,12 +90,12 @@ func (p *parser) parseProgram() *ast.Program {
 	}
 	prog.Begin = p.peek().Pos
 	if !p.match(token.INICIO) {
-		p.error(p.peek(), "expected inicio")
+		p.expect(token.INICIO, "expected inicio")
 		return prog
 	}
 	prog.Body = p.parseStmtList(stopSet(token.FIMALGORITMO))
 	prog.End = p.expect(token.FIMALGORITMO, "expected fimalgoritmo").Pos
-	if p.peek().Kind == token.SUFFIX {
+	if p.peek().Kind == token.SUFFIX || p.peek().Kind == token.INVALID_SUFFIX {
 		prog.Suffix = p.advance()
 	}
 	return prog
@@ -123,6 +146,13 @@ func (p *parser) parseVarDecl() ast.VarDecl {
 	names := []token.Token{first}
 	for p.match(token.COMMA) {
 		names = append(names, p.expect(token.IDENT, "expected identifier"))
+	}
+	// Keep accented keywords and statement lookalikes intact in the lexer;
+	// the variable-name restriction applies at the declaration boundary.
+	for _, name := range names {
+		if strings.IndexFunc(name.Text, func(r rune) bool { return r > unicode.MaxASCII }) >= 0 {
+			p.diags = append(p.diags, diag.Diagnostic{Code: diag.ELexer, Pos: name.Pos, Message: "unsupported variable name"})
+		}
 	}
 	p.expect(token.COLON, "expected ':' after variable name")
 	typ := p.parseType()
@@ -223,6 +253,13 @@ func (p *parser) parseSubprogram() ast.Subprogram {
 func (p *parser) parseProcedure() *ast.ProcedureDecl {
 	start := p.expect(token.PROCEDIMENTO, "expected procedimento")
 	name := p.expect(token.IDENT, "expected procedure name")
+	if name.Text == "" {
+		return &ast.ProcedureDecl{At: start.Pos, Name: name}
+	}
+	if hasUnsupportedCallableName(name.Text) {
+		p.diags = append(p.diags, diag.Diagnostic{Code: diag.ELexer, Pos: name.Pos, Message: "unsupported procedure name"})
+		return &ast.ProcedureDecl{At: start.Pos, Name: name}
+	}
 	params := p.parseParamList()
 	p.rememberFragment(start.Pos)
 	decl := &ast.ProcedureDecl{At: start.Pos, Name: name, Params: params}
@@ -247,6 +284,13 @@ func (p *parser) parseProcedure() *ast.ProcedureDecl {
 func (p *parser) parseFunction() *ast.FunctionDecl {
 	start := p.expect(token.FUNCAO, "expected funcao")
 	name := p.expect(token.IDENT, "expected function name")
+	if name.Text == "" {
+		return &ast.FunctionDecl{At: start.Pos, Name: name}
+	}
+	if hasUnsupportedCallableName(name.Text) {
+		p.diags = append(p.diags, diag.Diagnostic{Code: diag.ELexer, Pos: name.Pos, Message: "unsupported function name"})
+		return &ast.FunctionDecl{At: start.Pos, Name: name}
+	}
 	params := p.parseParamList()
 	p.expect(token.COLON, "expected ':' before function return type")
 	ret := p.parseCallableType()
@@ -298,6 +342,10 @@ func (p *parser) parseParamList() []ast.Param {
 	return params
 }
 
+func hasUnsupportedCallableName(name string) bool {
+	return strings.IndexFunc(name, func(r rune) bool { return r > unicode.MaxASCII }) >= 0
+}
+
 func (p *parser) parseCallableType() ast.TypeSpec {
 	typ := p.parseType()
 	if len(p.diags) != 0 {
@@ -312,8 +360,15 @@ func (p *parser) parseCallableType() ast.TypeSpec {
 }
 
 func (p *parser) parseStmtList(stops map[token.Kind]bool) []ast.Stmt {
+	return p.parseStmtListUntil(stops, nil)
+}
+
+func (p *parser) parseStmtListUntil(stops map[token.Kind]bool, extraStop func(token.Token) bool) []ast.Stmt {
 	var stmts []ast.Stmt
 	for !stops[p.peek().Kind] && p.peek().Kind != token.EOF {
+		if extraStop != nil && extraStop(p.peek()) {
+			break
+		}
 		if p.match(token.SEMI) {
 			continue
 		}
@@ -365,8 +420,7 @@ func (p *parser) parseStmt() (stmt ast.Stmt) {
 	case token.TIMER:
 		s := &ast.TimerStmt{At: p.advance().Pos}
 		if p.atLineEnd() {
-			p.error(token.Token{Pos: s.At}, "expected timer value")
-			return s
+			return &ast.ErrorStmt{At: s.At, Text: "timer"}
 		}
 		s.Value = p.parseExpr(0)
 		p.skipLine()
@@ -378,8 +432,7 @@ func (p *parser) parseStmt() (stmt ast.Stmt) {
 	case token.DEBUG:
 		s := &ast.DebugStmt{At: p.advance().Pos}
 		if p.atLineEnd() {
-			p.error(token.Token{Pos: s.At}, "expected debug condition")
-			return s
+			return &ast.ErrorStmt{At: s.At, Text: "debug"}
 		}
 		s.Cond = p.parseExpr(0)
 		p.skipLine()
@@ -403,8 +456,17 @@ func (p *parser) parseStmt() (stmt ast.Stmt) {
 		stmt := &ast.ReturnStmt{At: tok.Pos}
 		if !p.atLineEnd() {
 			stmt.Value = p.parseExpr(0)
+		} else {
+			p.discardReturnContinuation()
 		}
 		return stmt
+	case token.ATE:
+		if p.caseDepth != 0 {
+			return p.parseErrorStmt()
+		}
+		p.error(p.advance(), "expected statement")
+		p.skipLine()
+		return nil
 	case token.LEIA:
 		return p.parseRead()
 	case token.ESCREVA, token.ESCREVAL:
@@ -470,7 +532,9 @@ func (p *parser) parseSwitch() ast.Stmt {
 			}
 			p.match(token.COLON)
 			p.rememberFragment(cstart.Pos)
+			p.caseDepth++
 			body := p.parseStmtList(stopSet(token.CASO, token.OUTROCASO, token.FIMESCOLHA))
+			p.caseDepth--
 			sw.Cases = append(sw.Cases, ast.CaseClause{At: cstart.Pos, Labels: labels, Body: body})
 		case token.OUTROCASO:
 			sw.DefaultAt = p.advance().Pos
@@ -499,6 +563,34 @@ func (p *parser) parseCaseLabel() ast.CaseLabel {
 	return label
 }
 
+func (p *parser) discardReturnContinuation() {
+	if p.pos >= len(p.tokens) || p.tokens[p.pos].Kind != token.NEWLINE {
+		return
+	}
+	i := p.pos + 1
+	if i >= len(p.tokens) {
+		return
+	}
+	switch p.tokens[i].Kind {
+	case token.NUMBER, token.STRING, token.LPAREN, token.ADD, token.SUB, token.NAO, token.VERDADEIRO, token.FALSO:
+	default:
+		return
+	}
+	for i < len(p.tokens) && p.tokens[i].Kind != token.NEWLINE && p.tokens[i].Kind != token.EOF {
+		i++
+	}
+	p.pos = i
+}
+
+func (p *parser) parseErrorStmt() ast.Stmt {
+	at := p.advance()
+	parts := []string{at.Text}
+	for !p.atLineEnd() {
+		parts = append(parts, p.advance().Text)
+	}
+	return &ast.ErrorStmt{At: at.Pos, Text: strings.Join(parts, " ")}
+}
+
 func (p *parser) parseWhile() ast.Stmt {
 	start := p.expect(token.ENQUANTO, "expected enquanto")
 	cond := p.parseExpr(0)
@@ -511,11 +603,60 @@ func (p *parser) parseWhile() ast.Stmt {
 
 func (p *parser) parseRepeat() ast.Stmt {
 	start := p.expect(token.REPITA, "expected repita")
-	body := p.parseStmtList(stopSet(token.ATE))
+	body := p.parseStmtListUntil(stopSet(token.ATE), func(tok token.Token) bool {
+		return p.repeatRecoveryBoundary(tok)
+	})
+	if marker := p.peek(); p.repeatRecoveryBoundary(marker) {
+		switch repeatRecovery(marker) {
+		case "fimrepita":
+			p.advance()
+			p.skipLine()
+			body = append(body, &ast.ErrorStmt{At: marker.Pos, Text: marker.Text})
+			p.rememberFragment(marker.Pos)
+			return &ast.RepeatStmt{At: start.Pos, Body: body, End: marker.Pos}
+		case "ate_que":
+			p.advance()
+			p.skipLine()
+			p.rememberFragment(marker.Pos)
+			return &ast.RepeatStmt{
+				At:   start.Pos,
+				Body: body,
+				Cond: &ast.IdentExpr{Name: marker},
+				End:  marker.Pos,
+			}
+		}
+	}
 	end := p.expect(token.ATE, "expected ate").Pos
 	cond := p.parseExpr(0)
 	p.rememberFragment(end)
 	return &ast.RepeatStmt{At: start.Pos, Body: body, Cond: cond, End: end}
+}
+
+func repeatRecovery(tok token.Token) string {
+	if tok.Kind != token.IDENT {
+		return ""
+	}
+	switch strings.ToLower(tok.Text) {
+	case "fimrepita":
+		return "fimrepita"
+	case "ate_que", "até_que":
+		return "ate_que"
+	default:
+		return ""
+	}
+}
+
+func (p *parser) repeatRecoveryBoundary(tok token.Token) bool {
+	marker := repeatRecovery(tok)
+	index := p.peekIndex(0)
+	if marker == "" || index == 0 || index >= len(p.tokens) || p.tokens[index-1].Kind != token.NEWLINE {
+		return false
+	}
+	next := index + 1
+	if marker != "fimrepita" {
+		return next >= len(p.tokens) || p.tokens[next].Kind != token.LPAREN
+	}
+	return next >= len(p.tokens) || p.tokens[next].Kind == token.NEWLINE || p.tokens[next].Kind == token.EOF
 }
 
 func (p *parser) parseFor() ast.Stmt {
@@ -563,6 +704,9 @@ func (p *parser) parseWrite() ast.Stmt {
 		p.skipLine()
 		return stmt
 	}
+	previous, previousRecovery := p.writeExpr, p.writeRecovery
+	p.writeExpr, p.writeRecovery = true, false
+	defer func() { p.writeExpr, p.writeRecovery = previous, previousRecovery }()
 	if !p.match(token.RPAREN) {
 		for {
 			arg := ast.WriteArg{Expr: p.parseExpr(0)}
@@ -578,7 +722,11 @@ func (p *parser) parseWrite() ast.Stmt {
 			}
 		}
 		if !p.match(token.RPAREN) {
-			p.error(p.peek(), "expected ')'")
+			if comment, ok := p.lineEndComment(); ok {
+				stmt.Unclosed = comment.Pos
+			} else {
+				p.error(p.peek(), "expected ')'")
+			}
 			p.skipLine()
 		}
 	}
@@ -588,6 +736,9 @@ func (p *parser) parseWrite() ast.Stmt {
 		if p.peek().Kind != token.FIMALGORITMO {
 			p.skipLine()
 		}
+	}
+	if p.writeRecovery || stmt.Unclosed != token.NoPos {
+		p.rememberRecovery(start.Pos)
 	}
 	return stmt
 }
@@ -634,7 +785,11 @@ func (p *parser) expect(kind token.Kind, msg string) token.Token {
 		return p.advance()
 	}
 	tok := p.peek()
-	p.error(tok, msg)
+	if kind == token.INICIO && strings.EqualFold(tok.Text, "início") {
+		p.diags = append(p.diags, diag.Diagnostic{Code: diag.ELexer, Pos: tok.Pos, Message: "unsupported spelling of inicio"})
+	} else {
+		p.error(tok, msg)
+	}
 	return token.Token{Kind: kind, Pos: tok.Pos}
 }
 

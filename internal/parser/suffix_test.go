@@ -7,6 +7,7 @@ import (
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/lexer"
+	"github.com/ncode/portugol-go/internal/token"
 )
 
 func TestIgnoredSuffixRoundTrip(t *testing.T) {
@@ -59,8 +60,12 @@ func TestSuffixDoesNotHideEarlierErrors(t *testing.T) {
 			t.Fatalf("accepted malformed body %q", body)
 		}
 	}
-	_, _, ds := lexer.Scan("suffix.alg", "algoritmo \"Invalid\"\ninicio\nfimalgoritmo \"unterminated\n")
-	if len(ds) != 1 {
-		t.Fatalf("terminator-line lexical errors must remain visible: %v", ds)
+	_, tokens, ds := lexer.Scan("suffix.alg", "algoritmo \"Invalid\"\ninicio\nfimalgoritmo \"unterminated\n")
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	prog, ds := Parse(tokens)
+	if len(ds) != 0 || prog.Suffix.Kind != token.INVALID_SUFFIX {
+		t.Fatalf("terminator-line fault was not retained for execution: %v", ds)
 	}
 }
