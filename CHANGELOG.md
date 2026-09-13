@@ -90,6 +90,10 @@
   and call forms, parameter and copy-back rules, argument order, lexical scope,
   and recursion; unqualified call variants remain explicit.
 
+- Mark the declaration documentation coverage complete for accepted aggregates,
+  rejected extensions, assignment aliases, zero/copy behavior, and captured
+  references; unqualified aggregate cases remain explicit.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 

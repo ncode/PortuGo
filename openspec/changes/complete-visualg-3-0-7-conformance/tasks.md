@@ -451,7 +451,12 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   vector-element replacement, self-assignment, and later argument side effects.
   Backing layouts are checked before copying or mutating destination storage.
 - [ ] 6.10 Add parser goldens, diagnostic tables, runtime fixtures, comment-preserving round trips, and an example combining only confirmed declarations and copy/reference forms.
-- [ ] 6.11 Update `docs/language.md` and `CHANGELOG.md` with accepted declarations, rejected extension forms, assignment spelling, and actual copy/reference semantics.
+- [x] 6.11 Update `docs/language.md` and `CHANGELOG.md` with accepted declarations, rejected extension forms, assignment spelling, and actual copy/reference semantics.
+
+  The authoritative language reference and changelog now document the
+  accepted declaration and aggregate forms, rejected extensions, assignment
+  aliases, zero/copy behavior, and captured reference semantics while keeping
+  unqualified aggregate cases explicitly pending.
 - [ ] 6.12 Run focused AST/parser/sema/runtime aggregate tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
 - [ ] 6.13 Mark every completed 6.x task immediately, commit the focused type/declaration changes, push the next stacked branch, and open its draft PR before group 7.
 
