@@ -315,6 +315,14 @@
       ]
     },
     {
+      "id": "assumption.reference-vector-element",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Passar elemento de vetor (`v[i]`) por referência: suportado?",
+      "probes": [
+        "reference-designator-capture-order"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
