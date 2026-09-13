@@ -61,6 +61,7 @@ func TestMain(m *testing.M) {
 
 func startHoldingChild() {
 	child := exec.Command(os.Args[0], "-test.run=^TestNoop$")
+	child.Dir = os.TempDir()
 	child.Env = append(os.Environ(), "PORTUGOL_GO_FAKE_GIT_HOLD=1")
 	child.Stdout, child.Stderr = os.Stdout, os.Stderr
 	if err := child.Start(); err != nil {
