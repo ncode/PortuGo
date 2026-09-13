@@ -397,7 +397,12 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 - [x] 5.7 Implement oracle-confirmed declaration visibility, direct recursion, mutual recursion, and independent recursive call frames.
 - [ ] 5.8 Add call-frame and alias regressions for accepted scalar/vector designators already representable at this stage, including early failure, call-depth exhaustion, and no partial call setup; field cases belong to group 6 only if confirmed.
 - [x] 5.9 Extend canonical printing and examples for all accepted bare and parenthesized call forms.
-- [ ] 5.10 Update `docs/language.md` and `CHANGELOG.md` with declaration, call, parameter, evaluation-order, scope, and recursion compatibility.
+- [x] 5.10 Update `docs/language.md` and `CHANGELOG.md` with declaration, call, parameter, evaluation-order, scope, and recursion compatibility.
+
+  The authoritative language reference and changelog now document the
+  recorded declaration and call forms, parameter conversion and copy-back,
+  argument evaluation order, lexical scope, and recursive-call behavior while
+  keeping unqualified call variants explicitly pending.
 - [x] 5.11 Run focused parser/sema/interpreter call tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
 - [x] 5.12 Mark every completed 5.x task immediately, commit the focused call changes, push the next stacked branch, and open its draft PR before group 6.
 
