@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Resolve conformance test links to imported `testing.T`, rejecting local and
+  foreign type lookalikes while preserving renamed and dot imports.
+
 - Bound host observation traces while recording so oversized event streams fail
   before JSON serialization.
 

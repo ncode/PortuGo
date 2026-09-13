@@ -97,6 +97,9 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   manifests, so downgrade validation cannot bypass schema checks.
   Historical manifests loaded from Git are bounded by the repository artifact
   limit before decoding, matching current-manifest loading.
+  Test links resolve the parameter to the imported `testing.T`, rejecting local
+  and foreign type lookalikes while preserving default, renamed, and dot
+  imports in all three validation modes.
   Recorder-owned staging and capture paths are rejected from auxiliary,
   generated, and absent files before capture can hash recorder metadata as
   reference output; capture rechecks the staged metadata boundary.
