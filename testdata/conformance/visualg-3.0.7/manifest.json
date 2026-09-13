@@ -138,6 +138,14 @@
       ]
     },
     {
+      "id": "assumption.assignment-colon-equals",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[3.0.6+]` `[VERIFICAR]` Algumas notas citam aceitação de `:=` como alternativa. Não confirmado em fonte primária.",
+      "probes": [
+        "assignment-colon-equals"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
