@@ -19,6 +19,9 @@ func safePath(root, name string) (string, error) {
 	}
 	current := root
 	for _, part := range strings.Split(name, "/") {
+		if strings.HasSuffix(part, ".") || strings.HasSuffix(part, " ") {
+			return "", fmt.Errorf("unsafe path %q", name)
+		}
 		current = filepath.Join(current, part)
 		info, err := os.Lstat(current)
 		if os.IsNotExist(err) {

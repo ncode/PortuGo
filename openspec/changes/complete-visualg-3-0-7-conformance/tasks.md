@@ -50,6 +50,9 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   File layouts also reject file/directory conflicts across input and generated
   destinations regardless of order, preserving same-path updates, declared
   removals, shared directories and similar filename prefixes.
+  Shared path validation rejects components ending in an ASCII period or space
+  before recording and replay; generic tests cover all three modes and retain
+  leading periods, interior periods and spaces, and nonbreaking spaces.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 
