@@ -81,7 +81,11 @@ func run(args []string, out, stderr io.Writer) (status int) {
 			_, _ = fmt.Fprintln(stderr, "capture requires --staging, --accepted and --captured-at")
 			return 2
 		}
-		e, err := captureRecording(*stage, accepts, *capturedAt, *normalizer, *guiOnly)
+		rootPath, err := filepath.Abs(*root)
+		if err != nil {
+			return fail(err)
+		}
+		e, err := captureRecording(rootPath, *stage, accepts, *capturedAt, *normalizer, *guiOnly)
 		if err != nil {
 			return fail(err)
 		}

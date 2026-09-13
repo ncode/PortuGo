@@ -8,6 +8,9 @@
 - Reject recorder-owned staging and capture paths from auxiliary, generated, or
   absent reference files before metadata can be published as evidence.
 
+- Enforce the private staging root boundary during capture and reject symlinked
+  roots before normalized evidence can be written.
+
 - Bound direct observation-adapter clock fixture reads by the repository
   artifact limit before decoding.
 

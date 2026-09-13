@@ -63,7 +63,7 @@ func TestCaptureRecording(t *testing.T) {
 		t.Fatal(err)
 	}
 	writeArtifact(t, stage, "raw.txt", "Início da execução\r\n 1\r\n\r\nFim da execução.\r\n")
-	got, err := captureRecording(stage, true, "2026-09-07T12:00:00Z", "panel-v1", false)
+	got, err := captureRecording(root, stage, true, "2026-09-07T12:00:00Z", "panel-v1", false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -77,10 +77,10 @@ func TestCaptureRecording(t *testing.T) {
 	if string(output) != " 1\n" {
 		t.Fatalf("output = %q", output)
 	}
-	if _, err := captureRecording(stage, false, "2026-09-07T12:00:00Z", "text-v1", true); err == nil {
+	if _, err := captureRecording(root, stage, false, "2026-09-07T12:00:00Z", "text-v1", true); err == nil {
 		t.Fatal("GUI-only capture requires screenshot and transcription")
 	}
-	if _, err := captureRecording(stage, true, "invalid", "panel-v1", false); err == nil {
+	if _, err := captureRecording(root, stage, true, "invalid", "panel-v1", false); err == nil {
 		t.Fatal("invalid capture date")
 	}
 }
@@ -111,10 +111,31 @@ func TestCaptureRejectsLooseStagedJSON(t *testing.T) {
 			if err := os.WriteFile(filepath.Join(stage, "staged.json"), data, 0600); err != nil {
 				t.Fatal(err)
 			}
-			if _, err := captureRecording(stage, true, "2026-09-07T12:00:00Z", "panel-v1", false); err == nil || !strings.Contains(err.Error(), tt.want) {
+			if _, err := captureRecording(root, stage, true, "2026-09-07T12:00:00Z", "panel-v1", false); err == nil || !strings.Contains(err.Error(), tt.want) {
 				t.Fatalf("error = %v, want %q", err, tt.want)
 			}
 		})
+	}
+}
+
+func TestCaptureRejectsSymlinkedStage(t *testing.T) {
+	root, _ := testManifest(t)
+	target := filepath.Join(root, "capture-target")
+	if err := os.Mkdir(target, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	stage := filepath.Join(t.TempDir(), "recording")
+	if err := os.Symlink(target, stage); err != nil {
+		t.Skip(err)
+	}
+	var out, stderr bytes.Buffer
+	if status := run([]string{"capture", "--root", root, "--staging", stage, "--accepted", "true", "--captured-at", "2026-09-07T12:00:00Z"}, &out, &stderr); status != 1 || !strings.Contains(stderr.String(), "must not be a symlink") {
+		t.Fatalf("status = %d, stderr = %q, want symlink rejection", status, stderr.String())
+	}
+	for _, name := range []string{"normalized.txt", "evidence.json"} {
+		if _, err := os.Stat(filepath.Join(target, name)); !os.IsNotExist(err) {
+			t.Fatalf("capture created %s through symlink", name)
+		}
 	}
 }
 
@@ -140,7 +161,7 @@ func TestCaptureRejectsRecorderOwnedGeneratedPath(t *testing.T) {
 	if err := os.WriteFile(filepath.Join(stage, "staged.json"), append(data, '\n'), 0600); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := captureRecording(stage, true, "2026-09-07T12:00:00Z", "panel-v1", false); err == nil || !strings.Contains(err.Error(), "recorder-owned path") {
+	if _, err := captureRecording(root, stage, true, "2026-09-07T12:00:00Z", "panel-v1", false); err == nil || !strings.Contains(err.Error(), "recorder-owned path") {
 		t.Fatalf("error = %v, want recorder-owned path", err)
 	}
 }
@@ -156,7 +177,7 @@ func TestCaptureGeneratedBytes(t *testing.T) {
 	}
 	writeArtifact(t, stage, "raw.txt", "Início da execução\r\n 1\r\n\r\nFim da execução.\r\n")
 	want := writeArtifact(t, stage, "generated.dat", "\xe9\r\n ")
-	e, err := captureRecording(stage, true, "2026-09-07T12:00:00Z", "panel-v1", false)
+	e, err := captureRecording(root, stage, true, "2026-09-07T12:00:00Z", "panel-v1", false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -179,7 +200,7 @@ func TestCaptureAbsentFiles(t *testing.T) {
 			if present {
 				writeArtifact(t, stage, "absent.dat", "unexpected")
 			}
-			e, err := captureRecording(stage, true, "2026-09-07T12:00:00Z", "panel-v1", false)
+			e, err := captureRecording(root, stage, true, "2026-09-07T12:00:00Z", "panel-v1", false)
 			if present && (err == nil || !strings.Contains(err.Error(), "expected absent file")) {
 				t.Fatalf("unexpected capture error=%v", err)
 			}
@@ -216,7 +237,7 @@ func TestCaptureInitialFiles(t *testing.T) {
 			}
 			writeArtifact(t, stage, "data/input.dat", tt.content)
 			writeArtifact(t, stage, "raw.txt", "Início da execução\r\n 1\r\n\r\nFim da execução.\r\n")
-			e, err := captureRecording(stage, true, "2026-09-07T12:00:00Z", "panel-v1", false)
+			e, err := captureRecording(root, stage, true, "2026-09-07T12:00:00Z", "panel-v1", false)
 			if tt.valid && err != nil {
 				t.Fatal(err)
 			}
