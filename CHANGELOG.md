@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject conformance inputs that collide with replay-owned files, including
+  case aliases and descendants, before validation or replay can accept them.
+
 - Validate conformance clock fixtures with the execution adapter's decoder,
   rejecting malformed schedules before replay without changing clock behavior.
 

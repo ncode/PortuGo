@@ -1382,6 +1382,11 @@ paths. Validation rejects case-only aliases that would collide on Windows,
 including aliases across file and directory roles. Exact-path input/output
 reuse and consistently spelled shared directories remain valid. This comparison
 does not rename fixture paths or alter the recorded bytes.
+Input fixtures cannot replace the replay runner's root `source.alg` file or use
+it as a directory. When state, host or clock observations are enabled, the same
+rule applies to root `state.json`, `host.json` and `clock.json`. Validation and
+replay reject case aliases too. Nested filenames and similar prefixes remain
+valid; ordinary runs may use the adapter filenames as input fixtures.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.
 Test links require Go's test-name and declaration shape: a top-level `Test`

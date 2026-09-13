@@ -45,6 +45,15 @@ func (b *boundedOutput) Write(p []byte) (int, error) {
 	return b.buffer.Write(p)
 }
 
+func checkReplayInputPath(name string, observe bool) error {
+	first, _, _ := strings.Cut(name, "/")
+	first = strings.ToUpper(first)
+	if first == "SOURCE.ALG" || observe && (first == "STATE.JSON" || first == "HOST.JSON" || first == "CLOCK.JSON") {
+		return fmt.Errorf("input file conflicts with replay-owned path: %s", name)
+	}
+	return nil
+}
+
 func replayProbe(root string, p probe, executable string, prefix []string, observer string) (runErr error) {
 	want := p.Implementation.Expected
 	observe := want.State != nil || want.HostTrace != nil || want.Clock != nil
@@ -83,8 +92,8 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 		}
 	}
 	for _, file := range p.Files {
-		if file.Path == "source.alg" || observe && (file.Path == "state.json" || file.Path == "host.json" || file.Path == "clock.json") {
-			return fmt.Errorf("input file conflicts with probe source")
+		if err := checkReplayInputPath(file.Path, observe); err != nil {
+			return err
 		}
 		data, err := readArtifact(root, file.Content)
 		if err != nil {
