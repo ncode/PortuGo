@@ -35,6 +35,8 @@
 
 - Link the accented-comparison verification marker to its recorded probe.
 
+- Link the brace-comment verification marker to its recorded probe.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
