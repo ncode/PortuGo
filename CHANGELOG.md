@@ -74,6 +74,9 @@
 
 - Link the vector-element reference verification marker to its recorded probe.
 
+- Link the ranged-random domain and precision marker to its recorded probes;
+  statistical uniformity remains open.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
