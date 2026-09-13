@@ -98,6 +98,10 @@
   anchored comments, whole-record copying, and scalar reference arguments;
   close the declaration fixture and ordering coverage tasks.
 
+- Mark the conformance validation-mode implementation complete after exercising
+  evidence, incremental, and implementation-acceptance checks for artifact
+  integrity, trace coverage, owner readiness, and downgrade history.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
