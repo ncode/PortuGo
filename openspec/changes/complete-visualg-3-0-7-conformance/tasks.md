@@ -97,6 +97,9 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   manifests, so downgrade validation cannot bypass schema checks.
   Historical manifests loaded from Git are bounded by the repository artifact
   limit before decoding, matching current-manifest loading.
+  Recorder-owned staging and capture paths are rejected from auxiliary,
+  generated, and absent files before capture can hash recorder metadata as
+  reference output; capture rechecks the staged metadata boundary.
   Artifact and fixture paths also reject repository metadata directories such as
   `.git`, including case aliases, before private Git state can be hashed.
   Completeness checks for checklist and verification obligations remain open

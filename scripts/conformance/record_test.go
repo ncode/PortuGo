@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -38,6 +39,19 @@ func TestPrepareRecording(t *testing.T) {
 	}
 	if err := prepareRecording(root, p, filepath.Join(root, "recording")); err == nil {
 		t.Fatal("raw recording must remain outside repository")
+	}
+}
+
+func TestPrepareRecordingRejectsRecorderOwnedPaths(t *testing.T) {
+	for _, name := range recorderOwnedPaths {
+		t.Run(name, func(t *testing.T) {
+			root, m := testManifest(t)
+			p := m.Probes[0]
+			p.Implementation.Expected.Generated = []generatedFile{{Path: name}}
+			if err := prepareRecording(root, p, filepath.Join(t.TempDir(), "recording")); err == nil || !strings.Contains(err.Error(), "recorder-owned path") {
+				t.Fatalf("error = %v, want recorder-owned path", err)
+			}
+		})
 	}
 }
 
@@ -101,6 +115,33 @@ func TestCaptureRejectsLooseStagedJSON(t *testing.T) {
 				t.Fatalf("error = %v, want %q", err, tt.want)
 			}
 		})
+	}
+}
+
+func TestCaptureRejectsRecorderOwnedGeneratedPath(t *testing.T) {
+	root, m := testManifest(t)
+	stage := filepath.Join(t.TempDir(), "recording")
+	if err := prepareRecording(root, m.Probes[0], stage); err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(filepath.Join(stage, "staged.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var staged stagedRecording
+	if err := json.Unmarshal(data, &staged); err != nil {
+		t.Fatal(err)
+	}
+	staged.Generated = []string{"instructions.txt"}
+	data, err = json.Marshal(staged)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(stage, "staged.json"), append(data, '\n'), 0600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := captureRecording(stage, true, "2026-09-07T12:00:00Z", "panel-v1", false); err == nil || !strings.Contains(err.Error(), "recorder-owned path") {
+		t.Fatalf("error = %v, want recorder-owned path", err)
 	}
 }
 

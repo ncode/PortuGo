@@ -21,8 +21,10 @@ Reference version and acquisition metadata remain mandatory for recorded probes.
 ## Recording and normalization
 
 `project.recording` covers private staging, source/input integrity, capture
-metadata, required GUI attachments, and generated-file bytes. Its tests are
-`TestPrepareRecording`, `TestCaptureRecording`, `TestCaptureGeneratedBytes`, and
+metadata, recorder-owned path isolation, required GUI attachments, and
+generated-file bytes. Its tests are `TestPrepareRecording`,
+`TestPrepareRecordingRejectsRecorderOwnedPaths`, `TestCaptureRecording`,
+`TestCaptureRejectsRecorderOwnedGeneratedPath`, `TestCaptureGeneratedBytes`, and
 `TestCaptureInitialFiles`. `project.normalization` uses `TestNormalize` to verify
 that only the declared envelope and line endings change, including rejection of
 invalid envelopes and preservation of significant output bytes.
