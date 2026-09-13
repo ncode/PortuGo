@@ -56,6 +56,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   All three modes also reject case-only aliases across declared input,
   generated, absent and fixture-access paths, including shared directory
   components. Exact-path reuse and consistent directory spelling remain valid.
+  Absence expectations now reject ancestors and descendants of generated or
+  retained input files in every mode. Generic controls preserve sibling paths,
+  similar prefixes and explicitly removed inputs above or below absent paths.
+  A removed input beneath a generated file remains invalid because the
+  generated ancestor prevents portable absence checks.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 

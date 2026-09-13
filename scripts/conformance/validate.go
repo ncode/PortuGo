@@ -307,9 +307,26 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 				add(fmt.Errorf("duplicate absent path %s", name))
 			}
 			seen[name] = true
+			for _, file := range p.Files {
+				if slices.Contains(paths, file.Path) {
+					continue
+				}
+				if strings.HasPrefix(file.Path, name+"/") {
+					add(fmt.Errorf("absent path contains a required file: %s", name))
+				}
+				if strings.HasPrefix(name, file.Path+"/") {
+					add(fmt.Errorf("required file is a parent of absent path: %s", name))
+				}
+			}
 			for _, file := range append(append([]generatedFile(nil), e.Generated...), i.Expected.Generated...) {
 				if file.Path == name {
 					add(fmt.Errorf("file is both generated and absent: %s", name))
+				}
+				if strings.HasPrefix(file.Path, name+"/") {
+					add(fmt.Errorf("absent path contains a required file: %s", name))
+				}
+				if strings.HasPrefix(name, file.Path+"/") {
+					add(fmt.Errorf("required file is a parent of absent path: %s", name))
 				}
 			}
 		}

@@ -1364,8 +1364,12 @@ A file destination cannot also be a parent directory of another input or
 generated destination, regardless of declaration order. Input-only files must
 retain their bytes, so a generated descendant cannot replace an input file with
 a directory. Shared directories and similar filename prefixes remain valid.
-An explicitly removed input may have an output at its former parent path;
-removal declarations still cannot make an invalid initial layout valid.
+Removal declarations still cannot make an invalid initial layout valid.
+An absent path cannot contain a generated file or an input required to remain
+present. An absent parent is compatible with input removal only when every
+input beneath it is explicitly declared absent as well.
+Required files also cannot be parents of absent paths: absence checks must not
+traverse a file. An explicitly removed input may instead have absent descendants.
 Artifact and fixture path components cannot end in an ASCII period or space,
 avoiding Windows filename normalization. All validation modes enforce this
 before replay. Leading periods, interior periods and spaces, and nonbreaking
