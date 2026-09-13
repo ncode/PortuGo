@@ -1345,6 +1345,12 @@ Retirement records remain in later manifests; retired IDs cannot be reused.
 Recording verifies input-only file hashes before accepting a capture.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.
+Test links require Go's test-name and declaration shape: a top-level `Test`
+function whose suffix does not start with a lowercase letter, one `*testing.T`
+parameter, no results and no type parameters. Aliased and dot-imported `testing`
+names remain supported. Helpers and the `TestMain(*testing.M)` harness cannot
+serve as probe tests. Package compilation and test execution remain separate
+required checks; a valid declaration link alone does not establish coverage.
 The [project tooling evidence](conformance-project-evidence.md) separately traces
 provenance, recording, normalization, and validation tests. Those mappings do not
 substitute for language recordings or establish complete reference conformance.

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Reject conformance test links to helper names, methods or invalid Go test
+  signatures in every validation mode. Preserve valid test naming and imported
+  parameter forms while keeping compilation and execution as separate checks.
+
 - Document the remaining accepted bundled-example replay blockers, separating
   varying generated output from declaration, loop and unexecuted-code errors.
   Preserve their pending status and original reference expectations.
