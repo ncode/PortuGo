@@ -394,8 +394,7 @@ func (p *parser) parseStmt() (stmt ast.Stmt) {
 	case token.TIMER:
 		s := &ast.TimerStmt{At: p.advance().Pos}
 		if p.atLineEnd() {
-			p.error(token.Token{Pos: s.At}, "expected timer value")
-			return s
+			return &ast.ErrorStmt{At: s.At, Text: "timer"}
 		}
 		s.Value = p.parseExpr(0)
 		p.skipLine()
@@ -407,8 +406,7 @@ func (p *parser) parseStmt() (stmt ast.Stmt) {
 	case token.DEBUG:
 		s := &ast.DebugStmt{At: p.advance().Pos}
 		if p.atLineEnd() {
-			p.error(token.Token{Pos: s.At}, "expected debug condition")
-			return s
+			return &ast.ErrorStmt{At: s.At, Text: "debug"}
 		}
 		s.Cond = p.parseExpr(0)
 		p.skipLine()

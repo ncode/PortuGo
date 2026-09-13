@@ -99,7 +99,7 @@ func (c *checker) assignmentProcedure(expr ast.Expr) (symbol, bool) {
 	}
 }
 
-// DeferredDiagnostic returns a name error retained for recovered-expression execution.
+// DeferredDiagnostic returns a name error retained for expression execution.
 func (i *Info) DeferredDiagnostic(pos token.Pos) (diag.Diagnostic, bool) {
 	if i == nil {
 		return diag.Diagnostic{}, false

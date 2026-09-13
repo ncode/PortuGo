@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Preserve earlier output when missing timer/debug arguments, unresolved timer
+  modes, or nonlogical debug values fail during execution. Verify ten recorded
+  diagnostics before and after formatting, including host-effect ordering.
+
 - Reject the recorded accented variable name and unsupported `início` body
   opener with positioned `L001` diagnostics. Preserve accepted accented
   keywords, statement lookalikes, and rejected source bytes during formatting.

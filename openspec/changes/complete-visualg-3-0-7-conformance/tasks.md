@@ -692,6 +692,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 - [ ] 15.1 Add failing parser/sema/runtime fixtures and fake-host call traces for timer/delay, pause, debug/breakpoint, echo, chronometer, clear-screen, color/display, invalid arguments, host failures, clock regressions, and every additional command discovered by the oracle inventory.
 - [ ] 15.2 Add typed environment statement nodes, tokens, parser productions, printer output, and semantic validation for all recorded environment commands not completed in earlier groups.
+
+  Ten timer/debug rejection recordings now preserve earlier output and their
+  positioned runtime diagnostics in original and formatted execution. Typed
+  host tests cover missing arguments, unresolved timer modes, nonlogical debug
+  values and the absence of host effects after failure. Other environment
+  syntax and qualification obligations remain pending.
 - [x] 15.3 Implement timer/delay units, argument evaluation, ordering, and failure behavior through `Host.Delay` without direct sleeps in interpreter logic.
 
   Numeric timer commands now use typed delays, with per-run reset, expression
@@ -737,7 +743,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   output and causes, safe error rendering, and call-frame cleanup. Bounded CLI
   replay verifies silent UI effects without waiting for interactive input.
   Requested timer delays still wait; variable elapsed-time recordings and
-  source-level rejection timing remain pending.
+  remaining source-level rejection timing remain pending. The ten recorded
+  timer/debug argument failures now retain their preceding output without a
+  delay or breakpoint from the rejected command.
 
 - [x] 15.10 Add fake clock/host tables, CLI headless fixtures, canonical-print coverage, and an example demonstrating portable environment-command behavior.
 - [x] 15.11 Update `docs/language.md` and `CHANGELOG.md` with all environment commands, host effects, headless deviations, timing units, and failures.

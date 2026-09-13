@@ -75424,7 +75424,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75437,7 +75437,11 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75479,7 +75483,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75492,7 +75496,11 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75534,7 +75542,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75547,7 +75555,11 @@
               "line": 6
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75589,7 +75601,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75602,7 +75614,11 @@
               "line": 6
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75644,7 +75660,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75657,7 +75673,11 @@
               "line": 6
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75699,7 +75719,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75712,7 +75732,11 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75754,7 +75778,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75767,7 +75791,11 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75809,7 +75837,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75822,7 +75850,11 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75864,7 +75896,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75877,7 +75909,11 @@
               "line": 6
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {
@@ -75919,7 +75955,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -75932,7 +75968,11 @@
               "line": 6
             }
           ]
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestRecordedDeferredExecutionCommands",
+          "internal/interp/execution_controls_test.go#TestDeferredExecutionCommandEffects"
+        ]
       }
     },
     {

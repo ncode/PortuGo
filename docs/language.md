@@ -713,6 +713,9 @@ milliseconds. Zero, negative values and positive fractions below one millisecond
 disable it. Character and logical values preserve the current delay; an absent
 value receives `P001`. Remaining line syntax is ignored. Bare `timer` and
 undeclared modes such as `timer on`/`timer off` receive `P001`.
+These recorded argument failures are reported when the command executes,
+preserving earlier output. Name lookup errors retain operand evaluation order;
+the failed command does not request a delay or change the current timer.
 Positive fractions are truncated to whole milliseconds, and values above
 10,000 milliseconds are clamped to 10,000. The cap also applies to large real
 values outside the 32-bit integer range. Nonfinite values receive `R008` as a
@@ -731,11 +734,15 @@ Unrecorded configuration and declaration combinations remain unqualified.
 `pausa` requests one `Host.Breakpoint` at its source position; apparent call
 syntax and other tails are ignored. `debug logical-expression` requests one
 breakpoint only when true and ignores trailing syntax. Missing conditions
-receive `P001`, while nonlogical conditions receive `E001`. The default headless
+receive `P001`, while nonlogical conditions receive `E001` when executed. Earlier
+output is retained, and rejected conditions do not request a breakpoint or delay.
+The default headless
 host continues immediately; it does not wait for a keypress. Expression forms
 `timer()`, `debug()` and `pausa()` produce no value or host action. Host delay or
 breakpoint failures report positioned `R008`, preserve preceding output and
 hide underlying operational details. See [execution controls](execution-controls-progress.md).
+The ten recorded timer/debug rejection programs retain their output and
+diagnostics after canonical formatting, including missing-argument forms.
 
 Numeric input ignores leading ASCII spaces and accepts a sign and decimal
 exponent. Malformed text retains the unsigned mantissa before decimal and

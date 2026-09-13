@@ -3,12 +3,19 @@ package interp
 import (
 	"bytes"
 	"errors"
+	"os"
+	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
+	"github.com/ncode/portugol-go/internal/lexer"
+	"github.com/ncode/portugol-go/internal/parser"
+	"github.com/ncode/portugol-go/internal/sema"
+	"github.com/ncode/portugol-go/internal/source"
 	"github.com/ncode/portugol-go/internal/token"
 )
 
@@ -223,5 +230,114 @@ func TestTimerFractionalBoundaries(t *testing.T) {
 		if ds := New(Options{Host: h}).Run(p, info); len(ds) != 0 || !reflect.DeepEqual(h.delays, []time.Duration{tt.want}) {
 			t.Fatalf("timer %s: %v delays=%v", tt.literal, ds, h.delays)
 		}
+	}
+}
+
+func TestRecordedDeferredExecutionCommands(t *testing.T) {
+	for _, tt := range []struct {
+		id   string
+		code diag.Code
+		line int
+	}{
+		{"execution-debug-missing", diag.EParse, 4},
+		{"execution-debug-number", diag.ETypeMismatch, 4},
+		{"execution-timer-zero", diag.EParse, 6},
+		{"execution-timer-negative", diag.EParse, 6},
+		{"execution-timer-fraction", diag.EParse, 6},
+		{"execution-timer-on-off", diag.EParse, 4},
+		{"execution-timer-bare", diag.EParse, 4},
+		{"execution-timer-unknown", diag.EParse, 4},
+		{"execution-timer-quoted", diag.EParse, 6},
+		{"execution-timer-expression", diag.EParse, 6},
+	} {
+		t.Run(tt.id, func(t *testing.T) {
+			dir := filepath.Join("../../testdata/conformance/visualg-3.0.7/probes", tt.id)
+			data, err := os.ReadFile(filepath.Join(dir, "source.alg"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			want, err := os.ReadFile(filepath.Join(dir, "stdout.txt"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			for pass := range 2 {
+				src, err := source.DecodeFile("source.alg", data)
+				if err != nil {
+					t.Fatal(err)
+				}
+				file, tokens, ds := lexer.ScanFile(src)
+				if len(ds) != 0 {
+					t.Fatal(ds)
+				}
+				prog, ds := parser.Parse(tokens)
+				if len(ds) != 0 {
+					t.Fatalf("premature parse diagnostics: %v", ds)
+				}
+				info, ds := sema.Analyze(prog)
+				if len(ds) != 0 {
+					t.Fatalf("premature semantic diagnostics: %v", ds)
+				}
+				var out bytes.Buffer
+				host := &executionHost{out: &out}
+				ds = New(Options{Output: &out, Host: host}).Run(prog, info)
+				if len(ds) != 1 || ds[0].Code != tt.code || file.Position(ds[0].Pos).Line != tt.line || !bytes.Equal(out.Bytes(), want) {
+					t.Fatalf("diagnostics=%v stdout=%q; want %s line %d and %q", ds, out.String(), tt.code, tt.line, want)
+				}
+				if len(host.delays) != 0 || len(host.breaks) != 0 {
+					t.Fatalf("unexpected host effects: delays=%v breakpoints=%v", host.delays, host.breaks)
+				}
+				var formatted bytes.Buffer
+				if err := ast.Fprint(&formatted, prog); err != nil {
+					t.Fatal(err)
+				}
+				if pass != 0 && !bytes.Equal(formatted.Bytes(), data) {
+					t.Fatal("formatting is not idempotent")
+				}
+				data = formatted.Bytes()
+			}
+		})
+	}
+}
+
+func TestDeferredExecutionCommandEffects(t *testing.T) {
+	for _, tt := range []struct {
+		command string
+		code    diag.Code
+	}{
+		{"timer", diag.EParse}, {"timer unknown", diag.EParse},
+		{"debug", diag.EParse}, {"debug 0", diag.ETypeMismatch},
+	} {
+		t.Run(tt.command, func(t *testing.T) {
+			prog, info := analyzed(t, "algoritmo \"command failure\"\ninicio\ntimer 2\nescreva(\"A\")\n"+tt.command+"\nescreva(\"B\")\nfimalgoritmo")
+			var out bytes.Buffer
+			host := &executionHost{out: &out}
+			ds := New(Options{Output: &out, Host: host}).Run(prog, info)
+			if len(ds) != 1 || ds[0].Code != tt.code || out.String() != "A" {
+				t.Fatalf("diagnostics=%v stdout=%q", ds, out.String())
+			}
+			if !reflect.DeepEqual(host.delays, []time.Duration{2 * time.Millisecond, 2 * time.Millisecond}) ||
+				!reflect.DeepEqual(host.prefixes, []string{"", "A"}) || len(host.breaks) != 0 {
+				t.Fatalf("failed command changed host effects: delays=%v prefixes=%q breakpoints=%v", host.delays, host.prefixes, host.breaks)
+			}
+		})
+	}
+
+	const src = `algoritmo "timer operand order"
+funcao marker: inteiro
+inicio
+escreva("A")
+retorne 2
+fimfuncao
+inicio
+timer marker() + unknown
+escreva("B")
+fimalgoritmo
+`
+	prog, info := analyzed(t, src)
+	var out bytes.Buffer
+	host := &executionHost{out: &out}
+	ds := New(Options{Output: &out, Host: host}).Run(prog, info)
+	if len(ds) != 1 || ds[0].Code != diag.EParse || ds[0].Pos != token.Pos(strings.Index(src, "unknown")) || out.String() != "A" || len(host.delays) != 0 || len(host.breaks) != 0 {
+		t.Fatalf("operand error changed effects: diagnostics=%v stdout=%q delays=%v breakpoints=%v", ds, out.String(), host.delays, host.breaks)
 	}
 }

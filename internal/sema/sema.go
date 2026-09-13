@@ -80,7 +80,7 @@ type checker struct {
 	loopDepth    int
 	returnType   runtime.Type
 	inFunction   bool
-	deferLookup  bool
+	deferLookup  diag.Code
 	stopped      bool
 	dynamicCells map[dynamicCell]bool
 	copyBack     map[dynamicCell][]dynamicCell
@@ -285,7 +285,10 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		return
 	case *ast.TimerStmt:
 		before := len(c.diags)
+		previous := c.deferLookup
+		c.deferLookup = diag.EParse
 		c.expr(s.Value)
+		c.deferLookup = previous
 		if len(c.diags) > before {
 			if c.diags[before].Code == diag.EUndeclared {
 				c.diags[before].Code = diag.EParse
@@ -293,7 +296,7 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			c.diags = c.diags[:before+1]
 		}
 	case *ast.DebugStmt:
-		c.requireBool(s.Cond)
+		c.expr(s.Cond) // The executed command validates the logical value.
 	case *ast.RandomInputStmt:
 		for _, arg := range s.Args {
 			before := len(c.diags)
@@ -433,7 +436,7 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 	switch e := expr.(type) {
 	case *ast.RecoveryExpr:
 		previous := c.deferLookup
-		c.deferLookup = true
+		c.deferLookup = diag.EUndeclared
 		for _, operand := range e.Operands {
 			c.expr(operand)
 		}
@@ -455,11 +458,11 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 	case *ast.IdentExpr:
 		sym, ok := c.lookupCallable(e.Name, funcSym)
 		if !ok {
-			if c.deferLookup {
+			if c.deferLookup != "" {
 				if c.info.deferred == nil {
 					c.info.deferred = make(map[token.Pos]diag.Diagnostic)
 				}
-				c.info.deferred[e.Name.Pos] = diag.Diagnostic{Code: diag.EUndeclared, Pos: e.Name.Pos, Message: fmt.Sprintf("undeclared identifier %q", e.Name.Text)}
+				c.info.deferred[e.Name.Pos] = diag.Diagnostic{Code: c.deferLookup, Pos: e.Name.Pos, Message: fmt.Sprintf("undeclared identifier %q", e.Name.Text)}
 				return runtime.Type{Kind: runtime.DynamicType}
 			}
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
