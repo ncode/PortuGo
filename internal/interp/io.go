@@ -84,10 +84,13 @@ func (i *Interpreter) readLine(pos token.Pos) (string, error) {
 }
 
 func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
+	i.writeDepth++
+	defer func() { i.writeDepth-- }()
 	// Nested writes consume the newline requested by an outer escreval.
 	i.writeNewline = i.writeNewline || s.Newline
 	items := make([]string, len(s.Args))
 	buffered := 0
+	absenceIndex := -1
 	defer func() { i.writeBytes -= buffered }()
 	for index, arg := range s.Args {
 		v, err := i.eval(arg.Expr)
@@ -96,6 +99,13 @@ func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
 		}
 		if v.Kind == runtime.VoidValue {
 			// Discard this statement without consuming a pending newline.
+			return nil
+		}
+		if v.ConvertedAbsence && absenceIndex < 0 {
+			absenceIndex = index
+		}
+		if absenceIndex >= 0 && index > absenceIndex && i.containsUserCall(arg.Expr) {
+			i.halted = true
 			return nil
 		}
 		width := int64(0)

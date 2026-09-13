@@ -1,38 +1,22 @@
-# Text argument-order gaps
+# Text argument-order recordings
 
-Two existing successful reference recordings still differ from execution:
-`text-order-no-value-bound` omits the final substring after its nested calls,
-and `text-order-no-value-code` omits both the pending output and a later `DONE`.
-Independent reruns reproduce both results.
-
-Four further recordings separate ordinary zero conversion from the missing
-execution-state behavior. Each contains the complete reference execution
-notices, uses `panel-v1` normalization, and retains unchanged source/output
-bytes with their hashes. Only source and output text are published.
+The six previously pending text-call controls now replay successfully in both
+original and formatted sources. They cover left-to-right output before a
+deferred rejection, arity rejection without evaluating an extra argument, and
+the no-value state carried through direct and stored character conversions.
 
 | Probe | Recorded behavior | Implementation |
 | --- | --- | --- |
+| `text-order-no-value-bound` | `Texto(1)` and `Numero(3)` write before the absent bound suppresses the outer substring. | Verified |
+| `text-order-bad-bound` | `Texto(1)` writes before the invalid bound receives `E001`. | Verified |
+| `text-order-extra` | The first three arguments write before the extra argument receives `P001`; the extra call is not evaluated. | Verified |
+| `text-order-no-value-code` | `Texto(9)` writes, then the pending output and later `DONE` are skipped. | Verified |
 | `text-state-code-zero-call` | Explicit `carac(0)` retains pending text and later `DONE` around a nested function write. | Verified |
 | `text-state-copy-absent-earlier-call` | A function call before an absent substring bound retains the substring and later `DONE`. | Verified |
-| `text-state-code-absent-stored` | Assigning `carac(abs())` before the output statement still ends after the nested function's write. | Pending |
-| `text-state-code-absent-tail-error` | The reference reports normal completion without reaching later `DONE` or the deliberate `raizq(-1)` domain error. | Pending |
+| `text-state-code-absent-stored` | Assigning `carac(abs())` preserves the state for later output with `Texto(9)`. | Verified |
+| `text-state-code-absent-tail-error` | The state skips later `DONE` and the deliberate `raizq(-1)` failure, completing normally. | Verified |
 
-`TestRecordedTextFunctions` checks original and formatted execution of the two
-controls. The termination cases remain pending: discarding only the current
-output buffer would not account for the missing later output and error. The
-recordings do not yet establish the lifetime or reset rules of the reference
-state, so they do not justify a runtime special case.
-
-Two separate rejection recordings also remain pending. `text-order-bad-bound`
-writes `1` before rejecting the second argument with `E001`;
-`text-order-extra` writes `1`, `2`, and `3` before rejecting the extra argument
-with `P001`, without evaluating that argument. Semantic analysis currently
-reports both diagnostics before execution. Matching these prefixes requires
-an explicit design for preserving bindings and deferring the relevant errors
-until their execution boundary. Suppressing semantic diagnostics alone would
-leave incomplete analysis metadata.
-
-These findings do not change the completed indexing/case-conversion task or
-complete any additional group 12 task. Earlier text-progress counts describe
-their original recording slice; the conformance manifest is the current
-source of implementation states.
+`TestRecordedTextArgumentOrderGaps` checks the six formerly pending controls in
+both original and formatted sources; the two earlier controls remain covered by
+`TestRecordedTextFunctions`. The state is per interpreter run, and pending
+output remains bounded by the existing output limits.

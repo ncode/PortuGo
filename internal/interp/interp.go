@@ -23,6 +23,7 @@ type Interpreter struct {
 	out                io.Writer
 	writeNewline       bool
 	writeBytes         int
+	writeDepth         int
 	lib                *stdlib.Library
 	env                *env
 	subs               map[token.Pos]ast.Subprogram
@@ -83,6 +84,7 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) (ds []diag.Diagnos
 	}()
 	i.writeNewline = false
 	i.writeBytes = 0
+	i.writeDepth = 0
 	i.program = nil
 	i.global = nil
 	i.result = nil

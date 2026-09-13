@@ -1,8 +1,8 @@
 # Text and character recordings
 
 This slice adds 88 reference recordings: 56 completed programs and 32 positioned
-rejections. Seventy-eight match the implementation and have permanent tests;
-ten remain pending. Sources, output panels, and reviewed diagnostic-window
+rejections. Eighty-four match the implementation and have permanent tests; four
+initial `caracpnum` conversions remain pending. Sources, output panels, and reviewed diagnostic-window
 crops are linked by hash from the conformance manifest.
 
 The verified cases cover empty and accented text, first and missing matches,
@@ -19,14 +19,12 @@ reference's control and drawing-character substitutions.
 Source-decoding links cover unambiguous CP1252 input; original-byte position
 mapping and BOM position behavior remain separate work.
 
-The ten pending recordings are six initial `caracpnum` conversions and four
-argument-order cases. `text-order-bad-bound` and `text-order-extra` retain
-reference output before rejection, while current semantic analysis rejects
-before execution. `text-order-no-value-bound` and `text-order-no-value-code`
-record different no-value/output behavior when later arguments call user
-functions. These cases remain visible gaps rather than verified replays.
+The four remaining pending recordings are initial `caracpnum` conversions.
+Argument-order and no-value state controls now retain their recorded output and
+execution phase, including deferred `E001`/`P001` diagnostics and nested-call
+termination.
 
-The corpus contains 963 reference recordings: 912 verified and 51 pending,
+The corpus contains 963 reference recordings: 918 verified and 45 pending,
 plus 16 separate project-contract records. The evidence gate still needs
 11 requirement mappings and 30 bundled-example classifications. This slice
 does not complete the remaining text/conversion checklist. The current

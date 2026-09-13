@@ -511,9 +511,17 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
   Text descriptors and evaluators are covered by the independent registry rows and recorded execution fixtures. `copia` now locates 1-based decoded-character spans without a rune-slice allocation and preserves the recorded clipping rules.
 - [x] 12.3 Implement 1-based reference bounds, empty/not-found behavior, and CP1252-aware text indexing and case conversion without UTF-8 byte or Unicode-code-point leakage.
+
+  Text-call replay now evaluates declared arguments left to right, defers the
+  recorded type and arity failures until execution after prior user calls, and
+  skips an extra argument that the reference does not evaluate.
 - [x] 12.4 Complete descriptors and evaluators for `asc`, `carac`, all character-code aliases, and the separately recorded code tables and domain/failure behavior.
 
   The recorded Windows-1252 byte conversion and complete 0..255 character table are exercised by direct and end-to-end rows, including empty, control, extended, and unsupported values. No aliases are present in the independent inventory.
+
+  Generic no-value conversion state is retained through optional character
+  arguments and stored character results, matching the recorded nested-call
+  termination controls.
 - [x] 12.5 Complete explicit integer, real, logical, and character conversion descriptors and evaluators with oracle decimal, sign, whitespace, range, and fallback rules.
 
   Direct and end-to-end rows cover integer narrowing, numeric-to-text output, decimal and hexadecimal classification, signs, whitespace, range boundaries, zero-prefix fallback, and malformed nonzero-prefix failures.
@@ -523,7 +531,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   Recorded diagnostics cover runtime code and conversion failures. The direct `copia` guard rejects a result over the 16 MiB text allocation limit before materialization, and malformed dynamic conversion returns no partial value.
 - [x] 12.8 Add catalog signature tests, byte-precise runtime tables, integration fixtures, and an example combining accented text, codes, search, slicing, and conversions.
 
-  The existing independent registry and recorded fixtures cover every catalog descriptor; this slice adds direct byte and type rows while retaining the combined text example and character-conversion fixture.
+  The existing independent registry and recorded fixtures cover every catalog descriptor; this slice adds direct byte and type rows, the combined text example, character-conversion fixture, and all six previously pending text-order/state controls.
 - [x] 12.9 Update `docs/language.md` and `CHANGELOG.md` with the full text, code, conversion, and dynamic-result contracts.
 
   The authoritative language reference now records the direct-library `copia` allocation guard, and the changelog records the completed contract coverage. Existing progress notes retain pending reference and evidence gaps.

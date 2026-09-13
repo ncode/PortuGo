@@ -89,9 +89,10 @@
   reject unrepresentable integer endpoints before consuming the source, and
   cover the full signed-32-bit interval plus `randi` signed-boundary widths.
 
-- Record text-call controls and early completion after no-value conversion;
-  verify explicit-zero and earlier-call controls in original and formatted
-  programs. Keep persistent execution-state and diagnostic-phase gaps pending.
+- Complete recorded text-call ordering and early completion after no-value
+  conversion. Preserve nested output before deferred `E001`/`P001` diagnostics,
+  suppress unvisited extra arguments, and carry the execution state through
+  stored character values.
 
 - Preserve bare return and call syntax during formatting, including bare `pi`
   statements, and use canonical operator spellings. Normalize repeated carriage

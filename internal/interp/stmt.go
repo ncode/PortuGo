@@ -66,6 +66,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		if err != nil {
 			return control{}, err
 		}
+		if i.halted {
+			return control{}, nil
+		}
 		return control{}, assign(cell, v)
 	case *ast.CallStmt:
 		return control{}, i.callProcedure(s.Call)

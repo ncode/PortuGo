@@ -11178,14 +11178,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/text-order-no-value-bound/stdout.txt",
             "sha256": "9ad1abc95f309ac35941cc1a3a5a3fc11b551a95995af243ea48fe31935b972f"
           }
-        }
+        },
+        "tests": [
+          "text_argument_order_gaps_test.go#TestRecordedTextArgumentOrderGaps"
+        ]
       }
     },
     {
@@ -49984,7 +49987,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -49997,7 +50000,10 @@
               "line": 13
             }
           ]
-        }
+        },
+        "tests": [
+          "text_argument_order_gaps_test.go#TestRecordedTextArgumentOrderGaps"
+        ]
       }
     },
     {
@@ -50039,7 +50045,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -50052,7 +50058,10 @@
               "line": 13
             }
           ]
-        }
+        },
+        "tests": [
+          "text_argument_order_gaps_test.go#TestRecordedTextArgumentOrderGaps"
+        ]
       }
     },
     {
@@ -50128,14 +50137,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/text-order-no-value-code/stdout.txt",
             "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
           }
-        }
+        },
+        "tests": [
+          "text_argument_order_gaps_test.go#TestRecordedTextArgumentOrderGaps"
+        ]
       }
     },
     {
@@ -81051,14 +81063,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-stored/stdout.txt",
             "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
           }
-        }
+        },
+        "tests": [
+          "text_argument_order_gaps_test.go#TestRecordedTextArgumentOrderGaps"
+        ]
       }
     },
     {
@@ -81092,14 +81107,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/text-state-code-absent-tail-error/stdout.txt",
             "sha256": "7258f5dc1f449c5174716b01041e1e7937f8a6df86110f2dc96c14c8a36ae9d1"
           }
-        }
+        },
+        "tests": [
+          "text_argument_order_gaps_test.go#TestRecordedTextArgumentOrderGaps"
+        ]
       }
     },
     {

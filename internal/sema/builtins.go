@@ -200,17 +200,69 @@ func (c *checker) textArgs(call *ast.CallExpr, signature stdlib.Signature) {
 		parameter := signature.Parameters[index]
 		if parameter.Type == runtime.StringType {
 			if t.Kind != runtime.StringType {
-				c.error(arg.Start(), diag.ETypeMismatch, "expected caractere argument")
+				if !c.deferTextDiagnostic(call, index) {
+					c.error(arg.Start(), diag.ETypeMismatch, "expected caractere argument")
+				}
 				return
 			}
 		} else if !isNumeric(t) && (!parameter.AbsenceAsZero || t.Kind != runtime.VoidType) {
-			c.error(arg.Start(), diag.ETypeMismatch, "expected numeric argument")
+			if !c.deferTextDiagnostic(call, index) {
+				c.error(arg.Start(), diag.ETypeMismatch, "expected numeric argument")
+			}
 			return
 		}
 	}
 	if len(call.Args) < strings {
 		c.error(call.Name.Pos, diag.ETypeMismatch, "expected caractere argument")
 	} else if len(call.Args) != signature.Arity {
-		c.error(call.Name.Pos, diag.EParse, "expected ')' after text arguments")
+		if !c.deferTextDiagnostic(call, min(len(call.Args), signature.Arity)) {
+			c.error(call.Name.Pos, diag.EParse, "expected ')' after text arguments")
+		}
 	}
+}
+
+func (c *checker) deferTextDiagnostic(call *ast.CallExpr, index int) bool {
+	for _, arg := range call.Args[:min(index, len(call.Args))] {
+		if c.containsUserCall(arg) {
+			return true
+		}
+	}
+	return false
+}
+
+func (c *checker) containsUserCall(expr ast.Expr) bool {
+	switch e := expr.(type) {
+	case *ast.CallExpr:
+		if binding, ok := c.info.Binding(e.Name); ok && !binding.Builtin {
+			return true
+		}
+		for _, arg := range e.Args {
+			if c.containsUserCall(arg) {
+				return true
+			}
+		}
+	case *ast.IdentExpr:
+		binding, ok := c.info.Binding(e.Name)
+		if !ok || binding.Builtin {
+			return false
+		}
+		sym, ok := c.subs[canon(e.Name.Text)]
+		return ok && sym.kind == funcSym
+	case *ast.IndexExpr:
+		if c.containsUserCall(e.X) {
+			return true
+		}
+		for _, index := range e.Indices {
+			if c.containsUserCall(index) {
+				return true
+			}
+		}
+	case *ast.FieldExpr:
+		return c.containsUserCall(e.X)
+	case *ast.UnaryExpr:
+		return c.containsUserCall(e.X)
+	case *ast.BinaryExpr:
+		return c.containsUserCall(e.Left) || c.containsUserCall(e.Right)
+	}
+	return false
 }
