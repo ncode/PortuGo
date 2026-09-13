@@ -138,6 +138,14 @@
       ]
     },
     {
+      "id": "assumption.power-associativity",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#3. ^                       (assoc. à direita? [VERIFICAR] — em Pascal-like geralmente à esquerda)",
+      "probes": [
+        "power-associativity"
+      ]
+    },
+    {
       "id": "assumption.assignment-colon-equals",
       "kind": "assumption",
       "link": "especificacao-visualg-3.md#- `[3.0.6+]` `[VERIFICAR]` Algumas notas citam aceitação de `:=` como alternativa. Não confirmado em fonte primária.",
