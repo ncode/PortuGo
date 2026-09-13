@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject conformance artifact and fixture paths that enter repository metadata
+  directories, including case aliases of `.git`.
+
 - Decode previous manifests loaded from Git with the same strict unknown-field
   and trailing-JSON checks as current manifests.
 

@@ -1383,6 +1383,9 @@ Artifact and fixture path components cannot end in an ASCII period or space,
 avoiding Windows filename normalization. All validation modes enforce this
 before replay. Leading periods, interior periods and spaces, and nonbreaking
 spaces retain their literal spelling.
+Artifact and fixture paths also cannot enter repository metadata directories
+such as `.git`, including case aliases, so validation never hashes private Git
+state as corpus evidence.
 Each probe must use consistent case for declared fixture destinations and
 shared directory components across input, generated, absent and fixture-access
 paths. Validation rejects case-only aliases that would collide on Windows,

@@ -101,7 +101,8 @@ executable, installer or distribution archive.
 The JSON model is defined by `scripts/conformance/manifest.go`. Unknown fields
 and trailing JSON are errors. All artifact paths are portable, repository-relative
 paths without parent traversal, drive prefixes, backslashes or symlinks. Artifact
-hashes are lowercase SHA-256 of the exact published bytes.
+paths also cannot enter repository metadata directories such as `.git`, including
+case aliases. Artifact hashes are lowercase SHA-256 of the exact published bytes.
 
 - Top level: `version`, `reference`, `recorderVersion`, `normalizerVersion`,
   `tasksPath`, `inventorySources`, `inventory`, `probes`, optional `retired`.
