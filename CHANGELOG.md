@@ -8,6 +8,9 @@
 
 - Add a call-form parser golden and record frame and alias regression coverage
   for accepted procedure and function syntax.
+- Record call compatibility coverage for parameterless and bare or
+  parenthesized calls, invalid contexts, reference conversion and copy-back,
+  evaluation order, lexical scope, shadowing, and recursion.
 
 - Add control-flow parser and semantic goldens plus valid and diagnostic run
   fixtures for repeat, range selection, break, and descending loops.
