@@ -63,13 +63,16 @@ func readFile(root, name string) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("read %s: %w", name, err)
 	}
-	defer f.Close()
 	b, err := readBounded(f, maxArtifactBytes)
+	closeErr := f.Close()
 	if errors.Is(err, errArtifactTooLarge) {
 		return nil, fmt.Errorf("invalid file size or type: %s", name)
 	}
 	if err != nil {
 		return nil, fmt.Errorf("read %s: %w", name, err)
+	}
+	if closeErr != nil {
+		return nil, fmt.Errorf("read %s: %w", name, closeErr)
 	}
 	return b, nil
 }
