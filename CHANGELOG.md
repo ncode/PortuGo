@@ -26,6 +26,8 @@
 
 - Link the legacy `:=` verification marker to its recorded assignment probe.
 
+- Link the accented-identifier verification marker to its recorded probe.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
