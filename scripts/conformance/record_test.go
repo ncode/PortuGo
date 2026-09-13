@@ -119,6 +119,81 @@ func TestCaptureRejectsLooseStagedJSON(t *testing.T) {
 	}
 }
 
+func TestCaptureRejectsDuplicateStagedPaths(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		set  func(*stagedRecording)
+		want string
+	}{
+		{name: "generated", set: func(staged *stagedRecording) { staged.Generated = []string{"result.dat", "result.dat"} }, want: "duplicate staged generated path"},
+		{name: "absent", set: func(staged *stagedRecording) { staged.Absent = []string{"missing.dat", "missing.dat"} }, want: "duplicate staged absent path"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			root, m := testManifest(t)
+			p := m.Probes[0]
+			if tt.name == "generated" {
+				p.Implementation.Expected.Generated = []generatedFile{{Path: "result.dat"}}
+			} else {
+				p.Implementation.Expected.Absent = []string{"missing.dat"}
+			}
+			stage := filepath.Join(t.TempDir(), "recording")
+			if err := prepareRecording(root, p, stage); err != nil {
+				t.Fatal(err)
+			}
+			writeArtifact(t, stage, "raw.txt", "Início da execução\r\n 1\r\n\r\nFim da execução.\r\n")
+			if tt.name == "generated" {
+				writeArtifact(t, stage, "result.dat", "generated")
+			}
+			data, err := os.ReadFile(filepath.Join(stage, "staged.json"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			var staged stagedRecording
+			if err := json.Unmarshal(data, &staged); err != nil {
+				t.Fatal(err)
+			}
+			tt.set(&staged)
+			data, err = json.Marshal(staged)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if err := os.WriteFile(filepath.Join(stage, "staged.json"), append(data, '\n'), 0600); err != nil {
+				t.Fatal(err)
+			}
+			if _, err := captureRecording(root, stage, true, "2026-09-07T12:00:00Z", "panel-v1", false); err == nil || !strings.Contains(err.Error(), tt.want) {
+				t.Fatalf("error = %v, want %q", err, tt.want)
+			}
+			for _, name := range []string{"normalized.txt", "evidence.json"} {
+				if _, err := os.Stat(filepath.Join(stage, name)); !os.IsNotExist(err) {
+					t.Fatalf("capture created %s for duplicate staged path", name)
+				}
+			}
+		})
+	}
+}
+
+func TestPrepareRecordingRejectsDuplicateStagedPaths(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		set  func(*probe)
+		want string
+	}{
+		{name: "generated", set: func(p *probe) {
+			p.Implementation.Expected.Generated = []generatedFile{{Path: "result.dat"}, {Path: "result.dat"}}
+		}, want: "duplicate staged generated path"},
+		{name: "absent", set: func(p *probe) { p.Implementation.Expected.Absent = []string{"missing.dat", "missing.dat"} }, want: "duplicate staged absent path"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			root, m := testManifest(t)
+			p := m.Probes[0]
+			tt.set(&p)
+			if err := prepareRecording(root, p, filepath.Join(t.TempDir(), "recording")); err == nil || !strings.Contains(err.Error(), tt.want) {
+				t.Fatalf("error = %v, want %q", err, tt.want)
+			}
+		})
+	}
+}
+
 func TestCaptureRejectsSymlinkedStage(t *testing.T) {
 	root, _ := testManifest(t)
 	target := filepath.Join(root, "capture-target")

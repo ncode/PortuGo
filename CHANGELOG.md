@@ -20,6 +20,9 @@
 - Reject existing non-private recording stages before capture reads or writes
   evidence on POSIX hosts; Windows continues to use its ACL model.
 
+- Reject duplicate generated or absent declarations in recording stages before
+  capture writes evidence.
+
 - Verify auxiliary replay input files remain unchanged unless their paths are
   explicitly declared generated or absent, detecting candidate mutations and
   deletions.
