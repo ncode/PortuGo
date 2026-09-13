@@ -1356,6 +1356,8 @@ Candidate generated expectations also require unique destinations, including for
 reviewed exclusions where candidate replay is not run.
 Optional candidate stdout on an exclusion must also retain a valid artifact
 path and hash when present; it need not match the excluded reference output.
+Bundled example catalog source hashes and byte counts are checked against every
+linked probe source, including reviewed non-goals.
 Retained generated files must also form a valid layout with the input fixtures.
 Reference and candidate file layouts are checked separately, so a valid retained
 reference layout does not require a matching candidate layout for an exclusion.
