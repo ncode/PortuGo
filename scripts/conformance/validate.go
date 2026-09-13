@@ -272,6 +272,9 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		} else if e.Accepted != nil && (i.Expected.ExitCode != 1 || len(i.Expected.Diagnostics) == 0) {
 			add(fmt.Errorf("reference disposition requires rejection with exit status 1 and mapped diagnostics"))
 		}
+	} else if i.Expected.Stdout != (artifact{}) {
+		_, err := readArtifact(root, i.Expected.Stdout)
+		add(err)
 	}
 	inputs := make(map[string]bool)
 	for _, file := range p.Files {
