@@ -24,6 +24,8 @@
 
 - Sort untraced probe diagnostics so manifest validation reports stable errors.
 
+- Link the exponent-associativity verification marker to its recorded probe.
+
 - Link the legacy `:=` verification marker to its recorded assignment probe.
 
 - Link the accented-identifier verification marker to its recorded probe.
