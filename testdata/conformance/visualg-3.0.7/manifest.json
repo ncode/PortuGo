@@ -227,6 +227,14 @@
       ]
     },
     {
+      "id": "assumption.numpcarac-real-format",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#| `numpcarac(n)` | inteiro/real → caracter | número → string. `[VERIFICAR]` formato de real |",
+      "probes": [
+        "numpcarac-reals"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
