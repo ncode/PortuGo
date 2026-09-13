@@ -41438,6 +41438,7 @@
           "internal/interp/environment_test.go#TestChronometerResetAndFailures",
           "internal/interp/execution_controls_test.go#TestTimerCallFailureRestoresFrame",
           "internal/repl/input_modes_test.go#TestInputModesPreserveNextSubmission",
+          "scripts/conformance/privacy_test.go#TestExecuteProbeRedactsDiagnosticSourcePath",
           "scripts/conformance/execute_test.go#TestReplayBudgetExhaustion",
           "scripts/conformance/replay_test.go#TestReplay"
         ]

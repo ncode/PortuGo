@@ -59,6 +59,9 @@ CRLF, and Windows-1252 data, even when `core.autocrlf=true` on Windows.
 
 The oracle gate runs evidence validation, which allows recorded probes with
 pending implementations and currently fails for missing recordings and mappings.
+The execution adapter renders source diagnostics with the stable filename
+`source.alg`, so captured output never includes the caller's local filesystem
+path.
 Supply the PR base or parent branch with `--base` (replace `origin/main` for
 stacked work); history comparison is required to detect unreviewed coverage
 downgrades. CI supplies the PR base or pre-push commit and fetches its history.

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Keep conformance execution diagnostics on the stable `source.alg` filename so
+  local filesystem paths cannot enter captured output.
 - Correct the reference-corpus progress totals to match the current manifest.
 - Correct the randomness handoff notes so completed task status is not described
   as open work.
