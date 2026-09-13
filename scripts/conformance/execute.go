@@ -22,6 +22,7 @@ import (
 )
 
 var errObservationSize = errors.New("observation size limit exceeded")
+var errClockExhausted = errors.New("clock fixture exhausted")
 
 // executeProbe is a deterministic subprocess adapter for state/host fixtures.
 // Ordinary output/diagnostic fixtures continue to use the actual CLI.
@@ -77,6 +78,9 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 	h := &recordingHost{events: []hostEvent{}, nowMS: nowMS}
 	i := interp.New(interp.Options{Input: in, Output: capture, Host: h, Random: rand.New(rand.NewPCG(1, 2)), MaxSteps: *steps})
 	ds = i.Run(p, info)
+	if h.clockExhausted {
+		return fail(errClockExhausted)
+	}
 	if _, err := out.Write(capture.buffer.Bytes()); err != nil {
 		return fail(err)
 	}
@@ -188,12 +192,13 @@ type hostEvent struct {
 }
 
 type recordingHost struct {
-	elapsed   time.Duration
-	events    []hostEvent
-	eventSize int
-	overflow  bool
-	nowMS     []int64
-	nowRead   int
+	elapsed        time.Duration
+	events         []hostEvent
+	eventSize      int
+	overflow       bool
+	nowMS          []int64
+	nowRead        int
+	clockExhausted bool
 }
 
 func (h *recordingHost) Delay(d time.Duration) error {
@@ -226,6 +231,9 @@ func (h *recordingHost) Now() time.Time {
 		return time.Unix(0, 0).UTC().Add(time.Duration(ms) * time.Millisecond)
 	}
 	h.nowRead++
+	if len(h.nowMS) != 0 {
+		h.clockExhausted = true
+	}
 	return time.Unix(0, 0).UTC().Add(h.elapsed)
 }
 
