@@ -1,9 +1,30 @@
 package main
 
 import (
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
+
+func TestCheckProhibitedSkipsRepositoryMetadata(t *testing.T) {
+	for _, kind := range []string{"file", "directory"} {
+		t.Run(kind, func(t *testing.T) {
+			root := t.TempDir()
+			metadata := filepath.Join(root, ".git")
+			if kind == "file" {
+				if err := os.WriteFile(metadata, []byte("metadata\n"), 0o600); err != nil {
+					t.Fatal(err)
+				}
+			} else if err := os.Mkdir(metadata, 0o700); err != nil {
+				t.Fatal(err)
+			}
+			if err := checkProhibited(root, reference{}); err != nil {
+				t.Fatal(err)
+			}
+		})
+	}
+}
 
 func TestManifestPathComponents(t *testing.T) {
 	t.Parallel()
