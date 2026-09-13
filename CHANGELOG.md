@@ -22,6 +22,8 @@
   rows and validate their declared source section against existing probes;
   broader marker, defect, feature, and environment coverage remains open.
 
+- Sort untraced probe diagnostics so manifest validation reports stable errors.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 

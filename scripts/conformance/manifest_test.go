@@ -375,6 +375,27 @@ func TestManifestChecklistSource(t *testing.T) {
 	}
 }
 
+func TestManifestUntracedProbeOrder(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	for _, id := range []string{"zeta", "alpha"} {
+		p := m.Probes[0]
+		p.ID = id
+		m.Probes = append(m.Probes, p)
+	}
+	for range 20 {
+		err := validate(root, m, "evidence", nil)
+		if err == nil {
+			t.Fatal("validate succeeded, want untraced probe diagnostics")
+		}
+		text := err.Error()
+		alpha, zeta := strings.Index(text, "untraced probe alpha"), strings.Index(text, "untraced probe zeta")
+		if alpha < 0 || zeta < 0 || alpha > zeta {
+			t.Fatalf("error order = %q, want alpha before zeta", text)
+		}
+	}
+}
+
 func TestManifestRejectsSymlink(t *testing.T) {
 	t.Parallel()
 	root, m := testManifest(t)
