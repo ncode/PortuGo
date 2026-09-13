@@ -86,6 +86,10 @@
   newline/comment retention, source and AST limits, and compatibility
   rejections; unresolved oracle boundaries remain explicit.
 
+- Mark the subprogram documentation coverage complete for recorded declaration
+  and call forms, parameter and copy-back rules, argument order, lexical scope,
+  and recursion; unqualified call variants remain explicit.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
