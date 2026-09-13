@@ -20,6 +20,9 @@ storage safeguard with positioned `R003`, not a measured reference quota.
 Regression tests cover the limit, independent expressions, reuse after failure
 and release of references held by the operand buffer.
 
-The complete operand-type matrix remains pending. Published evidence contains
+The complete static scalar operand-type matrix is now verified by the semantic
+table covering integer, real, dynamic numeric, text, and logical operands across
+the documented accepted arithmetic, comparison, and logical result categories.
+Published evidence contains
 synthetic source, program-only output panels, two reviewed diagnostic crops and
 labeled manual transcriptions. Operational metadata stays private.
