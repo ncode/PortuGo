@@ -1394,6 +1394,8 @@ it as a directory. When state, host or clock observations are enabled, the same
 rule applies to root `state.json`, `host.json` and `clock.json`. Validation and
 replay reject case aliases too. Nested filenames and similar prefixes remain
 valid; ordinary runs may use the adapter filenames as input fixtures.
+Generated and absent expectations use the same reserved-path rule when an
+observer is enabled, so an expectation cannot alias an adapter output.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.
 Test links require Go's test-name and declaration shape: a top-level `Test`

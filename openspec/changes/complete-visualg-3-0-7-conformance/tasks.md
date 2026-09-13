@@ -69,6 +69,9 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   source or enabled observation-adapter files, including case aliases and
   descendants. Generic controls preserve nested names, similar prefixes and
   ordinary input use of adapter filenames; suffix aliases remain unsafe paths.
+  Generated and absent expectations now reject the same replay-owned aliases
+  when observations are enabled, preventing adapter outputs from satisfying
+  candidate file expectations.
   Absence expectations now reject ancestors and descendants of generated or
   retained input files in every mode. Generic controls preserve sibling paths,
   similar prefixes and explicitly removed inputs above or below absent paths.
