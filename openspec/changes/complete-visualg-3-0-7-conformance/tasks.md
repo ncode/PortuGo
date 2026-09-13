@@ -24,7 +24,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
 - [x] 2.1 Add failing manifest-validator tests for provenance, evidence hashes, trace links, and prohibited binaries, plus phase cases proving recorded/pending entries pass evidence validation and fail implementation acceptance.
 - [ ] 2.2 Inventory every `[VERIFICAR]`, original compatibility-checklist item, audited defect, current behavior assumption, environment command, official feature, and bundled `.alg` example into stable manifest IDs.
-- [ ] 2.3 Define the JSON manifest and probe-directory schema under `testdata/conformance/visualg-3.0.7`, including bytes/hashes, screenshots, reference acceptance/rejection, independent evidence/implementation states, owning groups/tasks, per-probe test budgets, optional pending test links, reviewed non-applicability, and retired-ID dispositions.
+- [x] 2.3 Define the JSON manifest and probe-directory schema under `testdata/conformance/visualg-3.0.7`, including bytes/hashes, screenshots, reference acceptance/rejection, independent evidence/implementation states, owning groups/tasks, per-probe test budgets, optional pending test links, reviewed non-applicability, and retired-ID dispositions.
 - [x] 2.4 Implement and test a versioned normalizer that preserves significant whitespace, casing, decimal syntax, error locations, and generated-file bytes while removing only declared host noise.
 - [ ] 2.5 Implement and test evidence, incremental, and implementation-acceptance validation modes, including hashes, path containment, prohibited artifacts, inventory coverage, stale links, owner-group readiness, and forbidden unreviewed verified-to-pending downgrades.
 
