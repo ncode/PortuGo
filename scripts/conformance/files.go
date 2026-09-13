@@ -106,10 +106,13 @@ func checkProhibited(root string, r reference) error {
 		if err != nil {
 			return err
 		}
-		if d.IsDir() {
-			if d.Name() == ".git" {
+		if filepath.Clean(filepath.Dir(p)) == filepath.Clean(root) && strings.EqualFold(d.Name(), ".git") {
+			if d.IsDir() {
 				return filepath.SkipDir
 			}
+			return nil
+		}
+		if d.IsDir() {
 			return nil
 		}
 		name, err := filepath.Rel(root, p)
