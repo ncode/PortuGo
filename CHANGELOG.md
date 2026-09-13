@@ -43,6 +43,10 @@
   against existing probes. Broader marker, defect, feature, and environment
   coverage remains open.
 
+- Add stable feature links for the documented console, display, timer,
+  breakpoint, echo, and chronometer families; leave unqualified timing, GUI,
+  and source obligations pending.
+
 - Sort untraced probe diagnostics so manifest validation reports stable errors.
 
 - Link the exponent-associativity verification marker to its recorded probe.

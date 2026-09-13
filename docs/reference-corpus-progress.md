@@ -8,8 +8,10 @@ implementation checks remain pending. The original compatibility checklist is
 present in `especificacao-visualg-3.md`; its 25 numbered rows now have stable
 manifest links to existing probe coverage. Twenty-six evidenced source
 assumptions, the builtin catalog, and one recorded CLI correction are also
-linked; five source obligations and the broader environment-command inventory
-remain open.
+linked. Stable feature entries now cover the documented console, display,
+timer, breakpoint, echo, and chronometer families through existing probe
+coverage. Five source obligations, unqualified timing and GUI combinations,
+and the broader environment-command inventory remain open.
 
 The initial manifest contained 18 reduced probes:
 

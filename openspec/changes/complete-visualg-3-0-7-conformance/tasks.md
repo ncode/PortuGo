@@ -140,7 +140,10 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   prose/grammar marker coverage remain open. The 25 numbered rows in the
   legacy compatibility checklist are now declared as `checklist.*` entries and
   linked to existing probe coverage; unresolved variants, audited defects,
-  official features, and environment commands remain open. These links do not
+  unresolved official features and environment commands remain open. Stable
+  feature entries now cover the documented console, display, timer, breakpoint,
+  echo, and chronometer families through existing probe coverage. These links do
+  not
   promote unresolved variants to decisive evidence.
   Untraced probe diagnostics are sorted before reporting so repeated validation
   produces stable error ordering.
