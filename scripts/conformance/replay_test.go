@@ -20,7 +20,7 @@ func TestReplayChild(t *testing.T) {
 	case "pass":
 		fmt.Print(" 1\n")
 	case "mismatch":
-		fmt.Print("1\n")
+		fmt.Print("replay-mismatch-sentinel\n")
 	case "random-input":
 		fmt.Print("2.8470000000\n 2.847\n")
 	case "reject":
@@ -112,6 +112,28 @@ func TestReplay(t *testing.T) {
 				t.Fatalf("error = %v, want %q", err, tt.want)
 			}
 		})
+	}
+}
+
+func TestReplayMismatchReportOmitsOutput(t *testing.T) {
+	t.Parallel()
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	root, m := testManifest(t)
+	p := m.Probes[0]
+	p.Source = writeArtifact(t, root, p.Source.Path, "mismatch")
+	p.TimeoutMS = 5000
+	err = replayProbe(root, p, executable, []string{"-test.run=^TestReplayChild$", "--"}, "")
+	if err == nil || !strings.Contains(err.Error(), "stdout mismatch") {
+		t.Fatalf("error = %v, want stdout mismatch", err)
+	}
+	if !strings.Contains(err.Error(), "first difference at byte") {
+		t.Fatalf("error = %v, want mismatch metadata", err)
+	}
+	if strings.Contains(err.Error(), "replay-mismatch-sentinel") {
+		t.Fatalf("error leaked captured output: %v", err)
 	}
 }
 

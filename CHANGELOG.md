@@ -10,6 +10,8 @@
   cannot exhaust validator memory.
 - Bound post-exit Git pipe draining during history and quality validation, so
   helper processes cannot leave the validator waiting indefinitely.
+- Sanitize replay mismatch errors to report byte metadata without copying
+  captured or expected output into validation artifacts.
 
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
