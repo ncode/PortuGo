@@ -211,6 +211,14 @@
       ]
     },
     {
+      "id": "assumption.pos-case-sensitive",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#| `pos(subc, c)` | caracter, caracter → inteiro | posição (base 1) de subc em c; 0 se ausente. Ordem dos args: agulha, palheiro. `[VERIFICAR]` se a busca é case-sensitive (provável que sim, ao contrário das comparações!) |",
+      "probes": [
+        "text-position-missing"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
