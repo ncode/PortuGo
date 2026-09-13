@@ -340,6 +340,14 @@
       ]
     },
     {
+      "id": "assumption.vector-procedure-parameter",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Vetores como parâmetros: o help oficial não documenta. Comunidade reporta suporte parcial/bugado no 3.x. Testar `procedimento p(v: vetor[1..10] de inteiro)`.",
+      "probes": [
+        "vector-context-procedure-parameter"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",

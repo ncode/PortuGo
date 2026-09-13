@@ -80,6 +80,8 @@
 - Link the generated file-format marker to its recorded probe; separate input
   tokenization remains covered by its dedicated probe.
 
+- Link the vector-parameter verification marker to its recorded rejection.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
