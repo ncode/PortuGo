@@ -588,15 +588,18 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   arithmetic, comparison, and logical result category. Retained storage has a
   positioned project guard and is released after each outer evaluation or
   error.
-- [ ] 8.4 Implement overflow-safe integer arithmetic, real division, integer division, modulo, exponentiation, unary operations, and `R002` domain failures exactly as recorded.
+- [x] 8.4 Implement overflow-safe integer arithmetic, real division, integer division, modulo, exponentiation, unary operations, and `R002` domain failures exactly as recorded.
 
   Integer addition, subtraction, multiplication, and negation now reproduce
   signed 32-bit wrapping. Integer division overflow has a positioned project
   guard. Division and remainder now match recorded scalar result types, signed
   conversion, divisor rules, and left-to-right evaluation. Invalid numeric
   powers report positioned errors; recorded nonnumeric power, unary minus,
-  division, and numeric unary plus are covered. Additional operand combinations
-  and the remaining domain cases are pending.
+  division, and numeric unary plus are covered. The 62 linked arithmetic
+  recordings, the positioned `R002` execution table, and the
+  `arithmetic_safety` end-to-end fixture now cover the recorded overflow and
+  domain cases. Operand combinations without a reference recording remain
+  outside this qualified scope.
 - [x] 8.5 Implement logical operand evaluation order and short-circuit/eager behavior with side-effect tests that pin the oracle result.
 
   The recorded logical-evaluation program proves both `e` and `ou` evaluate
