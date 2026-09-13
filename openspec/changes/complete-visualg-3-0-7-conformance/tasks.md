@@ -516,7 +516,11 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   Declaration and aggregate focused tests, full ordinary and race tests, build,
   formatting, vet, and strict OpenSpec validation pass at this stacked head;
   unavailable local lint binaries remain covered by the existing CI gate.
-- [ ] 6.13 Mark every completed 6.x task immediately, commit the focused type/declaration changes, push the next stacked branch, and open its draft PR before group 7.
+- [x] 6.13 Mark every completed 6.x task immediately, commit the focused type/declaration changes, push the next stacked branch, and open its draft PR before group 7.
+
+  The declaration implementation and documentation slices are committed and
+  published through ready stacked PRs; this repository uses ready PRs for the
+  handoff instead of draft status.
 
 ## 7. Vector Bounds, Slot Accounting, Allocation, and Indexing
 
@@ -645,7 +649,11 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   Focused expression, parser, semantic, interpreter, and choice tests plus the
   complete local quality suite, strict OpenSpec validation, and fuzz smoke
   checks pass at the stacked branch head.
-- [ ] 8.12 Mark every completed 8.x task immediately, commit the focused expression changes, push the next stacked branch, and open its draft PR before group 9.
+- [x] 8.12 Mark every completed 8.x task immediately, commit the focused expression changes, push the next stacked branch, and open its draft PR before group 9.
+
+  The expression matrix and arithmetic safety slices are committed and
+  published through ready stacked PRs; unrecorded operand combinations remain
+  outside the qualified scope.
 
 ## 9. Repeat Forms, Case Ranges, Return/Break, and Overflow-Safe For Loops
 
