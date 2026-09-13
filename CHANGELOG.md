@@ -577,6 +577,9 @@
   operators, preserve recorded nonnumeric division and no-value behavior,
   and accept numeric unary plus through parsing, analysis, and formatting.
 
+- Close the recorded arithmetic safety slice with a positioned invalid-power
+  regression and an explicit boundary for unrecorded operand combinations.
+
 - Match recorded division and remainder operand types, signed conversion,
   divisor handling, and left-to-right evaluation. Preserve positioned guards
   for unsupported conversions and integer division failures.

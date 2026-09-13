@@ -375,7 +375,9 @@ also receive positioned `R002` as a project guard.
 Power with a text or logical operand, and unary minus applied to text or a
 logical value, produce no value. In output statements this uses the same
 recorded no-value handling as `numpcarac`: the current statement emits nothing.
-Additional nonnumeric arithmetic combinations remain pending conformance work.
+The recorded scalar combinations and arithmetic domain failures are covered by
+the conformance fixtures. Combinations without a reference recording remain
+outside the qualified language surface.
 Even exact `/` results remain real: assigning `4/2` to an integer is rejected.
 Mixed `/` expressions retaining an integer also retain a real expression
 category for unary signs. Unary plus reports `P001`. Unary minus interprets the
