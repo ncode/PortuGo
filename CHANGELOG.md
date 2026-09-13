@@ -15,6 +15,9 @@
 - Sanitize wrapped filesystem errors before they reach conformance stderr or
   replay-result JSON.
 
+- Validate explicit `[VERIFICAR]` source items against checklist, defect, and
+  feature inventory links while retaining incomplete legacy source coverage.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 

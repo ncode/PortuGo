@@ -173,16 +173,37 @@ func checkReview(root string, r *review) error {
 	return nil
 }
 
+func isSourceObligationLine(line string) bool {
+	line = strings.TrimSpace(line)
+	if !strings.Contains(line, "[VERIFICAR]") && !strings.Contains(line, "[VERIFICAR:") {
+		return false
+	}
+	if strings.HasPrefix(line, "- ") || strings.HasPrefix(line, "* ") || strings.HasPrefix(line, "+ ") || strings.HasPrefix(line, "|") || strings.HasPrefix(line, "`") || strings.HasPrefix(line, "[VERIFICAR]") {
+		return true
+	}
+	for i := 0; i < len(line) && line[i] >= '0' && line[i] <= '9'; i++ {
+		if i+1 < len(line) && (line[i+1] == '.' || line[i+1] == ')') && i+2 < len(line) && line[i+2] == ' ' {
+			return true
+		}
+	}
+	return false
+}
+
+func sourceObligationLink(name, line string) string {
+	return name + "#" + strings.TrimSpace(strings.TrimLeft(line, "#"))
+}
+
 func validateInventory(root string, m manifest, probes map[string]probe) error {
 	var problems []error
-	ids, links, used := make(map[string]bool), make(map[string]bool), make(map[string]bool)
+	ids, links, requirementLinks, used := make(map[string]bool), make(map[string]bool), make(map[string]bool), make(map[string]bool)
 	for _, item := range m.Inventory {
 		if item.ID == "" || ids[item.ID] {
 			problems = append(problems, fmt.Errorf("duplicate or empty inventory ID %q", item.ID))
 		}
 		ids[item.ID] = true
+		links[item.Link] = true
 		if item.Kind == "requirement" {
-			links[item.Link] = true
+			requirementLinks[item.Link] = true
 		}
 		switch item.Kind {
 		case "requirement", "checklist", "defect", "assumption", "feature", "example":
@@ -239,8 +260,14 @@ func validateInventory(root string, m manifest, probes map[string]probe) error {
 		for _, line := range strings.Split(string(data), "\n") {
 			if strings.HasPrefix(line, "### Requirement: ") {
 				link := name + "#" + strings.TrimPrefix(line, "### ")
-				if !links[link] {
+				if !requirementLinks[link] {
 					problems = append(problems, fmt.Errorf("untraced requirement %s", link))
+				}
+			}
+			if isSourceObligationLine(line) {
+				link := sourceObligationLink(name, line)
+				if !links[link] {
+					problems = append(problems, fmt.Errorf("untraced verification item %s", link))
 				}
 			}
 		}

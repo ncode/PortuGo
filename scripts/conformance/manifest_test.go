@@ -326,6 +326,36 @@ func TestManifestGeneratedInventory(t *testing.T) {
 	}
 }
 
+func TestManifestSourceObligations(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		name, source, kind, want string
+		traced                   bool
+	}{
+		{name: "untraced marker", source: "- [VERIFICAR] output behavior\n", want: "untraced verification item"},
+		{name: "qualified marker", source: "1. [VERIFICAR: output behavior]\n", want: "untraced verification item"},
+		{name: "checklist link", source: "- [VERIFICAR] output behavior\n", kind: "checklist", traced: true},
+		{name: "defect link", source: "| [VERIFICAR] output behavior |\n", kind: "defect", traced: true},
+		{name: "feature link", source: "`[VERIFICAR] output behavior`\n", kind: "feature", traced: true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			root, m := testManifest(t)
+			writeArtifact(t, root, "compatibility.md", tt.source)
+			m.InventorySources = append(m.InventorySources, "compatibility.md")
+			if tt.traced {
+				m.Inventory = append(m.Inventory, inventoryItem{
+					ID: "obligation." + tt.kind, Kind: tt.kind,
+					Link: "compatibility.md#" + strings.TrimSpace(tt.source), Probes: []string{"output"},
+				})
+			}
+			err := validate(root, m, "evidence", nil)
+			if tt.want == "" && err != nil || tt.want != "" && (err == nil || !strings.Contains(err.Error(), tt.want)) {
+				t.Fatalf("error = %v, want %q", err, tt.want)
+			}
+		})
+	}
+}
+
 func TestManifestRejectsSymlink(t *testing.T) {
 	t.Parallel()
 	root, m := testManifest(t)
