@@ -97,6 +97,9 @@ func TestManifestValidation(t *testing.T) {
 		{name: "parent path", mode: "evidence", want: "unsafe path", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].Source.Path = "../source.alg" }},
 		{name: "Windows path", mode: "evidence", want: "unsafe path", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].Source.Path = `C:\source.alg` }},
 		{name: "duplicate probe", mode: "evidence", want: "duplicate probe", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes = append(m.Probes, m.Probes[0]) }},
+		{name: "duplicate inventory probe link", mode: "evidence", want: "duplicate probe link", mutate: func(_ *testing.T, _ string, m *manifest) {
+			m.Inventory[0].Probes = []string{"output", "output"}
+		}},
 		{name: "missing task", mode: "evidence", want: "task link", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].Tasks = []string{"10.99"} }},
 		{name: "wrong owner", mode: "evidence", want: "owner group", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].OwnerGroup = 9 }},
 		{name: "stale requirement", mode: "evidence", want: "trace link", mutate: func(_ *testing.T, _ string, m *manifest) {
