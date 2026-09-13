@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Validate bundled-example catalog source hashes and byte counts for reviewed
+  non-goals as well as recorded examples.
+
 - Reject duplicate candidate generated-output destinations in conformance
   expectations, including reviewed exclusions across every validation mode.
 

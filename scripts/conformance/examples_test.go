@@ -72,3 +72,39 @@ func TestManifestExampleCatalog(t *testing.T) {
 		})
 	}
 }
+
+func TestNonGoalCatalogSourceMetadata(t *testing.T) {
+	t.Parallel()
+	for _, mode := range []string{"evidence", "incremental", "implementation-acceptance"} {
+		for _, field := range []string{"hash", "bytes"} {
+			t.Run(mode+"/"+field, func(t *testing.T) {
+				t.Parallel()
+				root, m := testManifest(t)
+				writeArtifact(t, root, "review.md", "Recorded non-goal.\n")
+				p := &m.Probes[0]
+				p.Evidence.State = "not-applicable"
+				p.Evidence.Review = &review{Reason: "Recorded non-goal", Link: "review.md"}
+				p.Implementation.State = "not-applicable"
+				p.Implementation.Review = &review{Reason: "Recorded non-goal", Link: "review.md"}
+				name := "examples/output.alg"
+				id := "example." + hashBytes([]byte(name))[:12]
+				src, err := readArtifact(root, p.Source)
+				if err != nil {
+					t.Fatal(err)
+				}
+				e := bundledExample{ID: id, Name: name, SHA256: p.Source.SHA256, Bytes: len(src), Disposition: "non-goal", Review: &review{Reason: "Recorded non-goal", Link: "review.md"}}
+				switch field {
+				case "hash":
+					e.SHA256 = strings.Repeat("0", 64)
+				case "bytes":
+					e.Bytes++
+				}
+				m.Inventory = append(m.Inventory, inventoryItem{ID: id, Kind: "example", Link: "official-examples.json", Probes: []string{"output"}})
+				writeJSON(t, root, "official-examples.json", []bundledExample{e})
+				if err := validate(root, m, mode, nil); err == nil || !strings.Contains(err.Error(), "example source differs from catalog") {
+					t.Fatalf("error = %v, want catalog source metadata failure", err)
+				}
+			})
+		}
+	}
+}

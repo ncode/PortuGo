@@ -76,6 +76,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   generated ancestor prevents portable absence checks.
   Candidate generated expectations now reject duplicate destinations even for
   reviewed exclusions, with generic coverage across all validation modes.
+  Bundled-example catalog source hashes and byte counts are also checked for
+  reviewed non-goals in every validation mode.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 
