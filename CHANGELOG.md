@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add control-flow parser and semantic goldens plus valid and diagnostic run
+  fixtures for repeat, range selection, break, and descending loops.
+
 - Add expression type and rejection tables, a parser golden, and positioned
   runtime diagnostic fixtures with partial-output checks.
 
