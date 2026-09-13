@@ -1363,6 +1363,10 @@ retain their bytes, so a generated descendant cannot replace an input file with
 a directory. Shared directories and similar filename prefixes remain valid.
 An explicitly removed input may have an output at its former parent path;
 removal declarations still cannot make an invalid initial layout valid.
+Artifact and fixture path components cannot end in an ASCII period or space,
+avoiding Windows filename normalization. All validation modes enforce this
+before replay. Leading periods, interior periods and spaces, and nonbreaking
+spaces retain their literal spelling.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.
 Test links require Go's test-name and declaration shape: a top-level `Test`
