@@ -243,6 +243,14 @@
       ]
     },
     {
+      "id": "assumption.real-output-default",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Formato default de impressão de reais sem `:N:M` (quantas casas? remove zeros à direita? `2.0` imprime como \"2\"?). Ponto crítico para compatibilidade de saída.",
+      "probes": [
+        "output-format"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
