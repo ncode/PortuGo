@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject conformance file layouts that require a path to be both a file and
+  a parent directory across input and generated destinations.
+
 - Reject duplicate conformance input destinations before replay, while allowing
   distinct files to share content and input files to have recorded output updates.
 

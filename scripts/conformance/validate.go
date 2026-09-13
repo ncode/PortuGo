@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"maps"
 	"net/url"
 	"regexp"
+	"slices"
 	"strings"
 	"time"
 )
@@ -265,7 +267,21 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		}
 		inputs[file.Path] = true
 	}
+	destinations := maps.Clone(inputs)
+	for _, file := range i.Expected.Generated {
+		destinations[file.Path] = true
+	}
 	for _, file := range append(append([]generatedFile(nil), p.Files...), i.Expected.Generated...) {
+		parents := destinations
+		if slices.Contains(i.Expected.Absent, file.Path) {
+			// Declared removals still must fit the initial layout.
+			parents = inputs
+		}
+		for end := strings.LastIndexByte(file.Path, '/'); end >= 0; end = strings.LastIndexByte(file.Path[:end], '/') {
+			if parents[file.Path[:end]] {
+				add(fmt.Errorf("file path is both file and directory: %s", file.Path[:end]))
+			}
+		}
 		_, err := safePath(root, file.Path)
 		add(err)
 		_, err = readArtifact(root, file.Content)

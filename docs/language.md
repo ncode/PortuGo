@@ -1357,6 +1357,12 @@ Manifest validation rejects repeated input fixture destinations, including
 entries with identical bytes. Distinct destinations may share a content artifact,
 and a path may appear once as input and once as generated output to describe
 a recorded file update.
+A file destination cannot also be a parent directory of another input or
+generated destination, regardless of declaration order. Input-only files must
+retain their bytes, so a generated descendant cannot replace an input file with
+a directory. Shared directories and similar filename prefixes remain valid.
+An explicitly removed input may have an output at its former parent path;
+removal declarations still cannot make an invalid initial layout valid.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.
 Test links require Go's test-name and declaration shape: a top-level `Test`
