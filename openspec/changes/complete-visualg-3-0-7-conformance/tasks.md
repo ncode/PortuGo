@@ -53,6 +53,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Clock fixtures now share the execution adapter's JSON decoder in every
   validation mode. Generic tests reject malformed schedules before replay and
   preserve zero, repeated and backward readings without changing clock behavior.
+  Direct adapter clock fixture reads also use the repository artifact limit
+  before decoding.
   Input inventories now reject repeated destination paths in every mode,
   including identical content. Distinct destinations and recorded input/output
   reuse remain covered by generic positive controls.
