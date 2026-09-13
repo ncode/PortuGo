@@ -1437,5 +1437,7 @@ Bundled-example catalogs use the same strict JSON boundary: unknown fields and
 trailing values fail validation before catalog entries are considered.
 State and host observation artifacts use the adapter's 1 MiB output limit;
 larger retained expectations fail validation before replay.
+Capture also rejects unknown fields and trailing JSON in its staged recording
+metadata before producing evidence.
 Final acceptance requires quality evidence for the candidate commit; the
 separate release gate also requires completed implementation and handoff tasks.

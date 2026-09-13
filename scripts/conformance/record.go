@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"slices"
@@ -136,8 +138,13 @@ func captureRecording(stage string, accepted bool, capturedAt, normalizer string
 		return e, err
 	}
 	var staged stagedRecording
-	if err := json.Unmarshal(data, &staged); err != nil {
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&staged); err != nil {
 		return e, err
+	}
+	if err := decoder.Decode(new(any)); err != io.EOF {
+		return e, fmt.Errorf("trailing staged JSON")
 	}
 	for _, a := range []artifact{staged.Source, staged.Input} {
 		if _, err := readArtifact(stage, a); err != nil {
