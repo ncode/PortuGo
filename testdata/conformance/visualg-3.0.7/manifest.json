@@ -187,6 +187,14 @@
       ]
     },
     {
+      "id": "assumption.choice-range-ate",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Suporte a intervalos `caso 1 ate 5`. Aparece em material da comunidade, mas NÃO no help oficial 3.0.5.2. Os valores de caso podem ser expressões ou apenas literais? O help usa apenas literais.",
+      "probes": [
+        "choice-range-inside"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
