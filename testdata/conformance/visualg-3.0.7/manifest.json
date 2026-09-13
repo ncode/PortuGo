@@ -219,6 +219,14 @@
       ]
     },
     {
+      "id": "assumption.exact-division-integer",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- Divisão `/` entre dois inteiros: `[VERIFICAR]` ponto crítico. Duas hipóteses observadas na comunidade: (a) sempre produz real; (b) produz inteiro quando a divisão é exata. Teste obrigatório: `x: inteiro; x <- 4/2` dá erro ou não?",
+      "probes": [
+        "exact-division-integer"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
