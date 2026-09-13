@@ -5,6 +5,9 @@
 - Bound host observation traces while recording so oversized event streams fail
   before JSON serialization.
 
+- Reject recorder-owned staging and capture paths from auxiliary, generated, or
+  absent reference files before metadata can be published as evidence.
+
 - Bound direct observation-adapter clock fixture reads by the repository
   artifact limit before decoding.
 

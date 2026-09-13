@@ -21,6 +21,27 @@ type stagedRecording struct {
 	Absent    []string   `json:"absent,omitempty"`
 }
 
+var recorderOwnedPaths = []string{
+	"source.alg",
+	"input.txt",
+	"staged.json",
+	"instructions.txt",
+	"raw.txt",
+	"normalized.txt",
+	"evidence.json",
+	"screenshot.png",
+	"transcription.txt",
+}
+
+func checkRecorderOwnedPath(name string) error {
+	for _, owned := range recorderOwnedPaths {
+		if strings.EqualFold(name, owned) {
+			return fmt.Errorf("recorder-owned path: %s", name)
+		}
+	}
+	return nil
+}
+
 func writeNew(name string, data []byte) error {
 	f, err := os.OpenFile(name, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o600)
 	if err != nil {
@@ -66,6 +87,21 @@ func prepareRecording(root string, p probe, stage string) error {
 	input, err := readArtifact(root, p.Input)
 	if err != nil {
 		return err
+	}
+	for _, file := range p.Files {
+		if err := checkRecorderOwnedPath(file.Path); err != nil {
+			return err
+		}
+	}
+	for _, file := range p.Implementation.Expected.Generated {
+		if err := checkRecorderOwnedPath(file.Path); err != nil {
+			return err
+		}
+	}
+	for _, name := range p.Implementation.Expected.Absent {
+		if err := checkRecorderOwnedPath(name); err != nil {
+			return err
+		}
 	}
 	if err := os.Mkdir(stage, 0o700); err != nil {
 		return err
@@ -145,6 +181,24 @@ func captureRecording(stage string, accepted bool, capturedAt, normalizer string
 	}
 	if err := decoder.Decode(new(any)); err != io.EOF {
 		return e, fmt.Errorf("trailing staged JSON")
+	}
+	if staged.Source.Path != "source.alg" || staged.Input.Path != "input.txt" {
+		return e, fmt.Errorf("staged recording uses non-owned source or input path")
+	}
+	for _, file := range staged.Files {
+		if err := checkRecorderOwnedPath(file.Path); err != nil {
+			return e, err
+		}
+	}
+	for _, name := range staged.Generated {
+		if err := checkRecorderOwnedPath(name); err != nil {
+			return e, err
+		}
+	}
+	for _, name := range staged.Absent {
+		if err := checkRecorderOwnedPath(name); err != nil {
+			return e, err
+		}
 	}
 	for _, a := range []artifact{staged.Source, staged.Input} {
 		if _, err := readArtifact(stage, a); err != nil {
