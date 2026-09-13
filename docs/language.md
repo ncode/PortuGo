@@ -153,6 +153,8 @@ validation. Variable declarations use ASCII names; the recorded accented name
 `ação` receives one `L001` on its declaration line, before execution. This
 restriction is checked at the declaration boundary, preserving recognized
 accented keywords and the recorded `até_que` statement's `E002` behavior.
+Procedure and function declarations also use ASCII names; an accented callable
+name receives one `L001` at its declaration boundary.
 The two rejected accented forms retain their source bytes in every formatter
 mode, including `fmt -w`.
 

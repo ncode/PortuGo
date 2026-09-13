@@ -38,6 +38,8 @@
   an unterminated quote after the program terminator. Preserve preceding output
   for the terminator error and retain its suffix through formatting.
 
+- Reject non-ASCII procedure and function names at the declaration boundary.
+
 - Reject an output expression whose binary operand starts on the following
   physical line, and report single-quoted text once at its opening quote.
   Preserve following-line recovery and prevent formatting from rewriting the

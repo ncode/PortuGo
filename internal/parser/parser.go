@@ -45,6 +45,20 @@ func (p *parser) parseProgram() *ast.Program {
 	start := p.peek()
 	prog := &ast.Program{At: start.Pos}
 	if !p.match(token.ALGORITMO) {
+		if p.peek().Kind == token.FUNCAO || p.peek().Kind == token.PROCEDIMENTO {
+			// Some recorded library fragments begin with subprograms and have no
+			// algorithm body. Parse their declarations far enough to report a
+			// declaration error at its source position; a complete fragment still
+			// receives the required-header diagnostic below.
+			for p.peek().Kind == token.PROCEDIMENTO || p.peek().Kind == token.FUNCAO {
+				prog.Subs = append(prog.Subs, p.parseSubprogram())
+				if len(p.diags) != 0 {
+					return prog
+				}
+			}
+			p.error(p.peek(), "expected algoritmo")
+			return prog
+		}
 		if p.match(token.STRING) {
 			start = p.peek()
 		}
@@ -242,6 +256,10 @@ func (p *parser) parseProcedure() *ast.ProcedureDecl {
 	if name.Text == "" {
 		return &ast.ProcedureDecl{At: start.Pos, Name: name}
 	}
+	if hasUnsupportedCallableName(name.Text) {
+		p.diags = append(p.diags, diag.Diagnostic{Code: diag.ELexer, Pos: name.Pos, Message: "unsupported procedure name"})
+		return &ast.ProcedureDecl{At: start.Pos, Name: name}
+	}
 	params := p.parseParamList()
 	p.rememberFragment(start.Pos)
 	decl := &ast.ProcedureDecl{At: start.Pos, Name: name, Params: params}
@@ -267,6 +285,10 @@ func (p *parser) parseFunction() *ast.FunctionDecl {
 	start := p.expect(token.FUNCAO, "expected funcao")
 	name := p.expect(token.IDENT, "expected function name")
 	if name.Text == "" {
+		return &ast.FunctionDecl{At: start.Pos, Name: name}
+	}
+	if hasUnsupportedCallableName(name.Text) {
+		p.diags = append(p.diags, diag.Diagnostic{Code: diag.ELexer, Pos: name.Pos, Message: "unsupported function name"})
 		return &ast.FunctionDecl{At: start.Pos, Name: name}
 	}
 	params := p.parseParamList()
@@ -318,6 +340,10 @@ func (p *parser) parseParamList() []ast.Param {
 	}
 	p.expect(token.RPAREN, "expected ')'")
 	return params
+}
+
+func hasUnsupportedCallableName(name string) bool {
+	return strings.IndexFunc(name, func(r rune) bool { return r > unicode.MaxASCII }) >= 0
 }
 
 func (p *parser) parseCallableType() ast.TypeSpec {
