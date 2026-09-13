@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Bound replay source reads at the 64 KiB execution profile before staging a
+  candidate run.
+
 - Bound retained replay-output reads at the 1 MiB observation limit before
   hashing or comparison.
 
