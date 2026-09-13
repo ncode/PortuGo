@@ -40,7 +40,10 @@ actual source, input, capture time, and reviewed observation artifacts.
 specifications, unique IDs, and preservation of probe, inventory, task, and
 retirement history. Its tests are `TestManifestValidation`,
 `TestManifestPreservesVerifiedHistory`, `TestManifestPreservesRetiredHistory`,
-`TestManifestRetirementIDs`, and `TestCommandHistoryValidation`.
+`TestManifestRetirementIDs`, and `TestCommandHistoryValidation`. Test links
+resolve the parameter to the imported `testing.T`, preserving default, renamed,
+and dot imports while rejecting local and foreign type lookalikes in every
+validation mode; `TestManifestTestFunctionLinks` covers those cases.
 
 `project.validation-phases` covers recorded/pending evidence, completed owner
 groups, acceptance rejection of pending implementation, reference disposition,

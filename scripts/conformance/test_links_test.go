@@ -20,6 +20,8 @@ func TestManifestTestFunctionLinks(t *testing.T) {
 		{"TestDot", "func TestDot(t *T) {}", true},
 		{"TestMain", "func TestMain(t *testing.T) {}", true},
 		{"TestMethodShadow", "type helper struct{}\nfunc (helper) TestMethodShadow(t *testing.T) {}\nfunc TestMethodShadow(t *testing.T) {}", true},
+		{"TestLocalT", "type T struct{}\nfunc TestLocalT(t *T) {}", false},
+		{"TestForeignT", "func TestForeignT(t *foreign.T) {}", false},
 		{"Testhelper", "func Testhelper(t *testing.T) {}", false},
 		{"Testé", "func Testé(t *testing.T) {}", false},
 		{"TestMissingArgument", "func TestMissingArgument() {}", false},
@@ -41,6 +43,8 @@ func TestManifestTestFunctionLinks(t *testing.T) {
 					imports = "import alias \"testing\"\n"
 				case "TestDot":
 					imports = "import . \"testing\"\n"
+				case "TestForeignT":
+					imports = "import foreign \"example.invalid/foreign\"\n"
 				}
 				writeArtifact(t, root, "output_test.go", "package example\n"+imports+tt.declaration+"\n")
 				m.Probes[0].Implementation.State = "verified"
