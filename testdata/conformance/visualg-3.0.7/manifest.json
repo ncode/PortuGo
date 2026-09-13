@@ -275,6 +275,14 @@
       ]
     },
     {
+      "id": "assumption.for-loop-final-value",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Valor da variável de controle após o término do laço (no Pascal clássico é indefinido; no VisuAlg, pelo modelo de execução descrito, fica `limite + passo` ou além).",
+      "probes": [
+        "for-termination"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
