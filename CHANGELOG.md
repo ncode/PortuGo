@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject unknown fields and trailing JSON in staged recording metadata before
+  capture emits evidence.
+
 - Reject state and host observation artifacts larger than the adapter's 1 MiB
   output limit before conformance replay.
 

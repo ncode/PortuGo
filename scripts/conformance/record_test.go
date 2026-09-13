@@ -71,6 +71,39 @@ func TestCaptureRecording(t *testing.T) {
 	}
 }
 
+func TestCaptureRejectsLooseStagedJSON(t *testing.T) {
+	for _, tt := range []struct {
+		name, want string
+	}{
+		{name: "unknown field", want: "unknown field"},
+		{name: "trailing JSON", want: "trailing staged JSON"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			root, m := testManifest(t)
+			stage := filepath.Join(t.TempDir(), "recording")
+			if err := prepareRecording(root, m.Probes[0], stage); err != nil {
+				t.Fatal(err)
+			}
+			data, err := os.ReadFile(filepath.Join(stage, "staged.json"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if tt.name == "unknown field" {
+				text := strings.TrimSuffix(strings.TrimSpace(string(data)), "}") + `,"extra":true}`
+				data = []byte(text)
+			} else {
+				data = append(bytes.TrimSpace(data), []byte("\n{}")...)
+			}
+			if err := os.WriteFile(filepath.Join(stage, "staged.json"), data, 0600); err != nil {
+				t.Fatal(err)
+			}
+			if _, err := captureRecording(stage, true, "2026-09-07T12:00:00Z", "panel-v1", false); err == nil || !strings.Contains(err.Error(), tt.want) {
+				t.Fatalf("error = %v, want %q", err, tt.want)
+			}
+		})
+	}
+}
+
 func TestCaptureGeneratedBytes(t *testing.T) {
 	t.Parallel()
 	root, m := testManifest(t)
