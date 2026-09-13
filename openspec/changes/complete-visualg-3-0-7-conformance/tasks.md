@@ -107,7 +107,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Capture also resolves the staging root against the repository boundary and
   rejects symlinked roots before writing normalized or evidence metadata.
   Artifact and fixture paths also reject repository metadata directories such as
-  `.git`, including case aliases, before private Git state can be hashed.
+  `.git`, including case aliases, before private Git state can be hashed; the
+  prohibited-artifact scan skips those directories at any depth.
   Replay checks auxiliary input fixtures after execution and rejects changed or
   deleted bytes unless the path is explicitly declared generated or absent.
   Existing capture stages reject group or other permission bits on POSIX hosts;

@@ -4,6 +4,8 @@
 
 - Reject non-regular direct observation-adapter source and clock paths before
   opening them, so special files cannot block a bounded read.
+- Skip repository metadata directories at any depth during prohibited-artifact
+  scans, so nested private Git state is never hashed as corpus evidence.
 
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.

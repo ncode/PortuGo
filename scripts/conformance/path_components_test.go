@@ -26,6 +26,20 @@ func TestCheckProhibitedSkipsRepositoryMetadata(t *testing.T) {
 	}
 }
 
+func TestCheckProhibitedSkipsNestedRepositoryMetadata(t *testing.T) {
+	root := t.TempDir()
+	metadata := filepath.Join(root, "nested", ".git")
+	if err := os.MkdirAll(metadata, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(metadata, "payload.exe"), []byte("metadata\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if err := checkProhibited(root, reference{}); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestManifestPathComponents(t *testing.T) {
 	t.Parallel()
 	tests := []struct {
