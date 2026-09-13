@@ -377,9 +377,17 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			delete(generated, file.Path)
 		}
 	}
-	for _, a := range []*artifact{i.Expected.State, i.Expected.HostTrace, i.Expected.Clock} {
+	for _, a := range []*artifact{i.Expected.State, i.Expected.HostTrace} {
 		if a != nil {
 			_, err := readArtifact(root, *a)
+			add(err)
+		}
+	}
+	if i.Expected.Clock != nil {
+		data, err := readArtifact(root, *i.Expected.Clock)
+		add(err)
+		if err == nil {
+			_, err := decodeClockFixture(data)
 			add(err)
 		}
 	}
