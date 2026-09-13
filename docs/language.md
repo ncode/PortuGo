@@ -1410,6 +1410,8 @@ required checks; a valid declaration link alone does not establish coverage.
 The [project tooling evidence](conformance-project-evidence.md) separately traces
 provenance, recording, normalization, and validation tests. Those mappings do not
 substitute for language recordings or establish complete reference conformance.
+The conformance validator bounds candidate-build diagnostics before replay, so a
+failed build cannot exhaust its output buffer.
 
 Runtime fixture output is compared byte for byte, including decimal separators,
 whitespace, and newlines. Git preserves committed fixture bytes on every
