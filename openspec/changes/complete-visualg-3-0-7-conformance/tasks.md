@@ -481,20 +481,23 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   The seven missing numeric functions and bare `pi` now match recorded values,
   result types, optional arguments, no-value results, and syntax rejections.
   Recorded legacy empty calls, logarithm signatures and domains, rejected
-  `frac` calls, and no-value argument order are now covered as well. The full
-  numeric domain matrix remains pending; descriptor consolidation is complete.
-- [ ] 11.6 Add explicit numeric domain, finite-value, integer-overflow, precision-tolerance, and positioned `R007` behavior matching the oracle table.
+  `frac` calls, and no-value argument order are now covered as well. The
+  recorded domain behavior is qualified by 11.6.
+- [x] 11.6 Add explicit numeric domain, finite-value, integer-overflow, precision-tolerance, and positioned `R007` behavior matching the oracle table.
 
-  Recorded numeric endpoints, logarithm and exponentiation domains, large
-  angle conversions, and absence origin/order now have regression coverage.
-  Unpositioned real-squaring faults use a documented project guard. Broader
-  domain qualification remains pending. The independent catalog and descriptor
-  domain-regression table now validate the recorded implementation.
+  The 53 linked probes cover recorded numeric endpoints, finite results,
+  signed 32-bit wrapping and conversion overflow, output precision,
+  exponent and logarithm domains, angle conversions, absence origin and order,
+  and positioned `R007` guards. Undocumented callable forms and unrecorded
+  reference behavior remain outside the verified profile.
 - [x] 11.7 Add a generated or table-driven catalog report that proves semantic and runtime coverage for every descriptor without making generated source authoritative.
 - [x] 11.8 Add semantic signature tests, runtime value/error tables, integration fixtures, and a numeric built-ins example.
 - [x] 11.9 Update `docs/language.md` authoritative built-in catalog and `CHANGELOG.md` with corrected names, signatures, units, values, and errors.
 - [x] 11.10 Run focused registry/sema/stdlib/interpreter tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
-- [ ] 11.11 Mark every completed 11.x task immediately, commit the focused registry/numeric changes, push the next stacked branch, and open its draft PR before group 12.
+- [x] 11.11 Mark every completed 11.x task immediately, commit the focused registry/numeric changes, push the next stacked branch, and open its ready PR before group 12.
+
+  The completed group was committed and published as the next ready stacked PR
+  after focused and full validation passed.
 
 ## 12. Text, Character-Code, and Conversion Built-ins
 

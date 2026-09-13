@@ -14,6 +14,10 @@
   including reversed endpoints, while retaining pre-draw rejection for
   unrepresentable bounds.
 
+- Complete recorded numeric built-in domain coverage, including finite
+  results, integer overflow, output precision, absence ordering, and positioned
+  `R007` guards. Keep undocumented callable forms outside the verified profile.
+
 - Stop `para` progression at the terminal bound when its next signed integer
   value would overflow, and keep `R005`/`R006` runtime-limit diagnostics tied to
   the attempted call or loop position.

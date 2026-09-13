@@ -39,9 +39,11 @@ Four controlled mutations fail validation: omitting `arccos`, changing the
 the sine evaluator. The omission affects semantic and runtime recognition
 together, so the independent inventory remains necessary.
 
-The broader numeric domain matrix and undocumented callable forms remain
-pending. Catalog agreement does not qualify reference behavior that has not
-been recorded.
+The recorded numeric domain matrix is covered by linked boundary and
+diagnostic regressions for finite results, signed 32-bit wrapping, conversion
+overflow, output precision, absence ordering, and positioned `R007` guards.
+Undocumented callable forms and unrecorded reference behavior remain outside
+the verified profile.
 
 Published evidence contains synthetic source, two program-only output panels,
 one reviewed diagnostic crop and a labeled transcription. The original document

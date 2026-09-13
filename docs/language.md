@@ -895,8 +895,11 @@ signed 32-bit: `int(2147483648.0)` is `-2147483648`, and
 An absent numeric argument propagates through a containing numeric call,
 subject to the `exp` argument rules above. Output handles the result as
 described for `numpcarac`.
-The broader numeric domain matrix remains pending. Catalog consolidation is
-complete for the recorded names and behaviors.
+The recorded numeric domain matrix is covered by linked boundary and
+diagnostic regressions for finite results, signed 32-bit wrapping, conversion
+overflow, output precision, absence ordering, and positioned `R007` guards.
+Undocumented callable forms and unrecorded reference behavior remain outside
+the verified profile.
 
 String built-ins: `copia`, `maiusc`, `minusc`, `asc`, `carac`, `compr`, and
 `pos`. Their recorded character repertoire is Windows-1252, decoded to UTF-8
