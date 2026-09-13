@@ -111,6 +111,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   deleted bytes unless the path is explicitly declared generated or absent.
   Existing capture stages reject group or other permission bits on POSIX hosts;
   Windows staging privacy remains enforced by its ACL model.
+  Recording preparation and capture also reject duplicate generated or absent
+  staged path declarations before evidence is written.
   Artifact reads remain bounded after opening, so a file that grows between
   metadata inspection and consumption cannot bypass the repository size limit.
   Retained replay-output reads apply the smaller observation limit before hash

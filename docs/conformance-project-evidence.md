@@ -25,12 +25,16 @@ covers that project-only resource guard.
 
 `project.recording` covers private staging, root containment, source/input
 integrity, capture metadata, recorder-owned path isolation, required GUI
-attachments, and generated-file bytes. Its tests are `TestPrepareRecording`,
+attachments, duplicate staged path declarations, and generated-file bytes. Its
+tests are `TestPrepareRecording`,
 `TestPrepareRecordingRejectsRecorderOwnedPaths`, `TestCaptureRecording`,
-`TestCaptureRejectsSymlinkedStage`, `TestCaptureRejectsNonPrivateStage`,
-`TestCaptureRejectsRecorderOwnedGeneratedPath`, `TestCaptureGeneratedBytes`,
-and `TestCaptureInitialFiles`. Existing stages must have no group or other
-permission bits on POSIX hosts; Windows staging privacy remains an ACL concern.
+`TestCaptureRejectsLooseStagedJSON`, `TestCaptureRejectsDuplicateStagedPaths`,
+`TestPrepareRecordingRejectsDuplicateStagedPaths`, `TestCaptureRejectsSymlinkedStage`,
+`TestCaptureRejectsNonPrivateStage`, `TestCaptureRejectsRecorderOwnedGeneratedPath`,
+`TestCaptureGeneratedBytes`, and `TestCaptureInitialFiles`. Existing stages
+must have no group or other permission bits on POSIX hosts; Windows staging
+privacy remains an ACL concern. Duplicate generated or absent declarations are
+rejected before capture writes evidence.
 `project.normalization` uses `TestNormalize` to verify
 that only the declared envelope and line endings change, including rejection of
 invalid envelopes and preservation of significant output bytes.

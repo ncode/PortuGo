@@ -43,6 +43,18 @@ func checkRecorderOwnedPath(name string) error {
 	return nil
 }
 
+func checkDuplicateStagedPaths(kind string, paths []string) error {
+	seen := make(map[string]struct{}, len(paths))
+	for _, name := range paths {
+		key := strings.ToUpper(name)
+		if _, exists := seen[key]; exists {
+			return fmt.Errorf("duplicate staged %s path: %s", kind, name)
+		}
+		seen[key] = struct{}{}
+	}
+	return nil
+}
+
 func writeNew(name string, data []byte) error {
 	f, err := os.OpenFile(name, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o600)
 	if err != nil {
@@ -121,6 +133,16 @@ func prepareRecording(root string, p probe, stage string) error {
 		if err := checkRecorderOwnedPath(name); err != nil {
 			return err
 		}
+	}
+	generated := make([]string, len(p.Implementation.Expected.Generated))
+	for i, file := range p.Implementation.Expected.Generated {
+		generated[i] = file.Path
+	}
+	if err := checkDuplicateStagedPaths("generated", generated); err != nil {
+		return err
+	}
+	if err := checkDuplicateStagedPaths("absent", p.Implementation.Expected.Absent); err != nil {
+		return err
 	}
 	if err := os.Mkdir(stage, 0o700); err != nil {
 		return err
@@ -230,6 +252,12 @@ func captureRecording(root, stage string, accepted bool, capturedAt, normalizer 
 		if err := checkRecorderOwnedPath(name); err != nil {
 			return e, err
 		}
+	}
+	if err := checkDuplicateStagedPaths("generated", staged.Generated); err != nil {
+		return e, err
+	}
+	if err := checkDuplicateStagedPaths("absent", staged.Absent); err != nil {
+		return e, err
 	}
 	for _, a := range []artifact{staged.Source, staged.Input} {
 		if _, err := readArtifact(stage, a); err != nil {
