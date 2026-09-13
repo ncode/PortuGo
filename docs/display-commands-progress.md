@@ -1,8 +1,8 @@
 # Display command recordings
 
 This slice adds 72 VisuAlg 3.0.7 recordings: 57 completed programs and 15
-positioned rejections. Sixty-seven match the implementation and have permanent
-tests; five remain pending. Source bytes, program-output text, and reviewed
+positioned rejections. Seventy match the implementation and have permanent
+tests; two remain pending. Source bytes, program-output text, and reviewed
 diagnostic transcriptions are linked by hash from the corpus manifest.
 
 The observations cover clear-screen syntax, ignored arguments, expression
@@ -18,20 +18,16 @@ Only program text and diagnostic-window crops are retained in this repository.
 `TestDisplayHostOrder`, `TestDisplayPalette`, and
 `TestDisplayKeywordsHaveNoValue` check typed host events, both color targets,
 ignored options, call order, interpreter reuse, and expression contexts.
+`TestRecordedDisplayArgumentOrder` checks that recorded first-argument output
+survives a later invalid color argument.
 The parser depth tests cover both color expressions at and beyond the limit.
 
-The five pending records are:
+The two pending records are:
 
-- `display-color-bad-second`: the reference prints the first argument's effect
-  before rejecting the second; current semantic analysis rejects before execution.
-- `display-color-no-value-first`: mixed integer/string addition has a different
-  diagnostic from the reference before the display operation is reached.
-- `display-color-no-value-second`: the same expression difference combines with
-  the reference's retained first-argument output.
 - `bundled-991ec2bd1566` and `bundled-7f44aa03fcc5`: accepted original examples
   print random values. Their samples do not establish exact portable sequences.
 
-The corpus now has 875 reference recordings: 834 verified and 41 pending,
+The corpus now has 875 reference recordings: 837 verified and 38 pending,
 plus 15 explicitly separate project-contract records. The evidence gate still
 requires mappings for 16 requirements and 31 bundled examples. These recordings
 do not close the remaining environment-command or overall conformance tasks.

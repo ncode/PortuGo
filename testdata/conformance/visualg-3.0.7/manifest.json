@@ -44130,7 +44130,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -44143,7 +44143,10 @@
               "line": 8
             }
           ]
-        }
+        },
+        "tests": [
+          "display_argument_order_test.go#TestRecordedDisplayArgumentOrder"
+        ]
       }
     },
     {
@@ -44243,7 +44246,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -44256,7 +44259,10 @@
               "line": 8
             }
           ]
-        }
+        },
+        "tests": [
+          "display_argument_order_test.go#TestRecordedDisplayArgumentOrder"
+        ]
       }
     },
     {
@@ -44298,7 +44304,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -44311,7 +44317,10 @@
               "line": 8
             }
           ]
-        }
+        },
+        "tests": [
+          "display_argument_order_test.go#TestRecordedDisplayArgumentOrder"
+        ]
       }
     },
     {

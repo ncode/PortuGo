@@ -339,8 +339,8 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 	case *ast.CallStmt:
 		c.checkCall(s.Call, true)
 	case *ast.ColorStmt:
-		if c.checkColorArg(s.Color) {
-			c.checkColorArg(s.Target)
+		if c.checkColorArg(s.Color, false) {
+			c.checkColorArg(s.Target, c.containsUserCall(s.Color))
 		}
 	case *ast.IfStmt:
 		c.requireBool(s.Cond)

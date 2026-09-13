@@ -39,6 +39,10 @@
   including accented case, 1-based slicing/search, CP1252 boundaries, dynamic
   conversion types, and checked `copia` allocation failures.
 
+- Match display color argument evaluation order, preserving earlier output when
+  a later color argument fails and retaining the recorded syntax diagnostic for
+  mixed invalid color expressions.
+
 - Record nine call-form controls and verify seven supplied-argument or
   parameterless cases through original and formatted execution. Keep two
   empty numeric-argument early-completion cases pending without inferring
