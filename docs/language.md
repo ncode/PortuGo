@@ -1409,6 +1409,8 @@ provenance, recording, normalization, and validation tests. Those mappings do no
 substitute for language recordings or establish complete reference conformance.
 The conformance validator bounds candidate-build diagnostics before replay, so a
 failed build cannot exhaust its output buffer.
+Git history and quality checks also bound post-exit pipe draining, so an exited
+helper process cannot leave validation waiting indefinitely.
 
 Runtime fixture output is compared byte for byte, including decimal separators,
 whitespace, and newlines. Git preserves committed fixture bytes on every

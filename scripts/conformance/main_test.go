@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 	"testing"
 	"time"
@@ -180,6 +182,29 @@ func TestPreviousManifestRejectsOversizedGitMetadata(t *testing.T) {
 			installFakeGit(t, tt.mode)
 			if _, err := previousManifest(t.TempDir(), "base", "manifest.json"); err == nil || !strings.Contains(err.Error(), tt.want) {
 				t.Fatalf("error = %v, want %q", err, tt.want)
+			}
+		})
+	}
+}
+
+func TestGitValidationBoundsPipeDrain(t *testing.T) {
+	for _, tt := range []struct {
+		name, mode, want string
+		run              func(*testing.T) error
+	}{
+		{name: "history", mode: "stalled-rev-parse", want: "resolve previous manifest base", run: func(t *testing.T) error {
+			_, err := previousManifest(t.TempDir(), "base", "manifest.json")
+			return err
+		}},
+		{name: "quality", mode: "stalled-status", want: "inspect quality candidate", run: func(t *testing.T) error {
+			return validateQuality(t.TempDir(), filepath.Join(t.TempDir(), "quality.json"), "")
+		}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			installFakeGit(t, tt.mode)
+			err := tt.run(t)
+			if err == nil || !errors.Is(err, exec.ErrWaitDelay) || !strings.Contains(err.Error(), tt.want) {
+				t.Fatalf("error = %v, want bounded Git wait failure", err)
 			}
 		})
 	}

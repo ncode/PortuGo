@@ -127,6 +127,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   build diagnostics cannot exhaust validator memory.
   Historical-manifest revision and tree lookups also apply the artifact limit
   before history comparison.
+  Historical-manifest and quality Git commands also bound post-exit pipe
+  draining, so helper processes cannot leave validation waiting indefinitely.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 
