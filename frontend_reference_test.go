@@ -49,6 +49,8 @@ func TestRecordedFrontendRejections(t *testing.T) {
 	}{
 		{"leading-decimal-point", diag.ELexer, 3},
 		{"unterminated-string", diag.ELexer, 3},
+		{"single-quoted-string", diag.ELexer, 3},
+		{"expression-next-line", diag.EParse, 3},
 		{"single-slash-inline", diag.EParse, 3},
 		{"single-star-inline", diag.EParse, 3},
 		{"logical-type-accented", diag.EParse, 3},

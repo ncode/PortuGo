@@ -114,6 +114,8 @@ func TestFormatterPreservesMalformedFiles(t *testing.T) {
 		{"write_trailing_semicolon", "../../testdata/check/write_trailing_semicolon.alg"},
 		{"write_no_newline_trailing_semicolon", "../../testdata/check/write_no_newline_trailing_semicolon.alg"},
 		{"write_same_line_terminator", "../../testdata/check/write_same_line_terminator.alg"},
+		{"expression_next_line", "../../testdata/conformance/visualg-3.0.7/probes/expression-next-line/source.alg"},
+		{"single_quoted_string", "../../testdata/conformance/visualg-3.0.7/probes/single-quoted-string/source.alg"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			src, err := os.ReadFile(tt.path)

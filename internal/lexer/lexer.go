@@ -52,6 +52,17 @@ func (s *scanner) scan() {
 			s.scanNumber(start)
 		case r == '"':
 			s.scanString(start)
+		case r == '\'':
+			s.error(token.Pos(start), "single-quoted text is unsupported")
+			for s.offset < len(s.src) && s.peek() != '\'' && s.peek() != '\n' {
+				s.advance()
+			}
+			if s.peek() == '\n' {
+				for s.offset > start && s.src[s.offset-1] == '\r' {
+					s.offset--
+				}
+			}
+			s.match('\'')
 		default:
 			s.scanSymbol(start, r)
 		}

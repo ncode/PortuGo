@@ -101,6 +101,10 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   by 4.7 and 4.10; incomplete expression behavior and the remaining literal
   boundaries are still pending.
 
+  Single-quoted text now produces one positioned lexical diagnostic, retaining
+  subsequent-line recovery. Its recorded rejection is verified; other literal
+  boundaries remain pending.
+
   Digit-only literals now use integer type through `2147483647` and real type
   above it; real literal types survive formatter round trips. Default real
   output and numeric-to-text conversion share the recorded 15-digit profile.
@@ -135,6 +139,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   rejection; ordinary regression fixtures preserve those diagnostics without
   publishing GUI captures. A new text-output recording verifies the accepted
   trailing-comment control with unchanged source and panel text.
+
+  The recorded output expression split after a binary operator now receives
+  `P001` on the operator's physical line. Recovery retains following statements,
+  and formatting refuses to join the invalid expression. Other multiline
+  expression forms remain under qualification.
 
 - [x] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
 

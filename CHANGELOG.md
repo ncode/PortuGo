@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Reject an output expression whose binary operand starts on the following
+  physical line, and report single-quoted text once at its opening quote.
+  Preserve following-line recovery and prevent formatting from rewriting the
+  rejected input. Verify both existing reference records.
+
 - Record native Windows validation for existing-file continuation under sharing
   locks while retaining all six access-constrained probes as pending until the
   corpus replay can recreate their restrictions.

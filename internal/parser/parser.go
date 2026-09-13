@@ -34,6 +34,7 @@ type parser struct {
 	diags     []diag.Diagnostic
 	depth     int
 	caseDepth int
+	writeExpr bool
 	limited   bool
 }
 
@@ -604,6 +605,9 @@ func (p *parser) parseWrite() ast.Stmt {
 		p.skipLine()
 		return stmt
 	}
+	previous := p.writeExpr
+	p.writeExpr = true
+	defer func() { p.writeExpr = previous }()
 	if !p.match(token.RPAREN) {
 		for {
 			arg := ast.WriteArg{Expr: p.parseExpr(0)}

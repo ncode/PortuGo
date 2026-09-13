@@ -125,3 +125,22 @@ func TestWriteTailRejections(t *testing.T) {
 		})
 	}
 }
+
+func TestWriteOperandLineRecovery(t *testing.T) {
+	for _, ending := range []string{"\n", "\r\n", "\r\r\n"} {
+		for _, command := range []string{"escreva", "escreval"} {
+			src := strings.Join([]string{`algoritmo "write recovery"`, "inicio", command + "(1 +", "2)", "escreval(3)", "(4)", "fimalgoritmo", ""}, ending)
+			file, tokens, ds := lexer.Scan("source.alg", src)
+			if len(ds) != 0 {
+				t.Fatal(ds)
+			}
+			prog, ds := Parse(tokens)
+			if len(ds) != 2 || ds[0].Code != diag.EParse || file.Position(ds[0].Pos).Line != 3 || ds[1].Code != diag.EParse || file.Position(ds[1].Pos).Line != 6 {
+				t.Fatalf("diagnostics = %v, want P001 on lines 3 and 6", ds)
+			}
+			if prog == nil || len(prog.Body) != 2 || file.Position(prog.Body[1].Start()).Line != 5 {
+				t.Fatal("recovery lost the following write")
+			}
+		}
+	}
+}

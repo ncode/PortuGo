@@ -4356,7 +4356,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -4369,7 +4369,11 @@
               "line": 3
             }
           ]
-        }
+        },
+        "tests": [
+          "frontend_reference_test.go#TestRecordedFrontendRejections",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ]
       }
     },
     {
@@ -5017,7 +5021,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -5030,7 +5034,11 @@
               "line": 3
             }
           ]
-        }
+        },
+        "tests": [
+          "frontend_reference_test.go#TestRecordedFrontendRejections",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ]
       }
     },
     {

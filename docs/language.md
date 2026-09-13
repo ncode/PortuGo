@@ -250,6 +250,10 @@ or doubled quotes. The recorded backslash forms are covered by byte-exact
 reference replay; formatting preserves their contents and program names.
 See [the literal-string example](../examples/literal_strings.alg).
 
+Single quotes do not delimit strings. Single-quoted text receives one `L001`
+at its opening quote; lexical recovery resumes after the closing quote or at
+the next physical newline.
+
 ## Comments
 
 `//` consumes the rest of its physical line. The reference also treats it as
@@ -714,6 +718,10 @@ line receives `P001` before execution, including when separated by `;`.
 A lone trailing semicolon or same-line `fimalgoritmo` is also rejected. Put
 output statements and their terminators on separate lines. Accepted trailing
 comments remain valid, and `fmt` rejects invalid source without rewriting it.
+In an output expression, a binary operator's operand cannot start on the next
+physical line: `escreval(1 +` followed by `2)` receives `P001` on the operator's
+line. Formatting rejects this source instead of joining its lines. Other
+multiline expression boundaries remain under qualification.
 Each statement evaluates and formats its arguments in order before emitting
 its own text. Output from functions called during that evaluation appears first.
 `escreval` requests a pending newline, which the next output statement to finish

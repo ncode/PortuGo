@@ -22,7 +22,14 @@ func (p *parser) parseExpr(minPrec int) ast.Expr {
 			return left
 		}
 		p.advance()
+		continued := p.writeExpr && p.pos < len(p.tokens) && p.tokens[p.pos].Kind == token.NEWLINE
+		before := len(p.diags)
 		right := p.parseExpr(prec + 1)
+		if continued && len(p.diags) == before {
+			// Keep parsing the operand for recovery, but do not let formatting
+			// turn an incomplete physical output line into accepted syntax.
+			p.error(op, "expected output operand on the same line")
+		}
 		binary := &ast.BinaryExpr{Op: op, Left: left, Right: right}
 		left = binary
 		if binary.IsComparison() {
