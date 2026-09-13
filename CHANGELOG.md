@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Validate conformance clock fixtures with the execution adapter's decoder,
+  rejecting malformed schedules before replay without changing clock behavior.
+
 - Validate optional candidate stdout artifacts on reviewed exclusions, retaining
   path and hash checks without requiring output for excluded runs.
 

@@ -77,21 +77,10 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 		if err != nil {
 			return fail(err)
 		}
-		var fixture struct {
-			NowMS []int64 `json:"nowMS"`
+		nowMS, err = decodeClockFixture(data)
+		if err != nil {
+			return fail(err)
 		}
-		decoder := json.NewDecoder(bytes.NewReader(data))
-		decoder.DisallowUnknownFields()
-		if err := decoder.Decode(&fixture); err != nil {
-			return fail(fmt.Errorf("decode clock fixture: %w", err))
-		}
-		if err := decoder.Decode(new(any)); err != io.EOF {
-			return fail(fmt.Errorf("trailing clock fixture JSON"))
-		}
-		if len(fixture.NowMS) == 0 {
-			return fail(fmt.Errorf("clock fixture has no reads"))
-		}
-		nowMS = fixture.NowMS
 	}
 	h := &recordingHost{events: []hostEvent{}, nowMS: nowMS}
 	i := interp.New(interp.Options{Input: in, Output: capture, Host: h, Random: rand.New(rand.NewPCG(1, 2)), MaxSteps: *steps})
@@ -118,6 +107,24 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 		return 1
 	}
 	return 0
+}
+
+func decodeClockFixture(data []byte) ([]int64, error) {
+	var fixture struct {
+		NowMS []int64 `json:"nowMS"`
+	}
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&fixture); err != nil {
+		return nil, fmt.Errorf("decode clock fixture: %w", err)
+	}
+	if err := decoder.Decode(new(any)); err != io.EOF {
+		return nil, fmt.Errorf("trailing clock fixture JSON")
+	}
+	if len(fixture.NowMS) == 0 {
+		return nil, fmt.Errorf("clock fixture has no reads")
+	}
+	return fixture.NowMS, nil
 }
 
 func writeObservation(path string, value any) error {
