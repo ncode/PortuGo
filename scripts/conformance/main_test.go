@@ -104,6 +104,32 @@ func TestLoadRejectsUnknownFieldsAndTrailingJSON(t *testing.T) {
 	}
 }
 
+func TestPreviousManifestRejectsLooseJSON(t *testing.T) {
+	for _, tt := range []struct {
+		name, content, want string
+	}{
+		{name: "unknown field", content: `{"versoin":1}`, want: "unknown field"},
+		{name: "trailing JSON", content: `{"version":1} {"version":2}`, want: "trailing manifest JSON"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			root := t.TempDir()
+			writeArtifact(t, root, "manifest.json", tt.content)
+			ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+			defer cancel()
+			for _, args := range [][]string{{"init"}, {"add", "manifest.json"}, {"-c", "user.name=Test", "-c", "user.email=test@example.invalid", "-c", "commit.gpgsign=false", "commit", "-m", "Initial manifest"}} {
+				cmd := exec.CommandContext(ctx, "git", args...)
+				cmd.Dir = root
+				if output, err := cmd.CombinedOutput(); err != nil {
+					t.Fatalf("git %v: %v: %s", args, err, output)
+				}
+			}
+			if _, err := previousManifest(root, "HEAD", "manifest.json"); err == nil || !bytes.Contains([]byte(err.Error()), []byte(tt.want)) {
+				t.Fatalf("error = %v, want %q", err, tt.want)
+			}
+		})
+	}
+}
+
 func TestLoadManifestAcceptsFixtureAccess(t *testing.T) {
 	t.Parallel()
 	root := t.TempDir()

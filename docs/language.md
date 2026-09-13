@@ -1439,5 +1439,7 @@ State and host observation artifacts use the adapter's 1 MiB output limit;
 larger retained expectations fail validation before replay.
 Capture also rejects unknown fields and trailing JSON in its staged recording
 metadata before producing evidence.
+Historical manifests loaded for downgrade checks use the same strict decoder as
+the current manifest, so malformed history cannot bypass schema validation.
 Final acceptance requires quality evidence for the candidate commit; the
 separate release gate also requires completed implementation and handoff tasks.
