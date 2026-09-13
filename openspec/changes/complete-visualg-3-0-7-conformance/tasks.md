@@ -129,6 +129,10 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   before history comparison.
   Historical-manifest and quality Git commands also bound post-exit pipe
   draining, so helper processes cannot leave validation waiting indefinitely.
+  Declared source files now require inventory links for explicit `[VERIFICAR]`
+  list, table, code, and numbered items; checklist, defect, and feature links
+  participate in the same coverage check. The legacy source inventory and
+  prose/grammar marker coverage remain open.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 
