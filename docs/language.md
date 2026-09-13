@@ -1444,5 +1444,7 @@ Capture also rejects unknown fields and trailing JSON in its staged recording
 metadata before producing evidence.
 Historical manifests loaded for downgrade checks use the same strict decoder as
 the current manifest, so malformed history cannot bypass schema validation.
+Historical manifest output is also bounded by the repository artifact limit
+before it is decoded, matching current-manifest loading.
 Final acceptance requires quality evidence for the candidate commit; the
 separate release gate also requires completed implementation and handoff tasks.

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"os"
 	"os/exec"
+	"strings"
 	"testing"
 	"time"
 )
@@ -127,6 +128,26 @@ func TestPreviousManifestRejectsLooseJSON(t *testing.T) {
 				t.Fatalf("error = %v, want %q", err, tt.want)
 			}
 		})
+	}
+}
+
+func TestPreviousManifestRejectsOversizedJSON(t *testing.T) {
+	root := t.TempDir()
+	writeArtifact(t, root, "manifest.json", strings.Repeat("x", maxArtifactBytes+1))
+	if _, err := loadManifest(root, "manifest.json"); err == nil || !strings.Contains(err.Error(), "invalid file size or type") {
+		t.Fatalf("current manifest error = %v, want size limit", err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+	for _, args := range [][]string{{"init"}, {"add", "manifest.json"}, {"-c", "user.name=Test", "-c", "user.email=test@example.invalid", "-c", "commit.gpgsign=false", "commit", "-m", "Initial manifest"}} {
+		cmd := exec.CommandContext(ctx, "git", args...)
+		cmd.Dir = root
+		if output, err := cmd.CombinedOutput(); err != nil {
+			t.Fatalf("git %v: %v: %s", args, err, output)
+		}
+	}
+	if _, err := previousManifest(root, "HEAD", "manifest.json"); err == nil || !strings.Contains(err.Error(), "previous manifest exceeds artifact size limit") {
+		t.Fatalf("error = %v, want size limit", err)
 	}
 }
 
