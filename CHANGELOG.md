@@ -12,6 +12,8 @@
   helper processes cannot leave the validator waiting indefinitely.
 - Sanitize replay mismatch errors to report byte metadata without copying
   captured or expected output into validation artifacts.
+- Sanitize wrapped filesystem errors before they reach conformance stderr or
+  replay-result JSON.
 
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.

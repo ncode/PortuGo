@@ -954,7 +954,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
   Replay mismatch errors now report only captured and expected byte lengths and
   the first differing byte, keeping output payloads out of validation JSON and
-  CI diagnostics. Full implementation acceptance remains pending.
+  CI diagnostics. CLI error boundaries also redact wrapped filesystem paths
+  before writing stderr or replay-result JSON. Full implementation acceptance
+  remains pending.
 - [ ] 17.7 Reconcile `AGENTS.md`, `docs/language.md`, every example, and `CHANGELOG.md` with the oracle-backed final behavior and remove all obsolete open questions or compatibility claims.
 - [ ] 17.8 Perform a clean-checkout release rehearsal of all CLI commands, REPL transcripts, fixtures, manifest validation, and build artifacts on the supported platforms.
 - [ ] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.

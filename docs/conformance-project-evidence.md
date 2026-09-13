@@ -73,6 +73,8 @@ unless they are declared generated or absent. Its tests are
 and `TestReplaySummary`. Replay mismatch errors expose only captured and
 expected byte lengths plus the first differing byte; output payloads are not
 serialized into validation JSON or CI diagnostics.
+CLI error boundaries also replace wrapped filesystem paths with a generic
+failure before writing stderr or replay-result JSON.
 
 These mappings verify enforcement by the tooling. They do not declare the
 inventory complete, satisfy missing checklist/audit inputs, or authorize a

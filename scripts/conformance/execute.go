@@ -39,7 +39,7 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 	if flags.NArg() != 1 || *steps == 0 {
 		return 2
 	}
-	fail := func(err error) int { _, _ = fmt.Fprintln(stderr, err); return 1 }
+	fail := func(err error) int { _, _ = fmt.Fprintln(stderr, publicError(err)); return 1 }
 	data, err := readBoundedFile(flags.Arg(0), 64<<10, fmt.Errorf("source exceeds replay profile"))
 	if err != nil {
 		return fail(err)
