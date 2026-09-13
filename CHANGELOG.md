@@ -18,6 +18,10 @@
 - Validate explicit `[VERIFICAR]` source items against checklist, defect, and
   feature inventory links while retaining incomplete legacy source coverage.
 
+- Add stable inventory links for the 25 numbered legacy compatibility-checklist
+  rows and validate their declared source section against existing probes;
+  broader marker, defect, feature, and environment coverage remains open.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 

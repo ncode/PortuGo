@@ -112,6 +112,9 @@ case aliases. Artifact hashes are lowercase SHA-256 of the exact published bytes
   Every requirement in the `specs/` tree adjacent to `tasksPath`, plus every
   requirement in additional declared source files, must have a requirement-kind
   trace. Omitting a source file from `inventorySources` cannot hide its requirements.
+  A declared source containing `## 12. Checklist de conformidade` also requires
+  a checklist-kind trace for each numbered row in that section; other legacy
+  marker lines remain outside the current bounded inventory slice.
 - Probes have stable `id`, `ownerGroup`, existing `tasks`, `source`, `input`,
   optional initial `files`, `timeoutMS`, `evidence`, and `implementation`.
   `evidence.absent` and `implementation.expected.absent` declare relative files
