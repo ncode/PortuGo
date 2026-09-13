@@ -618,7 +618,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   The same golden round-trips the accepted `ate`, range, return, and descending
   `para` forms; existing repeat recovery fixtures retain rejection behavior for
   unsupported terminators.
-- [ ] 9.4 Validate repeat conditions, dynamic range endpoint expressions, label types and recorded overlapping-label ordering, return contexts/types and recorded fallthrough behavior, break contexts, and integer loop control.
+- [x] 9.4 Validate repeat conditions, dynamic range endpoint expressions, label types and recorded overlapping-label ordering, return contexts/types and recorded fallthrough behavior, break contexts, and integer loop control.
 
   The missing-value return continuation probe now reports the recorded `E001`
   at `retorne` while keeping the following line from becoming a second syntax
