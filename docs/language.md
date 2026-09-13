@@ -1435,8 +1435,8 @@ Malformed JSON, unknown fields, trailing data, invalid read values and empty
 read schedules fail before replay. Repeated and backward readings remain valid.
 Bundled-example catalogs use the same strict JSON boundary: unknown fields and
 trailing values fail validation before catalog entries are considered.
-State and host observation artifacts use the adapter's 1 MiB output limit;
-larger retained expectations fail validation before replay.
+Stdout, state and host observation artifacts use the adapter's 1 MiB output
+limit; larger retained expectations fail validation before replay.
 Capture also rejects unknown fields and trailing JSON in its staged recording
 metadata before producing evidence.
 Historical manifests loaded for downgrade checks use the same strict decoder as

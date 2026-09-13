@@ -90,13 +90,13 @@ func readArtifact(root string, a artifact) ([]byte, error) {
 	return b, nil
 }
 
-func readObservationArtifact(root string, a artifact) ([]byte, error) {
+func readReplayOutputArtifact(root string, a artifact) ([]byte, error) {
 	b, err := readArtifact(root, a)
 	if err != nil {
 		return nil, err
 	}
 	if len(b) > maxObservationBytes {
-		return nil, fmt.Errorf("observation exceeds replay size limit: %s", a.Path)
+		return nil, fmt.Errorf("replay output exceeds size limit: %s", a.Path)
 	}
 	return b, nil
 }
