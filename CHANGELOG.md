@@ -18,6 +18,10 @@
   results, integer overflow, output precision, absence ordering, and positioned
   `R007` guards. Keep undocumented callable forms outside the verified profile.
 
+- Defer recorded real-to-integer assignment failures to execution as positioned
+  `R001` diagnostics for large and exponent-form literals and duplicate aliases,
+  while retaining static rejection for exact real division.
+
 - Stop `para` progression at the terminal bound when its next signed integer
   value would overflow, and keep `R005`/`R006` runtime-limit diagnostics tied to
   the attempted call or loop position.

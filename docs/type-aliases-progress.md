@@ -17,9 +17,8 @@ sections, and semicolons after alias definitions are rejected. A long flat
 alias chain and AST type-depth checks cover bounded processing independently
 of the reference observations.
 
-The `type-alias-duplicate` narrowing-assignment case remains pending: the
-reference reports `R001` on assignment, while current analysis reports `E001`
-before execution. Record aliases and their identity rules remain separate
+The `type-alias-duplicate` narrowing-assignment case now reports the recorded
+`R001` at execution. Record aliases and their identity rules remain separate
 work; scalar compatibility does not establish aggregate compatibility.
 
 The declaration-scope requirement now links accepted constant, alias, and

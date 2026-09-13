@@ -25134,7 +25134,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -25147,7 +25147,10 @@
               "line": 5
             }
           ]
-        }
+        },
+        "tests": [
+          "narrowing_assignment_test.go#TestRecordedRealToIntegerAssignmentDiagnostics"
+        ]
       }
     },
     {
@@ -59133,7 +59136,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -59146,7 +59149,10 @@
               "line": 5
             }
           ]
-        }
+        },
+        "tests": [
+          "narrowing_assignment_test.go#TestRecordedRealToIntegerAssignmentDiagnostics"
+        ]
       }
     },
     {
@@ -59188,7 +59194,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -59201,7 +59207,10 @@
               "line": 5
             }
           ]
-        }
+        },
+        "tests": [
+          "narrowing_assignment_test.go#TestRecordedRealToIntegerAssignmentDiagnostics"
+        ]
       }
     },
     {
@@ -59445,7 +59454,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -59458,7 +59467,10 @@
               "line": 8
             }
           ]
-        }
+        },
+        "tests": [
+          "narrowing_assignment_test.go#TestRecordedRealToIntegerAssignmentDiagnostics"
+        ]
       }
     },
     {

@@ -104,12 +104,14 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Digit-only literals now use integer type through `2147483647` and real type
   above it; real literal types survive formatter round trips. Default real
   output and numeric-to-text conversion share the recorded 15-digit profile.
-  Division/remainder rules and narrowing-assignment diagnostic timing remain pending.
+  Division/remainder rules remain pending. The recorded direct
+  real-to-integer assignment diagnostics now run at the assignment and report
+  positioned `R001`.
 
   Empty exponent digits now preserve real literal type, and signs following
   an exponent marker start arithmetic operators. Five reference cases verify
-  original/formatted execution; two assignment-diagnostic timing cases remain
-  pending with their recorded real-to-integer errors.
+  original/formatted execution, and the two assignment-diagnostic timing cases
+  now report their recorded real-to-integer errors during execution.
 - [ ] 4.6 Make parser production boundaries newline-aware and enforce the reference program header, declaration region, body, terminators, and post-`fimalgoritmo` behavior.
 
   Thirteen declaration observations now verify one optional semicolon at a
@@ -215,9 +217,10 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   precedence, and share underlying scalar compatibility. Fifteen accepted
   programs and nineteen positioned rejections verify global/local scopes,
   aliased vector elements, scalar arguments, declaration boundaries, and
-  unsupported named callable headers. One narrowing-assignment diagnostic
-  remains pending. Record aliases now retain distinct record identity without
-  copied fields; their declaration and field-selection behavior is recorded.
+  unsupported named callable headers. The duplicate-alias narrowing-assignment
+  diagnostic now reports positioned `R001` during execution. Record aliases
+  now retain distinct record identity without copied fields; their declaration
+  and field-selection behavior is recorded.
 - [x] 6.5 Implement record syntax and layouts in `sema.Info` only if confirmed, including field order, duplicates, and depth/size guards; otherwise add rejection fixtures and omit record layout machinery.
 - [x] 6.6 Add field designators through AST, parser, printer, sema, and runtime only for confirmed record support; otherwise pin field-syntax rejection and remove positive field obligations from dependent tasks/specs.
 

@@ -332,7 +332,8 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 				c.dynamicCells[key] = true
 			}
 		}
-		if ok && !logicalResult && src.Kind != runtime.NumericType && !runtime.Assignable(dst, src) {
+		realToInteger := ok && dst.Kind == runtime.IntegerType && src.Kind == runtime.RealType && containsRealLiteral(s.Value)
+		if ok && !logicalResult && !realToInteger && src.Kind != runtime.NumericType && !runtime.Assignable(dst, src) {
 			c.error(s.Value.Start(), diag.ETypeMismatch, "cannot assign %s to %s", src, dst)
 		}
 	case *ast.CallStmt:
@@ -716,6 +717,19 @@ func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 	default:
 		c.error(expr.Start(), diag.ETypeMismatch, "expression is not assignable")
 		return runtime.Type{Kind: runtime.InvalidType}, false
+	}
+}
+
+func containsRealLiteral(expr ast.Expr) bool {
+	switch e := expr.(type) {
+	case *ast.LiteralExpr:
+		return e.Kind == ast.RealLiteral
+	case *ast.UnaryExpr:
+		return containsRealLiteral(e.X)
+	case *ast.BinaryExpr:
+		return containsRealLiteral(e.Left) || containsRealLiteral(e.Right)
+	default:
+		return false
 	}
 }
 

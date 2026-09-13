@@ -165,7 +165,9 @@ Integer addition, subtraction, multiplication, and negation wrap to signed
 minimum. Mixing a real operand into addition, subtraction, or multiplication
 uses real arithmetic. Division of the signed minimum by `-1` receives positioned
 `R002` as a project guard. The recorded real-to-integer assignment diagnostic
-behavior remains pending conformance work.
+behavior for literal, source-exponent, and duplicate-alias assignments runs at
+the assignment and reports positioned `R001`; other narrowing contexts retain
+their semantic checks.
 
 ## Records
 
