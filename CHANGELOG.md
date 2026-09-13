@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject duplicate conformance input destinations before replay, while allowing
+  distinct files to share content and input files to have recorded output updates.
+
 - Reject malformed diagnostic codes and invalid source positions in conformance
   expectations before replay, while retaining optional exact columns.
 

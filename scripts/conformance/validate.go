@@ -258,6 +258,13 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			add(fmt.Errorf("reference disposition requires rejection with exit status 1 and mapped diagnostics"))
 		}
 	}
+	inputs := make(map[string]bool)
+	for _, file := range p.Files {
+		if inputs[file.Path] {
+			add(fmt.Errorf("duplicate input path %s", file.Path))
+		}
+		inputs[file.Path] = true
+	}
 	for _, file := range append(append([]generatedFile(nil), p.Files...), i.Expected.Generated...) {
 		_, err := safePath(root, file.Path)
 		add(err)

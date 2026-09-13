@@ -1353,6 +1353,10 @@ optional screenshots, transcriptions and generated-file bytes. Retained generate
 paths must be contained and unique. Excluded runs may retain these observations
 without requiring corresponding candidate output or new captures.
 Recording verifies input-only file hashes before accepting a capture.
+Manifest validation rejects repeated input fixture destinations, including
+entries with identical bytes. Distinct destinations may share a content artifact,
+and a path may appear once as input and once as generated output to describe
+a recorded file update.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.
 Test links require Go's test-name and declaration shape: a top-level `Test`
