@@ -10,6 +10,7 @@ import (
 	"os"
 	"path"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 	"unicode"
@@ -253,10 +254,15 @@ func validateInventory(root string, m manifest, probes map[string]probe) error {
 			used[id] = true
 		}
 	}
+	var untraced []string
 	for id := range probes {
 		if !used[id] {
-			problems = append(problems, fmt.Errorf("untraced probe %s", id))
+			untraced = append(untraced, id)
 		}
+	}
+	sort.Strings(untraced)
+	for _, id := range untraced {
+		problems = append(problems, fmt.Errorf("untraced probe %s", id))
 	}
 	if len(m.InventorySources) == 0 {
 		problems = append(problems, fmt.Errorf("missing inventory sources"))
