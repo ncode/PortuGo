@@ -235,6 +235,14 @@
       ]
     },
     {
+      "id": "assumption.caracpnum-invalid",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#| `caracpnum(c)` | caracter → inteiro ou real | parse numérico (StrToInt/StrToFloat). `[VERIFICAR]` comportamento com string inválida: erro de execução? |",
+      "probes": [
+        "text-conversion-invalid"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
