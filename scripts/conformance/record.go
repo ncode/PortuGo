@@ -55,6 +55,33 @@ func writeNew(name string, data []byte) error {
 	return closeErr
 }
 
+func privateStage(root, stage string) (string, error) {
+	stage, err := filepath.Abs(stage)
+	if err != nil {
+		return "", err
+	}
+	info, err := os.Lstat(stage)
+	if err == nil && info.Mode()&os.ModeSymlink != 0 {
+		return "", fmt.Errorf("recording stage must not be a symlink")
+	}
+	if err != nil && !os.IsNotExist(err) {
+		return "", err
+	}
+	parent, err := filepath.EvalSymlinks(filepath.Dir(stage))
+	if err != nil {
+		return "", err
+	}
+	stage = filepath.Join(parent, filepath.Base(stage))
+	rel, err := filepath.Rel(root, stage)
+	if err != nil {
+		return "", err
+	}
+	if rel == "." || rel != ".." && !strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
+		return "", fmt.Errorf("raw recordings must be staged outside the repository")
+	}
+	return stage, nil
+}
+
 func prepareRecording(root string, p probe, stage string) error {
 	root, err := filepath.Abs(root)
 	if err != nil {
@@ -64,21 +91,9 @@ func prepareRecording(root string, p probe, stage string) error {
 	if err != nil {
 		return err
 	}
-	stage, err = filepath.Abs(stage)
+	stage, err = privateStage(root, stage)
 	if err != nil {
 		return err
-	}
-	parent, err := filepath.EvalSymlinks(filepath.Dir(stage))
-	if err != nil {
-		return err
-	}
-	stage = filepath.Join(parent, filepath.Base(stage))
-	rel, err := filepath.Rel(root, stage)
-	if err != nil {
-		return err
-	}
-	if rel == "." || rel != ".." && !strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
-		return fmt.Errorf("raw recordings must be staged outside the repository")
 	}
 	source, err := readArtifact(root, p.Source)
 	if err != nil {
@@ -164,8 +179,20 @@ func prepareRecording(root string, p probe, stage string) error {
 `))
 }
 
-func captureRecording(stage string, accepted bool, capturedAt, normalizer string, guiOnly bool) (evidence, error) {
+func captureRecording(root, stage string, accepted bool, capturedAt, normalizer string, guiOnly bool) (evidence, error) {
 	var e evidence
+	root, err := filepath.Abs(root)
+	if err != nil {
+		return e, err
+	}
+	root, err = filepath.EvalSymlinks(root)
+	if err != nil {
+		return e, err
+	}
+	stage, err = privateStage(root, stage)
+	if err != nil {
+		return e, err
+	}
 	if _, err := time.Parse(time.RFC3339Nano, capturedAt); err != nil {
 		return e, fmt.Errorf("invalid capture date: %w", err)
 	}

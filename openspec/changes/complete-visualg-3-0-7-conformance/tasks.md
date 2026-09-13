@@ -100,6 +100,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Recorder-owned staging and capture paths are rejected from auxiliary,
   generated, and absent files before capture can hash recorder metadata as
   reference output; capture rechecks the staged metadata boundary.
+  Capture also resolves the staging root against the repository boundary and
+  rejects symlinked roots before writing normalized or evidence metadata.
   Artifact and fixture paths also reject repository metadata directories such as
   `.git`, including case aliases, before private Git state can be hashed.
   Completeness checks for checklist and verification obligations remain open
