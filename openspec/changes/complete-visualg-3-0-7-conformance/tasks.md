@@ -1098,11 +1098,13 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   their language features and the remaining implementation differences are
   still required.
 
-  The bundled compound-repeat spelling now matches its recorded `E002` on
-  line 23, with original and formatted diagnostic regressions, leaving six
-  rejected paths pending. The generated-input example with an omitted loop
-  bound and the menu exit blocked by an unused read destination remain pending;
-  neither recording establishes a general recovery or deferred-lookup rule.
+  The bundled invalid-function-name rejection now matches its recorded `L001`
+  on line 34 through a focused parser regression. The bundled compound-repeat
+  spelling now matches its recorded `E002` on line 23, with original and
+  formatted diagnostic regressions, leaving five rejected paths pending. The
+  generated-input example with an omitted loop bound and the menu exit blocked
+  by an unused read destination remain pending; neither recording establishes a
+  general recovery or deferred-lookup rule.
 
   Auditing all seventeen pending accepted programs found thirteen successful
   local runs with varying output and four frontend rejections. The generated

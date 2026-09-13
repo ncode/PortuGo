@@ -50,6 +50,9 @@
 - Mark the declaration and expression group handoffs complete after their
   focused slices were published as ready stacked PRs.
 
+- Match the recorded invalid bundled function-name rejection with a positioned
+  `L001` parser regression and link its implementation acceptance test.
+
 - Sort untraced probe diagnostics so manifest validation reports stable errors.
 
 - Link the exponent-associativity verification marker to its recorded probe.

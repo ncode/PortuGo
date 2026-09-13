@@ -81,6 +81,22 @@ func TestBundledGameRejectsLiteralType(t *testing.T) {
 	checkSemanticDiagnostic(t, "testdata/conformance/visualg-3.0.7/probes/bundled-0cef94aa6573/source.alg", diag.EParse, 9)
 }
 
+func TestBundledRejectsInvalidFunctionName(t *testing.T) {
+	path := "testdata/conformance/visualg-3.0.7/probes/bundled-c9455d0abe8e/source.alg"
+	src, err := source.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	file, tokens, ds := lexer.Scan("source.alg", src)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	_, ds = parser.Parse(tokens)
+	if len(ds) != 1 || ds[0].Code != diag.ELexer || file.Position(ds[0].Pos).Line != 34 {
+		t.Fatalf("diagnostics = %v, want L001 on line 34", ds)
+	}
+}
+
 func TestBundledRepeatRejectsCompoundTerminator(t *testing.T) {
 	src, err := source.ReadFile("testdata/conformance/visualg-3.0.7/probes/bundled-8576df453f1f/source.alg")
 	if err != nil {
