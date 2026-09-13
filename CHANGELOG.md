@@ -47,6 +47,9 @@
   breakpoint, echo, and chronometer families; leave unqualified timing, GUI,
   and source obligations pending.
 
+- Mark the declaration and expression group handoffs complete after their
+  focused slices were published as ready stacked PRs.
+
 - Sort untraced probe diagnostics so manifest validation reports stable errors.
 
 - Link the exponent-associativity verification marker to its recorded probe.
