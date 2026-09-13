@@ -77,6 +77,9 @@
 - Link the ranged-random domain and precision marker to its recorded probes;
   statistical uniformity remains open.
 
+- Link the generated file-format marker to its recorded probe; separate input
+  tokenization remains covered by its dedicated probe.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
