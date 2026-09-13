@@ -281,10 +281,10 @@ func TestReleaseTaskCompletion(t *testing.T) {
 
 func TestAcceptanceRejectsReplayMismatch(t *testing.T) {
 	t.Parallel()
-	root, quality := testAcceptanceCandidate(t, "- [x] 10.1 Implement\n", "1\n")
+	root, quality := testAcceptanceCandidate(t, "- [x] 10.1 Implement\n", "replay-mismatch-sentinel\n")
 	var out, stderr bytes.Buffer
 	status := run([]string{"validate", "--root", root, "--manifest", "manifest.json", "--previous", "manifest.json", "--mode", "implementation-acceptance", "--quality", quality}, &out, &stderr)
-	if status != 1 || !strings.Contains(stderr.String(), "verified reference regression") || !strings.Contains(out.String(), "stdout mismatch") {
+	if status != 1 || !strings.Contains(stderr.String(), "verified reference regression") || !strings.Contains(out.String(), "stdout mismatch") || !strings.Contains(out.String(), "first difference at byte") || strings.Contains(out.String(), "replay-mismatch-sentinel") {
 		t.Fatalf("status = %d, stdout = %s, stderr = %s; want replay mismatch", status, &out, &stderr)
 	}
 }

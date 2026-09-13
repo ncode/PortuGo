@@ -58,6 +58,14 @@ func checkExpectedExitCode(code int) error {
 	return nil
 }
 
+func stdoutMismatch(got, want []byte) error {
+	offset := 0
+	for offset < len(got) && offset < len(want) && got[offset] == want[offset] {
+		offset++
+	}
+	return fmt.Errorf("stdout mismatch: got %d bytes, expected %d bytes, first difference at byte %d", len(got), len(want), offset)
+}
+
 func checkReplayInputPath(name string, observe bool) error {
 	if replayOwnedPath(name, observe) {
 		return fmt.Errorf("input file conflicts with replay-owned path: %s", name)
@@ -218,7 +226,7 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 			return fmt.Errorf("replayed random input: %w", err)
 		}
 	} else if !bytes.Equal(stdout.buffer.Bytes(), wantOut) {
-		return fmt.Errorf("stdout mismatch: got %q, expected %q", stdout.buffer.Bytes(), wantOut)
+		return stdoutMismatch(stdout.buffer.Bytes(), wantOut)
 	}
 	if err := compareDiagnostics(stderr.buffer.String(), want.Diagnostics); err != nil {
 		return err

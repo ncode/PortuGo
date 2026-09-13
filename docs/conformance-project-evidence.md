@@ -70,7 +70,9 @@ and the distinction between pending mismatches and verified regressions. Replay
 also checks that auxiliary input fixtures remain byte-identical after execution
 unless they are declared generated or absent. Its tests are
 `TestManifestValidation`, `TestManifestReferenceDisposition`, `TestReplay`,
-and `TestReplaySummary`.
+and `TestReplaySummary`. Replay mismatch errors expose only captured and
+expected byte lengths plus the first differing byte; output payloads are not
+serialized into validation JSON or CI diagnostics.
 
 These mappings verify enforcement by the tooling. They do not declare the
 inventory complete, satisfy missing checklist/audit inputs, or authorize a
