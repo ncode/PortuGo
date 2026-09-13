@@ -359,6 +359,22 @@ func TestManifestSourceObligations(t *testing.T) {
 	}
 }
 
+func TestManifestChecklistSource(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	writeArtifact(t, root, "compatibility.md", "## 12. Checklist de conformidade\n\n1. output behavior\n\n## 13. Other notes\n\n1. outside checklist\n")
+	m.InventorySources = append(m.InventorySources, "compatibility.md")
+	if err := validate(root, m, "evidence", nil); err == nil || !strings.Contains(err.Error(), "untraced checklist item") {
+		t.Fatalf("error = %v, want untraced checklist item", err)
+	}
+	m.Inventory = append(m.Inventory, inventoryItem{
+		ID: "checklist.01", Kind: "checklist", Link: "compatibility.md#1. output behavior", Probes: []string{"output"},
+	})
+	if err := validate(root, m, "evidence", nil); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestManifestRejectsSymlink(t *testing.T) {
 	t.Parallel()
 	root, m := testManifest(t)

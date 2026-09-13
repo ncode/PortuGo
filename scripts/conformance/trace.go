@@ -173,20 +173,45 @@ func checkReview(root string, r *review) error {
 	return nil
 }
 
-func isSourceObligationLine(line string) bool {
+func isNumberedSourceItem(line string) bool {
 	line = strings.TrimSpace(line)
-	if !strings.Contains(line, "[VERIFICAR]") && !strings.Contains(line, "[VERIFICAR:") {
-		return false
-	}
-	if strings.HasPrefix(line, "- ") || strings.HasPrefix(line, "* ") || strings.HasPrefix(line, "+ ") || strings.HasPrefix(line, "|") || strings.HasPrefix(line, "`") || strings.HasPrefix(line, "[VERIFICAR]") {
-		return true
-	}
 	for i := 0; i < len(line) && line[i] >= '0' && line[i] <= '9'; i++ {
 		if i+1 < len(line) && (line[i+1] == '.' || line[i+1] == ')') && i+2 < len(line) && line[i+2] == ' ' {
 			return true
 		}
 	}
 	return false
+}
+
+func isSourceObligationLine(line string) bool {
+	line = strings.TrimSpace(line)
+	if !strings.Contains(line, "[VERIFICAR]") && !strings.Contains(line, "[VERIFICAR:") {
+		return false
+	}
+	if strings.HasPrefix(line, "- ") || strings.HasPrefix(line, "* ") || strings.HasPrefix(line, "+ ") || strings.HasPrefix(line, "|") || strings.HasPrefix(line, "`") || strings.HasPrefix(line, "[VERIFICAR]") || isNumberedSourceItem(line) {
+		return true
+	}
+	return false
+}
+
+func checklistSourceItems(data []byte) []string {
+	const header = "## 12. Checklist de conformidade"
+	inChecklist := false
+	var items []string
+	for _, raw := range strings.Split(string(data), "\n") {
+		line := strings.TrimSpace(raw)
+		if strings.HasPrefix(line, header) {
+			inChecklist = true
+			continue
+		}
+		if inChecklist && strings.HasPrefix(line, "## ") {
+			break
+		}
+		if inChecklist && isNumberedSourceItem(line) {
+			items = append(items, line)
+		}
+	}
+	return items
 }
 
 func sourceObligationLink(name, line string) string {
@@ -262,6 +287,7 @@ func validateInventory(root string, m manifest, probes map[string]probe) error {
 			problems = append(problems, err)
 			continue
 		}
+		checklist := checklistSourceItems(data)
 		for _, line := range strings.Split(string(data), "\n") {
 			if strings.HasPrefix(line, "### Requirement: ") {
 				link := name + "#" + strings.TrimPrefix(line, "### ")
@@ -269,11 +295,19 @@ func validateInventory(root string, m manifest, probes map[string]probe) error {
 					problems = append(problems, fmt.Errorf("untraced requirement %s", link))
 				}
 			}
-			if isSourceObligationLine(line) {
+			// The legacy checklist source is covered by its numbered section below;
+			// its other marker lines remain outside this bounded inventory slice.
+			if len(checklist) == 0 && isSourceObligationLine(line) {
 				link := sourceObligationLink(name, line)
 				if !links[link] {
 					problems = append(problems, fmt.Errorf("untraced verification item %s", link))
 				}
+			}
+		}
+		for _, line := range checklist {
+			link := sourceObligationLink(name, line)
+			if !links[link] {
+				problems = append(problems, fmt.Errorf("untraced checklist item %s", link))
 			}
 		}
 	}

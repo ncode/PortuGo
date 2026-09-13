@@ -21,7 +21,8 @@
     "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md",
     "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md",
     "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md"
+    "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md",
+    "especificacao-visualg-3.md"
   ],
   "inventory": [
     {
@@ -134,6 +135,214 @@
       "link": "docs/validation/visualg-2026-09-07/followup-observations.json",
       "probes": [
         "for-break-mutation"
+      ]
+    },
+    {
+      "id": "checklist.01",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
+      "probes": [
+        "exact-division-integer",
+        "integer-divide-real"
+      ]
+    },
+    {
+      "id": "checklist.02",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#2. `escreva(2.0)`, `escreva(2.5)`, `escreva(1/3)` → formato default de reais.",
+      "probes": [
+        "output-format",
+        "real-output-default-width"
+      ]
+    },
+    {
+      "id": "checklist.03",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#3. `escreva(123:2)` → campo menor que o valor: trunca ou expande?",
+      "probes": [
+        "output-edges"
+      ]
+    },
+    {
+      "id": "checklist.04",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#4. `escreva(\"a\", 1, \"b\")` → posicionamento exato dos espaços automáticos.",
+      "probes": [
+        "output-edges"
+      ]
+    },
+    {
+      "id": "checklist.05",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#5. `se a > 1 e a < 5 entao` sem parênteses → compila?",
+      "probes": [
+        "comparison-and-condition",
+        "logical-precedence-relation-and"
+      ]
+    },
+    {
+      "id": "checklist.06",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#6. `2^3^2` → 64 ou 512?",
+      "probes": [
+        "power-associativity"
+      ]
+    },
+    {
+      "id": "checklist.07",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#7. `nao a = b` → parse.",
+      "probes": [
+        "comparison-negation"
+      ]
+    },
+    {
+      "id": "checklist.08",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#8. `-7 mod 3`, `-7 \\ 3` → sinais.",
+      "probes": [
+        "integer-divide-signs",
+        "integer-modulo-signs"
+      ]
+    },
+    {
+      "id": "checklist.09",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#9. `7.5 mod 2`, `7.5 \\ 2` → erro ou trunca?",
+      "probes": [
+        "integer-divide-real",
+        "integer-modulo-real"
+      ]
+    },
+    {
+      "id": "checklist.10",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#10. `int(-1.8)` → -1 ou -2?",
+      "probes": [
+        "int-truncation"
+      ]
+    },
+    {
+      "id": "checklist.11",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#11. `pos(\"a\", \"BANANA\")` → 0 (case-sensitive) ou 2 (insensitive)?",
+      "probes": [
+        "text-position-first"
+      ]
+    },
+    {
+      "id": "checklist.12",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#12. `maiusc(\"ção\")` → \"ÇÃO\" ou \"çãO\"...?",
+      "probes": [
+        "text-upper-accents"
+      ]
+    },
+    {
+      "id": "checklist.13",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#13. `escolha x` com `caso 1 ate 5` → aceita?",
+      "probes": [
+        "case-range"
+      ]
+    },
+    {
+      "id": "checklist.14",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#14. Variável não inicializada em expressão → erro ou zero?",
+      "probes": [
+        "declaration-semicolon-var"
+      ]
+    },
+    {
+      "id": "checklist.15",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#15. Valor da variável de controle após `fimpara`.",
+      "probes": [
+        "for-termination"
+      ]
+    },
+    {
+      "id": "checklist.16",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#16. Modificar variável de controle dentro do `para`.",
+      "probes": [
+        "for-mutation"
+      ]
+    },
+    {
+      "id": "checklist.17",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#17. Função sem `retorne` executado.",
+      "probes": [
+        "function-without-return"
+      ]
+    },
+    {
+      "id": "checklist.18",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#18. `interrompa` fora de laço.",
+      "probes": [
+        "for-break-mutation"
+      ]
+    },
+    {
+      "id": "checklist.19",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#19. Vetor como parâmetro de subprograma.",
+      "probes": [
+        "vector-context-procedure-parameter",
+        "constant-bound-vector-parameter"
+      ]
+    },
+    {
+      "id": "checklist.20",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#20. `v[i]` como argumento de parâmetro `var`.",
+      "probes": [
+        "reference-designator-capture-order"
+      ]
+    },
+    {
+      "id": "checklist.21",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#21. Leitura com `arquivo`: formato do arquivo gerado.",
+      "probes": [
+        "file-detail-space-separated"
+      ]
+    },
+    {
+      "id": "checklist.22",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#22. String com 31+ caracteres no identificador → erro em que fase?",
+      "probes": [
+        "mixed-case-identifier"
+      ]
+    },
+    {
+      "id": "checklist.23",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#23. Literais: `1.` , `.5`, `1e3` → aceitos?",
+      "probes": [
+        "leading-decimal-point",
+        "trailing-decimal-point",
+        "numeric-source-operator-precedence"
+      ]
+    },
+    {
+      "id": "checklist.24",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#24. `escreval(verdadeiro e falso ou verdadeiro)` → precedência e/ou.",
+      "probes": [
+        "logical-precedence-and-or"
+      ]
+    },
+    {
+      "id": "checklist.25",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#25. Comparação `\"a\" < \"B\"` → ordem com case-insensitivity.",
+      "probes": [
+        "comparison-string-order"
       ]
     },
     {
