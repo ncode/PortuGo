@@ -26,6 +26,9 @@ func TestReplayChild(t *testing.T) {
 	case "reject":
 		fmt.Fprintln(os.Stderr, "source.alg:4:2: E004: invalid call")
 		os.Exit(1)
+	case "budget":
+		fmt.Fprintln(os.Stderr, "source.alg:3:1: R006: execution step budget exhausted")
+		os.Exit(1)
 	case "unpositioned":
 		fmt.Fprintln(os.Stderr, "source.alg:4:0: E004: invalid call")
 		os.Exit(1)
@@ -72,7 +75,7 @@ func TestReplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, tt := range []struct{ source, want string }{
-		{"pass", ""}, {"mismatch", "stdout mismatch"}, {"reject", ""}, {"unpositioned", "unpositioned diagnostic"}, {"hang", "deadline"}, {"flood", "output limit"}, {"file", ""}, {"mutate-input", "input file mismatch"}, {"delete-input", "input file mismatch"}, {"unexpected-file", "expected absent file"},
+		{"pass", ""}, {"mismatch", "stdout mismatch"}, {"reject", ""}, {"budget", "exit status 1, expected 0"}, {"unpositioned", "unpositioned diagnostic"}, {"hang", "deadline"}, {"flood", "output limit"}, {"file", ""}, {"mutate-input", "input file mismatch"}, {"delete-input", "input file mismatch"}, {"unexpected-file", "expected absent file"},
 	} {
 		t.Run(tt.source, func(t *testing.T) {
 			t.Parallel()

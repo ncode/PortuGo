@@ -1114,7 +1114,16 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   group-13 echo/output contracts do not qualify these bundled transcripts;
   no additional example is promoted by this audit.
 
-- [ ] 17.4 Exercise the assembled source/depth/call/value/step guards, including empty infinite loops, recursive calls, flat AST chains, input retries, and cleanup, plus storage/encoding/host/filesystem adversarial cases; require controlled diagnostics and fail on a subprocess watchdog kill or accepted-example budget exhaustion.
+- [x] 17.4 Exercise the assembled source/depth/call/value/step guards, including empty infinite loops, recursive calls, flat AST chains, input retries, and cleanup, plus storage/encoding/host/filesystem adversarial cases; require controlled diagnostics and fail on a subprocess watchdog kill or accepted-example budget exhaustion.
+
+  The assembled safeguard sweep is recorded in
+  `docs/safeguard-acceptance.md` and linked as `project.assembled-safeguards`.
+  Source and parser bounds, runtime recursion/step/evaluation limits, flat
+  operand retention, input and file cleanup, storage validation, CP1252
+  decoding, host restoration, and REPL recovery all have focused tests. The
+  replay adapter now has a bounded empty-loop regression that requires a
+  positioned `R006`; child-process watchdog expiry remains a test failure.
+  These are implementation contracts and do not promote reference probes.
 - [ ] 17.5 Run and archive results for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, race tests, Windows/macOS/Linux tests, and 30-second lexer and parser fuzz jobs.
 - [ ] 17.6 Run strict OpenSpec validation and the corpus runner in implementation-acceptance mode; produce a report proving no pending behavior, mismatches, or untraced requirements, stable positioned diagnostics, and complete accepted-example support. Report remaining handoff tasks separately from behavioral acceptance.
 
