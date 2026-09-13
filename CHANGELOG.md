@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Verify auxiliary replay input files remain unchanged unless their paths are
+  explicitly declared generated or absent, detecting candidate mutations and
+  deletions.
+
 - Resolve conformance test links to imported `testing.T`, rejecting local and
   foreign type lookalikes while preserving renamed and dot imports.
 

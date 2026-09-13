@@ -44,6 +44,16 @@ func TestReplayChild(t *testing.T) {
 			os.Exit(2)
 		}
 		fmt.Print(" 1\n")
+	case "mutate-input":
+		if err := os.WriteFile("input.dat", []byte("changed"), 0o600); err != nil {
+			os.Exit(2)
+		}
+		fmt.Print(" 1\n")
+	case "delete-input":
+		if err := os.Remove("input.dat"); err != nil {
+			os.Exit(2)
+		}
+		fmt.Print(" 1\n")
 	case "file-unavailable":
 		if _, err := os.ReadFile("input.dat"); err == nil {
 			os.Exit(2)
@@ -62,7 +72,7 @@ func TestReplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, tt := range []struct{ source, want string }{
-		{"pass", ""}, {"mismatch", "stdout mismatch"}, {"reject", ""}, {"unpositioned", "unpositioned diagnostic"}, {"hang", "deadline"}, {"flood", "output limit"}, {"file", ""}, {"unexpected-file", "expected absent file"},
+		{"pass", ""}, {"mismatch", "stdout mismatch"}, {"reject", ""}, {"unpositioned", "unpositioned diagnostic"}, {"hang", "deadline"}, {"flood", "output limit"}, {"file", ""}, {"mutate-input", "input file mismatch"}, {"delete-input", "input file mismatch"}, {"unexpected-file", "expected absent file"},
 	} {
 		t.Run(tt.source, func(t *testing.T) {
 			t.Parallel()
@@ -81,10 +91,12 @@ func TestReplay(t *testing.T) {
 					p.Implementation.Expected.Diagnostics[0].Column = 0
 				}
 			}
-			if tt.source == "file" {
+			if tt.source == "file" || tt.source == "mutate-input" || tt.source == "delete-input" {
 				a := writeArtifact(t, root, "fixture.dat", "\xe9\r\n ")
 				p.Files = []generatedFile{{Path: "input.dat", Content: a}}
-				p.Implementation.Expected.Generated = []generatedFile{{Path: "result.dat", Content: a}}
+				if tt.source == "file" {
+					p.Implementation.Expected.Generated = []generatedFile{{Path: "result.dat", Content: a}}
+				}
 			}
 			p.Implementation.Expected.Absent = []string{"absent.dat"}
 			if tt.source == "unexpected-file" {
