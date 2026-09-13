@@ -90,6 +90,18 @@ func TestObservationAdapterRejectsOversizedClockFixture(t *testing.T) {
 	}
 }
 
+func TestObservationAdapterRejectsNonRegularSource(t *testing.T) {
+	source := filepath.Join(t.TempDir(), "source.alg")
+	if err := os.Mkdir(source, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	var out, stderr bytes.Buffer
+	status := executeProbe([]string{source}, strings.NewReader(""), &out, &stderr)
+	if status != 1 || out.Len() != 0 || !strings.Contains(stderr.String(), "invalid file size or type") {
+		t.Fatalf("status %d, streams %q %q", status, &out, &stderr)
+	}
+}
+
 func TestRecordingHost(t *testing.T) {
 	h := &recordingHost{}
 	before := h.Now()

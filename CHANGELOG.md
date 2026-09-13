@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject non-regular direct observation-adapter source and clock paths before
+  opening them, so special files cannot block a bounded read.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 

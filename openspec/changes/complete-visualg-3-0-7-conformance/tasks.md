@@ -54,7 +54,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   validation mode. Generic tests reject malformed schedules before replay and
   preserve zero, repeated and backward readings without changing clock behavior.
   Direct adapter clock fixture reads also use the repository artifact limit
-  before decoding.
+  before decoding, and direct source and clock paths reject non-regular files
+  before opening them so special files cannot block bounded reads.
   Host observation traces enforce the same output limit while events are
   accumulated, before JSON serialization.
   Input inventories now reject repeated destination paths in every mode,
