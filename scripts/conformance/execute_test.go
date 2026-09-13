@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/ncode/portugol-go/internal/interp"
+	"github.com/ncode/portugol-go/internal/testprocess"
 )
 
 func TestObservationAdapter(t *testing.T) {
@@ -30,6 +31,22 @@ func TestObservationAdapter(t *testing.T) {
 			t.Fatalf("observation %s: %q (%v)", filepath.Base(path), data, err)
 		}
 	}
+}
+
+func TestReplayBudgetExhaustion(t *testing.T) {
+	testprocess.Run(t, func() {
+		source := filepath.Join(t.TempDir(), "source.alg")
+		program := "algoritmo \"budget\"\ninicio\nenquanto verdadeiro faca\nfimenquanto\nfimalgoritmo\n"
+		if err := os.WriteFile(source, []byte(program), 0600); err != nil {
+			t.Fatal(err)
+		}
+		var out, stderr bytes.Buffer
+		status := executeProbe([]string{"--max-steps", "8", source}, strings.NewReader(""), &out, &stderr)
+		diagnostics := strings.ReplaceAll(stderr.String(), source, filepath.Base(source))
+		if status != 1 || out.Len() != 0 || strings.Count(diagnostics, ": R006:") != 1 {
+			t.Fatalf("status=%d output=%q diagnostics=%q; want one bounded R006", status, &out, diagnostics)
+		}
+	})
 }
 
 func TestObservationAdapterUsesClockFixture(t *testing.T) {

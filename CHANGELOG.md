@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Record the assembled source, runtime, input, storage, host, filesystem, and
+  replay safeguard acceptance sweep, including bounded empty-loop execution.
+
 - Add frontend lexer/parser/printer goldens for line endings, comments,
   CP1252 source mapping, literals, recovery, ignored suffixes, and resource
   boundaries.

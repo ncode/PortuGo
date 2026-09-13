@@ -2933,6 +2933,7 @@
       "probes": [
         "project.frontend-recovery-limits",
         "project.execution-limits",
+        "project.assembled-safeguards",
         "project.cli-contracts",
         "project.vector-allocation"
       ]
@@ -41401,6 +41402,43 @@
           "internal/interp/execution_test.go#TestFormattedItemBoundary",
           "internal/stdlib/stdlib_test.go#TestCaseConversionAllocationGuard",
           "internal/interp/io_test.go#TestWriteBufferLimit"
+        ]
+      }
+    },
+    {
+      "id": "project.assembled-safeguards",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.4"
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "The assembled source, runtime, input, host, storage, encoding, and filesystem safeguards are implementation contracts rather than reference-language limits.",
+          "link": "docs/safeguard-acceptance.md#Safeguard acceptance"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "internal/source/limits_test.go#TestSourceLimit",
+          "internal/parser/adversarial_test.go#TestEncodedSourceLimitSubprocess",
+          "internal/parser/limits_test.go#TestStructuralLimits",
+          "internal/interp/execution_test.go#TestStepBudgetAndReuse",
+          "internal/interp/execution_test.go#TestCallAndValueLimits",
+          "internal/interp/execution_test.go#TestRetainedOperandStorage",
+          "internal/interp/execution_test.go#TestDefensiveEvaluationDepth",
+          "internal/interp/io_test.go#TestInputFailurePreservesValue",
+          "internal/interp/execution_test.go#TestInputBufferOwnership",
+          "internal/interp/file_input_test.go#TestFileInputCleanupAndReset",
+          "internal/interp/storage_test.go#TestCorruptedVectorStorage",
+          "internal/interp/display_test.go#TestDisplayHostFailures",
+          "internal/interp/environment_test.go#TestChronometerResetAndFailures",
+          "internal/interp/execution_controls_test.go#TestTimerCallFailureRestoresFrame",
+          "internal/repl/input_modes_test.go#TestInputModesPreserveNextSubmission",
+          "scripts/conformance/execute_test.go#TestReplayBudgetExhaustion",
+          "scripts/conformance/replay_test.go#TestReplay"
         ]
       }
     },

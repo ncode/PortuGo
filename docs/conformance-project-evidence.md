@@ -111,6 +111,16 @@ and `TestWriteBufferLimit`. These safeguards are project policies, not inferred
 reference limits. Recorded programs still fail acceptance if a configured
 limit prevents their required outcome.
 
+`project.assembled-safeguards` records the group-17 acceptance sweep in
+[safeguard-acceptance.md](safeguard-acceptance.md). The sweep covers source and
+encoding bounds, parser and AST depth, empty-loop budgets, recursive calls,
+flat operand chains, input failure/reuse, file cleanup, storage validation,
+host restoration, and bounded replay execution. The replay adapter's
+`TestReplayBudgetExhaustion` test confirms that a finite budget returns a
+positioned `R006`; the child-process helper makes a watchdog expiry a failing
+test. These checks exercise implementation contracts without promoting any
+reference probe or bundled example.
+
 `project.vector-allocation` records the following independent safeguard.
 One vector aggregate is limited to 1,048,576 scalar slots as a project allocation
 guard, including nested element layouts. `TestVectorSlotLimit` checks the exact
