@@ -44,8 +44,11 @@ cases retain five seconds. Crashes and watchdog expiration fail the test, even
 if a child printed `PASS` before exiting. CI uploads newly discovered failing
 fuzz inputs; reduce and commit them as regression seeds after fixing the cause.
 
-Runtime fixtures compare exact bytes with `internal/golden`. Missing `.out`
-files fail. To intentionally regenerate those fixtures, run
+Runtime fixtures compare exact bytes with `internal/golden`. Successful
+programs use `.out` files; diagnostic programs may pair `.err` files containing
+one `CODE@line:column` entry per ordered diagnostic and an optional `.out` file
+for output emitted before the failure. Missing expected files fail. To
+intentionally regenerate successful fixtures, run
 `go test . -run '^TestRunFixtures$' -update`, then review the diff. Comparison
 errors report a repository-relative path, the first differing byte, lengths,
 and quoted context without normalizing whitespace or encoding.

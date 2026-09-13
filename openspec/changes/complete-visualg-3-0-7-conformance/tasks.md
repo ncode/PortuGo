@@ -585,13 +585,13 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   Choice tables cover single and comma-separated labels, inclusive ranges,
   selector truncation, dynamic bounds, first-match stopping, no-match fallback,
   and the accepted text/logical cases.
-- [ ] 8.9 Add parser goldens, semantic diagnostic tables, runtime `.out`/`.err` fixtures, and an example that makes precedence/coercion/comparison choices observable.
+- [x] 8.9 Add parser goldens, semantic diagnostic tables, runtime `.out`/`.err` fixtures, and an example that makes precedence/coercion/comparison choices observable.
 
   Parser printer tests, positioned semantic tables, recorded runtime output and
   diagnostic fixtures, and the arithmetic, comparison, logical, and choice
-  examples are present. The repository has no `.err` fixture convention yet,
-  so this evidence task remains open until those diagnostics are captured in
-  the runtime fixture format.
+  examples are present. Runtime diagnostic fixtures use a checked-in `.err`
+  format with ordered `CODE@line:column` entries and an optional `.out` file
+  for output emitted before a failure.
 - [x] 8.10 Update `docs/language.md` and `CHANGELOG.md` with the empirical precedence table, coercion matrix, logical evaluation, comparison, and `escolha` rules.
 
   The language reference and changelog record the precedence, retained-value
