@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Bound direct observation-adapter clock fixture reads by the repository
+  artifact limit before decoding.
+
 - Bound historical manifests loaded from Git by the repository artifact limit
   before strict decoding.
 

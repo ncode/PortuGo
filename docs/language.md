@@ -1436,6 +1436,8 @@ failure in every validation mode, including reviewed exclusions.
 Clock fixtures also use the execution adapter's JSON decoder during validation.
 Malformed JSON, unknown fields, trailing data, invalid read values and empty
 read schedules fail before replay. Repeated and backward readings remain valid.
+The adapter bounds clock fixture reads by the repository artifact limit before
+decoding, including when invoked directly.
 Bundled-example catalogs use the same strict JSON boundary: unknown fields and
 trailing values fail validation before catalog entries are considered.
 Stdout, state and host observation artifacts use the adapter's 1 MiB output

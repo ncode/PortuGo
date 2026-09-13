@@ -36,20 +36,9 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 		return 2
 	}
 	fail := func(err error) int { _, _ = fmt.Fprintln(stderr, err); return 1 }
-	f, err := os.Open(flags.Arg(0))
+	data, err := readBoundedFile(flags.Arg(0), 64<<10, fmt.Errorf("source exceeds replay profile"))
 	if err != nil {
 		return fail(err)
-	}
-	data, err := io.ReadAll(io.LimitReader(f, (64<<10)+1))
-	closeErr := f.Close()
-	if err != nil {
-		return fail(err)
-	}
-	if closeErr != nil {
-		return fail(closeErr)
-	}
-	if len(data) > 64<<10 {
-		return fail(fmt.Errorf("source exceeds replay profile"))
 	}
 	decoded, err := source.DecodeFile(flags.Arg(0), data)
 	if err != nil {
@@ -73,7 +62,7 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 	capture := &boundedOutput{cancel: func() {}}
 	var nowMS []int64
 	if *clock != "" {
-		data, err := os.ReadFile(*clock)
+		data, err := readBoundedFile(*clock, maxArtifactBytes, fmt.Errorf("clock fixture exceeds artifact size limit"))
 		if err != nil {
 			return fail(err)
 		}
@@ -107,6 +96,25 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 		return 1
 	}
 	return 0
+}
+
+func readBoundedFile(name string, limit int, tooLarge error) ([]byte, error) {
+	f, err := os.Open(name)
+	if err != nil {
+		return nil, err
+	}
+	data, readErr := io.ReadAll(io.LimitReader(f, int64(limit)+1))
+	closeErr := f.Close()
+	if readErr != nil {
+		return nil, readErr
+	}
+	if closeErr != nil {
+		return nil, closeErr
+	}
+	if len(data) > limit {
+		return nil, tooLarge
+	}
+	return data, nil
 }
 
 func decodeClockFixture(data []byte) ([]int64, error) {

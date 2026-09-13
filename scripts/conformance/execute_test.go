@@ -55,6 +55,24 @@ func TestObservationAdapterUsesClockFixture(t *testing.T) {
 	}
 }
 
+func TestObservationAdapterRejectsOversizedClockFixture(t *testing.T) {
+	dir := t.TempDir()
+	src := filepath.Join(dir, "source.alg")
+	if err := os.WriteFile(src, []byte("algoritmo \"clock\"\ninicio\nfimalgoritmo"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	clock := filepath.Join(dir, "clock.json")
+	data := append([]byte(`{"nowMS":[0]}`), []byte(strings.Repeat(" ", maxArtifactBytes))...)
+	if err := os.WriteFile(clock, data, 0600); err != nil {
+		t.Fatal(err)
+	}
+	var out, stderr bytes.Buffer
+	status := executeProbe([]string{"--clock", clock, src}, strings.NewReader(""), &out, &stderr)
+	if status != 1 || !strings.Contains(stderr.String(), "clock fixture exceeds artifact size limit") {
+		t.Fatalf("status %d, stderr %q", status, stderr.String())
+	}
+}
+
 func TestRecordingHost(t *testing.T) {
 	h := &recordingHost{}
 	before := h.Now()
