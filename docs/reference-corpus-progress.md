@@ -1,12 +1,15 @@
 # Reference corpus progress
 
 OpenSpec group 2 is in progress. The corpus currently inventories 73 requirements
-and 73 bundled example filenames, sizes and hashes. Twelve examples
-now have recorded classifications; the remaining example and reduced recordings
-are pending. The original compatibility checklist is present in
-`especificacao-visualg-3.md`; its 25 numbered rows now have stable manifest
-links to existing probe coverage. The broader checklist, marker, audit, and
-feature inventories must still be reconciled before this group can close.
+and 73 bundled example filenames, sizes and hashes. All 73 examples now have
+recorded dispositions: 60 accepted, 11 unusable, and 2 reviewed non-goals. The
+manifest has 1,648 recorded probes and 21 reviewed non-applicable probes; 23
+implementation checks remain pending. The original compatibility checklist is
+present in `especificacao-visualg-3.md`; its 25 numbered rows now have stable
+manifest links to existing probe coverage. Twenty-six evidenced source
+assumptions, the builtin catalog, and one recorded CLI correction are also
+linked; five source obligations and the broader environment-command inventory
+remain open.
 
 The initial manifest contained 18 reduced probes:
 
