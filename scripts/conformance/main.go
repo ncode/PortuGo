@@ -18,12 +18,8 @@ import (
 
 func main() { os.Exit(run(os.Args[1:], os.Stdout, os.Stderr)) }
 
-func loadManifest(root, name string) (manifest, error) {
+func decodeManifest(data []byte) (manifest, error) {
 	var m manifest
-	data, err := readFile(root, name)
-	if err != nil {
-		return m, err
-	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(&m); err != nil {
@@ -33,6 +29,14 @@ func loadManifest(root, name string) (manifest, error) {
 		return m, fmt.Errorf("trailing manifest JSON")
 	}
 	return m, nil
+}
+
+func loadManifest(root, name string) (manifest, error) {
+	data, err := readFile(root, name)
+	if err != nil {
+		return manifest{}, err
+	}
+	return decodeManifest(data)
 }
 
 func run(args []string, out, stderr io.Writer) (status int) {
@@ -246,8 +250,8 @@ func previousManifest(root, base, name string) (*manifest, error) {
 		}
 		return nil, fmt.Errorf("read previous manifest: %w", err)
 	}
-	var m manifest
-	if err := json.Unmarshal(data, &m); err != nil {
+	m, err := decodeManifest(data)
+	if err != nil {
 		return nil, err
 	}
 	return &m, nil

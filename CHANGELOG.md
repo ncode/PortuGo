@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Decode previous manifests loaded from Git with the same strict unknown-field
+  and trailing-JSON checks as current manifests.
+
 - Reject unknown fields and trailing JSON in staged recording metadata before
   capture emits evidence.
 

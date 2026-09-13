@@ -89,6 +89,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   limit, so oversized retained expectations fail before replay.
   Staged recording metadata also rejects unknown fields and trailing JSON before
   capture emits evidence.
+  Manifests loaded from a history base use the same strict decoder as current
+  manifests, so downgrade validation cannot bypass schema checks.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 
