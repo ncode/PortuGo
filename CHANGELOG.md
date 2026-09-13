@@ -68,6 +68,8 @@
 
 - Link the procedure bare-return verification marker to its recorded probe.
 
+- Link the function-without-return verification marker to its recorded probe.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
