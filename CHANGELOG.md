@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject unknown fields and trailing JSON in bundled-example catalogs in every
+  conformance validation mode.
+
 - Reject conformance expectations with exit statuses outside the replay
   contract (`0` for success or `1` for failure), including reviewed exclusions.
 

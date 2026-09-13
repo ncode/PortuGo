@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"path"
 	"strings"
 )
@@ -36,8 +38,14 @@ func validateExampleCatalogs(root string, inventory []inventoryItem, probes map[
 			continue
 		}
 		var examples []bundledExample
-		if err := json.Unmarshal(data, &examples); err != nil {
+		decoder := json.NewDecoder(bytes.NewReader(data))
+		decoder.DisallowUnknownFields()
+		if err := decoder.Decode(&examples); err != nil {
 			problems = append(problems, fmt.Errorf("example catalog %s: %w", name, err))
+			continue
+		}
+		if err := decoder.Decode(new(any)); err != io.EOF {
+			problems = append(problems, fmt.Errorf("example catalog %s: trailing JSON", name))
 			continue
 		}
 		seen := make(map[string]bool)
