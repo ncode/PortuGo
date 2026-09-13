@@ -267,6 +267,14 @@
       ]
     },
     {
+      "id": "assumption.input-invalid-type",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- Validação de tipo na entrada: valor digitado incompatível com o tipo da variável gera nova solicitação ou erro `[VERIFICAR]`.",
+      "probes": [
+        "input-integer-invalid"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
