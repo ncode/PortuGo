@@ -55,6 +55,23 @@ func TestObservationAdapterUsesClockFixture(t *testing.T) {
 	}
 }
 
+func TestObservationAdapterRejectsExhaustedClockFixture(t *testing.T) {
+	dir := t.TempDir()
+	src := filepath.Join(dir, "source.alg")
+	if err := os.WriteFile(src, []byte("algoritmo \"clock\"\ninicio\ncronometro on\ncronometro off\nfimalgoritmo"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	clock := filepath.Join(dir, "clock.json")
+	if err := os.WriteFile(clock, []byte("{\"nowMS\":[0]}\n"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	var out, stderr bytes.Buffer
+	status := executeProbe([]string{"--clock", clock, src}, strings.NewReader(""), &out, &stderr)
+	if status != 1 || out.Len() != 0 || !strings.Contains(stderr.String(), "clock fixture exhausted") {
+		t.Fatalf("status %d, streams %q %q", status, &out, &stderr)
+	}
+}
+
 func TestObservationAdapterRejectsOversizedClockFixture(t *testing.T) {
 	dir := t.TempDir()
 	src := filepath.Join(dir, "source.alg")

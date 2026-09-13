@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject replay runs that consume more clock reads than a supplied deterministic
+  schedule provides instead of silently falling back to elapsed time.
+
 - Reject existing non-private recording stages before capture reads or writes
   evidence on POSIX hosts; Windows continues to use its ACL model.
 
