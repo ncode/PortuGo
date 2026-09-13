@@ -39,6 +39,8 @@
 
 - Link the choice-range verification marker to its recorded probe.
 
+- Link the integer-truncation verification marker to its recorded probe.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
