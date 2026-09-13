@@ -277,7 +277,9 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		add(err)
 	}
 	inputs := make(map[string]bool)
+	observe := i.Expected.State != nil || i.Expected.HostTrace != nil || i.Expected.Clock != nil
 	for _, file := range p.Files {
+		add(checkReplayInputPath(file.Path, observe))
 		if inputs[file.Path] {
 			add(fmt.Errorf("duplicate input path %s", file.Path))
 		}

@@ -65,6 +65,10 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   All three modes also reject case-only aliases across declared input,
   generated, absent and fixture-access paths, including shared directory
   components. Exact-path reuse and consistent directory spelling remain valid.
+  Validation and replay also share a guard for inputs colliding with the staged
+  source or enabled observation-adapter files, including case aliases and
+  descendants. Generic controls preserve nested names, similar prefixes and
+  ordinary input use of adapter filenames; suffix aliases remain unsafe paths.
   Absence expectations now reject ancestors and descendants of generated or
   retained input files in every mode. Generic controls preserve sibling paths,
   similar prefixes and explicitly removed inputs above or below absent paths.
