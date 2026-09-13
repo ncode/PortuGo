@@ -160,6 +160,38 @@ func TestStepBudgetAndReuse(t *testing.T) {
 	})
 }
 
+func TestStepBudgetSharedAcrossCalls(t *testing.T) {
+	src := "algoritmo \"shared budget\"\nprocedimento p()\ninicio\nescreva(1)\nfimprocedimento\ninicio\np()\np()\nfimalgoritmo"
+	p, info := analyzed(t, src)
+	second := strings.Index(src, "1)")
+	for _, tt := range []struct {
+		name   string
+		limit  uint64
+		output string
+		code   diag.Code
+	}{
+		{name: "exhausted", limit: 7, output: " 1", code: diag.RLoop},
+		{name: "complete", limit: 8, output: " 1 1", code: ""},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			var out bytes.Buffer
+			ds := New(Options{MaxSteps: tt.limit, Output: &out}).Run(p, info)
+			if out.String() != tt.output {
+				t.Fatalf("output=%q, want %q", out.String(), tt.output)
+			}
+			if tt.code == "" {
+				if len(ds) != 0 {
+					t.Fatalf("unexpected diagnostics: %v", ds)
+				}
+				return
+			}
+			if len(ds) != 1 || ds[0].Code != tt.code || int(ds[0].Pos) != second {
+				t.Fatalf("diagnostics=%v, want positioned %s at %d", ds, tt.code, second)
+			}
+		})
+	}
+}
+
 func TestCallAndValueLimits(t *testing.T) {
 	testprocess.Run(t, func() {
 		for _, tt := range []struct {

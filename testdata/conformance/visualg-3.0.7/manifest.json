@@ -41426,6 +41426,7 @@
           "internal/parser/adversarial_test.go#TestEncodedSourceLimitSubprocess",
           "internal/parser/limits_test.go#TestStructuralLimits",
           "internal/interp/execution_test.go#TestStepBudgetAndReuse",
+          "internal/interp/execution_test.go#TestStepBudgetSharedAcrossCalls",
           "internal/interp/execution_test.go#TestCallAndValueLimits",
           "internal/interp/execution_test.go#TestRetainedOperandStorage",
           "internal/interp/execution_test.go#TestDefensiveEvaluationDepth",
