@@ -58,5 +58,5 @@ and `environment-chronometer-minute`. Their reference elapsed values are
 supplied to the deterministic host adapter as project clock fixtures;
 arbitrary wall-clock measurements remain pending.
 
-The manifest contains 1,648 reference recordings: 1,643 verified and 24 pending,
+The manifest contains 1,648 reference recordings: 1,624 verified and 24 pending,
 plus 19 verified project contracts and two explicit exclusions (1,669 total).
