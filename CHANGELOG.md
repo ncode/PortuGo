@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Bound conformance artifact reads after opening files so growth during a read
+  cannot bypass the repository artifact limit.
+
 - Reject replay runs that consume more clock reads than a supplied deterministic
   schedule provides instead of silently falling back to elapsed time.
 

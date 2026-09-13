@@ -111,6 +111,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   deleted bytes unless the path is explicitly declared generated or absent.
   Existing capture stages reject group or other permission bits on POSIX hosts;
   Windows staging privacy remains enforced by its ACL model.
+  Artifact reads remain bounded after opening, so a file that grows between
+  metadata inspection and consumption cannot bypass the repository size limit.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 

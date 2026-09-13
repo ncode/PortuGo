@@ -3,7 +3,9 @@ package main
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"errors"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path"
@@ -15,6 +17,8 @@ const (
 	maxArtifactBytes    = 16 << 20
 	maxObservationBytes = 1 << 20
 )
+
+var errArtifactTooLarge = errors.New("artifact exceeds size limit")
 
 func safePath(root, name string) (string, error) {
 	if name == "." || !fs.ValidPath(name) || strings.ContainsAny(name, "\\:\x00") {
@@ -55,7 +59,30 @@ func readFile(root, name string) ([]byte, error) {
 	if !info.Mode().IsRegular() || info.Size() > maxArtifactBytes {
 		return nil, fmt.Errorf("invalid file size or type: %s", name)
 	}
-	return os.ReadFile(p)
+	f, err := os.Open(p)
+	if err != nil {
+		return nil, fmt.Errorf("read %s: %w", name, err)
+	}
+	defer f.Close()
+	b, err := readBounded(f, maxArtifactBytes)
+	if errors.Is(err, errArtifactTooLarge) {
+		return nil, fmt.Errorf("invalid file size or type: %s", name)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("read %s: %w", name, err)
+	}
+	return b, nil
+}
+
+func readBounded(r io.Reader, limit int) ([]byte, error) {
+	b, err := io.ReadAll(io.LimitReader(r, int64(limit)+1))
+	if err != nil {
+		return nil, err
+	}
+	if len(b) > limit {
+		return nil, errArtifactTooLarge
+	}
+	return b, nil
 }
 
 func checkAbsent(root, name string) error {
