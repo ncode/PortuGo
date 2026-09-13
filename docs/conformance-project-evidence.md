@@ -47,9 +47,11 @@ validation mode; `TestManifestTestFunctionLinks` covers those cases.
 
 `project.validation-phases` covers recorded/pending evidence, completed owner
 groups, acceptance rejection of pending implementation, reference disposition,
-and the distinction between pending mismatches and verified regressions. Its
-tests are `TestManifestValidation`, `TestManifestReferenceDisposition`,
-`TestReplay`, and `TestReplaySummary`.
+and the distinction between pending mismatches and verified regressions. Replay
+also checks that auxiliary input fixtures remain byte-identical after execution
+unless they are declared generated or absent. Its tests are
+`TestManifestValidation`, `TestManifestReferenceDisposition`, `TestReplay`,
+and `TestReplaySummary`.
 
 These mappings verify enforcement by the tooling. They do not declare the
 inventory complete, satisfy missing checklist/audit inputs, or authorize a

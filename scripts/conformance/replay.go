@@ -260,6 +260,37 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 			return err
 		}
 	}
+	for _, file := range p.Files {
+		declared := false
+		for _, generated := range want.Generated {
+			if generated.Path == file.Path {
+				declared = true
+				break
+			}
+		}
+		if !declared {
+			for _, absent := range want.Absent {
+				if absent == file.Path {
+					declared = true
+					break
+				}
+			}
+		}
+		if declared {
+			continue
+		}
+		actual, err := readFile(dir, file.Path)
+		if err != nil {
+			return fmt.Errorf("input file mismatch: %s: %w", file.Path, err)
+		}
+		expected, err := readArtifact(root, file.Content)
+		if err != nil {
+			return err
+		}
+		if !bytes.Equal(actual, expected) {
+			return fmt.Errorf("input file mismatch: %s", file.Path)
+		}
+	}
 	return nil
 }
 
