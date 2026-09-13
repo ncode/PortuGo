@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"runtime"
 	"slices"
 	"strings"
 	"time"
@@ -63,6 +64,9 @@ func privateStage(root, stage string) (string, error) {
 	info, err := os.Lstat(stage)
 	if err == nil && info.Mode()&os.ModeSymlink != 0 {
 		return "", fmt.Errorf("recording stage must not be a symlink")
+	}
+	if err == nil && runtime.GOOS != "windows" && info.Mode().Perm()&0o077 != 0 {
+		return "", fmt.Errorf("recording stage must be private")
 	}
 	if err != nil && !os.IsNotExist(err) {
 		return "", err

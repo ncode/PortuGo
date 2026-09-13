@@ -109,6 +109,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   `.git`, including case aliases, before private Git state can be hashed.
   Replay checks auxiliary input fixtures after execution and rejects changed or
   deleted bytes unless the path is explicitly declared generated or absent.
+  Existing capture stages reject group or other permission bits on POSIX hosts;
+  Windows staging privacy remains enforced by its ACL model.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 

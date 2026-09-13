@@ -24,8 +24,10 @@ Reference version and acquisition metadata remain mandatory for recorded probes.
 integrity, capture metadata, recorder-owned path isolation, required GUI
 attachments, and generated-file bytes. Its tests are `TestPrepareRecording`,
 `TestPrepareRecordingRejectsRecorderOwnedPaths`, `TestCaptureRecording`,
-`TestCaptureRejectsSymlinkedStage`, `TestCaptureRejectsRecorderOwnedGeneratedPath`,
-`TestCaptureGeneratedBytes`, and `TestCaptureInitialFiles`.
+`TestCaptureRejectsSymlinkedStage`, `TestCaptureRejectsNonPrivateStage`,
+`TestCaptureRejectsRecorderOwnedGeneratedPath`, `TestCaptureGeneratedBytes`,
+and `TestCaptureInitialFiles`. Existing stages must have no group or other
+permission bits on POSIX hosts; Windows staging privacy remains an ACL concern.
 `project.normalization` uses `TestNormalize` to verify
 that only the declared envelope and line endings change, including rejection of
 invalid envelopes and preservation of significant output bytes.
