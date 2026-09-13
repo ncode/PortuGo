@@ -203,6 +203,14 @@
       ]
     },
     {
+      "id": "assumption.maiusc-accented",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#| `maiusc(c)` | caracter → caracter | uppercase. `[VERIFICAR]` se acentuados são convertidos (Delphi UpperCase só converte A-Z) |",
+      "probes": [
+        "text-upper-accents"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
