@@ -232,11 +232,17 @@ func previousManifest(root, base, name string) (*manifest, error) {
 	defer cancel()
 	resolve := exec.CommandContext(ctx, "git", "rev-parse", "--verify", "--end-of-options", base+"^{commit}")
 	resolve.Dir = root
-	sha, err := resolve.Output()
+	var resolved boundedCommandOutput
+	resolved.limit, resolved.cancel = maxArtifactBytes, cancel
+	resolve.Stdout = &resolved
+	err := resolve.Run()
+	if resolved.overflow {
+		return nil, fmt.Errorf("previous manifest base exceeds artifact size limit")
+	}
 	if err != nil {
 		return nil, fmt.Errorf("resolve previous manifest base: %w", err)
 	}
-	object := string(bytes.TrimSpace(sha)) + ":" + filepath.ToSlash(name)
+	object := string(bytes.TrimSpace(resolved.buffer.Bytes())) + ":" + filepath.ToSlash(name)
 	cmd := exec.CommandContext(ctx, "git", "show", object)
 	cmd.Dir = root
 	var output boundedCommandOutput
@@ -251,10 +257,16 @@ func previousManifest(root, base, name string) (*manifest, error) {
 		if errors.As(err, &exit) {
 			// A new corpus has no previous manifest. Confirm absence in the tree;
 			// other Git errors must not silently disable downgrade checking.
-			list := exec.CommandContext(ctx, "git", "ls-tree", "--name-only", string(bytes.TrimSpace(sha)), "--", name)
+			list := exec.CommandContext(ctx, "git", "ls-tree", "--name-only", string(bytes.TrimSpace(resolved.buffer.Bytes())), "--", name)
 			list.Dir = root
-			paths, listErr := list.Output()
-			if listErr == nil && len(bytes.TrimSpace(paths)) == 0 {
+			var listed boundedCommandOutput
+			listed.limit, listed.cancel = maxArtifactBytes, cancel
+			list.Stdout = &listed
+			listErr := list.Run()
+			if listed.overflow {
+				return nil, fmt.Errorf("previous manifest path lookup exceeds artifact size limit")
+			}
+			if listErr == nil && len(bytes.TrimSpace(listed.buffer.Bytes())) == 0 {
 				return nil, nil
 			}
 		}

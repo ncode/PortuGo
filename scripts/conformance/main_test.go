@@ -151,6 +151,22 @@ func TestPreviousManifestRejectsOversizedJSON(t *testing.T) {
 	}
 }
 
+func TestPreviousManifestRejectsOversizedGitMetadata(t *testing.T) {
+	for _, tt := range []struct {
+		name, mode, want string
+	}{
+		{name: "revision", mode: "oversized-rev-parse", want: "previous manifest base exceeds artifact size limit"},
+		{name: "tree lookup", mode: "oversized-ls-tree", want: "previous manifest path lookup exceeds artifact size limit"},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			installFakeGit(t, tt.mode)
+			if _, err := previousManifest(t.TempDir(), "base", "manifest.json"); err == nil || !strings.Contains(err.Error(), tt.want) {
+				t.Fatalf("error = %v, want %q", err, tt.want)
+			}
+		})
+	}
+}
+
 func TestLoadManifestAcceptsFixtureAccess(t *testing.T) {
 	t.Parallel()
 	root := t.TempDir()
