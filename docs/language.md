@@ -1352,6 +1352,9 @@ Reviewed exclusions still validate hashes for every retained artifact, including
 optional screenshots, transcriptions and generated-file bytes. Retained generated
 paths must be contained and unique. Excluded runs may retain these observations
 without requiring corresponding candidate output or new captures.
+Retained generated files must also form a valid layout with the input fixtures.
+Reference and candidate file layouts are checked separately, so a valid retained
+reference layout does not require a matching candidate layout for an exclusion.
 Recording verifies input-only file hashes before accepting a capture.
 Manifest validation rejects repeated input fixture destinations, including
 entries with identical bytes. Distinct destinations may share a content artifact,
