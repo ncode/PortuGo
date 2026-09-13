@@ -35,6 +35,64 @@ func TestReviewedExclusionArtifactHashes(t *testing.T) {
 	}
 }
 
+func TestReviewedExclusionStdout(t *testing.T) {
+	t.Parallel()
+	for _, mode := range []string{"evidence", "incremental", "implementation-acceptance"} {
+		for _, tt := range []struct{ name, want string }{
+			{"independent bytes", ""},
+			{"empty bytes", ""},
+			{"omitted", ""},
+			{"altered bytes", "hash mismatch"},
+			{"missing file", "read missing.txt"},
+			{"invalid hash", "invalid artifact hash"},
+			{"missing hash", "invalid artifact hash"},
+			{"missing path", "unsafe path"},
+			{"unsafe path", "unsafe path"},
+		} {
+			t.Run(mode+"/"+tt.name, func(t *testing.T) {
+				t.Parallel()
+				root, m := testManifest(t)
+				writeArtifact(t, root, "review.md", "Reviewed exclusion retaining candidate output.\n")
+				r := &review{Reason: "Reviewed external-stop exclusion", Link: "review.md"}
+				p := &m.Probes[0]
+				p.Evidence.State, p.Evidence.Review = "not-applicable", r
+				p.Implementation.State, p.Implementation.Review = "not-applicable", r
+				out := &p.Implementation.Expected.Stdout
+				*out = writeArtifact(t, root, "stdout.txt", "Independent candidate output.\n")
+				if err := validate(root, m, mode, nil); err != nil {
+					t.Fatal(err)
+				}
+				switch tt.name {
+				case "empty bytes":
+					*out = writeArtifact(t, root, "stdout.txt", "")
+				case "omitted":
+					*out = artifact{}
+				case "altered bytes":
+					writeArtifact(t, root, "stdout.txt", "Changed bytes.\n")
+				case "missing file":
+					out.Path = "missing.txt"
+				case "invalid hash":
+					out.SHA256 = "invalid"
+				case "missing hash":
+					out.SHA256 = ""
+				case "missing path":
+					out.Path = ""
+				case "unsafe path":
+					out.Path = "../stdout.txt"
+				}
+				err := validate(root, m, mode, nil)
+				if tt.want == "" {
+					if err != nil {
+						t.Fatal(err)
+					}
+				} else if err == nil || !strings.Contains(err.Error(), tt.want) {
+					t.Fatalf("error = %v, want %q", err, tt.want)
+				}
+			})
+		}
+	}
+}
+
 func TestReviewedExclusionGeneratedPaths(t *testing.T) {
 	t.Parallel()
 	for _, mode := range []string{"evidence", "incremental", "implementation-acceptance"} {

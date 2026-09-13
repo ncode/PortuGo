@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Validate optional candidate stdout artifacts on reviewed exclusions, retaining
+  path and hash checks without requiring output for excluded runs.
+
 - Validate retained generated-file layouts on reviewed exclusions, including
   conflicts with input fixtures, without requiring matching candidate outputs.
 

@@ -1352,6 +1352,8 @@ Reviewed exclusions still validate hashes for every retained artifact, including
 optional screenshots, transcriptions and generated-file bytes. Retained generated
 paths must be contained and unique. Excluded runs may retain these observations
 without requiring corresponding candidate output or new captures.
+Optional candidate stdout on an exclusion must also retain a valid artifact
+path and hash when present; it need not match the excluded reference output.
 Retained generated files must also form a valid layout with the input fixtures.
 Reference and candidate file layouts are checked separately, so a valid retained
 reference layout does not require a matching candidate layout for an exclusion.
