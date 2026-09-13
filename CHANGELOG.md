@@ -51,6 +51,9 @@
 - Link the numeric-to-text real-format verification marker to its recorded
   probe.
 
+- Link the invalid numeric-conversion verification marker to its recorded
+  probe.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
