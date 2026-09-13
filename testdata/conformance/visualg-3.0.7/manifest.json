@@ -291,6 +291,14 @@
       ]
     },
     {
+      "id": "assumption.procedure-bare-return",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` `retorne` em procedimento (retorno antecipado sem valor): aceito?",
+      "probes": [
+        "procedure-bare-return"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
