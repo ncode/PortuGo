@@ -216,7 +216,12 @@ func validateInventory(root string, m manifest, probes map[string]probe) error {
 		if len(item.Probes) == 0 {
 			problems = append(problems, fmt.Errorf("missing probe link for %s", item.ID))
 		}
+		itemProbes := make(map[string]bool)
 		for _, id := range item.Probes {
+			if itemProbes[id] {
+				problems = append(problems, fmt.Errorf("duplicate probe link %s in %s", id, item.ID))
+			}
+			itemProbes[id] = true
 			if _, ok := probes[id]; !ok {
 				problems = append(problems, fmt.Errorf("stale probe link %s in %s", id, item.ID))
 			}

@@ -1295,8 +1295,7 @@
       "probes": [
         "project.vector-storage",
         "vector-second-index-oob",
-        "vector-negative-index",
-        "project.vector-storage"
+        "vector-negative-index"
       ]
     },
     {
@@ -1573,7 +1572,6 @@
         "random-input-echo-random",
         "echo-command-on",
         "echo-command-off",
-        "echo-command-bare",
         "echo-command-number",
         "echo-command-unknown",
         "echo-command-quoted",
