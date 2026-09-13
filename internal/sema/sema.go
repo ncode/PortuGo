@@ -448,7 +448,7 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 			return runtime.Type{Kind: runtime.InvalidType}
 		}
 		if sym.kind == funcSym {
-			c.checkArgs(&ast.CallExpr{Name: e.Name}, sym)
+			c.checkArgs(&ast.CallExpr{Name: e.Name, Bare: true}, sym)
 			return sym.typ
 		}
 		if sym.kind == builtinSym {
@@ -671,7 +671,7 @@ func (c *checker) checkArgs(call *ast.CallExpr, sym symbol) {
 	if sym.kind == procSym {
 		pos = sym.pos
 	}
-	emptyNumericValue := sym.kind == procSym && !call.Bare && len(call.Args) == 0 && len(params) == 1 &&
+	emptyNumericValue := !call.Bare && len(call.Args) == 0 && len(params) == 1 &&
 		!params[0].byRef && (params[0].typ.Kind == runtime.IntegerType || params[0].typ.Kind == runtime.RealType)
 	if len(call.Args) != len(params) && !emptyNumericValue {
 		c.error(pos, diag.ECall, "%q expects %d arguments, got %d", call.Name.Text, len(params), len(call.Args))

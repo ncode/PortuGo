@@ -119,7 +119,7 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 	if !ok {
 		return runtime.Value{}, fmt.Errorf("%q is not a function", call.Name.Text)
 	}
-	return i.callUserFunction(fn, call.Args, call.Start())
+	return i.callUserFunction(fn, call)
 }
 
 func (i *Interpreter) containsUserCall(expr ast.Expr) bool {
@@ -180,12 +180,12 @@ func (i *Interpreter) callProcedure(call *ast.CallExpr) (err error) {
 	return err
 }
 
-func (i *Interpreter) callUserFunction(fn *ast.FunctionDecl, args []ast.Expr, at token.Pos) (runtime.Value, error) {
+func (i *Interpreter) callUserFunction(fn *ast.FunctionDecl, call *ast.CallExpr) (runtime.Value, error) {
 	b, ok := i.info.Binding(fn.Name)
 	if !ok {
 		return runtime.Value{}, failure(fn.Start(), diag.RType, fmt.Errorf("missing return type"))
 	}
-	return i.callSub(at, fn.Params, fn.Config, fn.Consts, fn.Locals, fn.Body, b.Type, args, false)
+	return i.callSub(call.Start(), fn.Params, fn.Config, fn.Consts, fn.Locals, fn.Body, b.Type, call.Args, !call.Bare)
 }
 
 func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stmt, consts []ast.ConstDecl, locals []ast.VarDecl, body []ast.Stmt, retType runtime.Type, args []ast.Expr, allowEmptyNumericValue bool) (runtime.Value, error) {
@@ -298,6 +298,11 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 		return runtime.Value{}, failure(ctrl.at, diag.RLoop, fmt.Errorf("interrompa outside loop"))
 	}
 	if retType.Kind != runtime.VoidType {
+		if result.Value.MissingArgument {
+			// A function that returns its absent value parameter propagates no
+			// value to the enclosing expression.
+			result.Value = runtime.Value{Kind: runtime.VoidValue, MissingArgument: true}
+		}
 		i.results[callDepth] = runtime.Clone(result.Value)
 	}
 	// The reference copies parameters back in declaration order, including their

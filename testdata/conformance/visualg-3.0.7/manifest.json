@@ -13169,14 +13169,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/procedure-empty-arguments/stdout.txt",
             "sha256": "082f1b30dfd690d2eb56f15099a07810daa4555b553e0f0a8f7cb61e5f0aff94"
           }
-        }
+        },
+        "tests": [
+          "call_arguments_test.go#TestRecordedCallArguments"
+        ]
       }
     },
     {
@@ -13267,14 +13270,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/function-empty-arguments/stdout.txt",
             "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
           }
-        }
+        },
+        "tests": [
+          "call_arguments_test.go#TestRecordedCallArguments"
+        ]
       }
     },
     {
@@ -14547,14 +14553,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/function-empty-arguments-continuation/stdout.txt",
             "sha256": "76d2b0dc0c3f97e2bbf9bc62f097ca2f9f830187ecb4bc8f795f8cdc6bd243c2"
           }
-        }
+        },
+        "tests": [
+          "call_arguments_test.go#TestRecordedCallArguments"
+        ]
       }
     },
     {

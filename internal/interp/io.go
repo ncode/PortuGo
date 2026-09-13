@@ -98,11 +98,17 @@ func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
 			return err
 		}
 		if v.MissingArgument {
-			// The accepted empty numeric call ends normally when its absent
-			// value parameter is printed; no output from this statement or its
-			// caller continuation is committed.
-			i.halted = true
-			return nil
+			if i.result == nil && len(s.Args) == 1 && v.Kind != runtime.VoidValue {
+				// The older one-argument procedure form exposes its typed zero
+				// when the absent formal is written directly.
+				v.MissingArgument = false
+			} else {
+				// The accepted empty numeric call ends normally when its absent
+				// value parameter is printed; no output from this statement or
+				// its caller continuation is committed.
+				i.halted = true
+				return nil
+			}
 		}
 		if v.Kind == runtime.VoidValue {
 			// Discard this statement without consuming a pending newline.

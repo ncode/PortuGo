@@ -203,8 +203,12 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 - [ ] 5.4 Implement parameter grouping, arity, value-parameter coercion, and oracle-confirmed reference-parameter conversion, copy-back, and assignability validation.
 
   Recorded numeric conversions and scalar copy-in/copy-out now match, including
-  repeated destinations and type changes on return. Empty-argument edge cases
-  and integer operators after a reference type change remain pending.
+  repeated destinations and type changes on return. Three additional
+  empty-argument recordings now qualify the parenthesized one-parameter
+  numeric procedure/function forms: direct procedure output exposes typed zero,
+  while a missing function result propagates no value. Bare, multi-parameter,
+  and other omitted-argument forms remain pending, as do integer operators
+  after a reference type change.
   Seven additional call controls verify all scalar value types, numeric `var`
   parameters and a parameterless call in original and formatted execution.
   Two empty numeric-argument recordings now enter the body and complete when
