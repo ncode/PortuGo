@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add a call-form parser golden and record frame and alias regression coverage
+  for accepted procedure and function syntax.
+
 - Add control-flow parser and semantic goldens plus valid and diagnostic run
   fixtures for repeat, range selection, break, and descending loops.
 

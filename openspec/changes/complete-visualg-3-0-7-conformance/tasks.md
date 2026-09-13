@@ -377,7 +377,12 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 ## 5. Declaration and Call Compatibility
 
 - [ ] 5.1 Add failing parser, semantic, and runtime cases for parameterless declarations, optional parentheses, bare procedure calls, invalid call contexts, recorded `var` conversions and copy-back, argument evaluation order, global lexical scope, shadowing, and recursion visibility.
-- [ ] 5.2 Parse every oracle-confirmed procedure/function declaration and call form while retaining enough syntax information for canonical printing.
+- [x] 5.2 Parse every oracle-confirmed procedure/function declaration and call form while retaining enough syntax information for canonical printing.
+
+  The call-form golden covers grouped value/reference parameters, optional and
+  bare procedure calls, parenthesized calls, and function expressions through
+  parse, print, and an idempotent reparsing pass. Omitted multi-parameter forms
+  that remain unqualified stay pending under 5.1 and 5.4.
 - [x] 5.3 Resolve call statements versus expression calls and ordinary designators according to the recorded ambiguity rules.
 
   Parameterless declarations, bare calls, callable-name priority, separate
@@ -400,7 +405,12 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 - [x] 5.5 Evaluate all call arguments exactly once in the oracle-confirmed order and capture reference designators before entering the callee.
 - [x] 5.6 Replace caller-derived lookup with fixed lexical bindings so globals, parameters, locals, and allowed shadowing never depend on dynamic call order.
 - [x] 5.7 Implement oracle-confirmed declaration visibility, direct recursion, mutual recursion, and independent recursive call frames.
-- [ ] 5.8 Add call-frame and alias regressions for accepted scalar/vector designators already representable at this stage, including early failure, call-depth exhaustion, and no partial call setup; field cases belong to group 6 only if confirmed.
+- [x] 5.8 Add call-frame and alias regressions for accepted scalar/vector designators already representable at this stage, including early failure, call-depth exhaustion, and no partial call setup; field cases belong to group 6 only if confirmed.
+
+  Existing call-argument and interpreter frame suites cover scalar and
+  vector-element aliases, early setup failures, call-depth exhaustion, tail
+  failures, state cleanup, and reuse without partial frame setup. Record-field
+  aliases remain covered by the declaration group.
 - [x] 5.9 Extend canonical printing and examples for all accepted bare and parenthesized call forms.
 - [x] 5.10 Update `docs/language.md` and `CHANGELOG.md` with declaration, call, parameter, evaluation-order, scope, and recursion compatibility.
 
