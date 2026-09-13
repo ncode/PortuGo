@@ -44,3 +44,15 @@ func TestRunRedactsReplayFilesystemFailure(t *testing.T) {
 		t.Fatalf("stdout leaked executable path: %s", out.String())
 	}
 }
+
+func TestExecuteProbeRedactsFilesystemFailure(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "source.alg")
+	if err := os.Mkdir(path, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	var out, stderr strings.Builder
+	status := executeProbe([]string{path}, strings.NewReader(""), &out, &stderr)
+	if status != 1 || !strings.Contains(stderr.String(), "invalid file size or type") || strings.Contains(stderr.String(), path) {
+		t.Fatalf("status = %d, stderr = %q; want sanitized filesystem failure", status, stderr.String())
+	}
+}
