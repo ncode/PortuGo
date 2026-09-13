@@ -55,6 +55,41 @@ func TestObservationAdapterUsesClockFixture(t *testing.T) {
 	}
 }
 
+func TestObservationAdapterRejectsExhaustedClockFixture(t *testing.T) {
+	dir := t.TempDir()
+	src := filepath.Join(dir, "source.alg")
+	if err := os.WriteFile(src, []byte("algoritmo \"clock\"\ninicio\ncronometro on\ncronometro off\nfimalgoritmo"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	clock := filepath.Join(dir, "clock.json")
+	if err := os.WriteFile(clock, []byte("{\"nowMS\":[0]}\n"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	var out, stderr bytes.Buffer
+	status := executeProbe([]string{"--clock", clock, src}, strings.NewReader(""), &out, &stderr)
+	if status != 1 || out.Len() != 0 || !strings.Contains(stderr.String(), "clock fixture exhausted") {
+		t.Fatalf("status %d, streams %q %q", status, &out, &stderr)
+	}
+}
+
+func TestObservationAdapterRejectsOversizedClockFixture(t *testing.T) {
+	dir := t.TempDir()
+	src := filepath.Join(dir, "source.alg")
+	if err := os.WriteFile(src, []byte("algoritmo \"clock\"\ninicio\nfimalgoritmo"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	clock := filepath.Join(dir, "clock.json")
+	data := append([]byte(`{"nowMS":[0]}`), []byte(strings.Repeat(" ", maxArtifactBytes))...)
+	if err := os.WriteFile(clock, data, 0600); err != nil {
+		t.Fatal(err)
+	}
+	var out, stderr bytes.Buffer
+	status := executeProbe([]string{"--clock", clock, src}, strings.NewReader(""), &out, &stderr)
+	if status != 1 || !strings.Contains(stderr.String(), "clock fixture exceeds artifact size limit") {
+		t.Fatalf("status %d, stderr %q", status, stderr.String())
+	}
+}
+
 func TestRecordingHost(t *testing.T) {
 	h := &recordingHost{}
 	before := h.Now()
@@ -65,6 +100,26 @@ func TestRecordingHost(t *testing.T) {
 	}
 	if !h.Now().Equal(before.Add(2*time.Second)) || len(h.events) != 6 {
 		t.Fatalf("non-deterministic host: %+v", h.events)
+	}
+}
+
+func TestRecordingHostBoundsEvents(t *testing.T) {
+	h := &recordingHost{}
+	var err error
+	for range maxObservationBytes {
+		err = h.ClearScreen()
+		if err != nil {
+			break
+		}
+	}
+	if err == nil || !strings.Contains(err.Error(), "observation size limit") {
+		t.Fatalf("error = %v, want observation size limit", err)
+	}
+	if !h.overflow || h.eventSize >= maxObservationBytes {
+		t.Fatalf("event trace exceeded limit: overflow=%v size=%d", h.overflow, h.eventSize)
+	}
+	if err := h.ClearScreen(); err == nil {
+		t.Fatal("accepted event after overflow")
 	}
 }
 

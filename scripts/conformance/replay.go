@@ -45,6 +45,26 @@ func (b *boundedOutput) Write(p []byte) (int, error) {
 	return b.buffer.Write(p)
 }
 
+func replayOwnedPath(name string, observe bool) bool {
+	first, _, _ := strings.Cut(name, "/")
+	first = strings.ToUpper(first)
+	return first == "SOURCE.ALG" || observe && (first == "STATE.JSON" || first == "HOST.JSON" || first == "CLOCK.JSON")
+}
+
+func checkExpectedExitCode(code int) error {
+	if code != 0 && code != 1 {
+		return fmt.Errorf("invalid expected exit status %d", code)
+	}
+	return nil
+}
+
+func checkReplayInputPath(name string, observe bool) error {
+	if replayOwnedPath(name, observe) {
+		return fmt.Errorf("input file conflicts with replay-owned path: %s", name)
+	}
+	return nil
+}
+
 func replayProbe(root string, p probe, executable string, prefix []string, observer string) (runErr error) {
 	want := p.Implementation.Expected
 	observe := want.State != nil || want.HostTrace != nil || want.Clock != nil
@@ -53,6 +73,19 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	}
 	if p.TimeoutMS < 1 || p.TimeoutMS > 30000 {
 		return fmt.Errorf("invalid replay budget")
+	}
+	if err := checkExpectedExitCode(want.ExitCode); err != nil {
+		return err
+	}
+	for _, a := range []*artifact{want.State, want.HostTrace} {
+		if a != nil {
+			if _, err := readReplayOutputArtifact(root, *a); err != nil {
+				return err
+			}
+		}
+	}
+	if _, err := readReplayOutputArtifact(root, want.Stdout); err != nil {
+		return err
 	}
 	source, err := readArtifact(root, p.Source)
 	if err != nil {
@@ -83,8 +116,8 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 		}
 	}
 	for _, file := range p.Files {
-		if file.Path == "source.alg" || observe && (file.Path == "state.json" || file.Path == "host.json" || file.Path == "clock.json") {
-			return fmt.Errorf("input file conflicts with probe source")
+		if err := checkReplayInputPath(file.Path, observe); err != nil {
+			return err
 		}
 		data, err := readArtifact(root, file.Content)
 		if err != nil {
@@ -99,6 +132,16 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 		}
 		if err := os.WriteFile(name, data, 0o600); err != nil {
 			return err
+		}
+	}
+	for _, file := range want.Generated {
+		if replayOwnedPath(file.Path, observe) {
+			return fmt.Errorf("generated expectation conflicts with replay-owned path: %s", file.Path)
+		}
+	}
+	for _, name := range want.Absent {
+		if replayOwnedPath(name, observe) {
+			return fmt.Errorf("absent expectation conflicts with replay-owned path: %s", name)
 		}
 	}
 	restoreAccess, err := prepareFixtureAccess(dir, p.FixtureAccess)
@@ -166,7 +209,7 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	if exitCode != want.ExitCode {
 		return fmt.Errorf("exit status %d, expected %d", exitCode, want.ExitCode)
 	}
-	wantOut, err := readArtifact(root, want.Stdout)
+	wantOut, err := readReplayOutputArtifact(root, want.Stdout)
 	if err != nil {
 		return err
 	}
@@ -191,7 +234,7 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 		if err != nil {
 			return fmt.Errorf("missing %s observation", name)
 		}
-		expected, err := readArtifact(root, *artifact)
+		expected, err := readReplayOutputArtifact(root, *artifact)
 		if err != nil {
 			return err
 		}
@@ -215,6 +258,37 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	for _, name := range want.Absent {
 		if err := checkAbsent(dir, name); err != nil {
 			return err
+		}
+	}
+	for _, file := range p.Files {
+		declared := false
+		for _, generated := range want.Generated {
+			if generated.Path == file.Path {
+				declared = true
+				break
+			}
+		}
+		if !declared {
+			for _, absent := range want.Absent {
+				if absent == file.Path {
+					declared = true
+					break
+				}
+			}
+		}
+		if declared {
+			continue
+		}
+		actual, err := readFile(dir, file.Path)
+		if err != nil {
+			return fmt.Errorf("input file mismatch: %s: %w", file.Path, err)
+		}
+		expected, err := readArtifact(root, file.Content)
+		if err != nil {
+			return err
+		}
+		if !bytes.Equal(actual, expected) {
+			return fmt.Errorf("input file mismatch: %s", file.Path)
 		}
 	}
 	return nil

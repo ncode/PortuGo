@@ -2,6 +2,85 @@
 
 ## Unreleased
 
+- Bound conformance artifact reads after opening files so growth during a read
+  cannot bypass the repository artifact limit.
+
+- Reject replay runs that consume more clock reads than a supplied deterministic
+  schedule provides instead of silently falling back to elapsed time.
+
+- Reject existing non-private recording stages before capture reads or writes
+  evidence on POSIX hosts; Windows continues to use its ACL model.
+
+- Verify auxiliary replay input files remain unchanged unless their paths are
+  explicitly declared generated or absent, detecting candidate mutations and
+  deletions.
+
+- Resolve conformance test links to imported `testing.T`, rejecting local and
+  foreign type lookalikes while preserving renamed and dot imports.
+
+- Bound host observation traces while recording so oversized event streams fail
+  before JSON serialization.
+
+- Reject recorder-owned staging and capture paths from auxiliary, generated, or
+  absent reference files before metadata can be published as evidence.
+
+- Enforce the private staging root boundary during capture and reject symlinked
+  roots before normalized evidence can be written.
+
+- Bound direct observation-adapter clock fixture reads by the repository
+  artifact limit before decoding.
+
+- Bound historical manifests loaded from Git by the repository artifact limit
+  before strict decoding.
+
+- Reject conformance artifact and fixture paths that enter repository metadata
+  directories, including case aliases of `.git`.
+
+- Decode previous manifests loaded from Git with the same strict unknown-field
+  and trailing-JSON checks as current manifests.
+
+- Reject unknown fields and trailing JSON in staged recording metadata before
+  capture emits evidence.
+
+- Reject stdout, state and host observation artifacts larger than the adapter's
+  1 MiB output limit before conformance replay.
+
+- Reject unknown fields and trailing JSON in bundled-example catalogs in every
+  conformance validation mode.
+
+- Reject conformance expectations with exit statuses outside the replay
+  contract (`0` for success or `1` for failure), including reviewed exclusions.
+
+- Reject generated and absent expectations that alias replay-owned source or
+  observation files when an observer is enabled.
+
+- Validate bundled-example catalog source hashes and byte counts for reviewed
+  non-goals as well as recorded examples.
+
+- Reject duplicate candidate generated-output destinations in conformance
+  expectations, including reviewed exclusions across every validation mode.
+
+- Reject conformance inputs that collide with replay-owned files, including
+  case aliases and descendants, before validation or replay can accept them.
+
+- Validate conformance clock fixtures with the execution adapter's decoder,
+  rejecting malformed schedules before replay without changing clock behavior.
+
+- Validate optional candidate stdout artifacts on reviewed exclusions, retaining
+  path and hash checks without requiring output for excluded runs.
+
+- Validate retained generated-file layouts on reviewed exclusions, including
+  conflicts with input fixtures, without requiring matching candidate outputs.
+
+- Reject contradictory conformance absence expectations containing generated
+  files or retained inputs, or requiring absence checks through a file.
+
+- Reject case-only aliases across conformance fixture paths and directory
+  components before replay, while preserving exact-path updates.
+
+- Reject trailing ASCII periods and spaces in conformance path components
+  before Windows filename normalization can change their meaning.
+
 - Reject conformance file layouts that require a path to be both a file and
   a parent directory across input and generated destinations.
 

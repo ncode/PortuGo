@@ -1352,6 +1352,15 @@ Reviewed exclusions still validate hashes for every retained artifact, including
 optional screenshots, transcriptions and generated-file bytes. Retained generated
 paths must be contained and unique. Excluded runs may retain these observations
 without requiring corresponding candidate output or new captures.
+Candidate generated expectations also require unique destinations, including for
+reviewed exclusions where candidate replay is not run.
+Optional candidate stdout on an exclusion must also retain a valid artifact
+path and hash when present; it need not match the excluded reference output.
+Bundled example catalog source hashes and byte counts are checked against every
+linked probe source, including reviewed non-goals.
+Retained generated files must also form a valid layout with the input fixtures.
+Reference and candidate file layouts are checked separately, so a valid retained
+reference layout does not require a matching candidate layout for an exclusion.
 Recording verifies input-only file hashes before accepting a capture.
 Manifest validation rejects repeated input fixture destinations, including
 entries with identical bytes. Distinct destinations may share a content artifact,
@@ -1361,8 +1370,32 @@ A file destination cannot also be a parent directory of another input or
 generated destination, regardless of declaration order. Input-only files must
 retain their bytes, so a generated descendant cannot replace an input file with
 a directory. Shared directories and similar filename prefixes remain valid.
-An explicitly removed input may have an output at its former parent path;
-removal declarations still cannot make an invalid initial layout valid.
+Removal declarations still cannot make an invalid initial layout valid.
+An absent path cannot contain a generated file or an input required to remain
+present. An absent parent is compatible with input removal only when every
+input beneath it is explicitly declared absent as well.
+Required files also cannot be parents of absent paths: absence checks must not
+traverse a file. An explicitly removed input may instead have absent descendants.
+Artifact and fixture path components cannot end in an ASCII period or space,
+avoiding Windows filename normalization. All validation modes enforce this
+before replay. Leading periods, interior periods and spaces, and nonbreaking
+spaces retain their literal spelling.
+Artifact and fixture paths also cannot enter repository metadata directories
+such as `.git`, including case aliases, so validation never hashes private Git
+state as corpus evidence.
+Each probe must use consistent case for declared fixture destinations and
+shared directory components across input, generated, absent and fixture-access
+paths. Validation rejects case-only aliases that would collide on Windows,
+including aliases across file and directory roles. Exact-path input/output
+reuse and consistently spelled shared directories remain valid. This comparison
+does not rename fixture paths or alter the recorded bytes.
+Input fixtures cannot replace the replay runner's root `source.alg` file or use
+it as a directory. When state, host or clock observations are enabled, the same
+rule applies to root `state.json`, `host.json` and `clock.json`. Validation and
+replay reject case aliases too. Nested filenames and similar prefixes remain
+valid; ordinary runs may use the adapter filenames as input fixtures.
+Generated and absent expectations use the same reserved-path rule when an
+observer is enabled, so an expectation cannot alias an adapter output.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.
 Test links require Go's test-name and declaration shape: a top-level `Test`
@@ -1395,5 +1428,24 @@ Manifest diagnostic expectations use `L`, `P`, `S`, `E` or `R` followed by three
 ASCII digits, a positive line, and an omitted or zero column when the exact
 column is unconstrained. Negative expected columns are invalid. Every validation
 mode checks this metadata before replay, including for pending implementations.
+Expected source-run exit statuses are restricted to `0` for success or `1` for
+failure in every validation mode, including reviewed exclusions.
+Clock fixtures also use the execution adapter's JSON decoder during validation.
+Malformed JSON, unknown fields, trailing data, invalid read values and empty
+read schedules fail before replay. Repeated and backward readings remain valid.
+The adapter bounds clock fixture reads by the repository artifact limit before
+decoding, including when invoked directly.
+Host observation events are bounded while they are recorded, so a trace cannot
+grow beyond the adapter's 1 MiB output limit before serialization.
+Bundled-example catalogs use the same strict JSON boundary: unknown fields and
+trailing values fail validation before catalog entries are considered.
+Stdout, state and host observation artifacts use the adapter's 1 MiB output
+limit; larger retained expectations fail validation before replay.
+Capture also rejects unknown fields and trailing JSON in its staged recording
+metadata before producing evidence.
+Historical manifests loaded for downgrade checks use the same strict decoder as
+the current manifest, so malformed history cannot bypass schema validation.
+Historical manifest output is also bounded by the repository artifact limit
+before it is decoded, matching current-manifest loading.
 Final acceptance requires quality evidence for the candidate commit; the
 separate release gate also requires completed implementation and handoff tasks.

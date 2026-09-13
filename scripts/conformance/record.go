@@ -1,10 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
+	"runtime"
 	"slices"
 	"strings"
 	"time"
@@ -17,6 +20,27 @@ type stagedRecording struct {
 	Files     []artifact `json:"files,omitempty"`
 	Generated []string   `json:"generated,omitempty"`
 	Absent    []string   `json:"absent,omitempty"`
+}
+
+var recorderOwnedPaths = []string{
+	"source.alg",
+	"input.txt",
+	"staged.json",
+	"instructions.txt",
+	"raw.txt",
+	"normalized.txt",
+	"evidence.json",
+	"screenshot.png",
+	"transcription.txt",
+}
+
+func checkRecorderOwnedPath(name string) error {
+	for _, owned := range recorderOwnedPaths {
+		if strings.EqualFold(name, owned) {
+			return fmt.Errorf("recorder-owned path: %s", name)
+		}
+	}
+	return nil
 }
 
 func writeNew(name string, data []byte) error {
@@ -32,6 +56,36 @@ func writeNew(name string, data []byte) error {
 	return closeErr
 }
 
+func privateStage(root, stage string) (string, error) {
+	stage, err := filepath.Abs(stage)
+	if err != nil {
+		return "", err
+	}
+	info, err := os.Lstat(stage)
+	if err == nil && info.Mode()&os.ModeSymlink != 0 {
+		return "", fmt.Errorf("recording stage must not be a symlink")
+	}
+	if err == nil && runtime.GOOS != "windows" && info.Mode().Perm()&0o077 != 0 {
+		return "", fmt.Errorf("recording stage must be private")
+	}
+	if err != nil && !os.IsNotExist(err) {
+		return "", err
+	}
+	parent, err := filepath.EvalSymlinks(filepath.Dir(stage))
+	if err != nil {
+		return "", err
+	}
+	stage = filepath.Join(parent, filepath.Base(stage))
+	rel, err := filepath.Rel(root, stage)
+	if err != nil {
+		return "", err
+	}
+	if rel == "." || rel != ".." && !strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
+		return "", fmt.Errorf("raw recordings must be staged outside the repository")
+	}
+	return stage, nil
+}
+
 func prepareRecording(root string, p probe, stage string) error {
 	root, err := filepath.Abs(root)
 	if err != nil {
@@ -41,21 +95,9 @@ func prepareRecording(root string, p probe, stage string) error {
 	if err != nil {
 		return err
 	}
-	stage, err = filepath.Abs(stage)
+	stage, err = privateStage(root, stage)
 	if err != nil {
 		return err
-	}
-	parent, err := filepath.EvalSymlinks(filepath.Dir(stage))
-	if err != nil {
-		return err
-	}
-	stage = filepath.Join(parent, filepath.Base(stage))
-	rel, err := filepath.Rel(root, stage)
-	if err != nil {
-		return err
-	}
-	if rel == "." || rel != ".." && !strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
-		return fmt.Errorf("raw recordings must be staged outside the repository")
 	}
 	source, err := readArtifact(root, p.Source)
 	if err != nil {
@@ -64,6 +106,21 @@ func prepareRecording(root string, p probe, stage string) error {
 	input, err := readArtifact(root, p.Input)
 	if err != nil {
 		return err
+	}
+	for _, file := range p.Files {
+		if err := checkRecorderOwnedPath(file.Path); err != nil {
+			return err
+		}
+	}
+	for _, file := range p.Implementation.Expected.Generated {
+		if err := checkRecorderOwnedPath(file.Path); err != nil {
+			return err
+		}
+	}
+	for _, name := range p.Implementation.Expected.Absent {
+		if err := checkRecorderOwnedPath(name); err != nil {
+			return err
+		}
 	}
 	if err := os.Mkdir(stage, 0o700); err != nil {
 		return err
@@ -126,8 +183,20 @@ func prepareRecording(root string, p probe, stage string) error {
 `))
 }
 
-func captureRecording(stage string, accepted bool, capturedAt, normalizer string, guiOnly bool) (evidence, error) {
+func captureRecording(root, stage string, accepted bool, capturedAt, normalizer string, guiOnly bool) (evidence, error) {
 	var e evidence
+	root, err := filepath.Abs(root)
+	if err != nil {
+		return e, err
+	}
+	root, err = filepath.EvalSymlinks(root)
+	if err != nil {
+		return e, err
+	}
+	stage, err = privateStage(root, stage)
+	if err != nil {
+		return e, err
+	}
 	if _, err := time.Parse(time.RFC3339Nano, capturedAt); err != nil {
 		return e, fmt.Errorf("invalid capture date: %w", err)
 	}
@@ -136,8 +205,31 @@ func captureRecording(stage string, accepted bool, capturedAt, normalizer string
 		return e, err
 	}
 	var staged stagedRecording
-	if err := json.Unmarshal(data, &staged); err != nil {
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&staged); err != nil {
 		return e, err
+	}
+	if err := decoder.Decode(new(any)); err != io.EOF {
+		return e, fmt.Errorf("trailing staged JSON")
+	}
+	if staged.Source.Path != "source.alg" || staged.Input.Path != "input.txt" {
+		return e, fmt.Errorf("staged recording uses non-owned source or input path")
+	}
+	for _, file := range staged.Files {
+		if err := checkRecorderOwnedPath(file.Path); err != nil {
+			return e, err
+		}
+	}
+	for _, name := range staged.Generated {
+		if err := checkRecorderOwnedPath(name); err != nil {
+			return e, err
+		}
+	}
+	for _, name := range staged.Absent {
+		if err := checkRecorderOwnedPath(name); err != nil {
+			return e, err
+		}
 	}
 	for _, a := range []artifact{staged.Source, staged.Input} {
 		if _, err := readArtifact(stage, a); err != nil {

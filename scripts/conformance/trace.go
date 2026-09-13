@@ -74,7 +74,7 @@ func checkLink(root, link string, test bool) error {
 		}
 		for _, decl := range file.Decls {
 			if fn, ok := decl.(*ast.FuncDecl); ok && fn.Recv == nil && fn.Name.Name == anchor {
-				if !isTestFunction(fn) {
+				if !isTestFunction(file, fn) {
 					return fmt.Errorf("invalid test link %s: not a Go test function", link)
 				}
 				return nil
@@ -91,8 +91,7 @@ func checkLink(root, link string, test bool) error {
 }
 
 // isTestFunction applies Go test discovery's name and declaration checks.
-// Package compilation still validates imports and resolves the parameter type.
-func isTestFunction(fn *ast.FuncDecl) bool {
+func isTestFunction(file *ast.File, fn *ast.FuncDecl) bool {
 	suffix, ok := strings.CutPrefix(fn.Name.Name, "Test")
 	if !ok || fn.Recv != nil {
 		return false
@@ -110,14 +109,46 @@ func isTestFunction(fn *ast.FuncDecl) bool {
 	if !ok {
 		return false
 	}
-	switch typ := ptr.X.(type) {
-	case *ast.Ident:
-		return typ.Name == "T"
-	case *ast.SelectorExpr:
-		return typ.Sel.Name == "T"
-	default:
+	if typ, ok := ptr.X.(*ast.Ident); ok {
+		if typ.Name != "T" {
+			return false
+		}
+		for _, spec := range file.Imports {
+			if spec.Name != nil && spec.Name.Name == "." && importPath(spec) == "testing" {
+				return true
+			}
+		}
 		return false
 	}
+	typ, ok := ptr.X.(*ast.SelectorExpr)
+	if !ok || typ.Sel.Name != "T" {
+		return false
+	}
+	pkg, ok := typ.X.(*ast.Ident)
+	if !ok {
+		return false
+	}
+	for _, spec := range file.Imports {
+		if importPath(spec) != "testing" || spec.Name != nil && (spec.Name.Name == "." || spec.Name.Name == "_") {
+			continue
+		}
+		name := "testing"
+		if spec.Name != nil {
+			name = spec.Name.Name
+		}
+		if name == pkg.Name {
+			return true
+		}
+	}
+	return false
+}
+
+func importPath(spec *ast.ImportSpec) string {
+	path, err := strconv.Unquote(spec.Path.Value)
+	if err != nil {
+		return ""
+	}
+	return path
 }
 
 func checkTests(root string, tests []string) error {

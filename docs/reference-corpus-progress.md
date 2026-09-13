@@ -333,3 +333,11 @@ recordings through original and formatted execution. Fixed host-clock schedules
 preserve each recorded elapsed message and half-second delay order across
 procedure/function calls, interrupted loops, a choice branch, and local
 declaration layouts. Other variable timing combinations remain pending.
+
+The replay adapter now rejects a run when a deterministic clock schedule is
+exhausted, preventing an incomplete fixture from silently falling back to
+elapsed time.
+
+Conformance artifact reads now enforce the repository size limit while reading,
+so files that grow after metadata inspection are rejected before their bytes are
+used.

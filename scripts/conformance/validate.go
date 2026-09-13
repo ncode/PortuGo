@@ -121,6 +121,22 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			problems = append(problems, err)
 		}
 	}
+	spellings := make(map[string]string)
+	checkPath := func(name string) {
+		_, err := safePath(root, name)
+		add(err)
+		if err != nil {
+			return
+		}
+		for end := len(name); end > 0; end = strings.LastIndexByte(name[:end], '/') {
+			prefix := name[:end]
+			key := strings.ToUpper(prefix)
+			if earlier, exists := spellings[key]; exists && earlier != prefix {
+				add(fmt.Errorf("case-insensitive path collision: %s and %s", earlier, prefix))
+			}
+			spellings[key] = prefix
+		}
+	}
 	if p.OwnerGroup < 1 || len(p.Tasks) == 0 {
 		add(fmt.Errorf("missing owner group or task links"))
 	}
@@ -143,10 +159,7 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		if access.Mode != "unavailable" {
 			add(fmt.Errorf("unsupported fixture access mode %q", access.Mode))
 		}
-		add(func() error {
-			_, err := safePath(root, access.Path)
-			return err
-		}())
+		checkPath(access.Path)
 		declared := false
 		for _, file := range p.Files {
 			if file.Path == access.Path {
@@ -244,8 +257,9 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			add(fmt.Errorf("invalid diagnostic expectation: %+v", d))
 		}
 	}
+	add(checkExpectedExitCode(i.Expected.ExitCode))
 	if e.State == "recorded" {
-		out, err := readArtifact(root, i.Expected.Stdout)
+		out, err := readReplayOutputArtifact(root, i.Expected.Stdout)
 		add(err)
 		if e.Accepted != nil && *e.Accepted {
 			if i.Expected.ExitCode != 0 || len(i.Expected.Diagnostics) != 0 {
@@ -259,48 +273,93 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		} else if e.Accepted != nil && (i.Expected.ExitCode != 1 || len(i.Expected.Diagnostics) == 0) {
 			add(fmt.Errorf("reference disposition requires rejection with exit status 1 and mapped diagnostics"))
 		}
+	} else if i.Expected.Stdout != (artifact{}) {
+		_, err := readReplayOutputArtifact(root, i.Expected.Stdout)
+		add(err)
 	}
 	inputs := make(map[string]bool)
+	observe := i.Expected.State != nil || i.Expected.HostTrace != nil || i.Expected.Clock != nil
 	for _, file := range p.Files {
+		add(checkReplayInputPath(file.Path, observe))
 		if inputs[file.Path] {
 			add(fmt.Errorf("duplicate input path %s", file.Path))
 		}
 		inputs[file.Path] = true
 	}
-	destinations := maps.Clone(inputs)
-	for _, file := range i.Expected.Generated {
-		destinations[file.Path] = true
+	layouts := []observation{i.Expected}
+	if len(e.Generated) != 0 {
+		layouts = append(layouts, observation{Generated: e.Generated, Absent: e.Absent})
 	}
-	for _, file := range append(append([]generatedFile(nil), p.Files...), i.Expected.Generated...) {
-		parents := destinations
-		if slices.Contains(i.Expected.Absent, file.Path) {
-			// Declared removals still must fit the initial layout.
-			parents = inputs
+	for _, layout := range layouts {
+		destinations := maps.Clone(inputs)
+		for _, file := range layout.Generated {
+			destinations[file.Path] = true
 		}
-		for end := strings.LastIndexByte(file.Path, '/'); end >= 0; end = strings.LastIndexByte(file.Path[:end], '/') {
-			if parents[file.Path[:end]] {
-				add(fmt.Errorf("file path is both file and directory: %s", file.Path[:end]))
+		for _, file := range append(append([]generatedFile(nil), p.Files...), layout.Generated...) {
+			parents := destinations
+			if slices.Contains(layout.Absent, file.Path) {
+				// Declared removals still must fit the initial layout.
+				parents = inputs
+			}
+			for end := strings.LastIndexByte(file.Path, '/'); end >= 0; end = strings.LastIndexByte(file.Path[:end], '/') {
+				if parents[file.Path[:end]] {
+					add(fmt.Errorf("file path is both file and directory: %s", file.Path[:end]))
+				}
 			}
 		}
-		_, err := safePath(root, file.Path)
+	}
+	for _, file := range append(append([]generatedFile(nil), p.Files...), i.Expected.Generated...) {
+		checkPath(file.Path)
+		_, err := readArtifact(root, file.Content)
 		add(err)
-		_, err = readArtifact(root, file.Content)
-		add(err)
+	}
+	for _, file := range i.Expected.Generated {
+		if replayOwnedPath(file.Path, observe) {
+			add(fmt.Errorf("generated expectation conflicts with replay-owned path: %s", file.Path))
+		}
+	}
+	expectedGenerated := make(map[string]bool)
+	for _, file := range i.Expected.Generated {
+		if expectedGenerated[file.Path] {
+			add(fmt.Errorf("duplicate generated expectation path %s", file.Path))
+		}
+		expectedGenerated[file.Path] = true
 	}
 	for _, paths := range [][]string{e.Absent, i.Expected.Absent} {
 		seen := make(map[string]bool)
 		for _, name := range paths {
-			_, err := safePath(root, name)
-			add(err)
+			checkPath(name)
 			if seen[name] {
 				add(fmt.Errorf("duplicate absent path %s", name))
 			}
 			seen[name] = true
+			for _, file := range p.Files {
+				if slices.Contains(paths, file.Path) {
+					continue
+				}
+				if strings.HasPrefix(file.Path, name+"/") {
+					add(fmt.Errorf("absent path contains a required file: %s", name))
+				}
+				if strings.HasPrefix(name, file.Path+"/") {
+					add(fmt.Errorf("required file is a parent of absent path: %s", name))
+				}
+			}
 			for _, file := range append(append([]generatedFile(nil), e.Generated...), i.Expected.Generated...) {
 				if file.Path == name {
 					add(fmt.Errorf("file is both generated and absent: %s", name))
 				}
+				if strings.HasPrefix(file.Path, name+"/") {
+					add(fmt.Errorf("absent path contains a required file: %s", name))
+				}
+				if strings.HasPrefix(name, file.Path+"/") {
+					add(fmt.Errorf("required file is a parent of absent path: %s", name))
+				}
 			}
+		}
+	}
+	for _, name := range i.Expected.Absent {
+		if replayOwnedPath(name, observe) {
+			add(fmt.Errorf("absent expectation conflicts with replay-owned path: %s", name))
 		}
 	}
 	generated := make(map[string]string)
@@ -308,9 +367,8 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		if _, exists := generated[file.Path]; exists {
 			add(fmt.Errorf("duplicate generated reference path %s", file.Path))
 		}
-		_, err := safePath(root, file.Path)
-		add(err)
-		_, err = readArtifact(root, file.Content)
+		checkPath(file.Path)
+		_, err := readArtifact(root, file.Content)
 		add(err)
 		generated[file.Path] = file.Content.SHA256
 	}
@@ -339,9 +397,17 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			delete(generated, file.Path)
 		}
 	}
-	for _, a := range []*artifact{i.Expected.State, i.Expected.HostTrace, i.Expected.Clock} {
+	for _, a := range []*artifact{i.Expected.State, i.Expected.HostTrace} {
 		if a != nil {
-			_, err := readArtifact(root, *a)
+			_, err := readReplayOutputArtifact(root, *a)
+			add(err)
+		}
+	}
+	if i.Expected.Clock != nil {
+		data, err := readArtifact(root, *i.Expected.Clock)
+		add(err)
+		if err == nil {
+			_, err := decodeClockFixture(data)
 			add(err)
 		}
 	}

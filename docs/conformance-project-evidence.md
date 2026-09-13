@@ -20,10 +20,15 @@ Reference version and acquisition metadata remain mandatory for recorded probes.
 
 ## Recording and normalization
 
-`project.recording` covers private staging, source/input integrity, capture
-metadata, required GUI attachments, and generated-file bytes. Its tests are
-`TestPrepareRecording`, `TestCaptureRecording`, `TestCaptureGeneratedBytes`, and
-`TestCaptureInitialFiles`. `project.normalization` uses `TestNormalize` to verify
+`project.recording` covers private staging, root containment, source/input
+integrity, capture metadata, recorder-owned path isolation, required GUI
+attachments, and generated-file bytes. Its tests are `TestPrepareRecording`,
+`TestPrepareRecordingRejectsRecorderOwnedPaths`, `TestCaptureRecording`,
+`TestCaptureRejectsSymlinkedStage`, `TestCaptureRejectsNonPrivateStage`,
+`TestCaptureRejectsRecorderOwnedGeneratedPath`, `TestCaptureGeneratedBytes`,
+and `TestCaptureInitialFiles`. Existing stages must have no group or other
+permission bits on POSIX hosts; Windows staging privacy remains an ACL concern.
+`project.normalization` uses `TestNormalize` to verify
 that only the declared envelope and line endings change, including rejection of
 invalid envelopes and preservation of significant output bytes.
 
@@ -37,13 +42,18 @@ actual source, input, capture time, and reviewed observation artifacts.
 specifications, unique IDs, and preservation of probe, inventory, task, and
 retirement history. Its tests are `TestManifestValidation`,
 `TestManifestPreservesVerifiedHistory`, `TestManifestPreservesRetiredHistory`,
-`TestManifestRetirementIDs`, and `TestCommandHistoryValidation`.
+`TestManifestRetirementIDs`, and `TestCommandHistoryValidation`. Test links
+resolve the parameter to the imported `testing.T`, preserving default, renamed,
+and dot imports while rejecting local and foreign type lookalikes in every
+validation mode; `TestManifestTestFunctionLinks` covers those cases.
 
 `project.validation-phases` covers recorded/pending evidence, completed owner
 groups, acceptance rejection of pending implementation, reference disposition,
-and the distinction between pending mismatches and verified regressions. Its
-tests are `TestManifestValidation`, `TestManifestReferenceDisposition`,
-`TestReplay`, and `TestReplaySummary`.
+and the distinction between pending mismatches and verified regressions. Replay
+also checks that auxiliary input fixtures remain byte-identical after execution
+unless they are declared generated or absent. Its tests are
+`TestManifestValidation`, `TestManifestReferenceDisposition`, `TestReplay`,
+and `TestReplaySummary`.
 
 These mappings verify enforcement by the tooling. They do not declare the
 inventory complete, satisfy missing checklist/audit inputs, or authorize a
