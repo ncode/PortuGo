@@ -147,6 +147,14 @@ func readReplayOutputArtifact(root string, a artifact) ([]byte, error) {
 	return b, nil
 }
 
+func readReplaySourceArtifact(root string, a artifact) ([]byte, error) {
+	b, err := readArtifactLimit(root, a, 64<<10)
+	if errors.Is(err, errArtifactTooLarge) {
+		return nil, fmt.Errorf("source exceeds replay profile")
+	}
+	return b, err
+}
+
 func checkProhibited(root string, r reference) error {
 	return filepath.WalkDir(root, func(p string, d fs.DirEntry, err error) error {
 		if err != nil {

@@ -87,16 +87,13 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	if _, err := readReplayOutputArtifact(root, want.Stdout); err != nil {
 		return err
 	}
-	source, err := readArtifact(root, p.Source)
+	source, err := readReplaySourceArtifact(root, p.Source)
 	if err != nil {
 		return err
 	}
 	input, err := readArtifact(root, p.Input)
 	if err != nil {
 		return err
-	}
-	if len(source) > 64<<10 {
-		return fmt.Errorf("source exceeds replay profile")
 	}
 	dir, err := os.MkdirTemp("", "portugol-probe-")
 	if err != nil {

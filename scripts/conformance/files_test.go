@@ -26,3 +26,15 @@ func TestReadFileLimitRejectsOversizedFile(t *testing.T) {
 		t.Fatalf("error = %v, want oversized artifact", err)
 	}
 }
+
+func TestReadReplaySourceArtifactRejectsOversizedFile(t *testing.T) {
+	root := t.TempDir()
+	data := []byte(strings.Repeat("x", 64<<10+1))
+	if err := os.WriteFile(filepath.Join(root, "source.alg"), data, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	_, err := readReplaySourceArtifact(root, artifact{Path: "source.alg", SHA256: hashBytes(data)})
+	if err == nil || err.Error() != "source exceeds replay profile" {
+		t.Fatalf("error = %v, want source profile limit", err)
+	}
+}

@@ -345,3 +345,6 @@ used.
 Retained replay-output artifacts now use the smaller observation limit during
 the read, avoiding a larger allocation before an oversized expectation is
 rejected.
+
+Replay source artifacts now apply the 64 KiB execution profile while reading,
+before a candidate process is staged.
