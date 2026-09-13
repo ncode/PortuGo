@@ -30,6 +30,9 @@
 
 - Link the scientific-notation verification marker to its recorded probe.
 
+- Link the string-quote escape verification marker to its recorded rejection
+  probes.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
