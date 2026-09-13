@@ -94,6 +94,24 @@ func TestCommandHistoryValidation(t *testing.T) {
 	}
 }
 
+func TestCandidateBuildRejectsOversizedOutput(t *testing.T) {
+	installFakeGo(t, "oversized-build-output")
+	root, m := testManifest(t)
+	data, err := json.Marshal(m)
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeArtifact(t, root, "manifest.json", string(data))
+	var out, stderr bytes.Buffer
+	status := run([]string{"validate", "--root", root, "--manifest", "manifest.json", "--previous", "manifest.json"}, &out, &stderr)
+	if status != 1 || !strings.Contains(stderr.String(), "candidate build output exceeds artifact size limit") {
+		t.Fatalf("status=%d, stderr=%s; want bounded candidate-build output failure", status, &stderr)
+	}
+	if stderr.Len() > maxArtifactBytes+256 {
+		t.Fatalf("stderr length=%d, want at most the bounded output and error", stderr.Len())
+	}
+}
+
 func TestLoadRejectsUnknownFieldsAndTrailingJSON(t *testing.T) {
 	t.Parallel()
 	for _, content := range []string{`{"versoin":1}`, `{"version":1} {"version":2}`} {

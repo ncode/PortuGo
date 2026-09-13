@@ -25,6 +25,9 @@ covers that project-only resource guard.
 History validation bounds Git revision and tree-lookup output before comparing
 manifests; `TestPreviousManifestRejectsOversizedGitMetadata` covers those
 project-only guards.
+The default candidate build also captures combined compiler output through the
+same artifact limit before emitting diagnostics; `TestCandidateBuildRejectsOversizedOutput`
+covers that project-only guard.
 
 ## Recording and normalization
 

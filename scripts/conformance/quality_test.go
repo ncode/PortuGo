@@ -15,6 +15,14 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	if mode := os.Getenv("PORTUGOL_GO_FAKE_GO"); mode != "" {
+		for _, arg := range os.Args[1:] {
+			if arg == "build" && mode == "oversized-build-output" {
+				_, _ = os.Stderr.Write(bytes.Repeat([]byte("x"), maxArtifactBytes*2))
+			}
+		}
+		os.Exit(1)
+	}
 	if mode := os.Getenv("PORTUGOL_GO_FAKE_GIT"); mode != "" {
 		for _, arg := range os.Args[1:] {
 			switch arg {
@@ -59,6 +67,28 @@ func installFakeGit(t *testing.T, mode string) {
 		t.Fatal(err)
 	}
 	t.Setenv("PORTUGOL_GO_FAKE_GIT", mode)
+	t.Setenv("PATH", bin+string(os.PathListSeparator)+os.Getenv("PATH"))
+}
+
+func installFakeGo(t *testing.T, mode string) {
+	t.Helper()
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(executable)
+	if err != nil {
+		t.Fatal(err)
+	}
+	bin := t.TempDir()
+	name := "go"
+	if runtime.GOOS == "windows" {
+		name += ".exe"
+	}
+	if err := os.WriteFile(filepath.Join(bin, name), data, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("PORTUGOL_GO_FAKE_GO", mode)
 	t.Setenv("PATH", bin+string(os.PathListSeparator)+os.Getenv("PATH"))
 }
 

@@ -13,6 +13,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -189,16 +190,12 @@ func run(args []string, out, stderr io.Writer) (status int) {
 		executable = filepath.Join(dir, "portugol.exe")
 		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 		defer cancel()
-		cmd := exec.CommandContext(ctx, "go", "build", "-o", executable, "./cmd/portugol")
-		cmd.Dir, cmd.Stdout, cmd.Stderr = rootPath, stderr, stderr
-		if err := cmd.Run(); err != nil {
-			return fail(fmt.Errorf("build candidate: %w", err))
+		if err := buildCandidate(ctx, cancel, rootPath, executable, "./cmd/portugol", stderr); err != nil {
+			return fail(err)
 		}
 		if needsObserver {
 			observer = filepath.Join(dir, "observations.exe")
-			cmd := exec.CommandContext(ctx, "go", "build", "-o", observer, "./scripts/conformance")
-			cmd.Dir, cmd.Stdout, cmd.Stderr = rootPath, stderr, stderr
-			if err := cmd.Run(); err != nil {
+			if err := buildCandidate(ctx, cancel, rootPath, observer, "./scripts/conformance", stderr); err != nil {
 				return fail(fmt.Errorf("build observation adapter: %w", err))
 			}
 		}
@@ -225,6 +222,26 @@ func run(args []string, out, stderr io.Writer) (status int) {
 		return fail(fmt.Errorf("verified reference regression"))
 	}
 	return 0
+}
+
+func buildCandidate(ctx context.Context, cancel context.CancelFunc, root, executable, packagePath string, stderr io.Writer) error {
+	cmd := exec.CommandContext(ctx, "go", "build", "-o", executable, packagePath)
+	cmd.Dir = root
+	cmd.WaitDelay = time.Second
+	var output boundedCommandOutput
+	output.limit, output.cancel = maxArtifactBytes, cancel
+	cmd.Stdout, cmd.Stderr = &output, &output
+	err := cmd.Run()
+	if _, writeErr := stderr.Write(output.buffer.Bytes()); writeErr != nil {
+		return fmt.Errorf("write candidate build output: %w", writeErr)
+	}
+	if output.overflow {
+		return fmt.Errorf("candidate build output exceeds artifact size limit")
+	}
+	if err != nil {
+		return fmt.Errorf("build candidate: %w", err)
+	}
+	return nil
 }
 
 func previousManifest(root, base, name string) (*manifest, error) {
@@ -280,6 +297,7 @@ func previousManifest(root, base, name string) (*manifest, error) {
 }
 
 type boundedCommandOutput struct {
+	mu       sync.Mutex
 	buffer   bytes.Buffer
 	limit    int
 	overflow bool
@@ -287,6 +305,8 @@ type boundedCommandOutput struct {
 }
 
 func (b *boundedCommandOutput) Write(p []byte) (int, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
 	remaining := b.limit - b.buffer.Len()
 	if len(p) > remaining {
 		if remaining > 0 {
