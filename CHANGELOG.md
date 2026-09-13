@@ -10,6 +10,10 @@
   a direct dynamic range upper bound, including its evaluation and enclosing
   execution stop.
 
+- Qualify generated integer input across the full signed 32-bit interval,
+  including reversed endpoints, while retaining pre-draw rejection for
+  unrepresentable bounds.
+
 - Stop `para` progression at the terminal bound when its next signed integer
   value would overflow, and keep `R005`/`R006` runtime-limit diagnostics tied to
   the attempted call or loop position.

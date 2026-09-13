@@ -1,12 +1,12 @@
 # Random input recordings
 
 The report below describes the original recording slice. Later work verified
-all 94 group-13 recordings, including seventeen varying transcripts through
+all 96 group-13 recordings, including nineteen varying transcripts through
 explicit [domain replay contracts](random-replay-contracts.md). Echo behavior,
 file-source restoration and recording of generated input are also covered by
 the [language reference](language.md) and linked conformance tests. Extreme
-bounds and exact reference seeds, sequences and draw counts remain outside
-these verified claims.
+bounds outside the signed 32-bit interval and exact reference seeds, sequences
+and draw counts remain outside these verified claims.
 
 ## Original recording slice
 
@@ -47,5 +47,5 @@ values are removed or normalized away to make replay pass.
 Eight additional bundled programs complete in the reference, as described in
 [the example catalog progress](bundled-examples-progress.md). Their implementation
 status remains pending because their output is nondeterministic. File-input
-interactions and extreme numeric bounds also remain unqualified; the current
-slice does not complete the full conformance change.
+interactions and out-of-range floating-bound failures also remain unqualified;
+the current slice does not complete the full conformance change.

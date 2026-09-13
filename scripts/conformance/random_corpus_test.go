@@ -94,7 +94,7 @@ func TestRecordedRandomInputDomains(t *testing.T) {
 			}
 		})
 	}
-	if qualified != 17 {
-		t.Fatalf("qualified %d random-input recordings, expected 17", qualified)
+	if qualified != 19 {
+		t.Fatalf("qualified %d random-input recordings, expected 19", qualified)
 	}
 }

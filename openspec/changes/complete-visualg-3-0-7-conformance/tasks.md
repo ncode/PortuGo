@@ -551,13 +551,15 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   both signatures, domains and evaluators; its independent signature table pins
   their bindings and result types. The recorded set has no aliases. Exact
   reference seeds and generator-consumption counts are not promised.
-- [ ] 13.4 Implement overflow-safe bound normalization and rejection, including full integer-domain cases, while consuming random values only when the reference does.
+- [x] 13.4 Implement overflow-safe bound normalization and rejection, including full integer-domain cases, while consuming random values only when the reference does.
 
   The implementation now checks finite ordered bounds and inclusive-width
   overflow before converting to a source width, accepts the full signed-32-bit
   integer interval, and rejects unrepresentable integer endpoints before any
-  random draw. Native qualification of extreme bounds and reference draw
-  consumption remains pending.
+  random draw. Native recordings now cover the full signed-32-bit interval and
+  reversed endpoints, while deterministic tests cover pre-draw rejection and
+  source-width behavior. Exact reference sequences and GUI-only floating-bound
+  failures remain outside the verified profile.
 - [x] 13.5 Add typed AST, parser, printer, and semantic validation for command-form `aleatorio` and any oracle-confirmed range/disable companion commands.
 - [x] 13.6 Implement random-input activation, destination conversion, bounds, echo state, and return to the prior/default input mode.
 

@@ -1525,6 +1525,8 @@
         "random-range-parentheses",
         "random-range-on-reset",
         "random-range-reversed",
+        "random-boundary-full-signed32",
+        "random-boundary-full-signed32-reversed",
         "random-range-default-real",
         "random-range-text",
         "random-context-call-zero",
@@ -71827,6 +71829,118 @@
           }
         },
         "tests": [
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
+      }
+    },
+    {
+      "id": "random-boundary-full-signed32",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32/source.alg",
+        "sha256": "99ed5f22d4215054abc5af41f2da265ffe85626a355453cd8706aafc129d8cc0"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T21:01:32.6336544Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32/raw.txt",
+          "sha256": "89bd7bcddc90e574b90d95004e25b09594ddc033087bd9e53c7e31a201430c5e"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32/stdout.txt",
+          "sha256": "d74f1e7a994eca8e59dca3924bfcbda3cba127152285185f4cbcb51042071b02"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32/stdout.txt",
+            "sha256": "d74f1e7a994eca8e59dca3924bfcbda3cba127152285185f4cbcb51042071b02"
+          },
+          "randomInput": {
+            "kind": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647,
+            "decimals": 0,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify the full signed 32-bit generated-input domain and endpoint normalization; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
+          }
+        },
+        "tests": [
+          "internal/stdlib/random_input_test.go#TestRandomInputRejectsUnrepresentableIntegerRangeBeforeDraw",
+          "internal/stdlib/random_input_test.go#TestRandomInputAcceptsFullSigned32Range",
+          "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
+        ]
+      }
+    },
+    {
+      "id": "random-boundary-full-signed32-reversed",
+      "ownerGroup": 13,
+      "tasks": [
+        "13.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32-reversed/source.alg",
+        "sha256": "e35b9b4eeab38129e18f397a79e8b43fcd5d9987cc7de07be70eefe093d885c3"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-12T21:01:45.8704847Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32-reversed/raw.txt",
+          "sha256": "89bd7bcddc90e574b90d95004e25b09594ddc033087bd9e53c7e31a201430c5e"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32-reversed/stdout.txt",
+          "sha256": "d74f1e7a994eca8e59dca3924bfcbda3cba127152285185f4cbcb51042071b02"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/random-boundary-full-signed32-reversed/stdout.txt",
+            "sha256": "d74f1e7a994eca8e59dca3924bfcbda3cba127152285185f4cbcb51042071b02"
+          },
+          "randomInput": {
+            "kind": "integer",
+            "minimum": -2147483648,
+            "maximum": 2147483647,
+            "decimals": 0,
+            "samples": 1,
+            "review": {
+              "reason": "Qualify the full signed 32-bit generated-input domain and endpoint normalization; reference seeds and sequences are not promised.",
+              "link": "docs/random-replay-contracts.md"
+            }
+          }
+        },
+        "tests": [
+          "internal/stdlib/random_input_test.go#TestRandomInputRejectsUnrepresentableIntegerRangeBeforeDraw",
+          "internal/stdlib/random_input_test.go#TestRandomInputAcceptsFullSigned32Range",
           "scripts/conformance/random_corpus_test.go#TestRecordedRandomInputDomains"
         ]
       }

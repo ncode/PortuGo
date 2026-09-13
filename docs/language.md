@@ -1095,8 +1095,10 @@ return positioned `R004` without assigning or echoing the failed read. Builtin
 random failures continue using `R007`. Recorded file-input transitions preserve
 unread file lines during generated reads, resume the selected source when random
 mode is disabled, and record generated values when creating a missing file.
-Extreme bound compatibility remains pending reference qualification; ordinary
-range and input-state coverage does not establish exact reference draw counts.
+The full signed 32-bit interval is qualified, including reversed endpoints;
+out-of-range floating-bound failures remain outside the verified profile.
+Ordinary range and input-state coverage does not establish exact reference draw
+counts.
 
 ## Execution diagnostics and safeguards
 
