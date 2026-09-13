@@ -609,15 +609,25 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
 As with declaration candidates, group 2 must replace unsupported repeat, range, or return forms with rejection tasks before this group starts. The work below adds positive forms only where recorded acceptance exists.
 
 - [ ] 9.1 Add failing oracle regressions for conditional and infinite repeat forms, `fimrepita`, inclusive case ranges and overlapping-label ordering, nested return/break propagation, zero/negative steps, bound evaluation timing, loop-variable mutation, and integer-boundary iteration.
-- [ ] 9.2 Add explicit optional repeat conditions, ranged case labels, and optional return expressions to the AST and canonical printer.
-- [ ] 9.3 Parse every accepted repeat terminator, range-label syntax, return form, and `para` form with newline-aware recovery.
+- [x] 9.2 Add explicit optional repeat conditions, ranged case labels, and optional return expressions to the AST and canonical printer.
+
+  The control-flow golden covers a conditional repeat, inclusive ranged labels,
+  bare procedure return, and valued function return through parse and print.
+- [x] 9.3 Parse every accepted repeat terminator, range-label syntax, return form, and `para` form with newline-aware recovery.
+
+  The same golden round-trips the accepted `ate`, range, return, and descending
+  `para` forms; existing repeat recovery fixtures retain rejection behavior for
+  unsupported terminators.
 - [ ] 9.4 Validate repeat conditions, dynamic range endpoint expressions, label types and recorded overlapping-label ordering, return contexts/types and recorded fallthrough behavior, break contexts, and integer loop control.
 
   The missing-value return continuation probe now reports the recorded `E001`
   at `retorne` while keeping the following line from becoming a second syntax
-  failure. Remaining repeat, range, and loop validation stays pending.
+  failure. A table-driven semantic diagnostic suite now pins nonlogical repeat
+  conditions, break outside loops, noninteger loop variables, bounds, and
+  steps; recorded range, return, and loop tables cover the remaining accepted
+  contexts.
 - [ ] 9.5 Implement conditional and confirmed infinite repeats with a budget charge on every iteration, including empty bodies; test that finite-budget runs stop with `R006` while unbudgeted loop semantics remain unchanged.
-- [ ] 9.6 Implement inclusive range matching, first-arm selection, and no fall-through while evaluating the selector once.
+- [x] 9.6 Implement inclusive range matching, first-arm selection, and no fall-through while evaluating the selector once.
 
   Recorded ordinary numeric, text, and logical labels, dynamic numeric ranges,
   duplicate/overlapping labels, selector truncation, and first-match evaluation
@@ -627,8 +637,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   without selecting an arm or default; literal, built-in, and nested bounds
   retain the ordinary no-match path. The selector-order probe covers this
   rule. A malformed `ate` line in an unselected case body is now retained and
-  reports `P001` only when that body executes. Broader choice and range
-  validation remains pending.
+  reports `P001` only when that body executes. The control-flow parser golden
+  and combined runtime fixture now exercise the accepted range forms and
+  first-match behavior alongside the recorded range table.
 - [x] 9.7 Apply recorded result updates without exiting nested conditions, choices, or loops; propagate break control to the exact innermost-loop boundary.
 
   Recorded finite return cases cover nested conditions, choices, loops, and
@@ -642,7 +653,11 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
   Runtime-limit regressions assert positioned `R005` call-depth and `R006`
   step-budget diagnostics under a subprocess watchdog.
-- [ ] 9.10 Add parser goldens, semantic diagnostic tables, runtime `.out`/`.err` fixtures, and examples for ranges, repeat variants, and descending boundary-safe loops.
+- [x] 9.10 Add parser goldens, semantic diagnostic tables, runtime `.out`/`.err` fixtures, and examples for ranges, repeat variants, and descending boundary-safe loops.
+
+  The control-flow golden, semantic diagnostic table, combined execution
+  fixture, zero-step error fixture with partial output, and example cover the
+  recorded forms and diagnostics.
 - [x] 9.11 Update `docs/language.md` and `CHANGELOG.md` with repeat, ranges, return, break, and exact `para` semantics.
 
   The language reference and changelog record the verified repeat, range,
