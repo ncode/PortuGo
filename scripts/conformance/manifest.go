@@ -54,6 +54,11 @@ type generatedFile struct {
 	Content artifact `json:"content"`
 }
 
+type fixtureAccess struct {
+	Path string `json:"path"`
+	Mode string `json:"mode"`
+}
+
 // observation also defines the state/host adapter boundary used by group 3.
 // Subprocess replay uses the deterministic execution adapter for these channels.
 type observation struct {
@@ -83,6 +88,7 @@ type probe struct {
 	Files          []generatedFile `json:"files,omitempty"`
 	TimeoutMS      int             `json:"timeoutMS"`
 	MaxSteps       uint64          `json:"maxSteps,omitempty"`
+	FixtureAccess  *fixtureAccess  `json:"fixtureAccess,omitempty"`
 	Evidence       evidence        `json:"evidence"`
 	Implementation implementation  `json:"implementation"`
 }

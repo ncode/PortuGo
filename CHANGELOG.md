@@ -16,9 +16,9 @@
   `ate_que` and `até_que` without cascading line errors. Keep the canonical
   repeat syntax as `repita ... ate <condition>`.
 
-- Record native Windows validation for existing-file continuation under sharing
-  locks while retaining all six access-constrained probes as pending until the
-  corpus replay can recreate their restrictions.
+- Add fixture-access replay setup for existing-file continuation under
+  unavailable reads, covering the six recorded permission-denied and
+  sharing-locked controls while restoring and checking unchanged bytes.
 
 - Match the recorded choice behavior for a numeric-domain-absent selector with
   a direct dynamic range upper bound, including its evaluation and enclosing
@@ -92,8 +92,8 @@
 - Continue from an existing regular `arquivo` file when read access is denied
   or Windows reports a sharing violation, preserving its bytes and console or
   generated input. Add nine reference controls, including logical file input
-  during random mode, and platform filesystem regressions. Six access-constrained
-  probes remain pending generic CLI replay.
+  during random mode, platform filesystem regressions and replay coverage for
+  the six constrained controls.
 
 - Continue execution when an `arquivo` parent directory is missing, preserving
   console or random input without creating directories or a recording. Match

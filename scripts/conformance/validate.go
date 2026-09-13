@@ -133,6 +133,25 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 	if p.TimeoutMS < 1 || p.TimeoutMS > 30000 {
 		add(fmt.Errorf("replay budget must be 1..30000 milliseconds"))
 	}
+	if access := p.FixtureAccess; access != nil {
+		if access.Mode != "unavailable" {
+			add(fmt.Errorf("unsupported fixture access mode %q", access.Mode))
+		}
+		add(func() error {
+			_, err := safePath(root, access.Path)
+			return err
+		}())
+		declared := false
+		for _, file := range p.Files {
+			if file.Path == access.Path {
+				declared = true
+				break
+			}
+		}
+		if !declared {
+			add(fmt.Errorf("fixture access path %s is not an input file", access.Path))
+		}
+	}
 	if p.Evidence.State != "not-applicable" {
 		for _, a := range []artifact{p.Source, p.Input} {
 			_, err := readArtifact(root, a)

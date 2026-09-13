@@ -104,6 +104,15 @@ func TestLoadRejectsUnknownFieldsAndTrailingJSON(t *testing.T) {
 	}
 }
 
+func TestLoadManifestAcceptsFixtureAccess(t *testing.T) {
+	t.Parallel()
+	root := t.TempDir()
+	writeArtifact(t, root, "manifest.json", `{"probes":[{"fixtureAccess":{"path":"input.dat","mode":"unavailable"}}]}`)
+	if _, err := loadManifest(root, "manifest.json"); err != nil {
+		t.Fatalf("load fixture access manifest: %v", err)
+	}
+}
+
 func TestCommandStagesSelectedProbe(t *testing.T) {
 	t.Parallel()
 	root, m := testManifest(t)

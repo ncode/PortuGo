@@ -92,6 +92,23 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 			return err
 		}
 	}
+	restoreAccess, err := prepareFixtureAccess(dir, p.FixtureAccess)
+	if err != nil {
+		return err
+	}
+	restoredAccess := false
+	restore := func() error {
+		if restoredAccess {
+			return nil
+		}
+		restoredAccess = true
+		return restoreAccess()
+	}
+	defer func() {
+		if err := restore(); err != nil {
+			runErr = errors.Join(runErr, fmt.Errorf("restore fixture access: %w", err))
+		}
+	}()
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(p.TimeoutMS)*time.Millisecond)
 	defer cancel()
 	stdout, stderr := &boundedOutput{cancel: cancel}, &boundedOutput{cancel: cancel}
@@ -117,6 +134,9 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	}
 	if ctx.Err() != nil {
 		return fmt.Errorf("replay deadline exceeded")
+	}
+	if err := restore(); err != nil {
+		return fmt.Errorf("restore fixture access: %w", err)
 	}
 	exitCode := 0
 	if err != nil {

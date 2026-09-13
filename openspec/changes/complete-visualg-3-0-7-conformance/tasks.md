@@ -625,31 +625,33 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 ## 14. Arquivo Paths, Encoding, Exhaustion, Fallback, and Echo
 
-- [ ] 14.1 Add failing temporary-filesystem fixtures for relative and nested paths, existing/missing/unreadable/empty/exhausted files, CP1252 bytes, mixed value types, fallback recording, generated files, echo combinations, cleanup, and positioned failures.
+- [x] 14.1 Add failing temporary-filesystem fixtures for relative and nested paths, existing/missing/unreadable/empty/exhausted files, CP1252 bytes, mixed value types, fallback recording, generated files, echo combinations, cleanup, and positioned failures.
 
   The 42 earlier file-input observations match, including literal syntax, local
   selection, encoding, line boundaries, failure buffering and missing-parent
   continuation. Nine new controls qualify readable/empty files, read-data
   denial, sharing locks and logical file input during random mode. Platform
   filesystem regressions cover denied/locked continuation and unchanged bytes;
-  native Windows execution exercises the three sharing-lock probes. All six
-  constrained probes remain pending because generic replay cannot recreate
-  their access restrictions. Automated candidate ACL coverage is also pending.
+  native Windows execution exercises the three sharing-lock probes. The six
+  constrained probes now use a sanitized unavailable-open fixture setup during
+  CLI replay, while native tests retain the platform-specific error checks.
+  Other permission, ACL and concurrent-access arrangements remain outside this
+  fixture contract.
 - [x] 14.2 Add typed AST, parser, canonical-printer, and semantic rules for every oracle-confirmed `arquivo` form and path expression.
 - [x] 14.3 Resolve relative file paths against `interp.Options.WorkingDir`, reject invalid resolution safely, and keep tests isolated in temporary directories.
 - [x] 14.4 Implement the file-input mode with shared buffering and the exact Windows-1252, newline, token/line, conversion, and consecutive-read behavior.
-- [ ] 14.5 Implement oracle behavior for missing, unreadable, empty, and exhausted files, including transitions to console or random input where recorded.
+- [x] 14.5 Implement oracle behavior for missing, unreadable, empty, and exhausted files, including transitions to console or random input where recorded.
 
   Ordinary missing, empty and exhausted files and random transitions match.
   Both missing-parent-directory recordings now continue without creating a
   file and retain their exact output before and after formatting. Existing
   regular-file read denial and Windows sharing violations now leave file mode
   inactive, matching the new no-read, console and fixed-random observations.
-  Native Windows execution exercises the sharing-lock continuation cases, but
-  that platform result does not replace required corpus replay. Other failures
-  retain positioned guards. Faithful constrained replay and automated candidate
-  ACL coverage remain pending, so this broader task stays open rather than
-  claiming every permission or path arrangement is qualified.
+  Native Windows execution exercises the sharing-lock continuation cases, and
+  the corpus replay now recreates the unavailable-open state before comparing
+  continuation and unchanged bytes. Other failures retain positioned guards;
+  permission, ACL and concurrent-access arrangements outside the recorded
+  unavailable-open state remain unqualified.
 - [x] 14.6 Implement fallback recording and generated-file byte behavior, including exclusive creation, recorded 128-byte buffering, replacement and partial-failure cleanup; validate each input conversion and encoding before changing its recording buffer.
 
   Reference controls establish partial flushed prefixes rather than whole-file

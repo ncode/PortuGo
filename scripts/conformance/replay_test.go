@@ -44,6 +44,11 @@ func TestReplayChild(t *testing.T) {
 			os.Exit(2)
 		}
 		fmt.Print(" 1\n")
+	case "file-unavailable":
+		if _, err := os.ReadFile("input.dat"); err == nil {
+			os.Exit(2)
+		}
+		fmt.Print(" 1\n")
 	default:
 		os.Exit(2)
 	}
@@ -95,6 +100,25 @@ func TestReplay(t *testing.T) {
 				t.Fatalf("error = %v, want %q", err, tt.want)
 			}
 		})
+	}
+}
+
+func TestReplayAppliesFixtureAccess(t *testing.T) {
+	t.Parallel()
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	root, m := testManifest(t)
+	p := m.Probes[0]
+	p.TimeoutMS = 5000
+	p.Source = writeArtifact(t, root, p.Source.Path, "file-unavailable")
+	a := writeArtifact(t, root, "fixture.dat", "unchanged\r\n")
+	p.Files = []generatedFile{{Path: "input.dat", Content: a}}
+	p.FixtureAccess = &fixtureAccess{Path: "input.dat", Mode: "unavailable"}
+	p.Implementation.Expected.Generated = []generatedFile{{Path: "input.dat", Content: a}}
+	if err := replayProbe(root, p, executable, []string{"-test.run=^TestReplayChild$", "--"}, ""); err != nil {
+		t.Fatal(err)
 	}
 }
 
