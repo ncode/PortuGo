@@ -34,11 +34,14 @@
   replay-result JSON.
 
 - Validate explicit `[VERIFICAR]` source items against checklist, defect, and
-  feature inventory links while retaining incomplete legacy source coverage.
+  feature inventory links while retaining incomplete legacy source coverage;
+  unresolved source markers remain pending.
 
 - Add stable inventory links for the 25 numbered legacy compatibility-checklist
-  rows and validate their declared source section against existing probes;
-  broader marker, defect, feature, and environment coverage remains open.
+  rows, 26 evidenced assumptions, the documented builtin catalog, and the
+  recorded CLI status correction; validate their declared source sections
+  against existing probes. Broader marker, defect, feature, and environment
+  coverage remains open.
 
 - Sort untraced probe diagnostics so manifest validation reports stable errors.
 
@@ -119,7 +122,6 @@
 - Mark the conformance validation-mode implementation complete after exercising
   evidence, incremental, and implementation-acceptance checks for artifact
   integrity, trace coverage, owner readiness, and downgrade history.
-
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 

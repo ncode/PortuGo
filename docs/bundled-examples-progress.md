@@ -131,7 +131,6 @@ moving subsequent missing-delimiter diagnostics to line 1. This corrects
 position loss without claiming to match the school's earlier parsing behavior.
 
 The catalog has sixty accepted examples, eleven unusable examples, and two
-awaiting recorded classifications: `Cronometro.alg` and `decpoutras.alg`.
-Incomplete captures are excluded. These
-records do not complete the full example sweep, evidence inventory, or
-conformance release gate.
+reviewed non-goal examples. All 73 catalog entries now have a recorded
+disposition; incomplete captures are excluded. These records do not complete
+the full example sweep, evidence inventory, or conformance release gate.

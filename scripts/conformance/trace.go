@@ -219,6 +219,33 @@ func sourceObligationLink(name, line string) string {
 	return name + "#" + strings.TrimSpace(strings.TrimLeft(line, "#"))
 }
 
+type pendingSourceObligation struct {
+	line   int
+	prefix string
+}
+
+// These source markers have no recorded reference evidence yet. Keep them
+// explicitly enumerated so the legacy source cannot hide them behind its
+// checklist section, and do not synthesize probe links for them.
+var pendingSourceObligations = map[string][]pendingSourceObligation{
+	"especificacao-visualg-3.md": {
+		{line: 81, prefix: "- `*` `const` e `dos`:"},
+		{line: 128, prefix: "- `[VERIFICAR]` Se múltiplas seções `var`"},
+		{line: 334, prefix: "- `[VERIFICAR]` Passar expressão/literal para parâmetro `var`:"},
+		{line: 431, prefix: "- Os nomes das builtins NÃO são impedidos"},
+		{line: 440, prefix: "- Pilha de ativação visível no IDE"},
+	},
+}
+
+func isPendingSourceObligation(name string, lineNumber int, line string) bool {
+	line = strings.TrimSpace(line)
+	for _, pending := range pendingSourceObligations[name] {
+		if pending.line == lineNumber && strings.HasPrefix(line, pending.prefix) {
+			return true
+		}
+	}
+	return false
+}
 func validateInventory(root string, m manifest, probes map[string]probe) error {
 	var problems []error
 	ids, links, requirementLinks, used := make(map[string]bool), make(map[string]bool), make(map[string]bool), make(map[string]bool)
@@ -294,20 +321,30 @@ func validateInventory(root string, m manifest, probes map[string]probe) error {
 			continue
 		}
 		checklist := checklistSourceItems(data)
-		for _, line := range strings.Split(string(data), "\n") {
+		pendingSeen := make(map[int]bool)
+		for lineNumber, line := range strings.Split(string(data), "\n") {
+			lineNumber++
 			if strings.HasPrefix(line, "### Requirement: ") {
 				link := name + "#" + strings.TrimPrefix(line, "### ")
 				if !requirementLinks[link] {
 					problems = append(problems, fmt.Errorf("untraced requirement %s", link))
 				}
 			}
-			// The legacy checklist source is covered by its numbered section below;
-			// its other marker lines remain outside this bounded inventory slice.
-			if len(checklist) == 0 && isSourceObligationLine(line) {
-				link := sourceObligationLink(name, line)
-				if !links[link] {
-					problems = append(problems, fmt.Errorf("untraced verification item %s", link))
-				}
+			if !isSourceObligationLine(line) {
+				continue
+			}
+			if isPendingSourceObligation(name, lineNumber, line) {
+				pendingSeen[lineNumber] = true
+				continue
+			}
+			link := sourceObligationLink(name, line)
+			if !links[link] {
+				problems = append(problems, fmt.Errorf("untraced verification item %s", link))
+			}
+		}
+		for _, pending := range pendingSourceObligations[name] {
+			if !pendingSeen[pending.line] {
+				problems = append(problems, fmt.Errorf("pending verification item missing %s#line %d", name, pending.line))
 			}
 		}
 		for _, line := range checklist {
