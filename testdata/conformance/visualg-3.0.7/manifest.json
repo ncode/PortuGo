@@ -243,6 +243,14 @@
       ]
     },
     {
+      "id": "assumption.output-width-auto-space",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#`[VERIFICAR]` Interação exata do espaço automático com `:N` (o espaço entra dentro ou fora do campo? o exemplo oficial \"x 2.5\" com x:4:1 sugere que \" 2.5\" ocupa o campo de 4 e o espaço é o padding do próprio campo). Teste com valores que enchem o campo.",
+      "probes": [
+        "output-format"
+      ]
+    },
+    {
       "id": "assumption.real-output-default",
       "kind": "assumption",
       "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Formato default de impressão de reais sem `:N:M` (quantas casas? remove zeros à direita? `2.0` imprime como \"2\"?). Ponto crítico para compatibilidade de saída.",
