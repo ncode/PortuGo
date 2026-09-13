@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -10,12 +11,17 @@ import (
 
 func TestPublicErrorRedactsFilesystemDetails(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "private-name")
-	err := publicError(fmt.Errorf("start: %w", &os.PathError{Op: "open", Path: path, Err: os.ErrNotExist}))
-	if err == nil || err.Error() != "filesystem operation failed" {
-		t.Fatalf("error = %v, want generic filesystem failure", err)
-	}
-	if strings.Contains(err.Error(), path) {
-		t.Fatalf("error leaked filesystem path: %v", err)
+	for _, input := range []error{
+		fmt.Errorf("start: %w", &os.PathError{Op: "open", Path: path, Err: os.ErrNotExist}),
+		fmt.Errorf("start: %w", &exec.Error{Name: path, Err: os.ErrNotExist}),
+	} {
+		err := publicError(input)
+		if err == nil || err.Error() != "filesystem operation failed" {
+			t.Fatalf("error = %v, want generic filesystem failure", err)
+		}
+		if strings.Contains(err.Error(), path) {
+			t.Fatalf("error leaked filesystem path: %v", err)
+		}
 	}
 }
 

@@ -43,7 +43,8 @@ func loadManifest(root, name string) (manifest, error) {
 func publicError(err error) error {
 	var pathErr *os.PathError
 	var linkErr *os.LinkError
-	if errors.As(err, &pathErr) || errors.As(err, &linkErr) {
+	var execErr *exec.Error
+	if errors.As(err, &pathErr) || errors.As(err, &linkErr) || errors.As(err, &execErr) {
 		return errors.New("filesystem operation failed")
 	}
 	return err
