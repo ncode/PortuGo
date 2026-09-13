@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -135,6 +136,28 @@ func TestCaptureRejectsSymlinkedStage(t *testing.T) {
 	for _, name := range []string{"normalized.txt", "evidence.json"} {
 		if _, err := os.Stat(filepath.Join(target, name)); !os.IsNotExist(err) {
 			t.Fatalf("capture created %s through symlink", name)
+		}
+	}
+}
+
+func TestCaptureRejectsNonPrivateStage(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Windows staging privacy is enforced by ACLs")
+	}
+	root, m := testManifest(t)
+	stage := filepath.Join(t.TempDir(), "recording")
+	if err := prepareRecording(root, m.Probes[0], stage); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Chmod(stage, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := captureRecording(root, stage, true, "2026-09-07T12:00:00Z", "panel-v1", false); err == nil || !strings.Contains(err.Error(), "stage must be private") {
+		t.Fatalf("error = %v, want private-stage rejection", err)
+	}
+	for _, name := range []string{"normalized.txt", "evidence.json"} {
+		if _, err := os.Stat(filepath.Join(stage, name)); !os.IsNotExist(err) {
+			t.Fatalf("capture created %s in non-private stage", name)
 		}
 	}
 }

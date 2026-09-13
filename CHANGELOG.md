@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject existing non-private recording stages before capture reads or writes
+  evidence on POSIX hosts; Windows continues to use its ACL model.
+
 - Verify auxiliary replay input files remain unchanged unless their paths are
   explicitly declared generated or absent, detecting candidate mutations and
   deletions.
