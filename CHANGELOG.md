@@ -82,6 +82,10 @@
 
 - Link the vector-parameter verification marker to its recorded rejection.
 
+- Mark the grammar documentation coverage complete for recorded spellings,
+  newline/comment retention, source and AST limits, and compatibility
+  rejections; unresolved oracle boundaries remain explicit.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
