@@ -283,6 +283,14 @@
       ]
     },
     {
+      "id": "assumption.for-loop-control-mutation",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Modificar a variável de controle dentro do corpo: permitido? afeta o laço?",
+      "probes": [
+        "for-mutation"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
