@@ -4,13 +4,32 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"slices"
 	"strings"
 	"testing"
 	"time"
 )
+
+func TestMain(m *testing.M) {
+	if os.Getenv("PORTUGOL_GO_FAKE_GIT") == "1" {
+		for _, arg := range os.Args[1:] {
+			switch arg {
+			case "rev-parse":
+				_, _ = fmt.Fprintln(os.Stdout, strings.Repeat("a", 40))
+				os.Exit(0)
+			case "status":
+				_, _ = os.Stdout.Write(bytes.Repeat([]byte("x"), maxArtifactBytes+1))
+				os.Exit(0)
+			}
+		}
+		os.Exit(1)
+	}
+	os.Exit(m.Run())
+}
 
 func testQualityReport(t *testing.T, commit string) (string, qualityReport) {
 	t.Helper()
@@ -135,6 +154,30 @@ func TestQualityCandidate(t *testing.T) {
 				t.Fatalf("custom candidate: %v", err)
 			}
 		})
+	}
+}
+
+func TestQualityCandidateRejectsOversizedStatus(t *testing.T) {
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(executable)
+	if err != nil {
+		t.Fatal(err)
+	}
+	bin := t.TempDir()
+	name := "git"
+	if runtime.GOOS == "windows" {
+		name += ".exe"
+	}
+	if err := os.WriteFile(filepath.Join(bin, name), data, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("PORTUGOL_GO_FAKE_GIT", "1")
+	t.Setenv("PATH", bin+string(os.PathListSeparator)+os.Getenv("PATH"))
+	if err := validateQuality(t.TempDir(), "quality.json", ""); err == nil || !strings.Contains(err.Error(), "git output exceeds artifact size limit") {
+		t.Fatalf("error = %v, want bounded git output failure", err)
 	}
 }
 

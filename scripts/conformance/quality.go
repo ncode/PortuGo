@@ -37,9 +37,19 @@ func validateQuality(root, name, candidate string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	git := func(args ...string) ([]byte, error) {
-		cmd := exec.CommandContext(ctx, "git", args...)
+		commandCtx, commandCancel := context.WithCancel(ctx)
+		defer commandCancel()
+		cmd := exec.CommandContext(commandCtx, "git", args...)
 		cmd.Dir = root
-		return cmd.Output()
+		var output boundedCommandOutput
+		output.limit, output.cancel = maxArtifactBytes, commandCancel
+		cmd.Stdout = &output
+		if err := cmd.Run(); output.overflow {
+			return nil, fmt.Errorf("git output exceeds artifact size limit")
+		} else if err != nil {
+			return nil, err
+		}
+		return output.buffer.Bytes(), nil
 	}
 	commit, err := git("rev-parse", "--verify", "HEAD^{commit}")
 	if err != nil {
