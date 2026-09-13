@@ -109,6 +109,13 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 }
 
 func readBoundedFile(name string, limit int, tooLarge error) ([]byte, error) {
+	info, err := os.Stat(name)
+	if err != nil {
+		return nil, err
+	}
+	if !info.Mode().IsRegular() {
+		return nil, fmt.Errorf("invalid file size or type: %s", name)
+	}
 	f, err := os.Open(name)
 	if err != nil {
 		return nil, err
