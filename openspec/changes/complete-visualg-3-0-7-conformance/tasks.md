@@ -85,6 +85,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   reviewed non-goals in every validation mode.
   Bundled-example catalogs also reject unknown fields and trailing JSON in every
   validation mode, matching the manifest schema's strict decoding boundary.
+  State and host observation artifacts also share the adapter's 1 MiB output
+  limit, so oversized retained expectations fail before replay.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 

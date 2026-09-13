@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject state and host observation artifacts larger than the adapter's 1 MiB
+  output limit before conformance replay.
+
 - Reject unknown fields and trailing JSON in bundled-example catalogs in every
   conformance validation mode.
 

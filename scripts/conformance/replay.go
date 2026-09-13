@@ -77,6 +77,13 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	if err := checkExpectedExitCode(want.ExitCode); err != nil {
 		return err
 	}
+	for _, a := range []*artifact{want.State, want.HostTrace} {
+		if a != nil {
+			if _, err := readObservationArtifact(root, *a); err != nil {
+				return err
+			}
+		}
+	}
 	source, err := readArtifact(root, p.Source)
 	if err != nil {
 		return err
@@ -224,7 +231,7 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 		if err != nil {
 			return fmt.Errorf("missing %s observation", name)
 		}
-		expected, err := readArtifact(root, *artifact)
+		expected, err := readObservationArtifact(root, *artifact)
 		if err != nil {
 			return err
 		}

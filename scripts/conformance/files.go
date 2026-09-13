@@ -11,7 +11,10 @@ import (
 	"strings"
 )
 
-const maxArtifactBytes = 16 << 20
+const (
+	maxArtifactBytes    = 16 << 20
+	maxObservationBytes = 1 << 20
+)
 
 func safePath(root, name string) (string, error) {
 	if name == "." || !fs.ValidPath(name) || strings.ContainsAny(name, "\\:\x00") {
@@ -80,6 +83,17 @@ func readArtifact(root string, a artifact) ([]byte, error) {
 	}
 	if hashBytes(b) != a.SHA256 {
 		return nil, fmt.Errorf("hash mismatch: %s", a.Path)
+	}
+	return b, nil
+}
+
+func readObservationArtifact(root string, a artifact) ([]byte, error) {
+	b, err := readArtifact(root, a)
+	if err != nil {
+		return nil, err
+	}
+	if len(b) > maxObservationBytes {
+		return nil, fmt.Errorf("observation exceeds replay size limit: %s", a.Path)
 	}
 	return b, nil
 }
