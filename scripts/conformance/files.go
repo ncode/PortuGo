@@ -22,6 +22,9 @@ func safePath(root, name string) (string, error) {
 	}
 	current := root
 	for _, part := range strings.Split(name, "/") {
+		if strings.EqualFold(part, ".git") {
+			return "", fmt.Errorf("unsafe path %q", name)
+		}
 		if strings.HasSuffix(part, ".") || strings.HasSuffix(part, " ") {
 			return "", fmt.Errorf("unsafe path %q", name)
 		}

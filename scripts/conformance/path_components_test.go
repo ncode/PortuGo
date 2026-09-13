@@ -17,6 +17,8 @@ func TestManifestPathComponents(t *testing.T) {
 		{name: "directory space", path: "data /input.dat"},
 		{name: "parent alias", path: ".. /input.dat"},
 		{name: "only periods", path: "data/.../input.dat"},
+		{name: "repository metadata", path: ".git/HEAD"},
+		{name: "repository metadata alias", path: ".GIT/config"},
 		{name: "plain", path: "data/input.dat", valid: true},
 		{name: "leading periods", path: ".data/.input.dat", valid: true},
 		{name: "interior periods and spaces", path: "data.. files/input value.dat", valid: true},

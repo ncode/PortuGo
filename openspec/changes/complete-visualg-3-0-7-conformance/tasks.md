@@ -91,6 +91,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   capture emits evidence.
   Manifests loaded from a history base use the same strict decoder as current
   manifests, so downgrade validation cannot bypass schema checks.
+  Artifact and fixture paths also reject repository metadata directories such as
+  `.git`, including case aliases, before private Git state can be hashed.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 
