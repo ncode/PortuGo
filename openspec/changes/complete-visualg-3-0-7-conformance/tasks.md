@@ -113,6 +113,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Windows staging privacy remains enforced by its ACL model.
   Artifact reads remain bounded after opening, so a file that grows between
   metadata inspection and consumption cannot bypass the repository size limit.
+  Retained replay-output reads apply the smaller observation limit before hash
+  comparison, avoiding a larger allocation for oversized expectations.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 

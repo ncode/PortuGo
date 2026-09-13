@@ -48,6 +48,14 @@ func safePath(root, name string) (string, error) {
 }
 
 func readFile(root, name string) ([]byte, error) {
+	b, err := readFileLimit(root, name, maxArtifactBytes)
+	if errors.Is(err, errArtifactTooLarge) {
+		return nil, fmt.Errorf("invalid file size or type: %s", name)
+	}
+	return b, err
+}
+
+func readFileLimit(root, name string, limit int) ([]byte, error) {
 	p, err := safePath(root, name)
 	if err != nil {
 		return nil, err
@@ -56,23 +64,45 @@ func readFile(root, name string) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("read %s: %w", name, err)
 	}
-	if !info.Mode().IsRegular() || info.Size() > maxArtifactBytes {
+	if !info.Mode().IsRegular() {
 		return nil, fmt.Errorf("invalid file size or type: %s", name)
+	}
+	if info.Size() > int64(limit) {
+		return nil, errArtifactTooLarge
 	}
 	f, err := os.Open(p)
 	if err != nil {
 		return nil, fmt.Errorf("read %s: %w", name, err)
 	}
-	b, err := readBounded(f, maxArtifactBytes)
+	b, err := readBounded(f, limit)
 	closeErr := f.Close()
-	if errors.Is(err, errArtifactTooLarge) {
-		return nil, fmt.Errorf("invalid file size or type: %s", name)
-	}
 	if err != nil {
 		return nil, fmt.Errorf("read %s: %w", name, err)
 	}
 	if closeErr != nil {
 		return nil, fmt.Errorf("read %s: %w", name, closeErr)
+	}
+	return b, nil
+}
+
+func readArtifact(root string, a artifact) ([]byte, error) {
+	b, err := readArtifactLimit(root, a, maxArtifactBytes)
+	if errors.Is(err, errArtifactTooLarge) {
+		return nil, fmt.Errorf("invalid file size or type: %s", a.Path)
+	}
+	return b, err
+}
+
+func readArtifactLimit(root string, a artifact, limit int) ([]byte, error) {
+	if !validHash(a.SHA256) {
+		return nil, fmt.Errorf("invalid artifact hash: %s", a.Path)
+	}
+	b, err := readFileLimit(root, a.Path, limit)
+	if err != nil {
+		return nil, err
+	}
+	if hashBytes(b) != a.SHA256 {
+		return nil, fmt.Errorf("hash mismatch: %s", a.Path)
 	}
 	return b, nil
 }
@@ -106,27 +136,13 @@ func validHash(s string) bool {
 
 func hashBytes(b []byte) string { return fmt.Sprintf("%x", sha256.Sum256(b)) }
 
-func readArtifact(root string, a artifact) ([]byte, error) {
-	if !validHash(a.SHA256) {
-		return nil, fmt.Errorf("invalid artifact hash: %s", a.Path)
-	}
-	b, err := readFile(root, a.Path)
-	if err != nil {
-		return nil, err
-	}
-	if hashBytes(b) != a.SHA256 {
-		return nil, fmt.Errorf("hash mismatch: %s", a.Path)
-	}
-	return b, nil
-}
-
 func readReplayOutputArtifact(root string, a artifact) ([]byte, error) {
-	b, err := readArtifact(root, a)
+	b, err := readArtifactLimit(root, a, maxObservationBytes)
+	if errors.Is(err, errArtifactTooLarge) {
+		return nil, fmt.Errorf("replay output exceeds size limit: %s", a.Path)
+	}
 	if err != nil {
 		return nil, err
-	}
-	if len(b) > maxObservationBytes {
-		return nil, fmt.Errorf("replay output exceeds size limit: %s", a.Path)
 	}
 	return b, nil
 }
