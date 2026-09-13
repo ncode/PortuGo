@@ -45,10 +45,14 @@ func (b *boundedOutput) Write(p []byte) (int, error) {
 	return b.buffer.Write(p)
 }
 
-func checkReplayInputPath(name string, observe bool) error {
+func replayOwnedPath(name string, observe bool) bool {
 	first, _, _ := strings.Cut(name, "/")
 	first = strings.ToUpper(first)
-	if first == "SOURCE.ALG" || observe && (first == "STATE.JSON" || first == "HOST.JSON" || first == "CLOCK.JSON") {
+	return first == "SOURCE.ALG" || observe && (first == "STATE.JSON" || first == "HOST.JSON" || first == "CLOCK.JSON")
+}
+
+func checkReplayInputPath(name string, observe bool) error {
+	if replayOwnedPath(name, observe) {
 		return fmt.Errorf("input file conflicts with replay-owned path: %s", name)
 	}
 	return nil
@@ -108,6 +112,16 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 		}
 		if err := os.WriteFile(name, data, 0o600); err != nil {
 			return err
+		}
+	}
+	for _, file := range want.Generated {
+		if replayOwnedPath(file.Path, observe) {
+			return fmt.Errorf("generated expectation conflicts with replay-owned path: %s", file.Path)
+		}
+	}
+	for _, name := range want.Absent {
+		if replayOwnedPath(name, observe) {
+			return fmt.Errorf("absent expectation conflicts with replay-owned path: %s", name)
 		}
 	}
 	restoreAccess, err := prepareFixtureAccess(dir, p.FixtureAccess)

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject generated and absent expectations that alias replay-owned source or
+  observation files when an observer is enabled.
+
 - Validate bundled-example catalog source hashes and byte counts for reviewed
   non-goals as well as recorded examples.
 

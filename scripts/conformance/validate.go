@@ -312,6 +312,11 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		_, err := readArtifact(root, file.Content)
 		add(err)
 	}
+	for _, file := range i.Expected.Generated {
+		if replayOwnedPath(file.Path, observe) {
+			add(fmt.Errorf("generated expectation conflicts with replay-owned path: %s", file.Path))
+		}
+	}
 	expectedGenerated := make(map[string]bool)
 	for _, file := range i.Expected.Generated {
 		if expectedGenerated[file.Path] {
@@ -349,6 +354,11 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 					add(fmt.Errorf("required file is a parent of absent path: %s", name))
 				}
 			}
+		}
+	}
+	for _, name := range i.Expected.Absent {
+		if replayOwnedPath(name, observe) {
+			add(fmt.Errorf("absent expectation conflicts with replay-owned path: %s", name))
 		}
 	}
 	generated := make(map[string]string)
