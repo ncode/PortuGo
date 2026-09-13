@@ -55,6 +55,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   preserve zero, repeated and backward readings without changing clock behavior.
   Direct adapter clock fixture reads also use the repository artifact limit
   before decoding.
+  Host observation traces enforce the same output limit while events are
+  accumulated, before JSON serialization.
   Input inventories now reject repeated destination paths in every mode,
   including identical content. Distinct destinations and recorded input/output
   reuse remain covered by generic positive controls.

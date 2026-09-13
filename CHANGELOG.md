@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Bound host observation traces while recording so oversized event streams fail
+  before JSON serialization.
+
 - Bound direct observation-adapter clock fixture reads by the repository
   artifact limit before decoding.
 
