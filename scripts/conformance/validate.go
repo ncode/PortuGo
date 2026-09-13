@@ -312,6 +312,13 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		_, err := readArtifact(root, file.Content)
 		add(err)
 	}
+	expectedGenerated := make(map[string]bool)
+	for _, file := range i.Expected.Generated {
+		if expectedGenerated[file.Path] {
+			add(fmt.Errorf("duplicate generated expectation path %s", file.Path))
+		}
+		expectedGenerated[file.Path] = true
+	}
 	for _, paths := range [][]string{e.Absent, i.Expected.Absent} {
 		seen := make(map[string]bool)
 		for _, name := range paths {

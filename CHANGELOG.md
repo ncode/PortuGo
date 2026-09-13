@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject duplicate candidate generated-output destinations in conformance
+  expectations, including reviewed exclusions across every validation mode.
+
 - Reject conformance inputs that collide with replay-owned files, including
   case aliases and descendants, before validation or replay can accept them.
 
