@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Validate retained generated-file layouts on reviewed exclusions, including
+  conflicts with input fixtures, without requiring matching candidate outputs.
+
 - Reject contradictory conformance absence expectations containing generated
   files or retained inputs, or requiring absence checks through a file.
 
