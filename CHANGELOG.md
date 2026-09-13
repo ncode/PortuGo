@@ -2,8 +2,9 @@
 
 ## Unreleased
 
-- Add a welcoming README with Linux and macOS setup, a first program,
-  everyday CLI commands, examples, and compatibility guidance.
+- Reject case-only aliases across conformance fixture paths and directory
+  components before replay, while preserving exact-path updates.
+
 - Reject trailing ASCII periods and spaces in conformance path components
   before Windows filename normalization can change their meaning.
 

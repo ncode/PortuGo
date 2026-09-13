@@ -1370,6 +1370,12 @@ Artifact and fixture path components cannot end in an ASCII period or space,
 avoiding Windows filename normalization. All validation modes enforce this
 before replay. Leading periods, interior periods and spaces, and nonbreaking
 spaces retain their literal spelling.
+Each probe must use consistent case for declared fixture destinations and
+shared directory components across input, generated, absent and fixture-access
+paths. Validation rejects case-only aliases that would collide on Windows,
+including aliases across file and directory roles. Exact-path input/output
+reuse and consistently spelled shared directories remain valid. This comparison
+does not rename fixture paths or alter the recorded bytes.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.
 Test links require Go's test-name and declaration shape: a top-level `Test`
