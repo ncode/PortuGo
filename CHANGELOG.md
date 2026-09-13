@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Verify the bundled compound-repeat rejection at its recorded source line,
+  including the same unknown-name diagnostic after formatting. Keep the
+  generated-input loop and unexecuted read-destination cases pending further
+  qualification.
+
 - Preserve earlier output when missing timer/debug arguments, unresolved timer
   modes, or nonlogical debug values fail during execution. Verify ten recorded
   diagnostics before and after formatting, including host-effect ordering.

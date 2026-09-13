@@ -1,11 +1,17 @@
 package portugol_test
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
+	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
+	"github.com/ncode/portugol-go/internal/lexer"
+	"github.com/ncode/portugol-go/internal/parser"
+	"github.com/ncode/portugol-go/internal/sema"
 	"github.com/ncode/portugol-go/internal/source"
 )
 
@@ -73,4 +79,36 @@ func TestRecordedBundledExamples(t *testing.T) {
 
 func TestBundledGameRejectsLiteralType(t *testing.T) {
 	checkSemanticDiagnostic(t, "testdata/conformance/visualg-3.0.7/probes/bundled-0cef94aa6573/source.alg", diag.EParse, 9)
+}
+
+func TestBundledRepeatRejectsCompoundTerminator(t *testing.T) {
+	src, err := source.ReadFile("testdata/conformance/visualg-3.0.7/probes/bundled-8576df453f1f/source.alg")
+	if err != nil {
+		t.Fatal(err)
+	}
+	for pass := range 3 {
+		file, tokens, ds := lexer.Scan("source.alg", src)
+		if len(ds) != 0 {
+			t.Fatal(ds)
+		}
+		prog, ds := parser.Parse(tokens)
+		if len(ds) != 0 {
+			t.Fatal(ds)
+		}
+		_, ds = sema.Analyze(prog)
+		if len(ds) != 1 || ds[0].Code != diag.EUndeclared || int(ds[0].Pos) != strings.Index(src, "ATÉ_QUE") {
+			t.Fatalf("pass %d diagnostics = %v, want E002 at the compound terminator", pass, ds)
+		}
+		if pass == 0 && file.Position(ds[0].Pos).Line != 23 {
+			t.Fatalf("original diagnostic line = %d, want 23", file.Position(ds[0].Pos).Line)
+		}
+		var formatted bytes.Buffer
+		if err := ast.Fprint(&formatted, prog); err != nil {
+			t.Fatal(err)
+		}
+		if pass > 0 && formatted.String() != src {
+			t.Fatal("compound terminator formatting is not idempotent")
+		}
+		src = formatted.String()
+	}
 }

@@ -822,13 +822,19 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
   Forty-three original examples now match recorded output before and after
   formatting. Fifteen accepted programs still need a random-output replay
-  contract; two accepted paths encounter CLI errors in unexecuted code. Seven
+  contract; two accepted paths encounter CLI errors in unexecuted code. Six
   rejected programs retain diagnostic or execution-phase differences. The latest
   eleven recordings add eight completed reference runs and three reviewed
   rejections, including the school's input-dependent EOF diagnostic. The two
   nonterminating original runs now have reviewed finite-completion exclusions;
   their language features and the remaining implementation differences are
   still required.
+
+  The bundled compound-repeat spelling now matches its recorded `E002` on
+  line 23, with original and formatted diagnostic regressions, leaving six
+  rejected paths pending. The generated-input example with an omitted loop
+  bound and the menu exit blocked by an unused read destination remain pending;
+  neither recording establishes a general recovery or deferred-lookup rule.
 
 - [ ] 17.4 Exercise the assembled source/depth/call/value/step guards, including empty infinite loops, recursive calls, flat AST chains, input retries, and cleanup, plus storage/encoding/host/filesystem adversarial cases; require controlled diagnostics and fail on a subprocess watchdog kill or accepted-example budget exhaustion.
 - [ ] 17.5 Run and archive results for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, race tests, Windows/macOS/Linux tests, and 30-second lexer and parser fuzz jobs.

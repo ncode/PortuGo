@@ -15,8 +15,8 @@ verified. The reference accepts vectors larger than 500 elements; the draft
 500-slot compatibility restriction has therefore been withdrawn. The recordings
 do not establish the upper storage limit in every declaration context.
 
-The [bundled example sweep](bundled-examples-progress.md) verifies 42 original
-programs against reference output, including formatting and execution. Eight supplied files have
+The [bundled example sweep](bundled-examples-progress.md) verifies 43 original
+programs against reference output, including formatting and execution. Eleven supplied files have
 recorded reference errors. Bundled-file presence alone does not establish that
 its syntax is accepted by this release.
 
@@ -450,6 +450,8 @@ deferred syntax-error marker: an earlier `interrompa` can exit before it, while
 reaching the marker reports `P001` at the marker line. These spellings are
 outside the canonical syntax.
 General conditionless or infinite-repeat semantics remain pending.
+The original bundled compound-terminator example also reports `E002` on line 23
+before producing output. Formatting retains the unknown name and its rejection.
 
 After a complete assignment expression, a following parenthesized suffix or
 same-line statement is ignored. `x <- 7(1)` stores `7`; in

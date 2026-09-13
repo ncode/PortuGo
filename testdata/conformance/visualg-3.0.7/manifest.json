@@ -8442,7 +8442,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -8455,7 +8455,10 @@
               "line": 23
             }
           ]
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestBundledRepeatRejectsCompoundTerminator"
+        ]
       }
     },
     {
