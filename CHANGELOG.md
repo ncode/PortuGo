@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject case-only aliases across conformance fixture paths and directory
+  components before replay, while preserving exact-path updates.
+
 - Reject trailing ASCII periods and spaces in conformance path components
   before Windows filename normalization can change their meaning.
 

@@ -121,6 +121,22 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			problems = append(problems, err)
 		}
 	}
+	spellings := make(map[string]string)
+	checkPath := func(name string) {
+		_, err := safePath(root, name)
+		add(err)
+		if err != nil {
+			return
+		}
+		for end := len(name); end > 0; end = strings.LastIndexByte(name[:end], '/') {
+			prefix := name[:end]
+			key := strings.ToUpper(prefix)
+			if earlier, exists := spellings[key]; exists && earlier != prefix {
+				add(fmt.Errorf("case-insensitive path collision: %s and %s", earlier, prefix))
+			}
+			spellings[key] = prefix
+		}
+	}
 	if p.OwnerGroup < 1 || len(p.Tasks) == 0 {
 		add(fmt.Errorf("missing owner group or task links"))
 	}
@@ -143,10 +159,7 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		if access.Mode != "unavailable" {
 			add(fmt.Errorf("unsupported fixture access mode %q", access.Mode))
 		}
-		add(func() error {
-			_, err := safePath(root, access.Path)
-			return err
-		}())
+		checkPath(access.Path)
 		declared := false
 		for _, file := range p.Files {
 			if file.Path == access.Path {
@@ -282,16 +295,14 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 				add(fmt.Errorf("file path is both file and directory: %s", file.Path[:end]))
 			}
 		}
-		_, err := safePath(root, file.Path)
-		add(err)
-		_, err = readArtifact(root, file.Content)
+		checkPath(file.Path)
+		_, err := readArtifact(root, file.Content)
 		add(err)
 	}
 	for _, paths := range [][]string{e.Absent, i.Expected.Absent} {
 		seen := make(map[string]bool)
 		for _, name := range paths {
-			_, err := safePath(root, name)
-			add(err)
+			checkPath(name)
 			if seen[name] {
 				add(fmt.Errorf("duplicate absent path %s", name))
 			}
@@ -308,9 +319,8 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		if _, exists := generated[file.Path]; exists {
 			add(fmt.Errorf("duplicate generated reference path %s", file.Path))
 		}
-		_, err := safePath(root, file.Path)
-		add(err)
-		_, err = readArtifact(root, file.Content)
+		checkPath(file.Path)
+		_, err := readArtifact(root, file.Content)
 		add(err)
 		generated[file.Path] = file.Content.SHA256
 	}

@@ -53,6 +53,9 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Shared path validation rejects components ending in an ASCII period or space
   before recording and replay; generic tests cover all three modes and retain
   leading periods, interior periods and spaces, and nonbreaking spaces.
+  All three modes also reject case-only aliases across declared input,
+  generated, absent and fixture-access paths, including shared directory
+  components. Exact-path reuse and consistent directory spelling remain valid.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 
