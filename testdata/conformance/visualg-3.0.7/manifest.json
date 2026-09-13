@@ -75163,13 +75163,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-minute/stdout.txt",
             "sha256": "b7e30d728c8cf0e3d49f3368594e6f18ef52535beba0a2ca2306ef67a1c950d4"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-minute/expected-clock.json",
+            "sha256": "5f99f4e52944e5a327e15a710a0fed1766a863c5d50d5d6603f1203c409a42ca"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-chronometer-minute/expected-host.json",
+            "sha256": "606c4b897bd3cc937dee4e521062efe236e330c722837a365c0017f071a06813"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77085,13 +77100,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-clock-start/stdout.txt",
             "sha256": "132af304a46e5d05adf987cdcf2163cce7a777d901522ada583d66cb7db12db5"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-clock-start/expected-clock.json",
+            "sha256": "3b21e1980ddaeb7ae2b26e0c6bf4552ad40d3f5526d9653623abb6ab31d84f6d"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-clock-start/expected-host.json",
+            "sha256": "65dccb7546caacba38ae1f045845a030d0fbcb599da3f6fa5cb9bb309fa3422f"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77125,13 +77155,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-clock-stop/stdout.txt",
             "sha256": "387fe42b24210b4122a303e4df41c35d1cf46753b0e0c9d442619a741b56d927"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-clock-stop/expected-clock.json",
+            "sha256": "7d5f8c747d5b1cffb221e2567ef5b02c8bf0412b93e05cadbbb646ab824ab2d6"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-clock-stop/expected-host.json",
+            "sha256": "9d9437b47fb769e0f9a8ed881312033b7508fe9c7d8b1e16d3f0ff9473df46eb"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77605,13 +77650,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-upper-bound/stdout.txt",
             "sha256": "d69954e33fa8d782e7f08cf73b40418d6c1dee1e3446b0f5d4ce930bde47f448"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-upper-bound/expected-clock.json",
+            "sha256": "14c6c8440c7c9f9aa5fa8c1688139ea97eb9d15d3b4210ccf9014a1057d9f1dc"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-upper-bound/expected-host.json",
+            "sha256": "26cc7270a06193c8b2bd4725471c31ed68ff3090a65786172e6c2d613b2342bb"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77645,13 +77705,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-real-delay/stdout.txt",
             "sha256": "e8f8e2189046a49a165a3018575081d60c1c2e5cbbe0d599b724898fa55dfc9f"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-real-delay/expected-clock.json",
+            "sha256": "36c88cf4ee61fdbb6b470225d33203cbd84aa710b69049bf0d607155fc28d5f7"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-real-delay/expected-host.json",
+            "sha256": "a2d9d1cba0cf743e8f5a3ed1924a6096c3e2c7b69773d049f08924fc333fcc4e"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77685,13 +77760,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-large-delay/stdout.txt",
             "sha256": "a9a3f387ce55b839d5ee0b4273bd74847be737cfc675708ca9827c3a72f7b5ee"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-large-delay/expected-clock.json",
+            "sha256": "162bbc49508f8366c8cbed277bfb865917a8db9cd799425a7f3f3dcb26a0f79e"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-large-delay/expected-host.json",
+            "sha256": "26cc7270a06193c8b2bd4725471c31ed68ff3090a65786172e6c2d613b2342bb"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77725,13 +77815,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-enormous-delay/stdout.txt",
             "sha256": "e1571c2214af9bbb173551e937b2176f828c3037cfab919ecfc2473f2e1f24fc"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-enormous-delay/expected-clock.json",
+            "sha256": "380b0a2fd578afd646c72dc76e737b96c35d6c69d898c5cc55958a327fdd20ee"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-enormous-delay/expected-host.json",
+            "sha256": "26cc7270a06193c8b2bd4725471c31ed68ff3090a65786172e6c2d613b2342bb"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77765,13 +77870,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-fraction-loop/stdout.txt",
             "sha256": "40300a95d6a4af292ae8e63ed20c67d80b4f399139df752d24648e20de7ee9ca"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-fraction-loop/expected-clock.json",
+            "sha256": "6babfb32639932e623752ead8ba0649697c56bced3981049dd943b02d9b7de92"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-fraction-loop/expected-host.json",
+            "sha256": "96242989e3dad26c3eaed5cb3dbf6d84216ddf6d2521dc25ad10ff92f16fcec6"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77805,13 +77925,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-zero/stdout.txt",
             "sha256": "f4eef1076f5260a0d2137eb8734610e37a6ca67cf5f4fbd4f18dd470fad9de1d"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-zero/expected-clock.json",
+            "sha256": "6392c0e52c6154fd5064997057382ba61b6d2a74118b238a0c3fbd293fe9bbf6"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-zero/expected-host.json",
+            "sha256": "96242989e3dad26c3eaed5cb3dbf6d84216ddf6d2521dc25ad10ff92f16fcec6"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77845,13 +77980,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one/stdout.txt",
             "sha256": "e67c97557a29ee4df5abda96d133901787f4efa447ba8387a989989ada73f348"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one/expected-clock.json",
+            "sha256": "214f469d7b84c7a9f954424089534ad1ca03f110d2c06157028a727a0bd2d7d0"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one/expected-host.json",
+            "sha256": "9a2c1701fe205c082825c8d8a9d77bf2fe5fff58757b09ab3af483bcf9b8dbbb"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77885,13 +78035,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one-half/stdout.txt",
             "sha256": "cb826d26c1a24448bc4a96dbeae014c8612dd957e0b23b6eff7cb7511599fefa"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one-half/expected-clock.json",
+            "sha256": "fd4943b7bf37fe322869dbc4732297d97f9009be39c4789ad98dab5962000dbf"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-one-half/expected-host.json",
+            "sha256": "9a2c1701fe205c082825c8d8a9d77bf2fe5fff58757b09ab3af483bcf9b8dbbb"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77925,13 +78090,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-two-half/stdout.txt",
             "sha256": "f56a265fb3201b1d02f0da7bcb9c6be36f1b101a6b7f7f2160b7475f48c38616"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-two-half/expected-clock.json",
+            "sha256": "42160f477a209e30e36a30975ec4b47ecb1af1f35dba21f7a73c113490515f52"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timer-rounding-two-half/expected-host.json",
+            "sha256": "d4f95751b782497206868506d118468fe28a87bf3f113bf130cb3973f3e6ddfd"
           }
+        },
+        "tests": [
+          "deterministic_qualification_test.go#TestRecordedTimerTimingBoundaries"
+        ],
+        "review": {
+          "reason": "Exact recorded timing text passes with an explicit deterministic clock schedule; the clock and host files are project fixtures, and arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },

@@ -709,6 +709,10 @@ Four additional recorded timer/chronometer transcripts use explicit project
 clock schedules to compare their nonzero elapsed text and host delay order.
 These schedules qualify only those recorded programs; arbitrary wall-clock
 durations remain outside the deterministic replay contract.
+Twelve further boundary transcripts cover timer ordering, the ten-second cap,
+whole-millisecond truncation, repeated-loop delay rounding, and a chronometer
+interval beyond one minute through the same explicit schedules. Other timing
+combinations remain unqualified.
 
 `timer expression` evaluates one expression and selects a delay in whole
 milliseconds. Zero, negative values and positive fractions below one millisecond

@@ -19,8 +19,7 @@ Half-second controls separately qualify calls, local declaration grouping,
 interrupted loops and choice branches. Timer state, argument evaluation,
 host errors, duration guards and frame cleanup have deterministic tests.
 
-Fifteen new elapsed-time recordings remain pending exact replay because wall-clock
-values vary. Four elapsed-time recordings now replay through explicit project
+The twelve remaining elapsed-time recordings now replay through explicit project
 clock schedules, preserving their reference timing text and timer-delay order.
 Ten other rejections now retain output emitted before a later syntax or type
 error. Missing timer/debug arguments, unresolved timer modes, and nonlogical
@@ -49,11 +48,15 @@ fixed host-clock schedules, exact elapsed output, and the expected delay order.
 Other configuration/declaration combinations, file input, remaining original
 examples and the full conformance gate are still unfinished.
 
-The qualified elapsed-time controls are `chronometer-repeat-stop`,
-`environment-chronometer-milliseconds`, `environment-chronometer-seconds`, and
-`environment-chronometer-fractional-seconds`. Their reference elapsed values
-are supplied to the deterministic host adapter as project clock fixtures;
+The newly qualified elapsed-time controls are `environment-timer-clock-start`,
+`environment-timer-clock-stop`, `environment-timer-upper-bound`,
+`environment-timer-real-delay`, `environment-timer-large-delay`,
+`environment-timer-enormous-delay`, `environment-timer-fraction-loop`,
+`environment-timer-rounding-zero`, `environment-timer-rounding-one`,
+`environment-timer-rounding-one-half`, `environment-timer-rounding-two-half`,
+and `environment-chronometer-minute`. Their reference elapsed values are
+supplied to the deterministic host adapter as project clock fixtures;
 arbitrary wall-clock measurements remain pending.
 
-The manifest contains 1,648 reference recordings: 1,604 verified and 44 pending,
+The manifest contains 1,648 reference recordings: 1,643 verified and 24 pending,
 plus 19 verified project contracts and two explicit exclusions (1,669 total).

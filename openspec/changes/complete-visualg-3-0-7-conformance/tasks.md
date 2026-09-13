@@ -707,6 +707,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   subprogram timing forms now replay through fixed host-clock schedules with
   exact elapsed output and delay order, including procedure/function calls,
   interrupted loops, a choice branch, and one or two local declaration lines.
+  Eleven additional timer boundary recordings now replay through explicit
+  clock schedules with exact elapsed output and delay traces, covering command
+  ordering, the ten-second cap, whole-millisecond truncation and loop rounding.
   Other configuration/declaration combinations remain unqualified.
 
 - [x] 15.4 Implement pause and debug/breakpoint commands through typed `Host.Breakpoint` events with non-blocking default headless behavior.
@@ -727,9 +730,10 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   host adapter with explicit project clock-call fixtures. Original and
   formatted programs retain exact reference output; this qualification does
   not generalize to arbitrary wall-clock durations or other timing boundaries.
-  Four additional timer/chronometer recordings now replay through explicit
-  project clock schedules with their timer-delay traces. The remaining
-  variable elapsed-time recordings stay pending exact replay.
+  Five additional timer/chronometer recordings now replay through explicit
+  project clock schedules with their timer-delay traces, including the recorded
+  interval beyond one minute. The remaining variable elapsed-time recordings
+  stay pending exact replay.
 
 - [x] 15.7 Implement clear-screen and color/display operations through `Host.ClearScreen` and `Host.SetDisplay`, preserving call order and making UI-only default-headless effects no-ops.
 - [ ] 15.8 Implement every other oracle-confirmed host command with a typed operation and regression evidence; do not add generic string-based host dispatch.

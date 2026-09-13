@@ -97,6 +97,11 @@
   clock schedules, preserving elapsed text, timer-delay order, and original or
   formatted execution. Arbitrary wall-clock durations remain unqualified.
 
+- Qualify twelve recorded timer and chronometer boundary transcripts with
+  explicit project clock schedules, covering timer ordering, the ten-second cap,
+  whole-millisecond rounding, repeated-loop delays and an interval beyond one
+  minute. Arbitrary wall-clock durations remain unqualified.
+
 - Reject a second command after parenthesized output on the same physical
   line, including semicolon-separated commands, lone trailing semicolons and
   same-line program terminators, with positioned `P001` before execution.
