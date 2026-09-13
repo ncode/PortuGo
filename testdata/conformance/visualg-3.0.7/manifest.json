@@ -179,6 +179,14 @@
       ]
     },
     {
+      "id": "assumption.brace-comment",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Algumas versões aceitam `{ ... }` estilo Pascal? Não documentado; assumir que não.",
+      "probes": [
+        "brace-comment"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
