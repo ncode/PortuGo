@@ -139,6 +139,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   promote unresolved variants to decisive evidence.
   Untraced probe diagnostics are sorted before reporting so repeated validation
   produces stable error ordering.
+  The exponent-associativity verification marker now links to its recorded
+  probe; the remaining non-numbered markers remain open.
   The legacy `:=` verification marker now links to its recorded assignment
   probe; the remaining non-numbered markers remain open.
   The accented-identifier verification marker now links to its recorded probe;
