@@ -79,15 +79,16 @@ manual transcriptions:
 | `EXTENSO4.ALG` | The `LITERAL` vector element type is not recognized on line 8. |
 | `ESCOLA1.alg` | After input `SAIR`, a missing `FIMSE` is reported at EOF on line 320. The preceding prompt and echoed input are retained. |
 
-The two malformed headers and the unrecognized type now have matching positioned
-parser regressions. The game example now also has a matching type rejection.
+The two malformed headers, the unrecognized type, and the invalid function name
+now have matching positioned parser regressions. The game example now also has
+a matching type rejection.
 The bundled compound-repeat spelling now also has a matching `E002` on line 23,
 before any output. Original and formatted source retain the unknown-identifier
 rejection; formatting does not make the spelling an accepted terminator.
-The other six rejection mappings remain pending. The
-reference may execute a prefix before discovering malformed syntax or an invalid
-assignment, while CLI analysis reports errors before execution and may collect
-more than one diagnostic.
+The other five rejection mappings remain pending. The reference may execute a
+prefix before discovering malformed syntax or an invalid assignment, while CLI
+analysis reports errors before execution and may collect more than one
+diagnostic.
 
 The latest bounded grammar audit keeps these two accepted recordings pending:
 
