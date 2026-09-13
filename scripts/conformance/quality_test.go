@@ -60,7 +60,11 @@ func TestMain(m *testing.M) {
 }
 
 func startHoldingChild() {
-	child := exec.Command(os.Args[0], "-test.run=^TestNoop$")
+	executable := os.Getenv("PORTUGOL_GO_TEST_EXECUTABLE")
+	if executable == "" {
+		executable = os.Args[0]
+	}
+	child := exec.Command(executable, "-test.run=^TestNoop$")
 	child.Dir = os.TempDir()
 	child.Env = append(os.Environ(), "PORTUGOL_GO_FAKE_GIT_HOLD=1")
 	child.Stdout, child.Stderr = os.Stdout, os.Stderr
@@ -88,6 +92,7 @@ func installFakeGit(t *testing.T, mode string) {
 		t.Fatal(err)
 	}
 	t.Setenv("PORTUGOL_GO_FAKE_GIT", mode)
+	t.Setenv("PORTUGOL_GO_TEST_EXECUTABLE", executable)
 	t.Setenv("PATH", bin+string(os.PathListSeparator)+os.Getenv("PATH"))
 }
 
