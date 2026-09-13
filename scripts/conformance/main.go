@@ -249,6 +249,7 @@ func previousManifest(root, base, name string) (*manifest, error) {
 	defer cancel()
 	resolve := exec.CommandContext(ctx, "git", "rev-parse", "--verify", "--end-of-options", base+"^{commit}")
 	resolve.Dir = root
+	resolve.WaitDelay = time.Second
 	var resolved boundedCommandOutput
 	resolved.limit, resolved.cancel = maxArtifactBytes, cancel
 	resolve.Stdout = &resolved
@@ -262,6 +263,7 @@ func previousManifest(root, base, name string) (*manifest, error) {
 	object := string(bytes.TrimSpace(resolved.buffer.Bytes())) + ":" + filepath.ToSlash(name)
 	cmd := exec.CommandContext(ctx, "git", "show", object)
 	cmd.Dir = root
+	cmd.WaitDelay = time.Second
 	var output boundedCommandOutput
 	output.limit, output.cancel = maxArtifactBytes, cancel
 	cmd.Stdout = &output
@@ -276,6 +278,7 @@ func previousManifest(root, base, name string) (*manifest, error) {
 			// other Git errors must not silently disable downgrade checking.
 			list := exec.CommandContext(ctx, "git", "ls-tree", "--name-only", string(bytes.TrimSpace(resolved.buffer.Bytes())), "--", name)
 			list.Dir = root
+			list.WaitDelay = time.Second
 			var listed boundedCommandOutput
 			listed.limit, listed.cancel = maxArtifactBytes, cancel
 			list.Stdout = &listed

@@ -28,6 +28,8 @@ project-only guards.
 The default candidate build also captures combined compiler output through the
 same artifact limit before emitting diagnostics; `TestCandidateBuildRejectsOversizedOutput`
 covers that project-only guard.
+History and quality checks bound post-exit Git pipe draining;
+`TestGitValidationBoundsPipeDrain` covers that process-waiting guard.
 
 ## Recording and normalization
 

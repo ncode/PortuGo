@@ -15,6 +15,10 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	if os.Getenv("PORTUGOL_GO_FAKE_GIT_HOLD") == "1" {
+		time.Sleep(3 * time.Second)
+		os.Exit(0)
+	}
 	if mode := os.Getenv("PORTUGOL_GO_FAKE_GO"); mode != "" {
 		for _, arg := range os.Args[1:] {
 			if arg == "build" && mode == "oversized-build-output" {
@@ -27,6 +31,9 @@ func TestMain(m *testing.M) {
 		for _, arg := range os.Args[1:] {
 			switch arg {
 			case "rev-parse":
+				if mode == "stalled-rev-parse" {
+					startHoldingChild()
+				}
 				if mode == "oversized-rev-parse" {
 					_, _ = os.Stdout.Write(bytes.Repeat([]byte("x"), maxArtifactBytes+1))
 					os.Exit(0)
@@ -34,6 +41,10 @@ func TestMain(m *testing.M) {
 				_, _ = fmt.Fprintln(os.Stdout, strings.Repeat("a", 40))
 				os.Exit(0)
 			case "status":
+				if mode == "stalled-status" {
+					startHoldingChild()
+					os.Exit(0)
+				}
 				_, _ = os.Stdout.Write(bytes.Repeat([]byte("x"), maxArtifactBytes+1))
 				os.Exit(0)
 			case "ls-tree":
@@ -46,6 +57,15 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 	os.Exit(m.Run())
+}
+
+func startHoldingChild() {
+	child := exec.Command(os.Args[0], "-test.run=^TestNoop$")
+	child.Env = append(os.Environ(), "PORTUGOL_GO_FAKE_GIT_HOLD=1")
+	child.Stdout, child.Stderr = os.Stdout, os.Stderr
+	if err := child.Start(); err != nil {
+		os.Exit(1)
+	}
 }
 
 func installFakeGit(t *testing.T, mode string) {

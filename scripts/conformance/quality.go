@@ -41,6 +41,7 @@ func validateQuality(root, name, candidate string) error {
 		defer commandCancel()
 		cmd := exec.CommandContext(commandCtx, "git", args...)
 		cmd.Dir = root
+		cmd.WaitDelay = time.Second
 		var output boundedCommandOutput
 		output.limit, output.cancel = maxArtifactBytes, commandCancel
 		cmd.Stdout = &output

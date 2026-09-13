@@ -8,6 +8,8 @@
   scans, so nested private Git state is never hashed as corpus evidence.
 - Bound default candidate-build output before replay, so compiler diagnostics
   cannot exhaust validator memory.
+- Bound post-exit Git pipe draining during history and quality validation, so
+  helper processes cannot leave the validator waiting indefinitely.
 
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
