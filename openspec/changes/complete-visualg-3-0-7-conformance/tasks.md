@@ -360,7 +360,12 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   and cover every byte truncation of mixed newline/encoding programs plus the
   exact source-size boundary and one beyond. A minimized fuzz regression pins
   the syntax-limit diagnostic at EOF without an out-of-range end position.
-- [ ] 4.12 Update `docs/language.md`, grammar examples, and `CHANGELOG.md` with spellings, newline rules, retained comments/suffixes, source/depth limits, and breaking rejections.
+- [x] 4.12 Update `docs/language.md`, grammar examples, and `CHANGELOG.md` with spellings, newline rules, retained comments/suffixes, source/depth limits, and breaking rejections.
+
+  The authoritative language reference, grammar examples, and changelog now
+  document the recorded spellings, physical-line and comment behavior,
+  retained suffixes, source/AST limits, and compatibility rejections while
+  keeping unresolved oracle boundaries explicitly pending.
 - [x] 4.13 Run focused source/lexer/parser/sema/printer tests and fuzz smoke tests, then the full build, lint, ordinary, race, incremental corpus, and strict OpenSpec suites.
 - [x] 4.14 Mark every completed 4.x task immediately, commit the focused grammar changes, push the next stacked branch, and open its draft PR before group 5.
 
