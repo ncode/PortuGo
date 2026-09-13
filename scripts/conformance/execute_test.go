@@ -86,6 +86,26 @@ func TestRecordingHost(t *testing.T) {
 	}
 }
 
+func TestRecordingHostBoundsEvents(t *testing.T) {
+	h := &recordingHost{}
+	var err error
+	for range maxObservationBytes {
+		err = h.ClearScreen()
+		if err != nil {
+			break
+		}
+	}
+	if err == nil || !strings.Contains(err.Error(), "observation size limit") {
+		t.Fatalf("error = %v, want observation size limit", err)
+	}
+	if !h.overflow || h.eventSize >= maxObservationBytes {
+		t.Fatalf("event trace exceeded limit: overflow=%v size=%d", h.overflow, h.eventSize)
+	}
+	if err := h.ClearScreen(); err == nil {
+		t.Fatal("accepted event after overflow")
+	}
+}
+
 func TestReplayObserverChild(t *testing.T) {
 	marker := slices.Index(os.Args, "--")
 	if marker < 0 {

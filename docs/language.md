@@ -1435,6 +1435,8 @@ Malformed JSON, unknown fields, trailing data, invalid read values and empty
 read schedules fail before replay. Repeated and backward readings remain valid.
 The adapter bounds clock fixture reads by the repository artifact limit before
 decoding, including when invoked directly.
+Host observation events are bounded while they are recorded, so a trace cannot
+grow beyond the adapter's 1 MiB output limit before serialization.
 Bundled-example catalogs use the same strict JSON boundary: unknown fields and
 trailing values fail validation before catalog entries are considered.
 Stdout, state and host observation artifacts use the adapter's 1 MiB output

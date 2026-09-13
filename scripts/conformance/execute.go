@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -19,6 +20,8 @@ import (
 	"github.com/ncode/portugol-go/internal/source"
 	"github.com/ncode/portugol-go/internal/token"
 )
+
+var errObservationSize = errors.New("observation size limit exceeded")
 
 // executeProbe is a deterministic subprocess adapter for state/host fixtures.
 // Ordinary output/diagnostic fixtures continue to use the actual CLI.
@@ -78,6 +81,9 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 		return fail(err)
 	}
 	diag.Render(stderr, file, ds)
+	if h.overflow {
+		return fail(errObservationSize)
+	}
 	if *state != "" {
 		values := make(map[string]any)
 		for name, value := range i.State() {
@@ -141,7 +147,7 @@ func writeObservation(path string, value any) error {
 		return err
 	}
 	if len(data) >= maxObservationBytes {
-		return fmt.Errorf("observation size limit exceeded")
+		return errObservationSize
 	}
 	return os.WriteFile(path, append(data, '\n'), 0600)
 }
@@ -182,39 +188,38 @@ type hostEvent struct {
 }
 
 type recordingHost struct {
-	elapsed time.Duration
-	events  []hostEvent
-	nowMS   []int64
-	nowRead int
+	elapsed   time.Duration
+	events    []hostEvent
+	eventSize int
+	overflow  bool
+	nowMS     []int64
+	nowRead   int
 }
 
 func (h *recordingHost) Delay(d time.Duration) error {
-	h.events = append(h.events, hostEvent{Operation: "delay", Duration: d})
+	if err := h.appendEvent(hostEvent{Operation: "delay", Duration: d}); err != nil {
+		return err
+	}
 	h.elapsed += d
 	return nil
 }
 func (h *recordingHost) Breakpoint(e interp.Breakpoint) error {
-	h.events = append(h.events, hostEvent{Operation: "breakpoint", Pos: e.Pos})
-	return nil
+	return h.appendEvent(hostEvent{Operation: "breakpoint", Pos: e.Pos})
 }
 func (h *recordingHost) ClearScreen() error {
-	h.events = append(h.events, hostEvent{Operation: "clearScreen"})
-	return nil
+	return h.appendEvent(hostEvent{Operation: "clearScreen"})
 }
 func (h *recordingHost) UseConsole() error {
-	h.events = append(h.events, hostEvent{Operation: "console"})
-	return nil
+	return h.appendEvent(hostEvent{Operation: "console"})
 }
 func (h *recordingHost) SetDisplay(s interp.DisplayState) error {
-	h.events = append(h.events, hostEvent{Operation: "display", Display: &s})
-	return nil
+	return h.appendEvent(hostEvent{Operation: "display", Display: &s})
 }
 func (h *recordingHost) SetEcho(enabled bool) error {
-	h.events = append(h.events, hostEvent{Operation: "echo", Echo: &enabled})
-	return nil
+	return h.appendEvent(hostEvent{Operation: "echo", Echo: &enabled})
 }
 func (h *recordingHost) Now() time.Time {
-	h.events = append(h.events, hostEvent{Operation: "now"})
+	_ = h.appendEvent(hostEvent{Operation: "now"})
 	if h.nowRead < len(h.nowMS) {
 		ms := h.nowMS[h.nowRead]
 		h.nowRead++
@@ -222,4 +227,29 @@ func (h *recordingHost) Now() time.Time {
 	}
 	h.nowRead++
 	return time.Unix(0, 0).UTC().Add(h.elapsed)
+}
+
+func (h *recordingHost) appendEvent(event hostEvent) error {
+	if h.overflow {
+		return errObservationSize
+	}
+	encoded, err := json.Marshal(event)
+	if err != nil {
+		return err
+	}
+	size := h.eventSize
+	if size == 0 {
+		size = 2
+	}
+	if len(h.events) != 0 {
+		size++
+	}
+	size += len(encoded)
+	if size >= maxObservationBytes {
+		h.overflow = true
+		return errObservationSize
+	}
+	h.events = append(h.events, event)
+	h.eventSize = size
+	return nil
 }
