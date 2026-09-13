@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Document the remaining accepted bundled-example replay blockers, separating
+  varying generated output from declaration, loop and unexecuted-code errors.
+  Preserve their pending status and original reference expectations.
+
 - Verify the bundled compound-repeat rejection at its recorded source line,
   including the same unknown-name diagnostic after formatting. Keep the
   generated-input loop and unexecuted read-destination cases pending further

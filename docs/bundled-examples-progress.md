@@ -99,6 +99,27 @@ The latest bounded grammar audit keeps these two accepted recordings pending:
 These observations do not justify adding a default loop bound or generally
 suppressing diagnostics in unexecuted subprograms.
 
+A replay audit of all seventeen pending accepted programs found no additional
+byte-exact matches. Thirteen finish without diagnostics but produce different
+generated values. Successful local completion alone does not qualify their
+output or every branch.
+
+The other four fail before producing output:
+
+| Case | Current CLI rejection | Pending behavior |
+| --- | --- | --- |
+| Counted-loop form | `P001`, lines 23 and 24 | Missing counted-loop upper bound, after generated input. |
+| Declaration order | `P001`, line 20 | The global `var` section follows the procedures rather than immediately following the record type. Generated output also needs qualification. |
+| Unexecuted read | `E002`, line 157 | An undeclared read destination in a procedure avoided by the recorded menu exit. |
+| Unselected break | `E006`, line 69 | An out-of-loop `interrompa` in the branch avoided by the recorded valid input. |
+
+These CLI diagnostics are mismatch observations, not replacement reference
+expectations: all seventeen recordings are accepted by the reference. The
+existing [generated-input contract](random-replay-contracts.md) covers only
+group-13 echo/output pairs. It cannot qualify the bundled programs' generated
+tables, sorting, searches or mixed input/output transcripts. Their sources and
+expected output remain unchanged, and all seventeen remain pending.
+
 The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
 recording therefore remains pending; the retained diagnostic and preceding output
 record the reference outcome without claiming an implementation match.
