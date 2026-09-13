@@ -40,8 +40,11 @@ type Value struct {
 	// ConvertedAbsence retains a generic no-value origin after an optional
 	// numeric parameter converts it to zero.
 	ConvertedAbsence bool
-	Vec              *Vector
-	Rec              *Record
+	// MissingArgument marks the zero storage created for an accepted empty
+	// numeric value-parameter call until the formal is assigned.
+	MissingArgument bool
+	Vec             *Vector
+	Rec             *Record
 }
 
 // Zero returns the zero value for a type.

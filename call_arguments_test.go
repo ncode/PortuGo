@@ -36,6 +36,8 @@ func TestRecordedCallArguments(t *testing.T) {
 		"call-supplied-reference-integer",
 		"call-supplied-reference-real",
 		"call-empty-zero-parameters",
+		"call-empty-value-integer",
+		"call-empty-value-real",
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)

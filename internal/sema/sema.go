@@ -669,7 +669,9 @@ func (c *checker) checkArgs(call *ast.CallExpr, sym symbol) {
 	if sym.kind == procSym {
 		pos = sym.pos
 	}
-	if len(call.Args) != len(params) {
+	emptyNumericValue := sym.kind == procSym && !call.Bare && len(call.Args) == 0 && len(params) == 1 &&
+		!params[0].byRef && (params[0].typ.Kind == runtime.IntegerType || params[0].typ.Kind == runtime.RealType)
+	if len(call.Args) != len(params) && !emptyNumericValue {
 		c.error(pos, diag.ECall, "%q expects %d arguments, got %d", call.Name.Text, len(params), len(call.Args))
 		return
 	}

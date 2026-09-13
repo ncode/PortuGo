@@ -43,10 +43,11 @@
   a later color argument fails and retaining the recorded syntax diagnostic for
   mixed invalid color expressions.
 
-- Record nine call-form controls and verify seven supplied-argument or
-  parameterless cases through original and formatted execution. Keep two
-  empty numeric-argument early-completion cases pending without inferring
-  missing-argument defaults.
+- Verify nine recorded call-form controls through original and formatted
+  execution, including the two qualified empty numeric value-parameter calls
+  that enter the body and complete when the absent parameter is printed.
+  Keep the rule narrow without inferring missing-argument defaults for other
+  call forms.
 
 - Trace the existing console, echo, timer, breakpoint and chronometer failure
   tests alongside display failures, completing the positioned host-error and

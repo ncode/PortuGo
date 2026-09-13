@@ -508,16 +508,21 @@ Out-of-range or non-finite integer arguments fail before the body executes;
 failed call setup does not copy partially prepared parameters back.
 
 Recorded procedure argument-count and type errors point to the declaration
-line; function argument-count errors point to the call. Empty-argument edge
-cases and integer operators after numeric reference conversion remain under
-validation.
+line; function argument-count errors point to the call. One qualified empty
+call form is accepted: a parenthesized procedure call with one by-value
+`inteiro` or `real` parameter and no arguments. The formal starts as absent
+storage; when the recorded body prints it, that write is suppressed and
+execution completes after the output that preceded the read. Bare calls,
+functions, multi-parameter calls, other scalar types, and `var` parameters
+remain argument-count errors until separately qualified.
 
 The [call-form controls](empty-call-progress.md) verify supplied arguments for
 all four scalar value types and numeric `var` parameters, including parameter
 mutation and return to the caller. Two empty numeric-argument recordings enter
 the procedure body but complete execution before printing the parameter or
-returning to the caller. These calls remain rejected by the implementation;
-the observations do not establish a general zero-default rule.
+returning to the caller. The implementation preserves that absent-parameter
+state without supplying a default value; the observations do not establish a
+general omitted-argument rule.
 
 ## Function Results
 

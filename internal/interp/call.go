@@ -176,7 +176,7 @@ func (i *Interpreter) callProcedure(call *ast.CallExpr) (err error) {
 	if !ok {
 		return fmt.Errorf("%q is not a procedure", call.Name.Text)
 	}
-	_, err = i.callSub(call.Start(), proc.Params, proc.Config, proc.Consts, proc.Locals, proc.Body, runtime.Type{Kind: runtime.VoidType}, call.Args)
+	_, err = i.callSub(call.Start(), proc.Params, proc.Config, proc.Consts, proc.Locals, proc.Body, runtime.Type{Kind: runtime.VoidType}, call.Args, !call.Bare)
 	return err
 }
 
@@ -185,14 +185,19 @@ func (i *Interpreter) callUserFunction(fn *ast.FunctionDecl, args []ast.Expr, at
 	if !ok {
 		return runtime.Value{}, failure(fn.Start(), diag.RType, fmt.Errorf("missing return type"))
 	}
-	return i.callSub(at, fn.Params, fn.Config, fn.Consts, fn.Locals, fn.Body, b.Type, args)
+	return i.callSub(at, fn.Params, fn.Config, fn.Consts, fn.Locals, fn.Body, b.Type, args, false)
 }
 
-func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stmt, consts []ast.ConstDecl, locals []ast.VarDecl, body []ast.Stmt, retType runtime.Type, args []ast.Expr) (runtime.Value, error) {
+func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stmt, consts []ast.ConstDecl, locals []ast.VarDecl, body []ast.Stmt, retType runtime.Type, args []ast.Expr, allowEmptyNumericValue bool) (runtime.Value, error) {
 	if i.calls == maxCalls {
 		return runtime.Value{}, fmt.Errorf("active call limit exceeded")
 	}
-	if len(args) != len(params) {
+	emptyNumericValue := allowEmptyNumericValue && len(args) == 0 && len(params) == 1 && !params[0].ByRef
+	if emptyNumericValue {
+		binding, ok := i.info.Binding(params[0].Name)
+		emptyNumericValue = ok && (binding.Type.Kind == runtime.IntegerType || binding.Type.Kind == runtime.RealType)
+	}
+	if len(args) != len(params) && !emptyNumericValue {
 		return runtime.Value{}, fmt.Errorf("expected %d arguments, got %d", len(params), len(args))
 	}
 	outer := i.env
@@ -204,6 +209,11 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 			return runtime.Value{}, failure(param.Name.Pos, diag.RType, fmt.Errorf("missing parameter layout"))
 		}
 		typ := b.Type
+		if idx >= len(args) {
+			cell := callEnv.define(b.ID, typ)
+			cell.Value.MissingArgument = true
+			continue
+		}
 		var v runtime.Value
 		var caller *runtime.Cell
 		var err error

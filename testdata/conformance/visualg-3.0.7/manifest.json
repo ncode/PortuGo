@@ -81909,7 +81909,7 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
@@ -81917,10 +81917,9 @@
             "sha256": "76d2b0dc0c3f97e2bbf9bc62f097ca2f9f830187ecb4bc8f795f8cdc6bd243c2"
           }
         },
-        "review": {
-          "reason": "The reference completes after BEFORE and BODY without the parameter output or caller continuation; no general omitted-argument rule is established.",
-          "link": "docs/empty-call-progress.md"
-        }
+        "tests": [
+          "call_arguments_test.go#TestRecordedCallArguments"
+        ]
       }
     },
     {
@@ -81996,7 +81995,7 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
@@ -82004,10 +82003,9 @@
             "sha256": "76d2b0dc0c3f97e2bbf9bc62f097ca2f9f830187ecb4bc8f795f8cdc6bd243c2"
           }
         },
-        "review": {
-          "reason": "The reference completes after BEFORE and BODY without the parameter output or caller continuation; no general omitted-argument rule is established.",
-          "link": "docs/empty-call-progress.md"
-        }
+        "tests": [
+          "call_arguments_test.go#TestRecordedCallArguments"
+        ]
       }
     },
     {
