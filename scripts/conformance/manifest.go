@@ -69,6 +69,7 @@ type observation struct {
 	Absent      []string                `json:"absent,omitempty"`
 	State       *artifact               `json:"state,omitempty"`
 	HostTrace   *artifact               `json:"hostTrace,omitempty"`
+	Clock       *artifact               `json:"clock,omitempty"`
 	RandomInput *randomInputExpectation `json:"randomInput,omitempty"`
 }
 

@@ -306,7 +306,7 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			delete(generated, file.Path)
 		}
 	}
-	for _, a := range []*artifact{i.Expected.State, i.Expected.HostTrace} {
+	for _, a := range []*artifact{i.Expected.State, i.Expected.HostTrace, i.Expected.Clock} {
 		if a != nil {
 			_, err := readArtifact(root, *a)
 			add(err)

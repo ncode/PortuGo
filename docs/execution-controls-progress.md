@@ -19,8 +19,10 @@ Half-second controls separately qualify calls, local declaration grouping,
 interrupted loops and choice branches. Timer state, argument evaluation,
 host errors, duration guards and frame cleanup have deterministic tests.
 
-Nineteen new elapsed-time recordings remain pending exact replay because wall-clock
-values vary. Ten other rejections retain output emitted before a later syntax
+Fifteen new elapsed-time recordings remain pending exact replay because wall-clock
+values vary. Four elapsed-time recordings now replay through explicit project
+clock schedules, preserving their reference timing text and timer-delay order.
+Ten other rejections retain output emitted before a later syntax
 or semantic error; the implementation's earlier diagnostics still differ.
 Those prefixes are preserved, and the cases remain pending. No clock values or
 earlier output are removed to make replay pass.
@@ -34,3 +36,9 @@ treated as exact host-call traces: scheduling quantizes their observed delays.
 Subprogram timing is qualified for the recorded ordinary local-variable forms.
 Other configuration/declaration combinations, file input, remaining original
 examples and the full conformance gate are still unfinished.
+
+The qualified elapsed-time controls are `chronometer-repeat-stop`,
+`environment-chronometer-milliseconds`, `environment-chronometer-seconds`, and
+`environment-chronometer-fractional-seconds`. Their reference elapsed values
+are supplied to the deterministic host adapter as project clock fixtures;
+arbitrary wall-clock measurements remain pending.

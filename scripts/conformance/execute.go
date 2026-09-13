@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -27,6 +28,7 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 	steps := flags.Uint64("max-steps", 10000, "finite probe work budget")
 	state := flags.String("state", "", "global-state observation file")
 	host := flags.String("host-trace", "", "host-call observation file")
+	clock := flags.String("clock", "", "deterministic clock fixture")
 	if err := flags.Parse(args); err != nil {
 		return 2
 	}
@@ -69,7 +71,29 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 		return 1
 	}
 	capture := &boundedOutput{cancel: func() {}}
-	h := &recordingHost{events: []hostEvent{}}
+	var nowMS []int64
+	if *clock != "" {
+		data, err := os.ReadFile(*clock)
+		if err != nil {
+			return fail(err)
+		}
+		var fixture struct {
+			NowMS []int64 `json:"nowMS"`
+		}
+		decoder := json.NewDecoder(bytes.NewReader(data))
+		decoder.DisallowUnknownFields()
+		if err := decoder.Decode(&fixture); err != nil {
+			return fail(fmt.Errorf("decode clock fixture: %w", err))
+		}
+		if err := decoder.Decode(new(any)); err != io.EOF {
+			return fail(fmt.Errorf("trailing clock fixture JSON"))
+		}
+		if len(fixture.NowMS) == 0 {
+			return fail(fmt.Errorf("clock fixture has no reads"))
+		}
+		nowMS = fixture.NowMS
+	}
+	h := &recordingHost{events: []hostEvent{}, nowMS: nowMS}
 	i := interp.New(interp.Options{Input: in, Output: capture, Host: h, Random: rand.New(rand.NewPCG(1, 2)), MaxSteps: *steps})
 	ds = i.Run(p, info)
 	if _, err := out.Write(capture.buffer.Bytes()); err != nil {
@@ -145,6 +169,8 @@ type hostEvent struct {
 type recordingHost struct {
 	elapsed time.Duration
 	events  []hostEvent
+	nowMS   []int64
+	nowRead int
 }
 
 func (h *recordingHost) Delay(d time.Duration) error {
@@ -174,5 +200,11 @@ func (h *recordingHost) SetEcho(enabled bool) error {
 }
 func (h *recordingHost) Now() time.Time {
 	h.events = append(h.events, hostEvent{Operation: "now"})
+	if h.nowRead < len(h.nowMS) {
+		ms := h.nowMS[h.nowRead]
+		h.nowRead++
+		return time.Unix(0, 0).UTC().Add(time.Duration(ms) * time.Millisecond)
+	}
+	h.nowRead++
 	return time.Unix(0, 0).UTC().Add(h.elapsed)
 }

@@ -47,7 +47,7 @@ func (b *boundedOutput) Write(p []byte) (int, error) {
 
 func replayProbe(root string, p probe, executable string, prefix []string, observer string) (runErr error) {
 	want := p.Implementation.Expected
-	observe := want.State != nil || want.HostTrace != nil
+	observe := want.State != nil || want.HostTrace != nil || want.Clock != nil
 	if observe && observer == "" {
 		return fmt.Errorf("missing state/host observation adapter")
 	}
@@ -73,8 +73,17 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	if err := os.WriteFile(filepath.Join(dir, "source.alg"), source, 0o600); err != nil {
 		return err
 	}
+	if want.Clock != nil {
+		data, err := readArtifact(root, *want.Clock)
+		if err != nil {
+			return err
+		}
+		if err := os.WriteFile(filepath.Join(dir, "clock.json"), data, 0o600); err != nil {
+			return err
+		}
+	}
 	for _, file := range p.Files {
-		if file.Path == "source.alg" || observe && (file.Path == "state.json" || file.Path == "host.json") {
+		if file.Path == "source.alg" || observe && (file.Path == "state.json" || file.Path == "host.json" || file.Path == "clock.json") {
 			return fmt.Errorf("input file conflicts with probe source")
 		}
 		data, err := readArtifact(root, file.Content)
@@ -122,7 +131,15 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	}
 	args := append(append([]string(nil), prefix...), command, "--max-steps", strconv.FormatUint(steps, 10))
 	if observe {
-		args = append(args, "--state", "state.json", "--host-trace", "host.json")
+		if want.State != nil {
+			args = append(args, "--state", "state.json")
+		}
+		if want.HostTrace != nil {
+			args = append(args, "--host-trace", "host.json")
+		}
+		if want.Clock != nil {
+			args = append(args, "--clock", "clock.json")
+		}
 	}
 	args = append(args, "source.alg")
 	cmd := exec.CommandContext(ctx, executable, args...)

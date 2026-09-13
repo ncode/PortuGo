@@ -79,6 +79,10 @@
   fixtures, canonical printing and the portable example. Remaining environment
   commands and explicitly pending timing or GUI qualifications stay open.
 
+- Qualify four recorded chronometer timing transcripts with explicit project
+  clock schedules, preserving elapsed text, timer-delay order, and original or
+  formatted execution. Arbitrary wall-clock durations remain unqualified.
+
 - Reject a second command after parenthesized output on the same physical
   line, including semicolon-separated commands, lone trailing semicolons and
   same-line program terminators, with positioned `P001` before execution.

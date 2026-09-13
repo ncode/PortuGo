@@ -703,6 +703,10 @@ The [qualified zero-elapsed-time probes](deterministic-qualification.md) compare
 start/stop, repeated start, and ignored tails through a fixed injected clock.
 Their host traces are project fixtures, and their reference transcripts remain
 unchanged; actual wall-clock timing is not required to reproduce zero.
+Four additional recorded timer/chronometer transcripts use explicit project
+clock schedules to compare their nonzero elapsed text and host delay order.
+These schedules qualify only those recorded programs; arbitrary wall-clock
+durations remain outside the deterministic replay contract.
 
 `timer expression` evaluates one expression and selects a delay in whole
 milliseconds. Zero, negative values and positive fractions below one millisecond

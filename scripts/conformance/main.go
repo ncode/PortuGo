@@ -162,7 +162,7 @@ func run(args []string, out, stderr io.Writer) (status int) {
 	executable := *candidate
 	needsObserver := false
 	for _, p := range m.Probes {
-		needsObserver = needsObserver || p.Implementation.Expected.State != nil || p.Implementation.Expected.HostTrace != nil
+		needsObserver = needsObserver || p.Implementation.Expected.State != nil || p.Implementation.Expected.HostTrace != nil || p.Implementation.Expected.Clock != nil
 	}
 	if executable != "" && needsObserver {
 		return fail(fmt.Errorf("state/host observations require the default current-checkout candidate"))

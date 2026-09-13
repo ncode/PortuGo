@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 	"time"
 
@@ -77,6 +78,27 @@ func (h *zeroElapsedHost) Now() time.Time {
 	return time.Unix(0, 0)
 }
 
+type recordedClockHost struct {
+	interp.HeadlessHost
+	nowMS      []int64
+	clockCalls int
+	delays     []time.Duration
+}
+
+func (h *recordedClockHost) Now() time.Time {
+	if h.clockCalls >= len(h.nowMS) {
+		return time.Time{}
+	}
+	ms := h.nowMS[h.clockCalls]
+	h.clockCalls++
+	return time.Unix(0, 0).Add(time.Duration(ms) * time.Millisecond)
+}
+
+func (h *recordedClockHost) Delay(d time.Duration) error {
+	h.delays = append(h.delays, d)
+	return nil
+}
+
 func TestRecordedZeroElapsedChronometers(t *testing.T) {
 	for _, tt := range []struct {
 		id    string
@@ -112,6 +134,59 @@ func TestRecordedZeroElapsedChronometers(t *testing.T) {
 				ds = interp.New(interp.Options{Output: &out, Host: host}).Run(prog, info)
 				if len(ds) != 0 || !bytes.Equal(out.Bytes(), want) || host.clockCalls != tt.calls {
 					t.Fatalf("pass %d: diagnostics %v, output %q, clock calls %d", pass, ds, &out, host.clockCalls)
+				}
+				var formatted bytes.Buffer
+				if err := ast.Fprint(&formatted, prog); err != nil {
+					t.Fatal(err)
+				}
+				if pass != 0 && formatted.String() != src {
+					t.Fatal("formatting is not idempotent")
+				}
+				src = formatted.String()
+			}
+		})
+	}
+}
+
+func TestRecordedTimedChronometers(t *testing.T) {
+	for _, tt := range []struct {
+		id     string
+		nowMS  []int64
+		delays []time.Duration
+	}{
+		{"chronometer-repeat-stop", []int64{0, 16}, nil},
+		{"environment-chronometer-milliseconds", []int64{0, 359}, []time.Duration{150 * time.Millisecond, 150 * time.Millisecond}},
+		{"environment-chronometer-seconds", []int64{0, 2047}, []time.Duration{time.Second, time.Second}},
+		{"environment-chronometer-fractional-seconds", []int64{0, 2422}, []time.Duration{1200 * time.Millisecond, 1200 * time.Millisecond}},
+	} {
+		t.Run(tt.id, func(t *testing.T) {
+			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", tt.id)
+			src, err := source.ReadFile(filepath.Join(dir, "source.alg"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			want, err := os.ReadFile(filepath.Join(dir, "stdout.txt"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			for pass := range 2 {
+				_, tokens, ds := lexer.Scan("source.alg", src)
+				if len(ds) != 0 {
+					t.Fatal(ds)
+				}
+				prog, ds := parser.Parse(tokens)
+				if len(ds) != 0 {
+					t.Fatal(ds)
+				}
+				info, ds := sema.Analyze(prog)
+				if len(ds) != 0 {
+					t.Fatal(ds)
+				}
+				host := &recordedClockHost{nowMS: tt.nowMS}
+				var out bytes.Buffer
+				ds = interp.New(interp.Options{Output: &out, Host: host}).Run(prog, info)
+				if len(ds) != 0 || !bytes.Equal(out.Bytes(), want) || host.clockCalls != len(tt.nowMS) || !reflect.DeepEqual(host.delays, tt.delays) {
+					t.Fatalf("pass %d: diagnostics %v, output %q, clock calls %d, delays %v", pass, ds, &out, host.clockCalls, host.delays)
 				}
 				var formatted bytes.Buffer
 				if err := ast.Fprint(&formatted, prog); err != nil {

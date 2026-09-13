@@ -718,6 +718,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   host adapter with explicit project clock-call fixtures. Original and
   formatted programs retain exact reference output; this qualification does
   not generalize to arbitrary wall-clock durations or other timing boundaries.
+  Four additional timer/chronometer recordings now replay through explicit
+  project clock schedules with their timer-delay traces. The remaining
+  variable elapsed-time recordings stay pending exact replay.
 
 - [x] 15.7 Implement clear-screen and color/display operations through `Host.ClearScreen` and `Host.SetDisplay`, preserving call order and making UI-only default-headless effects no-ops.
 - [ ] 15.8 Implement every other oracle-confirmed host command with a typed operation and regression evidence; do not add generic string-based host dispatch.
