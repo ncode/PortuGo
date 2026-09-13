@@ -890,7 +890,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   logical input still reads the selected file while random mode is active.
   File regressions compare original/formatted execution and unchanged/generated
   bytes. Extreme command bounds and reference draw-count qualification remain
-  pending in 13.4.
+  outside the verified profile.
 
 - [x] 13.7 Return positioned `R007` for builtin random failures and `R004` for random-input failures with no panic or invalid source call.
 - [x] 13.8 Add repeatable runtime fixtures using scripted random values, property checks across many seeds, and an example that asserts domains rather than sequences.
@@ -902,7 +902,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   [PR #83](https://github.com/ncode/PortuGo/pull/83), with its
   [commit history](https://github.com/ncode/PortuGo/pull/83/commits) and
   [quality checks](https://github.com/ncode/PortuGo/pull/83/checks).
-  This handoff covers the completed slice; tasks 13.1 and 13.4 remain open.
+  This handoff covers the completed slice; exact reference sequences, draw
+  counts, and GUI-only floating-bound failures remain outside the verified
+  profile.
 
 ## 14. Arquivo Paths, Encoding, Exhaustion, Fallback, and Echo
 

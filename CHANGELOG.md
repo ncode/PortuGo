@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Correct the reference-corpus progress totals to match the current manifest.
+- Correct the randomness handoff notes so completed task status is not described
+  as open work.
 
 - Record the assembled source, runtime, input, storage, host, filesystem, and
   replay safeguard acceptance sweep, including bounded empty-loop execution.
