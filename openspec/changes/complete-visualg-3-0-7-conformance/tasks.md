@@ -410,8 +410,18 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
 Group 2 must resolve and rewrite this group's candidate work before it begins. Positive syntax, layouts, copies, and examples apply only to accepted forms. Rejected candidates require rejection fixtures and removal of dependent positive obligations; do not mark unsupported features as implemented.
 
-- [ ] 6.1 Add failing fixtures for the recorded declaration dispositions, including rejected constants/types/records/fields, and positive ordering, assignment, zero-value, copy, and reference cases only where accepted.
-- [ ] 6.2 Use ordered program/local declarations for the section kinds actually accepted by the reference, migrating visitors and preserving the group 4 comment anchors.
+- [x] 6.1 Add failing fixtures for the recorded declaration dispositions, including rejected constants/types/records/fields, and positive ordering, assignment, zero-value, copy, and reference cases only where accepted.
+
+  Declaration, alias, record, field, vector, zero-value, copy, and reference
+  suites now cover the recorded positive and rejection dispositions with
+  positioned diagnostic tables and end-to-end output fixtures. Unsupported
+  aggregate and callable forms remain explicit negative coverage.
+- [x] 6.2 Use ordered program/local declarations for the section kinds actually accepted by the reference, migrating visitors and preserving the group 4 comment anchors.
+
+  Program and subprogram declaration sections retain source order through the
+  AST, semantic analysis, interpreter initialization, and canonical printer.
+  Declaration-order and comment-anchor fixtures cover global and local
+  sections, including empty sections and separators.
 - [x] 6.3 Implement constant declarations and bounded declaration-time evaluation only if confirmed, including dependency/cycle and overflow diagnostics; otherwise add the recorded rejection fixtures.
 
   Thirty-two recordings now verify scalar declarations, earlier dependencies,
@@ -420,7 +430,7 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   initialize in source order when their section is entered, not during static
   analysis. The accepted constant-bound recordings are implemented under 7.2;
   aggregate-valued and no-value initializers remain unqualified.
-- [ ] 6.4 Implement named types/aliases and identity/compatibility rules only if confirmed, including bounded unknown-type/cycle handling; otherwise add rejection fixtures and omit named-type machinery.
+- [x] 6.4 Implement named types/aliases and identity/compatibility rules only if confirmed, including bounded unknown-type/cycle handling; otherwise add rejection fixtures and omit named-type machinery.
 
   Scalar aliases now resolve earlier definitions, retain first-definition
   precedence, and share underlying scalar compatibility. Fifteen accepted
@@ -450,7 +460,13 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   replacement. Copies now preserve captured field locations across direct and
   vector-element replacement, self-assignment, and later argument side effects.
   Backing layouts are checked before copying or mutating destination storage.
-- [ ] 6.10 Add parser goldens, diagnostic tables, runtime fixtures, comment-preserving round trips, and an example combining only confirmed declarations and copy/reference forms.
+- [x] 6.10 Add parser goldens, diagnostic tables, runtime fixtures, comment-preserving round trips, and an example combining only confirmed declarations and copy/reference forms.
+
+  The aggregate declaration golden exercises aliases, records, vectors,
+  captured scalar references, whole-record copying, and anchored comments.
+  Existing declaration diagnostic tables, conformance output fixtures, and
+  comment round-trip tests provide the corresponding rejection and runtime
+  coverage; examples use only recorded forms.
 - [x] 6.11 Update `docs/language.md` and `CHANGELOG.md` with accepted declarations, rejected extension forms, assignment spelling, and actual copy/reference semantics.
 
   The authoritative language reference and changelog now document the

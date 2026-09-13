@@ -94,6 +94,10 @@
   rejected extensions, assignment aliases, zero/copy behavior, and captured
   references; unqualified aggregate cases remain explicit.
 
+- Add an aggregate declaration parser golden covering aliases, records, vectors,
+  anchored comments, whole-record copying, and scalar reference arguments;
+  close the declaration fixture and ordering coverage tasks.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
