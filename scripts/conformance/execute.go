@@ -114,7 +114,7 @@ func readBoundedFile(name string, limit int, tooLarge error) ([]byte, error) {
 		return nil, err
 	}
 	if !info.Mode().IsRegular() {
-		return nil, fmt.Errorf("invalid file size or type: %s", name)
+		return nil, errors.New("invalid file size or type")
 	}
 	f, err := os.Open(name)
 	if err != nil {
