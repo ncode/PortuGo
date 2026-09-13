@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Bound historical manifests loaded from Git by the repository artifact limit
+  before strict decoding.
+
 - Reject conformance artifact and fixture paths that enter repository metadata
   directories, including case aliases of `.git`.
 

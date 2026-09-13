@@ -235,7 +235,13 @@ func previousManifest(root, base, name string) (*manifest, error) {
 	object := string(bytes.TrimSpace(sha)) + ":" + filepath.ToSlash(name)
 	cmd := exec.CommandContext(ctx, "git", "show", object)
 	cmd.Dir = root
-	data, err := cmd.Output()
+	var output boundedCommandOutput
+	output.limit, output.cancel = maxArtifactBytes, cancel
+	cmd.Stdout = &output
+	err = cmd.Run()
+	if output.overflow {
+		return nil, fmt.Errorf("previous manifest exceeds artifact size limit")
+	}
 	if err != nil {
 		var exit *exec.ExitError
 		if errors.As(err, &exit) {
@@ -250,9 +256,29 @@ func previousManifest(root, base, name string) (*manifest, error) {
 		}
 		return nil, fmt.Errorf("read previous manifest: %w", err)
 	}
-	m, err := decodeManifest(data)
+	m, err := decodeManifest(output.buffer.Bytes())
 	if err != nil {
 		return nil, err
 	}
 	return &m, nil
+}
+
+type boundedCommandOutput struct {
+	buffer   bytes.Buffer
+	limit    int
+	overflow bool
+	cancel   context.CancelFunc
+}
+
+func (b *boundedCommandOutput) Write(p []byte) (int, error) {
+	remaining := b.limit - b.buffer.Len()
+	if len(p) > remaining {
+		if remaining > 0 {
+			_, _ = b.buffer.Write(p[:remaining])
+		}
+		b.overflow = true
+		b.cancel()
+		return len(p), nil
+	}
+	return b.buffer.Write(p)
 }
