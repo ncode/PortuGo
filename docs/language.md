@@ -1348,6 +1348,10 @@ review. Changing only the linked document while retaining identical manifest
 review fields does not establish a new downgrade disposition. A reviewed
 downgrade still leaves the probe pending and cannot pass implementation acceptance.
 Retirement records remain in later manifests; retired IDs cannot be reused.
+Reviewed exclusions still validate hashes for every retained artifact, including
+optional screenshots, transcriptions and generated-file bytes. Retained generated
+paths must be contained and unique. Excluded runs may retain these observations
+without requiring corresponding candidate output or new captures.
 Recording verifies input-only file hashes before accepting a capture.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.

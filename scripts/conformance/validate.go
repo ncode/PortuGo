@@ -184,12 +184,6 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		if e.GUIOnly && (e.Screenshot == nil || e.Transcription == nil) {
 			add(fmt.Errorf("GUI evidence requires screenshot and transcription"))
 		}
-		for _, a := range []*artifact{e.Screenshot, e.Transcription} {
-			if a != nil {
-				_, err := readArtifact(root, *a)
-				add(err)
-			}
-		}
 	case "not-applicable":
 		add(checkReview(root, e.Review))
 		// An exclusion does not waive integrity checks on retained observations.
@@ -201,6 +195,12 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 		}
 	default:
 		add(fmt.Errorf("unrecorded evidence"))
+	}
+	for _, a := range []*artifact{e.Screenshot, e.Transcription} {
+		if a != nil {
+			_, err := readArtifact(root, *a)
+			add(err)
+		}
 	}
 	i := p.Implementation
 	if contract := i.Expected.RandomInput; contract != nil {
@@ -273,6 +273,17 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			}
 		}
 	}
+	generated := make(map[string]string)
+	for _, file := range e.Generated {
+		if _, exists := generated[file.Path]; exists {
+			add(fmt.Errorf("duplicate generated reference path %s", file.Path))
+		}
+		_, err := safePath(root, file.Path)
+		add(err)
+		_, err = readArtifact(root, file.Content)
+		add(err)
+		generated[file.Path] = file.Content.SHA256
+	}
 	if e.State == "recorded" {
 		absent := make(map[string]bool)
 		for _, name := range e.Absent {
@@ -286,17 +297,6 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 				add(fmt.Errorf("absent reference inventory differs from replay expectation"))
 			}
 			delete(absent, name)
-		}
-		generated := make(map[string]string)
-		for _, file := range e.Generated {
-			if _, exists := generated[file.Path]; exists {
-				add(fmt.Errorf("duplicate generated reference path %s", file.Path))
-			}
-			_, err := safePath(root, file.Path)
-			add(err)
-			_, err = readArtifact(root, file.Content)
-			add(err)
-			generated[file.Path] = file.Content.SHA256
 		}
 		if len(e.Generated) != len(i.Expected.Generated) {
 			add(fmt.Errorf("generated reference inventory differs from replay expectation"))

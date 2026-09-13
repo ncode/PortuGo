@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Validate retained screenshots, transcriptions and generated-file evidence for
+  reviewed exclusions, including generated path containment and uniqueness.
+
 - Reject coverage downgrades that reuse a verified probe's existing review.
   Require a new scope-correction rationale or review link in all validation
   modes while retaining the final gate's rejection of pending work.
