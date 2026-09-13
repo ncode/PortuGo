@@ -56,6 +56,8 @@
 
 - Link the default-real-output verification marker to its recorded probe.
 
+- Link the output-width spacing verification marker to its recorded probe.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
