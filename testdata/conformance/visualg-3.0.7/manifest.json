@@ -323,6 +323,15 @@
       ]
     },
     {
+      "id": "assumption.random-range-domain",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Para variável inteira com faixa, gera inteiro uniforme; para real, gera real? Granularidade?",
+      "probes": [
+        "random-range-reversed",
+        "random-range-fraction-precision"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
