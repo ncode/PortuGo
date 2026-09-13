@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject contradictory conformance absence expectations containing generated
+  files or retained inputs, or requiring absence checks through a file.
+
 - Reject case-only aliases across conformance fixture paths and directory
   components before replay, while preserving exact-path updates.
 
