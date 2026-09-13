@@ -243,7 +243,17 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
 ## 4. Newline-Aware Lexing, Strict Grammar, Recovery, and Printing
 
-- [ ] 4.1 Add failing lexer/parser/printer goldens for CRLF/LF, comment contents and anchors, CP1252 comments, strict vocabulary/literals, recovery, ignored suffixes, and source/depth limit boundaries.
+- [x] 4.1 Add failing lexer/parser/printer goldens for CRLF/LF, comment contents and anchors, CP1252 comments, strict vocabulary/literals, recovery, ignored suffixes, and source/depth limit boundaries.
+
+  `TestFrontendGrammarGolden` adds positioned lexer and formatter goldens for
+  LF/CRLF, decoded CP1252 comments, case-preserving identifiers, recorded
+  literal forms, comments, and opaque suffixes, with parse-print-parse checks.
+  `TestFrontendGrammarRecoveryFixture` checks independent positioned parser
+  diagnostics and retained later statements under both line endings. Existing
+  keyword/literal tables and source, parser, and AST limit suites cover the
+  strict vocabulary/literal rejection cases and exact boundary/one-beyond
+  resource behavior. Broader vocabulary, literal, production-boundary, and
+  recovery implementation work remains tracked by 4.3-4.6 and 4.8.
 - [x] 4.2 Preserve positioned physical newline and comment tokens through decoding and lexing with original-byte mapping; comments must not consume their terminating newline.
   Original-byte mapping now survives BOM removal and Windows-1252 decoding,
   including physical newline, EOF, ignored-suffix and interior-comment spans.

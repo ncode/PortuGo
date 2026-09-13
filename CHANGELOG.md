@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Add frontend lexer/parser/printer goldens for line endings, comments,
+  CP1252 source mapping, literals, recovery, ignored suffixes, and resource
+  boundaries.
+
 - Add a call-form parser golden and record frame and alias regression coverage
   for accepted procedure and function syntax.
 
