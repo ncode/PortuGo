@@ -154,6 +154,14 @@
       ]
     },
     {
+      "id": "assumption.scientific-notation",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- **Numéricos:** inteiros (`42`, `-3`) e reais (`1.5`). Separador decimal é **ponto**, sempre, independente do locale. Sem separador de milhares. Sem notação científica documentada `[VERIFICAR]`.",
+      "probes": [
+        "numeric-exponent"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
