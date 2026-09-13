@@ -259,7 +259,7 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 	}
 	add(checkExpectedExitCode(i.Expected.ExitCode))
 	if e.State == "recorded" {
-		out, err := readArtifact(root, i.Expected.Stdout)
+		out, err := readReplayOutputArtifact(root, i.Expected.Stdout)
 		add(err)
 		if e.Accepted != nil && *e.Accepted {
 			if i.Expected.ExitCode != 0 || len(i.Expected.Diagnostics) != 0 {
@@ -274,7 +274,7 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			add(fmt.Errorf("reference disposition requires rejection with exit status 1 and mapped diagnostics"))
 		}
 	} else if i.Expected.Stdout != (artifact{}) {
-		_, err := readArtifact(root, i.Expected.Stdout)
+		_, err := readReplayOutputArtifact(root, i.Expected.Stdout)
 		add(err)
 	}
 	inputs := make(map[string]bool)
@@ -399,7 +399,7 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 	}
 	for _, a := range []*artifact{i.Expected.State, i.Expected.HostTrace} {
 		if a != nil {
-			_, err := readObservationArtifact(root, *a)
+			_, err := readReplayOutputArtifact(root, *a)
 			add(err)
 		}
 	}

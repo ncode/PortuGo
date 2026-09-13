@@ -85,8 +85,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   reviewed non-goals in every validation mode.
   Bundled-example catalogs also reject unknown fields and trailing JSON in every
   validation mode, matching the manifest schema's strict decoding boundary.
-  State and host observation artifacts also share the adapter's 1 MiB output
-  limit, so oversized retained expectations fail before replay.
+  Stdout, state and host observation artifacts also share the adapter's 1 MiB
+  output limit, so oversized retained expectations fail before replay.
   Staged recording metadata also rejects unknown fields and trailing JSON before
   capture emits evidence.
   Manifests loaded from a history base use the same strict decoder as current
