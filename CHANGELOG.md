@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Correct the reference-corpus progress totals to match the current manifest.
+
 - Record the assembled source, runtime, input, storage, host, filesystem, and
   replay safeguard acceptance sweep, including bounded empty-loop execution.
 
