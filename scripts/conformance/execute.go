@@ -44,7 +44,10 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 	if err != nil {
 		return fail(err)
 	}
-	decoded, err := source.DecodeFile(flags.Arg(0), data)
+	// The execution adapter is also used directly by recording tooling. Keep
+	// diagnostic filenames stable and avoid exposing the caller's filesystem
+	// path in captured conformance output.
+	decoded, err := source.DecodeFile("source.alg", data)
 	if err != nil {
 		return fail(err)
 	}

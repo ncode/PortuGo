@@ -62,3 +62,18 @@ func TestExecuteProbeRedactsFilesystemFailure(t *testing.T) {
 		t.Fatalf("status = %d, stderr = %q; want sanitized filesystem failure", status, stderr.String())
 	}
 }
+
+func TestExecuteProbeRedactsDiagnosticSourcePath(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "private-name", "source.alg")
+	if err := os.MkdirAll(filepath.Dir(path), 0o700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(path, []byte("algoritmo \"broken\"\ninicio\nescreval(\nfimalgoritmo\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	var out, stderr strings.Builder
+	status := executeProbe([]string{path}, strings.NewReader(""), &out, &stderr)
+	if status != 1 || out.Len() != 0 || !strings.HasPrefix(stderr.String(), "source.alg:") || strings.Contains(stderr.String(), path) {
+		t.Fatalf("status = %d, stdout = %q, stderr = %q; want stable diagnostic filename", status, out.String(), stderr.String())
+	}
+}
