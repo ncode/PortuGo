@@ -20,6 +20,9 @@ Reference version and acquisition metadata remain mandatory for recorded probes.
 Quality-result validation also bounds Git status output before deciding whether
 the candidate checkout is clean; `TestQualityCandidateRejectsOversizedStatus`
 covers that project-only resource guard.
+History validation bounds Git revision and tree-lookup output before comparing
+manifests; `TestPreviousManifestRejectsOversizedGitMetadata` covers those
+project-only guards.
 
 ## Recording and normalization
 

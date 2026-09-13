@@ -5,6 +5,9 @@
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
+- Bound Git revision and tree-lookup output during historical manifest
+  validation before comparing downgrade history.
+
 - Bound replay source reads at the 64 KiB execution profile before staging a
   candidate run.
 
