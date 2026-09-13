@@ -117,6 +117,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   comparison, avoiding a larger allocation for oversized expectations.
   Replay source reads apply the 64 KiB execution profile before candidate
   staging, so oversized sources are rejected without a larger allocation.
+  Quality-result validation bounds Git status output at the artifact limit before
+  checking candidate cleanliness.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 

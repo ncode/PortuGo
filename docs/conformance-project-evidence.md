@@ -17,6 +17,9 @@ paths, and exclusion of reference binaries and archives. These are properties of
 the corpus validator. `TestManifestValidation`, `TestManifestRejectsSymlink`, and
 `TestLoadRejectsUnknownFieldsAndTrailingJSON` exercise their failure cases.
 Reference version and acquisition metadata remain mandatory for recorded probes.
+Quality-result validation also bounds Git status output before deciding whether
+the candidate checkout is clean; `TestQualityCandidateRejectsOversizedStatus`
+covers that project-only resource guard.
 
 ## Recording and normalization
 
