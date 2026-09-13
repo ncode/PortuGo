@@ -299,6 +299,14 @@
       ]
     },
     {
+      "id": "assumption.function-without-return",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Função que termina sem executar `retorne`: erro ou valor default?",
+      "probes": [
+        "function-without-return"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
