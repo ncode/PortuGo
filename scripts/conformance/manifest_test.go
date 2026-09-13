@@ -375,6 +375,46 @@ func TestManifestChecklistSource(t *testing.T) {
 	}
 }
 
+func TestManifestChecksMarkersAlongsideChecklist(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	writeArtifact(t, root, "compatibility.md", "## 12. Checklist de conformidade\n\n1. output behavior\n\n## Notes\n- [VERIFICAR] another behavior\n")
+	m.InventorySources = append(m.InventorySources, "compatibility.md")
+	m.Inventory = append(m.Inventory, inventoryItem{
+		ID: "checklist.01", Kind: "checklist", Link: "compatibility.md#1. output behavior", Probes: []string{"output"},
+	})
+	if err := validate(root, m, "evidence", nil); err == nil || !strings.Contains(err.Error(), "untraced verification item") {
+		t.Fatalf("error = %v, want untraced verification item", err)
+	}
+	m.Inventory = append(m.Inventory, inventoryItem{
+		ID: "assumption.marker", Kind: "assumption", Link: "compatibility.md#- [VERIFICAR] another behavior", Probes: []string{"output"},
+	})
+	if err := validate(root, m, "evidence", nil); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestManifestRetainsPendingLegacyObligations(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	lines := make([]string, 440)
+	for i := range lines {
+		lines[i] = "source text"
+	}
+	for _, pending := range pendingSourceObligations["especificacao-visualg-3.md"] {
+		lines[pending.line-1] = pending.prefix + " [VERIFICAR] pending details"
+	}
+	writeArtifact(t, root, "especificacao-visualg-3.md", strings.Join(lines, "\n")+"\n")
+	m.InventorySources = append(m.InventorySources, "especificacao-visualg-3.md")
+	if err := validate(root, m, "evidence", nil); err != nil {
+		t.Fatal(err)
+	}
+	lines[pendingSourceObligations["especificacao-visualg-3.md"][0].line-1] = "source text"
+	writeArtifact(t, root, "especificacao-visualg-3.md", strings.Join(lines, "\n")+"\n")
+	if err := validate(root, m, "evidence", nil); err == nil || !strings.Contains(err.Error(), "pending verification item missing") {
+		t.Fatalf("error = %v, want missing pending verification item", err)
+	}
+}
 func TestManifestUntracedProbeOrder(t *testing.T) {
 	t.Parallel()
 	root, m := testManifest(t)

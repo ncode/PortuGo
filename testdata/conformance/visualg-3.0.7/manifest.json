@@ -556,6 +556,22 @@
       ]
     },
     {
+      "id": "feature.builtin-catalog",
+      "kind": "feature",
+      "link": "testdata/conformance/visualg-3.0.7/builtin-inventory.json",
+      "probes": [
+        "catalog-documented-functions"
+      ]
+    },
+    {
+      "id": "defect.cli-error-status",
+      "kind": "defect",
+      "link": "docs/windows-lab-validation-2026-09-07.md#Recorded corrections",
+      "probes": [
+        "project.cli-contracts"
+      ]
+    },
+    {
       "id": "requirement.reference-release-authority",
       "kind": "requirement",
       "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference release authority",
