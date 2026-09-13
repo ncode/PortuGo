@@ -24,6 +24,8 @@
 
 - Sort untraced probe diagnostics so manifest validation reports stable errors.
 
+- Link the legacy `:=` verification marker to its recorded assignment probe.
+
 - Bound Git status output during quality-result validation so oversized dirty
   checkouts fail closed without an unbounded memory read.
 
