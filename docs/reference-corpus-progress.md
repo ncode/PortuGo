@@ -341,3 +341,7 @@ elapsed time.
 Conformance artifact reads now enforce the repository size limit while reading,
 so files that grow after metadata inspection are rejected before their bytes are
 used.
+
+Retained replay-output artifacts now use the smaller observation limit during
+the read, avoiding a larger allocation before an oversized expectation is
+rejected.
