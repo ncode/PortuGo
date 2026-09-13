@@ -51,6 +51,13 @@ func replayOwnedPath(name string, observe bool) bool {
 	return first == "SOURCE.ALG" || observe && (first == "STATE.JSON" || first == "HOST.JSON" || first == "CLOCK.JSON")
 }
 
+func checkExpectedExitCode(code int) error {
+	if code != 0 && code != 1 {
+		return fmt.Errorf("invalid expected exit status %d", code)
+	}
+	return nil
+}
+
 func checkReplayInputPath(name string, observe bool) error {
 	if replayOwnedPath(name, observe) {
 		return fmt.Errorf("input file conflicts with replay-owned path: %s", name)
@@ -66,6 +73,9 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	}
 	if p.TimeoutMS < 1 || p.TimeoutMS > 30000 {
 		return fmt.Errorf("invalid replay budget")
+	}
+	if err := checkExpectedExitCode(want.ExitCode); err != nil {
+		return err
 	}
 	source, err := readArtifact(root, p.Source)
 	if err != nil {

@@ -72,6 +72,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Generated and absent expectations now reject the same replay-owned aliases
   when observations are enabled, preventing adapter outputs from satisfying
   candidate file expectations.
+  Expected source-run statuses now accept only 0 or 1 in every validation mode,
+  including reviewed exclusions, and replay applies the same guard.
   Absence expectations now reject ancestors and descendants of generated or
   retained input files in every mode. Generic controls preserve sibling paths,
   similar prefixes and explicitly removed inputs above or below absent paths.
