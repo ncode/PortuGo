@@ -132,7 +132,7 @@ func writeObservation(path string, value any) error {
 	if err != nil {
 		return err
 	}
-	if len(data) >= 1<<20 {
+	if len(data) >= maxObservationBytes {
 		return fmt.Errorf("observation size limit exceeded")
 	}
 	return os.WriteFile(path, append(data, '\n'), 0600)

@@ -399,7 +399,7 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 	}
 	for _, a := range []*artifact{i.Expected.State, i.Expected.HostTrace} {
 		if a != nil {
-			_, err := readArtifact(root, *a)
+			_, err := readObservationArtifact(root, *a)
 			add(err)
 		}
 	}
