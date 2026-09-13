@@ -61275,7 +61275,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -61288,7 +61288,10 @@
               "line": 9
             }
           ]
-        }
+        },
+        "tests": [
+          "record_types_test.go#TestRecordedRecordRejections"
+        ]
       }
     },
     {
@@ -61547,7 +61550,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -61560,7 +61563,10 @@
               "line": 14
             }
           ]
-        }
+        },
+        "tests": [
+          "record_types_test.go#TestRecordedRecordAssignmentRejections"
+        ]
       }
     },
     {
@@ -61746,7 +61752,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -61759,7 +61765,10 @@
               "line": 10
             }
           ]
-        }
+        },
+        "tests": [
+          "record_types_test.go#TestRecordedRecordAssignmentRejections"
+        ]
       }
     },
     {
@@ -62723,7 +62732,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -62736,7 +62745,10 @@
               "line": 10
             }
           ]
-        }
+        },
+        "tests": [
+          "record_types_test.go#TestRecordedRecordAssignmentRejections"
+        ]
       }
     },
     {
@@ -62778,7 +62790,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -62791,7 +62803,10 @@
               "line": 12
             }
           ]
-        }
+        },
+        "tests": [
+          "record_types_test.go#TestRecordedRecordAssignmentRejections"
+        ]
       }
     },
     {
@@ -62876,7 +62891,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -62889,7 +62904,10 @@
               "line": 12
             }
           ]
-        }
+        },
+        "tests": [
+          "record_types_test.go#TestRecordedRecordAssignmentRejections"
+        ]
       }
     },
     {

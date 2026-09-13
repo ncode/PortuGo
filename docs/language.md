@@ -120,7 +120,9 @@ Parameters and function results must use built-in type names; a named type in
 either header position receives `P001`. Variables declared through an alias
 can still be passed to compatible built-in scalar parameters, including `var`
 parameters. Vector type aliases are rejected. Record declarations and their
-distinct alias behavior are described below.
+distinct alias behavior are described below. The recorded keyword-shaped record
+alias case is accepted in the `tipo` declaration boundary but receives `P001`
+when that alias is used as a variable type.
 
 Formatting preserves alias spelling, definition order, and local scopes, and
 emits the required `var` section. See the [type-alias example](../examples/type_aliases.alg)
@@ -197,8 +199,11 @@ copied fields. A field declared with a named record type likewise creates no
 addressable nested field. Selecting either missing field produces `E002` at
 the first failing selection; analysis stops there. Inline record fields,
 vector fields, and named record parameter/result types receive `P001`.
-Cross-type record assignments are rejected; matching their recorded runtime
-diagnostic timing remains pending.
+Cross-type record assignments remain incompatible. In the recorded controls,
+the assignment is evaluated and reports positioned `R001` at runtime for
+distinct record definitions and record aliases. Duplicate-field layouts also
+retain their first field and report the recorded `R001` when the incompatible
+assignment runs; these timings are limited to the recorded controls.
 
 ## Vectors
 

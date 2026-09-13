@@ -6,6 +6,10 @@
   C-style operator sequences, preserving operand side effects. Defer the
   associated undeclared-name and comment-truncated delimiter errors until
   execution, retaining earlier output and exact formatter behavior.
+- Verify six recorded record rejection controls: keep the keyword-shaped alias
+  declaration boundary positioned at `P001` when used as a variable type, and
+  report the five incompatible or duplicate-layout assignments as positioned
+  `R001` runtime diagnostics.
 
 - Match four recorded frontend recovery cases: reserved callable names, a
   quoted header without its keyword, a brace-truncated output expression, and

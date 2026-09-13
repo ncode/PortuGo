@@ -334,7 +334,9 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			}
 		}
 		realToInteger := ok && dst.Kind == runtime.IntegerType && src.Kind == runtime.RealType && containsRealLiteral(s.Value)
-		if ok && !logicalResult && !realToInteger && src.Kind != runtime.NumericType && !runtime.Assignable(dst, src) {
+		// Recorded incompatible record destinations report their failure during
+		// execution, where the runtime validates the concrete record layout.
+		if ok && dst.Kind != runtime.RecordType && !logicalResult && !realToInteger && src.Kind != runtime.NumericType && !runtime.Assignable(dst, src) {
 			c.error(s.Value.Start(), diag.ETypeMismatch, "cannot assign %s to %s", src, dst)
 		}
 	case *ast.CallStmt:

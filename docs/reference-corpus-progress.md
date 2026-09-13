@@ -321,3 +321,9 @@ one-argument numeric procedure exposes its typed zero; a one-argument numeric
 function propagates no value when that absent parameter is returned, preserving
 the recorded body output and caller stop. Bare, multi-parameter, and other
 omitted-argument forms remain pending.
+
+The record-rejection follow-up now verifies six previously pending recorded
+controls. One keyword-shaped alias use reports `P001` at its variable
+declaration, while five incompatible or duplicate-layout assignments report
+positioned `R001` during execution. The evidence remains recorded and broader
+aggregate semantics remain pending.

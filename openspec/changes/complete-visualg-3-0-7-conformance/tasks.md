@@ -251,17 +251,19 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   unsupported named callable headers. The duplicate-alias narrowing-assignment
   diagnostic now reports positioned `R001` during execution. Record aliases
   now retain distinct record identity without copied fields; their declaration
-  and field-selection behavior is recorded.
+  and field-selection behavior is recorded. The two incompatible record-alias
+  value controls now report their recorded `R001` during execution.
 - [x] 6.5 Implement record syntax and layouts in `sema.Info` only if confirmed, including field order, duplicates, and depth/size guards; otherwise add rejection fixtures and omit record layout machinery.
 - [x] 6.6 Add field designators through AST, parser, printer, sema, and runtime only for confirmed record support; otherwise pin field-syntax rejection and remove positive field obligations from dependent tasks/specs.
 
-  Forty-six new record observations verify 42 cases, including two earlier
-  recordings: 28 accepted programs and 14 positioned rejections. Layouts retain
+  Forty-six new record observations verify 48 cases, including two earlier
+  recordings: 28 accepted programs and 20 positioned rejections. Layouts retain
   scalar field order, first definitions, local scope, and distinct record
   identity. Nested named fields are not addressable; inline record/vector
   fields and named callable headers are rejected. Traversal, slot, backing
   storage, and copy checks guard the implementation. Five assignment-diagnostic
-  cases and one keyword type-name case remain pending.
+  cases and one keyword-shaped alias case now preserve their recorded
+  `R001`/`P001` timing; broader aggregate semantics remain pending.
 - [x] 6.7 Accept only oracle-confirmed assignment aliases and normalize them to the assignment AST without losing source positions.
 - [x] 6.8 Implement zero initialization and copying only for accepted scalar/aggregate operations, with the depth and allocation guards applied before nested copies.
 - [x] 6.9 Implement location-based `var` aliases for accepted scalar/vector designators and, if confirmed, fields; reproduce rejection of unsupported aggregate parameter forms.

@@ -1,12 +1,14 @@
 package portugol_test
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
+	"github.com/ncode/portugol-go/internal/interp"
 	"github.com/ncode/portugol-go/internal/lexer"
 	"github.com/ncode/portugol-go/internal/parser"
 	"github.com/ncode/portugol-go/internal/sema"
@@ -68,6 +70,7 @@ func TestRecordedRecordRejections(t *testing.T) {
 		{"record-field-type-result-header", diag.EParse, 7},
 		{"record-name-alias-first", diag.EUndeclared, 10},
 		{"record-name-keyword-field", diag.EParse, 4},
+		{"record-layout-alias", diag.EParse, 9},
 	} {
 		t.Run(tt.id, func(t *testing.T) {
 			src, err := source.ReadFile(filepath.Join("testdata/conformance/visualg-3.0.7/probes", tt.id, "source.alg"))
@@ -84,6 +87,46 @@ func TestRecordedRecordRejections(t *testing.T) {
 			}
 			if len(ds) != 1 || ds[0].Code != tt.code || file.Position(ds[0].Pos).Line != tt.line {
 				t.Fatalf("diagnostics = %v, want %s on line %d", ds, tt.code, tt.line)
+			}
+		})
+	}
+}
+
+func TestRecordedRecordAssignmentRejections(t *testing.T) {
+	for _, tt := range []struct {
+		id   string
+		line int
+	}{
+		{"record-layout-copy-identity", 14},
+		{"record-boundary-duplicate-real", 10},
+		{"record-alias-value-alias-integer", 10},
+		{"record-alias-value-alias-copy", 12},
+		{"record-name-duplicate-integer-first", 12},
+	} {
+		t.Run(tt.id, func(t *testing.T) {
+			src, err := source.ReadFile(filepath.Join("testdata/conformance/visualg-3.0.7/probes", tt.id, "source.alg"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			file, tokens, ds := lexer.Scan("source.alg", src)
+			if len(ds) != 0 {
+				t.Fatal(ds)
+			}
+			prog, ds := parser.Parse(tokens)
+			if len(ds) != 0 {
+				t.Fatal(ds)
+			}
+			info, ds := sema.Analyze(prog)
+			if len(ds) != 0 {
+				t.Fatalf("semantic diagnostics = %v", ds)
+			}
+			var out bytes.Buffer
+			ds = interp.New(interp.Options{Output: &out}).Run(prog, info)
+			if len(ds) != 1 || ds[0].Code != diag.RType || file.Position(ds[0].Pos).Line != tt.line {
+				t.Fatalf("diagnostics = %v, output = %q; want R001 on line %d", ds, out.String(), tt.line)
+			}
+			if out.Len() != 0 {
+				t.Fatalf("output = %q, want empty", out.String())
 			}
 		})
 	}
