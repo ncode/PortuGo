@@ -147,6 +147,7 @@ func TestReviewedExclusionFileLayouts(t *testing.T) {
 		{name: "absent child", generated: []string{"data"}, absent: []string{"data/output.dat"}, want: "absent path"},
 		{name: "generated case aliases", generated: []string{"result.dat", "RESULT.DAT"}, want: "case-insensitive path collision"},
 		{name: "directory case aliases", inputs: []string{"Data/input.dat"}, generated: []string{"data/output.dat"}, want: "case-insensitive path collision"},
+		{name: "duplicate expected generated", expected: []string{"result.dat", "result.dat"}, want: "duplicate generated expectation path"},
 		{name: "retained output only", generated: []string{"data/output.dat"}},
 		{name: "shared directory", inputs: []string{"data/input.dat"}, generated: []string{"data/output.dat"}},
 		{name: "similar prefix", inputs: []string{"data"}, generated: []string{"database/output.dat"}},
