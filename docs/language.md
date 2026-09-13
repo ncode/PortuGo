@@ -1428,6 +1428,8 @@ Manifest diagnostic expectations use `L`, `P`, `S`, `E` or `R` followed by three
 ASCII digits, a positive line, and an omitted or zero column when the exact
 column is unconstrained. Negative expected columns are invalid. Every validation
 mode checks this metadata before replay, including for pending implementations.
+Expected source-run exit statuses are restricted to `0` for success or `1` for
+failure in every validation mode, including reviewed exclusions.
 Clock fixtures also use the execution adapter's JSON decoder during validation.
 Malformed JSON, unknown fields, trailing data, invalid read values and empty
 read schedules fail before replay. Repeated and backward readings remain valid.

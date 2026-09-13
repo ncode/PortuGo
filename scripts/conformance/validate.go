@@ -257,6 +257,7 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			add(fmt.Errorf("invalid diagnostic expectation: %+v", d))
 		}
 	}
+	add(checkExpectedExitCode(i.Expected.ExitCode))
 	if e.State == "recorded" {
 		out, err := readArtifact(root, i.Expected.Stdout)
 		add(err)

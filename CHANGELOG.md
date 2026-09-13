@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject conformance expectations with exit statuses outside the replay
+  contract (`0` for success or `1` for failure), including reviewed exclusions.
+
 - Reject generated and absent expectations that alias replay-owned source or
   observation files when an observer is enabled.
 
