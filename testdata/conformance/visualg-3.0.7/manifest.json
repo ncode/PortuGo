@@ -146,6 +146,14 @@
       ]
     },
     {
+      "id": "assumption.accented-identifiers",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Se letras acentuadas são aceitas em identificadores (provavelmente sim no 3.x via charset ANSI/Windows-1252, mas não documentado).",
+      "probes": [
+        "accented-identifier"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
