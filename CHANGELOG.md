@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add expression type and rejection tables, a parser golden, and positioned
+  runtime diagnostic fixtures with partial-output checks.
+
 - Reject non-regular direct observation-adapter source and clock paths before
   opening them, so special files cannot block a bounded read.
 - Skip repository metadata directories at any depth during prohibited-artifact
