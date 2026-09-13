@@ -138,13 +138,20 @@ The function terminator `fimfunção` is also reserved as a variable name;
 using it in a declaration receives `P001` on that line.
 
 These are specific accepted spellings. The recorded type spelling `lógico` is
-rejected with `P001` on its declaration line. Further vocabulary and physical-line
+rejected with `P001` on its declaration line. `início` is not an alias for
+`inicio`: the recorded program-body opener receives `L001` on that line.
+Further vocabulary and physical-line
 grammar work remains pending; see the [keyword observations](keyword-forms-progress.md).
 
 Recorded identifiers accept leading and internal underscores. Identifier
 matching ignores case: a declaration named `SoMa` can be assigned through `soma`
 and read through `SOMA`. Broader identifier character rules remain under
-validation.
+validation. Variable declarations use ASCII names; the recorded accented name
+`ação` receives one `L001` on its declaration line, before execution. This
+restriction is checked at the declaration boundary, preserving recognized
+accented keywords and the recorded `até_que` statement's `E002` behavior.
+The two rejected accented forms retain their source bytes in every formatter
+mode, including `fmt -w`.
 
 Recorded real literals accept an unsigned exponent such as `1e2` and a trailing
 decimal point such as `5.`. An exponent marker without digits contributes zero

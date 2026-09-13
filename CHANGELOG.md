@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Reject the recorded accented variable name and unsupported `início` body
+  opener with positioned `L001` diagnostics. Preserve accepted accented
+  keywords, statement lookalikes, and rejected source bytes during formatting.
+
 - Match recorded no-value output recovery for adjacent numeric braces and
   C-style operator sequences, preserving operand side effects. Defer the
   associated undeclared-name and comment-truncated delimiter errors until

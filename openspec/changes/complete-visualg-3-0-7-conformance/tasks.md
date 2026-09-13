@@ -83,6 +83,9 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   The comment regression checks mapped CP1252 bytes through canonical printing;
   separate lexer tables verify that each comment leaves its newline intact.
 - [ ] 4.3 Implement the oracle-recorded identifier character set, case-preserving token text, locale-independent canonical matching, and rejection of unsupported identifier forms.
+  The recorded accented variable declaration now receives one positioned
+  `L001` before execution. Original Windows-1252, UTF-8 and BOM source positions
+  and formatter rejection are covered. Broader identifier forms remain pending.
 - [ ] 4.4 Replace the keyword table with the complete oracle-recorded command vocabulary, accented and unaccented spellings, aliases, and non-reserved lookalikes.
 
   Four recorded `div` cases now verify the case-insensitive `\` alias, its
@@ -93,6 +96,9 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   passes with that spelling. The reserved `caracter` callable-name recording
   now receives one declaration-line `P001`, without a duplicate return-type
   diagnostic.
+  The unsupported `início` body opener now receives its recorded `L001`, while
+  accepted accented aliases and the `até_que` statement lookalike retain their
+  existing behavior. Complete vocabulary qualification remains pending.
 
 - [ ] 4.5 Implement exact comment, string, integer, real, range-punctuation, delimiter, and malformed-literal rules with positioned recovery.
 

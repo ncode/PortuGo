@@ -118,6 +118,8 @@ func TestFormatterPreservesMalformedFiles(t *testing.T) {
 		{"single_quoted_string", "../../testdata/conformance/visualg-3.0.7/probes/single-quoted-string/source.alg"},
 		{"alias-caracter-callable", "../../testdata/conformance/visualg-3.0.7/probes/alias-caracter-callable/source.alg"},
 		{"header-name-without-keyword", "../../testdata/conformance/visualg-3.0.7/probes/header-name-without-keyword/source.alg"},
+		{"accented-identifier", "../../testdata/conformance/visualg-3.0.7/probes/accented-identifier/source.alg"},
+		{"accented-keywords", "../../testdata/conformance/visualg-3.0.7/probes/accented-keywords/source.alg"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			src, err := os.ReadFile(tt.path)

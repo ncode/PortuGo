@@ -30,5 +30,15 @@ previously pending implementation entries are promoted; reference sources,
 recordings, expected outcomes, and task checkboxes remain unchanged. Raw
 qualification captures are kept outside the repository.
 
-The manifest contains 1,648 reference recordings: 1,573 verified and 75 pending,
+Two further rejection recordings now match before execution:
+`accented-identifier` receives one `L001` on declaration line 3, and
+`accented-keywords` receives one `L001` at the unsupported `início` on line 2.
+The parser applies these restrictions at their grammatical boundaries, retaining
+accepted accented keywords and the existing `até_que`/`lógico` diagnostics.
+Tests cover original Windows-1252 bytes, UTF-8 and an uppercase UTF-8 BOM form,
+including original-byte positions and unchanged token spelling. Every formatter
+mode rejects the recorded programs without changing their source. Broader
+identifier and keyword tasks remain open; the reference evidence is unchanged.
+
+The manifest contains 1,648 reference recordings: 1,584 verified and 64 pending,
 plus 19 verified project contracts and two explicit exclusions (1,669 total).

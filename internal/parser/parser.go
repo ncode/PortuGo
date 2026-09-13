@@ -3,6 +3,7 @@ package parser
 import (
 	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/ncode/portugol-go/internal/ast"
 	"github.com/ncode/portugol-go/internal/diag"
@@ -75,7 +76,7 @@ func (p *parser) parseProgram() *ast.Program {
 	}
 	prog.Begin = p.peek().Pos
 	if !p.match(token.INICIO) {
-		p.error(p.peek(), "expected inicio")
+		p.expect(token.INICIO, "expected inicio")
 		return prog
 	}
 	prog.Body = p.parseStmtList(stopSet(token.FIMALGORITMO))
@@ -131,6 +132,13 @@ func (p *parser) parseVarDecl() ast.VarDecl {
 	names := []token.Token{first}
 	for p.match(token.COMMA) {
 		names = append(names, p.expect(token.IDENT, "expected identifier"))
+	}
+	// Keep accented keywords and statement lookalikes intact in the lexer;
+	// the variable-name restriction applies at the declaration boundary.
+	for _, name := range names {
+		if strings.IndexFunc(name.Text, func(r rune) bool { return r > unicode.MaxASCII }) >= 0 {
+			p.diags = append(p.diags, diag.Diagnostic{Code: diag.ELexer, Pos: name.Pos, Message: "unsupported variable name"})
+		}
 	}
 	p.expect(token.COLON, "expected ':' after variable name")
 	typ := p.parseType()
@@ -753,7 +761,11 @@ func (p *parser) expect(kind token.Kind, msg string) token.Token {
 		return p.advance()
 	}
 	tok := p.peek()
-	p.error(tok, msg)
+	if kind == token.INICIO && strings.EqualFold(tok.Text, "início") {
+		p.diags = append(p.diags, diag.Diagnostic{Code: diag.ELexer, Pos: tok.Pos, Message: "unsupported spelling of inicio"})
+	} else {
+		p.error(tok, msg)
+	}
 	return token.Token{Kind: kind, Pos: tok.Pos}
 }
 
