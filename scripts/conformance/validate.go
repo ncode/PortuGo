@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -234,6 +235,12 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 	}
 	for _, link := range i.Tests {
 		add(checkLink(root, link, true))
+	}
+	diagnosticCode := regexp.MustCompile(`^[LPSER][0-9]{3}$`)
+	for _, d := range i.Expected.Diagnostics {
+		if !diagnosticCode.MatchString(d.Code) || d.Line < 1 || d.Column < 0 {
+			add(fmt.Errorf("invalid diagnostic expectation: %+v", d))
+		}
 	}
 	if e.State == "recorded" {
 		out, err := readArtifact(root, i.Expected.Stdout)

@@ -1381,5 +1381,9 @@ See [development checks](development.md) and the
 [quality baseline](quality-baseline.md) for commands and measured coverage.
 Conformance replay requires positive diagnostic lines and columns, including
 when a recording constrains the line without fixing an exact column.
+Manifest diagnostic expectations use `L`, `P`, `S`, `E` or `R` followed by three
+ASCII digits, a positive line, and an omitted or zero column when the exact
+column is unconstrained. Negative expected columns are invalid. Every validation
+mode checks this metadata before replay, including for pending implementations.
 Final acceptance requires quality evidence for the candidate commit; the
 separate release gate also requires completed implementation and handoff tasks.

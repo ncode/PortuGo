@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Reject malformed diagnostic codes and invalid source positions in conformance
+  expectations before replay, while retaining optional exact columns.
+
 - Validate retained screenshots, transcriptions and generated-file evidence for
   reviewed exclusions, including generated path containment and uniqueness.
 
