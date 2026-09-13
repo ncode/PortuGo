@@ -162,6 +162,15 @@
       ]
     },
     {
+      "id": "assumption.string-quote-escape",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- **Caractere (string):** delimitado por aspas duplas `\"...\"`. Não há documentação de escape de aspas dentro da string `[VERIFICAR: provavelmente não existe escape; aspas internas são impossíveis]`. Aspas simples não são válidas.",
+      "probes": [
+        "backslash-string-quote",
+        "single-quoted-string"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
