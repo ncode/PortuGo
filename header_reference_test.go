@@ -46,6 +46,8 @@ func TestRecordedHeaderRejections(t *testing.T) {
 		{"header-unquoted-name", 1},
 		{"header-missing-name", 1},
 		{"header-omitted", 1},
+		{"header-name-without-keyword", 2},
+		{"alias-caracter-callable", 2},
 		{"header-leading-unrelated-word", 1},
 		{"alias-caracter-variable", 3},
 		{"legacy-type-variable", 3},

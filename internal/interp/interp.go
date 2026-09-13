@@ -136,6 +136,9 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) (ds []diag.Diagnos
 	}
 	switch ctrl.kind {
 	case noControl:
+		if !i.halted && prog.Suffix.Kind == token.INVALID_SUFFIX {
+			return []diag.Diagnostic{{Code: diag.EParse, Pos: prog.End, Message: "unterminated string after fimalgoritmo"}}
+		}
 		return nil
 	case breakControl:
 		return diagnostics(fmt.Errorf("interrompa outside loop"), ctrl.at, diag.RLoop)

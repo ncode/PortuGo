@@ -21,15 +21,16 @@ func Scan(filename, src string) (*token.File, []token.Token, []diag.Diagnostic) 
 }
 
 type scanner struct {
-	src        string
-	file       *token.File
-	offset     int
-	tokens     []token.Token
-	diags      []diag.Diagnostic
-	lineStart  bool
-	endProgram int
-	endTokens  int
-	rawOffset  int
+	src           string
+	file          *token.File
+	offset        int
+	tokens        []token.Token
+	diags         []diag.Diagnostic
+	lineStart     bool
+	endProgram    int
+	endTokens     int
+	rawOffset     int
+	invalidSuffix bool
 }
 
 func (s *scanner) scan() {
@@ -157,7 +158,11 @@ func (s *scanner) scanSuffix() {
 	s.tokens = s.tokens[:s.endTokens]
 	s.rawOffset = s.endProgram
 	if s.endProgram < len(s.src) {
-		s.emit(token.SUFFIX, s.src[s.endProgram:], token.Pos(s.endProgram))
+		kind := token.SUFFIX
+		if s.invalidSuffix {
+			kind = token.INVALID_SUFFIX
+		}
+		s.emit(kind, s.src[s.endProgram:], token.Pos(s.endProgram))
 	}
 	for i := s.offset; i < len(s.src); i++ {
 		if s.src[i] == '\n' {
@@ -211,20 +216,29 @@ func (s *scanner) scanString(start int) {
 			}
 			s.file.AddLine(s.offset)
 			s.lineStart = true
-			s.error(token.Pos(start), "unterminated string literal")
+			s.unterminatedString(start)
 			s.emit(token.NEWLINE, s.src[newline:s.offset], token.Pos(newline))
 			return
 		case '/':
 			if s.peek() == '/' {
 				// The reference strips // even inside a quoted value.
 				s.skipLine()
-				s.error(token.Pos(start), "unterminated string literal")
+				s.unterminatedString(start)
 				return
 			}
 			text = append(text, r)
 		default:
 			text = append(text, r)
 		}
+	}
+	s.unterminatedString(start)
+}
+
+func (s *scanner) unterminatedString(start int) {
+	if s.endProgram != 0 {
+		// A malformed terminator-line quote is diagnosed only after the body.
+		s.invalidSuffix = true
+		return
 	}
 	s.error(token.Pos(start), "unterminated string literal")
 }

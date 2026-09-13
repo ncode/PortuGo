@@ -11721,7 +11721,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -11734,7 +11734,12 @@
               "line": 3
             }
           ]
-        }
+        },
+        "tests": [
+          "frontend_reference_test.go#TestRecordedFrontendRejections",
+          "internal/parser/recovery_test.go#TestCommentTruncatedWriteRecovery",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ]
       }
     },
     {
@@ -19394,7 +19399,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -19407,7 +19412,11 @@
               "line": 2
             }
           ]
-        }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ]
       }
     },
     {
@@ -19799,7 +19808,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -19812,7 +19821,11 @@
               "line": 2
             }
           ]
-        }
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections",
+          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+        ]
       }
     },
     {
@@ -80723,7 +80736,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -80736,7 +80749,12 @@
               "line": 4
             }
           ]
-        }
+        },
+        "tests": [
+          "source_suffix_test.go#TestRecordedMalformedTerminatorSuffix",
+          "internal/lexer/source_test.go#TestMalformedSuffixOriginalPositions",
+          "internal/parser/suffix_test.go#TestSuffixDoesNotHideEarlierErrors"
+        ]
       }
     },
     {

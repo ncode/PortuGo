@@ -97,8 +97,9 @@ const (
 	XOU
 	MOD
 	NEWLINE
-	COMMENT // A physical-line comment, excluding its terminating newline.
-	SUFFIX  // Opaque source following the program terminator.
+	COMMENT        // A physical-line comment, excluding its terminating newline.
+	SUFFIX         // Opaque source following the program terminator.
+	INVALID_SUFFIX // Suffix with an unterminated quote on the terminator's line.
 )
 
 // Token is one item in the source stream.
@@ -200,9 +201,10 @@ var kindNames = map[Kind]string{
 	ECO:       "eco", CRONOMETRO: "cronometro",
 	TIMER: "timer", PAUSA: "pausa", DEBUG: "debug",
 	NAO: "nao", XOU: "xou", MOD: "mod",
-	NEWLINE: "NEWLINE",
-	COMMENT: "COMMENT",
-	SUFFIX:  "SUFFIX",
+	NEWLINE:        "NEWLINE",
+	COMMENT:        "COMMENT",
+	SUFFIX:         "SUFFIX",
+	INVALID_SUFFIX: "INVALID_SUFFIX",
 }
 
 // Lookup returns the keyword kind for ident, or IDENT.

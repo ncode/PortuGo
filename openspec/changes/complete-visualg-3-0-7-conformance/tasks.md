@@ -90,7 +90,9 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   vocabulary qualification remains pending. Three further `fimfunção` cases
   verify the accented function terminator, canonical formatting, and reserved
   variable-name rejection; the original bundled string-processing example now
-  passes with that spelling.
+  passes with that spelling. The reserved `caracter` callable-name recording
+  now receives one declaration-line `P001`, without a duplicate return-type
+  diagnostic.
 
 - [ ] 4.5 Implement exact comment, string, integer, real, range-punctuation, delimiter, and malformed-literal rules with positioned recovery.
 
@@ -100,6 +102,10 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   delimiters, and `//` truncation inside strings. Comment retention is covered
   by 4.7 and 4.10; incomplete expression behavior and the remaining literal
   boundaries are still pending.
+
+  The spaced brace-comment expression now reports the missing closing
+  parenthesis on its own physical line and preserves following-line recovery.
+  The adjacent-brace and C-style expression recordings remain pending.
 
   Single-quoted text now produces one positioned lexical diagnostic, retaining
   subsequent-line recovery. Its recorded rejection is verified; other literal
@@ -126,8 +132,10 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Four new completed recordings verify that later physical lines after
   `fimalgoritmo` are opaque, even with malformed literals, symbols or blocks.
   The scanner retains their decoded text for idempotent printing. A fifth
-  recording rejects an unmatched quote on the terminator's own line; its
-  diagnostic code and execution phase still differ and remain pending.
+  recording now reports `P001` when execution reaches an unmatched quote on
+  the terminator's own line, retaining preceding output and formatter-stable
+  suffix text. The quoted-name-without-keyword record also matches its
+  diagnostic on the following token.
 
   The two recorded same-line output cases now reject a second command after
   parenthesized output, with or without a semicolon, using `P001` before
@@ -156,6 +164,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
   Recovery now retains the final source position after consuming EOF. A
   truncated-call fixture pins all subsequent diagnostics to the EOF line.
+  Reserved callable-name recovery now stops at the name, and comment-truncated
+  writes retain the current line for their missing-delimiter diagnostic.
   Broader structural and execution-phase recovery differences remain pending.
 - [x] 4.9 Enforce source-size and syntax/AST-traversal limits from design decision 10 across source loading, parsing, analysis, and printing, reserving `E900`; cover flat expression chains and exact boundary/one-beyond cases before recursion or allocation.
 - [x] 4.10 Extend canonical printing and round-trip tests to retain every comment exactly once with its anchor and suffix, comparing comment content/order as well as AST structure and idempotence.

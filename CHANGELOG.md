@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Match four recorded frontend recovery cases: reserved callable names, a
+  quoted header without its keyword, a brace-truncated output expression, and
+  an unterminated quote after the program terminator. Preserve preceding output
+  for the terminator error and retain its suffix through formatting.
+
 - Reject an output expression whose binary operand starts on the following
   physical line, and report single-quoted text once at its opening quote.
   Preserve following-line recovery and prevent formatting from rewriting the

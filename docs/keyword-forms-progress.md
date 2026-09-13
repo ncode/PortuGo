@@ -21,7 +21,8 @@ recorded type spelling `lógico` remains a positioned `P001` rejection.
 The reference rejects `caracter` as a variable or function name, and rejects
 `caractere` as a variable name. The longer `caracter_extra` identifier executes
 successfully and is verified. Exact diagnostic recovery for the reserved
-function-name declaration remains pending under task 4.8. The two variable-name
+function-name declaration now produces one `P001` on its declaration line;
+recovery stops before reporting further callable-header errors. The two variable-name
 rejections are now verified by the program-header regressions.
 
 The accepted choice-header forms with optional `faca`/`faça` are now verified.

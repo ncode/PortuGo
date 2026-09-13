@@ -144,3 +144,29 @@ func TestWriteOperandLineRecovery(t *testing.T) {
 		}
 	}
 }
+
+func TestCommentTruncatedWriteRecovery(t *testing.T) {
+	for _, ending := range []string{"\n", "\r\n", "\r\r\n"} {
+		src := strings.Join([]string{`algoritmo "comment recovery"`, "inicio",
+			`escreval(1 { note } + 2)`, `escreval(3)`, `(4 + 5)`, "fimalgoritmo", ""}, ending)
+		file, tokens, ds := lexer.Scan("source.alg", src)
+		if len(ds) != 0 {
+			t.Fatal(ds)
+		}
+		prog, ds := Parse(tokens)
+		if len(ds) != 2 {
+			t.Fatalf("diagnostics = %v, want two independent errors", ds)
+		}
+		for i, line := range []int{3, 5} {
+			if ds[i].Code != diag.EParse || file.Position(ds[i].Pos).Line != line {
+				t.Fatalf("diagnostic %d = %v, want P001 on line %d", i, ds[i], line)
+			}
+		}
+		if len(prog.Body) != 2 {
+			t.Fatal("recovery lost the following valid write")
+		}
+		if _, ok := prog.Body[1].(*ast.WriteStmt); !ok {
+			t.Fatal("recovery did not preserve the write")
+		}
+	}
+}

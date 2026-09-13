@@ -42,6 +42,9 @@ func (p *parser) parseProgram() *ast.Program {
 	start := p.peek()
 	prog := &ast.Program{At: start.Pos}
 	if !p.match(token.ALGORITMO) {
+		if p.match(token.STRING) {
+			start = p.peek()
+		}
 		p.error(start, "expected algoritmo")
 		return prog
 	}
@@ -75,7 +78,7 @@ func (p *parser) parseProgram() *ast.Program {
 	}
 	prog.Body = p.parseStmtList(stopSet(token.FIMALGORITMO))
 	prog.End = p.expect(token.FIMALGORITMO, "expected fimalgoritmo").Pos
-	if p.peek().Kind == token.SUFFIX {
+	if p.peek().Kind == token.SUFFIX || p.peek().Kind == token.INVALID_SUFFIX {
 		prog.Suffix = p.advance()
 	}
 	return prog
@@ -226,6 +229,9 @@ func (p *parser) parseSubprogram() ast.Subprogram {
 func (p *parser) parseProcedure() *ast.ProcedureDecl {
 	start := p.expect(token.PROCEDIMENTO, "expected procedimento")
 	name := p.expect(token.IDENT, "expected procedure name")
+	if name.Text == "" {
+		return &ast.ProcedureDecl{At: start.Pos, Name: name}
+	}
 	params := p.parseParamList()
 	p.rememberFragment(start.Pos)
 	decl := &ast.ProcedureDecl{At: start.Pos, Name: name, Params: params}
@@ -250,6 +256,9 @@ func (p *parser) parseProcedure() *ast.ProcedureDecl {
 func (p *parser) parseFunction() *ast.FunctionDecl {
 	start := p.expect(token.FUNCAO, "expected funcao")
 	name := p.expect(token.IDENT, "expected function name")
+	if name.Text == "" {
+		return &ast.FunctionDecl{At: start.Pos, Name: name}
+	}
 	params := p.parseParamList()
 	p.expect(token.COLON, "expected ':' before function return type")
 	ret := p.parseCallableType()
@@ -623,7 +632,11 @@ func (p *parser) parseWrite() ast.Stmt {
 			}
 		}
 		if !p.match(token.RPAREN) {
-			p.error(p.peek(), "expected ')'")
+			at := p.peek()
+			if comment, ok := p.lineEndComment(); ok {
+				at = comment
+			}
+			p.error(at, "expected ')'")
 			p.skipLine()
 		}
 	}

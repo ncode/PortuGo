@@ -37,7 +37,9 @@ The quoted algorithm name must follow `algoritmo` on the same physical line.
 Text after the closing quote on that line is ignored, including another quoted
 string or an unmatched quote. The executable body starts on a later line.
 A missing or misplaced header produces one `P001` diagnostic; parsing stops
-when the program header or the required main `inicio` is invalid. Formatting
+when the program header or the required main `inicio` is invalid. A leading
+quoted name without `algoritmo` is consumed before reporting the error at the
+following token; the recorded next-line `inicio` receives the diagnostic. Formatting
 emits only the algorithm name on the header line and discards ignored header text.
 LF and CRLF inputs retain equivalent token kinds, line/column positions, and
 syntax. An unrecognized statement start is diagnosed once; parsing resumes on
@@ -53,10 +55,11 @@ bytes immediately before it become one LF in a single formatting pass. CR bytes
 not followed by LF and all other opaque text remain unchanged.
 See the [ignored-suffix example](../examples/ignored_suffix.alg).
 
-The terminator's own line still receives lexical validation. An unmatched quote
-on that line produces a reference syntax error after preceding output. The CLI
-currently reports `L001` before execution for that case; its diagnostic code and
-execution phase remain explicitly pending in the corpus.
+An unmatched double quote on the terminator's own line produces `P001` when
+execution reaches the terminator, retaining preceding output. The malformed
+suffix remains intact through formatting, so formatting preserves this error
+and its execution phase. Other lexical errors in executable source still
+prevent execution.
 
 An optional `;` may end a `var` line or a scalar/vector declaration, including
 local declarations and an empty `var` block. It must be on that physical line
@@ -276,8 +279,12 @@ Multiline expressions, declaration headers and argument lists containing
 internal comments retain their token spellings and line breaks, with normalized
 indentation, so comments cannot hide following tokens or merge together.
 See [the comment-preservation example](../examples/comment_anchors.alg).
-The reference's handling of comments within incomplete expressions and the
-remaining syntax-recovery behavior are still pending.
+A brace comment after an unfinished output argument, as in
+`escreval(1 { note } + 2)`, truncates the physical line and reports the missing
+`)` on that line. Recovery preserves statements on following lines. The
+recorded adjacent-brace form `escreval(1{ note })` and C-style delimiter
+sequences inside an expression remain pending; their observed outcomes do not
+yet establish a general malformed-expression rule.
 
 ## Expressions
 

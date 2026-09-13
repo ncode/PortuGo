@@ -74,3 +74,16 @@ func (p *parser) section(kind token.Kind) token.Token {
 	}
 	return token.Token{}
 }
+
+// lineEndComment identifies the comment that truncated the current syntax line.
+func (p *parser) lineEndComment() (token.Token, bool) {
+	if p.pos >= len(p.tokens) || p.tokens[p.pos].Kind != token.NEWLINE {
+		return token.Token{}, false
+	}
+	newline := p.tokens[p.pos].Pos
+	i := sort.Search(len(p.original), func(i int) bool { return p.original[i].Pos >= newline })
+	if i > 0 && p.original[i-1].Kind == token.COMMENT {
+		return p.original[i-1], true
+	}
+	return token.Token{}, false
+}

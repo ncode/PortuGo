@@ -55,3 +55,26 @@ func TestScanFileOriginalPositions(t *testing.T) {
 		})
 	}
 }
+
+func TestMalformedSuffixOriginalPositions(t *testing.T) {
+	original := []byte("\ufeffalgoritmo \"\xe9\"\r\ninicio\r\nfimalgoritmo \"\xe9\r\r\nignored")
+	decoded, err := source.DecodeFile("source.alg", original)
+	if err != nil {
+		t.Fatal(err)
+	}
+	file, tokens, ds := ScanFile(decoded)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	if len(tokens) < 2 {
+		t.Fatal("missing suffix")
+	}
+	suffix := tokens[len(tokens)-2]
+	want := bytes.Index(original, []byte("fimalgoritmo")) + len("fimalgoritmo")
+	if suffix.Kind != token.INVALID_SUFFIX || suffix.Pos != token.Pos(want) || suffix.Text != " \"é\r\r\nignored" {
+		t.Fatalf("suffix = %+v", suffix)
+	}
+	if eof := tokens[len(tokens)-1]; eof.Pos != token.Pos(len(original)) || file.Position(eof.Pos).Line != 4 {
+		t.Fatalf("EOF = %+v", eof)
+	}
+}
