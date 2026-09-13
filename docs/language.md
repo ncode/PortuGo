@@ -729,7 +729,11 @@ condition. Recorded subprogram entry adds two intervals; a nonempty local
 variable section adds one interval plus one per declaration line, regardless
 of how many names that line declares. Declaration formatting can therefore
 change elapsed time; wall-clock output is not an exact canonical-replay promise.
-Unrecorded configuration and declaration combinations remain unqualified.
+Eight accepted recorded programs covering procedure and function calls,
+interrupted loops, a choice branch, and one or two local declaration lines are
+replayed through fixed host-clock schedules. Their elapsed text and delay order
+are part of the recorded qualification; other configuration and declaration
+combinations, and arbitrary wall-clock durations, remain unqualified.
 
 `pausa` requests one `Host.Breakpoint` at its source position; apparent call
 syntax and other tails are ignored. `debug logical-expression` requests one

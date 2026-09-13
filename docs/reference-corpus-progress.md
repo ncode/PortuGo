@@ -327,3 +327,9 @@ controls. One keyword-shaped alias use reports `P001` at its variable
 declaration, while five incompatible or duplicate-layout assignments report
 positioned `R001` during execution. The evidence remains recorded and broader
 aggregate semantics remain pending.
+
+The timed-subprogram follow-up now verifies eight accepted elapsed-time
+recordings through original and formatted execution. Fixed host-clock schedules
+preserve each recorded elapsed message and half-second delay order across
+procedure/function calls, interrupted loops, a choice branch, and local
+declaration layouts. Other variable timing combinations remain pending.

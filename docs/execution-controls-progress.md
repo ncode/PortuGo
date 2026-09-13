@@ -42,7 +42,10 @@ zero-delay control, supporting whole-millisecond truncation. Integer and
 half-integer controls also show why short wall-clock measurements cannot be
 treated as exact host-call traces: scheduling quantizes their observed delays.
 
-Subprogram timing is qualified for the recorded ordinary local-variable forms.
+Subprogram timing is now qualified for eight accepted recorded forms spanning
+procedure and function calls, interrupted loops, a choice branch, and one or
+two local declaration lines. Their original and formatted sources replay with
+fixed host-clock schedules, exact elapsed output, and the expected delay order.
 Other configuration/declaration combinations, file input, remaining original
 examples and the full conformance gate are still unfinished.
 

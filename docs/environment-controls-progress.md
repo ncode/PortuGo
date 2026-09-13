@@ -48,3 +48,9 @@ environment example. Echo on/off, ignored tails, file-input echo and the
 recorded console/random transitions have focused execution coverage. Remaining
 work is limited to the other oracle commands and the explicitly pending timing
 and GUI qualifications.
+
+The eight accepted timed-subprogram recordings now have deterministic replay
+coverage. The focused regression runs each original and formatted source with
+the recorded elapsed value supplied by a fixed host clock, and checks the exact
+output and half-second delay sequence. Other variable elapsed-time recordings,
+configuration/declaration combinations, and GUI qualifications remain pending.

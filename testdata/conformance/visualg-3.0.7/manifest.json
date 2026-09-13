@@ -77162,13 +77162,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-procedure/stdout.txt",
             "sha256": "629816baf9489ffc7939b192894918f5d29fff64e5c6f6171002ab8389bac7dc"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-procedure/expected-clock.json",
+            "sha256": "160dbba09d3ebfc9a433dcd1ae0e52e3155b2f5f2b6e333b481280da79fef9ef"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-procedure/expected-host.json",
+            "sha256": "8033a971682c71d75030bcd9c240c903d8ec78c3f9e4e76db598fb400744fb49"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77202,13 +77217,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-procedure-local/stdout.txt",
             "sha256": "24a9f311b229e25f4f6d9ac9626fc0c1742bc52a60f3abf3c0f8b71d229f8bb6"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-procedure-local/expected-clock.json",
+            "sha256": "0607cc3219d38e50e0e13b44a6997b00702fdd7c5808c6938bfc528a72eb9826"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-procedure-local/expected-host.json",
+            "sha256": "741bf535b5cdf1616951d0b8293ed069746c74ab907a08bddd5053aeca6323d7"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77242,13 +77272,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-function/stdout.txt",
             "sha256": "eaea555b9e7decc8dc73d786f82e1cb43a029fe2df3aa5b82596718781b09383"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-function/expected-clock.json",
+            "sha256": "d0c7bc46f8b09e1c5d933aed44b18dbfa9ee866d3e72b5e9da3de903454f2332"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-function/expected-host.json",
+            "sha256": "0945e993f0897975d8dadf20a3a5f5cad838f7d459b44e1827e26956417f7946"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77282,13 +77327,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-for-break/stdout.txt",
             "sha256": "b3ec4fc1e18f4225466ba20576c9e6d7a8f4357eb124bbc160f854c619654c96"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-for-break/expected-clock.json",
+            "sha256": "4d02f5555d798db3d25ead422a8652fa8df0046d79c94e8ae79b82508fc3d151"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-for-break/expected-host.json",
+            "sha256": "56ea03d3346456d79ca1f17e1a11ce342dbac3518c4cd3580f72f6af77705f1a"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77322,13 +77382,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-while-break/stdout.txt",
             "sha256": "7f88bc85c8c085db0b194e8265b9632534295cc9176bcc1bd25dc95250fc98e9"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-while-break/expected-clock.json",
+            "sha256": "2e16de6467e236c6a209c9afc9d60e225135371129247b74264d60c05e4498d0"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-while-break/expected-host.json",
+            "sha256": "56ea03d3346456d79ca1f17e1a11ce342dbac3518c4cd3580f72f6af77705f1a"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77362,13 +77437,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-switch/stdout.txt",
             "sha256": "45a7d4de5edac60a941dda40c78c211d8b66383fe5af829d058d55be6896a77d"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-switch/expected-clock.json",
+            "sha256": "caf45f7b63086e894e9dd21e67652c2b0b838bb549e20bf19a1a783b478c722f"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-switch/expected-host.json",
+            "sha256": "56ea03d3346456d79ca1f17e1a11ce342dbac3518c4cd3580f72f6af77705f1a"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77402,13 +77492,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-one-local/stdout.txt",
             "sha256": "f672e2b735ddb5d743af449b1166b8a6348a8e4c75e5508df62c1e359c2334bc"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-one-local/expected-clock.json",
+            "sha256": "4351db4b66c02cb34caa5a07056c791b20c988b91c451dc3d5d21133b66bdeac"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-one-local/expected-host.json",
+            "sha256": "741bf535b5cdf1616951d0b8293ed069746c74ab907a08bddd5053aeca6323d7"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },
@@ -77442,13 +77547,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-separate-locals/stdout.txt",
             "sha256": "0cb40cab1ec7dd241f0d573f72be515d128287c942d137346ba9588a2ba661df"
+          },
+          "clock": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-separate-locals/expected-clock.json",
+            "sha256": "895d47544bc1787ac2d21b5a11b06e88d47a3771d2c9783c48a637b00d2c8f64"
+          },
+          "hostTrace": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/environment-timed-separate-locals/expected-host.json",
+            "sha256": "187b897ebdeaa68fe570d19b6521f7771f632aa4ba666ec394cec041a846a23a"
           }
+        },
+        "tests": [
+          "timed_subprograms_test.go#TestRecordedTimedSubprograms"
+        ],
+        "review": {
+          "reason": "Qualified with an explicit deterministic clock schedule; the project host trace records clock reads and timer-delay order. Arbitrary wall-clock durations remain outside this comparison.",
+          "link": "docs/deterministic-qualification.md"
         }
       }
     },

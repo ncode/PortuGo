@@ -157,6 +157,12 @@ Echo, delay or timer, and chronometer commands SHALL reproduce the state transit
 - **WHEN** a program starts, queries, resets, or stops the chronometer using accepted forms while the injected clock advances
 - **THEN** the observed value and output match the reference semantics for that clock sequence
 
+#### Scenario: Replay accepted timed subprogram forms
+- **WHEN** an accepted recorded program combines a timer command with a procedure or function call, an interrupted loop, a choice branch, or local declarations
+- **THEN** an injected host clock reproduces the recorded elapsed text while `Host.Delay` receives the reference delay order for that program
+- **AND** the original and canonical formatted sources produce the same output and host trace
+- **AND** unrecorded timing combinations remain outside the deterministic replay guarantee
+
 #### Scenario: Toggle input echo
 - **WHEN** echo is enabled or disabled around console, file, or random input
 - **THEN** exactly the reference-selected input representations are emitted

@@ -19,6 +19,11 @@
   report the five incompatible or duplicate-layout assignments as positioned
   `R001` runtime diagnostics.
 
+- Qualify eight accepted timed-subprogram recordings through original and
+  formatted execution with fixed host-clock schedules. Preserve their exact
+  elapsed text and half-second delay order while leaving other variable timing
+  combinations unqualified.
+
 - Match four recorded frontend recovery cases: reserved callable names, a
   quoted header without its keyword, a brace-truncated output expression, and
   an unterminated quote after the program terminator. Preserve preceding output

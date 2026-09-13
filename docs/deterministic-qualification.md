@@ -12,6 +12,7 @@ outputs, normalized transcripts, and their recorded hashes are unchanged.
 | `c-comment-after-statement`, `c-inline-without-statement` | A C-like opener after an output statement is rejected on that line before printing the statement's text. The reference partial output is empty after removing its execution wrapper. |
 | `chronometer-on-off`, `chronometer-repeat-start`, `chronometer-tail` | Original and formatted source reproduce their recorded zero-elapsed-time transcripts using an injected clock that does not advance. |
 | `chronometer-repeat-stop`, `environment-chronometer-milliseconds`, `environment-chronometer-seconds`, `environment-chronometer-fractional-seconds` | Original and formatted source reproduce their recorded elapsed-time transcripts using explicit clock schedules and timer delays through the deterministic host adapter. |
+| Eight accepted timed-subprogram recordings | Procedure/function calls, interrupted loops, a choice branch, and local declaration layouts reproduce their recorded elapsed text and half-second delay order through explicit clock schedules. |
 
 The five rejected programs receive one `P001` parser diagnostic. This code is
 the project's syntax category; reference screenshots establish the reported
@@ -40,3 +41,5 @@ stdout, clock schedules and host traces for all seven qualified chronometer
 programs.
 `TestRecordedTimedChronometers` applies the same checks to the four elapsed-time
 transcripts and verifies their timer-delay calls.
+`TestRecordedTimedSubprograms` applies the same checks to the eight accepted
+timed-subprogram transcripts and verifies their timer-delay calls.
