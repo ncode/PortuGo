@@ -189,7 +189,11 @@ func (s *scanner) scanNumber(start int) {
 			s.advance()
 		}
 	}
-	s.emit(token.NUMBER, s.src[start:s.offset], token.Pos(start))
+	kind := token.NUMBER
+	if s.peek() == '{' {
+		kind = token.ABSENT_NUMBER
+	}
+	s.emit(kind, s.src[start:s.offset], token.Pos(start))
 }
 
 func (s *scanner) scanString(start int) {

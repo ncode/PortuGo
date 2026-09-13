@@ -154,19 +154,29 @@ func TestCommentTruncatedWriteRecovery(t *testing.T) {
 			t.Fatal(ds)
 		}
 		prog, ds := Parse(tokens)
-		if len(ds) != 2 {
-			t.Fatalf("diagnostics = %v, want two independent errors", ds)
-		}
-		for i, line := range []int{3, 5} {
-			if ds[i].Code != diag.EParse || file.Position(ds[i].Pos).Line != line {
-				t.Fatalf("diagnostic %d = %v, want P001 on line %d", i, ds[i], line)
-			}
+		if len(ds) != 1 || ds[0].Code != diag.EParse || file.Position(ds[0].Pos).Line != 5 {
+			t.Fatalf("diagnostics = %v, want the independent error on line 5", ds)
 		}
 		if len(prog.Body) != 2 {
 			t.Fatal("recovery lost the following valid write")
 		}
+		if first, ok := prog.Body[0].(*ast.WriteStmt); !ok || file.Position(first.Unclosed).Line != 3 {
+			t.Fatal("missing deferred closing-delimiter diagnostic on line 3")
+		}
 		if _, ok := prog.Body[1].(*ast.WriteStmt); !ok {
 			t.Fatal("recovery did not preserve the write")
 		}
+	}
+}
+
+func TestRecoveredExpressionChainLimit(t *testing.T) {
+	src := "algoritmo \"recovery limit\"\ninicio\nescreval(\"" + strings.Repeat("x", 1<<16) + "\"" + strings.Repeat(" /* 1 */", 512) + ")\nfimalgoritmo\n"
+	_, tokens, ds := lexer.Scan("source.alg", src)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	prog, ds := Parse(tokens)
+	if prog != nil || len(ds) != 1 || ds[0].Code != diag.EResource {
+		t.Fatalf("uncontrolled recovery chain: %v", ds)
 	}
 }

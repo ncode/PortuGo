@@ -103,9 +103,12 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   by 4.7 and 4.10; incomplete expression behavior and the remaining literal
   boundaries are still pending.
 
-  The spaced brace-comment expression now reports the missing closing
-  parenthesis on its own physical line and preserves following-line recovery.
-  The adjacent-brace and C-style expression recordings remain pending.
+  The spaced brace-comment expression reports the missing closing parenthesis
+  during execution on its own physical line, retaining earlier output. Adjacent
+  numeric braces and the recorded C-style operator sequence now produce no value
+  after their operand effects; undeclared names in the latter are diagnosed
+  during execution. All three original recordings and formatting round trips
+  match. Other adjacent-token and malformed-operator forms remain pending.
 
   Single-quoted text now produces one positioned lexical diagnostic, retaining
   subsequent-line recovery. Its recorded rejection is verified; other literal
@@ -167,8 +170,10 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
   Recovery now retains the final source position after consuming EOF. A
   truncated-call fixture pins all subsequent diagnostics to the EOF line.
-  Reserved callable-name recovery now stops at the name, and comment-truncated
-  writes retain the current line for their missing-delimiter diagnostic.
+  Reserved callable-name recovery stops at the name. Comment-truncated writes
+  retain the current line for a deferred missing-delimiter diagnostic, and the
+  recorded malformed-expression forms preserve operand effects and name-error
+  timing without consuming following statements.
   Broader structural and execution-phase recovery differences remain pending.
 - [x] 4.9 Enforce source-size and syntax/AST-traversal limits from design decision 10 across source loading, parsing, analysis, and printing, reserving `E900`; cover flat expression chains and exact boundary/one-beyond cases before recursion or allocation.
 - [x] 4.10 Extend canonical printing and round-trip tests to retain every comment exactly once with its anchor and suffix, comparing comment content/order as well as AST structure and idempotence.

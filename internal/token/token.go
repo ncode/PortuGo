@@ -14,6 +14,7 @@ const (
 	IDENT
 	NUMBER
 	STRING
+	ABSENT_NUMBER // Numeric token immediately truncated by an adjacent brace.
 
 	ADD
 	SUB
@@ -180,7 +181,7 @@ var keywords = map[string]Kind{
 }
 
 var kindNames = map[Kind]string{
-	ILLEGAL: "ILLEGAL", EOF: "EOF", IDENT: "IDENT", NUMBER: "NUMBER", STRING: "STRING",
+	ILLEGAL: "ILLEGAL", EOF: "EOF", IDENT: "IDENT", NUMBER: "NUMBER", STRING: "STRING", ABSENT_NUMBER: "ABSENT_NUMBER",
 	ADD: "+", SUB: "-", MUL: "*", QUO: "/", IDIV: "\\", REM: "%", POW: "^",
 	ASSIGN: "<-", EQL: "=", NEQ: "<>", LSS: "<", GTR: ">", LEQ: "<=", GEQ: ">=",
 	LPAREN: "(", RPAREN: ")", LBRACK: "[", RBRACK: "]", COMMA: ",", COLON: ":",

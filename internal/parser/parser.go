@@ -27,15 +27,17 @@ func Parse(tokens []token.Token) (*ast.Program, []diag.Diagnostic) {
 }
 
 type parser struct {
-	original  []token.Token
-	fragments map[token.Pos]ast.CommentFragment
-	tokens    []token.Token
-	pos       int
-	diags     []diag.Diagnostic
-	depth     int
-	caseDepth int
-	writeExpr bool
-	limited   bool
+	original      []token.Token
+	fragments     map[token.Pos]ast.CommentFragment
+	tokens        []token.Token
+	pos           int
+	diags         []diag.Diagnostic
+	depth         int
+	caseDepth     int
+	writeExpr     bool
+	recoveryPair  bool
+	writeRecovery bool
+	limited       bool
 }
 
 func (p *parser) parseProgram() *ast.Program {
@@ -670,9 +672,9 @@ func (p *parser) parseWrite() ast.Stmt {
 		p.skipLine()
 		return stmt
 	}
-	previous := p.writeExpr
-	p.writeExpr = true
-	defer func() { p.writeExpr = previous }()
+	previous, previousRecovery := p.writeExpr, p.writeRecovery
+	p.writeExpr, p.writeRecovery = true, false
+	defer func() { p.writeExpr, p.writeRecovery = previous, previousRecovery }()
 	if !p.match(token.RPAREN) {
 		for {
 			arg := ast.WriteArg{Expr: p.parseExpr(0)}
@@ -688,11 +690,11 @@ func (p *parser) parseWrite() ast.Stmt {
 			}
 		}
 		if !p.match(token.RPAREN) {
-			at := p.peek()
 			if comment, ok := p.lineEndComment(); ok {
-				at = comment
+				stmt.Unclosed = comment.Pos
+			} else {
+				p.error(p.peek(), "expected ')'")
 			}
-			p.error(at, "expected ')'")
 			p.skipLine()
 		}
 	}
@@ -702,6 +704,9 @@ func (p *parser) parseWrite() ast.Stmt {
 		if p.peek().Kind != token.FIMALGORITMO {
 			p.skipLine()
 		}
+	}
+	if p.writeRecovery || stmt.Unclosed != token.NoPos {
+		p.rememberRecovery(start.Pos)
 	}
 	return stmt
 }

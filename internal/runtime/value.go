@@ -37,6 +37,8 @@ type Value struct {
 	RealFallback bool
 	// NumericAbsence retains the domain origin of a VoidValue.
 	NumericAbsence bool
+	// SyntaxAbsence retains a recovered malformed-output operand through arithmetic.
+	SyntaxAbsence bool
 	// ConvertedAbsence retains a generic no-value origin after an optional
 	// numeric parameter converts it to zero.
 	ConvertedAbsence bool

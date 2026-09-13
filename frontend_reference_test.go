@@ -53,7 +53,6 @@ func TestRecordedFrontendRejections(t *testing.T) {
 		{"expression-next-line", diag.EParse, 3},
 		{"single-slash-inline", diag.EParse, 3},
 		{"single-star-inline", diag.EParse, 3},
-		{"brace-comment-in-expression", diag.EParse, 3},
 		{"logical-type-accented", diag.EParse, 3},
 		{"write-no-parenthesis-string", diag.EParse, 3},
 		{"write-no-parenthesis-number", diag.EParse, 3},

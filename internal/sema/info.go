@@ -2,6 +2,7 @@ package sema
 
 import (
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/runtime"
 	"github.com/ncode/portugol-go/internal/token"
 )
@@ -25,6 +26,7 @@ type Info struct {
 	types    map[ast.Expr]runtime.Type
 	bindings map[token.Pos]Binding
 	names    map[token.Pos]string
+	deferred map[token.Pos]diag.Diagnostic
 }
 
 // ValidFor reports whether this result successfully analyzed program.
@@ -95,4 +97,13 @@ func (c *checker) assignmentProcedure(expr ast.Expr) (symbol, bool) {
 	default:
 		return symbol{}, false
 	}
+}
+
+// DeferredDiagnostic returns a name error retained for recovered-expression execution.
+func (i *Info) DeferredDiagnostic(pos token.Pos) (diag.Diagnostic, bool) {
+	if i == nil {
+		return diag.Diagnostic{}, false
+	}
+	d, ok := i.deferred[pos]
+	return d, ok
 }

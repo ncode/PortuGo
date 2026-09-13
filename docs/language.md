@@ -263,14 +263,14 @@ the next physical newline.
 a comment inside quotes, so a string containing `//` is rejected as unterminated.
 Single slashes, `/*`, `*/`, and braces otherwise remain literal inside strings.
 
-Outside strings, `{` and `}` consume the rest of the line. At the first
+Outside strings, `{` and `}` normally consume the rest of the line. At the first
 non-whitespace position, `/` and `*` also consume the line, including `/*` and
 `*/`. These forms do not open multiline blocks and need no closing delimiter.
 Statements on subsequent lines still execute. After a complete statement,
 `/` and `*` retain their operator meaning; `/*` is not an inline comment there.
 See [the comment example](../examples/comment_lines.alg).
 
-Thirty-one recorded cases cover these forms, quoted delimiters, and formatting
+Recorded cases cover these forms, quoted delimiters, and formatting
 without changing execution. Formatting retains decoded comment text in source
 order, including leading and same-line comments, empty declaration sections,
 comment-only branches and comments before block terminators. Indentation and
@@ -279,12 +279,21 @@ Multiline expressions, declaration headers and argument lists containing
 internal comments retain their token spellings and line breaks, with normalized
 indentation, so comments cannot hide following tokens or merge together.
 See [the comment-preservation example](../examples/comment_anchors.alg).
-A brace comment after an unfinished output argument, as in
-`escreval(1 { note } + 2)`, truncates the physical line and reports the missing
-`)` on that line. Recovery preserves statements on following lines. The
-recorded adjacent-brace form `escreval(1{ note })` and C-style delimiter
-sequences inside an expression remain pending; their observed outcomes do not
-yet establish a general malformed-expression rule.
+A brace after an unfinished output argument, as in
+`escreval(1 { note } + 2)`, truncates the physical line. The missing `)` receives
+`P001` when that write executes, retaining earlier output. Formatting keeps the
+truncated source intact and preserves the diagnostic phase.
+
+A numeric token immediately followed by `{` in output instead produces no
+value: `escreval(1{ note })` emits nothing and the next statement still executes.
+An earlier operand call still runs. The adjacent operator pairs in
+`escreval(1 /* note */ + 2)` also produce no value, but `note` is evaluated;
+these are not ignored comment contents. A declared value, literal, or function
+call in that position suppresses the write after its effects. An undeclared
+name receives `E002` during execution, after earlier output. Formatting retains
+these spellings and adjacency. Other adjacent-token forms and malformed
+operator combinations remain under qualification; these observations do not
+establish a general missing-operand grammar.
 
 ## Expressions
 

@@ -14,12 +14,33 @@ func (p *parser) parseExpr(minPrec int) ast.Expr {
 		return &ast.LiteralExpr{Kind: ast.IntLiteral}
 	}
 	defer func() { p.depth-- }()
+	start := p.peek().Pos
 	left := p.parseUnary()
 	for {
 		op := p.peek()
+		if p.recoveryPair && p.adjacentPair(token.MUL, token.QUO) {
+			return left
+		}
 		prec := op.Kind.BinaryPrecedence()
 		if prec < minPrec {
 			return left
+		}
+		if p.writeExpr && p.adjacentPair(token.QUO, token.MUL) {
+			p.advance()
+			p.advance()
+			previous := p.recoveryPair
+			p.recoveryPair = true
+			inner := p.parseExpr(0)
+			p.recoveryPair = previous
+			if !p.adjacentPair(token.MUL, token.QUO) {
+				p.error(p.peek(), "expected closing operator pair")
+				return left
+			}
+			p.advance()
+			p.advance()
+			left = &ast.RecoveryExpr{At: start, Operands: []ast.Expr{left, inner}}
+			p.writeRecovery = true
+			continue
 		}
 		p.advance()
 		continued := p.writeExpr && p.pos < len(p.tokens) && p.tokens[p.pos].Kind == token.NEWLINE
@@ -49,8 +70,12 @@ func (p *parser) parseUnary() ast.Expr {
 func (p *parser) parsePrimary() ast.Expr {
 	tok := p.peek()
 	switch tok.Kind {
-	case token.NUMBER:
+	case token.NUMBER, token.ABSENT_NUMBER:
 		p.advance()
+		if tok.Kind == token.ABSENT_NUMBER && p.writeExpr {
+			p.writeRecovery = true
+			return &ast.RecoveryExpr{At: tok.Pos, Text: tok.Text + "{"}
+		}
 		if v, err := strconv.ParseInt(tok.Text, 10, 32); err == nil {
 			return &ast.LiteralExpr{At: tok.Pos, Kind: ast.IntLiteral, Int: v}
 		}
@@ -120,4 +145,9 @@ func (p *parser) parseCall() *ast.CallExpr {
 		p.expect(token.RPAREN, "expected ')'")
 	}
 	return call
+}
+
+func (p *parser) adjacentPair(first, second token.Kind) bool {
+	a, b := p.peek(), p.peekN(1)
+	return a.Kind == first && b.Kind == second && b.Pos == a.Pos+1
 }

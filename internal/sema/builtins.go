@@ -232,6 +232,12 @@ func (c *checker) deferTextDiagnostic(call *ast.CallExpr, index int) bool {
 
 func (c *checker) containsUserCall(expr ast.Expr) bool {
 	switch e := expr.(type) {
+	case *ast.RecoveryExpr:
+		for _, operand := range e.Operands {
+			if c.containsUserCall(operand) {
+				return true
+			}
+		}
 	case *ast.CallExpr:
 		if binding, ok := c.info.Binding(e.Name); ok && !binding.Builtin {
 			return true

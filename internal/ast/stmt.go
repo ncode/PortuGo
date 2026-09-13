@@ -214,9 +214,10 @@ type WriteArg struct {
 
 // WriteStmt writes expressions to stdout.
 type WriteStmt struct {
-	At      token.Pos
-	Newline bool
-	Args    []WriteArg
+	Unclosed token.Pos // Comment that removed the closing delimiter; checked during execution.
+	At       token.Pos
+	Newline  bool
+	Args     []WriteArg
 }
 
 func (*WriteStmt) stmtNode()          {}

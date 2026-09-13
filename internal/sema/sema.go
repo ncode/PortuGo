@@ -80,6 +80,7 @@ type checker struct {
 	loopDepth    int
 	returnType   runtime.Type
 	inFunction   bool
+	deferLookup  bool
 	stopped      bool
 	dynamicCells map[dynamicCell]bool
 	copyBack     map[dynamicCell][]dynamicCell
@@ -428,6 +429,14 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 	defer func() { c.info.types[expr] = typ }()
 	switch e := expr.(type) {
+	case *ast.RecoveryExpr:
+		previous := c.deferLookup
+		c.deferLookup = true
+		for _, operand := range e.Operands {
+			c.expr(operand)
+		}
+		c.deferLookup = previous
+		return runtime.Type{Kind: runtime.DynamicType}
 	case *ast.NoValueExpr:
 		return runtime.Type{Kind: runtime.VoidType}
 	case *ast.LiteralExpr:
@@ -444,6 +453,13 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 	case *ast.IdentExpr:
 		sym, ok := c.lookupCallable(e.Name, funcSym)
 		if !ok {
+			if c.deferLookup {
+				if c.info.deferred == nil {
+					c.info.deferred = make(map[token.Pos]diag.Diagnostic)
+				}
+				c.info.deferred[e.Name.Pos] = diag.Diagnostic{Code: diag.EUndeclared, Pos: e.Name.Pos, Message: fmt.Sprintf("undeclared identifier %q", e.Name.Text)}
+				return runtime.Type{Kind: runtime.DynamicType}
+			}
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}
 		}

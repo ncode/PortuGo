@@ -11736,9 +11736,10 @@
           ]
         },
         "tests": [
-          "frontend_reference_test.go#TestRecordedFrontendRejections",
-          "internal/parser/recovery_test.go#TestCommentTruncatedWriteRecovery",
-          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+          "malformed_comments_test.go#TestRecordedMalformedComments",
+          "malformed_comments_test.go#TestMalformedCommentExecutionControls",
+          "malformed_comments_test.go#TestMalformedCommentOriginalBytes",
+          "internal/parser/recovery_test.go#TestCommentTruncatedWriteRecovery"
         ]
       }
     },
@@ -11781,7 +11782,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -11794,7 +11795,12 @@
               "line": 3
             }
           ]
-        }
+        },
+        "tests": [
+          "malformed_comments_test.go#TestRecordedMalformedComments",
+          "malformed_comments_test.go#TestMalformedCommentExecutionControls",
+          "malformed_comments_test.go#TestMalformedCommentOriginalBytes"
+        ]
       }
     },
     {
@@ -12450,14 +12456,19 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/brace-inline-math/stdout.txt",
             "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
           }
-        }
+        },
+        "tests": [
+          "malformed_comments_test.go#TestRecordedMalformedComments",
+          "malformed_comments_test.go#TestMalformedCommentExecutionControls",
+          "malformed_comments_test.go#TestMalformedCommentOriginalBytes"
+        ]
       }
     },
     {

@@ -124,6 +124,12 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 
 func (i *Interpreter) containsUserCall(expr ast.Expr) bool {
 	switch e := expr.(type) {
+	case *ast.RecoveryExpr:
+		for _, operand := range e.Operands {
+			if i.containsUserCall(operand) {
+				return true
+			}
+		}
 	case *ast.CallExpr:
 		if binding, ok := i.info.Binding(e.Name); ok && !binding.Builtin {
 			return true

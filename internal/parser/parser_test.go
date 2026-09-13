@@ -86,6 +86,8 @@ func TestChoiceRangePrinting(t *testing.T) {
 func FuzzParser(f *testing.F) {
 	for _, seed := range []string{
 		"",
+		"algoritmo \"x\"\ninicio\nescreval(1{ note })\nfimalgoritmo",
+		"algoritmo \"x\"\ninicio\nescreval(1 /* note */ + 2)\nfimalgoritmo",
 		"algoritmo \"x\"\ninicio\nfimalgoritmo",
 		"algoritmo \"x\"\nvar\nx: inteiro\ninicio\nx <- 1\nfimalgoritmo",
 		"algoritmo \"x\"\nconst\nn = 1+2\nvar\ninicio\nescreval(n)\nfimalgoritmo",

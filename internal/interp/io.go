@@ -149,6 +149,9 @@ func (i *Interpreter) execWrite(s *ast.WriteStmt) error {
 		buffered += len(text)
 		i.writeBytes += len(text)
 	}
+	if s.Unclosed != token.NoPos {
+		return failure(s.Unclosed, diag.EParse, fmt.Errorf("expected closing output parenthesis"))
+	}
 	for index, text := range items {
 		if _, err := io.WriteString(i.out, text); err != nil {
 			return diag.Diagnostic{Code: diag.RHost, Pos: s.Args[index].Expr.Start(), Message: "cannot write output", Cause: err}

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Match recorded no-value output recovery for adjacent numeric braces and
+  C-style operator sequences, preserving operand side effects. Defer the
+  associated undeclared-name and comment-truncated delimiter errors until
+  execution, retaining earlier output and exact formatter behavior.
+
 - Match four recorded frontend recovery cases: reserved callable names, a
   quoted header without its keyword, a brace-truncated output expression, and
   an unterminated quote after the program terminator. Preserve preceding output

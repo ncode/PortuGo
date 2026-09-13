@@ -350,6 +350,11 @@ func writeArgString(arg WriteArg) string {
 
 func exprString(expr Expr) string {
 	switch e := expr.(type) {
+	case *RecoveryExpr:
+		if len(e.Operands) == 2 {
+			return exprString(e.Operands[0]) + " /* " + exprString(e.Operands[1]) + " */"
+		}
+		return e.Text
 	case *NoValueExpr:
 		if e.Keyword.Kind == token.IDIV {
 			return "div()"
