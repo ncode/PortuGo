@@ -171,6 +171,14 @@
       ]
     },
     {
+      "id": "assumption.accented-comparison-case",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Se a comparação case-insensitive usa apenas A-Z ou também acentuados (provável: tabela ANSI do Delphi, não Unicode).",
+      "probes": [
+        "comparison-string-accent"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
