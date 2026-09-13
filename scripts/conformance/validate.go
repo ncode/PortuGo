@@ -89,8 +89,11 @@ func validate(root string, m manifest, mode string, previous *manifest) error {
 				}
 			}
 			if exists && old.Implementation.State == "verified" && p.Implementation.State != "verified" {
-				if err := checkReview(root, p.Implementation.Review); err != nil {
+				before, after := old.Implementation.Review, p.Implementation.Review
+				if err := checkReview(root, after); err != nil {
 					add(fmt.Errorf("unreviewed downgrade of %s: %w", old.ID, err))
+				} else if before != nil && strings.TrimSpace(before.Reason) == strings.TrimSpace(after.Reason) && before.Link == after.Link {
+					add(fmt.Errorf("unreviewed downgrade of %s: prior review reused without a scope correction", old.ID))
 				}
 			}
 		}

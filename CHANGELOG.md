@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Reject coverage downgrades that reuse a verified probe's existing review.
+  Require a new scope-correction rationale or review link in all validation
+  modes while retaining the final gate's rejection of pending work.
+
 - Reject conformance test links to helper names, methods or invalid Go test
   signatures in every validation mode. Preserve valid test naming and imported
   parameter forms while keeping compilation and execution as separate checks.

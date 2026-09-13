@@ -1341,6 +1341,12 @@ implementation. Corpus validation requires expected acceptance/rejection and
 generated files to agree with the reference, and an explicit history base to
 detect unreviewed regressions in coverage. Removing a probe, inventory entry,
 or linked task requires a reviewed retirement, even for pending behavior.
+Downgrading a verified probe requires a scope-correction review distinct from
+any review already attached to its verified state. Update the rationale or
+review link; surrounding whitespace in the rationale does not count as a new
+review. Changing only the linked document while retaining identical manifest
+review fields does not establish a new downgrade disposition. A reviewed
+downgrade still leaves the probe pending and cannot pass implementation acceptance.
 Retirement records remain in later manifests; retired IDs cannot be reused.
 Recording verifies input-only file hashes before accepting a capture.
 Requirement traceability scans the whole change's specification tree, including
