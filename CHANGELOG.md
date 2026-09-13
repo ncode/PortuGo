@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Bound retained replay-output reads at the 1 MiB observation limit before
+  hashing or comparison.
+
 - Bound conformance artifact reads after opening files so growth during a read
   cannot bypass the repository artifact limit.
 
