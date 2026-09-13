@@ -40,6 +40,15 @@ func loadManifest(root, name string) (manifest, error) {
 	return decodeManifest(data)
 }
 
+func publicError(err error) error {
+	var pathErr *os.PathError
+	var linkErr *os.LinkError
+	if errors.As(err, &pathErr) || errors.As(err, &linkErr) {
+		return errors.New("filesystem operation failed")
+	}
+	return err
+}
+
 func run(args []string, out, stderr io.Writer) (status int) {
 	if len(args) > 0 && args[0] == "execute" {
 		return executeProbe(args[1:], os.Stdin, out, stderr)
@@ -75,7 +84,7 @@ func run(args []string, out, stderr io.Writer) (status int) {
 		return 2
 	}
 	// A failed error stream cannot change the already failing exit status.
-	fail := func(err error) int { _, _ = fmt.Fprintln(stderr, err); return 1 }
+	fail := func(err error) int { _, _ = fmt.Fprintln(stderr, publicError(err)); return 1 }
 	if args[0] == "capture" {
 		accepts, err := strconv.ParseBool(*accepted)
 		if *stage == "" || *capturedAt == "" || err != nil {
@@ -210,7 +219,7 @@ func run(args []string, out, stderr io.Writer) (status int) {
 		r := replayResult{ID: p.ID, State: p.Implementation.State}
 		if p.Evidence.State == "recorded" && p.Implementation.State != "not-applicable" {
 			if err := replayProbe(rootPath, p, executable, nil, observer); err != nil {
-				r.Error = err.Error()
+				r.Error = publicError(err).Error()
 			}
 		}
 		results = append(results, r)
