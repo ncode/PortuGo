@@ -83,6 +83,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   reviewed exclusions, with generic coverage across all validation modes.
   Bundled-example catalog source hashes and byte counts are also checked for
   reviewed non-goals in every validation mode.
+  Bundled-example catalogs also reject unknown fields and trailing JSON in every
+  validation mode, matching the manifest schema's strict decoding boundary.
   Completeness checks for checklist and verification obligations remain open
   with the source inventory in task 2.2.
 

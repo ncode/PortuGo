@@ -108,3 +108,34 @@ func TestNonGoalCatalogSourceMetadata(t *testing.T) {
 		}
 	}
 }
+
+func TestExampleCatalogRejectsLooseJSON(t *testing.T) {
+	for _, tt := range []struct {
+		name, extra, want string
+		trailing          bool
+	}{
+		{name: "unknown field", extra: `,"extra":true`, want: "unknown field"},
+		{name: "trailing JSON", trailing: true, want: "trailing JSON"},
+	} {
+		for _, mode := range []string{"evidence", "incremental", "implementation-acceptance"} {
+			t.Run(mode+"/"+tt.name, func(t *testing.T) {
+				root, m := testManifest(t)
+				name := "examples/output.alg"
+				id := "example." + hashBytes([]byte(name))[:12]
+				src, err := readArtifact(root, m.Probes[0].Source)
+				if err != nil {
+					t.Fatal(err)
+				}
+				m.Inventory = append(m.Inventory, inventoryItem{ID: id, Kind: "example", Link: "official-examples.json", Probes: []string{"output"}})
+				payload := fmt.Sprintf(`[{"id":%q,"name":%q,"sha256":%q,"bytes":%d,"disposition":"accepted"%s}]`, id, name, m.Probes[0].Source.SHA256, len(src), tt.extra)
+				if tt.trailing {
+					payload += "\n[]"
+				}
+				writeArtifact(t, root, "official-examples.json", payload)
+				if err := validate(root, m, mode, nil); err == nil || !strings.Contains(err.Error(), tt.want) {
+					t.Fatalf("error = %v, want %q", err, tt.want)
+				}
+			})
+		}
+	}
+}

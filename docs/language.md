@@ -1433,5 +1433,7 @@ failure in every validation mode, including reviewed exclusions.
 Clock fixtures also use the execution adapter's JSON decoder during validation.
 Malformed JSON, unknown fields, trailing data, invalid read values and empty
 read schedules fail before replay. Repeated and backward readings remain valid.
+Bundled-example catalogs use the same strict JSON boundary: unknown fields and
+trailing values fail validation before catalog entries are considered.
 Final acceptance requires quality evidence for the candidate commit; the
 separate release gate also requires completed implementation and handoff tasks.
