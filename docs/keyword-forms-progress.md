@@ -26,12 +26,13 @@ recovery stops before reporting further callable-header errors. The two variable
 rejections are now verified by the program-header regressions.
 
 The accepted choice-header forms with optional `faca`/`faça` are now verified.
-The rejected `ate_que`/`até_que` statements remain pending under task 4.6.
-An unconditional break exits
-before the `fimrepita` text in one accepted probe; it does not establish that
-`fimrepita` is a valid terminator when reached. A separate reachable-terminator
-probe confirms a syntax rejection. The bundled prime-number program now passes
-with bare-output syntax, while the complete example sweep remains open.
+The rejected `ate_que`/`até_que` statements now report the recorded undeclared
+identifier diagnostic at the marker line. An unconditional break exits before
+the `fimrepita` text in one accepted probe; it does not establish that
+`fimrepita` is a valid terminator when reached. The reachable-terminator probe
+now reports the recorded syntax diagnostic at that line. The bundled
+prime-number program now passes with bare-output syntax, while the complete
+example sweep remains open.
 
 Four further observations verify case-insensitive `div` as the `\` alias,
 including operand types, precedence, left-to-right evaluation, and rejection

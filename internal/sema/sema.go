@@ -370,7 +370,9 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		c.withLoop(func() { c.checkStmts(s.Body) })
 	case *ast.RepeatStmt:
 		c.withLoop(func() { c.checkStmts(s.Body) })
-		c.requireBool(s.Cond)
+		if s.Cond != nil {
+			c.requireBool(s.Cond)
+		}
 	case *ast.ForStmt:
 		sym, ok := c.lookup(s.Name)
 		if !ok || sym.kind != varSym {

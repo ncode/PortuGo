@@ -19088,14 +19088,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/repeat-fimrepita/stdout.txt",
             "sha256": "bac2589259cea9f078c0733f698046d4bc495daae234e0c4b80719247d9fe00f"
           }
-        }
+        },
+        "tests": [
+          "repeat_recovery_test.go#TestRecordedRepeatFimrepitaPrefix"
+        ]
       }
     },
     {
@@ -19138,7 +19141,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -19151,7 +19154,10 @@
               "line": 5
             }
           ]
-        }
+        },
+        "tests": [
+          "repeat_recovery_test.go#TestRecordedRepeatRejectedForms"
+        ]
       }
     },
     {
@@ -19194,7 +19200,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -19207,7 +19213,10 @@
               "line": 5
             }
           ]
-        }
+        },
+        "tests": [
+          "repeat_recovery_test.go#TestRecordedRepeatRejectedForms"
+        ]
       }
     },
     {
@@ -20127,7 +20136,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -20140,7 +20149,10 @@
               "line": 10
             }
           ]
-        }
+        },
+        "tests": [
+          "repeat_recovery_test.go#TestRecordedRepeatRejectedForms"
+        ]
       }
     },
     {

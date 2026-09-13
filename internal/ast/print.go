@@ -241,7 +241,9 @@ func (p *printer) printStmt(stmt Stmt) {
 		p.indent++
 		p.printStmts(s.Body)
 		p.indent--
-		p.end(s.End, "ate %s", exprString(s.Cond))
+		if s.Cond != nil {
+			p.end(s.End, "ate %s", exprString(s.Cond))
+		}
 	case *ForStmt:
 		step := ""
 		if s.Step != nil {

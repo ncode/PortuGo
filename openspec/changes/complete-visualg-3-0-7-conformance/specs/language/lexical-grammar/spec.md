@@ -130,6 +130,14 @@ Malformed input SHALL produce collected diagnostics rather than a user-visible p
 - **WHEN** a file contains independent malformed declarations and statements on later lines
 - **THEN** parsing returns diagnostics for each recoverable error with stable positions and does not panic or loop indefinitely
 
+#### Scenario: Recover recorded repeat lookalikes
+- **WHEN** a `repita` body contains the recorded `ate_que` or `até_que` spelling
+- **THEN** the spelling remains an identifier and analysis reports one positioned `E002` for it without manufacturing later line errors
+- **WHEN** a `repita` body contains `fimrepita` after an unconditional `interrompa`
+- **THEN** execution leaves the loop before that marker and continues with the following statement
+- **WHEN** execution reaches the `fimrepita` marker
+- **THEN** execution reports one positioned `P001` at the marker
+
 ### Requirement: Canonical source printing
 Canonical printing SHALL emit valid VisuAlg 3.0.7 source for every representable valid syntax tree, preserve behavior and all accepted comments, be idempotent, and support parse-print-parse equivalence modulo documented normalization of indentation, line endings, and spelling. Comment contents, order, and association with surrounding constructs SHALL survive decoding, lexing, parsing, and printing. Any reference-ignored suffix after program termination SHALL remain ignored and SHALL be retained when formatting.
 

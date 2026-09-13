@@ -153,7 +153,8 @@ type WhileStmt struct {
 func (*WhileStmt) stmtNode()          {}
 func (s *WhileStmt) Start() token.Pos { return s.At }
 
-// RepeatStmt is a repita loop.
+// RepeatStmt is a repita loop. Cond is nil only for a recovered fimrepita
+// marker whose syntax error is deferred until the marker is reached.
 type RepeatStmt struct {
 	End  token.Pos
 	At   token.Pos

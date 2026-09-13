@@ -324,8 +324,15 @@ func (p *parser) parseCallableType() ast.TypeSpec {
 }
 
 func (p *parser) parseStmtList(stops map[token.Kind]bool) []ast.Stmt {
+	return p.parseStmtListUntil(stops, nil)
+}
+
+func (p *parser) parseStmtListUntil(stops map[token.Kind]bool, extraStop func(token.Token) bool) []ast.Stmt {
 	var stmts []ast.Stmt
 	for !stops[p.peek().Kind] && p.peek().Kind != token.EOF {
+		if extraStop != nil && extraStop(p.peek()) {
+			break
+		}
 		if p.match(token.SEMI) {
 			continue
 		}
@@ -562,11 +569,60 @@ func (p *parser) parseWhile() ast.Stmt {
 
 func (p *parser) parseRepeat() ast.Stmt {
 	start := p.expect(token.REPITA, "expected repita")
-	body := p.parseStmtList(stopSet(token.ATE))
+	body := p.parseStmtListUntil(stopSet(token.ATE), func(tok token.Token) bool {
+		return p.repeatRecoveryBoundary(tok)
+	})
+	if marker := p.peek(); p.repeatRecoveryBoundary(marker) {
+		switch repeatRecovery(marker) {
+		case "fimrepita":
+			p.advance()
+			p.skipLine()
+			body = append(body, &ast.ErrorStmt{At: marker.Pos, Text: marker.Text})
+			p.rememberFragment(marker.Pos)
+			return &ast.RepeatStmt{At: start.Pos, Body: body, End: marker.Pos}
+		case "ate_que":
+			p.advance()
+			p.skipLine()
+			p.rememberFragment(marker.Pos)
+			return &ast.RepeatStmt{
+				At:   start.Pos,
+				Body: body,
+				Cond: &ast.IdentExpr{Name: marker},
+				End:  marker.Pos,
+			}
+		}
+	}
 	end := p.expect(token.ATE, "expected ate").Pos
 	cond := p.parseExpr(0)
 	p.rememberFragment(end)
 	return &ast.RepeatStmt{At: start.Pos, Body: body, Cond: cond, End: end}
+}
+
+func repeatRecovery(tok token.Token) string {
+	if tok.Kind != token.IDENT {
+		return ""
+	}
+	switch strings.ToLower(tok.Text) {
+	case "fimrepita":
+		return "fimrepita"
+	case "ate_que", "até_que":
+		return "ate_que"
+	default:
+		return ""
+	}
+}
+
+func (p *parser) repeatRecoveryBoundary(tok token.Token) bool {
+	marker := repeatRecovery(tok)
+	index := p.peekIndex(0)
+	if marker == "" || index == 0 || index >= len(p.tokens) || p.tokens[index-1].Kind != token.NEWLINE {
+		return false
+	}
+	next := index + 1
+	if marker != "fimrepita" {
+		return next >= len(p.tokens) || p.tokens[next].Kind != token.LPAREN
+	}
+	return next >= len(p.tokens) || p.tokens[next].Kind == token.NEWLINE || p.tokens[next].Kind == token.EOF
 }
 
 func (p *parser) parseFor() ast.Stmt {

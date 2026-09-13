@@ -157,15 +157,17 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 			if ctrl.kind == breakControl {
 				return control{}, nil
 			}
-			cond, err := i.evalBool(s.Cond)
-			if err != nil {
-				return control{}, err
-			}
-			if err := i.delay(s.At); err != nil {
-				return control{}, err
-			}
-			if cond {
-				return control{}, nil
+			if s.Cond != nil {
+				cond, err := i.evalBool(s.Cond)
+				if err != nil {
+					return control{}, err
+				}
+				if err := i.delay(s.At); err != nil {
+					return control{}, err
+				}
+				if cond {
+					return control{}, nil
+				}
 			}
 		}
 	case *ast.ForStmt:

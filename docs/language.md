@@ -421,6 +421,15 @@ Supported statements:
 
 `interrompa` outside a loop is a semantic error.
 
+The canonical repeat form is `repita ... ate <condition>`. In the recorded
+keyword-form recovery cases, `ate_que` and `até_que` remain identifier
+spellings rather than a compound terminator; a repeat using either spelling
+reports `E002` at that identifier. A `fimrepita` line is retained as a
+deferred syntax-error marker: an earlier `interrompa` can exit before it, while
+reaching the marker reports `P001` at the marker line. These spellings are
+outside the canonical syntax.
+General conditionless or infinite-repeat semantics remain pending.
+
 After a complete assignment expression, a following parenthesized suffix or
 same-line statement is ignored. `x <- 7(1)` stores `7`; in
 `x <- 7 escreval("IGNORED")`, the write does not execute. Put subsequent statements

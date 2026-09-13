@@ -127,7 +127,10 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Thirteen declaration observations now verify one optional semicolon at a
   physical line's end, including local, vector, and empty declarations, while
   rejecting repeated or misplaced delimiters. The original bundled mean
-  example matches its recording; other physical-line rules remain pending.
+  example matches its recording. Repeat lookalike recovery now verifies the
+  recorded `ate_que`/`até_que` undeclared-identifier diagnostics, the
+  break-before-`fimrepita` prefix, and the reached-`fimrepita` syntax diagnostic;
+  other physical-line rules remain pending.
 
   Four new completed recordings verify that later physical lines after
   `fimalgoritmo` are opaque, even with malformed literals, symbols or blocks.

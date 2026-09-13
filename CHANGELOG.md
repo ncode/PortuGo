@@ -11,6 +11,10 @@
   physical line, and report single-quoted text once at its opening quote.
   Preserve following-line recovery and prevent formatting from rewriting the
   rejected input. Verify both existing reference records.
+- Recover the recorded repeat lookalike forms: preserve an early break before
+  `fimrepita`, report `P001` when that marker is reached, and report `E002` for
+  `ate_que` and `até_que` without cascading line errors. Keep the canonical
+  repeat syntax as `repita ... ate <condition>`.
 
 - Record native Windows validation for existing-file continuation under sharing
   locks while retaining all six access-constrained probes as pending until the
