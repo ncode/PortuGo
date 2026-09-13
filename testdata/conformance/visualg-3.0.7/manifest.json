@@ -195,6 +195,14 @@
       ]
     },
     {
+      "id": "assumption.int-truncation",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#| `int(x)` | real → inteiro | parte inteira. `[VERIFICAR]` trunca em direção a zero ou floor? Para negativos: `int(-1.8)` = -1 (trunc, comportamento Delphi Int()) ou -2 (floor, comportamento DL)? **DL usa Math.floor, o que provavelmente diverge do original Delphi (Trunc).** |",
+      "probes": [
+        "int-truncation"
+      ]
+    },
+    {
       "id": "checklist.01",
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
