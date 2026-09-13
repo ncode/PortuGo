@@ -17,6 +17,8 @@
 
 - Add expression type and rejection tables, a parser golden, and positioned
   runtime diagnostic fixtures with partial-output checks.
+- Add a complete semantic operand-type matrix for the documented scalar
+  arithmetic, comparison, and logical combinations.
 
 - Reject non-regular direct observation-adapter source and clock paths before
   opening them, so special files cannot block a bounded read.
