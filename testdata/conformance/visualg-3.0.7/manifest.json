@@ -39550,14 +39550,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/choice-match-no-value-selector-order/stdout.txt",
             "sha256": "6b8e8d36d042ba2f6e1e8841725ee5caed3b5cf1bf6f1428e0ffb598b992a116"
           }
-        }
+        },
+        "tests": [
+          "choice_ranges_test.go#TestRecordedChoiceRanges"
+        ]
       }
     },
     {

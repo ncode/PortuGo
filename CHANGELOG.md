@@ -6,6 +6,10 @@
   locks while retaining all six access-constrained probes as pending until the
   corpus replay can recreate their restrictions.
 
+- Match the recorded choice behavior for a numeric-domain-absent selector with
+  a direct dynamic range upper bound, including its evaluation and enclosing
+  execution stop.
+
 - Stop `para` progression at the terminal bound when its next signed integer
   value would overflow, and keep `R005`/`R006` runtime-limit diagnostics tied to
   the attempted call or loop position.

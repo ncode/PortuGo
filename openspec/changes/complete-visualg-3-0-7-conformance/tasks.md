@@ -381,10 +381,14 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
   Recorded ordinary numeric, text, and logical labels, dynamic numeric ranges,
   duplicate/overlapping labels, selector truncation, and first-match evaluation
-  now have regressions. The original bundled choice program matches. An absent
-  selector combined with a function bound still exposes a reference control-flow
-  difference, so this task remains open. A malformed `ate` line in an unselected
-  case body is now retained and reports `P001` only when that body executes.
+  now have regressions. The original bundled choice program matches. When a
+  selector has numeric-domain absence, a direct dynamic upper bound (a user
+  function or variable) is evaluated and then terminates enclosing execution
+  without selecting an arm or default; literal, built-in, and nested bounds
+  retain the ordinary no-match path. The selector-order probe covers this
+  rule. A malformed `ate` line in an unselected case body is now retained and
+  reports `P001` only when that body executes. Broader choice and range
+  validation remains pending.
 - [x] 9.7 Apply recorded result updates without exiting nested conditions, choices, or loops; propagate break control to the exact innermost-loop boundary.
 
   Recorded finite return cases cover nested conditions, choices, loops, and

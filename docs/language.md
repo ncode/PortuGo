@@ -435,8 +435,10 @@ line. A missing upper expression or the unsupported `1..5` spelling produces
 `P001`. A lower bound that produces no value does not match and skips its upper
 bound; an evaluated upper bound without a value produces `P001`. A malformed
 `ate` line in an unselected case body is retained and reports `P001` only when
-that body executes. A no-value selector combined with a function bound remains
-a pending control-flow conformance case.
+that body executes. When a selector has numeric-domain absence, a direct
+dynamic upper bound (a user function or variable) is evaluated and then
+terminates enclosing execution without selecting an arm or default; literal,
+built-in, and nested bounds retain the ordinary no-match path.
 See the [choice-range example](../examples/choice_ranges.alg).
 
 `para` evaluates its bounds and step once. The default step is 1; zero is

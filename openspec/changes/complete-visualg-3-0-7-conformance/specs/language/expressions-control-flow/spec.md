@@ -146,6 +146,11 @@ Subexpressions, designator indices, statement expressions, and format expression
 - **WHEN** the recorded ASCII text selector is compared with a single text label
 - **THEN** the label is uppercased and compared with the unchanged selector, including labels computed by expressions
 
+#### Scenario: Stop after a dynamic bound with an absent selector
+- **WHEN** a selector has numeric-domain absence and a ranged label has a direct dynamic upper bound from a user function or variable
+- **THEN** the upper bound is evaluated, no arm or default body executes, and enclosing execution stops
+- **AND** literal, built-in, and nested bounds retain the ordinary no-match path
+
 ### Requirement: Loop semantics
 `enquanto`, `repita`, and `para` SHALL implement the complete oracle-confirmed VisuAlg 3.0.7 forms, including `repita ... ate`, any accepted `repita ... fimrepita` infinite form, default and explicit `para` steps, negative steps, bound and step evaluation timing, and loop-variable mutation behavior.
 

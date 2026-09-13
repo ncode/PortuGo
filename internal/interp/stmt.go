@@ -11,6 +11,9 @@ import (
 
 func (i *Interpreter) execStmts(stmts []ast.Stmt) (control, error) {
 	for _, stmt := range stmts {
+		if i.halted {
+			return control{}, nil
+		}
 		ctrl, err := i.execStmt(stmt)
 		if err != nil || ctrl.kind != noControl {
 			return ctrl, err
@@ -98,6 +101,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 				if err != nil {
 					return control{}, err
 				}
+				if i.halted {
+					return control{}, nil
+				}
 				if match {
 					return i.execStmts(cc.Body)
 				}
@@ -123,6 +129,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 			if err != nil {
 				return control{}, err
 			}
+			if i.halted {
+				return control{}, nil
+			}
 			if ctrl.kind == breakControl {
 				return control{}, nil
 			}
@@ -138,6 +147,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 			ctrl, err := i.execStmts(s.Body)
 			if err != nil {
 				return control{}, err
+			}
+			if i.halted {
+				return control{}, nil
 			}
 			if ctrl.kind == breakControl {
 				return control{}, nil
@@ -227,6 +239,9 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 		ctrl, err := i.execStmts(s.Body)
 		if err != nil {
 			return control{}, err
+		}
+		if i.halted {
+			return control{}, nil
 		}
 		if ctrl.kind == breakControl {
 			final = min(cell.Value.Int, to)

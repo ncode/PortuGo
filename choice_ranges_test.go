@@ -38,6 +38,7 @@ func TestRecordedChoiceRanges(t *testing.T) {
 		"choice-match-variable-range-middle", "choice-match-variable-range-upper",
 		"choice-match-variable-uppercase-range", "choice-match-two-variables",
 		"choice-match-function-selector", "choice-match-no-value-lower-order",
+		"choice-match-no-value-selector-order",
 		"choice-numeric-point-integer-low", "choice-numeric-point-integer-high",
 		"choice-numeric-point-real-low", "choice-numeric-point-real-high",
 		"choice-numeric-point-real-exact", "choice-numeric-point-integer-selector",
