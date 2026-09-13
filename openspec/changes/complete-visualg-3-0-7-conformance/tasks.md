@@ -478,7 +478,11 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
   accepted declaration and aggregate forms, rejected extensions, assignment
   aliases, zero/copy behavior, and captured reference semantics while keeping
   unqualified aggregate cases explicitly pending.
-- [ ] 6.12 Run focused AST/parser/sema/runtime aggregate tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+- [x] 6.12 Run focused AST/parser/sema/runtime aggregate tests and then the full build, lint, ordinary, race, and strict OpenSpec suites.
+
+  Declaration and aggregate focused tests, full ordinary and race tests, build,
+  formatting, vet, and strict OpenSpec validation pass at this stacked head;
+  unavailable local lint binaries remain covered by the existing CI gate.
 - [ ] 6.13 Mark every completed 6.x task immediately, commit the focused type/declaration changes, push the next stacked branch, and open its draft PR before group 7.
 
 ## 7. Vector Bounds, Slot Accounting, Allocation, and Indexing
