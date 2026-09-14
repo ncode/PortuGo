@@ -225,6 +225,9 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 	if err != nil {
 		return control{}, err
 	}
+	if s.To == nil {
+		return control{}, nil
+	}
 	to, err := i.evalInt(s.To, diag.EParse)
 	if err != nil {
 		return control{}, err

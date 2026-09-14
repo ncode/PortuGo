@@ -520,7 +520,9 @@ applies to descending loops: `5 ate 1 passo -2` visits 5, 3, 1 and leaves -1;
 `1 ate 6 passo 2` visits 1, 3, 5 and leaves 6. These unusual exit rules follow
 the recorded program output; the reference GUI memory grid can disagree. If
 the next iteration value would overflow the signed integer domain, iteration
-stops at the terminal bound instead of wrapping.
+stops at the terminal bound instead of wrapping. `para` also accepts the
+recorded `ate faca` form without an upper bound. It executes zero iterations
+and leaves the loop variable unchanged; no default upper bound is inferred.
 
 ## Subprogram Calls
 

@@ -249,7 +249,11 @@ func (p *printer) printStmt(stmt Stmt) {
 		if s.Step != nil {
 			step = " passo " + exprString(s.Step)
 		}
-		p.lineFrom(s.At, "para %s de %s ate %s%s faca", s.Name.Text, exprString(s.From), exprString(s.To), step)
+		to := ""
+		if s.To != nil {
+			to = " " + exprString(s.To)
+		}
+		p.lineFrom(s.At, "para %s de %s ate%s%s faca", s.Name.Text, exprString(s.From), to, step)
 		p.indent++
 		p.printStmts(s.Body)
 		p.indent--

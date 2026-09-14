@@ -3,6 +3,7 @@ package parser
 import (
 	"bytes"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/ncode/portugol-go/internal/ast"
@@ -50,5 +51,24 @@ func TestControlFlowGolden(t *testing.T) {
 	}
 	if !bytes.Equal(reformatted.Bytes(), formatted.Bytes()) {
 		t.Fatalf("control-flow formatting is not idempotent:\nfirst:\n%s\nsecond:\n%s", formatted.Bytes(), reformatted.Bytes())
+	}
+}
+
+func TestOmittedForUpperBound(t *testing.T) {
+	src := "algoritmo \"omitted upper\"\nvar\ni: inteiro\ninicio\npara i de 1 ate faca\nfimpara\nfimalgoritmo\n"
+	_, tokens, lexDiags := lexer.Scan("omitted.alg", src)
+	if len(lexDiags) != 0 {
+		t.Fatalf("lexer diagnostics: %v", lexDiags)
+	}
+	program, parseDiags := Parse(tokens)
+	if len(parseDiags) != 0 {
+		t.Fatalf("parser diagnostics: %v", parseDiags)
+	}
+	var formatted bytes.Buffer
+	if err := ast.Fprint(&formatted, program); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(formatted.String(), "  para i de 1 ate faca\n") {
+		t.Fatalf("formatted omitted upper bound: %q", formatted.String())
 	}
 }
