@@ -9841,14 +9841,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-a5945bc9ee4d/stdout.txt",
             "sha256": "51ae4ff821670390cf4543af8df3e3190ba73293e4e56a31edeec5701470e982"
+          },
+          "randomOutput": {
+            "kind": "random-int-sort-lines",
+            "lines": 40,
+            "minimum": 1,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves the generated input multiset and its sorted output while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomSortOutput"
+        ]
       }
     },
     {

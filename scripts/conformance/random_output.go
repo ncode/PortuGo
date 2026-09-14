@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"math/big"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -104,6 +105,7 @@ func (c randomInputExpectation) compare(output []byte) error {
 type randomOutputExpectation struct {
 	Kind      string `json:"kind"`
 	Lines     int    `json:"lines"`
+	Minimum   int64  `json:"minimum,omitempty"`
 	Bound     int64  `json:"bound"`
 	FixedTail int64  `json:"fixedTail"`
 	Review    review `json:"review"`
@@ -112,11 +114,15 @@ type randomOutputExpectation struct {
 func (c randomOutputExpectation) compare(output []byte) error {
 	switch c.Kind {
 	case "randi-lines":
-		if c.Lines < 1 || c.Lines > 4096 || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail < 0 || c.FixedTail >= c.Bound {
+		if c.Lines < 1 || c.Lines > 4096 || c.Minimum != 0 || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail < 0 || c.FixedTail >= c.Bound {
 			return fmt.Errorf("invalid random-output contract")
 		}
 	case "random-int-text-lines":
-		if c.Lines < 2 || c.Lines > 4096 || c.Lines%2 != 0 || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail != 0 {
+		if c.Lines < 2 || c.Lines > 4096 || c.Lines%2 != 0 || c.Minimum != 0 || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail != 0 {
+			return fmt.Errorf("invalid random-output contract")
+		}
+	case "random-int-sort-lines":
+		if c.Lines < 2 || c.Lines > 4096 || c.Lines%2 != 0 || c.Minimum < math.MinInt32 || c.Minimum >= c.Bound || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
 		}
 	default:
@@ -137,6 +143,31 @@ func (c randomOutputExpectation) compare(output []byte) error {
 			value, err := strconv.ParseInt(line, 10, 64)
 			if err != nil || line != strconv.FormatInt(value, 10) || value < 0 || value >= c.Bound {
 				return fmt.Errorf("random-output integer line %d outside domain", index+1)
+			}
+		}
+		return nil
+	}
+	if c.Kind == "random-int-sort-lines" {
+		input := make([]int64, c.Lines/2)
+		for index, line := range lines[:c.Lines/2] {
+			value, err := strconv.ParseInt(line, 10, 64)
+			if err != nil || line != strconv.FormatInt(value, 10) || value < c.Minimum || value >= c.Bound {
+				return fmt.Errorf("random-output integer line %d outside domain", index+1)
+			}
+			input[index] = value
+		}
+		expected := slices.Clone(input)
+		slices.Sort(expected)
+		for index, line := range lines[c.Lines/2 : c.Lines] {
+			if !strings.HasPrefix(line, " ") {
+				return fmt.Errorf("random-output sorted line %d spacing mismatch", index+1)
+			}
+			value, err := strconv.ParseInt(line[1:], 10, 64)
+			if err != nil || line[1:] != strconv.FormatInt(value, 10) || value < c.Minimum || value >= c.Bound {
+				return fmt.Errorf("random-output sorted line %d outside domain", index+1)
+			}
+			if value != expected[index] {
+				return fmt.Errorf("random-output sorted line %d is not the input permutation", index+1)
 			}
 		}
 		return nil

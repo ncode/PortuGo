@@ -58,5 +58,5 @@ and `environment-chronometer-minute`. Their reference elapsed values are
 supplied to the deterministic host adapter as project clock fixtures;
 arbitrary wall-clock measurements remain pending.
 
-The manifest contains 1,657 recorded probes: 1,639 verified and 18 pending,
+The manifest contains 1,657 recorded probes: 1,640 verified and 17 pending,
 plus 20 verified project contracts and two explicit exclusions (1,679 total).

@@ -163,6 +163,35 @@ func TestRandomIntegerTextOutputContract(t *testing.T) {
 	}
 }
 
+func TestRandomIntegerSortOutputContract(t *testing.T) {
+	t.Parallel()
+	valid := "79\n69\n34\n76\n63\n67\n44\n51\n91\n31\n18\n51\n4\n89\n29\n64\n92\n25\n78\n42\n 4\n 18\n 25\n 29\n 31\n 34\n 42\n 44\n 51\n 51\n 63\n 64\n 67\n 69\n 76\n 78\n 79\n 89\n 91\n 92\n"
+	contract := randomOutputExpectation{Kind: "random-int-sort-lines", Lines: 40, Minimum: 1, Bound: 101}
+	for _, tt := range []struct {
+		name   string
+		output string
+		valid  bool
+	}{
+		{"domain and sorted permutation", valid, true},
+		{"input below domain", strings.Replace(valid, "79\n", "0\n", 1), false},
+		{"input above domain", strings.Replace(valid, "79\n", "101\n", 1), false},
+		{"unsorted output", strings.Replace(valid, " 18\n 25\n", " 25\n 18\n", 1), false},
+		{"wrong permutation", strings.Replace(valid, " 92\n", " 93\n", 1), false},
+		{"missing output space", strings.Replace(valid, "\n 4\n", "\n4\n", 1), false},
+		{"carriage returns", strings.ReplaceAll(valid, "\n", "\r\n"), false},
+		{"missing final newline", strings.TrimSuffix(valid, "\n"), false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := contract.compare([]byte(tt.output)); (err == nil) != tt.valid {
+				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
+			}
+		})
+	}
+	if err := (randomOutputExpectation{Kind: "random-int-sort-lines", Lines: 3, Minimum: 1, Bound: 101}).compare([]byte("1\n 1\n")); err == nil {
+		t.Fatal("odd sort line count accepted")
+	}
+}
+
 func TestRandomInputContractValidation(t *testing.T) {
 	t.Parallel()
 	for _, name := range []string{"accepted", "missing review", "wrong owner", "rejected", "invalid recorded sample", "replaced evidence"} {

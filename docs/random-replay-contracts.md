@@ -19,6 +19,12 @@ followed by five uppercase ASCII letters. Replay checks the line shape,
 integer domain and text alphabet for the original and formatted source without
 promising the generated sequence.
 
+One bundled integer-sort example has a separate `randomOutput` contract. It
+emits an unconstrained sequence of bounded integers followed by the same values
+in nondecreasing order, using the documented output spacing. Replay checks the
+input domain, sorted permutation and line framing for the original and formatted
+source without promising the generated sequence.
+
 The optional `implementation.expected.randomInput` contract is restricted to
 accepted group-13 recordings and requires a review reason and document link.
 `minimum` and `maximum` are inclusive integer ticks at `10^-decimals`; for
@@ -65,7 +71,8 @@ spacing, line counts, invalid specifications, and attempts to replace recorded
 evidence. The bundled `randomicos.alg.ALG` contract is replayed in
 `TestRecordedBundledRandiOutput` for both source forms, forced endpoints, and
 sixteen deterministic seeds. The mixed-input contract is replayed by
-`TestRecordedBundledMixedRandomOutput` with the same source and generator
+`TestRecordedBundledMixedRandomOutput`, and the integer-sort contract by
+`TestRecordedBundledRandomSortOutput`, with the same source and generator
 coverage. Bundled programs with generated arrays, records, sorting, branching,
 or other mixed input/output remain pending until their own observable contracts
 exist.
