@@ -15,6 +15,9 @@
   sections, builtin collisions, reference-argument edge cases, interruption,
   and finite recursion depth. Keep application faults as labeled GUI evidence
   and leave their unresolved implementation contracts pending.
+- Classify the seven remaining legacy verification markers, linking the
+  declaration-placement recording, preserving the zero-value question as
+  pending, and retaining contextual prose/grammar aliases in trace validation.
 
 - Match the recorded outside-loop `interrompa` behavior by ignoring it without
   a semantic or runtime diagnostic, while keeping loop breaks scoped to the

@@ -397,9 +397,29 @@ func TestManifestChecksMarkersAlongsideChecklist(t *testing.T) {
 func TestManifestRetainsPendingLegacyObligations(t *testing.T) {
 	t.Parallel()
 	root, m := testManifest(t)
-	lines := make([]string, 440)
+	maxLine := 0
+	for _, pending := range pendingSourceObligations["especificacao-visualg-3.md"] {
+		if pending.line > maxLine {
+			maxLine = pending.line
+		}
+	}
+	for _, marker := range contextualSourceMarkers["especificacao-visualg-3.md"] {
+		if marker.line > maxLine {
+			maxLine = marker.line
+		}
+	}
+	lines := make([]string, maxLine)
 	for i := range lines {
 		lines[i] = "source text"
+	}
+	for _, marker := range contextualSourceMarkers["especificacao-visualg-3.md"] {
+		lines[marker.line-1] = marker.prefix + " [VERIFICAR] contextual marker"
+		if marker.aliasID != "" {
+			m.Inventory = append(m.Inventory, inventoryItem{
+				ID: marker.aliasID, Kind: "assumption",
+				Link: "specs/output/spec.md#Requirement: Output", Probes: []string{"output"},
+			})
+		}
 	}
 	for _, pending := range pendingSourceObligations["especificacao-visualg-3.md"] {
 		lines[pending.line-1] = pending.prefix + " [VERIFICAR] pending details"
@@ -413,6 +433,43 @@ func TestManifestRetainsPendingLegacyObligations(t *testing.T) {
 	writeArtifact(t, root, "especificacao-visualg-3.md", strings.Join(lines, "\n")+"\n")
 	if err := validate(root, m, "evidence", nil); err == nil || !strings.Contains(err.Error(), "pending verification item missing") {
 		t.Fatalf("error = %v, want missing pending verification item", err)
+	}
+}
+
+func TestManifestClassifiesContextualLegacyMarkers(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	maxLine := 0
+	for _, marker := range contextualSourceMarkers["especificacao-visualg-3.md"] {
+		if marker.line > maxLine {
+			maxLine = marker.line
+		}
+	}
+	lines := make([]string, maxLine)
+	for i := range lines {
+		lines[i] = "source text"
+	}
+	for _, pending := range pendingSourceObligations["especificacao-visualg-3.md"] {
+		lines[pending.line-1] = pending.prefix + " [VERIFICAR] pending details"
+	}
+	for _, marker := range contextualSourceMarkers["especificacao-visualg-3.md"] {
+		lines[marker.line-1] = marker.prefix + " [VERIFICAR] contextual marker"
+		if marker.aliasID != "" {
+			m.Inventory = append(m.Inventory, inventoryItem{
+				ID: marker.aliasID, Kind: "assumption",
+				Link: "specs/output/spec.md#Requirement: Output", Probes: []string{"output"},
+			})
+		}
+	}
+	writeArtifact(t, root, "especificacao-visualg-3.md", strings.Join(lines, "\n")+"\n")
+	m.InventorySources = append(m.InventorySources, "especificacao-visualg-3.md")
+	if err := validate(root, m, "evidence", nil); err != nil {
+		t.Fatal(err)
+	}
+	lines[contextualSourceMarkers["especificacao-visualg-3.md"][0].line-1] = "source text"
+	writeArtifact(t, root, "especificacao-visualg-3.md", strings.Join(lines, "\n")+"\n")
+	if err := validate(root, m, "evidence", nil); err == nil || !strings.Contains(err.Error(), "contextual verification marker missing") {
+		t.Fatalf("error = %v, want missing contextual marker", err)
 	}
 }
 func TestManifestUntracedProbeOrder(t *testing.T) {

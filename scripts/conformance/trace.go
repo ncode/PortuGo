@@ -184,9 +184,17 @@ func isNumberedSourceItem(line string) bool {
 	return false
 }
 
+// Verification markers may carry a free-form qualifier inside the brackets,
+// such as "[VERIFICAR posição exata]". Treat every bracketed spelling as a
+// marker, then let the source-line shape and explicit contextual list decide
+// whether it creates an inventory obligation.
+func hasVerificationMarker(line string) bool {
+	return strings.Contains(line, "[VERIFICAR")
+}
+
 func isSourceObligationLine(line string) bool {
 	line = strings.TrimSpace(line)
-	if !strings.Contains(line, "[VERIFICAR]") && !strings.Contains(line, "[VERIFICAR:") {
+	if !hasVerificationMarker(line) {
 		return false
 	}
 	if strings.HasPrefix(line, "- ") || strings.HasPrefix(line, "* ") || strings.HasPrefix(line, "+ ") || strings.HasPrefix(line, "|") || strings.HasPrefix(line, "`") || strings.HasPrefix(line, "[VERIFICAR]") || isNumberedSourceItem(line) {
@@ -224,6 +232,39 @@ type pendingSourceObligation struct {
 	prefix string
 }
 
+type contextualSourceMarker struct {
+	line    int
+	prefix  string
+	aliasID string
+}
+
+// These markers explain the marker/checklist notation or repeat a question
+// already represented by a nearby source item. They are anchored explicitly
+// so future edits cannot silently turn contextual prose or grammar comments
+// into untracked obligations.
+var contextualSourceMarkers = map[string][]contextualSourceMarker{
+	"especificacao-visualg-3.md": {
+		{line: 18, prefix: "Itens marcados"},
+		{line: 171, prefix: "Pontos a validar empiricamente"},
+		{line: 528, prefix: "grupo_param", aliasID: "assumption.vector-procedure-parameter"},
+		{line: 549, prefix: "valor_caso", aliasID: "assumption.choice-range-ate"},
+		{line: 562, prefix: "(* expressões:"},
+	},
+}
+
+func isContextualSourceMarker(name string, lineNumber int, line string) bool {
+	line = strings.TrimSpace(line)
+	if !hasVerificationMarker(line) {
+		return false
+	}
+	for _, marker := range contextualSourceMarkers[name] {
+		if marker.line == lineNumber && strings.HasPrefix(line, marker.prefix) {
+			return true
+		}
+	}
+	return false
+}
+
 // These source markers still contain an unresolved implementation or
 // diagnostic question. Keep them explicitly enumerated so the legacy source
 // cannot hide them behind its checklist section, and do not synthesize probe
@@ -232,6 +273,7 @@ var pendingSourceObligations = map[string][]pendingSourceObligation{
 	"especificacao-visualg-3.md": {
 		{line: 334, prefix: "- A gravação de compatibilidade mostra uma falha interna"},
 		{line: 440, prefix: "- A pilha de ativação é visível no IDE"},
+		{line: 441, prefix: "- Valores iniciais de variáveis:"},
 	},
 }
 
@@ -320,6 +362,7 @@ func validateInventory(root string, m manifest, probes map[string]probe) error {
 		}
 		checklist := checklistSourceItems(data)
 		pendingSeen := make(map[int]bool)
+		contextualSeen := make(map[int]bool)
 		for lineNumber, line := range strings.Split(string(data), "\n") {
 			lineNumber++
 			if strings.HasPrefix(line, "### Requirement: ") {
@@ -327,6 +370,10 @@ func validateInventory(root string, m manifest, probes map[string]probe) error {
 				if !requirementLinks[link] {
 					problems = append(problems, fmt.Errorf("untraced requirement %s", link))
 				}
+			}
+			if isContextualSourceMarker(name, lineNumber, line) {
+				contextualSeen[lineNumber] = true
+				continue
 			}
 			if !isSourceObligationLine(line) {
 				continue
@@ -343,6 +390,13 @@ func validateInventory(root string, m manifest, probes map[string]probe) error {
 		for _, pending := range pendingSourceObligations[name] {
 			if !pendingSeen[pending.line] {
 				problems = append(problems, fmt.Errorf("pending verification item missing %s#line %d", name, pending.line))
+			}
+		}
+		for _, marker := range contextualSourceMarkers[name] {
+			if !contextualSeen[marker.line] {
+				problems = append(problems, fmt.Errorf("contextual verification marker missing %s#line %d", name, marker.line))
+			} else if marker.aliasID != "" && !ids[marker.aliasID] {
+				problems = append(problems, fmt.Errorf("contextual verification marker %s aliases missing inventory %s", name, marker.aliasID))
 			}
 		}
 		for _, line := range checklist {

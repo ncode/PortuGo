@@ -3,7 +3,7 @@
 OpenSpec group 2 is in progress. The corpus currently inventories 73 requirements
 and 73 bundled example filenames, sizes and hashes. All 73 examples now have
 recorded dispositions: 60 accepted, 11 unusable, and 2 reviewed non-goals. The
-manifest has 1,656 recorded probes and 22 reviewed non-applicable probes; 29
+manifest has 1,656 recorded probes and 22 reviewed non-applicable probes; 28
 implementation checks remain pending. The original compatibility checklist is
 present in `especificacao-visualg-3.md`; its 25 numbered rows now have stable
 manifest links to existing probe coverage. Twenty-six evidenced source
@@ -27,6 +27,14 @@ The recursive case is covered by a local regression test; the other new
 implementation links remain pending under their owning tasks. Published GUI
 evidence contains only reviewed, sanitized images and text; raw operational
 captures remain private.
+
+The legacy marker audit now classifies seven remaining occurrences explicitly:
+the declaration-placement question is linked to its existing accepted and
+rejected recordings, the zero-value question remains pending, and the prose
+instructions and grammar comments at their recorded lines are contextual
+references (the grammar aliases point to their existing assumptions). Trace
+validation anchors all seven classifications and accepts no unclassified
+qualified marker.
 
 The initial manifest contained 18 reduced probes:
 

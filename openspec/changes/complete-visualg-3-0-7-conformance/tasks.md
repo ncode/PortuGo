@@ -136,8 +136,10 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   draining, so helper processes cannot leave validation waiting indefinitely.
   Declared source files now require inventory links for explicit `[VERIFICAR]`
   list, table, code, and numbered items; checklist, defect, and feature links
-  participate in the same coverage check. The legacy source inventory and
-  prose/grammar marker coverage remain open. The 25 numbered rows in the
+  participate in the same coverage check. The legacy source audit links the
+  declaration-placement question to its existing recordings, classifies its
+  five prose/grammar markers as contextual aliases or references, and retains
+  only the zero-value question as pending. The 25 numbered rows in the
   legacy compatibility checklist are now declared as `checklist.*` entries and
   linked to existing probe coverage; unresolved variants, audited defects,
   unresolved official features and environment commands remain open. Stable
@@ -200,6 +202,13 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   input tokenization remains covered by its dedicated probe.
   The vector-parameter verification marker now links to its recorded rejection
   probe; the remaining non-numbered markers remain open.
+  The seven remaining legacy marker occurrences are now anchored: declaration
+  placement reuses its accepted and rejected file-directive recordings, the
+  zero-value question remains pending, and the marker instructions and grammar
+  comments are contextual references or aliases. Qualified marker spellings
+  are recognized by trace validation without inventing probe links. This slice
+  still does not complete task 2.2 because the broader environment inventory
+  and other source questions remain open.
   This slice does not complete tasks 2.2 or 17.2.
   Twenty-six evidenced source assumptions, the builtin catalog, and the
   recorded CLI status correction also have stable links. The new source
