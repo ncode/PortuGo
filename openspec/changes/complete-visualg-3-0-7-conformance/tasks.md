@@ -230,7 +230,13 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   vector copying, parameterless calls, one reference coercion, zero/positive/
   negative bounds, and accepted vector sizes through 5001. They do not establish
   the upper storage limit, complete aliasing rules, visibility, or returns.
-- [ ] 2.10 Create reduced precedence, unary, coercion, logical evaluation, comparison, case/range, loop, interruption, evaluation-order, and overflow probe batches.
+- [x] 2.10 Create reduced precedence, unary, coercion, logical evaluation, comparison, case/range, loop, interruption, evaluation-order, and overflow probe batches.
+
+  Nine requirement inventory links cover 299 unique recorded probes across the
+  requested expression and control-flow categories. Every linked probe has
+  recorded evidence and a verified implementation; one shared probe accounts
+  for the overlapping requirement totals. Unqualified operand combinations
+  remain outside the qualified scope.
 - [x] 2.11 Create reduced console/CP1252/arquivo/random/environment probe batches and a built-in inventory covering every name in the standard-library spec, including the seven missing numeric functions and the two-argument `exp` candidate.
 
   The manifest now links the recorded random-input, file-input, and console
