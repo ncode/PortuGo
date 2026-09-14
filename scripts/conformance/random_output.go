@@ -142,6 +142,10 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		if c.Lines != 21 || c.Minimum != 0 || c.Bound != 101 || c.Decimals != 0 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
 		}
+	case "random-int-countsort-lines":
+		if c.Lines != 44 || c.Minimum != 1 || c.Bound != 101 || c.Decimals != 0 || c.FixedTail != 0 {
+			return fmt.Errorf("invalid random-output contract")
+		}
 	case "random-randi-repeat-lines":
 		if c.Lines != 11 || c.Minimum < 1 || c.Minimum >= c.Bound || c.Bound < 2 || c.Bound > math.MaxInt32 || c.Decimals != 0 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
@@ -297,6 +301,49 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		}
 		return nil
 	}
+	if c.Kind == "random-int-countsort-lines" {
+		counts := make(map[int64]int, 20)
+		for index, line := range lines[:20] {
+			value, err := strconv.ParseInt(line, 10, 64)
+			if err != nil || line != strconv.FormatInt(value, 10) || value < c.Minimum || value >= c.Bound {
+				return fmt.Errorf("random-output countsort input %d mismatch", index+1)
+			}
+			counts[value]++
+		}
+		if lines[20] != "" || lines[21] != "Cronômetro iniciado." || lines[22] != "" {
+			return fmt.Errorf("random-output countsort chronometer start framing mismatch")
+		}
+		const stopPrefix = "Cronômetro terminado. Tempo decorrido: "
+		if !strings.HasPrefix(lines[23], stopPrefix) || !validElapsedDuration(strings.TrimPrefix(lines[23], stopPrefix)) {
+			return fmt.Errorf("random-output countsort chronometer stop mismatch")
+		}
+		var previous int64
+		for index, line := range lines[24:44] {
+			prefix := fmt.Sprintf("v2[ %d] = ", index+1)
+			if !strings.HasPrefix(line, prefix) {
+				return fmt.Errorf("random-output countsort row %d framing mismatch", index+1)
+			}
+			valueText := strings.TrimPrefix(line, prefix)
+			value, err := strconv.ParseInt(strings.TrimSpace(valueText), 10, 64)
+			if err != nil || line != prefix+" "+strconv.FormatInt(value, 10) || value < c.Minimum || value >= c.Bound {
+				return fmt.Errorf("random-output countsort row %d value mismatch", index+1)
+			}
+			if index > 0 && value < previous {
+				return fmt.Errorf("random-output countsort row %d order mismatch", index+1)
+			}
+			if counts[value] == 0 {
+				return fmt.Errorf("random-output countsort row %d is not an input permutation", index+1)
+			}
+			counts[value]--
+			previous = value
+		}
+		for _, count := range counts {
+			if count != 0 {
+				return fmt.Errorf("random-output countsort rows are not an input permutation")
+			}
+		}
+		return nil
+	}
 	if c.Kind == "random-record-sort-lines" {
 		type record struct {
 			code int64
@@ -381,6 +428,29 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		}
 	}
 	return nil
+}
+
+func validElapsedDuration(text string) bool {
+	if strings.HasSuffix(text, " ms.") {
+		valueText := strings.TrimSuffix(text, " ms.")
+		if secondsText, millisecondsText, ok := strings.Cut(valueText, " segundo(s) e "); ok {
+			seconds, secondsOK := parseCanonicalNonNegativeInteger(secondsText)
+			milliseconds, millisecondsOK := parseCanonicalNonNegativeInteger(millisecondsText)
+			return secondsOK && seconds > 0 && millisecondsOK && milliseconds > 0 && milliseconds < 1000
+		}
+		milliseconds, ok := parseCanonicalNonNegativeInteger(valueText)
+		return ok && milliseconds > 0 && milliseconds < 1000
+	}
+	if strings.HasSuffix(text, " segundo(s).") {
+		seconds, ok := parseCanonicalNonNegativeInteger(strings.TrimSuffix(text, " segundo(s)."))
+		return ok && seconds >= 0
+	}
+	return false
+}
+
+func parseCanonicalNonNegativeInteger(text string) (int64, bool) {
+	value, err := strconv.ParseInt(text, 10, 64)
+	return value, err == nil && value >= 0 && text == strconv.FormatInt(value, 10)
 }
 
 func parseFixedDecimal(text string, valueDecimals, textDecimals int) (int64, error) {

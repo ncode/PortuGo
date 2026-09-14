@@ -9991,14 +9991,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-acf5d46a3a6a/stdout.txt",
             "sha256": "10bd0b9d1887746c14dfb733deb6b0966694c3d153f94213e927b18f30c5f33d"
+          },
+          "randomOutput": {
+            "kind": "random-int-countsort-lines",
+            "lines": 44,
+            "minimum": 1,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves twenty bounded inputs, chronometer framing, and a sorted multiset render while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomCountSortOutput"
+        ]
       }
     },
     {

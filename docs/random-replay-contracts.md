@@ -55,6 +55,13 @@ nondecreasing order, then records the fixed negative search sentinel. Replay
 checks row numbering, field widths, ordering, domain and prompt framing for the
 original and formatted source without promising the generated sequence.
 
+One bundled counting-sort example has a separate `randomOutput` contract. It
+emits twenty canonical generated integers from `[1, 101)`, the documented blank
+lines and chronometer messages, and twenty indexed `v2` rows containing the
+same values in nondecreasing order. Replay accepts only the documented elapsed
+time forms, checks the multiset permutation and row framing, and requires the
+final LF without promising the generated sequence.
+
 Two bundled repeated-value examples have separate `randomOutput` contracts.
 Each emits one nonzero generated integer twice inside fixed sequence framing;
 the transcript has eleven lines and no final LF. Replay checks the prompts,
@@ -114,8 +121,9 @@ coverage. The real-sort contracts are replayed by
 `TestRecordedBundledRandomRecordSortOutput`; the integer-search contract is
 replayed by `TestRecordedBundledRandomSearchTableOutput`, and the repeated-value
 contracts by `TestRecordedBundledRandomRandiRepeatOutput`. The raw integer-search
-contract is covered by the bundled replay test, and the sorted integer-search
-contract by its bundled replay test. Bundled programs with
+contract is covered by the bundled replay test, the sorted integer-search
+contract by its bundled replay test, and the counting-sort contract by its
+bundled replay test. Bundled programs with
 generated arrays, records, sorting, branching,
 or other mixed input/output remain pending until their own observable contracts
 exist.

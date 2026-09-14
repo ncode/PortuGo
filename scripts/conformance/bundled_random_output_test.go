@@ -60,6 +60,7 @@ func TestBundledRandiOutputContractMetadata(t *testing.T) {
 		"random-int-search-table-lines":  "bundled random search table example",
 		"random-int-search-lines":        "bundled random search example",
 		"random-int-search-sorted-lines": "bundled sorted random search example",
+		"random-int-countsort-lines":     "bundled counting sort example",
 		"random-randi-repeat-lines":      "bundled repeated random example",
 	}
 	found := make(map[string]bool)
@@ -112,6 +113,10 @@ func TestRecordedBundledRandomSearchOutput(t *testing.T) {
 
 func TestRecordedBundledRandomSearchSortedOutput(t *testing.T) {
 	testRecordedBundledRandomOutput(t, "random-int-search-sorted-lines")
+}
+
+func TestRecordedBundledRandomCountSortOutput(t *testing.T) {
+	testRecordedBundledRandomOutput(t, "random-int-countsort-lines")
 }
 
 func TestRecordedBundledRandomRandiRepeatOutput(t *testing.T) {

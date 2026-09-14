@@ -361,6 +361,53 @@ func TestRandomIntegerSearchSortedOutputContract(t *testing.T) {
 	}
 }
 
+func TestRandomIntegerCountSortOutputContract(t *testing.T) {
+	t.Parallel()
+	valid := "91\n26\n52\n78\n41\n5\n79\n69\n81\n32\n14\n27\n85\n45\n5\n46\n63\n34\n33\n62\n\nCronômetro iniciado.\n\nCronômetro terminado. Tempo decorrido: 0 segundo(s).\nv2[ 1] =  5\nv2[ 2] =  5\nv2[ 3] =  14\nv2[ 4] =  26\nv2[ 5] =  27\nv2[ 6] =  32\nv2[ 7] =  33\nv2[ 8] =  34\nv2[ 9] =  41\nv2[ 10] =  45\nv2[ 11] =  46\nv2[ 12] =  52\nv2[ 13] =  62\nv2[ 14] =  63\nv2[ 15] =  69\nv2[ 16] =  78\nv2[ 17] =  79\nv2[ 18] =  81\nv2[ 19] =  85\nv2[ 20] =  91\n"
+	contract := randomOutputExpectation{Kind: "random-int-countsort-lines", Lines: 44, Minimum: 1, Bound: 101}
+	for _, tt := range []struct {
+		name   string
+		output string
+		valid  bool
+	}{
+		{"domain, sorting and framing", valid, true},
+		{"milliseconds elapsed shape", strings.Replace(valid, "0 segundo(s).", "16 ms.", 1), true},
+		{"fractional seconds elapsed shape", strings.Replace(valid, "0 segundo(s).", "2 segundo(s) e 47 ms.", 1), true},
+		{"exact seconds elapsed shape", strings.Replace(valid, "0 segundo(s).", "2 segundo(s).", 1), true},
+		{"elapsed zero milliseconds rejected", strings.Replace(valid, "0 segundo(s).", "0 ms.", 1), false},
+		{"elapsed zero remainder rejected", strings.Replace(valid, "0 segundo(s).", "1 segundo(s) e 0 ms.", 1), false},
+		{"elapsed over one second rejected as milliseconds", strings.Replace(valid, "0 segundo(s).", "1000 ms.", 1), false},
+		{"input below domain", strings.Replace(valid, "91\n", "0\n", 1), false},
+		{"input above domain", strings.Replace(valid, "91\n", "101\n", 1), false},
+		{"input leading zero", strings.Replace(valid, "91\n", "091\n", 1), false},
+		{"unsorted output", strings.Replace(valid, "v2[ 2] =  5\n", "v2[ 2] =  4\n", 1), false},
+		{"wrong output permutation", strings.Replace(valid, "v2[ 2] =  5\n", "v2[ 2] =  6\n", 1), false},
+		{"wrong row number", strings.Replace(valid, "v2[ 2] =  5\n", "v2[ 3] =  5\n", 1), false},
+		{"wrong row spacing", strings.Replace(valid, "v2[ 1] =  5\n", "v2[1] =  5\n", 1), false},
+		{"missing start blank line", strings.Replace(valid, "62\n\nCronômetro", "62\nCronômetro", 1), false},
+		{"wrong start message", strings.Replace(valid, "Cronômetro iniciado.", "Cronômetro começou.", 1), false},
+		{"wrong stop message", strings.Replace(valid, "Cronômetro terminado.", "Cronômetro concluído.", 1), false},
+		{"missing output row", strings.Replace(valid, "v2[ 20] =  91\n", "", 1), false},
+		{"carriage returns", strings.ReplaceAll(valid, "\n", "\r\n"), false},
+		{"missing final newline", strings.TrimSuffix(valid, "\n"), false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := contract.compare([]byte(tt.output)); (err == nil) != tt.valid {
+				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
+			}
+		})
+	}
+	if err := (randomOutputExpectation{Kind: "random-int-countsort-lines", Lines: 43, Minimum: 1, Bound: 101}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong countsort line count accepted")
+	}
+	if err := (randomOutputExpectation{Kind: "random-int-countsort-lines", Lines: 44, Minimum: 0, Bound: 101}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong countsort minimum accepted")
+	}
+	if err := (randomOutputExpectation{Kind: "random-int-countsort-lines", Lines: 44, Minimum: 1, Bound: 100}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong countsort bound accepted")
+	}
+}
+
 func TestRandomRandiRepeatOutputContract(t *testing.T) {
 	t.Parallel()
 	valid := " \n ============================================== \nQUANTOS NUMEROS (1-10): 1\nDigite o destaque: 0\n \nA SEQUENCIA É \n 1 \nO NUMERO DE REPETIÇÕES FOI:  0\n \nRESTOU A SEQUENCIA: \n 1"
