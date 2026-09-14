@@ -224,16 +224,14 @@ type pendingSourceObligation struct {
 	prefix string
 }
 
-// These source markers have no recorded reference evidence yet. Keep them
-// explicitly enumerated so the legacy source cannot hide them behind its
-// checklist section, and do not synthesize probe links for them.
+// These source markers still contain an unresolved implementation or
+// diagnostic question. Keep them explicitly enumerated so the legacy source
+// cannot hide them behind its checklist section, and do not synthesize probe
+// links for them until the question is resolved.
 var pendingSourceObligations = map[string][]pendingSourceObligation{
 	"especificacao-visualg-3.md": {
-		{line: 81, prefix: "- `*` `const` e `dos`:"},
-		{line: 128, prefix: "- `[VERIFICAR]` Se múltiplas seções `var`"},
-		{line: 334, prefix: "- `[VERIFICAR]` Passar expressão/literal para parâmetro `var`:"},
-		{line: 431, prefix: "- Os nomes das builtins NÃO são impedidos"},
-		{line: 440, prefix: "- Pilha de ativação visível no IDE"},
+		{line: 334, prefix: "- A gravação de compatibilidade mostra uma falha interna"},
+		{line: 440, prefix: "- A pilha de ativação é visível no IDE"},
 	},
 }
 

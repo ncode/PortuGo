@@ -3,15 +3,30 @@
 OpenSpec group 2 is in progress. The corpus currently inventories 73 requirements
 and 73 bundled example filenames, sizes and hashes. All 73 examples now have
 recorded dispositions: 60 accepted, 11 unusable, and 2 reviewed non-goals. The
-manifest has 1,648 recorded probes and 22 reviewed non-applicable probes; 22
+manifest has 1,656 recorded probes and 22 reviewed non-applicable probes; 29
 implementation checks remain pending. The original compatibility checklist is
 present in `especificacao-visualg-3.md`; its 25 numbered rows now have stable
 manifest links to existing probe coverage. Twenty-six evidenced source
 assumptions, the builtin catalog, and one recorded CLI correction are also
 linked. Stable feature entries now cover the documented console, display,
 timer, breakpoint, echo, and chronometer families through existing probe
-coverage. Five source obligations, unqualified timing and GUI combinations,
-and the broader environment-command inventory remain open.
+coverage. The latest source-obligation recordings close five previously
+unrecorded questions; nonassignable `var` arguments and maximum recursion or
+stack-display behavior remain open, along with unqualified timing and GUI
+combinations and the broader environment-command inventory.
+
+The September 14 source-obligation slice adds eight reviewed recordings from
+the Windows reference application. `const` and `dos` are reserved, a second
+main `var` section is rejected, and builtin names cannot be declared as user
+procedures. A finite recursive call at depth 32 completes, while `interrompa`
+outside a loop is accepted and execution continues. The reference application
+raised an internal fault for expression and literal arguments passed to a
+`var` parameter; those two observations are retained as labeled GUI
+transcriptions without treating the fault as a language-level diagnostic.
+The recursive case is covered by a local regression test; the other new
+implementation links remain pending under their owning tasks. Published GUI
+evidence contains only reviewed, sanitized images and text; raw operational
+captures remain private.
 
 The initial manifest contained 18 reduced probes:
 

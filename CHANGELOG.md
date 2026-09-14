@@ -11,6 +11,11 @@
 - Archive the green candidate quality, race, platform, fuzz, and strict
   specification checks for the current stacked layer.
 
+- Record the remaining source-obligation probes for reserved words, declaration
+  sections, builtin collisions, reference-argument edge cases, interruption,
+  and finite recursion depth. Keep application faults as labeled GUI evidence
+  and leave their unresolved implementation contracts pending.
+
 - Keep conformance execution diagnostics on the stable `source.alg` filename so
   local filesystem paths cannot enter captured output.
 - Reconcile the environment-command task ledger with its verified typed host

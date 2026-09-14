@@ -61,7 +61,7 @@ Nota sobre `;`: no corpo do programa é desnecessário/ignorado, mas é **sintat
 
 ### 1.6 Palavras reservadas (conjunto 3.0.5.2 + 3.0.6)
 ```
-algoritmo, fimalgoritmo, var, inicio, const?*, 
+algoritmo, fimalgoritmo, var, inicio, const,
 inteiro, real, caractere, caracter, logico, vetor, de,
 se, entao, senao, fimse,
 escolha, caso, outrocaso, fimescolha,
@@ -75,10 +75,10 @@ e, ou, nao, xou, mod,
 verdadeiro, falso,
 aleatorio, arquivo, timer, pausa, debug, eco, cronometro, limpatela,
 on, off,
-dos?*
+dos
 ```
 - `caracter` (sem o "e" final) é aceito como sinônimo de `caractere` em declarações de parâmetros e retorno de funções. O help oficial usa `caracter` nas assinaturas das funções builtin.
-- `*` `const` e `dos`: aparecem em algumas listas da comunidade, mas não no help oficial 3.0.5.2. `[VERIFICAR]` antes de reservar.
+- `const` e `dos`: a gravação de compatibilidade registra os dois nomes como palavras reservadas; usá-los como nomes de variáveis faz o parser esperar `inicio` na declaração.
 - Formas acentuadas `[3.0.6+]`: `até, faça, então, senão, função, fimfunção, não` mapeiam para os mesmos tokens.
 
 ---
@@ -125,7 +125,7 @@ fimalgoritmo
   - `<lista-de-nomes> : <tipo>`
   - `<lista-de-nomes> : vetor [<intervalos>] de <tipo>`
 - `intervalo := <inteiro> .. <inteiro>`, separados por vírgula para 2D.
-- `[VERIFICAR]` Se múltiplas seções `var` são permitidas no programa principal (provavelmente apenas uma).
+- O programa principal aceita uma única seção `var`; uma segunda seção é rejeitada antes de `inicio`.
 
 ---
 
@@ -288,7 +288,7 @@ fimrepita
 Só termina via `interrompa`.
 
 ### 6.6 `interrompa`
-Sai imediatamente do laço mais interno (`para`, `enquanto`, `repita`, `repita..fimrepita`). `[VERIFICAR]` comportamento fora de laço (erro de compilação ou de execução?).
+Sai imediatamente do laço mais interno (`para`, `enquanto`, `repita`, `repita..fimrepita`). Fora de um laço, a gravação de compatibilidade mostra que `interrompa` é ignorado e a execução continua.
 
 ---
 
@@ -331,7 +331,7 @@ fimfuncao
 
 ### 7.4 Passagem por referência
 - Parâmetro `var` recebe o endereço; alterações afetam a variável do chamador.
-- `[VERIFICAR]` Passar expressão/literal para parâmetro `var`: erro de compilação?
+- A gravação de compatibilidade mostra uma falha interna da aplicação de referência ao passar uma expressão ou literal para parâmetro `var`; nenhum diagnóstico de linguagem foi exposto. `[VERIFICAR]` A proteção da implementação e o contrato de diagnóstico permanecem pendentes.
 - `[VERIFICAR]` Passar elemento de vetor (`v[i]`) por referência: suportado?
 
 ---
@@ -428,7 +428,7 @@ Todas case-insensitive. Usáveis em qualquer posição de expressão (nunca no l
 | `pos(subc, c)` | caracter, caracter → inteiro | posição (base 1) de subc em c; 0 se ausente. Ordem dos args: agulha, palheiro. `[VERIFICAR]` se a busca é case-sensitive (provável que sim, ao contrário das comparações!) |
 
 ### 9.3 Observações para o implementador
-- Os nomes das builtins NÃO são impedidos de colidir com subprogramas do usuário? `[VERIFICAR]` (provavelmente são reservados).
+- Os nomes das builtins não podem colidir com procedimentos ou funções declarados pelo usuário; a aplicação de referência rejeita a declaração conflitante.
 - `exp` é a maior pegadinha da biblioteca: tem 2 argumentos e é potenciação, não exponencial.
 
 ---
@@ -437,7 +437,7 @@ Todas case-insensitive. Usáveis em qualquer posição de expressão (nunca no l
 
 - **Dois displays** `[OFICIAL]`: a "saída padrão" (painel do IDE) e a "tela DOS" (simulação de console, afetada por `limpatela`). Em implementação headless, trate como um único stdout.
 - Escopo: global (programa principal) + local por chamada de subprograma. Sem blocos léxicos internos. Shadowing de global por local/parâmetro: permitido `[INFERIDO]`.
-- Pilha de ativação visível no IDE (Ctrl-F3); profundidade máxima de recursão não documentada `[VERIFICAR: estouro de pilha vs limite artificial]`.
+- A pilha de ativação é visível no IDE (Ctrl-F3). A gravação de compatibilidade conclui uma chamada recursiva com profundidade 32; `[VERIFICAR]` a profundidade máxima e a exibição da pilha continuam sem especificação e não são requisitos de aceitação.
 - Valores iniciais de variáveis: **não documentado**. Comunidade reporta inicialização com zero/""/FALSO `[VERIFICAR — decisão importante: ler variável não inicializada é erro ou retorna zero-value?]`.
 - Erros de execução param o programa com mensagem apontando a linha.
 
