@@ -1139,6 +1139,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   before writing stderr or replay-result JSON. Full implementation acceptance
   remains pending.
 - [ ] 17.7 Reconcile `AGENTS.md`, `docs/language.md`, every example, and `CHANGELOG.md` with the oracle-backed final behavior and remove all obsolete open questions or compatibility claims.
+
+  The current documentation pass reconciles the settled dialect, evaluation,
+  I/O, randomness, and CLI decisions in `AGENTS.md`, clarifies the in-scope
+  `arquivo` directive in `docs/language.md`, and finds no obsolete scope claims
+  in the examples. Final reconciliation remains open while the pending
+  reference implementations and bundled-example mismatches remain.
 - [ ] 17.8 Perform a clean-checkout release rehearsal of all CLI commands, REPL transcripts, fixtures, manifest validation, and build artifacts on the supported platforms.
 - [ ] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
 - [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.
