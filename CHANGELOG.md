@@ -47,6 +47,9 @@
   `E004` regressions, while keeping the reference application's fault
   observations separate from language-level diagnostic claims.
 
+- Accept the recorded `para ... ate faca` form without an upper bound; it
+  executes zero iterations without inferring a default bound.
+
 - Match the recorded outside-loop `interrompa` behavior by ignoring it without
   a semantic or runtime diagnostic, while keeping loop breaks scoped to the
   active lexical call frame.

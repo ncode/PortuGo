@@ -94,22 +94,23 @@ The latest bounded grammar audit keeps these two accepted recordings pending:
 
 | Corpus ID | Remaining qualification |
 | --- | --- |
-| `bundled-3b4c69f65b60` | Generated input precedes a counted loop with no upper bound. The CLI rejects the header; the recording alone establishes neither a portable random transcript nor the omitted-bound rule. |
+| `bundled-3b4c69f65b60` | Generated input precedes a counted loop with no upper bound. The CLI now accepts the header and skips that loop, but the recording still establishes no portable random transcript. |
 | `bundled-54f1e50d1c02` | The recorded menu exit avoids a procedure with an undeclared read destination. The CLI rejects that unused body. Selected and unselected read controls are still needed before changing diagnostic timing. |
 
 These observations do not justify adding a default loop bound or generally
 suppressing diagnostics in unexecuted subprograms.
 
 A replay audit of the sixteen remaining pending accepted programs found no
-additional byte-exact matches. Twelve finish without diagnostics but produce
+additional byte-exact matches. Thirteen finish without diagnostics but produce
 different generated values. Successful local completion alone does not qualify
 their output or every branch.
 
-The other four fail before producing output:
+Three still fail before producing output; the counted-loop example now runs but
+differs in generated output:
 
-| Case | Current CLI rejection | Pending behavior |
+| Case | Current CLI result | Pending behavior |
 | --- | --- | --- |
-| Counted-loop form | `P001`, lines 23 and 24 | Missing counted-loop upper bound, after generated input. |
+| Counted-loop form | generated output differs | Omitted counted-loop upper bound is accepted and skips the loop; generated input/output still needs qualification. |
 | Declaration order | `P001`, line 20 | The global `var` section follows the procedures rather than immediately following the record type. Generated output also needs qualification. |
 | Unexecuted read | `E002`, line 157 | An undeclared read destination in a procedure avoided by the recorded menu exit. |
 | Unselected break | `E006`, line 69 | An out-of-loop `interrompa` in the branch avoided by the recorded valid input. |

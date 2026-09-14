@@ -45,8 +45,9 @@ execution paths as actual subprocesses.
 Loop assignments remain visible within the body without changing progression.
 Normal nonempty completion exposes the smaller of the next iteration value and
 terminal bound; interruption exposes the smaller of the body value and terminal
-bound; an empty loop exposes its initial bound. The reference memory grid can
-disagree with subsequent program output; the tests follow program output.
+bound; an explicitly bounded empty loop exposes its initial bound. The
+reference memory grid can disagree with subsequent program output; the tests
+follow program output.
 
 Eager logical evaluation and real-valued `/` were already correct. Invalid
 programs are statically rejected before execution, whereas the reference GUI

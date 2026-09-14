@@ -673,7 +673,10 @@ func (p *parser) parseFor() ast.Stmt {
 	p.expect(token.DE, "expected de")
 	from := p.parseExpr(0)
 	p.expect(token.ATE, "expected ate")
-	to := p.parseExpr(0)
+	var to ast.Expr
+	if p.peek().Kind != token.FACA {
+		to = p.parseExpr(0)
+	}
 	var step ast.Expr
 	if p.match(token.PASSO) {
 		step = p.parseExpr(0)

@@ -174,11 +174,12 @@ enquanto <cond> faca ... fimenquanto
 repita ... ate <cond>
 
 para <i> de <a> ate <b> [passo <p>] faca ... fimpara
+para <i> de <a> ate faca ... fimpara
 
 interrompa     // break out of innermost loop
 ```
 
-`para` semantics: `i` is `inteiro`, `passo` defaults to 1, supports negative step. Loop variable is mutable inside the body but reassigning it does not affect iteration count. Recorded exit-state rules, including descending, empty, and interrupted loops, are defined and tested in `docs/language.md`.
+`para` semantics: `i` is `inteiro`, `passo` defaults to 1, supports negative step. Loop variable is mutable inside the body but reassigning it does not affect iteration count. An omitted upper bound (`ate faca`) executes zero iterations and leaves the loop variable unchanged. Recorded exit-state rules for explicitly bounded loops, including descending, empty, and interrupted loops, are defined and tested in `docs/language.md`.
 
 ### 6.5 I/O
 

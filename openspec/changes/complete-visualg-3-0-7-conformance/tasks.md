@@ -1199,10 +1199,15 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   by an unused read destination remain pending; neither recording establishes a
   general recovery or deferred-lookup rule.
 
-  Auditing the sixteen remaining pending accepted programs found twelve
-  successful local runs with varying output and four frontend rejections. The generated
-  data set includes two syntax mismatches: an omitted loop bound and a global
-  variable section after procedures. The two fixed-input paths remain blocked
+  The implementation now accepts the reduced omitted-bound form (`para ... ate
+  faca`) and executes zero iterations. The bundled generated-input transcript
+  remains pending because its random-output contract is not qualified.
+
+  Auditing the sixteen remaining pending accepted programs found thirteen
+  successful local runs with varying output and three frontend rejections. The
+  generated data set now has one syntax mismatch: a global variable section
+  after procedures; the omitted loop bound is accepted and produces a differing
+  generated transcript. The two fixed-input paths remain blocked
   by an unused read destination and an unselected out-of-loop break. Existing
   group-13 echo/output contracts do not qualify these bundled transcripts;
   no additional example is promoted by this audit.

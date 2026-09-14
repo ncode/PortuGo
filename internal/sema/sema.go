@@ -386,7 +386,9 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			c.error(s.Name.Pos, diag.ETypeMismatch, "loop variable must be inteiro")
 		}
 		c.requireInt(s.From)
-		c.requireInt(s.To)
+		if s.To != nil {
+			c.requireInt(s.To)
+		}
 		if s.Step != nil {
 			c.requireInt(s.Step)
 		}

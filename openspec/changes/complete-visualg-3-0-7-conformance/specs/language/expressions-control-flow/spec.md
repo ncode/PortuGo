@@ -167,8 +167,12 @@ Subexpressions, designator indices, statement expressions, and format expression
 - **THEN** the loop terminates or reports the reference-compatible diagnostic without wrapping
 
 #### Scenario: Replay recorded loop exit state
-- **WHEN** the finite integer loops in the 2026-09-07 Windows observations complete normally, execute zero iterations, or reach `interrompa`
-- **THEN** normal nonempty completion exposes the smaller of the next iteration value and terminal bound, an empty loop exposes its initial bound, and interruption exposes the smaller of the body value and terminal bound, including the recorded descending cases
+- **WHEN** the finite integer loops in the 2026-09-07 Windows observations have explicit bounds and complete normally, execute zero iterations, or reach `interrompa`
+- **THEN** normal nonempty completion exposes the smaller of the next iteration value and terminal bound, an explicitly bounded empty loop exposes its initial bound, and interruption exposes the smaller of the body value and terminal bound, including the recorded descending cases
+
+#### Scenario: Accept an omitted counted-loop upper bound
+- **WHEN** a `para` statement uses `ate faca` without an upper-bound expression
+- **THEN** parsing and semantic analysis succeed, execution performs zero iterations, the loop variable remains unchanged, and no default upper bound is inferred
 
 ### Requirement: Interruption and return propagation
 `interrompa` and `retorne` SHALL be valid only in the oracle-confirmed contexts.
