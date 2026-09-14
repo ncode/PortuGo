@@ -37,6 +37,12 @@ name and by code with the documented row framing. Replay checks field domains,
 record permutation, both sort orders and framing for the original and formatted
 source without promising the generated sequence.
 
+One bundled integer-search example has a separate `randomOutput` contract. It
+emits ten numbered rows with generated integers in `[0, 100)`, then records the
+fixed `-1` search input and the resulting not-found message. Replay checks row
+numbering, field widths, integer domains and the fixed search result without
+promising the generated sequence.
+
 The optional `implementation.expected.randomInput` contract is restricted to
 accepted group-13 recordings and requires a review reason and document link.
 `minimum` and `maximum` are inclusive integer ticks at `10^-decimals`; for
@@ -87,8 +93,9 @@ sixteen deterministic seeds. The mixed-input contract is replayed by
 `TestRecordedBundledRandomSortOutput`, with the same source and generator
 coverage. The real-sort contracts are replayed by
 `TestRecordedBundledRandomRealSortOutput`, and the record-sort contracts by
-`TestRecordedBundledRandomRecordSortOutput`. Bundled programs with generated
-arrays, records, sorting, branching,
+`TestRecordedBundledRandomRecordSortOutput`; the integer-search contract is
+replayed by `TestRecordedBundledRandomSearchTableOutput`. Bundled programs with
+generated arrays, records, sorting, branching,
 or other mixed input/output remain pending until their own observable contracts
 exist.
 The ordinary subprocess replay uses the production CLI and its own generator.

@@ -20,6 +20,9 @@
 - Qualify the two bundled record-sort transcripts with bounded generated fields,
   row framing, and both name/code sort-order contracts for original and formatted
   replay, without promising the random sequence.
+- Qualify a bundled integer-search transcript with bounded numbered rows and a
+  fixed not-found result for original and formatted replay, without promising
+  the random sequence; 12 implementation checks remain.
 - Clarify that the recorded `arquivo` input directive is in scope while other
   file APIs such as `arqabertura` remain out of scope.
 - Replace the stale open-questions section in `AGENTS.md` with the settled

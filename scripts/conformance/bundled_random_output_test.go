@@ -39,11 +39,12 @@ func TestBundledRandiOutputContractMetadata(t *testing.T) {
 		t.Fatal(err)
 	}
 	required := map[string]string{
-		"randi-lines":              "bundled randi example",
-		"random-int-text-lines":    "bundled mixed random example",
-		"random-int-sort-lines":    "bundled random sort example",
-		"random-real-sort-lines":   "bundled real sort examples",
-		"random-record-sort-lines": "bundled record sort examples",
+		"randi-lines":                   "bundled randi example",
+		"random-int-text-lines":         "bundled mixed random example",
+		"random-int-sort-lines":         "bundled random sort example",
+		"random-real-sort-lines":        "bundled real sort examples",
+		"random-record-sort-lines":      "bundled record sort examples",
+		"random-int-search-table-lines": "bundled random search table example",
 	}
 	found := make(map[string]bool)
 	for _, p := range doc.Probes {
@@ -85,6 +86,10 @@ func TestRecordedBundledRandomRecordSortOutput(t *testing.T) {
 	testRecordedBundledRandomOutput(t, "random-record-sort-lines")
 }
 
+func TestRecordedBundledRandomSearchTableOutput(t *testing.T) {
+	testRecordedBundledRandomOutput(t, "random-int-search-table-lines")
+}
+
 func testRecordedBundledRandomOutput(t *testing.T, kind string) {
 	t.Helper()
 	root, err := filepath.Abs("../..")
@@ -107,6 +112,13 @@ func testRecordedBundledRandomOutput(t *testing.T, kind string) {
 	}
 	for probeIndex, probe := range probes {
 		contract := probe.Implementation.Expected.RandomOutput
+		var input []byte
+		if probe.Input.Path != "" {
+			input, err = readArtifact(root, probe.Input)
+			if err != nil {
+				t.Fatal(err)
+			}
+		}
 		recorded, err := readArtifact(root, probe.Evidence.Normalized)
 		if err != nil {
 			t.Fatal(err)
@@ -141,7 +153,7 @@ func testRecordedBundledRandomOutput(t *testing.T, kind string) {
 			}
 			for index, rng := range generators {
 				var out bytes.Buffer
-				i := interp.New(interp.Options{Output: &out, Random: rng, MaxSteps: 10000})
+				i := interp.New(interp.Options{Input: bytes.NewReader(input), Output: &out, Random: rng, MaxSteps: 10000})
 				if ds := i.Run(program, info); len(ds) != 0 {
 					t.Fatalf("case=%d pass=%d generator=%d: %v", probeIndex, pass, index, ds)
 				}

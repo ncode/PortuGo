@@ -130,6 +130,10 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		if c.Lines < 2 || c.Lines > 4096 || c.Lines%2 != 0 || c.Decimals < 1 || c.Decimals > 5 || c.Minimum < math.MinInt32 || c.Minimum >= c.Bound || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
 		}
+	case "random-int-search-table-lines":
+		if c.Lines != 12 || c.Minimum < math.MinInt32 || c.Minimum >= c.Bound || c.Bound < 1 || c.Bound > math.MaxInt32 || c.Decimals != 0 || c.FixedTail != 0 {
+			return fmt.Errorf("invalid random-output contract")
+		}
 	case "random-record-sort-lines":
 		if c.Lines != 42 || c.Minimum < 0 || c.Minimum >= c.Bound || c.Bound > math.MaxInt32 || c.FixedTail != 0 || c.Decimals != 0 {
 			return fmt.Errorf("invalid random-output contract")
@@ -205,6 +209,23 @@ func (c randomOutputExpectation) compare(output []byte) error {
 			if value != expected[index] {
 				return fmt.Errorf("random-output sorted real line %d is not the input permutation", index+1)
 			}
+		}
+		return nil
+	}
+	if c.Kind == "random-int-search-table-lines" {
+		for index := range 10 {
+			line := lines[index]
+			if len(line) != 10 {
+				return fmt.Errorf("random-output search row %d width mismatch", index+1)
+			}
+			valueText := strings.TrimSpace(line[5:])
+			value, err := strconv.ParseInt(valueText, 10, 64)
+			if err != nil || value < c.Minimum || value >= c.Bound || line != fmt.Sprintf("%5d%5d", index+1, value) {
+				return fmt.Errorf("random-output search row %d value mismatch", index+1)
+			}
+		}
+		if lines[10] != "Entre com o valor de busca (ESC termina) :-1" || lines[11] != "Nao achei." {
+			return fmt.Errorf("random-output search result mismatch")
 		}
 		return nil
 	}

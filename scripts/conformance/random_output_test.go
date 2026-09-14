@@ -253,6 +253,41 @@ func TestRandomRecordSortOutputContract(t *testing.T) {
 	}
 }
 
+func TestRandomIntegerSearchTableOutputContract(t *testing.T) {
+	t.Parallel()
+	valid := "    1   83\n    2   97\n    3   39\n    4   95\n    5   39\n    6   16\n    7   92\n    8   61\n    9   85\n   10   67\nEntre com o valor de busca (ESC termina) :-1\nNao achei.\n"
+	contract := randomOutputExpectation{Kind: "random-int-search-table-lines", Lines: 12, Minimum: 0, Bound: 100}
+	for _, tt := range []struct {
+		name   string
+		output string
+		valid  bool
+	}{
+		{"domain and not-found search", valid, true},
+		{"value below domain", strings.Replace(valid, "    1   83\n", "    1   -1\n", 1), false},
+		{"value at excluded bound", strings.Replace(valid, "    1   83\n", "    1  100\n", 1), false},
+		{"leading zero", strings.Replace(valid, "    1   83\n", "    1  083\n", 1), false},
+		{"wrong row number", strings.Replace(valid, "    1   83\n", "    2   83\n", 1), false},
+		{"wrong row width", strings.Replace(valid, "    1   83\n", "   1   83\n", 1), false},
+		{"wrong search input", strings.Replace(valid, "Entre com o valor de busca (ESC termina) :-1", "Entre com o valor de busca (ESC termina) :0", 1), false},
+		{"found result", strings.Replace(valid, "Nao achei.", "Achei -1.", 1), false},
+		{"missing row", strings.Replace(valid, "   10   67\n", "", 1), false},
+		{"carriage returns", strings.ReplaceAll(valid, "\n", "\r\n"), false},
+		{"missing final newline", strings.TrimSuffix(valid, "\n"), false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := contract.compare([]byte(tt.output)); (err == nil) != tt.valid {
+				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
+			}
+		})
+	}
+	if err := (randomOutputExpectation{Kind: "random-int-search-table-lines", Lines: 10, Bound: 100}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong search table line count accepted")
+	}
+	if err := (randomOutputExpectation{Kind: "random-int-search-table-lines", Lines: 12, Bound: 0}).compare([]byte(valid)); err == nil {
+		t.Fatal("zero search table bound accepted")
+	}
+}
+
 func TestRandomInputContractValidation(t *testing.T) {
 	t.Parallel()
 	for _, name := range []string{"accepted", "missing review", "wrong owner", "rejected", "invalid recorded sample", "replaced evidence"} {

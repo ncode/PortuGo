@@ -9373,14 +9373,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-86701928f296/stdout.txt",
             "sha256": "c66c056d5b3b076e9f3a0d8d9e525b977ed2e03e60f6fe24503e426c95db9456"
+          },
+          "randomOutput": {
+            "kind": "random-int-search-table-lines",
+            "lines": 12,
+            "minimum": 0,
+            "bound": 100,
+            "review": {
+              "reason": "The recorded transcript preserves ten generated integer rows and the fixed not-found search while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomSearchTableOutput"
+        ]
       }
     },
     {
