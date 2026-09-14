@@ -60,6 +60,10 @@
   and finite recursion depth. Keep application faults as labeled GUI evidence
   and leave their unresolved implementation contracts pending.
 
+- Match the recorded outside-loop `interrompa` behavior by ignoring it without
+  a semantic or runtime diagnostic, while keeping loop breaks scoped to the
+  active lexical call frame.
+
 - Keep conformance execution diagnostics on the stable `source.alg` filename so
   local filesystem paths cannot enter captured output.
 - Reconcile the environment-command task ledger with its verified typed host
