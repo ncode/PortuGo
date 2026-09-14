@@ -4,6 +4,8 @@
 
 - Clarify that the recorded `arquivo` input directive is in scope while other
   file APIs such as `arqabertura` remain out of scope.
+- Replace the stale open-questions section in `AGENTS.md` with the settled
+  dialect, evaluation, I/O, randomness, and CLI decisions.
 
 - Keep conformance execution diagnostics on the stable `source.alg` filename so
   local filesystem paths cannot enter captured output.
