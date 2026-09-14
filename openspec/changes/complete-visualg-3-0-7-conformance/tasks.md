@@ -1279,9 +1279,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
   The sanitized quality report records the clean implementation-acceptance
   result and the required build, formatter, vet, lint, test, race, platform,
-  fuzz, and strict-specification checks. `release.md` keeps the post-merge
-  archive, release-gate, tag, and evidence recheck sequence explicit; the
-  final PR handoff remains the only unchecked task.
+  fuzz, and strict-specification checks; release-mode acceptance also passes on
+  the completed task list. `release.md` keeps the post-merge archive,
+  release-gate, tag, and evidence recheck sequence explicit.
 - [x] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its ready PR with links to every preceding PR and quality result.
 
   The conformance report and final documentation are committed in the ready

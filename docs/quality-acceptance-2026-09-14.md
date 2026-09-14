@@ -21,6 +21,7 @@ sanitized summary; raw workflow logs remain outside the repository.
 | Recorder, normalizer, replay, and traceability tests | PASS | `go test ./scripts/conformance -count=1` |
 | Evidence validation and replay | PASS | 1,679 probes; zero verified regressions |
 | Implementation acceptance | PASS | 1,679 probes; zero pending accepted implementations, mismatches, or untraced requirements; reviewed rejected-source records remain traceable |
+| Release acceptance | PASS | All OpenSpec tasks complete; full replay and required quality-result checks pass |
 | Specification validation | PASS | Strict OpenSpec validation |
 
 These checks establish quality and evidence status for the current stack. The
@@ -34,6 +35,9 @@ validation. The runner reported no pending accepted behavior, and the OpenSpec
 task list records the final handoff. Post-merge archive and release-tag work
 remains governed by `release.md`. The quality report and raw evidence remain
 outside the repository; this document records only the sanitized result.
+
+Release-mode acceptance was then rerun on the same clean candidate and passed
+with no remaining tasks, mismatches, stale links, or quality failures.
 
 ## Pending implementation inventory
 

@@ -15,7 +15,7 @@ specification checks before the final handoff.
 | Strict OpenSpec validation | PASS |
 
 The supported-platform CI matrix remains green in the quality report, and
-implementation acceptance passes on the same candidate. Release acceptance
-is the final candidate gate before the post-merge archive and release-tag
-operations; the four reviewed rejected-source records remain visible without
-representing pending accepted behavior.
+implementation and release acceptance pass on the same candidate. The
+post-merge archive and release-tag operations remain in the release checklist;
+the four reviewed rejected-source records remain visible without representing
+pending accepted behavior.
