@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/lexer"
 	"github.com/ncode/portugol-go/internal/source"
 )
@@ -93,5 +94,25 @@ fimalgoritmo
 	}
 	if _, parseDiags := Parse(reparsedTokens); len(parseDiags) != 0 {
 		t.Fatalf("reformatted parser diagnostics: %v", parseDiags)
+	}
+}
+
+func TestTypedSubprogramsStillRequireGlobalVar(t *testing.T) {
+	src := `algoritmo "typed subprogram without var"
+tipo
+  numero = inteiro
+procedimento noop
+inicio
+fimprocedimento
+inicio
+fimalgoritmo
+`
+	file, tokens, lexDiags := lexer.Scan("missing-var.alg", src)
+	if len(lexDiags) != 0 {
+		t.Fatalf("lexer diagnostics: %v", lexDiags)
+	}
+	_, parseDiags := Parse(tokens)
+	if len(parseDiags) != 1 || parseDiags[0].Code != diag.EParse || file.Position(parseDiags[0].Pos).Line != 7 {
+		t.Fatalf("diagnostics = %v, want P001 on line 7", parseDiags)
 	}
 }

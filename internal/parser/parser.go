@@ -96,6 +96,10 @@ func (p *parser) parseProgram() *ast.Program {
 		prog.Sections.Var = p.peek()
 		prog.Globals = p.parseVarBlock()
 	}
+	if prog.Sections.Type.Kind == token.TIPO && prog.Sections.Var.Kind == 0 {
+		p.error(p.peek(), "expected var after types")
+		return prog
+	}
 	prog.Begin = p.peek().Pos
 	if !p.match(token.INICIO) {
 		p.expect(token.INICIO, "expected inicio")
