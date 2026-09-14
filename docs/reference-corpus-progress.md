@@ -4,7 +4,7 @@ OpenSpec group 2 is complete. The corpus inventories 229 stable records across
 73 requirements, 73 bundled example filenames, sizes and hashes, 25 checklist
 rows, 48 assumptions, 9 feature records, and one audited defect. All 73 examples now have
 recorded dispositions: 60 accepted, 11 unusable, and 2 reviewed non-goals. The
-manifest has 1,657 recorded probes and 22 reviewed non-applicable probes; 23
+manifest has 1,657 recorded probes and 22 reviewed non-applicable probes; 21
 implementation checks remain pending. Every one of the 33 legacy `[VERIFICAR]`
 markers has a stable inventory link. The original compatibility checklist is
 present in `especificacao-visualg-3.md`; its 25 numbered rows now have stable
@@ -12,14 +12,15 @@ manifest links to existing probe coverage. Twenty-six evidenced source
 assumptions, the builtin catalog, and one recorded CLI correction are also
 linked. Stable feature entries now cover every documented environment-command
 family through existing probe coverage. The latest source-obligation recordings
-close six previously unrecorded questions; nonassignable `var` arguments and
-maximum recursion or stack-display behavior remain open, along with unqualified
+close six previously unrecorded questions; the reference diagnostic behavior
+for nonassignable `var` arguments and maximum recursion or stack-display behavior
+remain unclaimed, along with unqualified
 timing, GUI, and reference-sequence behavior.
 
 The evidence-recording portion of group 2 is complete: all 73 bundled examples
 have a recorded disposition, and every manifest probe is either recorded or
 reviewed not-applicable. Evidence validation reports 1,657 recorded probes, 22
-reviewed not-applicable probes, and no unrecorded entries. The 23 pending
+reviewed not-applicable probes, and no unrecorded entries. The 21 pending
 implementation checks remain visible under their implementation tasks.
 
 The September 14 source-obligation slice adds eight reviewed recordings from
@@ -31,10 +32,10 @@ raised an internal fault for expression and literal arguments passed to a
 `var` parameter; those two observations are retained as labeled GUI
 transcriptions without treating the fault as a language-level diagnostic.
 The four deterministic rejection cases are now linked to local implementation
-tests; only the two reference application faults for nonassignable `var`
-arguments remain pending under their owning tasks. Published GUI evidence
-contains only reviewed, sanitized images and text; raw operational captures
-remain private.
+tests; the two nonassignable `var` argument guards now have project regression
+coverage, while their reference application faults remain separate from any
+language-level diagnostic claim. Published GUI evidence contains only reviewed,
+sanitized images and text; raw operational captures remain private.
 
 The follow-up zero-value recording confirms that declared integer, real, text,
 and logical variables read before assignment produce their type zero values.
@@ -73,8 +74,8 @@ traces and 152 unique implementation-verified probes (149 recorded cases and
 three reviewed project-only contracts). The reduced type and declaration batch
 is complete across fourteen requirement traces and 273 unique recorded and
 implementation-verified probes. Broader unqualified forms remain outside this
-recorded scope; the reviewed nonassignable-argument faults remain pending under
-their owning task.
+recorded scope; the reviewed nonassignable-argument faults remain separate from
+the language-level diagnostic contract.
 
 The group 2 documentation reconciliation is complete. The proposal, delta
 specifications, design, task ledger, `AGENTS.md`, and language reference now
@@ -88,7 +89,8 @@ were preserved.
 Fresh recorder, normalizer, replay, manifest, traceability, quality, and strict
 OpenSpec checks are captured in the [current quality report](quality-acceptance-2026-09-14.md).
 Evidence validation has zero verified regressions; its published inventory
-keeps the 23 pending implementation probes visible.
+keeps the current 21 pending implementation probes visible; the two recorded
+nonassignable `var` guards are now covered by project regressions.
 
 The clean-checkout rehearsal in
 [the release rehearsal report](release-rehearsal-2026-09-14.md) passes the

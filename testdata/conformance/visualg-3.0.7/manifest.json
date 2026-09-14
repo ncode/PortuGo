@@ -83891,7 +83891,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -83904,7 +83904,10 @@
               "line": 9
             }
           ]
-        }
+        },
+        "tests": [
+          "call_arguments_test.go#TestRecordedArgumentRejections"
+        ]
       }
     },
     {
@@ -83947,7 +83950,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -83960,7 +83963,10 @@
               "line": 7
             }
           ]
-        }
+        },
+        "tests": [
+          "call_arguments_test.go#TestRecordedArgumentRejections"
+        ]
       }
     },
     {

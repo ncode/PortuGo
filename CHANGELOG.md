@@ -41,7 +41,11 @@
 - Complete the conformance inventory audit with stable IDs for every legacy
   marker, checklist row, assumption, environment command, feature, audited
   defect, requirement, and bundled example; retain the two unresolved behavior
-  questions as pending implementation work.
+  questions as pending reference qualifications.
+
+- Verify the two recorded nonassignable `var` argument guards with positioned
+  `E004` regressions, while keeping the reference application's fault
+  observations separate from language-level diagnostic claims.
 
 - Match the recorded outside-loop `interrompa` behavior by ignoring it without
   a semantic or runtime diagnostic, while keeping loop breaks scoped to the
