@@ -8643,14 +8643,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-467736cf246b/stdout.txt",
             "sha256": "d4f3e4baca8c95eba490780b8e18e03ebe5279b6835ba51173f41aaf53e6b43e"
+          },
+          "randomOutput": {
+            "kind": "random-randi-repeat-lines",
+            "lines": 11,
+            "minimum": 1,
+            "bound": 10,
+            "review": {
+              "reason": "The recorded transcript preserves the repeated nonzero random value, fixed prompts and sequence framing while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRandiRepeatOutput"
+        ]
       }
     },
     {
@@ -9470,14 +9483,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-8b2d8c702924/stdout.txt",
             "sha256": "3b68cc36dd78a58ca9245fe6f9992f7d5125ee36519d0be3c29bc0096e573752"
+          },
+          "randomOutput": {
+            "kind": "random-randi-repeat-lines",
+            "lines": 11,
+            "minimum": 1,
+            "bound": 10,
+            "review": {
+              "reason": "The recorded transcript preserves the repeated nonzero random value, fixed prompts and sequence framing while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRandiRepeatOutput"
+        ]
       }
     },
     {

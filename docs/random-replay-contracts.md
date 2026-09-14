@@ -43,6 +43,12 @@ fixed `-1` search input and the resulting not-found message. Replay checks row
 numbering, field widths, integer domains and the fixed search result without
 promising the generated sequence.
 
+Two bundled repeated-value examples have separate `randomOutput` contracts.
+Each emits one nonzero generated integer twice inside fixed sequence framing;
+the transcript has eleven lines and no final LF. Replay checks the prompts,
+spacing, `[1, 10)` domain and repeated value without promising the generated
+sequence.
+
 The optional `implementation.expected.randomInput` contract is restricted to
 accepted group-13 recordings and requires a review reason and document link.
 `minimum` and `maximum` are inclusive integer ticks at `10^-decimals`; for
@@ -94,7 +100,8 @@ sixteen deterministic seeds. The mixed-input contract is replayed by
 coverage. The real-sort contracts are replayed by
 `TestRecordedBundledRandomRealSortOutput`, and the record-sort contracts by
 `TestRecordedBundledRandomRecordSortOutput`; the integer-search contract is
-replayed by `TestRecordedBundledRandomSearchTableOutput`. Bundled programs with
+replayed by `TestRecordedBundledRandomSearchTableOutput`, and the repeated-value
+contracts by `TestRecordedBundledRandomRandiRepeatOutput`. Bundled programs with
 generated arrays, records, sorting, branching,
 or other mixed input/output remain pending until their own observable contracts
 exist.

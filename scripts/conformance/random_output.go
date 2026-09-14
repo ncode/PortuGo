@@ -134,6 +134,10 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		if c.Lines != 12 || c.Minimum < math.MinInt32 || c.Minimum >= c.Bound || c.Bound < 1 || c.Bound > math.MaxInt32 || c.Decimals != 0 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
 		}
+	case "random-randi-repeat-lines":
+		if c.Lines != 11 || c.Minimum < 1 || c.Minimum >= c.Bound || c.Bound < 2 || c.Bound > math.MaxInt32 || c.Decimals != 0 || c.FixedTail != 0 {
+			return fmt.Errorf("invalid random-output contract")
+		}
 	case "random-record-sort-lines":
 		if c.Lines != 42 || c.Minimum < 0 || c.Minimum >= c.Bound || c.Bound > math.MaxInt32 || c.FixedTail != 0 || c.Decimals != 0 {
 			return fmt.Errorf("invalid random-output contract")
@@ -142,7 +146,11 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		return fmt.Errorf("invalid random-output contract")
 	}
 	lines := strings.Split(string(output), "\n")
-	if len(lines) != c.Lines+1 || lines[len(lines)-1] != "" {
+	if c.Kind == "random-randi-repeat-lines" {
+		if len(lines) != c.Lines {
+			return fmt.Errorf("random-output line count mismatch")
+		}
+	} else if len(lines) != c.Lines+1 || lines[len(lines)-1] != "" {
 		return fmt.Errorf("random-output line count mismatch")
 	}
 	if c.Kind == "random-int-text-lines" {
@@ -209,6 +217,20 @@ func (c randomOutputExpectation) compare(output []byte) error {
 			if value != expected[index] {
 				return fmt.Errorf("random-output sorted real line %d is not the input permutation", index+1)
 			}
+		}
+		return nil
+	}
+	if c.Kind == "random-randi-repeat-lines" {
+		if lines[0] != " " || lines[1] != " ============================================== " || lines[2] != "QUANTOS NUMEROS (1-10): 1" || lines[3] != "Digite o destaque: 0" || lines[4] != " " || lines[5] != "A SEQUENCIA É " || lines[8] != " " || lines[9] != "RESTOU A SEQUENCIA: " {
+			return fmt.Errorf("random-output repeated-value framing mismatch")
+		}
+		valueText := strings.TrimSuffix(strings.TrimPrefix(lines[6], " "), " ")
+		value, err := strconv.ParseInt(valueText, 10, 64)
+		if err != nil || value < c.Minimum || value >= c.Bound || lines[6] != fmt.Sprintf(" %d ", value) || lines[10] != fmt.Sprintf(" %d", value) {
+			return fmt.Errorf("random-output repeated value mismatch")
+		}
+		if lines[7] != "O NUMERO DE REPETIÇÕES FOI:  0" {
+			return fmt.Errorf("random-output repeat count mismatch")
 		}
 		return nil
 	}

@@ -16,6 +16,19 @@ import (
 	"github.com/ncode/portugol-go/internal/source"
 )
 
+type nonZeroEndpointRandom struct{ upper bool }
+
+func (r nonZeroEndpointRandom) Float64() float64 { return 0 }
+func (r nonZeroEndpointRandom) Uint64N(n uint64) uint64 {
+	if n <= 1 {
+		return 0
+	}
+	if r.upper {
+		return n - 1
+	}
+	return 1
+}
+
 func TestBundledRandiOutputContractMetadata(t *testing.T) {
 	root, err := filepath.Abs("../..")
 	if err != nil {
@@ -45,6 +58,7 @@ func TestBundledRandiOutputContractMetadata(t *testing.T) {
 		"random-real-sort-lines":        "bundled real sort examples",
 		"random-record-sort-lines":      "bundled record sort examples",
 		"random-int-search-table-lines": "bundled random search table example",
+		"random-randi-repeat-lines":     "bundled repeated random example",
 	}
 	found := make(map[string]bool)
 	for _, p := range doc.Probes {
@@ -88,6 +102,10 @@ func TestRecordedBundledRandomRecordSortOutput(t *testing.T) {
 
 func TestRecordedBundledRandomSearchTableOutput(t *testing.T) {
 	testRecordedBundledRandomOutput(t, "random-int-search-table-lines")
+}
+
+func TestRecordedBundledRandomRandiRepeatOutput(t *testing.T) {
+	testRecordedBundledRandomOutput(t, "random-randi-repeat-lines")
 }
 
 func testRecordedBundledRandomOutput(t *testing.T, kind string) {
@@ -148,6 +166,9 @@ func testRecordedBundledRandomOutput(t *testing.T, kind string) {
 				t.Fatal(ds)
 			}
 			generators := []interp.RandomSource{endpointRandom{}, endpointRandom{upper: true}}
+			if contract.Kind == "random-randi-repeat-lines" {
+				generators = []interp.RandomSource{nonZeroEndpointRandom{}, nonZeroEndpointRandom{upper: true}}
+			}
 			for seed := uint64(0); seed < 16; seed++ {
 				generators = append(generators, rand.New(rand.NewPCG(seed, seed+1)))
 			}

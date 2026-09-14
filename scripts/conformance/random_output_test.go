@@ -288,6 +288,38 @@ func TestRandomIntegerSearchTableOutputContract(t *testing.T) {
 	}
 }
 
+func TestRandomRandiRepeatOutputContract(t *testing.T) {
+	t.Parallel()
+	valid := " \n ============================================== \nQUANTOS NUMEROS (1-10): 1\nDigite o destaque: 0\n \nA SEQUENCIA É \n 1 \nO NUMERO DE REPETIÇÕES FOI:  0\n \nRESTOU A SEQUENCIA: \n 1"
+	contract := randomOutputExpectation{Kind: "random-randi-repeat-lines", Lines: 11, Minimum: 1, Bound: 10}
+	for _, tt := range []struct {
+		name   string
+		output string
+		valid  bool
+	}{
+		{"domain and repeated value", valid, true},
+		{"value below domain", strings.Replace(valid, " 1 \n", " 0 \n", 1), false},
+		{"value at excluded bound", strings.Replace(valid, " 1 \n", " 10 \n", 1), false},
+		{"repeated value mismatch", strings.TrimSuffix(valid, " 1") + " 2", false},
+		{"wrong prompt input", strings.Replace(valid, "QUANTOS NUMEROS (1-10): 1", "QUANTOS NUMEROS (1-10): 2", 1), false},
+		{"wrong repeat count", strings.Replace(valid, "REPETIÇÕES FOI:  0", "REPETIÇÕES FOI:  1", 1), false},
+		{"missing value spacing", strings.Replace(valid, " 1 \n", "1 \n", 1), false},
+		{"wrong static line", strings.Replace(valid, "A SEQUENCIA É ", "A SEQUENCIA", 1), false},
+		{"wrong line count", strings.Replace(valid, "Digite o destaque: 0\n", "", 1), false},
+		{"carriage returns", strings.ReplaceAll(valid, "\n", "\r\n"), false},
+		{"unexpected final newline", valid + "\n", false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := contract.compare([]byte(tt.output)); (err == nil) != tt.valid {
+				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
+			}
+		})
+	}
+	if err := (randomOutputExpectation{Kind: "random-randi-repeat-lines", Lines: 11, Minimum: 1, Bound: 1}).compare([]byte(valid)); err == nil {
+		t.Fatal("empty repeated-value domain accepted")
+	}
+}
+
 func TestRandomInputContractValidation(t *testing.T) {
 	t.Parallel()
 	for _, name := range []string{"accepted", "missing review", "wrong owner", "rejected", "invalid recorded sample", "replaced evidence"} {
