@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add a welcoming README with Linux and macOS setup, a first program,
+  everyday CLI commands, examples, and compatibility guidance.
+
 - Reject conformance file layouts that require a path to be both a file and
   a parent directory across input and generated destinations.
 
