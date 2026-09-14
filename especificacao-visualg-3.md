@@ -438,7 +438,7 @@ Todas case-insensitive. Usáveis em qualquer posição de expressão (nunca no l
 - **Dois displays** `[OFICIAL]`: a "saída padrão" (painel do IDE) e a "tela DOS" (simulação de console, afetada por `limpatela`). Em implementação headless, trate como um único stdout.
 - Escopo: global (programa principal) + local por chamada de subprograma. Sem blocos léxicos internos. Shadowing de global por local/parâmetro: permitido `[INFERIDO]`.
 - A pilha de ativação é visível no IDE (Ctrl-F3). A gravação de compatibilidade conclui uma chamada recursiva com profundidade 32; `[VERIFICAR]` a profundidade máxima e a exibição da pilha continuam sem especificação e não são requisitos de aceitação.
-- Valores iniciais de variáveis: **não documentado**. Comunidade reporta inicialização com zero/""/FALSO `[VERIFICAR — decisão importante: ler variável não inicializada é erro ou retorna zero-value?]`.
+- Valores iniciais de variáveis: a gravação de referência confirma inicialização com zero/""/FALSO quando lidas antes de qualquer atribuição.
 - Erros de execução param o programa com mensagem apontando a linha.
 
 ---

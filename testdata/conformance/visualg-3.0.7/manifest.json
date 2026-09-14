@@ -471,7 +471,8 @@
       "kind": "checklist",
       "link": "especificacao-visualg-3.md#14. Variável não inicializada em expressão → erro ou zero?",
       "probes": [
-        "declaration-semicolon-var"
+        "declaration-semicolon-var",
+        "zero-value"
       ]
     },
     {
@@ -3791,6 +3792,14 @@
       "link": "especificacao-visualg-3.md#- A pilha de ativação é visível no IDE (Ctrl-F3). A gravação de compatibilidade conclui uma chamada recursiva com profundidade 32; `[VERIFICAR]` a profundidade máxima e a exibição da pilha continuam sem especificação e não são requisitos de aceitação.",
       "probes": [
         "recursive-depth-32"
+      ]
+    },
+    {
+      "id": "assumption.uninitialized-zero-value",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- Valores iniciais de variáveis: a gravação de referência confirma inicialização com zero/\"\"/FALSO quando lidas antes de qualquer atribuição.",
+      "probes": [
+        "zero-value"
       ]
     }
   ],
@@ -84098,6 +84107,49 @@
         },
         "tests": [
           "internal/interp/execution_controls_test.go#TestBreakOutsideLoopIsIgnored"
+        ]
+      }
+    },
+    {
+      "id": "zero-value",
+      "ownerGroup": 2,
+      "tasks": [
+        "2.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/zero-value/source.alg",
+        "sha256": "053c9129d588b5aef03313edefd9aa6fc4f7c103ab3e9a90707d7b60053a3e09"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/zero-value/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-14T12:06:04.9095906Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/zero-value/raw.txt",
+          "sha256": "21e15c10815da36ef0ac81420470beaf992dbe82c9343b1eb93979512ce353ac"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/zero-value/stdout.txt",
+          "sha256": "87ad0d90a70d6d8a7fd19d9465ae5394d0d5a7b2645d39f88acad8d67f39866f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/zero-value/stdout.txt",
+            "sha256": "87ad0d90a70d6d8a7fd19d9465ae5394d0d5a7b2645d39f88acad8d67f39866f"
+          }
+        },
+        "tests": [
+          "zero_value_reference_test.go#TestRecordedZeroValue"
         ]
       }
     }
