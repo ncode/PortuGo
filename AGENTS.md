@@ -122,6 +122,10 @@ fimalgoritmo
 
 `algoritmo`, `var`, `inicio`, `fimalgoritmo` are all required for a complete program. `var` block may be empty (omit it entirely, or `var` with no declarations).
 
+Top-level procedures and functions precede `inicio`; a single global `var`
+section may appear before or after those subprogram declarations. Repeating the
+global section is rejected.
+
 ### 6.2 Types
 
 | Portugol     | Go representation |
