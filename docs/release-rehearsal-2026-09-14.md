@@ -16,5 +16,6 @@ specification checks before the final handoff.
 
 The supported-platform CI matrix remains green in the quality report, and
 implementation acceptance passes on the same candidate. Release acceptance
-still requires the final PR handoff; the four reviewed rejected-source records
-remain visible without representing pending accepted behavior.
+is the final candidate gate before the post-merge archive and release-tag
+operations; the four reviewed rejected-source records remain visible without
+representing pending accepted behavior.

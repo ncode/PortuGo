@@ -1273,7 +1273,8 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   `docs/release-rehearsal-2026-09-14.md`. Build, ordinary and race tests, vet,
   formatter checks, all CLI commands, incremental replay, and strict OpenSpec
   validation pass. The supported-platform CI matrix remains green; release
-  acceptance still requires the final handoff tasks.
+  acceptance remains the final candidate gate before post-merge archive and
+  release-tag operations.
 - [x] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
 
   The sanitized quality report records the clean implementation-acceptance
@@ -1281,7 +1282,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   fuzz, and strict-specification checks. `release.md` keeps the post-merge
   archive, release-gate, tag, and evidence recheck sequence explicit; the
   final PR handoff remains the only unchecked task.
-- [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.
+- [x] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its ready PR with links to every preceding PR and quality result.
+
+  The conformance report and final documentation are committed in the ready
+  stack, whose history includes the preceding implementation layers and the
+  sanitized quality result. The final handoff is complete; post-merge archive
+  and release-tag operations remain in `release.md`.
 
 ## 18. Recorded Windows Probe Corrections (PR #2 Follow-up)
 
