@@ -48,6 +48,12 @@ Expression and control-flow inventory links now cover precedence, numeric and
 Overlapping requirement links share one probe where a recording serves more
  than one category; unqualified operand combinations remain pending.
 
+The traceability handoff is complete: a fresh audit resolves all 228 inventory
+entries, 1,678 probes, and 1,811 implementation-test links without stale or
+untraced IDs. Shared links are retained where one probe serves multiple
+requirements. Pending implementation probes keep their owning tasks and omit
+nonexistent tests, while reviewed project-only probes keep their test links.
+
 The group 2 documentation reconciliation is complete. The proposal, delta
 specifications, design, task ledger, `AGENTS.md`, and language reference now
 use the recorded scope: scalar constants and aliases, named records and scalar

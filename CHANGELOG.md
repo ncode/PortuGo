@@ -10,6 +10,9 @@
   implementation decisions.
 - Archive the green candidate quality, race, platform, fuzz, and strict
   specification checks for the current stacked layer.
+- Complete the conformance traceability handoff after auditing all inventory,
+  probe, and implementation-test links; pending probes retain their owning
+  tasks without fabricated test paths.
 
 - Record the remaining source-obligation probes for reserved words, declaration
   sections, builtin collisions, reference-argument edge cases, interruption,
