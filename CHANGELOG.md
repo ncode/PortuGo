@@ -37,6 +37,9 @@
   documented chronometer framing and a sorted multiset render for original and
   formatted replay, without promising the random sequence; 7 implementation
   checks remain.
+- Qualify a bundled record-search transcript with ten bounded code/salary
+  records and fixed negative-sentinel framing for original and formatted replay,
+  without promising the random sequence; 6 implementation checks remain.
 - Clarify that the recorded `arquivo` input directive is in scope while other
   file APIs such as `arqabertura` remain out of scope.
 - Replace the stale open-questions section in `AGENTS.md` with the settled

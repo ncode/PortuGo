@@ -24,21 +24,21 @@ repository.
 | Specification validation | PASS | Strict OpenSpec validation |
 
 These checks establish quality and evidence status for the current stack. They
-do not establish implementation acceptance: 7 implementation probes remain
+do not establish implementation acceptance: 6 implementation probes remain
 pending in the manifest.
 
 ## Pending implementation inventory
 
 | Owner | Count | Probe IDs |
 | --- | ---: | --- |
-| Bundled example qualification (17.3) | 7 | See the manifest for the current pending probe inventory. |
+| Bundled example qualification (17.3) | 6 | See the manifest for the current pending probe inventory. |
 
 The bundled entries retain their recorded sources and outputs while their
 deterministic mismatches remain pending. The two recorded nonassignable `var`
 argument guards are verified by project regressions; their reviewed reference
 application faults remain separate from language-level diagnostic claims.
 
-Thirteen bundled transcripts now have verified generated-output contracts. One
+Fourteen bundled transcripts now have verified generated-output contracts. One
 checks ten spaced integer lines, nine bounded random values and a fixed zero
 tail; the other checks ten alternating bounded integer and uppercase text
 lines; the third checks a bounded generated input sequence and its integer
@@ -50,6 +50,7 @@ fixed negative-sentinel search exit; the tenth and eleventh check a repeated
 nonzero integer with fixed prompts and no final LF; the twelfth checks twenty
 numbered sorted integers and the same fixed negative-sentinel search exit; the
 thirteenth checks twenty bounded counting-sort inputs, documented chronometer
-framing and a sorted `v2` multiset. All replay the original and
+framing and a sorted `v2` multiset; the fourteenth checks ten bounded
+code/salary records and a fixed not-found search result. All replay the original and
 formatted source without comparing random sequences. The remaining
 generated-output cases and rejected paths stay pending.

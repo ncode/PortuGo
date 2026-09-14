@@ -57,6 +57,7 @@ func TestBundledRandiOutputContractMetadata(t *testing.T) {
 		"random-int-sort-lines":          "bundled random sort example",
 		"random-real-sort-lines":         "bundled real sort examples",
 		"random-record-sort-lines":       "bundled record sort examples",
+		"random-record-search-lines":     "bundled record search example",
 		"random-int-search-table-lines":  "bundled random search table example",
 		"random-int-search-lines":        "bundled random search example",
 		"random-int-search-sorted-lines": "bundled sorted random search example",
@@ -101,6 +102,10 @@ func TestRecordedBundledRandomRealSortOutput(t *testing.T) {
 
 func TestRecordedBundledRandomRecordSortOutput(t *testing.T) {
 	testRecordedBundledRandomOutput(t, "random-record-sort-lines")
+}
+
+func TestRecordedBundledRandomRecordSearchOutput(t *testing.T) {
+	testRecordedBundledRandomOutput(t, "random-record-search-lines")
 }
 
 func TestRecordedBundledRandomSearchTableOutput(t *testing.T) {

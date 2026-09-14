@@ -37,6 +37,13 @@ name and by code with the documented row framing. Replay checks field domains,
 record permutation, both sort orders and framing for the original and formatted
 source without promising the generated sequence.
 
+One bundled record-search example has a separate `randomOutput` contract. It
+emits ten numbered records with codes from the `randi(100)` domain and cent
+formatted salaries produced by `int(rand * 100000) / 100`, then records the
+fixed negative search sentinel and `Nao achei.` result. Replay checks the exact
+row framing, code and salary domains, prompt/result text and final LF without
+promising the generated sequence.
+
 One bundled integer-search example has a separate `randomOutput` contract. It
 emits ten numbered rows with generated integers in `[0, 100)`, then records the
 fixed `-1` search input and the resulting not-found message. Replay checks row
@@ -123,7 +130,8 @@ replayed by `TestRecordedBundledRandomSearchTableOutput`, and the repeated-value
 contracts by `TestRecordedBundledRandomRandiRepeatOutput`. The raw integer-search
 contract is covered by the bundled replay test, the sorted integer-search
 contract by its bundled replay test, and the counting-sort contract by its
-bundled replay test. Bundled programs with
+bundled replay test. The record-search contract is covered by its bundled replay
+test. Bundled programs with
 generated arrays, records, sorting, branching,
 or other mixed input/output remain pending until their own observable contracts
 exist.

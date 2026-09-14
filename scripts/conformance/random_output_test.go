@@ -361,6 +361,48 @@ func TestRandomIntegerSearchSortedOutputContract(t *testing.T) {
 	}
 }
 
+func TestRandomRecordSearchOutputContract(t *testing.T) {
+	t.Parallel()
+	valid := "    1   82    597.84\n    2   83    294.13\n    3   61    311.13\n    4   83    455.65\n    5   11    920.21\n    6   19    452.77\n    7   21    502.31\n    8   74    416.78\n    9   16    356.91\n   10   14    262.12\nEntre com o valor de busca (ESC termina) :-1\nNao achei.\n"
+	contract := randomOutputExpectation{Kind: "random-record-search-lines", Lines: 12, Minimum: 0, Bound: 100, Decimals: 2}
+	for _, tt := range []struct {
+		name   string
+		output string
+		valid  bool
+	}{
+		{"domain, framing and not-found result", valid, true},
+		{"code below domain", strings.Replace(valid, "    1   82", "    1   -1", 1), false},
+		{"code at excluded bound", strings.Replace(valid, "    1   82", "    1  100", 1), false},
+		{"code leading zero", strings.Replace(valid, "    1   82", "    1  082", 1), false},
+		{"salary below domain", strings.Replace(valid, "    597.84", "     -1.00", 1), false},
+		{"salary at excluded bound", strings.Replace(valid, "    597.84", "   1000.00", 1), false},
+		{"salary wrong precision", strings.Replace(valid, "    597.84", "     597.8", 1), false},
+		{"salary leading zero", strings.Replace(valid, "    597.84", "   0597.84", 1), false},
+		{"wrong row number", strings.Replace(valid, "    1   82", "    2   82", 1), false},
+		{"wrong row spacing", strings.Replace(valid, "    1   82", "   1   82", 1), false},
+		{"wrong search input", strings.Replace(valid, ":-1\n", ":0\n", 1), false},
+		{"found result", strings.Replace(valid, "Nao achei.", "Achei.", 1), false},
+		{"missing record", strings.Replace(valid, "   10   14    262.12\n", "", 1), false},
+		{"carriage returns", strings.ReplaceAll(valid, "\n", "\r\n"), false},
+		{"missing final newline", strings.TrimSuffix(valid, "\n"), false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := contract.compare([]byte(tt.output)); (err == nil) != tt.valid {
+				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
+			}
+		})
+	}
+	if err := (randomOutputExpectation{Kind: "random-record-search-lines", Lines: 11, Minimum: 0, Bound: 100, Decimals: 2}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong record-search line count accepted")
+	}
+	if err := (randomOutputExpectation{Kind: "random-record-search-lines", Lines: 12, Minimum: 1, Bound: 100, Decimals: 2}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong record-search minimum accepted")
+	}
+	if err := (randomOutputExpectation{Kind: "random-record-search-lines", Lines: 12, Minimum: 0, Bound: 100, Decimals: 0}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong record-search precision accepted")
+	}
+}
+
 func TestRandomIntegerCountSortOutputContract(t *testing.T) {
 	t.Parallel()
 	valid := "91\n26\n52\n78\n41\n5\n79\n69\n81\n32\n14\n27\n85\n45\n5\n46\n63\n34\n33\n62\n\nCronômetro iniciado.\n\nCronômetro terminado. Tempo decorrido: 0 segundo(s).\nv2[ 1] =  5\nv2[ 2] =  5\nv2[ 3] =  14\nv2[ 4] =  26\nv2[ 5] =  27\nv2[ 6] =  32\nv2[ 7] =  33\nv2[ 8] =  34\nv2[ 9] =  41\nv2[ 10] =  45\nv2[ 11] =  46\nv2[ 12] =  52\nv2[ 13] =  62\nv2[ 14] =  63\nv2[ 15] =  69\nv2[ 16] =  78\nv2[ 17] =  79\nv2[ 18] =  81\nv2[ 19] =  85\nv2[ 20] =  91\n"

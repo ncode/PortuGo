@@ -8602,14 +8602,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-460092b86448/stdout.txt",
             "sha256": "8ec1f7136ca396b2f7fd58cebd53ae1a4c5a68a715eb83b75ddff33857eb6433"
+          },
+          "randomOutput": {
+            "kind": "random-record-search-lines",
+            "lines": 12,
+            "minimum": 0,
+            "bound": 100,
+            "decimals": 2,
+            "review": {
+              "reason": "The recorded transcript preserves ten bounded code and salary records, exact numbered formatting, and fixed negative search framing while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRecordSearchOutput"
+        ]
       }
     },
     {

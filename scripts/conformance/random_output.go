@@ -146,6 +146,10 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		if c.Lines != 44 || c.Minimum != 1 || c.Bound != 101 || c.Decimals != 0 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
 		}
+	case "random-record-search-lines":
+		if c.Lines != 12 || c.Minimum != 0 || c.Bound != 100 || c.Decimals != 2 || c.FixedTail != 0 {
+			return fmt.Errorf("invalid random-output contract")
+		}
 	case "random-randi-repeat-lines":
 		if c.Lines != 11 || c.Minimum < 1 || c.Minimum >= c.Bound || c.Bound < 2 || c.Bound > math.MaxInt32 || c.Decimals != 0 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
@@ -341,6 +345,24 @@ func (c randomOutputExpectation) compare(output []byte) error {
 			if count != 0 {
 				return fmt.Errorf("random-output countsort rows are not an input permutation")
 			}
+		}
+		return nil
+	}
+	if c.Kind == "random-record-search-lines" {
+		for index, line := range lines[:10] {
+			if len(line) != 20 {
+				return fmt.Errorf("random-output record search row %d width mismatch", index+1)
+			}
+			row, rowErr := strconv.ParseInt(strings.TrimSpace(line[:5]), 10, 64)
+			code, codeErr := strconv.ParseInt(strings.TrimSpace(line[5:10]), 10, 64)
+			salaryText := strings.TrimSpace(line[10:])
+			salary, salaryErr := parseFixedDecimal(salaryText, 2, 2)
+			if rowErr != nil || codeErr != nil || salaryErr != nil || row != int64(index+1) || line != fmt.Sprintf("%5d%5d%10s", row, code, salaryText) || code < c.Minimum || code >= c.Bound || salary < 0 || salary >= 100000 {
+				return fmt.Errorf("random-output record search row %d mismatch", index+1)
+			}
+		}
+		if lines[10] != "Entre com o valor de busca (ESC termina) :-1" || lines[11] != "Nao achei." {
+			return fmt.Errorf("random-output record search result mismatch")
 		}
 		return nil
 	}
