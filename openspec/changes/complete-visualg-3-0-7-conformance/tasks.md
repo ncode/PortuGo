@@ -1243,16 +1243,21 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   race, ordinary-test, six-platform, lexer-fuzz, parser-fuzz, and strict
   specification jobs. The sanitized evidence summary is recorded in
   `docs/quality-acceptance-2026-09-14.md`; raw workflow logs remain outside the
-  repository. This quality evidence does not promote pending behavior or close
-  implementation acceptance.
-- [ ] 17.6 Run strict OpenSpec validation and the corpus runner in implementation-acceptance mode; produce a report proving no pending behavior, mismatches, or untraced requirements, stable positioned diagnostics, and complete accepted-example support. Report remaining handoff tasks separately from behavioral acceptance.
+  repository. This quality evidence does not classify reviewed rejected-source
+  records as required behavior; implementation acceptance is recorded
+  separately below.
+- [x] 17.6 Run strict OpenSpec validation and the corpus runner in implementation-acceptance mode; produce a report proving no pending behavior, mismatches, or untraced requirements, stable positioned diagnostics, and complete accepted-example support. Report remaining handoff tasks separately from behavioral acceptance.
 
   Replay mismatch errors now report only captured and expected byte lengths and
   the first differing byte, keeping output payloads out of validation JSON and
   CI diagnostics. CLI error boundaries also redact wrapped filesystem paths
   before writing stderr or replay-result JSON. The acceptance validator keeps
   reviewed rejected-source records visible while rejecting pending accepted
-  behavior.
+  behavior. The exact candidate passed strict OpenSpec validation and
+  implementation acceptance with 1,679 replayed probes, zero pending accepted
+  implementations, zero mismatches, zero verified regressions, and complete
+  accepted-example coverage. The four reviewed rejected-source records remain
+  traceable; no handoff task is counted as behavioral incompleteness.
 - [x] 17.7 Reconcile `AGENTS.md`, `docs/language.md`, every example, and `CHANGELOG.md` with the oracle-backed final behavior and remove all obsolete open questions or compatibility claims.
 
   The current documentation pass reconciles the settled dialect, evaluation,
@@ -1269,7 +1274,13 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   formatter checks, all CLI commands, incremental replay, and strict OpenSpec
   validation pass. The supported-platform CI matrix remains green; release
   acceptance still requires the final handoff tasks.
-- [ ] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
+- [x] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
+
+  The sanitized quality report records the clean implementation-acceptance
+  result and the required build, formatter, vet, lint, test, race, platform,
+  fuzz, and strict-specification checks. `release.md` keeps the post-merge
+  archive, release-gate, tag, and evidence recheck sequence explicit; the
+  final PR handoff remains the only unchecked task.
 - [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.
 
 ## 18. Recorded Windows Probe Corrections (PR #2 Follow-up)

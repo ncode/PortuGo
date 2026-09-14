@@ -20,11 +20,20 @@ sanitized summary; raw workflow logs remain outside the repository.
 | Parser fuzz | PASS | 30-second campaign with two workers |
 | Recorder, normalizer, replay, and traceability tests | PASS | `go test ./scripts/conformance -count=1` |
 | Evidence validation and replay | PASS | 1,679 probes; zero verified regressions |
+| Implementation acceptance | PASS | 1,679 probes; zero pending accepted implementations, mismatches, or untraced requirements; reviewed rejected-source records remain traceable |
 | Specification validation | PASS | Strict OpenSpec validation |
 
 These checks establish quality and evidence status for the current stack. The
 four pending manifest probes are reviewed rejected-source recordings; they stay
 visible for traceability but do not represent pending accepted behavior.
+
+The implementation-acceptance runner rebuilt and replayed the exact candidate
+with the required quality report. It passed all required quality-result checks,
+stable diagnostic-position checks, accepted-example coverage, and traceability
+validation. The runner reported no pending accepted behavior; any remaining
+handoff work is tracked separately in the OpenSpec task list. The quality
+report and raw evidence remain outside the repository; this document records
+only the sanitized result.
 
 ## Pending implementation inventory
 

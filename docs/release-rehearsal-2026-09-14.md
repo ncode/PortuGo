@@ -14,7 +14,7 @@ specification checks before the final handoff.
 | Incremental corpus replay | PASS; 1,673 verified, 4 reviewed rejected-source records pending, 2 reviewed not-applicable, zero verified regressions |
 | Strict OpenSpec validation | PASS |
 
-The supported-platform CI matrix remains green in the quality report. Release
-acceptance still requires the remaining final handoff tasks; the four reviewed
-rejected-source records remain visible without representing pending accepted
-behavior.
+The supported-platform CI matrix remains green in the quality report, and
+implementation acceptance passes on the same candidate. Release acceptance
+still requires the final PR handoff; the four reviewed rejected-source records
+remain visible without representing pending accepted behavior.
