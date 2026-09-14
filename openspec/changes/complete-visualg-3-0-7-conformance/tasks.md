@@ -397,6 +397,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   The behavior is covered by an end-to-end fixture and example; broader
   production-boundary forms remain outside this recorded scope.
 
+  A single global `var` section is now accepted after top-level subprogram
+  declarations, while a repeated global section keeps its positioned `P001`.
+  The behavior is covered by an end-to-end fixture and example; broader
+  production-boundary qualification remains pending.
+
   Additional native checks confirm lone-semicolon and same-line program-end
   rejection; ordinary regression fixtures preserve those diagnostics without
   publishing GUI captures. A new text-output recording verifies the accepted
