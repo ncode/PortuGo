@@ -25,8 +25,8 @@ claim CLI support.
 The display slice also verifies `CARACOL.ALG`, `Caracol2.ALG`, and `graus.alg`
 with their original screen-clear and color commands. `randomicos.alg.ALG` and
 `RELACIONAR.ALG` now have completed reference recordings. The former has a
-reviewed domain/framing contract; the latter remains pending because its
-recorded sample does not establish a portable exact sequence.
+reviewed domain/framing contract; the latter now has a reviewed relation
+branch/framing contract without a portable exact sequence claim.
 
 The text slice adds `TABOADA.ALG`, which uses screen clearing, character input,
 and a counted multiplication-table loop. Its original and formatted executions
@@ -90,43 +90,36 @@ prefix before discovering malformed syntax or an invalid assignment, while CLI
 analysis reports errors before execution and may collect more than one
 diagnostic.
 
-The latest bounded grammar audit keeps these two accepted recordings pending:
+The latest bounded grammar audit keeps one accepted recording pending:
 
 | Corpus ID | Remaining qualification |
 | --- | --- |
 | `bundled-54f1e50d1c02` | The recorded menu exit avoids a procedure with an undeclared read destination. The CLI rejects that unused body. Selected and unselected read controls are still needed before changing diagnostic timing. |
-| `bundled-fa172f3f5f70` | The CLI now accepts the global `var` section after the record type and procedures, but its generated transcript still needs a portable random-output qualification. |
 
 These observations do not justify adding a default loop bound or generally
 suppressing diagnostics in unexecuted subprograms.
 
-A replay audit of the two remaining pending accepted programs found no
-additional byte-exact matches. The `randomicos.alg.ALG` transcript (source
-algorithm `semnome`, probe `bundled-991ec2bd1566`) now has a reviewed
-domain/framing contract for its nine `randi(10)` values and fixed zero tail;
-the mixed integer/text, integer-sort, real-sort, record-sort, record-search,
-integer-search, raw integer-search, sorted integer-search, counting-sort, and
-repeated-value transcripts now have reviewed shape-specific contracts. One
-generated-output case and one unexecuted-code path remain pending.
+A replay audit of the remaining pending accepted program found no additional
+byte-exact match. The `randomicos.alg.ALG` transcript (source algorithm
+`semnome`) now has a reviewed domain/framing contract for its nine `randi(10)`
+values and fixed zero tail; the mixed
+integer/text, integer-sort, real-sort, record-sort, record-search,
+integer-search, raw integer-search, sorted integer-search, counting-sort,
+repeated-value, and relation transcripts now have reviewed shape-specific
+contracts. One unexecuted-code path remains pending.
 Successful runs still produce different generated values, while a small number
 of paths stop during analysis or execution. Local completion alone does not
 qualify their output or every branch.
 
-The remaining accepted paths either fail during analysis or execution, or
-finish with generated output that differs:
+The remaining accepted path fails during analysis:
 
 | Case | Current CLI result | Pending behavior |
 | --- | --- | --- |
-| Generated data | generated output differs | Remaining random arrays, records, sorting, searches, and mixed input/output need shape-specific qualification. |
-| Declaration order | generated output differs | The CLI accepts the global `var` section after the record type and procedures; generated output still needs qualification. |
 | Unexecuted read | `E002`, line 157 | An undeclared read destination in a procedure avoided by the recorded menu exit. |
 
-These CLI diagnostics are mismatch observations, not replacement reference
-expectations: all two remaining recordings are accepted by the reference. The
-existing [generated-input contract](random-replay-contracts.md) covers only
-group-13 echo/output pairs. It cannot qualify the bundled programs' generated
-tables, sorting, searches or mixed input/output transcripts. Their sources and
-expected output remain unchanged, and all two remain pending.
+This CLI diagnostic is a mismatch observation, not a replacement reference
+expectation: the remaining recording is accepted by the reference. Its source
+and expected output remain unchanged and pending.
 
 The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
 recording therefore remains pending; the retained diagnostic and preceding output

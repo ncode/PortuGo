@@ -403,6 +403,48 @@ func TestRandomRecordSearchOutputContract(t *testing.T) {
 	}
 }
 
+func TestRandomRelationOutputContract(t *testing.T) {
+	t.Parallel()
+	valid := "Se 'A' for Diferente de 'B' então  1 <>  3\nSe 'A' for Menor quê 'B' então é:  1 <   3\nSe 'A' for Menor ou Igual à 'B':=  1 <=  3\n\nSe 'A' for Diferente de 'B' então  2 <>  9\nSe 'A' for Menor quê 'B' então é:  2 <   9\nSe 'A' for Menor ou Igual à 'B':=  2 <=  9\n\nSe 'A' for Diferente de 'B' então  3 <>  7\nSe 'A' for Menor quê 'B' então é:  3 <   7\nSe 'A' for Menor ou Igual à 'B':=  3 <=  7\n\nSe 'A' for Diferente de 'B' então  4 <>  1\nSe 'A' for Maior quê 'B' então é:  4 >   1\nSe 'A' for Maior ou Igual à 'B':=  4 >=  1\n\nSe 'A' for Diferente de 'B' então  5 <> 10\nSe 'A' for Menor quê 'B' então é:  5 <  10\nSe 'A' for Menor ou Igual à 'B':=  5 <= 10\n\nSe 'A' for Diferente de 'B' então  6 <> 10\nSe 'A' for Menor quê 'B' então é:  6 <  10\nSe 'A' for Menor ou Igual à 'B':=  6 <= 10\n\nSe 'A' for Diferente de 'B' então  7 <>  3\nSe 'A' for Maior quê 'B' então é:  7 >   3\nSe 'A' for Maior ou Igual à 'B':=  7 >=  3\n\nSe 'A' for Igual à 'B' então será  8 =   8\nSe 'A' for Menor ou Igual à 'B':=  8 <=  8\nSe 'A' for Maior ou Igual à 'B':=  8 >=  8\n\nSe 'A' for Diferente de 'B' então  9 <>  3\nSe 'A' for Maior quê 'B' então é:  9 >   3\nSe 'A' for Maior ou Igual à 'B':=  9 >=  3\n\nSe 'A' for Diferente de 'B' então 10 <>  8\nSe 'A' for Maior quê 'B' então é: 10 >   8\nSe 'A' for Maior ou Igual à 'B':= 10 >=  8\n"
+	valid += "\n"
+	contract := randomOutputExpectation{Kind: "random-relation-lines", Lines: 40, Minimum: 1, Bound: 11}
+	for _, tt := range []struct {
+		name   string
+		output string
+		valid  bool
+	}{
+		{"all branches and framing", valid, true},
+		{"equal branch mismatch", strings.Replace(valid, "Se 'A' for Igual à 'B' então será  8 =   8", "Se 'A' for Diferente de 'B' então  8 <>  8", 1), false},
+		{"less branch mismatch", strings.Replace(valid, "  1 <   3", "  1 >   3", 1), false},
+		{"greater branch mismatch", strings.Replace(valid, "  4 >   1", "  4 <   1", 1), false},
+		{"generated zero", strings.Replace(valid, "  1 <>  3", "  1 <>  0", 1), false},
+		{"generated excluded bound", strings.Replace(valid, "  1 <>  3", "  1 <> 11", 1), false},
+		{"source A mismatch", strings.Replace(valid, "  1 <>  3", "  2 <>  3", 1), false},
+		{"wrong branch order", strings.Replace(valid, "  1 <   3\nSe 'A' for Menor ou Igual", "  1 <=   3\nSe 'A' for Menor ou Igual", 1), false},
+		{"missing iteration blank", strings.Replace(valid, "  1 <=  3\n\nSe 'A'", "  1 <=  3\nSe 'A'", 1), false},
+		{"wrong iteration blank", strings.Replace(valid, "  1 <=  3\n\nSe 'A'", "  1 <=  3\n \nSe 'A'", 1), false},
+		{"wrong Portuguese text", strings.Replace(valid, "Diferente de 'B'", "Diferente do 'B'", 1), false},
+		{"wrong spacing", strings.Replace(valid, "  1 <>  3", "  1 <> 3", 1), false},
+		{"carriage returns", strings.ReplaceAll(valid, "\n", "\r\n"), false},
+		{"missing final newline", strings.TrimSuffix(valid, "\n"), false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := contract.compare([]byte(tt.output)); (err == nil) != tt.valid {
+				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
+			}
+		})
+	}
+	if err := (randomOutputExpectation{Kind: "random-relation-lines", Lines: 39, Minimum: 1, Bound: 11}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong relation line count accepted")
+	}
+	if err := (randomOutputExpectation{Kind: "random-relation-lines", Lines: 40, Minimum: 0, Bound: 11}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong relation minimum accepted")
+	}
+	if err := (randomOutputExpectation{Kind: "random-relation-lines", Lines: 40, Minimum: 1, Bound: 12}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong relation bound accepted")
+	}
+}
+
 func TestRandomIntegerCountSortOutputContract(t *testing.T) {
 	t.Parallel()
 	valid := "91\n26\n52\n78\n41\n5\n79\n69\n81\n32\n14\n27\n85\n45\n5\n46\n63\n34\n33\n62\n\nCronômetro iniciado.\n\nCronômetro terminado. Tempo decorrido: 0 segundo(s).\nv2[ 1] =  5\nv2[ 2] =  5\nv2[ 3] =  14\nv2[ 4] =  26\nv2[ 5] =  27\nv2[ 6] =  32\nv2[ 7] =  33\nv2[ 8] =  34\nv2[ 9] =  41\nv2[ 10] =  45\nv2[ 11] =  46\nv2[ 12] =  52\nv2[ 13] =  62\nv2[ 14] =  63\nv2[ 15] =  69\nv2[ 16] =  78\nv2[ 17] =  79\nv2[ 18] =  81\nv2[ 19] =  85\nv2[ 20] =  91\n"

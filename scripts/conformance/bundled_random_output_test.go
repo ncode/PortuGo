@@ -63,6 +63,7 @@ func TestBundledRandiOutputContractMetadata(t *testing.T) {
 		"random-int-search-sorted-lines": "bundled sorted random search example",
 		"random-int-countsort-lines":     "bundled counting sort example",
 		"random-randi-repeat-lines":      "bundled repeated random example",
+		"random-relation-lines":          "bundled relation example",
 	}
 	found := make(map[string]bool)
 	for _, p := range doc.Probes {
@@ -128,6 +129,10 @@ func TestRecordedBundledRandomRandiRepeatOutput(t *testing.T) {
 	testRecordedBundledRandomOutput(t, "random-randi-repeat-lines")
 }
 
+func TestRecordedBundledRandomRelationOutput(t *testing.T) {
+	testRecordedBundledRandomOutput(t, "random-relation-lines")
+}
+
 func testRecordedBundledRandomOutput(t *testing.T, kind string) {
 	t.Helper()
 	root, err := filepath.Abs("../..")
@@ -186,7 +191,7 @@ func testRecordedBundledRandomOutput(t *testing.T, kind string) {
 				t.Fatal(ds)
 			}
 			generators := []interp.RandomSource{endpointRandom{}, endpointRandom{upper: true}}
-			if contract.Kind == "random-randi-repeat-lines" {
+			if contract.Kind == "random-randi-repeat-lines" || contract.Kind == "random-relation-lines" {
 				generators = []interp.RandomSource{nonZeroEndpointRandom{}, nonZeroEndpointRandom{upper: true}}
 			}
 			for seed := uint64(0); seed < 16; seed++ {

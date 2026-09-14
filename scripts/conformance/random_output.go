@@ -150,6 +150,10 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		if c.Lines != 12 || c.Minimum != 0 || c.Bound != 100 || c.Decimals != 2 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
 		}
+	case "random-relation-lines":
+		if c.Lines != 40 || c.Minimum != 1 || c.Bound != 11 || c.Decimals != 0 || c.FixedTail != 0 {
+			return fmt.Errorf("invalid random-output contract")
+		}
 	case "random-randi-repeat-lines":
 		if c.Lines != 11 || c.Minimum < 1 || c.Minimum >= c.Bound || c.Bound < 2 || c.Bound > math.MaxInt32 || c.Decimals != 0 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
@@ -366,6 +370,22 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		}
 		return nil
 	}
+	if c.Kind == "random-relation-lines" {
+		for iteration := range 10 {
+			block := lines[iteration*4 : iteration*4+4]
+			matched := false
+			for value := c.Minimum; value < c.Bound; value++ {
+				if slices.Equal(block, relationOutputLines(int64(iteration+1), value)) {
+					matched = true
+					break
+				}
+			}
+			if !matched {
+				return fmt.Errorf("random-output relation iteration %d mismatch", iteration+1)
+			}
+		}
+		return nil
+	}
 	if c.Kind == "random-record-sort-lines" {
 		type record struct {
 			code int64
@@ -473,6 +493,27 @@ func validElapsedDuration(text string) bool {
 func parseCanonicalNonNegativeInteger(text string) (int64, bool) {
 	value, err := strconv.ParseInt(text, 10, 64)
 	return value, err == nil && value >= 0 && text == strconv.FormatInt(value, 10)
+}
+
+func relationOutputLines(a, b int64) []string {
+	lines := make([]string, 4)
+	if a == b {
+		lines[0] = fmt.Sprintf("Se 'A' for Igual à 'B' então será %2d =  %2d", a, b)
+	} else {
+		lines[0] = fmt.Sprintf("Se 'A' for Diferente de 'B' então %2d <> %2d", a, b)
+	}
+	if a < b {
+		lines[1] = fmt.Sprintf("Se 'A' for Menor quê 'B' então é: %2d <  %2d", a, b)
+		lines[2] = fmt.Sprintf("Se 'A' for Menor ou Igual à 'B':= %2d <= %2d", a, b)
+	} else if a > b {
+		lines[1] = fmt.Sprintf("Se 'A' for Maior quê 'B' então é: %2d >  %2d", a, b)
+		lines[2] = fmt.Sprintf("Se 'A' for Maior ou Igual à 'B':= %2d >= %2d", a, b)
+	} else {
+		lines[1] = fmt.Sprintf("Se 'A' for Menor ou Igual à 'B':= %2d <= %2d", a, b)
+		lines[2] = fmt.Sprintf("Se 'A' for Maior ou Igual à 'B':= %2d >= %2d", a, b)
+	}
+	lines[3] = ""
+	return lines
 }
 
 func parseFixedDecimal(text string, valueDecimals, textDecimals int) (int64, error) {

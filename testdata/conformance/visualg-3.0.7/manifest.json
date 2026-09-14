@@ -9257,14 +9257,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-7f44aa03fcc5/stdout.txt",
             "sha256": "dc267e68447f8efadc9ce1fdfab34bba31df26188918595917e1b8a7d1632059"
+          },
+          "randomOutput": {
+            "kind": "random-relation-lines",
+            "lines": 40,
+            "minimum": 1,
+            "bound": 11,
+            "review": {
+              "reason": "The recorded transcript preserves ten source-fixed relation iterations, bounded positive random values, exact branch framing, and blank iteration separators while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRelationOutput"
+        ]
       }
     },
     {

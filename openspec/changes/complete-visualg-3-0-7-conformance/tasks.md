@@ -1187,8 +1187,8 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
   Forty-four original examples still match recorded output byte-for-byte before
-  and after formatting; fourteen additional accepted programs now have reviewed
-  random-output contracts. One generated-output case still needs a
+  and after formatting; fifteen additional accepted programs now have reviewed
+  random-output contracts. No generated-output case remains without a
   random-output replay contract; one accepted path encounters a CLI error in
   unexecuted code. Four
   rejected programs retain diagnostic or execution-phase differences. The latest
@@ -1212,20 +1212,19 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   faca`) and executes zero iterations. The bundled generated-input transcript
   remains pending because its random-output contract is not qualified.
 
-  Auditing the two remaining pending accepted programs found successful
-  local runs with varying output and one frontend rejection. The
+  Auditing the remaining pending accepted program found one frontend rejection.
+  The
   `randomicos.alg.ALG` transcript (source algorithm `semnome`, probe
   `bundled-991ec2bd1566`) is now qualified by a bounded `randi(10)` output
   contract; the mixed integer/text, integer-sort, real-sort, record-sort,
   integer-search, raw integer-search, sorted integer-search, counting-sort,
-  record-search, and repeated-value transcripts are now qualified as well,
-  leaving one generated-output case and one frontend rejection.
+  record-search, repeated-value, and relation transcripts are now qualified as
+  well, leaving one frontend rejection.
   The parser now
   accepts a global variable section after a record type and its subprograms;
-  that generated transcript, like the omitted-bound transcript, remains
-  pending a random-output qualification. Existing group-13 echo/output
-  contracts do not qualify these bundled transcripts; no additional example is
-  promoted by this audit.
+  that transcript is now covered by the record-sort contract. Existing group-13
+  echo/output contracts do not qualify the other bundled transcripts; no
+  additional example is promoted by this audit.
 
 - [x] 17.4 Exercise the assembled source/depth/call/value/step guards, including empty infinite loops, recursive calls, flat AST chains, input retries, and cleanup, plus storage/encoding/host/filesystem adversarial cases; require controlled diagnostics and fail on a subprocess watchdog kill or accepted-example budget exhaustion.
 
@@ -1267,7 +1266,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   `docs/release-rehearsal-2026-09-14.md`. Build, ordinary and race tests, vet,
   formatter checks, all CLI commands, incremental replay, and strict OpenSpec
   validation pass. The supported-platform CI matrix remains green; release
-  acceptance stays blocked by the 6 pending implementation probes and final
+  acceptance stays blocked by the 5 pending implementation probes and final
   handoff tasks.
 - [ ] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
 - [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.

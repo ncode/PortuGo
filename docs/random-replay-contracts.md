@@ -44,6 +44,13 @@ fixed negative search sentinel and `Nao achei.` result. Replay checks the exact
 row framing, code and salary domains, prompt/result text and final LF without
 promising the generated sequence.
 
+One bundled relation example has a separate `randomOutput` contract. It emits
+ten four-line iterations with source-fixed values from 1 through 10 and a
+positive value from the zero-retried `randi(11)` domain. Each iteration uses the
+exact Portuguese text for the applicable relation branches and ends with a
+blank line. Replay checks branch consistency, spacing, iteration framing and
+final LF without promising the generated sequence.
+
 One bundled integer-search example has a separate `randomOutput` contract. It
 emits ten numbered rows with generated integers in `[0, 100)`, then records the
 fixed `-1` search input and the resulting not-found message. Replay checks row
@@ -131,7 +138,7 @@ contracts by `TestRecordedBundledRandomRandiRepeatOutput`. The raw integer-searc
 contract is covered by the bundled replay test, the sorted integer-search
 contract by its bundled replay test, and the counting-sort contract by its
 bundled replay test. The record-search contract is covered by its bundled replay
-test. Bundled programs with
+test, and the relation contract by its bundled replay test. Bundled programs with
 generated arrays, records, sorting, branching,
 or other mixed input/output remain pending until their own observable contracts
 exist.
