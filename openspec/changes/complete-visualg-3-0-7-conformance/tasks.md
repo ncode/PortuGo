@@ -678,8 +678,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   The missing-value return continuation probe now reports the recorded `E001`
   at `retorne` while keeping the following line from becoming a second syntax
   failure. A table-driven semantic diagnostic suite now pins nonlogical repeat
-  conditions, break outside loops, noninteger loop variables, bounds, and
-  steps; recorded range, return, and loop tables cover the remaining accepted
+  conditions, noninteger loop variables, bounds, and steps; outside-loop
+  `interrompa` is accepted and covered by a focused interpreter regression.
+  Recorded range, return, and loop tables cover the remaining accepted
   contexts.
 - [ ] 9.5 Implement conditional and confirmed infinite repeats with a budget charge on every iteration, including empty bodies; test that finite-budget runs stop with `R006` while unbudgeted loop semantics remain unchanged.
 - [x] 9.6 Implement inclusive range matching, first-arm selection, and no fall-through while evaluating the selector once.
