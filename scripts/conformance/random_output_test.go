@@ -288,6 +288,39 @@ func TestRandomIntegerSearchTableOutputContract(t *testing.T) {
 	}
 }
 
+func TestRandomIntegerSearchOutputContract(t *testing.T) {
+	t.Parallel()
+	valid := "71\n41\n25\n92\n76\n26\n73\n37\n84\n39\n44\n6\n87\n100\n43\n95\n49\n62\n57\n99\nValor para busca (ESC ou menor que 0 termina) : -1\n"
+	contract := randomOutputExpectation{Kind: "random-int-search-lines", Lines: 21, Minimum: 0, Bound: 101}
+	for _, tt := range []struct {
+		name   string
+		output string
+		valid  bool
+	}{
+		{"domain and exit prompt", valid, true},
+		{"value below domain", strings.Replace(valid, "71\n", "-1\n", 1), false},
+		{"value above domain", strings.Replace(valid, "71\n", "101\n", 1), false},
+		{"leading zero", strings.Replace(valid, "71\n", "071\n", 1), false},
+		{"wrong prompt input", strings.Replace(valid, " : -1\n", " : 0\n", 1), false},
+		{"unexpected search result", valid + "Nao achei.\n", false},
+		{"missing generated line", strings.Replace(valid, "99\nValor para busca", "Valor para busca", 1), false},
+		{"carriage returns", strings.ReplaceAll(valid, "\n", "\r\n"), false},
+		{"missing final newline", strings.TrimSuffix(valid, "\n"), false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := contract.compare([]byte(tt.output)); (err == nil) != tt.valid {
+				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
+			}
+		})
+	}
+	if err := (randomOutputExpectation{Kind: "random-int-search-lines", Lines: 20, Bound: 101}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong search line count accepted")
+	}
+	if err := (randomOutputExpectation{Kind: "random-int-search-lines", Lines: 21, Bound: 0}).compare([]byte(valid)); err == nil {
+		t.Fatal("zero search bound accepted")
+	}
+}
+
 func TestRandomRandiRepeatOutputContract(t *testing.T) {
 	t.Parallel()
 	valid := " \n ============================================== \nQUANTOS NUMEROS (1-10): 1\nDigite o destaque: 0\n \nA SEQUENCIA É \n 1 \nO NUMERO DE REPETIÇÕES FOI:  0\n \nRESTOU A SEQUENCIA: \n 1"

@@ -134,6 +134,10 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		if c.Lines != 12 || c.Minimum < math.MinInt32 || c.Minimum >= c.Bound || c.Bound < 1 || c.Bound > math.MaxInt32 || c.Decimals != 0 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
 		}
+	case "random-int-search-lines":
+		if c.Lines != 21 || c.Minimum < math.MinInt32 || c.Minimum >= c.Bound || c.Bound < 1 || c.Bound > math.MaxInt32 || c.Decimals != 0 || c.FixedTail != 0 {
+			return fmt.Errorf("invalid random-output contract")
+		}
 	case "random-randi-repeat-lines":
 		if c.Lines != 11 || c.Minimum < 1 || c.Minimum >= c.Bound || c.Bound < 2 || c.Bound > math.MaxInt32 || c.Decimals != 0 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
@@ -248,6 +252,19 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		}
 		if lines[10] != "Entre com o valor de busca (ESC termina) :-1" || lines[11] != "Nao achei." {
 			return fmt.Errorf("random-output search result mismatch")
+		}
+		return nil
+	}
+	if c.Kind == "random-int-search-lines" {
+		for index := range 20 {
+			line := lines[index]
+			value, err := strconv.ParseInt(line, 10, 64)
+			if err != nil || line != strconv.FormatInt(value, 10) || value < c.Minimum || value >= c.Bound {
+				return fmt.Errorf("random-output search value %d mismatch", index+1)
+			}
+		}
+		if lines[20] != "Valor para busca (ESC ou menor que 0 termina) : -1" {
+			return fmt.Errorf("random-output search prompt mismatch")
 		}
 		return nil
 	}
