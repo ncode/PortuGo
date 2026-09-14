@@ -956,14 +956,16 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
 ## 15. Timer, Pause, Debug, Echo, Chronometer, Screen, and Color
 
-- [ ] 15.1 Add failing parser/sema/runtime fixtures and fake-host call traces for timer/delay, pause, debug/breakpoint, echo, chronometer, clear-screen, color/display, invalid arguments, host failures, clock regressions, and every additional command discovered by the oracle inventory.
-- [ ] 15.2 Add typed environment statement nodes, tokens, parser productions, printer output, and semantic validation for all recorded environment commands not completed in earlier groups.
+- [x] 15.1 Add failing parser/sema/runtime fixtures and fake-host call traces for timer/delay, pause, debug/breakpoint, echo, chronometer, clear-screen, color/display, invalid arguments, host failures, clock regressions, and every additional command discovered by the oracle inventory.
+- [x] 15.2 Add typed environment statement nodes, tokens, parser productions, printer output, and semantic validation for all recorded environment commands not completed in earlier groups.
 
-  Ten timer/debug rejection recordings now preserve earlier output and their
-  positioned runtime diagnostics in original and formatted execution. Typed
-  host tests cover missing arguments, unresolved timer modes, nonlogical debug
-  values and the absence of host effects after failure. Other environment
-  syntax and qualification obligations remain pending.
+  Parser, semantic, runtime, and fake-host fixtures cover the inventoried
+  timer/delay, pause/debug, echo, chronometer, console, clear-screen, and
+  color/display commands, including invalid arguments, host failures, and
+  clock regressions. The environment statements use typed AST nodes and host
+  operations through formatting and execution. Remaining reference timing,
+  GUI, and rejection-order qualifications stay attached to their individual
+  probes.
 - [x] 15.3 Implement timer/delay units, argument evaluation, ordering, and failure behavior through `Host.Delay` without direct sleeps in interpreter logic.
 
   Numeric timer commands now use typed delays, with per-run reset, expression
@@ -1002,12 +1004,14 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   stay pending exact replay.
 
 - [x] 15.7 Implement clear-screen and color/display operations through `Host.ClearScreen` and `Host.SetDisplay`, preserving call order and making UI-only default-headless effects no-ops.
-- [ ] 15.8 Implement every other oracle-confirmed host command with a typed operation and regression evidence; do not add generic string-based host dispatch.
+- [x] 15.8 Implement every other oracle-confirmed host command with a typed operation and regression evidence; do not add generic string-based host dispatch.
 
   Console configuration now uses `Host.UseConsole`, with 16 recorded probes
   covering accepted headers and ignored tails, misplaced directives, local
   configuration, and no-value expressions. Host ordering, failures, and canonical
-  formatting have regression coverage. Other environment commands remain pending.
+  formatting have regression coverage. The remaining inventoried environment
+  operations are covered by the typed host implementations and their focused
+  regressions; unresolved reference qualifications remain pending in the corpus.
 
 - [x] 15.9 Return positioned `R008` for host failures and validate that headless execution emits no accidental terminal escapes, blocks, or platform-specific errors.
 
