@@ -29,6 +29,9 @@
   formatted executions match byte-for-byte.
 - Record the clean-checkout build, CLI, REPL, fixture, replay, and specification
   rehearsal while keeping release acceptance gated on the remaining probes.
+- Clarify that the reference-corpus README has a complete inventory while
+  implementation acceptance and two source-obligation classifications remain
+  pending.
 
 - Record the remaining source-obligation probes for reserved words, declaration
   sections, builtin collisions, reference-argument edge cases, interruption,

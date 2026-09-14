@@ -1,7 +1,8 @@
 # VisuAlg 3.0.7 reference corpus
 
-This directory is being assembled by OpenSpec group 2. It does not yet contain
-the complete evidence inventory and does not establish full conformance.
+This directory contains the complete evidence inventory for OpenSpec group 2.
+It does not establish full conformance; pending implementation checks remain
+under their owning tasks.
 The earlier selected observations remain in `docs/validation/visualg-2026-09-07`.
 
 ## Commands
@@ -114,7 +115,7 @@ case aliases. Artifact hashes are lowercase SHA-256 of the exact published bytes
   trace. Omitting a source file from `inventorySources` cannot hide its requirements.
   A declared source containing `## 12. Checklist de conformidade` also requires
   a checklist-kind trace for each numbered row in that section. Other explicit
-  verification markers are checked independently; three documented legacy
+  verification markers are checked independently; two documented legacy
   obligations remain unresolved while their recorded evidence is retained.
   Contextual prose and grammar markers are anchored separately, including
   aliases to existing inventory entries.

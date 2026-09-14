@@ -1248,8 +1248,10 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   The current documentation pass reconciles the settled dialect, evaluation,
   I/O, randomness, and CLI decisions in `AGENTS.md`, clarifies the in-scope
   `arquivo` directive in `docs/language.md`, and finds no obsolete scope claims
-  in the examples. Final reconciliation remains open while the pending
-  reference implementations and bundled-example mismatches remain.
+  in the examples. The reference-corpus README now describes the completed
+  inventory and its two unresolved source-obligation classifications. Final
+  reconciliation remains open while the pending reference implementations and
+  bundled-example mismatches remain.
 - [x] 17.8 Perform a clean-checkout release rehearsal of all CLI commands, REPL transcripts, fixtures, manifest validation, and build artifacts on the supported platforms.
 
   The fresh-checkout rehearsal is recorded in
