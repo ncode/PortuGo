@@ -32,6 +32,8 @@
   sequence or GUI qualifications.
 - Mark the environment probe-batch and built-in inventory task complete from
   the recorded, implementation-verified corpus coverage.
+- Verify the recorded reserved-word, repeated-main-section, and builtin-name
+  rejection probes against positioned local diagnostics.
 - Correct the reference-corpus progress totals to match the current manifest.
 - Correct the randomness handoff notes so completed task status is not described
   as open work.
