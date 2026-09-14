@@ -18,6 +18,11 @@ verified. The reference accepts vectors larger than 500 elements; the draft
 500-slot compatibility restriction has therefore been withdrawn. The recordings
 do not establish the upper storage limit in every declaration context.
 
+Declaration support is form-specific: the recorded scalar constant and alias,
+named-record and scalar-field, assignment-alias, and case-range forms have
+positive coverage. Rejected variants retain positioned diagnostics, while
+unrecorded combinations remain pending under their owning tasks.
+
 The [bundled example sweep](bundled-examples-progress.md) verifies 43 original
 programs against reference output, including formatting and execution. Eleven supplied files have
 recorded reference errors. Bundled-file presence alone does not establish that

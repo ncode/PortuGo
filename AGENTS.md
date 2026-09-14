@@ -134,6 +134,11 @@ fimalgoritmo
 
 Booleans literals: `verdadeiro`, `falso`. String literals use `"..."`. No char type.
 
+Declaration support is evidence-scoped. The recorded scalar constant and alias,
+named-record and scalar-field, assignment-alias, and case-range forms are
+supported; rejected variants keep their positioned diagnostics and unrecorded
+combinations remain pending in the conformance manifest.
+
 Recorded keyword aliases include `função`, `então`, `senão`, `faça`, `até`, and
 `não`, in any letter case. Canonical output uses unaccented keywords and
 `caractere`. Do not remove accents indiscriminately: `lógico` is not an accepted

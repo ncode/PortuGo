@@ -48,6 +48,15 @@ Expression and control-flow inventory links now cover precedence, numeric and
 Overlapping requirement links share one probe where a recording serves more
  than one category; unqualified operand combinations remain pending.
 
+The group 2 documentation reconciliation is complete. The proposal, delta
+specifications, design, task ledger, `AGENTS.md`, and language reference now
+use the recorded scope: scalar constants and aliases, named records and scalar
+fields, assignment aliases, and case ranges are positive only in their
+confirmed forms. Rejected variants retain positioned negative coverage;
+unrecorded forms keep their pending owning tasks, and no dependent layout or
+example obligation is inferred. Manifest dispositions and retired-ID history
+were preserved.
+
 The initial manifest contained 18 reduced probes:
 
 - Eleven accepted observations from the earlier Windows validation have complete
