@@ -8,6 +8,8 @@
   dialect, evaluation, I/O, randomness, and CLI decisions.
 - Align the CLI guidance and logical-evaluation pitfall with those settled
   implementation decisions.
+- Archive the green candidate quality, race, platform, fuzz, and strict
+  specification checks for the current stacked layer.
 
 - Keep conformance execution diagnostics on the stable `source.alg` filename so
   local filesystem paths cannot enter captured output.

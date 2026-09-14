@@ -1342,6 +1342,11 @@ does not print preceding statements before reporting a statically known error.
 The active OpenSpec change tracks the remaining work; these selected observations
 are not a claim of full reference conformance.
 
+The [candidate quality evidence](quality-acceptance-2026-09-14.md) records the
+green build, lint, race, platform, fuzz, and strict specification checks for
+the current stacked candidate. Pending reference implementations and bundled
+example qualifications still prevent implementation acceptance.
+
 The [reference corpus progress](reference-corpus-progress.md) tracks the broader
 recording work. New observations confirm particular constant, named-type and
 record forms in the reference application; those forms remain pending in this
