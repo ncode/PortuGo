@@ -27,6 +27,11 @@
   local filesystem paths cannot enter captured output.
 - Reconcile the environment-command task ledger with its verified typed host
   surface while keeping unresolved reference qualifications pending.
+- Add stable inventory links for the recorded random-input, file-input, and
+  console-configuration command families without promoting pending reference
+  sequence or GUI qualifications.
+- Mark the environment probe-batch and built-in inventory task complete from
+  the recorded, implementation-verified corpus coverage.
 - Correct the reference-corpus progress totals to match the current manifest.
 - Correct the randomness handoff notes so completed task status is not described
   as open work.
