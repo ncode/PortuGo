@@ -168,6 +168,12 @@ func TestRepeatBudgetAndFiniteCompletion(t *testing.T) {
 		t.Fatalf("unbudgeted repeat: diagnostics=%v output=%q", ds, out.String())
 	}
 
+	repeatAt := strings.Index(src, "repita")
+	out.Reset()
+	if ds := New(Options{MaxSteps: 1, Output: &out}).Run(p, info); len(ds) != 1 || ds[0].Code != diag.RLoop || int(ds[0].Pos) != repeatAt || out.Len() != 0 {
+		t.Fatalf("repeat header budget diagnostics=%v output=%q, want R006 at %d", ds, out.String(), repeatAt)
+	}
+
 	// The finite program consumes exactly thirty charges: the repeat statement,
 	// three iteration charges, the body and condition expression trees, and the
 	// final write. The one-step boundary catches regressions that stop charging
