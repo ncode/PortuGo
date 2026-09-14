@@ -28,7 +28,7 @@ programs against reference output, including formatting and execution. Eleven su
 recorded reference errors. Bundled-file presence alone does not establish that
 its syntax is accepted by this release.
 Seventeen accepted bundled recordings remain pending: fifteen contain generated
-output outside the current replay contract, including two syntax mismatches,
+output outside the current replay contract, including one syntax mismatch,
 and two recorded input paths are blocked by diagnostics in unexecuted code.
 
 ## Program Structure
