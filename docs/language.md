@@ -54,9 +54,11 @@ syntax. An unrecognized statement start is diagnosed once; parsing resumes on
 the next physical line to retain independent later errors.
 
 The `var` block may be omitted or left empty. Top-level `procedimento` and
-`funcao` declarations must appear before `inicio`. Recorded words and statements
-after `fimalgoritmo` are ignored during execution. Later physical lines are
-opaque, including unclosed strings, invalid symbols and unfinished blocks.
+`funcao` declarations must appear before `inicio`; one global `var` section may
+appear before or after those declarations. Repeating the global section is a
+`P001` error. Recorded words and statements after `fimalgoritmo` are ignored
+during execution. Later physical lines are opaque, including unclosed strings,
+invalid symbols and unfinished blocks.
 Formatting retains the complete decoded suffix immediately after the terminator,
 including same-line comments and whitespace. Each LF and the complete run of CR
 bytes immediately before it become one LF in a single formatting pass. CR bytes

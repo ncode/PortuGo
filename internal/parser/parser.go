@@ -88,6 +88,14 @@ func (p *parser) parseProgram() *ast.Program {
 			return prog
 		}
 	}
+	if p.peek().Kind == token.VAR {
+		if prog.Sections.Var.Kind != 0 {
+			p.error(p.peek(), "repeated var section")
+			return prog
+		}
+		prog.Sections.Var = p.peek()
+		prog.Globals = p.parseVarBlock()
+	}
 	prog.Begin = p.peek().Pos
 	if !p.match(token.INICIO) {
 		p.expect(token.INICIO, "expected inicio")

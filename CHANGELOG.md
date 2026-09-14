@@ -18,6 +18,8 @@
   keeping broader unqualified forms pending.
 - Close the evidence-recording task after validating all bundled-example
   dispositions and manifest probes; keep the 24 implementation checks pending.
+- Accept one global `var` section after top-level subprogram declarations and
+  retain the repeated-section diagnostic.
 
 - Record the remaining source-obligation probes for reserved words, declaration
   sections, builtin collisions, reference-argument edge cases, interruption,
