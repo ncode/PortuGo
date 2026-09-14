@@ -1135,7 +1135,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   evidence. Synthetic release candidates verify that unfinished reporting and
   handoff tasks permit behavioral acceptance but prevent release approval.
   Full implementation acceptance and release handoff remain incomplete.
-- [ ] 17.2 Complete bidirectional trace links for every OpenSpec requirement, `[VERIFICAR]`, original checklist item, audited defect, discovered official feature, implementation test, and bundled example with no stale IDs.
+- [x] 17.2 Complete bidirectional trace links for every OpenSpec requirement, `[VERIFICAR]`, original checklist item, audited defect, discovered official feature, implementation test, and bundled example with no stale IDs.
 
   AST positions, canonical printing and formatter modes now have explicit
   project-specific evidence classifications and verified implementation states
@@ -1143,7 +1143,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   formatter-mode regressions. Reference non-applicability remains limited to
   these tooling contracts; language and host differences are still pending.
   The two externally stopped examples have reviewed finite-completion
-  exclusions, retaining their unchanged sources and partial observations.
+  exclusions, retaining their unchanged sources and partial observations. A
+  fresh manifest audit resolves all 228 inventory links, all 1,678 probe links,
+  and all 1,811 implementation-test links with no stale or untraced IDs.
+  Shared probe links remain intentional; the 24 pending implementation probes
+  retain their owning tasks without fabricated tests, and the two reviewed
+  non-applicable probes retain their project-test links.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
   Forty-three original examples now match recorded output before and after
