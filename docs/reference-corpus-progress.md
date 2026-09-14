@@ -14,6 +14,12 @@ close five previously unrecorded questions; nonassignable `var` arguments and
 maximum recursion or stack-display behavior remain open, along with unqualified
 timing, GUI, and reference-sequence behavior.
 
+The evidence-recording portion of group 2 is complete: all 73 bundled examples
+have a recorded disposition, and every manifest probe is either recorded or
+reviewed not-applicable. Evidence validation reports 1,656 recorded probes, 22
+reviewed not-applicable probes, and no unrecorded entries. The 24 pending
+implementation checks remain visible under their implementation tasks.
+
 The September 14 source-obligation slice adds eight reviewed recordings from
 the Windows reference application. `const` and `dos` are reserved, a second
 main `var` section is rejected, and builtin names cannot be declared as user

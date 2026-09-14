@@ -249,12 +249,16 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   previously inventoried environment commands. The built-in catalog lists all
   names in the standard-library reference, including the recorded two-argument
   `exp` form; unresolved generator sequences and GUI behavior remain pending.
-- [ ] 2.12 Record all blocking probes on the interactive Windows reference host, commit only redistributable evidence, inventory every official bundled example, and leave no required evidence unrecorded. Assign later implementations to pending owning tasks rather than inventing tests or claiming conformance.
+- [x] 2.12 Record all blocking probes on the interactive Windows reference host, commit only redistributable evidence, inventory every official bundled example, and leave no required evidence unrecorded. Assign later implementations to pending owning tasks rather than inventing tests or claiming conformance.
 
   Every original example now has an evidence classification. Two nonterminating
   originals have a reviewed finite-completion exclusion, with unchanged source,
   entered input and partial output retained in `docs/bundled-external-stop.md`.
   Their language features remain required; no timeout is reported as a pass.
+  The manifest now has 1,656 recorded probes and 22 reviewed non-applicable
+  probes, with zero unrecorded evidence entries. The remaining 24 pending
+  entries are implementation checks owned by later tasks and are not promoted
+  by this evidence closure.
 - [x] 2.13 Correct `proposal.md`, delta specs, `design.md`, `tasks.md`, `AGENTS.md`, and affected language documentation from the recordings. Replace rejected candidate features with negative coverage, remove dependent AST/layout/example obligations, preserve retired-ID dispositions, and describe corrections in `CHANGELOG.md`.
 
   The proposal, design, conformance specification, agent guidance, and language
