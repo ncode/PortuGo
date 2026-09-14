@@ -38,6 +38,11 @@
   reference recording, and retaining contextual prose/grammar aliases in trace
   validation.
 
+- Complete the conformance inventory audit with stable IDs for every legacy
+  marker, checklist row, assumption, environment command, feature, audited
+  defect, requirement, and bundled example; retain the two unresolved behavior
+  questions as pending implementation work.
+
 - Match the recorded outside-loop `interrompa` behavior by ignoring it without
   a semantic or runtime diagnostic, while keeping loop breaks scoped to the
   active lexical call frame.

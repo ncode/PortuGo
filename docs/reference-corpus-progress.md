@@ -1,10 +1,12 @@
 # Reference corpus progress
 
-OpenSpec group 2 is in progress. The corpus currently inventories 73 requirements
-and 73 bundled example filenames, sizes and hashes. All 73 examples now have
+OpenSpec group 2 is complete. The corpus inventories 229 stable records across
+73 requirements, 73 bundled example filenames, sizes and hashes, 25 checklist
+rows, 48 assumptions, 9 feature records, and one audited defect. All 73 examples now have
 recorded dispositions: 60 accepted, 11 unusable, and 2 reviewed non-goals. The
 manifest has 1,657 recorded probes and 22 reviewed non-applicable probes; 23
-implementation checks remain pending. The original compatibility checklist is
+implementation checks remain pending. Every one of the 33 legacy `[VERIFICAR]`
+markers has a stable inventory link. The original compatibility checklist is
 present in `especificacao-visualg-3.md`; its 25 numbered rows now have stable
 manifest links to existing probe coverage. Twenty-six evidenced source
 assumptions, the builtin catalog, and one recorded CLI correction are also
@@ -126,11 +128,11 @@ claim of complete VisuAlg compatibility.
 
 The tooling review corrections now enforce reference acceptance/rejection,
 unique generated-file coverage, mandatory history comparison in validation and
-CI, and auxiliary input integrity during capture. These corrections do not fill
-the outstanding inventory mappings; group 2 remains in progress. All registered
-reference probes have evidence; additional required probes still need to be
-prepared and recorded. Inventory validation discovers the entire change's spec
-tree independently of the manifest's source list.
+CI, and auxiliary input integrity during capture. Those earlier corrections did
+not fill the outstanding inventory mappings; the current audit above closes
+them. All registered reference probes have evidence, and inventory validation
+discovers the entire change's spec tree independently of the manifest's source
+list.
 
 Five additional [project tooling entries](conformance-project-evidence.md) link
 existing provenance, recording, normalization, traceability, and phase-validation
