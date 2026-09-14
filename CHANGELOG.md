@@ -24,6 +24,8 @@
   accepted-and-ignored behavior.
 - Close the recorded lexer/parser scope tasks 4.3–4.6 and 4.8 while leaving
   broader unrecorded forms outside the qualified profile.
+- Promote the recorded bundled binary-conversion example after its original and
+  formatted executions match byte-for-byte.
 
 - Record the remaining source-obligation probes for reserved words, declaration
   sections, builtin collisions, reference-argument edge cases, interruption,

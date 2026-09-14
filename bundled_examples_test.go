@@ -57,6 +57,7 @@ func TestRecordedBundledExamples(t *testing.T) {
 		"bundled-c0633dc8add4", // Numeros_primos.alg
 		"bundled-ffd86884c181", // REGISTROS com VETORES.ALG
 		"bundled-51b9ad3b51c5", // REGISTROS.ALG
+		"bundled-c2c3c37e29ae", // semnome (binary conversion)
 	} {
 		t.Run(id, func(t *testing.T) {
 			dir := filepath.Join("testdata/conformance/visualg-3.0.7/probes", id)

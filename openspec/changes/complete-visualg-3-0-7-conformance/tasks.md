@@ -1169,7 +1169,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   non-applicable probes retain their project-test links.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
-  Forty-three original examples now match recorded output before and after
+  Forty-four original examples now match recorded output before and after
   formatting. Fifteen accepted programs still need a random-output replay
   contract; two accepted paths encounter CLI errors in unexecuted code. Six
   rejected programs retain diagnostic or execution-phase differences. The latest
@@ -1187,8 +1187,8 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   by an unused read destination remain pending; neither recording establishes a
   general recovery or deferred-lookup rule.
 
-  Auditing all seventeen pending accepted programs found thirteen successful
-  local runs with varying output and four frontend rejections. The generated
+  Auditing the sixteen remaining pending accepted programs found twelve
+  successful local runs with varying output and four frontend rejections. The generated
   data set includes two syntax mismatches: an omitted loop bound and a global
   variable section after procedures. The two fixed-input paths remain blocked
   by an unused read destination and an unselected out-of-loop break. Existing

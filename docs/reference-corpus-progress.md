@@ -3,7 +3,7 @@
 OpenSpec group 2 is in progress. The corpus currently inventories 73 requirements
 and 73 bundled example filenames, sizes and hashes. All 73 examples now have
 recorded dispositions: 60 accepted, 11 unusable, and 2 reviewed non-goals. The
-manifest has 1,656 recorded probes and 22 reviewed non-applicable probes; 24
+manifest has 1,656 recorded probes and 22 reviewed non-applicable probes; 23
 implementation checks remain pending. The original compatibility checklist is
 present in `especificacao-visualg-3.md`; its 25 numbered rows now have stable
 manifest links to existing probe coverage. Twenty-six evidenced source
@@ -80,7 +80,7 @@ were preserved.
 Fresh recorder, normalizer, replay, manifest, traceability, quality, and strict
 OpenSpec checks are captured in the [current quality report](quality-acceptance-2026-09-14.md).
 Evidence validation has zero verified regressions; its published inventory
-keeps the 24 pending implementation probes visible.
+keeps the 23 pending implementation probes visible.
 
 The initial manifest contained 18 reduced probes:
 
