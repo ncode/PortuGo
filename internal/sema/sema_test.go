@@ -8,13 +8,13 @@ import (
 	"github.com/ncode/portugol-go/internal/parser"
 )
 
-func TestBreakOutsideLoop(t *testing.T) {
+func TestBreakOutsideLoopIsAllowed(t *testing.T) {
 	diags := checkSource(t, `algoritmo "x"
 inicio
   interrompa
 fimalgoritmo`)
-	if len(diags) != 1 || diags[0].Code != diag.EBreak {
-		t.Fatalf("got diagnostics %#v, want one %s", diags, diag.EBreak)
+	if len(diags) != 0 {
+		t.Fatalf("got diagnostics %#v, want no diagnostics", diags)
 	}
 }
 

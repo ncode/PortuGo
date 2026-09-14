@@ -27,14 +27,6 @@ fimalgoritmo`,
 			code: diag.ETypeMismatch, line: 5, column: 7,
 		},
 		{
-			name: "break outside loop",
-			source: `algoritmo "invalid break"
-inicio
-  interrompa
-fimalgoritmo`,
-			code: diag.EBreak, line: 3, column: 3,
-		},
-		{
 			name: "loop variable",
 			source: `algoritmo "invalid loop variable"
 var

@@ -118,6 +118,23 @@ func TestTimerStructures(t *testing.T) {
 	}
 }
 
+func TestBreakOutsideLoopIsIgnored(t *testing.T) {
+	p, info := analyzed(t, "algoritmo \"outside break\"\ninicio\ninterrompa\nescreval(\"AFTER\")\nfimalgoritmo")
+	var out bytes.Buffer
+	if ds := New(Options{Output: &out}).Run(p, info); len(ds) != 0 || out.String() != "AFTER\n" {
+		t.Fatalf("outside-loop break: diagnostics=%v output=%q", ds, out.String())
+	}
+}
+
+func TestBreakDoesNotEscapeCallee(t *testing.T) {
+	src := "algoritmo \"callee break\"\nvar\ni: inteiro\nprocedimento P\ninicio\ninterrompa\nfimprocedimento\ninicio\npara i de 1 ate 2 faca\nP\nfimpara\nescreval(i)\nfimalgoritmo"
+	p, info := analyzed(t, src)
+	var out bytes.Buffer
+	if ds := New(Options{Output: &out}).Run(p, info); len(ds) != 0 || out.String() != " 2\n" {
+		t.Fatalf("callee break: diagnostics=%v output=%q", ds, out.String())
+	}
+}
+
 func TestBreakpointHost(t *testing.T) {
 	for _, command := range []string{"pausa", "pausa()", "pausa ignored", "debug verdadeiro", "debug 1=1"} {
 		t.Run(command, func(t *testing.T) {
