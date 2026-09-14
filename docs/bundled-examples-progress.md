@@ -93,7 +93,8 @@ diagnostic.
 The latest bounded grammar audit leaves four rejected recordings pending; no
 accepted recording remains pending. These observations do not justify adding a
 default loop bound or generally suppressing diagnostics in unexecuted
-subprograms.
+subprograms. Acceptance validation keeps these rejected-source mismatches
+visible without treating them as required accepted behavior.
 
 A replay audit after the lazy body diagnostic fix found no additional byte-exact
 match. The `randomicos.alg.ALG` transcript (source algorithm `semnome`) now has

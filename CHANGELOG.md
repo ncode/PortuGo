@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Keep reviewed rejected-source records visible during replay without treating
+  them as pending accepted behavior; pending accepted records still fail the
+  implementation-acceptance gate.
 - Reject undeclared files and special entries in private conformance recording
   stages before evidence is captured.
 - Qualify the bundled `randomicos.alg.ALG` transcript (source algorithm

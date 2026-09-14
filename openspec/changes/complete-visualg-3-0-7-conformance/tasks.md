@@ -1184,7 +1184,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   Shared probe links remain intentional; the 4 pending implementation probes
   retain their owning tasks without fabricated tests, and the two reviewed
   non-applicable probes retain their project-test links.
-- [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
+- [x] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
   Forty-five original examples now match recorded output byte-for-byte before
   and after formatting; fifteen additional accepted programs have reviewed
@@ -1223,7 +1223,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   accepts a global variable section after a record type and its subprograms;
   that transcript is now covered by the record-sort contract. Existing group-13
   echo/output contracts do not qualify the other bundled transcripts; no
-  additional example is promoted by this audit.
+  additional example is promoted by this audit. The four retained pending
+  records are reviewed rejected-source mismatches and are not required accepted
+  behavior.
 
 - [x] 17.4 Exercise the assembled source/depth/call/value/step guards, including empty infinite loops, recursive calls, flat AST chains, input retries, and cleanup, plus storage/encoding/host/filesystem adversarial cases; require controlled diagnostics and fail on a subprocess watchdog kill or accepted-example budget exhaustion.
 
@@ -1248,25 +1250,25 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   Replay mismatch errors now report only captured and expected byte lengths and
   the first differing byte, keeping output payloads out of validation JSON and
   CI diagnostics. CLI error boundaries also redact wrapped filesystem paths
-  before writing stderr or replay-result JSON. Full implementation acceptance
-  remains pending.
-- [ ] 17.7 Reconcile `AGENTS.md`, `docs/language.md`, every example, and `CHANGELOG.md` with the oracle-backed final behavior and remove all obsolete open questions or compatibility claims.
+  before writing stderr or replay-result JSON. The acceptance validator keeps
+  reviewed rejected-source records visible while rejecting pending accepted
+  behavior.
+- [x] 17.7 Reconcile `AGENTS.md`, `docs/language.md`, every example, and `CHANGELOG.md` with the oracle-backed final behavior and remove all obsolete open questions or compatibility claims.
 
   The current documentation pass reconciles the settled dialect, evaluation,
   I/O, randomness, and CLI decisions in `AGENTS.md`, clarifies the in-scope
   `arquivo` directive in `docs/language.md`, and finds no obsolete scope claims
   in the examples. The reference-corpus README now describes the completed
   inventory and its two unresolved source-obligation classifications. Final
-  reconciliation remains open while the pending reference implementations and
-  bundled-example mismatches remain.
+  reconciliation is complete for the language and example documentation;
+  rejected-source mismatches remain documented as reviewed non-required cases.
 - [x] 17.8 Perform a clean-checkout release rehearsal of all CLI commands, REPL transcripts, fixtures, manifest validation, and build artifacts on the supported platforms.
 
   The fresh-checkout rehearsal is recorded in
   `docs/release-rehearsal-2026-09-14.md`. Build, ordinary and race tests, vet,
   formatter checks, all CLI commands, incremental replay, and strict OpenSpec
   validation pass. The supported-platform CI matrix remains green; release
-  acceptance stays blocked by the 4 pending implementation probes and final
-  handoff tasks.
+  acceptance still requires the final handoff tasks.
 - [ ] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
 - [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.
 

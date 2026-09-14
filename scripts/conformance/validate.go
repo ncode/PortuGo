@@ -248,10 +248,15 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 	case "verified":
 		add(checkTests(root, i.Tests))
 	case "pending":
-		if mode == "implementation-acceptance" {
+		// A rejected reference recording is not required language behavior. Keep
+		// its pending mismatch visible in replay output, but do not treat it as
+		// an incomplete implementation during acceptance. Pending accepted
+		// behavior remains a hard failure in both acceptance phases.
+		required := p.Evidence.Accepted == nil || *p.Evidence.Accepted
+		if required && mode == "implementation-acceptance" {
 			add(fmt.Errorf("pending implementation"))
 		}
-		if mode != "evidence" && completed[p.OwnerGroup] {
+		if required && mode != "evidence" && completed[p.OwnerGroup] {
 			add(fmt.Errorf("pending behavior owned by completed group %d", p.OwnerGroup))
 		}
 	case "not-applicable":

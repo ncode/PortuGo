@@ -22,9 +22,9 @@ sanitized summary; raw workflow logs remain outside the repository.
 | Evidence validation and replay | PASS | 1,679 probes; zero verified regressions |
 | Specification validation | PASS | Strict OpenSpec validation |
 
-These checks establish quality and evidence status for the current stack. They
-do not establish implementation acceptance: 4 implementation probes remain
-pending in the manifest.
+These checks establish quality and evidence status for the current stack. The
+four pending manifest probes are reviewed rejected-source recordings; they stay
+visible for traceability but do not represent pending accepted behavior.
 
 ## Pending implementation inventory
 
@@ -33,7 +33,7 @@ pending in the manifest.
 | Bundled example qualification (17.3) | 4 | See the manifest for the current pending probe inventory. |
 
 The bundled entries retain their recorded sources and outputs while their
-deterministic mismatches remain pending. The two recorded nonassignable `var`
+deterministic mismatches remain pending as reviewed rejections. The two recorded nonassignable `var`
 argument guards are verified by project regressions; their reviewed reference
 application faults remain separate from language-level diagnostic claims.
 

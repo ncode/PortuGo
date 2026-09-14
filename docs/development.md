@@ -66,7 +66,9 @@ Supply the PR base or parent branch with `--base` (replace `origin/main` for
 stacked work); history comparison is required to detect unreviewed coverage
 downgrades. CI supplies the PR base or pre-push commit and fetches its history.
 Groups 3–16 will additionally require incremental
-replay of completed groups; final acceptance rejects every pending behavior.
+replay of completed groups; final acceptance rejects every pending accepted
+behavior. Reviewed rejected-source recordings remain visible in replay output
+without being treated as required language behavior.
 Missing reference evidence is never proof of compatibility.
 
 Replayed diagnostics must carry a positive source line and column. An omitted
