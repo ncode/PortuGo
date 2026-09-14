@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Clarify that the recorded `arquivo` input directive is in scope while other
+  file APIs such as `arqabertura` remain out of scope.
+
 - Keep conformance execution diagnostics on the stable `source.alg` filename so
   local filesystem paths cannot enter captured output.
 - Reconcile the environment-command task ledger with its verified typed host

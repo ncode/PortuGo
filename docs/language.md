@@ -1321,7 +1321,10 @@ continuation; requested timer delays still wait.
 
 ## Out Of Scope
 
-File I/O and GUI primitives are not implemented in v1.
+The recorded `arquivo` input directive is part of the implementation; its
+documented platform and access limitations remain described above. General
+file I/O outside that directive, including `arqabertura`, and GUI primitives
+remain out of scope for v1.
 
 ## Validation status
 
