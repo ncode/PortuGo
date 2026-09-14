@@ -192,6 +192,36 @@ func TestRandomIntegerSortOutputContract(t *testing.T) {
 	}
 }
 
+func TestRandomRealSortOutputContract(t *testing.T) {
+	t.Parallel()
+	valid := "99.2680000000\n7.8610000000\n44.1160000000\n21.3800000000\n3.5940000000\n40.1850000000\n15.1450000000\n50.2560000000\n85.0640000000\n20.0420000000\n  1 -      3.594\n  2 -      7.861\n  3 -     15.145\n  4 -     20.042\n  5 -     21.380\n  6 -     40.185\n  7 -     44.116\n  8 -     50.256\n  9 -     85.064\n 10 -     99.268\n"
+	contract := randomOutputExpectation{Kind: "random-real-sort-lines", Lines: 20, Minimum: 0, Bound: 101000, Decimals: 3}
+	for _, tt := range []struct {
+		name   string
+		output string
+		valid  bool
+	}{
+		{"domain and sorted permutation", valid, true},
+		{"input below domain", strings.Replace(valid, "99.2680000000", "-0.0010000000", 1), false},
+		{"input above domain", strings.Replace(valid, "99.2680000000", "101.0000000000", 1), false},
+		{"input off precision grid", strings.Replace(valid, "7.8610000000", "7.8615000000", 1), false},
+		{"unsorted output", strings.Replace(valid, "  2 -      7.861\n  3 -     15.145\n", "  2 -     15.145\n  3 -      7.861\n", 1), false},
+		{"wrong row number", strings.Replace(valid, "  1 -      3.594", "  2 -      3.594", 1), false},
+		{"wrong output precision", strings.Replace(valid, "  1 -      3.594", "  1 -      3.5940", 1), false},
+		{"carriage returns", strings.ReplaceAll(valid, "\n", "\r\n"), false},
+		{"missing final newline", strings.TrimSuffix(valid, "\n"), false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := contract.compare([]byte(tt.output)); (err == nil) != tt.valid {
+				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
+			}
+		})
+	}
+	if err := (randomOutputExpectation{Kind: "random-real-sort-lines", Lines: 20, Minimum: 0, Bound: 101000, Decimals: 0}).compare([]byte(valid)); err == nil {
+		t.Fatal("zero-decimal real sort contract accepted")
+	}
+}
+
 func TestRandomInputContractValidation(t *testing.T) {
 	t.Parallel()
 	for _, name := range []string{"accepted", "missing review", "wrong owner", "rejected", "invalid recorded sample", "replaced evidence"} {

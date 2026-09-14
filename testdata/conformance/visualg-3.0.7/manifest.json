@@ -8163,14 +8163,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-215411a6ad9a/stdout.txt",
             "sha256": "346dee4b29872c18bdc14a6572a861b10ba83eb7822a5d424047c31426cf7a60"
+          },
+          "randomOutput": {
+            "kind": "random-real-sort-lines",
+            "lines": 20,
+            "minimum": 0,
+            "bound": 101000,
+            "decimals": 3,
+            "review": {
+              "reason": "The recorded transcript preserves the generated real input multiset and its sorted output while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRealSortOutput"
+        ]
       }
     },
     {
@@ -10336,14 +10350,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c6443beee11c/stdout.txt",
             "sha256": "0a3c515f4c7599d85a37b016d1710bf648f3ac4dc953fbb466022c5d05ea584e"
+          },
+          "randomOutput": {
+            "kind": "random-real-sort-lines",
+            "lines": 20,
+            "minimum": 0,
+            "bound": 101000,
+            "decimals": 3,
+            "review": {
+              "reason": "The recorded transcript preserves the generated real input multiset and its sorted output while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRealSortOutput"
+        ]
       }
     },
     {

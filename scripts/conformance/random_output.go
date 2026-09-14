@@ -107,6 +107,7 @@ type randomOutputExpectation struct {
 	Lines     int    `json:"lines"`
 	Minimum   int64  `json:"minimum,omitempty"`
 	Bound     int64  `json:"bound"`
+	Decimals  int    `json:"decimals,omitempty"`
 	FixedTail int64  `json:"fixedTail"`
 	Review    review `json:"review"`
 }
@@ -114,15 +115,19 @@ type randomOutputExpectation struct {
 func (c randomOutputExpectation) compare(output []byte) error {
 	switch c.Kind {
 	case "randi-lines":
-		if c.Lines < 1 || c.Lines > 4096 || c.Minimum != 0 || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail < 0 || c.FixedTail >= c.Bound {
+		if c.Lines < 1 || c.Lines > 4096 || c.Minimum != 0 || c.Decimals != 0 || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail < 0 || c.FixedTail >= c.Bound {
 			return fmt.Errorf("invalid random-output contract")
 		}
 	case "random-int-text-lines":
-		if c.Lines < 2 || c.Lines > 4096 || c.Lines%2 != 0 || c.Minimum != 0 || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail != 0 {
+		if c.Lines < 2 || c.Lines > 4096 || c.Lines%2 != 0 || c.Minimum != 0 || c.Decimals != 0 || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
 		}
 	case "random-int-sort-lines":
-		if c.Lines < 2 || c.Lines > 4096 || c.Lines%2 != 0 || c.Minimum < math.MinInt32 || c.Minimum >= c.Bound || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail != 0 {
+		if c.Lines < 2 || c.Lines > 4096 || c.Lines%2 != 0 || c.Minimum < math.MinInt32 || c.Minimum >= c.Bound || c.Bound < 1 || c.Bound > math.MaxInt32 || c.Decimals != 0 || c.FixedTail != 0 {
+			return fmt.Errorf("invalid random-output contract")
+		}
+	case "random-real-sort-lines":
+		if c.Lines < 2 || c.Lines > 4096 || c.Lines%2 != 0 || c.Decimals < 1 || c.Decimals > 5 || c.Minimum < math.MinInt32 || c.Minimum >= c.Bound || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
 		}
 	default:
@@ -172,6 +177,33 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		}
 		return nil
 	}
+	if c.Kind == "random-real-sort-lines" {
+		input := make([]int64, c.Lines/2)
+		for index, line := range lines[:c.Lines/2] {
+			value, err := parseFixedDecimal(line, c.Decimals, 10)
+			if err != nil || value < c.Minimum || value >= c.Bound {
+				return fmt.Errorf("random-output real line %d outside domain", index+1)
+			}
+			input[index] = value
+		}
+		expected := slices.Clone(input)
+		slices.Sort(expected)
+		for index, line := range lines[c.Lines/2 : c.Lines] {
+			prefix := fmt.Sprintf("%3d - ", index+1)
+			if !strings.HasPrefix(line, prefix) {
+				return fmt.Errorf("random-output sorted real line %d framing mismatch", index+1)
+			}
+			valueText := strings.TrimSpace(line[len(prefix):])
+			value, err := parseFixedDecimal(valueText, c.Decimals, c.Decimals)
+			if err != nil || value < c.Minimum || value >= c.Bound || line != fmt.Sprintf("%s%10s", prefix, valueText) {
+				return fmt.Errorf("random-output sorted real line %d formatting mismatch", index+1)
+			}
+			if value != expected[index] {
+				return fmt.Errorf("random-output sorted real line %d is not the input permutation", index+1)
+			}
+		}
+		return nil
+	}
 	for index, line := range lines[:c.Lines] {
 		if !strings.HasPrefix(line, " ") {
 			return fmt.Errorf("random-output line %d spacing mismatch", index+1)
@@ -185,4 +217,51 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		}
 	}
 	return nil
+}
+
+func parseFixedDecimal(text string, valueDecimals, textDecimals int) (int64, error) {
+	if valueDecimals < 0 || textDecimals < valueDecimals || textDecimals > 10 {
+		return 0, fmt.Errorf("invalid decimal precision")
+	}
+	value, ok := new(big.Rat).SetString(text)
+	if !ok {
+		return 0, fmt.Errorf("invalid decimal")
+	}
+	valueScale := int64(math.Pow10(valueDecimals))
+	scaled := new(big.Rat).Mul(value, new(big.Rat).SetInt64(valueScale))
+	if !scaled.IsInt() || !scaled.Num().IsInt64() {
+		return 0, fmt.Errorf("decimal is off grid")
+	}
+	ticks := scaled.Num().Int64()
+	textTicks := ticks
+	for precision := valueDecimals; precision < textDecimals; precision++ {
+		if textTicks > math.MaxInt64/10 || textTicks < math.MinInt64/10 {
+			return 0, fmt.Errorf("decimal is out of range")
+		}
+		textTicks *= 10
+	}
+	if formatFixedDecimal(textTicks, textDecimals) != text {
+		return 0, fmt.Errorf("non-canonical decimal")
+	}
+	return ticks, nil
+}
+
+func formatFixedDecimal(ticks int64, decimals int) string {
+	if decimals == 0 {
+		return strconv.FormatInt(ticks, 10)
+	}
+	scale := int64(math.Pow10(decimals))
+	negative := ticks < 0
+	if negative {
+		if ticks == math.MinInt64 {
+			return ""
+		}
+		ticks = -ticks
+	}
+	whole, fraction := ticks/scale, ticks%scale
+	formatted := fmt.Sprintf("%d.%0*d", whole, decimals, fraction)
+	if negative {
+		return "-" + formatted
+	}
+	return formatted
 }

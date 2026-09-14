@@ -39,9 +39,10 @@ func TestBundledRandiOutputContractMetadata(t *testing.T) {
 		t.Fatal(err)
 	}
 	required := map[string]string{
-		"randi-lines":           "bundled randi example",
-		"random-int-text-lines": "bundled mixed random example",
-		"random-int-sort-lines": "bundled random sort example",
+		"randi-lines":            "bundled randi example",
+		"random-int-text-lines":  "bundled mixed random example",
+		"random-int-sort-lines":  "bundled random sort example",
+		"random-real-sort-lines": "bundled real sort examples",
 	}
 	found := make(map[string]bool)
 	for _, p := range doc.Probes {
@@ -75,6 +76,10 @@ func TestRecordedBundledRandomSortOutput(t *testing.T) {
 	testRecordedBundledRandomOutput(t, "random-int-sort-lines")
 }
 
+func TestRecordedBundledRandomRealSortOutput(t *testing.T) {
+	testRecordedBundledRandomOutput(t, "random-real-sort-lines")
+}
+
 func testRecordedBundledRandomOutput(t *testing.T, kind string) {
 	t.Helper()
 	root, err := filepath.Abs("../..")
@@ -85,64 +90,65 @@ func testRecordedBundledRandomOutput(t *testing.T, kind string) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var probe *probe
+	var probes []*probe
 	for index := range m.Probes {
 		contract := m.Probes[index].Implementation.Expected.RandomOutput
 		if contract != nil && contract.Kind == kind {
-			probe = &m.Probes[index]
-			break
+			probes = append(probes, &m.Probes[index])
 		}
 	}
-	if probe == nil || probe.Implementation.Expected.RandomOutput == nil {
-		t.Fatal("bundled randi output contract is missing")
+	if len(probes) == 0 {
+		t.Fatal("bundled random output contract is missing")
 	}
-	contract := probe.Implementation.Expected.RandomOutput
-	recorded, err := readArtifact(root, probe.Evidence.Normalized)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := contract.compare(recorded); err != nil {
-		t.Fatal(err)
-	}
-	data, err := readArtifact(root, probe.Source)
-	if err != nil {
-		t.Fatal(err)
-	}
-	src, err := source.Decode(data)
-	if err != nil {
-		t.Fatal(err)
-	}
-	for pass := range 2 {
-		_, tokens, ds := lexer.Scan("source.alg", src)
-		if len(ds) != 0 {
-			t.Fatal(ds)
-		}
-		program, ds := parser.Parse(tokens)
-		if len(ds) != 0 {
-			t.Fatal(ds)
-		}
-		info, ds := sema.Analyze(program)
-		if len(ds) != 0 {
-			t.Fatal(ds)
-		}
-		generators := []interp.RandomSource{endpointRandom{}, endpointRandom{upper: true}}
-		for seed := uint64(0); seed < 16; seed++ {
-			generators = append(generators, rand.New(rand.NewPCG(seed, seed+1)))
-		}
-		for index, rng := range generators {
-			var out bytes.Buffer
-			i := interp.New(interp.Options{Output: &out, Random: rng, MaxSteps: 10000})
-			if ds := i.Run(program, info); len(ds) != 0 {
-				t.Fatalf("pass=%d generator=%d: %v", pass, index, ds)
-			}
-			if err := contract.compare(out.Bytes()); err != nil {
-				t.Fatalf("pass=%d generator=%d: %v", pass, index, err)
-			}
-		}
-		var formatted bytes.Buffer
-		if err := ast.Fprint(&formatted, program); err != nil {
+	for probeIndex, probe := range probes {
+		contract := probe.Implementation.Expected.RandomOutput
+		recorded, err := readArtifact(root, probe.Evidence.Normalized)
+		if err != nil {
 			t.Fatal(err)
 		}
-		src = formatted.String()
+		if err := contract.compare(recorded); err != nil {
+			t.Fatal(err)
+		}
+		data, err := readArtifact(root, probe.Source)
+		if err != nil {
+			t.Fatal(err)
+		}
+		src, err := source.Decode(data)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for pass := range 2 {
+			_, tokens, ds := lexer.Scan("source.alg", src)
+			if len(ds) != 0 {
+				t.Fatal(ds)
+			}
+			program, ds := parser.Parse(tokens)
+			if len(ds) != 0 {
+				t.Fatal(ds)
+			}
+			info, ds := sema.Analyze(program)
+			if len(ds) != 0 {
+				t.Fatal(ds)
+			}
+			generators := []interp.RandomSource{endpointRandom{}, endpointRandom{upper: true}}
+			for seed := uint64(0); seed < 16; seed++ {
+				generators = append(generators, rand.New(rand.NewPCG(seed, seed+1)))
+			}
+			for index, rng := range generators {
+				var out bytes.Buffer
+				i := interp.New(interp.Options{Output: &out, Random: rng, MaxSteps: 10000})
+				if ds := i.Run(program, info); len(ds) != 0 {
+					t.Fatalf("case=%d pass=%d generator=%d: %v", probeIndex, pass, index, ds)
+				}
+				if err := contract.compare(out.Bytes()); err != nil {
+					t.Fatalf("case=%d pass=%d generator=%d: %v", probeIndex, pass, index, err)
+				}
+			}
+			var formatted bytes.Buffer
+			if err := ast.Fprint(&formatted, program); err != nil {
+				t.Fatal(err)
+			}
+			src = formatted.String()
+		}
 	}
 }

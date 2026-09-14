@@ -25,6 +25,12 @@ in nondecreasing order, using the documented output spacing. Replay checks the
 input domain, sorted permutation and line framing for the original and formatted
 source without promising the generated sequence.
 
+Two bundled real-sort examples have separate `randomOutput` contracts. Each
+emits bounded real input with a fixed decimal grid followed by the same values
+in nondecreasing order, rendered in the documented numbered-row format. Replay
+checks the input grid, sorted permutation and row framing for the original and
+formatted source without promising the generated sequence.
+
 The optional `implementation.expected.randomInput` contract is restricted to
 accepted group-13 recordings and requires a review reason and document link.
 `minimum` and `maximum` are inclusive integer ticks at `10^-decimals`; for
@@ -73,7 +79,8 @@ evidence. The bundled `randomicos.alg.ALG` contract is replayed in
 sixteen deterministic seeds. The mixed-input contract is replayed by
 `TestRecordedBundledMixedRandomOutput`, and the integer-sort contract by
 `TestRecordedBundledRandomSortOutput`, with the same source and generator
-coverage. Bundled programs with generated arrays, records, sorting, branching,
+coverage. The real-sort contracts are replayed by
+`TestRecordedBundledRandomRealSortOutput`. Bundled programs with generated arrays, records, sorting, branching,
 or other mixed input/output remain pending until their own observable contracts
 exist.
 The ordinary subprocess replay uses the production CLI and its own generator.

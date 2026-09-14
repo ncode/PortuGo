@@ -20,7 +20,7 @@ timing, GUI, and reference-sequence behavior.
 The evidence-recording portion of group 2 is complete: all 73 bundled examples
 have a recorded disposition, and every manifest probe is either recorded or
 reviewed not-applicable. Evidence validation reports 1,657 recorded probes, 22
-reviewed not-applicable probes, and no unrecorded entries. The 17 pending
+reviewed not-applicable probes, and no unrecorded entries. The 15 pending
 implementation checks remain visible under their implementation tasks.
 
 The September 14 source-obligation slice adds eight reviewed recordings from
@@ -89,7 +89,7 @@ were preserved.
 Fresh recorder, normalizer, replay, manifest, traceability, quality, and strict
 OpenSpec checks are captured in the [current quality report](quality-acceptance-2026-09-14.md).
 Evidence validation has zero verified regressions; its published inventory
-keeps the current 17 pending implementation probes visible; the two recorded
+keeps the current 15 pending implementation probes visible; the two recorded
 nonassignable `var` guards are now covered by project regressions.
 
 The clean-checkout rehearsal in
