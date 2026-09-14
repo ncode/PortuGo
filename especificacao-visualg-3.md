@@ -353,7 +353,7 @@ aleatorio off               // desativa (off obrigatório)
 
 ### 8.2 `arquivo "<nome>"`
 Redireciona `leia` para arquivo-texto.
-- Vai na **seção de declarações** (antes de `var`? junto? `[VERIFICAR posição exata]`), no máximo **um** por programa.
+- O comando `arquivo "<nome>"` fica na seção de configuração, antes de `var`; após `var` ou no corpo é rejeitado, e a forma exige um nome de arquivo entre aspas. Há no máximo um por programa.
 - Se o arquivo não existe: lê por digitação e **grava** os valores lidos no arquivo, na ordem.
 - Se existe: consome valores do arquivo até o fim; depois volta à digitação.
 - Sem caminho: resolve relativo à pasta de trabalho corrente (onde está o VISUALG.EXE). Sem extensão default.

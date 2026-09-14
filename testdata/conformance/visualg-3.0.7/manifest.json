@@ -340,6 +340,16 @@
       ]
     },
     {
+      "id": "assumption.file-command-position",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- O comando `arquivo \"<nome>\"` fica na seção de configuração, antes de `var`; após `var` ou no corpo é rejeitado, e a forma exige um nome de arquivo entre aspas. Há no máximo um por programa.",
+      "probes": [
+        "file-input-missing",
+        "file-detail-after-var",
+        "file-detail-body"
+      ]
+    },
+    {
       "id": "assumption.vector-procedure-parameter",
       "kind": "assumption",
       "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Vetores como parâmetros: o help oficial não documenta. Comunidade reporta suporte parcial/bugado no 3.x. Testar `procedimento p(v: vetor[1..10] de inteiro)`.",
