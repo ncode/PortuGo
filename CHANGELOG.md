@@ -321,6 +321,10 @@
   `fimrepita`, report `P001` when that marker is reached, and report `E002` for
   `ate_que` and `até_que` without cascading line errors. Keep the canonical
   repeat syntax as `repita ... ate <condition>`.
+- Add a focused repeat regression that preserves finite conditional completion,
+  charges empty and nonempty iterations under `MaxSteps`, and reports `R006`
+  before another iteration when the budget is exhausted. The recorded
+  `fimrepita` candidate remains rejected when reached.
 
 - Add fixture-access replay setup for existing-file continuation under
   unavailable reads, covering the six recorded permission-denied and

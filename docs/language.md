@@ -461,7 +461,10 @@ reports `E002` at that identifier. A `fimrepita` line is retained as a
 deferred syntax-error marker: an earlier `interrompa` can exit before it, while
 reaching the marker reports `P001` at the marker line. These spellings are
 outside the canonical syntax.
-General conditionless or infinite-repeat semantics remain pending.
+The reference does not establish a conditionless or infinite-repeat syntax, so
+the implementation does not claim one. Conditional repeats charge each
+iteration, including empty bodies, against an optional execution budget and
+report `R006` before the next iteration when that budget is exhausted.
 The original bundled compound-terminator example also reports `E002` on line 23
 before producing output. Formatting retains the unknown name and its rejection.
 
