@@ -24,7 +24,7 @@ repository.
 | Specification validation | PASS | Strict OpenSpec validation |
 
 These checks establish quality and evidence status for the current stack. They
-do not establish implementation acceptance: 23 implementation probes remain
+do not establish implementation acceptance: 21 implementation probes remain
 pending in the manifest.
 
 ## Pending implementation inventory
@@ -32,9 +32,8 @@ pending in the manifest.
 | Owner | Count | Probe IDs |
 | --- | ---: | --- |
 | Bundled example qualification (17.3) | 21 | `bundled-215411a6ad9a`, `bundled-24919c4a2e4c`, `bundled-3b4c69f65b60`, `bundled-43742446e585`, `bundled-460092b86448`, `bundled-467736cf246b`, `bundled-49eb7f47065e`, `bundled-54f1e50d1c02`, `bundled-7f44aa03fcc5`, `bundled-86701928f296`, `bundled-8b2d8c702924`, `bundled-991ec2bd1566`, `bundled-a5945bc9ee4d`, `bundled-acf5d46a3a6a`, `bundled-b1c9cc780302`, `bundled-c47bf27802a4`, `bundled-c6443beee11c`, `bundled-da71c1ad0344`, `bundled-f251f2cd0c22`, `bundled-f4fa0c514cf7`, `bundled-fa172f3f5f70` |
-| Nonassignable `var` arguments (2.2, 5.4) | 2 | `var-expression-argument`, `var-literal-argument` |
 
 The bundled entries retain their recorded sources and outputs while their
-deterministic mismatches remain pending. The two `var` entries retain reviewed
-reference application faults and are not promoted to language-level
-diagnostics.
+deterministic mismatches remain pending. The two recorded nonassignable `var`
+argument guards are verified by project regressions; their reviewed reference
+application faults remain separate from language-level diagnostic claims.

@@ -470,7 +470,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Parameterless declarations, bare calls, callable-name priority, separate
   variable/callable namespaces, and declaration-line errors now match the
   recorded cases. Empty-argument execution edge cases remain under 5.4.
-- [ ] 5.4 Implement parameter grouping, arity, value-parameter coercion, and oracle-confirmed reference-parameter conversion, copy-back, and assignability validation.
+- [x] 5.4 Implement parameter grouping, arity, value-parameter coercion, and oracle-confirmed reference-parameter conversion, copy-back, and assignability validation.
 
   Recorded numeric conversions and scalar copy-in/copy-out now match, including
   repeated destinations and type changes on return. Three additional
@@ -484,6 +484,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   Two empty numeric-argument recordings now enter the body and complete when
   the absent value parameter is printed, without supplying a default or
   generalizing the rule to other call forms. See `docs/empty-call-progress.md`.
+  The two recorded nonassignable `var` argument cases now have focused project
+  regressions for the positioned `E004` guard and are linked from the manifest.
+  Their reference recordings remain reviewed application faults; no reference
+  diagnostic is claimed. Unrecorded bare or multi-parameter variants remain
+  outside the qualified profile.
 - [x] 5.5 Evaluate all call arguments exactly once in the oracle-confirmed order and capture reference designators before entering the callee.
 - [x] 5.6 Replace caller-derived lookup with fixed lexical bindings so globals, parameters, locals, and allowed shadowing never depend on dynamic call order.
 - [x] 5.7 Implement oracle-confirmed declaration visibility, direct recursion, mutual recursion, and independent recursive call frames.
@@ -1171,7 +1176,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   exclusions, retaining their unchanged sources and partial observations. A
   fresh manifest audit resolves all 229 inventory links, all 1,679 probe links,
   and all 1,813 implementation-test links with no stale or untraced IDs.
-  Shared probe links remain intentional; the 23 pending implementation probes
+  Shared probe links remain intentional; the 21 pending implementation probes
   retain their owning tasks without fabricated tests, and the two reviewed
   non-applicable probes retain their project-test links.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
@@ -1240,7 +1245,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   `docs/release-rehearsal-2026-09-14.md`. Build, ordinary and race tests, vet,
   formatter checks, all CLI commands, incremental replay, and strict OpenSpec
   validation pass. The supported-platform CI matrix remains green; release
-  acceptance stays blocked by the 23 pending implementation probes and final
+  acceptance stays blocked by the 21 pending implementation probes and final
   handoff tasks.
 - [ ] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
 - [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.
