@@ -10201,14 +10201,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c2c3c37e29ae/stdout.txt",
             "sha256": "7cac1738cac2d74cb338b1bf3960386b70142a490d260c9b4ea3b8f15acc56df"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {

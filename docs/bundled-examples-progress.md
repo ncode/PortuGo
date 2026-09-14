@@ -9,7 +9,7 @@ The evidence gate checks catalog IDs, source hashes and sizes, classifications,
 recorded acceptance, and reviewed exclusion reasons. Pending entries still fail
 the missing-evidence gate; classifications do not grant them an exemption.
 
-Sixty programs complete successfully in the reference. Forty-three match
+Sixty programs complete successfully in the reference. Forty-four match
 the CLI byte for byte and have permanent tests for original and formatted execution.
 The fixed-input cases cover combinations, factorials, minimum selection, means,
 prime decomposition, base conversion, vector sorting, remainders, reversed text,
@@ -100,10 +100,10 @@ The latest bounded grammar audit keeps these two accepted recordings pending:
 These observations do not justify adding a default loop bound or generally
 suppressing diagnostics in unexecuted subprograms.
 
-A replay audit of all seventeen pending accepted programs found no additional
-byte-exact matches. Thirteen finish without diagnostics but produce different
-generated values. Successful local completion alone does not qualify their
-output or every branch.
+A replay audit of the sixteen remaining pending accepted programs found no
+additional byte-exact matches. Twelve finish without diagnostics but produce
+different generated values. Successful local completion alone does not qualify
+their output or every branch.
 
 The other four fail before producing output:
 
@@ -115,11 +115,11 @@ The other four fail before producing output:
 | Unselected break | `E006`, line 69 | An out-of-loop `interrompa` in the branch avoided by the recorded valid input. |
 
 These CLI diagnostics are mismatch observations, not replacement reference
-expectations: all seventeen recordings are accepted by the reference. The
+expectations: all sixteen remaining recordings are accepted by the reference. The
 existing [generated-input contract](random-replay-contracts.md) covers only
 group-13 echo/output pairs. It cannot qualify the bundled programs' generated
 tables, sorting, searches or mixed input/output transcripts. Their sources and
-expected output remain unchanged, and all seventeen remain pending.
+expected output remain unchanged, and all sixteen remain pending.
 
 The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
 recording therefore remains pending; the retained diagnostic and preceding output
