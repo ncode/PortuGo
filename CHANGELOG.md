@@ -32,6 +32,8 @@
   sequence or GUI qualifications.
 - Mark the environment probe-batch and built-in inventory task complete from
   the recorded, implementation-verified corpus coverage.
+- Mark the expression and control-flow probe-batch task complete from nine
+  stable requirement links covering 299 unique recorded and verified probes.
 - Verify the recorded reserved-word, repeated-main-section, and builtin-name
   rejection probes against positioned local diagnostics.
 - Correct the reference-corpus progress totals to match the current manifest.

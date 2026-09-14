@@ -42,6 +42,12 @@ breakpoint, echo, and chronometer entries. Every linked probe is recorded and
 implementation-verified; unresolved timing, GUI, and reference-sequence
 qualifications remain explicitly pending.
 
+Expression and control-flow inventory links now cover precedence, numeric and
+ logical evaluation, comparisons, evaluation order, case ranges, loops, and
+ interruption with 299 unique recorded and implementation-verified probes.
+Overlapping requirement links share one probe where a recording serves more
+ than one category; unqualified operand combinations remain pending.
+
 The initial manifest contained 18 reduced probes:
 
 - Eleven accepted observations from the earlier Windows validation have complete
