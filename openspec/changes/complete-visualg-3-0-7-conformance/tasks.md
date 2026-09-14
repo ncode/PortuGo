@@ -1130,7 +1130,14 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   replay adapter now has a bounded empty-loop regression that requires a
   positioned `R006`; child-process watchdog expiry remains a test failure.
   These are implementation contracts and do not promote reference probes.
-- [ ] 17.5 Run and archive results for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, race tests, Windows/macOS/Linux tests, and 30-second lexer and parser fuzz jobs.
+- [x] 17.5 Run and archive results for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, race tests, Windows/macOS/Linux tests, and 30-second lexer and parser fuzz jobs.
+
+  The exact pushed candidate for PR #183 passed the pinned quality, race,
+  ordinary-test, six-platform, lexer-fuzz, parser-fuzz, and strict
+  specification jobs. The sanitized evidence summary is recorded in
+  `docs/quality-acceptance-2026-09-14.md`; raw workflow logs remain outside the
+  repository. This quality evidence does not promote pending behavior or close
+  implementation acceptance.
 - [ ] 17.6 Run strict OpenSpec validation and the corpus runner in implementation-acceptance mode; produce a report proving no pending behavior, mismatches, or untraced requirements, stable positioned diagnostics, and complete accepted-example support. Report remaining handoff tasks separately from behavioral acceptance.
 
   Replay mismatch errors now report only captured and expected byte lengths and
