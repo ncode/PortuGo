@@ -1227,7 +1227,14 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   `arquivo` directive in `docs/language.md`, and finds no obsolete scope claims
   in the examples. Final reconciliation remains open while the pending
   reference implementations and bundled-example mismatches remain.
-- [ ] 17.8 Perform a clean-checkout release rehearsal of all CLI commands, REPL transcripts, fixtures, manifest validation, and build artifacts on the supported platforms.
+- [x] 17.8 Perform a clean-checkout release rehearsal of all CLI commands, REPL transcripts, fixtures, manifest validation, and build artifacts on the supported platforms.
+
+  The fresh-checkout rehearsal is recorded in
+  `docs/release-rehearsal-2026-09-14.md`. Build, ordinary and race tests, vet,
+  formatter checks, all CLI commands, incremental replay, and strict OpenSpec
+  validation pass. The supported-platform CI matrix remains green; release
+  acceptance stays blocked by the 23 pending implementation probes and final
+  handoff tasks.
 - [ ] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
 - [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.
 

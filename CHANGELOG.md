@@ -26,6 +26,8 @@
   broader unrecorded forms outside the qualified profile.
 - Promote the recorded bundled binary-conversion example after its original and
   formatted executions match byte-for-byte.
+- Record the clean-checkout build, CLI, REPL, fixture, replay, and specification
+  rehearsal while keeping release acceptance gated on the remaining probes.
 
 - Record the remaining source-obligation probes for reserved words, declaration
   sections, builtin collisions, reference-argument edge cases, interruption,

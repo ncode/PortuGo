@@ -82,6 +82,12 @@ OpenSpec checks are captured in the [current quality report](quality-acceptance-
 Evidence validation has zero verified regressions; its published inventory
 keeps the 23 pending implementation probes visible.
 
+The clean-checkout rehearsal in
+[the release rehearsal report](release-rehearsal-2026-09-14.md) passes the
+build, CLI and REPL smoke commands, ordinary and race suites, vet, formatter,
+incremental replay, and strict OpenSpec checks. Pending implementation and
+handoff tasks continue to block release acceptance.
+
 The initial manifest contained 18 reduced probes:
 
 - Eleven accepted observations from the earlier Windows validation have complete
