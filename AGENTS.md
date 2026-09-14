@@ -239,7 +239,8 @@ These cost time when wrong. Each must have a regression test.
 6. **Number formatting on output.** Use the recorded deterministic profile in `docs/language.md`; compare fixture bytes exactly.
 7. **Reading multiple values with `leia`.** Each variable consumes one complete input line. Preserve spaces and empty character lines, share unread input across calls, and emit the recorded typed input echo.
 8. **`escolha` fall-through.** Does **not** fall through. Each `caso` is independent.
-9. **`interrompa` outside a loop** is a sema error, not a runtime error.
+9. **`interrompa` outside a loop** is accepted and ignored; inside a loop it
+   exits the innermost active loop.
 10. **Uninitialized variables.** VisuAlg gives them zero values per type. Match this; do not error on read-before-write.
 
 ---

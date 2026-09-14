@@ -20,6 +20,8 @@
   dispositions and manifest probes; keep the 24 implementation checks pending.
 - Accept one global `var` section after top-level subprogram declarations and
   retain the repeated-section diagnostic.
+- Align the agent guidance for `interrompa` outside loops with the recorded
+  accepted-and-ignored behavior.
 
 - Record the remaining source-obligation probes for reserved words, declaration
   sections, builtin collisions, reference-argument edge cases, interruption,
