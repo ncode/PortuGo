@@ -8,12 +8,11 @@ implementation checks remain pending. The original compatibility checklist is
 present in `especificacao-visualg-3.md`; its 25 numbered rows now have stable
 manifest links to existing probe coverage. Twenty-six evidenced source
 assumptions, the builtin catalog, and one recorded CLI correction are also
-linked. Stable feature entries now cover the documented console, display,
-timer, breakpoint, echo, and chronometer families through existing probe
-coverage. The latest source-obligation recordings close five previously
-unrecorded questions; nonassignable `var` arguments and maximum recursion or
-stack-display behavior remain open, along with unqualified timing and GUI
-combinations and the broader environment-command inventory.
+linked. Stable feature entries now cover every documented environment-command
+family through existing probe coverage. The latest source-obligation recordings
+close five previously unrecorded questions; nonassignable `var` arguments and
+maximum recursion or stack-display behavior remain open, along with unqualified
+timing, GUI, and reference-sequence behavior.
 
 The September 14 source-obligation slice adds eight reviewed recordings from
 the Windows reference application. `const` and `dos` are reserved, a second
@@ -35,6 +34,12 @@ instructions and grammar comments at their recorded lines are contextual
 references (the grammar aliases point to their existing assumptions). Trace
 validation anchors all seven classifications and accepts no unclassified
 qualified marker.
+
+The environment inventory now includes stable links for random input, file
+input, and console configuration alongside the existing display, timer,
+breakpoint, echo, and chronometer entries. Every linked probe is recorded and
+implementation-verified; unresolved timing, GUI, and reference-sequence
+qualifications remain explicitly pending.
 
 The initial manifest contained 18 reduced probes:
 

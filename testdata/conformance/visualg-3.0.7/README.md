@@ -118,6 +118,9 @@ case aliases. Artifact hashes are lowercase SHA-256 of the exact published bytes
   obligations remain unresolved while their recorded evidence is retained.
   Contextual prose and grammar markers are anchored separately, including
   aliases to existing inventory entries.
+  Feature entries cover every documented environment-command family; pending
+  reference-sequence and GUI qualifications remain independent of that
+  inventory.
 - Probes have stable `id`, `ownerGroup`, existing `tasks`, `source`, `input`,
   optional initial `files`, `timeoutMS`, `evidence`, and `implementation`.
   `evidence.absent` and `implementation.expected.absent` declare relative files
