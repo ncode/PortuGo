@@ -62,7 +62,7 @@ golangci-lint run                  # config in .golangci.yml
 
 CI must run: `go vet`, `staticcheck`, `go test -race`, `go test -run=TestFuzz -fuzz=. -fuzztime=30s` on lexer + parser.
 
-No third-party dependencies in core language packages (`token`, `lexer`, `ast`, `parser`, `sema`, `runtime`, `interp`, `stdlib`, `diag`). CLI may depend on `cobra` or stdlib `flag` — prefer `flag` unless we have multi-level subcommands.
+No third-party dependencies in core language packages (`token`, `lexer`, `ast`, `parser`, `sema`, `runtime`, `interp`, `stdlib`, `diag`). The CLI uses the standard-library `flag` package.
 
 ---
 
@@ -223,7 +223,8 @@ These cost time when wrong. Each must have a regression test.
 
 1. **Declared vector indexing.** Bounds may start at zero or a positive integer; store an offset, do not assume 0 or 1. Vectors have at most two dimensions. An omitted second index selects that dimension's lower bound. Whole-vector assignment is rejected.
 2. **Integer vs real division.** `/` produces `real` for numeric pairs and otherwise returns the right scalar operand. `\` truncates two integers toward zero; other scalar pairs return the right operand and its type after evaluating both operands. Mixing integer and real operands in `+ - *` promotes to real. `%` and `MOD` follow the recorded divisor and conversion rules in `docs/language.md`.
-3. **Short-circuit `e` / `ou`.** VisuAlg historically does **not** short-circuit. Decide once, document, test both branches always evaluate. This is a common source of student bugs and we should not silently change it.
+3. **Logical evaluation.** VisuAlg does **not** short-circuit `e` or `ou`.
+   Both operands are evaluated, and this behavior is documented and tested.
 4. **Case-insensitivity.** `Soma`, `soma`, `SOMA` all refer to the same identifier. Canonicalize at the symbol-table boundary. Keywords likewise.
 5. **Encoding.** Real VisuAlg files are Windows-1252. Detect BOM / UTF-8 validity; otherwise assume CP1252 and transcode. Never read as raw bytes into a Go string and hope.
 6. **Number formatting on output.** Use the recorded deterministic profile in `docs/language.md`; compare fixture bytes exactly.
