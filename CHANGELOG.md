@@ -37,6 +37,8 @@
 - Reconcile the conformance plan and project guidance with the recorded
   declaration and case-range scope, retaining rejection coverage and pending
   ownership for unrecorded variants.
+- Record fresh conformance and quality evidence, including the complete
+  24-probe pending implementation inventory and zero verified replays.
 - Verify the recorded reserved-word, repeated-main-section, and builtin-name
   rejection probes against positioned local diagnostics.
 - Correct the reference-corpus progress totals to match the current manifest.
