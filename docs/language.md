@@ -150,8 +150,8 @@ using it in a declaration receives `P001` on that line.
 These are specific accepted spellings. The recorded type spelling `lógico` is
 rejected with `P001` on its declaration line. `início` is not an alias for
 `inicio`: the recorded program-body opener receives `L001` on that line.
-Further vocabulary and physical-line
-grammar work remains pending; see the [keyword observations](keyword-forms-progress.md).
+Further unrecorded vocabulary and physical-line grammar forms remain outside
+this qualified scope; see the [keyword observations](keyword-forms-progress.md).
 
 Recorded identifiers accept leading and internal underscores. Identifier
 matching ignores case: a declaration named `SoMa` can be assigned through `soma`

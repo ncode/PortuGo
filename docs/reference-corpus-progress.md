@@ -64,8 +64,9 @@ The reduced lexical and grammar batch is complete across nine requirement
 traces and 152 unique implementation-verified probes (149 recorded cases and
 three reviewed project-only contracts). The reduced type and declaration batch
 is complete across fourteen requirement traces and 273 unique recorded and
-implementation-verified probes. Broader unqualified forms and the reviewed
-nonassignable-argument faults remain pending under their owning tasks.
+implementation-verified probes. Broader unqualified forms remain outside this
+recorded scope; the reviewed nonassignable-argument faults remain pending under
+their owning task.
 
 The group 2 documentation reconciliation is complete. The proposal, delta
 specifications, design, task ledger, `AGENTS.md`, and language reference now

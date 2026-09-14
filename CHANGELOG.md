@@ -22,6 +22,8 @@
   retain the repeated-section diagnostic.
 - Align the agent guidance for `interrompa` outside loops with the recorded
   accepted-and-ignored behavior.
+- Close the recorded lexer/parser scope tasks 4.3–4.6 and 4.8 while leaving
+  broader unrecorded forms outside the qualified profile.
 
 - Record the remaining source-obligation probes for reserved words, declaration
   sections, builtin collisions, reference-argument edge cases, interruption,
