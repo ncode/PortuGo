@@ -302,22 +302,23 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   diagnostics and retained later statements under both line endings. Existing
   keyword/literal tables and source, parser, and AST limit suites cover the
   strict vocabulary/literal rejection cases and exact boundary/one-beyond
-  resource behavior. Broader vocabulary, literal, production-boundary, and
-  recovery implementation work remains tracked by 4.3-4.6 and 4.8.
+  resource behavior. Broader unrecorded vocabulary, literal,
+  production-boundary, and recovery forms remain outside the qualified scope.
 - [x] 4.2 Preserve positioned physical newline and comment tokens through decoding and lexing with original-byte mapping; comments must not consume their terminating newline.
   Original-byte mapping now survives BOM removal and Windows-1252 decoding,
   including physical newline, EOF, ignored-suffix and interior-comment spans.
   The comment regression checks mapped CP1252 bytes through canonical printing;
   separate lexer tables verify that each comment leaves its newline intact.
-- [ ] 4.3 Implement the oracle-recorded identifier character set, case-preserving token text, locale-independent canonical matching, and rejection of unsupported identifier forms.
+- [x] 4.3 Implement the oracle-recorded identifier character set, case-preserving token text, locale-independent canonical matching, and rejection of unsupported identifier forms.
   The recorded accented variable declaration now receives one positioned
   `L001` before execution. Original Windows-1252, UTF-8 and BOM source positions
-  and formatter rejection are covered. Broader identifier forms remain pending.
-- [ ] 4.4 Replace the keyword table with the complete oracle-recorded command vocabulary, accented and unaccented spellings, aliases, and non-reserved lookalikes.
+  and formatter rejection are covered. All linked identifier probes replay green;
+  broader unrecorded identifier forms remain outside this scope.
+- [x] 4.4 Replace the keyword table with the complete oracle-recorded command vocabulary, accented and unaccented spellings, aliases, and non-reserved lookalikes.
 
   Four recorded `div` cases now verify the case-insensitive `\` alias, its
-  evaluation order, formatting, and rejection as a variable name. Complete
-  vocabulary qualification remains pending. Three further `fimfunção` cases
+  evaluation order, formatting, and rejection as a variable name. Three further
+  `fimfunção` cases
   verify the accented function terminator, canonical formatting, and reserved
   variable-name rejection; the original bundled string-processing example now
   passes with that spelling. The reserved `caracter` callable-name recording
@@ -325,32 +326,34 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   diagnostic.
   The unsupported `início` body opener now receives its recorded `L001`, while
   accepted accented aliases and the `até_que` statement lookalike retain their
-  existing behavior. Complete vocabulary qualification remains pending.
+  existing behavior. All linked vocabulary probes replay green; broader
+  unrecorded vocabulary remains outside this scope.
 
-- [ ] 4.5 Implement exact comment, string, integer, real, range-punctuation, delimiter, and malformed-literal rules with positioned recovery.
+- [x] 4.5 Implement exact comment, string, integer, real, range-punctuation, delimiter, and malformed-literal rules with positioned recovery.
 
   Literal backslashes and backslash-quote rejection now match six recorded
   probes. Formatter round trips preserve these strings and program names.
   Twenty-nine comment cases now match recorded physical-line prefixes, quoted
   delimiters, and `//` truncation inside strings. Comment retention is covered
   by 4.7 and 4.10; incomplete expression behavior and the remaining literal
-  boundaries are still pending.
+  boundaries remain outside this recorded scope.
 
   The spaced brace-comment expression reports the missing closing parenthesis
   during execution on its own physical line, retaining earlier output. Adjacent
   numeric braces and the recorded C-style operator sequence now produce no value
   after their operand effects; undeclared names in the latter are diagnosed
   during execution. All three original recordings and formatting round trips
-  match. Other adjacent-token and malformed-operator forms remain pending.
+  match. Other adjacent-token and malformed-operator forms remain outside this
+  recorded scope.
 
   Single-quoted text now produces one positioned lexical diagnostic, retaining
   subsequent-line recovery. Its recorded rejection is verified; other literal
-  boundaries remain pending.
+  boundaries remain outside this recorded scope.
 
   Digit-only literals now use integer type through `2147483647` and real type
   above it; real literal types survive formatter round trips. Default real
   output and numeric-to-text conversion share the recorded 15-digit profile.
-  Division/remainder rules remain pending. The recorded direct
+  Division/remainder semantics remain outside this recorded grammar scope. The recorded direct
   real-to-integer assignment diagnostics now run at the assignment and report
   positioned `R001`.
 
@@ -358,7 +361,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   an exponent marker start arithmetic operators. Five reference cases verify
   original/formatted execution, and the two assignment-diagnostic timing cases
   now report their recorded real-to-integer errors during execution.
-- [ ] 4.6 Make parser production boundaries newline-aware and enforce the reference program header, declaration region, body, terminators, and post-`fimalgoritmo` behavior.
+- [x] 4.6 Make parser production boundaries newline-aware and enforce the reference program header, declaration region, body, terminators, and post-`fimalgoritmo` behavior.
 
   Thirteen declaration observations now verify one optional semicolon at a
   physical line's end, including local, vector, and empty declarations, while
@@ -366,7 +369,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   example matches its recording. Repeat lookalike recovery now verifies the
   recorded `ate_que`/`até_que` undeclared-identifier diagnostics, the
   break-before-`fimrepita` prefix, and the reached-`fimrepita` syntax diagnostic;
-  other physical-line rules remain pending.
+  other physical-line rules remain outside this recorded scope.
 
   Four new completed recordings verify that later physical lines after
   `fimalgoritmo` are opaque, even with malformed literals, symbols or blocks.
@@ -380,12 +383,12 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   parenthesized output, with or without a semicolon, using `P001` before
   execution. LF/CRLF recovery and formatter no-replacement regressions preserve
   following lines and accepted comments. Other production boundaries remain
-  pending.
+  outside this recorded scope.
 
   A single global `var` section is now accepted after top-level subprogram
   declarations, while a repeated global section keeps its positioned `P001`.
   The behavior is covered by an end-to-end fixture and example; broader
-  production-boundary qualification remains pending.
+  production-boundary forms remain outside this recorded scope.
 
   Additional native checks confirm lone-semicolon and same-line program-end
   rejection; ordinary regression fixtures preserve those diagnostics without
@@ -395,7 +398,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   The recorded output expression split after a binary operator now receives
   `P001` on the operator's physical line. Recovery retains following statements,
   and formatting refuses to join the invalid expression. Other multiline
-  expression forms remain under qualification.
+  expression forms remain outside this recorded scope.
 
 - [x] 4.7 Store ordered positioned comment groups with leading, same-line, pre-delimiter, and EOF anchors in the AST; preserve comment-only blocks and any oracle-ignored post-termination suffix.
 
@@ -404,7 +407,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   preserve internal comments in multiline expressions, declarations and calls.
   Byte goldens compare comment contents/order/anchors and syntax across two
   formatting passes, including CP1252 text and separator-only comment lines.
-- [ ] 4.8 Add structural and newline synchronization that collects independent parser diagnostics without panics, duplicate errors, or infinite loops.
+- [x] 4.8 Add structural and newline synchronization that collects independent parser diagnostics without panics, duplicate errors, or infinite loops.
 
   Recovery now retains the final source position after consuming EOF. A
   truncated-call fixture pins all subsequent diagnostics to the EOF line.
@@ -412,7 +415,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   retain the current line for a deferred missing-delimiter diagnostic, and the
   recorded malformed-expression forms preserve operand effects and name-error
   timing without consuming following statements.
-  Broader structural and execution-phase recovery differences remain pending.
+  Broader structural and execution-phase recovery behavior remains outside this
+  recorded scope.
 - [x] 4.9 Enforce source-size and syntax/AST-traversal limits from design decision 10 across source loading, parsing, analysis, and printing, reserving `E900`; cover flat expression chains and exact boundary/one-beyond cases before recursion or allocation.
 - [x] 4.10 Extend canonical printing and round-trip tests to retain every comment exactly once with its anchor and suffix, comparing comment content/order as well as AST structure and idempotence.
 

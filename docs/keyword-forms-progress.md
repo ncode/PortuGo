@@ -41,8 +41,9 @@ remains inconclusive and is excluded from the corpus. Four more original bundled
 programs now match fixed-input output, including the combination program using
 `div`, two factorial programs, and the minimum-of-three program.
 
-Tasks 4.4 and 4.6 remain in progress because complete vocabulary and physical-line
-grammar obligations extend beyond these spellings. Three more observations
+The recorded keyword and physical-line grammar scope is complete for these
+qualified forms. Broader unrecorded vocabulary and production boundaries remain
+outside this scope. Three more observations
 verify case-insensitive `fimfunção`, canonical formatting as `fimfuncao`, and
 rejection as a variable name. The original bundled `ENCRYPT.ALG` program now
 matches its fixed-input recording before and after formatting. The evidence
