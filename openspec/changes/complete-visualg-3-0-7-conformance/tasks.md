@@ -663,7 +663,13 @@ Group 2 must resolve and rewrite this group's candidate work before it begins. P
 
 As with declaration candidates, group 2 must replace unsupported repeat, range, or return forms with rejection tasks before this group starts. The work below adds positive forms only where recorded acceptance exists.
 
-- [ ] 9.1 Add failing oracle regressions for conditional and infinite repeat forms, `fimrepita`, inclusive case ranges and overlapping-label ordering, nested return/break propagation, zero/negative steps, bound evaluation timing, loop-variable mutation, and integer-boundary iteration.
+- [x] 9.1 Add failing oracle regressions for the recorded conditional repeat and rejected infinite-repeat candidate, `fimrepita`, inclusive case ranges and overlapping-label ordering, nested return/break propagation, zero/negative steps, bound evaluation timing, loop-variable mutation, and integer-boundary iteration.
+
+  The focused repeat, choice, return, and Windows-observation regressions cover
+  the recorded loop and propagation cases. `TestRepeatBudgetAndFiniteCompletion`
+  pins finite conditional completion, budget exhaustion, and empty-body charging;
+  `repeat_recovery_test.go` retains both the early-break prefix and reached-marker
+  rejection for `fimrepita`.
 - [x] 9.2 Add explicit optional repeat conditions, ranged case labels, and optional return expressions to the AST and canonical printer.
 
   The control-flow golden covers a conditional repeat, inclusive ranged labels,
@@ -682,7 +688,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   `interrompa` is accepted and covered by a focused interpreter regression.
   Recorded range, return, and loop tables cover the remaining accepted
   contexts.
-- [ ] 9.5 Implement conditional and confirmed infinite repeats with a budget charge on every iteration, including empty bodies; test that finite-budget runs stop with `R006` while unbudgeted loop semantics remain unchanged.
+- [x] 9.5 Implement conditional repeats with a budget charge on every iteration, including empty bodies; preserve the recorded rejection of unconfirmed infinite-repeat syntax and test that finite-budget runs stop with `R006` while unbudgeted loop semantics remain unchanged.
+
+  Conditional `repita ... ate` execution now has a focused regression for
+  finite completion, empty-body budget charging, and `R006` exhaustion. The
+  reference rejects a reached `fimrepita` marker, so no unsupported infinite
+  syntax is implemented or claimed.
 - [x] 9.6 Implement inclusive range matching, first-arm selection, and no fall-through while evaluating the selector once.
 
   Recorded ordinary numeric, text, and logical labels, dynamic numeric ranges,

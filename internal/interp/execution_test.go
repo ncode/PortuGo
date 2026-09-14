@@ -160,6 +160,28 @@ func TestStepBudgetAndReuse(t *testing.T) {
 	})
 }
 
+func TestRepeatBudgetAndFiniteCompletion(t *testing.T) {
+	src := "algoritmo \"repeat budget\"\nvar n: inteiro\ninicio\nrepita\nn <- n + 1\nate n = 3\nescreval(n)\nfimalgoritmo"
+	p, info := analyzed(t, src)
+	var out bytes.Buffer
+	if ds := New(Options{Output: &out}).Run(p, info); len(ds) != 0 || out.String() != " 3\n" {
+		t.Fatalf("unbudgeted repeat: diagnostics=%v output=%q", ds, out.String())
+	}
+
+	for _, limit := range []uint64{1, 2, 10} {
+		out.Reset()
+		ds := New(Options{MaxSteps: limit, Output: &out}).Run(p, info)
+		if len(ds) != 1 || ds[0].Code != diag.RLoop {
+			t.Fatalf("budget %d diagnostics=%v, want R006", limit, ds)
+		}
+	}
+
+	empty, emptyInfo := analyzed(t, "algoritmo \"empty repeat\"\ninicio\nrepita\nate falso\nfimalgoritmo")
+	if ds := New(Options{MaxSteps: 10}).Run(empty, emptyInfo); len(ds) != 1 || ds[0].Code != diag.RLoop {
+		t.Fatalf("empty repeat budget diagnostics=%v, want R006", ds)
+	}
+}
+
 func TestStepBudgetSharedAcrossCalls(t *testing.T) {
 	src := "algoritmo \"shared budget\"\nprocedimento p()\ninicio\nescreva(1)\nfimprocedimento\ninicio\np()\np()\nfimalgoritmo"
 	p, info := analyzed(t, src)
