@@ -54,6 +54,13 @@ untraced IDs. Shared links are retained where one probe serves multiple
 requirements. Pending implementation probes keep their owning tasks and omit
 nonexistent tests, while reviewed project-only probes keep their test links.
 
+The reduced lexical and grammar batch is complete across nine requirement
+traces and 152 unique implementation-verified probes (149 recorded cases and
+three reviewed project-only contracts). The reduced type and declaration batch
+is complete across fourteen requirement traces and 273 unique recorded and
+implementation-verified probes. Broader unqualified forms and the reviewed
+nonassignable-argument faults remain pending under their owning tasks.
+
 The group 2 documentation reconciliation is complete. The proposal, delta
 specifications, design, task ledger, `AGENTS.md`, and language reference now
 use the recorded scope: scalar constants and aliases, named records and scalar

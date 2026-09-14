@@ -13,6 +13,9 @@
 - Complete the conformance traceability handoff after auditing all inventory,
   probe, and implementation-test links; pending probes retain their owning
   tasks without fabricated test paths.
+- Close the reduced lexical/grammar and type/declaration probe-batch tasks
+  from their recorded, implementation-verified requirement traces while
+  keeping broader unqualified forms pending.
 
 - Record the remaining source-obligation probes for reserved words, declaration
   sections, builtin collisions, reference-argument edge cases, interruption,
