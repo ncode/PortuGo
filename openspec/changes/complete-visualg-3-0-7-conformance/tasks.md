@@ -691,9 +691,10 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 - [x] 9.5 Implement conditional repeats with a budget charge on every iteration, including empty bodies; preserve the recorded rejection of unconfirmed infinite-repeat syntax and test that finite-budget runs stop with `R006` while unbudgeted loop semantics remain unchanged.
 
   Conditional `repita ... ate` execution now has a focused regression for
-  finite completion, empty-body budget charging, and `R006` exhaustion. The
-  reference rejects a reached `fimrepita` marker, so no unsupported infinite
-  syntax is implemented or claimed.
+  finite completion, exact per-iteration and empty-body budget charging, and
+  positioned `R006` exhaustion. The reference rejects a reached `fimrepita`
+  marker, so no unsupported general infinite syntax is implemented or claimed;
+  the recorded early-break recovery path remains covered.
 - [x] 9.6 Implement inclusive range matching, first-arm selection, and no fall-through while evaluating the selector once.
 
   Recorded ordinary numeric, text, and logical labels, dynamic numeric ranges,

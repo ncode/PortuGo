@@ -168,17 +168,25 @@ func TestRepeatBudgetAndFiniteCompletion(t *testing.T) {
 		t.Fatalf("unbudgeted repeat: diagnostics=%v output=%q", ds, out.String())
 	}
 
-	for _, limit := range []uint64{1, 2, 10} {
-		out.Reset()
-		ds := New(Options{MaxSteps: limit, Output: &out}).Run(p, info)
-		if len(ds) != 1 || ds[0].Code != diag.RLoop {
-			t.Fatalf("budget %d diagnostics=%v, want R006", limit, ds)
-		}
+	// The finite program consumes exactly thirty charges: the repeat statement,
+	// three iteration charges, the body and condition expression trees, and the
+	// final write. The one-step boundary catches regressions that stop charging
+	// the repeat iteration itself.
+	out.Reset()
+	if ds := New(Options{MaxSteps: 30, Output: &out}).Run(p, info); len(ds) != 0 || out.String() != " 3\n" {
+		t.Fatalf("exact repeat budget: diagnostics=%v output=%q", ds, out.String())
+	}
+	out.Reset()
+	ds := New(Options{MaxSteps: 29, Output: &out}).Run(p, info)
+	writeArg := strings.Index(src, "escreval(n)") + len("escreval(")
+	if len(ds) != 1 || ds[0].Code != diag.RLoop || int(ds[0].Pos) != writeArg || out.Len() != 0 {
+		t.Fatalf("short repeat budget: diagnostics=%v output=%q, want R006 at %d", ds, out.String(), writeArg)
 	}
 
 	empty, emptyInfo := analyzed(t, "algoritmo \"empty repeat\"\ninicio\nrepita\nate falso\nfimalgoritmo")
-	if ds := New(Options{MaxSteps: 10}).Run(empty, emptyInfo); len(ds) != 1 || ds[0].Code != diag.RLoop {
-		t.Fatalf("empty repeat budget diagnostics=%v, want R006", ds)
+	emptySrc := "algoritmo \"empty repeat\"\ninicio\nrepita\nate falso\nfimalgoritmo"
+	if ds := New(Options{MaxSteps: 10}).Run(empty, emptyInfo); len(ds) != 1 || ds[0].Code != diag.RLoop || int(ds[0].Pos) != strings.Index(emptySrc, "falso") {
+		t.Fatalf("empty repeat budget diagnostics=%v, want R006 at %d", ds, strings.Index(emptySrc, "falso"))
 	}
 }
 
