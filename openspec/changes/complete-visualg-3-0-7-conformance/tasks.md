@@ -1188,7 +1188,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
 
   Forty-four original examples now match recorded output before and after
   formatting. Fifteen accepted programs still need a random-output replay
-  contract; two accepted paths encounter CLI errors in unexecuted code. Four
+  contract; one accepted path encounters a CLI error in unexecuted code. Four
   rejected programs retain diagnostic or execution-phase differences. The latest
   eleven recordings add eight completed reference runs and three reviewed
   rejections, including the school's input-dependent EOF diagnostic. The two

@@ -98,6 +98,28 @@ func TestBundledExtensoRejectsLiteralVectorType(t *testing.T) {
 	}
 }
 
+func TestLiteralTypeAliasRemainsSupported(t *testing.T) {
+	src := `algoritmo "literal-alias"
+tipo
+  literal = inteiro
+var
+  valores: vetor[1..2] de literal
+inicio
+  valores[1] <- 1
+fimalgoritmo`
+	_, tokens, ds := lexer.Scan("source.alg", src)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	prog, ds := parser.Parse(tokens)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	if _, ds = sema.Analyze(prog); len(ds) != 0 {
+		t.Fatal(ds)
+	}
+}
+
 func TestBundledRejectsInvalidFunctionName(t *testing.T) {
 	path := "testdata/conformance/visualg-3.0.7/probes/bundled-c9455d0abe8e/source.alg"
 	src, err := source.ReadFile(path)

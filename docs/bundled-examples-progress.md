@@ -115,7 +115,6 @@ finish with generated output that differs:
 | Counted-loop form | generated output differs | Omitted counted-loop upper bound is accepted and skips the loop; generated input/output still needs qualification. |
 | Declaration order | generated output differs | The CLI accepts the global `var` section after the record type and procedures; generated output still needs qualification. |
 | Unexecuted read | `E002`, line 157 | An undeclared read destination in a procedure avoided by the recorded menu exit. |
-| Unselected break | `E006`, line 69 | An out-of-loop `interrompa` in the branch avoided by the recorded valid input. |
 
 These CLI diagnostics are mismatch observations, not replacement reference
 expectations: all sixteen remaining recordings are accepted by the reference. The
