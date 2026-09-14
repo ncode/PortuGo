@@ -18,7 +18,8 @@ This file is the contract between the codebase and any coding agent (Claude Code
 - Diagnostics with stable error codes and source positions
 
 **Out of scope (v1):**
-- File I/O (`arqabertura`, etc.) — historical, niche, design later
+- General file I/O outside the recorded `arquivo` input directive
+  (`arqabertura`, etc.) — historical, niche, design later
 - GUI primitives — VisuAlg has none; some dialects do, ignore them
 - Native code emission, bytecode VM — tree-walker is enough until profiling says otherwise
 - LSP, debugger, formatter beyond `fmt` — defer
@@ -265,7 +266,8 @@ These are real decisions, not rhetorical. Resolve before implementing the affect
 2. **Short-circuit `e` / `ou`.** Spec-faithful (no SC) or pragmatic (SC)? Affects observable behavior of programs with side effects in conditions.
 3. **Decimal separator on I/O — resolved for the current profile.** Output uses the recorded `en-US` decimal dot on every host; input accepts comma or dot. Other reference locales remain unverified.
 4. **Random sequences — resolved.** Match recorded `rand`, `randi`, and command-form `aleatorio` domains with a per-interpreter source. Exact reference seeds and sequences are not promised; file-input interactions and extreme command bounds remain pending.
-5. **File I/O.** v1 = no, v2 = maybe. Confirm.
+5. **General file I/O.** The recorded `arquivo` input directive is in scope;
+   other file APIs such as `arqabertura` remain out of scope.
 6. **CLI framework.** stdlib `flag` or `cobra`? Default: `flag`.
 
 ---
