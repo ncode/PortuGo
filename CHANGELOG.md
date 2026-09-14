@@ -17,7 +17,7 @@
   from their recorded, implementation-verified requirement traces while
   keeping broader unqualified forms pending.
 - Close the evidence-recording task after validating all bundled-example
-  dispositions and manifest probes; keep the 24 implementation checks pending.
+  dispositions and manifest probes; keep the 23 implementation checks pending.
 - Accept one global `var` section after top-level subprogram declarations and
   retain the repeated-section diagnostic.
 - Align the agent guidance for `interrompa` outside loops with the recorded
@@ -34,8 +34,9 @@
   and finite recursion depth. Keep application faults as labeled GUI evidence
   and leave their unresolved implementation contracts pending.
 - Classify the seven remaining legacy verification markers, linking the
-  declaration-placement recording, preserving the zero-value question as
-  pending, and retaining contextual prose/grammar aliases in trace validation.
+  declaration-placement recording, resolving the zero-value question with a
+  reference recording, and retaining contextual prose/grammar aliases in trace
+  validation.
 
 - Match the recorded outside-loop `interrompa` behavior by ignoring it without
   a semantic or runtime diagnostic, while keeping loop breaks scoped to the

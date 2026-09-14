@@ -20,7 +20,7 @@ repository.
 | Lexer fuzz | PASS | 30-second campaign with two workers |
 | Parser fuzz | PASS | 30-second campaign with two workers |
 | Recorder, normalizer, replay, and traceability tests | PASS | `go test ./scripts/conformance -count=1` |
-| Evidence validation and replay | PASS | 1,678 probes; zero verified regressions |
+| Evidence validation and replay | PASS | 1,679 probes; zero verified regressions |
 | Specification validation | PASS | Strict OpenSpec validation |
 
 These checks establish quality and evidence status for the current stack. They

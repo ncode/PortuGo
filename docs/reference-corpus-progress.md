@@ -3,21 +3,21 @@
 OpenSpec group 2 is in progress. The corpus currently inventories 73 requirements
 and 73 bundled example filenames, sizes and hashes. All 73 examples now have
 recorded dispositions: 60 accepted, 11 unusable, and 2 reviewed non-goals. The
-manifest has 1,656 recorded probes and 22 reviewed non-applicable probes; 23
+manifest has 1,657 recorded probes and 22 reviewed non-applicable probes; 23
 implementation checks remain pending. The original compatibility checklist is
 present in `especificacao-visualg-3.md`; its 25 numbered rows now have stable
 manifest links to existing probe coverage. Twenty-six evidenced source
 assumptions, the builtin catalog, and one recorded CLI correction are also
 linked. Stable feature entries now cover every documented environment-command
 family through existing probe coverage. The latest source-obligation recordings
-close five previously unrecorded questions; nonassignable `var` arguments and
+close six previously unrecorded questions; nonassignable `var` arguments and
 maximum recursion or stack-display behavior remain open, along with unqualified
 timing, GUI, and reference-sequence behavior.
 
 The evidence-recording portion of group 2 is complete: all 73 bundled examples
 have a recorded disposition, and every manifest probe is either recorded or
-reviewed not-applicable. Evidence validation reports 1,656 recorded probes, 22
-reviewed not-applicable probes, and no unrecorded entries. The 24 pending
+reviewed not-applicable. Evidence validation reports 1,657 recorded probes, 22
+reviewed not-applicable probes, and no unrecorded entries. The 23 pending
 implementation checks remain visible under their implementation tasks.
 
 The September 14 source-obligation slice adds eight reviewed recordings from
@@ -34,10 +34,16 @@ arguments remain pending under their owning tasks. Published GUI evidence
 contains only reviewed, sanitized images and text; raw operational captures
 remain private.
 
+The follow-up zero-value recording confirms that declared integer, real, text,
+and logical variables read before assignment produce their type zero values.
+The probe is implementation-verified and closes the corresponding legacy
+checklist and source-obligation trace.
+
 The legacy marker audit now classifies seven remaining occurrences explicitly:
 the declaration-placement question is linked to its existing accepted and
-rejected recordings, the zero-value question remains pending, and the prose
-instructions and grammar comments at their recorded lines are contextual
+rejected recordings, and the zero-value question is resolved by its new
+recording. The prose instructions and grammar comments at their recorded lines
+are contextual
 references (the grammar aliases point to their existing assumptions). Trace
 validation anchors all seven classifications and accepts no unclassified
 qualified marker.
@@ -54,8 +60,8 @@ Expression and control-flow inventory links now cover precedence, numeric and
 Overlapping requirement links share one probe where a recording serves more
  than one category; unqualified operand combinations remain pending.
 
-The traceability handoff is complete: a fresh audit resolves all 228 inventory
-entries, 1,678 probes, and 1,811 implementation-test links without stale or
+The traceability handoff is complete: a fresh audit resolves all 229 inventory
+entries, 1,679 probes, and 1,813 implementation-test links without stale or
 untraced IDs. Shared links are retained where one probe serves multiple
 requirements. Pending implementation probes keep their owning tasks and omit
 nonexistent tests, while reviewed project-only probes keep their test links.

@@ -138,8 +138,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   list, table, code, and numbered items; checklist, defect, and feature links
   participate in the same coverage check. The legacy source audit links the
   declaration-placement question to its existing recordings, classifies its
-  five prose/grammar markers as contextual aliases or references, and retains
-  only the zero-value question as pending. The 25 numbered rows in the
+  five prose/grammar markers as contextual aliases or references, and resolves
+  the zero-value question with a recorded probe. The 25 numbered rows in the
   legacy compatibility checklist are now declared as `checklist.*` entries and
   linked to existing probe coverage; unresolved variants and audited defects
   remain open. Stable feature entries now cover every documented environment
@@ -201,10 +201,10 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   input tokenization remains covered by its dedicated probe.
   The vector-parameter verification marker now links to its recorded rejection
   probe; the remaining non-numbered markers remain open.
-  The seven remaining legacy marker occurrences are now anchored: declaration
-  placement reuses its accepted and rejected file-directive recordings, the
-  zero-value question remains pending, and the marker instructions and grammar
-  comments are contextual references or aliases. Qualified marker spellings
+  The seven remaining legacy marker occurrences are now anchored: the
+  zero-value question is resolved by a recorded probe, the two unresolved
+  runtime and stack questions remain pending, and the marker instructions and
+  grammar comments are contextual references or aliases. Qualified marker spellings
   are recognized by trace validation without inventing probe links. This slice
   still does not complete task 2.2 because other source questions remain open.
   This slice does not complete tasks 2.2 or 17.2.
@@ -255,8 +255,8 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   originals have a reviewed finite-completion exclusion, with unchanged source,
   entered input and partial output retained in `docs/bundled-external-stop.md`.
   Their language features remain required; no timeout is reported as a pass.
-  The manifest now has 1,656 recorded probes and 22 reviewed non-applicable
-  probes, with zero unrecorded evidence entries. The remaining 24 pending
+  The manifest now has 1,657 recorded probes and 22 reviewed non-applicable
+  probes, with zero unrecorded evidence entries. The remaining 23 pending
   entries are implementation checks owned by later tasks and are not promoted
   by this evidence closure.
 - [x] 2.13 Correct `proposal.md`, delta specs, `design.md`, `tasks.md`, `AGENTS.md`, and affected language documentation from the recordings. Replace rejected candidate features with negative coverage, remove dependent AST/layout/example obligations, preserve retired-ID dispositions, and describe corrections in `CHANGELOG.md`.
@@ -270,7 +270,7 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
 
   Fresh conformance tests, evidence validation, full ordinary and race tests,
   build, vet, formatter, and strict OpenSpec validation pass on the current
-  stack. Evidence replay reports zero verified regressions; the 24 pending
+  stack. Evidence replay reports zero verified regressions; the 23 pending
   implementation probes are published in `docs/quality-acceptance-2026-09-14.md`.
 - [x] 2.15 Mark every completed 2.x task immediately, commit the evidence and corrections, push the next stacked branch, and open its draft PR before group 3.
 
@@ -1162,9 +1162,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   these tooling contracts; language and host differences are still pending.
   The two externally stopped examples have reviewed finite-completion
   exclusions, retaining their unchanged sources and partial observations. A
-  fresh manifest audit resolves all 228 inventory links, all 1,678 probe links,
-  and all 1,811 implementation-test links with no stale or untraced IDs.
-  Shared probe links remain intentional; the 24 pending implementation probes
+  fresh manifest audit resolves all 229 inventory links, all 1,679 probe links,
+  and all 1,813 implementation-test links with no stale or untraced IDs.
+  Shared probe links remain intentional; the 23 pending implementation probes
   retain their owning tasks without fabricated tests, and the two reviewed
   non-applicable probes retain their project-test links.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
