@@ -6,6 +6,8 @@
   file APIs such as `arqabertura` remain out of scope.
 - Replace the stale open-questions section in `AGENTS.md` with the settled
   dialect, evaluation, I/O, randomness, and CLI decisions.
+- Align the CLI guidance and logical-evaluation pitfall with those settled
+  implementation decisions.
 
 - Keep conformance execution diagnostics on the stable `source.alg` filename so
   local filesystem paths cannot enter captured output.
