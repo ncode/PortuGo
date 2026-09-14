@@ -102,9 +102,10 @@ These observations do not justify adding a default loop bound or generally
 suppressing diagnostics in unexecuted subprograms.
 
 A replay audit of the sixteen remaining pending accepted programs found no
-additional byte-exact matches. Thirteen finish without diagnostics but produce
-different generated values. Successful local completion alone does not qualify
-their output or every branch.
+additional byte-exact matches. Successful runs still produce different
+generated values, while a small number of paths stop during analysis or
+execution. Local completion alone does not qualify their output or every
+branch.
 
 The remaining accepted paths either fail during analysis or execution, or
 finish with generated output that differs:
