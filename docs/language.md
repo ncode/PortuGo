@@ -58,8 +58,9 @@ the next physical line to retain independent later errors.
 
 The `var` block may be omitted or left empty. Top-level `procedimento` and
 `funcao` declarations must appear before `inicio`; one global `var` section may
-appear before or after those declarations. Repeating the global section is a
-`P001` error. Recorded words and statements after `fimalgoritmo` are ignored
+appear before or after those declarations, including after a `tipo` section and
+the subprograms that follow it. Repeating the global section is a `P001` error.
+Recorded words and statements after `fimalgoritmo` are ignored
 during execution. Later physical lines are opaque, including unclosed strings,
 invalid symbols and unfinished blocks.
 Formatting retains the complete decoded suffix immediately after the terminator,

@@ -18,8 +18,9 @@
   keeping broader unqualified forms pending.
 - Close the evidence-recording task after validating all bundled-example
   dispositions and manifest probes; keep the 23 implementation checks pending.
-- Accept one global `var` section after top-level subprogram declarations and
-  retain the repeated-section diagnostic.
+- Accept one global `var` section after top-level subprogram declarations,
+  including when a `tipo` section precedes them, and retain the repeated-section
+  diagnostic.
 - Align the agent guidance for `interrompa` outside loops with the recorded
   accepted-and-ignored behavior.
 - Close the recorded lexer/parser scope tasks 4.3–4.6 and 4.8 while leaving

@@ -1203,14 +1203,13 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   faca`) and executes zero iterations. The bundled generated-input transcript
   remains pending because its random-output contract is not qualified.
 
-  Auditing the sixteen remaining pending accepted programs found thirteen
-  successful local runs with varying output and three frontend rejections. The
-  generated data set now has one syntax mismatch: a global variable section
-  after procedures; the omitted loop bound is accepted and produces a differing
-  generated transcript. The two fixed-input paths remain blocked
-  by an unused read destination and an unselected out-of-loop break. Existing
-  group-13 echo/output contracts do not qualify these bundled transcripts;
-  no additional example is promoted by this audit.
+  Auditing the sixteen remaining pending accepted programs found successful
+  local runs with varying output and one frontend rejection. The parser now
+  accepts a global variable section after a record type and its subprograms;
+  that generated transcript, like the omitted-bound transcript, remains
+  pending a random-output qualification. Existing group-13 echo/output
+  contracts do not qualify these bundled transcripts; no additional example is
+  promoted by this audit.
 
 - [x] 17.4 Exercise the assembled source/depth/call/value/step guards, including empty infinite loops, recursive calls, flat AST chains, input retries, and cleanup, plus storage/encoding/host/filesystem adversarial cases; require controlled diagnostics and fail on a subprocess watchdog kill or accepted-example budget exhaustion.
 

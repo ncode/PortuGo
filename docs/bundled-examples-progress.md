@@ -90,12 +90,13 @@ prefix before discovering malformed syntax or an invalid assignment, while CLI
 analysis reports errors before execution and may collect more than one
 diagnostic.
 
-The latest bounded grammar audit keeps these two accepted recordings pending:
+The latest bounded grammar audit keeps these three accepted recordings pending:
 
 | Corpus ID | Remaining qualification |
 | --- | --- |
 | `bundled-3b4c69f65b60` | Generated input precedes a counted loop with no upper bound. The CLI now accepts the header and skips that loop, but the recording still establishes no portable random transcript. |
 | `bundled-54f1e50d1c02` | The recorded menu exit avoids a procedure with an undeclared read destination. The CLI rejects that unused body. Selected and unselected read controls are still needed before changing diagnostic timing. |
+| `bundled-fa172f3f5f70` | The CLI now accepts the global `var` section after the record type and procedures, but its generated transcript still needs a portable random-output qualification. |
 
 These observations do not justify adding a default loop bound or generally
 suppressing diagnostics in unexecuted subprograms.
@@ -105,13 +106,13 @@ additional byte-exact matches. Thirteen finish without diagnostics but produce
 different generated values. Successful local completion alone does not qualify
 their output or every branch.
 
-Three still fail before producing output; the counted-loop example now runs but
-differs in generated output:
+The remaining accepted paths either fail during analysis or execution, or
+finish with generated output that differs:
 
 | Case | Current CLI result | Pending behavior |
 | --- | --- | --- |
 | Counted-loop form | generated output differs | Omitted counted-loop upper bound is accepted and skips the loop; generated input/output still needs qualification. |
-| Declaration order | `P001`, line 20 | The global `var` section follows the procedures rather than immediately following the record type. Generated output also needs qualification. |
+| Declaration order | generated output differs | The CLI accepts the global `var` section after the record type and procedures; generated output still needs qualification. |
 | Unexecuted read | `E002`, line 157 | An undeclared read destination in a procedure avoided by the recorded menu exit. |
 | Unselected break | `E006`, line 69 | An out-of-loop `interrompa` in the branch avoided by the recorded valid input. |
 
