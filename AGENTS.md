@@ -258,17 +258,21 @@ Never land a bug fix without a regression fixture.
 
 ---
 
-## 10. Open questions
+## 10. Decisions
 
-These are real decisions, not rhetorical. Resolve before implementing the affected area.
-
-1. **Dialect target.** VisuAlg only, or also Portugol Studio (UNIVALI)? They differ on vector syntax (`vetor[10]` vs `vetor[1..10]`), subprogram syntax, and stdlib. Pick one for v1.
-2. **Short-circuit `e` / `ou`.** Spec-faithful (no SC) or pragmatic (SC)? Affects observable behavior of programs with side effects in conditions.
-3. **Decimal separator on I/O — resolved for the current profile.** Output uses the recorded `en-US` decimal dot on every host; input accepts comma or dot. Other reference locales remain unverified.
-4. **Random sequences — resolved.** Match recorded `rand`, `randi`, and command-form `aleatorio` domains with a per-interpreter source. Exact reference seeds and sequences are not promised; file-input interactions and extreme command bounds remain pending.
-5. **General file I/O.** The recorded `arquivo` input directive is in scope;
-   other file APIs such as `arqabertura` remain out of scope.
-6. **CLI framework.** stdlib `flag` or `cobra`? Default: `flag`.
+- **Dialect target.** VisuAlg 3.x is the v1 dialect. Other Portugol dialects
+  remain out of scope.
+- **Logical evaluation.** `e` and `ou` do not short-circuit; both operands are
+  evaluated, as documented in the language reference.
+- **I/O profile.** Output uses the recorded `en-US` decimal dot and input
+  accepts comma or dot. Other reference locales remain unverified.
+- **Randomness.** `rand`, `randi`, and command-form `aleatorio` use a
+  per-interpreter source with the recorded domains. Exact reference seeds and
+  sequences are not promised; file-input interactions and extreme command
+  bounds remain pending.
+- **File I/O.** The recorded `arquivo` input directive is in scope. General
+  file APIs such as `arqabertura` remain out of scope.
+- **CLI.** The command uses the standard-library `flag` package.
 
 ---
 
