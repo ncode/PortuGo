@@ -39,10 +39,11 @@ func TestBundledRandiOutputContractMetadata(t *testing.T) {
 		t.Fatal(err)
 	}
 	required := map[string]string{
-		"randi-lines":            "bundled randi example",
-		"random-int-text-lines":  "bundled mixed random example",
-		"random-int-sort-lines":  "bundled random sort example",
-		"random-real-sort-lines": "bundled real sort examples",
+		"randi-lines":              "bundled randi example",
+		"random-int-text-lines":    "bundled mixed random example",
+		"random-int-sort-lines":    "bundled random sort example",
+		"random-real-sort-lines":   "bundled real sort examples",
+		"random-record-sort-lines": "bundled record sort examples",
 	}
 	found := make(map[string]bool)
 	for _, p := range doc.Probes {
@@ -78,6 +79,10 @@ func TestRecordedBundledRandomSortOutput(t *testing.T) {
 
 func TestRecordedBundledRandomRealSortOutput(t *testing.T) {
 	testRecordedBundledRandomOutput(t, "random-real-sort-lines")
+}
+
+func TestRecordedBundledRandomRecordSortOutput(t *testing.T) {
+	testRecordedBundledRandomOutput(t, "random-record-sort-lines")
 }
 
 func testRecordedBundledRandomOutput(t *testing.T, kind string) {

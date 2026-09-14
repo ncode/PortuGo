@@ -9993,14 +9993,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-b1c9cc780302/stdout.txt",
             "sha256": "7b23f49dea0302255e1208f3b4af474042c9affd7058359fcae132c717324776"
+          },
+          "randomOutput": {
+            "kind": "random-record-sort-lines",
+            "lines": 42,
+            "minimum": 0,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves generated code/name pairs and both name/code sort orders while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRecordSortOutput"
+        ]
       }
     },
     {
@@ -10890,14 +10903,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-fa172f3f5f70/stdout.txt",
             "sha256": "97242809ac72920be63d5fc71c945891f3d940cfc03cfb5ce59742b1df47200c"
+          },
+          "randomOutput": {
+            "kind": "random-record-sort-lines",
+            "lines": 42,
+            "minimum": 0,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves generated code/name pairs and both name/code sort orders while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRecordSortOutput"
+        ]
       }
     },
     {

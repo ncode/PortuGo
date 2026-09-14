@@ -222,6 +222,37 @@ func TestRandomRealSortOutputContract(t *testing.T) {
 	}
 }
 
+func TestRandomRecordSortOutputContract(t *testing.T) {
+	t.Parallel()
+	valid := "Digite o codigo do  1o registro:60\nDigite o nome do  1o registro:HEGLU\nDigite o codigo do  2o registro:3\nDigite o nome do  2o registro:YUDCK\nDigite o codigo do  3o registro:49\nDigite o nome do  3o registro:QNYWK\nDigite o codigo do  4o registro:54\nDigite o nome do  4o registro:XWVRH\nDigite o codigo do  5o registro:10\nDigite o nome do  5o registro:FJVCP\nDigite o codigo do  6o registro:18\nDigite o nome do  6o registro:IPYCX\nDigite o codigo do  7o registro:42\nDigite o nome do  7o registro:KGLFO\nDigite o codigo do  8o registro:46\nDigite o nome do  8o registro:GWOMD\nDigite o codigo do  9o registro:7\nDigite o nome do  9o registro:HJYLV\nDigite o codigo do  10o registro:75\nDigite o nome do  10o registro:WDBXW\nItem - Codigo Nome\n   1 -     10 FJVCP\n   2 -     46 GWOMD\n   3 -     60 HEGLU\n   4 -      7 HJYLV\n   5 -     18 IPYCX\n   6 -     42 KGLFO\n   7 -     49 QNYWK\n   8 -     75 WDBXW\n   9 -     54 XWVRH\n  10 -      3 YUDCK\nItem - Codigo Nome\n   1 -      3 YUDCK\n   2 -      7 HJYLV\n   3 -     10 FJVCP\n   4 -     18 IPYCX\n   5 -     42 KGLFO\n   6 -     46 GWOMD\n   7 -     49 QNYWK\n   8 -     54 XWVRH\n   9 -     60 HEGLU\n  10 -     75 WDBXW\n"
+	contract := randomOutputExpectation{Kind: "random-record-sort-lines", Lines: 42, Minimum: 0, Bound: 101}
+	for _, tt := range []struct {
+		name   string
+		output string
+		valid  bool
+	}{
+		{"domain and sorted permutations", valid, true},
+		{"code below domain", strings.Replace(valid, ":60\n", ":-1\n", 1), false},
+		{"code above domain", strings.Replace(valid, ":60\n", ":101\n", 1), false},
+		{"name alphabet", strings.Replace(valid, ":HEGLU\n", ":HEGLU1\n", 1), false},
+		{"name sort", strings.Replace(valid, "   1 -     10 FJVCP\n   2 -     46 GWOMD\n", "   1 -     46 GWOMD\n   2 -     10 FJVCP\n", 1), false},
+		{"code sort", strings.Replace(valid, "   1 -      3 YUDCK\n   2 -      7 HJYLV\n", "   1 -      7 HJYLV\n   2 -      3 YUDCK\n", 1), false},
+		{"wrong header", strings.Replace(valid, "Item - Codigo Nome", "Item - Codigo", 1), false},
+		{"wrong row width", strings.Replace(valid, "   1 -     10 FJVCP", "  1 -     10 FJVCP", 1), false},
+		{"carriage returns", strings.ReplaceAll(valid, "\n", "\r\n"), false},
+		{"missing final newline", strings.TrimSuffix(valid, "\n"), false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := contract.compare([]byte(tt.output)); (err == nil) != tt.valid {
+				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
+			}
+		})
+	}
+	if err := (randomOutputExpectation{Kind: "random-record-sort-lines", Lines: 40, Minimum: 0, Bound: 101}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong record sort line count accepted")
+	}
+}
+
 func TestRandomInputContractValidation(t *testing.T) {
 	t.Parallel()
 	for _, name := range []string{"accepted", "missing review", "wrong owner", "rejected", "invalid recorded sample", "replaced evidence"} {

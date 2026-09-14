@@ -100,12 +100,12 @@ The latest bounded grammar audit keeps these two accepted recordings pending:
 These observations do not justify adding a default loop bound or generally
 suppressing diagnostics in unexecuted subprograms.
 
-A replay audit of the eleven remaining pending accepted programs found no
+A replay audit of the nine remaining pending accepted programs found no
 additional byte-exact matches. The `randomicos.alg.ALG` transcript (source
 algorithm `semnome`, probe `bundled-991ec2bd1566`) now has a reviewed
 domain/framing contract for its nine `randi(10)` values and fixed zero tail;
-the mixed integer/text, integer-sort, and real-sort transcripts now have
-reviewed shape-specific contracts. Ten generated-output cases and one
+the mixed integer/text, integer-sort, real-sort, and record-sort transcripts now
+have reviewed shape-specific contracts. Eight generated-output cases and one
 unexecuted-code path remain pending.
 Successful runs still produce different generated values, while a small number
 of paths stop during analysis or execution. Local completion alone does not
@@ -121,11 +121,11 @@ finish with generated output that differs:
 | Unexecuted read | `E002`, line 157 | An undeclared read destination in a procedure avoided by the recorded menu exit. |
 
 These CLI diagnostics are mismatch observations, not replacement reference
-expectations: all eleven remaining recordings are accepted by the reference. The
+expectations: all nine remaining recordings are accepted by the reference. The
 existing [generated-input contract](random-replay-contracts.md) covers only
 group-13 echo/output pairs. It cannot qualify the bundled programs' generated
 tables, sorting, searches or mixed input/output transcripts. Their sources and
-expected output remain unchanged, and all eleven remain pending.
+expected output remain unchanged, and all nine remain pending.
 
 The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
 recording therefore remains pending; the retained diagnostic and preceding output

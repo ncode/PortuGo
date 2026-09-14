@@ -17,6 +17,9 @@
 - Qualify the two bundled real-sort transcripts with bounded decimal input,
   sorted-permutation, and formatted-row contracts for original and formatted
   replay, without promising the reference generator sequence.
+- Qualify the two bundled record-sort transcripts with bounded generated fields,
+  row framing, and both name/code sort-order contracts for original and formatted
+  replay, without promising the random sequence.
 - Clarify that the recorded `arquivo` input directive is in scope while other
   file APIs such as `arqabertura` remain out of scope.
 - Replace the stale open-questions section in `AGENTS.md` with the settled
@@ -32,7 +35,7 @@
   from their recorded, implementation-verified requirement traces while
   keeping broader unqualified forms pending.
 - Close the evidence-recording task after validating all bundled-example
-  dispositions and manifest probes; keep the 15 implementation checks pending.
+  dispositions and manifest probes; keep the 13 implementation checks pending.
 - Accept one global `var` section after top-level subprogram declarations,
   including when a `tipo` section precedes them, and retain the repeated-section
   diagnostic.

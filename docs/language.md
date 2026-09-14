@@ -27,7 +27,7 @@ The [bundled example sweep](bundled-examples-progress.md) verifies 44 original
 programs against reference output, including formatting and execution. Eleven supplied files have
 recorded reference errors. Bundled-file presence alone does not establish that
 its syntax is accepted by this release.
-Eleven accepted bundled recordings remain pending: ten contain generated
+Nine accepted bundled recordings remain pending: eight contain generated
 output outside the current replay contract, including one syntax mismatch, and
 one recorded input path is blocked by diagnostics in unexecuted code.
 

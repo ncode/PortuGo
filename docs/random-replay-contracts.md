@@ -31,6 +31,12 @@ in nondecreasing order, rendered in the documented numbered-row format. Replay
 checks the input grid, sorted permutation and row framing for the original and
 formatted source without promising the generated sequence.
 
+Two bundled record-sort examples have separate `randomOutput` contracts. Each
+emits ten bounded code/name records, then renders the same records sorted by
+name and by code with the documented row framing. Replay checks field domains,
+record permutation, both sort orders and framing for the original and formatted
+source without promising the generated sequence.
+
 The optional `implementation.expected.randomInput` contract is restricted to
 accepted group-13 recordings and requires a review reason and document link.
 `minimum` and `maximum` are inclusive integer ticks at `10^-decimals`; for
@@ -80,7 +86,9 @@ sixteen deterministic seeds. The mixed-input contract is replayed by
 `TestRecordedBundledMixedRandomOutput`, and the integer-sort contract by
 `TestRecordedBundledRandomSortOutput`, with the same source and generator
 coverage. The real-sort contracts are replayed by
-`TestRecordedBundledRandomRealSortOutput`. Bundled programs with generated arrays, records, sorting, branching,
+`TestRecordedBundledRandomRealSortOutput`, and the record-sort contracts by
+`TestRecordedBundledRandomRecordSortOutput`. Bundled programs with generated
+arrays, records, sorting, branching,
 or other mixed input/output remain pending until their own observable contracts
 exist.
 The ordinary subprocess replay uses the production CLI and its own generator.

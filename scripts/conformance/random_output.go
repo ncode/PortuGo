@@ -130,6 +130,10 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		if c.Lines < 2 || c.Lines > 4096 || c.Lines%2 != 0 || c.Decimals < 1 || c.Decimals > 5 || c.Minimum < math.MinInt32 || c.Minimum >= c.Bound || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
 		}
+	case "random-record-sort-lines":
+		if c.Lines != 42 || c.Minimum < 0 || c.Minimum >= c.Bound || c.Bound > math.MaxInt32 || c.FixedTail != 0 || c.Decimals != 0 {
+			return fmt.Errorf("invalid random-output contract")
+		}
 	default:
 		return fmt.Errorf("invalid random-output contract")
 	}
@@ -200,6 +204,77 @@ func (c randomOutputExpectation) compare(output []byte) error {
 			}
 			if value != expected[index] {
 				return fmt.Errorf("random-output sorted real line %d is not the input permutation", index+1)
+			}
+		}
+		return nil
+	}
+	if c.Kind == "random-record-sort-lines" {
+		type record struct {
+			code int64
+			name string
+		}
+		input := make([]record, 10)
+		for index := range input {
+			codePrefix := fmt.Sprintf("Digite o codigo do  %do registro:", index+1)
+			namePrefix := fmt.Sprintf("Digite o nome do  %do registro:", index+1)
+			codeLine, nameLine := lines[2*index], lines[2*index+1]
+			if !strings.HasPrefix(codeLine, codePrefix) || !strings.HasPrefix(nameLine, namePrefix) {
+				return fmt.Errorf("random-output record prompt %d mismatch", index+1)
+			}
+			code, err := strconv.ParseInt(strings.TrimPrefix(codeLine, codePrefix), 10, 64)
+			name := strings.TrimPrefix(nameLine, namePrefix)
+			if err != nil || strings.TrimPrefix(codeLine, codePrefix) != strconv.FormatInt(code, 10) || code < c.Minimum || code >= c.Bound || len(name) != 5 || strings.Trim(name, "ABCDEFGHIJKLMNOPQRSTUVWXYZ") != "" {
+				return fmt.Errorf("random-output record %d input mismatch", index+1)
+			}
+			input[index] = record{code: code, name: name}
+		}
+		if lines[20] != "Item - Codigo Nome" || lines[31] != "Item - Codigo Nome" {
+			return fmt.Errorf("random-output record headers mismatch")
+		}
+		canonical := slices.Clone(input)
+		slices.SortFunc(canonical, func(left, right record) int {
+			if left.code < right.code {
+				return -1
+			}
+			if left.code > right.code {
+				return 1
+			}
+			return strings.Compare(left.name, right.name)
+		})
+		for offset := range [2]struct{}{} {
+			rows := make([]record, 10)
+			for index := range rows {
+				line := lines[21+offset*11+index]
+				prefix := fmt.Sprintf("%4d - ", index+1)
+				if !strings.HasPrefix(line, prefix) {
+					return fmt.Errorf("random-output record row %d framing mismatch", index+1)
+				}
+				value := strings.TrimPrefix(line, prefix)
+				if len(value) != 12 {
+					return fmt.Errorf("random-output record row %d width mismatch", index+1)
+				}
+				code, err := strconv.ParseInt(strings.TrimSpace(value[:6]), 10, 64)
+				name := value[7:]
+				got := record{code: code, name: name}
+				if err != nil || len(name) != 5 || strings.Trim(name, "ABCDEFGHIJKLMNOPQRSTUVWXYZ") != "" || code < c.Minimum || code >= c.Bound || line != fmt.Sprintf("%s%6d %s", prefix, code, name) {
+					return fmt.Errorf("random-output record row %d value mismatch", index+1)
+				}
+				if index > 0 && ((offset == 0 && rows[index-1].name > got.name) || (offset == 1 && rows[index-1].code > got.code)) {
+					return fmt.Errorf("random-output record row %d sort order mismatch", index+1)
+				}
+				rows[index] = got
+			}
+			slices.SortFunc(rows, func(left, right record) int {
+				if left.code < right.code {
+					return -1
+				}
+				if left.code > right.code {
+					return 1
+				}
+				return strings.Compare(left.name, right.name)
+			})
+			if !slices.Equal(rows, canonical) {
+				return fmt.Errorf("random-output record rows are not an input permutation")
 			}
 		}
 		return nil
