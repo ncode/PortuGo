@@ -273,7 +273,6 @@ var pendingSourceObligations = map[string][]pendingSourceObligation{
 	"especificacao-visualg-3.md": {
 		{line: 334, prefix: "- A gravação de compatibilidade mostra uma falha interna"},
 		{line: 440, prefix: "- A pilha de ativação é visível no IDE"},
-		{line: 441, prefix: "- Valores iniciais de variáveis:"},
 	},
 }
 
