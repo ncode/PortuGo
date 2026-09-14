@@ -734,7 +734,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   Focused control-flow regressions and the complete quality suite pass,
   including build, formatting, vet, static analysis, lint, ordinary and race
   tests, strict OpenSpec validation, and both fuzz smoke runs.
-- [ ] 9.13 Mark every completed 9.x task immediately, commit the focused control-flow changes, push the next stacked branch, and open its draft PR before group 10.
+- [x] 9.13 Mark every completed 9.x task immediately, commit the focused control-flow changes, push the next stacked branch, and open its draft PR before group 10.
+
+  Group 9 behavior and documentation tasks are marked complete on the stacked
+  branch. Focused and full quality suites, strict OpenSpec validation, and
+  evidence replay passed before the ready PR was updated with the sanitized
+  validation record.
 
 ## 10. CP1252, Input Parsing, Output Formatting, and I/O Validation
 
