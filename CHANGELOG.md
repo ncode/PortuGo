@@ -55,6 +55,11 @@
   a semantic or runtime diagnostic, while keeping loop breaks scoped to the
   active lexical call frame.
 
+- Record the remaining source-obligation probes for reserved words, declaration
+  sections, builtin collisions, reference-argument edge cases, interruption,
+  and finite recursion depth. Keep application faults as labeled GUI evidence
+  and leave their unresolved implementation contracts pending.
+
 - Keep conformance execution diagnostics on the stable `source.alg` filename so
   local filesystem paths cannot enter captured output.
 - Reconcile the environment-command task ledger with its verified typed host
