@@ -1181,14 +1181,14 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   exclusions, retaining their unchanged sources and partial observations. A
   fresh manifest audit resolves all 229 inventory links, all 1,679 probe links,
   and all 1,813 implementation-test links with no stale or untraced IDs.
-  Shared probe links remain intentional; the 21 pending implementation probes
+  Shared probe links remain intentional; the 20 pending implementation probes
   retain their owning tasks without fabricated tests, and the two reviewed
   non-applicable probes retain their project-test links.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
   Forty-four original examples now match recorded output before and after
   formatting. Fifteen accepted programs still need a random-output replay
-  contract; two accepted paths encounter CLI errors in unexecuted code. Six
+  contract; two accepted paths encounter CLI errors in unexecuted code. Four
   rejected programs retain diagnostic or execution-phase differences. The latest
   eleven recordings add eight completed reference runs and three reviewed
   rejections, including the school's input-dependent EOF diagnostic. The two
@@ -1199,7 +1199,9 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   The bundled invalid-function-name rejection now matches its recorded `L001`
   on line 34 through a focused parser regression. The bundled compound-repeat
   spelling now matches its recorded `E002` on line 23, with original and
-  formatted diagnostic regressions, leaving five rejected paths pending. The
+  formatted diagnostic regressions. The unsupported literal vector element
+  rejection now matches its recorded `P001` on line 8 through a focused parser
+  regression, leaving four rejected paths pending. The
   generated-input example with an omitted loop bound and the menu exit blocked
   by an unused read destination remain pending; neither recording establishes a
   general recovery or deferred-lookup rule.
@@ -1254,7 +1256,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   `docs/release-rehearsal-2026-09-14.md`. Build, ordinary and race tests, vet,
   formatter checks, all CLI commands, incremental replay, and strict OpenSpec
   validation pass. The supported-platform CI matrix remains green; release
-  acceptance stays blocked by the 21 pending implementation probes and final
+  acceptance stays blocked by the 20 pending implementation probes and final
   handoff tasks.
 - [ ] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
 - [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.

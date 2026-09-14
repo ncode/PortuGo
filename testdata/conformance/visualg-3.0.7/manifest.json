@@ -8526,7 +8526,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -8539,7 +8539,10 @@
               "line": 8
             }
           ]
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestBundledExtensoRejectsLiteralVectorType"
+        ]
       }
     },
     {

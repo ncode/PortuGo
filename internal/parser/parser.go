@@ -81,6 +81,12 @@ func (p *parser) parseProgram() *ast.Program {
 	if p.peek().Kind == token.VAR {
 		prog.Sections.Var = p.peek()
 		prog.Globals = p.parseVarBlock()
+		if len(p.diags) == 0 {
+			if typ := unsupportedGlobalType(prog.Globals); typ != nil {
+				p.error(token.Token{Pos: typ.At}, "unsupported type")
+				return prog
+			}
+		}
 	}
 	for p.peek().Kind == token.PROCEDIMENTO || p.peek().Kind == token.FUNCAO {
 		prog.Subs = append(prog.Subs, p.parseSubprogram())
@@ -95,6 +101,12 @@ func (p *parser) parseProgram() *ast.Program {
 		}
 		prog.Sections.Var = p.peek()
 		prog.Globals = p.parseVarBlock()
+		if len(p.diags) == 0 {
+			if typ := unsupportedGlobalType(prog.Globals); typ != nil {
+				p.error(token.Token{Pos: typ.At}, "unsupported type")
+				return prog
+			}
+		}
 	}
 	if prog.Sections.Type.Kind == token.TIPO && prog.Sections.Var.Kind == 0 {
 		p.error(p.peek(), "expected var after types")
@@ -151,6 +163,15 @@ func (p *parser) parseVarBlock() []ast.VarDecl {
 		decls = append(decls, p.parseVarDecl())
 	}
 	return decls
+}
+
+func unsupportedGlobalType(decls []ast.VarDecl) *ast.TypeSpec {
+	for _, decl := range decls {
+		if decl.Type.Name == "vetor" && decl.Type.Elem != nil && strings.EqualFold(decl.Type.Elem.Name, "literal") {
+			return decl.Type.Elem
+		}
+	}
+	return nil
 }
 
 func (p *parser) parseVarDecl() ast.VarDecl {
