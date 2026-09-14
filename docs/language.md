@@ -447,7 +447,9 @@ Supported statements:
 - procedure calls
 - `retorne` inside functions
 
-`interrompa` outside a loop is a semantic error.
+`interrompa` exits the innermost active loop. When no loop is active, the
+statement is accepted and ignored; a procedure or function call cannot use a
+caller’s loop as its own active loop.
 
 The canonical repeat form is `repita ... ate <condition>`. In the recorded
 keyword-form recovery cases, `ate_que` and `até_que` remain identifier

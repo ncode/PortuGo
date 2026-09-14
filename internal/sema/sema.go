@@ -77,7 +77,6 @@ type checker struct {
 	scope        *scope
 	subs         map[string]symbol
 	diags        []diag.Diagnostic
-	loopDepth    int
 	returnType   runtime.Type
 	inFunction   bool
 	deferLookup  diag.Code
@@ -373,9 +372,9 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		c.checkStmts(s.Default)
 	case *ast.WhileStmt:
 		c.requireBool(s.Cond)
-		c.withLoop(func() { c.checkStmts(s.Body) })
+		c.checkStmts(s.Body)
 	case *ast.RepeatStmt:
-		c.withLoop(func() { c.checkStmts(s.Body) })
+		c.checkStmts(s.Body)
 		if s.Cond != nil {
 			c.requireBool(s.Cond)
 		}
@@ -391,11 +390,12 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		if s.Step != nil {
 			c.requireInt(s.Step)
 		}
-		c.withLoop(func() { c.checkStmts(s.Body) })
+		c.checkStmts(s.Body)
 	case *ast.BreakStmt:
-		if c.loopDepth == 0 {
-			c.error(s.At, diag.EBreak, "interrompa outside loop")
-		}
+		// The reference accepts an interruption outside a loop and ignores it
+		// at execution time. Keep the statement in the AST so the interpreter
+		// can apply that behavior without producing a semantic diagnostic.
+		return
 	case *ast.ReturnStmt:
 		if !c.inFunction {
 			c.error(s.At, diag.EReturn, "retorne outside function")
@@ -772,12 +772,6 @@ func (c *checker) requireInt(expr ast.Expr) {
 	if t := c.expr(expr); t.Kind != runtime.IntegerType && t.Kind != runtime.NumericType && t.Kind != runtime.DynamicType && t.Kind != runtime.InvalidType {
 		c.error(expr.Start(), diag.ETypeMismatch, "expected inteiro, got %s", t)
 	}
-}
-
-func (c *checker) withLoop(fn func()) {
-	c.loopDepth++
-	defer func() { c.loopDepth-- }()
-	fn()
 }
 
 func (c *checker) error(pos token.Pos, code diag.Code, format string, args ...any) {

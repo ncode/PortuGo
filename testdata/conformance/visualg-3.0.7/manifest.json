@@ -83901,14 +83901,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/interrompa-outside-loop/stdout.txt",
             "sha256": "f72c713b7b432dd18949ca10f1be6dbcf493479945653609d1c715b2d8d74356"
           }
-        }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestBreakOutsideLoopIsIgnored"
+        ]
       }
     }
   ]
