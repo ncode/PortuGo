@@ -78,6 +78,42 @@ func TestRecordedBundledExamples(t *testing.T) {
 	}
 }
 
+func TestRecordedBundledMenuExample(t *testing.T) {
+	root := "testdata/conformance/visualg-3.0.7/probes"
+	entries, err := os.ReadDir(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			continue
+		}
+		dir := filepath.Join(root, entry.Name())
+		src, err := source.ReadFile(filepath.Join(dir, "source.alg"))
+		if err != nil {
+			if os.IsNotExist(err) {
+				continue
+			}
+			t.Fatal(err)
+		}
+		lower := strings.ToLower(src)
+		if !strings.Contains(lower, "procedimento alterar") || !strings.Contains(lower, "leia(yl)") {
+			continue
+		}
+		input, err := os.ReadFile(filepath.Join(dir, "input.txt"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		want, err := os.ReadFile(filepath.Join(dir, "stdout.txt"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		checkFormattingPreservesExecutionWithInput(t, src, input, want)
+		return
+	}
+	t.Fatal("recorded menu example not found")
+}
+
 func TestBundledGameRejectsLiteralType(t *testing.T) {
 	checkSemanticDiagnostic(t, "testdata/conformance/visualg-3.0.7/probes/bundled-0cef94aa6573/source.alg", diag.EParse, 9)
 }

@@ -1181,16 +1181,16 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   exclusions, retaining their unchanged sources and partial observations. A
   fresh manifest audit resolves all 229 inventory links, all 1,679 probe links,
   and all 1,813 implementation-test links with no stale or untraced IDs.
-  Shared probe links remain intentional; the 6 pending implementation probes
+  Shared probe links remain intentional; the 4 pending implementation probes
   retain their owning tasks without fabricated tests, and the two reviewed
   non-applicable probes retain their project-test links.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
-  Forty-four original examples still match recorded output byte-for-byte before
-  and after formatting; fifteen additional accepted programs now have reviewed
+  Forty-five original examples now match recorded output byte-for-byte before
+  and after formatting; fifteen additional accepted programs have reviewed
   random-output contracts. No generated-output case remains without a
-  random-output replay contract; one accepted path encounters a CLI error in
-  unexecuted code. Four
+  random-output replay contract, and the accepted menu path now completes with
+  its recorded exit input. Four
   rejected programs retain diagnostic or execution-phase differences. The latest
   eleven recordings add eight completed reference runs and three reviewed
   rejections, including the school's input-dependent EOF diagnostic. The two
@@ -1203,23 +1203,22 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   spelling now matches its recorded `E002` on line 23, with original and
   formatted diagnostic regressions. The unsupported literal vector element
   rejection now matches its recorded `P001` on line 8 through a focused parser
-  regression, leaving four rejected paths pending. The
-  generated-input example with an omitted loop bound and the menu exit blocked
-  by an unused read destination remain pending; neither recording establishes a
-  general recovery or deferred-lookup rule.
+  regression, leaving four rejected paths pending. The generated-input example
+  with an omitted loop bound remains pending; the menu path now defers an
+  undeclared read destination in an uncalled procedure and reports it if that
+  procedure is invoked.
 
   The implementation now accepts the reduced omitted-bound form (`para ... ate
-  faca`) and executes zero iterations. The bundled generated-input transcript
-  remains pending because its random-output contract is not qualified.
+  faca`) and executes zero iterations.
 
-  Auditing the remaining pending accepted program found one frontend rejection.
-  The
-  `randomicos.alg.ALG` transcript (source algorithm `semnome`, probe
-  `bundled-991ec2bd1566`) is now qualified by a bounded `randi(10)` output
+  Auditing the remaining accepted programs found no frontend rejection. The
+  `randomicos.alg.ALG` transcript (source algorithm `semnome`) is now qualified
+  by a bounded `randi(10)` output
   contract; the mixed integer/text, integer-sort, real-sort, record-sort,
   integer-search, raw integer-search, sorted integer-search, counting-sort,
   record-search, repeated-value, and relation transcripts are now qualified as
-  well, leaving one frontend rejection.
+  well. The menu transcript now has original and formatted replay coverage,
+  with body diagnostics deferred until invocation.
   The parser now
   accepts a global variable section after a record type and its subprograms;
   that transcript is now covered by the record-sort contract. Existing group-13
@@ -1238,8 +1237,8 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   These are implementation contracts and do not promote reference probes.
 - [x] 17.5 Run and archive results for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, race tests, Windows/macOS/Linux tests, and 30-second lexer and parser fuzz jobs.
 
-  The exact pushed candidate for PR #183 passed the pinned quality, race,
-  ordinary-test, six-platform, lexer-fuzz, parser-fuzz, and strict
+  The exact pushed candidate for the current stack passed the pinned quality,
+  race, ordinary-test, six-platform, lexer-fuzz, parser-fuzz, and strict
   specification jobs. The sanitized evidence summary is recorded in
   `docs/quality-acceptance-2026-09-14.md`; raw workflow logs remain outside the
   repository. This quality evidence does not promote pending behavior or close
@@ -1266,7 +1265,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   `docs/release-rehearsal-2026-09-14.md`. Build, ordinary and race tests, vet,
   formatter checks, all CLI commands, incremental replay, and strict OpenSpec
   validation pass. The supported-platform CI matrix remains green; release
-  acceptance stays blocked by the 5 pending implementation probes and final
+  acceptance stays blocked by the 4 pending implementation probes and final
   handoff tasks.
 - [ ] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
 - [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.

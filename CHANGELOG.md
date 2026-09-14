@@ -44,6 +44,9 @@
   positive zero-retried random values, branch-consistent Portuguese framing and
   blank separators for original and formatted replay, without promising the
   random sequence; 5 implementation checks remain.
+- Defer undeclared identifiers in uncalled subprogram bodies while retaining
+  their diagnostics when invoked, and promote the accepted menu exit through
+  original and formatted replay; 4 implementation checks remain.
 - Clarify that the recorded `arquivo` input directive is in scope while other
   file APIs such as `arqabertura` remain out of scope.
 - Replace the stale open-questions section in `AGENTS.md` with the settled

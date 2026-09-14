@@ -1,9 +1,8 @@
 # Current quality evidence — 2026-09-14
 
-This report records the green GitHub Actions checks for the preceding stacked
-documentation candidate (PR #190), together with fresh local checks on the
-same source. It is a sanitized summary; raw workflow logs remain outside the
-repository.
+This report records the green GitHub Actions checks for the current stacked
+candidate, together with fresh local checks on the same source. It is a
+sanitized summary; raw workflow logs remain outside the repository.
 
 | Check | Result | Coverage |
 | --- | --- | --- |
@@ -24,14 +23,14 @@ repository.
 | Specification validation | PASS | Strict OpenSpec validation |
 
 These checks establish quality and evidence status for the current stack. They
-do not establish implementation acceptance: 5 implementation probes remain
+do not establish implementation acceptance: 4 implementation probes remain
 pending in the manifest.
 
 ## Pending implementation inventory
 
 | Owner | Count | Probe IDs |
 | --- | ---: | --- |
-| Bundled example qualification (17.3) | 5 | See the manifest for the current pending probe inventory. |
+| Bundled example qualification (17.3) | 4 | See the manifest for the current pending probe inventory. |
 
 The bundled entries retain their recorded sources and outputs while their
 deterministic mismatches remain pending. The two recorded nonassignable `var`

@@ -8911,14 +8911,19 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-54f1e50d1c02/stdout.txt",
             "sha256": "c90d8f6be67a76668269a3d1af5dbfb57143f87338146aef4eadcade505620e3"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledMenuExample",
+          "internal/sema/info_test.go#TestUncalledSubprogramDefersUndeclaredIdentifier",
+          "internal/interp/execution_test.go#TestDeferredSubprogramDiagnosticOnInvocation"
+        ]
       }
     },
     {

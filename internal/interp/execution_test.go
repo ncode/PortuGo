@@ -37,6 +37,34 @@ func analyzed(t *testing.T, src string) (*ast.Program, *sema.Info) {
 	return p, info
 }
 
+func TestDeferredSubprogramDiagnosticOnInvocation(t *testing.T) {
+	src := `algoritmo "lazy body"
+procedimento P
+inicio
+  leia(missing)
+fimprocedimento
+inicio
+  P
+fimalgoritmo`
+	_, toks, ds := lexer.Scan("test.alg", src)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	p, ds := parser.Parse(toks)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	info, ds := sema.Analyze(p)
+	if len(ds) != 0 {
+		t.Fatalf("uncalled-body diagnostic leaked into analysis: %v", ds)
+	}
+	var out bytes.Buffer
+	ds = New(Options{Output: &out}).Run(p, info)
+	if len(ds) != 1 || ds[0].Code != diag.EUndeclared || out.Len() != 0 {
+		t.Fatalf("invoked deferred body: diagnostics=%v output=%q", ds, out.String())
+	}
+}
+
 func TestRetainedOperandStorage(t *testing.T) {
 	loop := "para counter de 1 ate " + strconv.Itoa(maxOperands+1) + " faca\nvalue <- 1 e 2\nfimpara\n"
 	plain := "algoritmo \"operand scope\"\nvar counter, value: inteiro\ninicio\n" + loop + "escreval(value)\nfimalgoritmo\n"

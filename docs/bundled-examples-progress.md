@@ -9,7 +9,7 @@ The evidence gate checks catalog IDs, source hashes and sizes, classifications,
 recorded acceptance, and reviewed exclusion reasons. Pending entries still fail
 the missing-evidence gate; classifications do not grant them an exemption.
 
-Sixty programs complete successfully in the reference. Forty-four match
+Sixty-one programs complete successfully in the reference. Forty-five match
 the CLI byte for byte and have permanent tests for original and formatted execution.
 The fixed-input cases cover combinations, factorials, minimum selection, means,
 prime decomposition, base conversion, vector sorting, remainders, reversed text,
@@ -55,11 +55,11 @@ do not establish exact portable random sequences or complete branch coverage.
 
 The latest recordings add `bin2dec.alg`, `buscaseq.alg`, `buscaseqreg.alg`,
 `buscbinr.alg`, `DESTAQUES.ALG`, `SEMNOME.ALG`, `MENU_PRINCIPAL.alg`, and
-`REGISTROS.ALG`. The original `REGISTROS.ALG` exit path now has exact original
-and formatted replay coverage. No generated-data transcript remains pending
-a random-output comparison contract. The valid recorded paths through
-`bin2dec.alg` and `MENU_PRINCIPAL.alg` complete in the reference but are rejected
-by the CLI for errors in unexecuted code; those mismatches remain pending.
+`REGISTROS.ALG`. The original `REGISTROS.ALG` exit path and the menu exit path
+now have exact original and formatted replay coverage. No generated-data
+transcript remains pending a random-output comparison contract. The menu
+diagnostic is deferred for uncalled subprogram bodies and remains available
+when an affected subprogram is invoked.
 
 Eleven bundled files are unusable on their recorded paths. Their GUI diagnostics
 were individually reviewed; the corpus retains diagnostic evidence and labeled
@@ -90,36 +90,26 @@ prefix before discovering malformed syntax or an invalid assignment, while CLI
 analysis reports errors before execution and may collect more than one
 diagnostic.
 
-The latest bounded grammar audit keeps one accepted recording pending:
+The latest bounded grammar audit leaves four rejected recordings pending; no
+accepted recording remains pending. These observations do not justify adding a
+default loop bound or generally suppressing diagnostics in unexecuted
+subprograms.
 
-| Corpus ID | Remaining qualification |
-| --- | --- |
-| `bundled-54f1e50d1c02` | The recorded menu exit avoids a procedure with an undeclared read destination. The CLI rejects that unused body. Selected and unselected read controls are still needed before changing diagnostic timing. |
-
-These observations do not justify adding a default loop bound or generally
-suppressing diagnostics in unexecuted subprograms.
-
-A replay audit of the remaining pending accepted program found no additional
-byte-exact match. The `randomicos.alg.ALG` transcript (source algorithm
-`semnome`) now has a reviewed domain/framing contract for its nine `randi(10)`
-values and fixed zero tail; the mixed
+A replay audit after the lazy body diagnostic fix found no additional byte-exact
+match. The `randomicos.alg.ALG` transcript (source algorithm `semnome`) now has
+a reviewed domain/framing contract for its nine `randi(10)` values and fixed
+zero tail; the mixed
 integer/text, integer-sort, real-sort, record-sort, record-search,
 integer-search, raw integer-search, sorted integer-search, counting-sort,
 repeated-value, and relation transcripts now have reviewed shape-specific
-contracts. One unexecuted-code path remains pending.
+contracts. The menu exit now retains its recorded output while deferring the
+unexecuted body diagnostic until invocation.
 Successful runs still produce different generated values, while a small number
 of paths stop during analysis or execution. Local completion alone does not
 qualify their output or every branch.
 
-The remaining accepted path fails during analysis:
-
-| Case | Current CLI result | Pending behavior |
-| --- | --- | --- |
-| Unexecuted read | `E002`, line 157 | An undeclared read destination in a procedure avoided by the recorded menu exit. |
-
-This CLI diagnostic is a mismatch observation, not a replacement reference
-expectation: the remaining recording is accepted by the reference. Its source
-and expected output remain unchanged and pending.
+The four rejected paths retain their recorded diagnostics and remain pending;
+the accepted menu path now completes in the CLI with the recorded exit input.
 
 The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
 recording therefore remains pending; the retained diagnostic and preceding output

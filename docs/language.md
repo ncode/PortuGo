@@ -1355,6 +1355,9 @@ Accepted program output is compared after removing only the two application
 notices and converting CRLF to the CLI's LF. Invalid programs receive positioned
 static diagnostics and are never executed: unlike the reference GUI, the CLI
 does not print preceding statements before reporting a statically known error.
+Unresolved identifiers in procedure and function bodies are retained as deferred
+diagnostics, so an uncalled body does not reject an otherwise executable path;
+the diagnostic is reported when that body is invoked.
 `run` exits 1 for lexical, parsing, semantic, or runtime failures and 0 on success.
 The active OpenSpec change tracks the remaining work; these selected observations
 are not a claim of full reference conformance.

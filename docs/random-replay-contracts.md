@@ -142,4 +142,6 @@ test, and the relation contract by its bundled replay test. Bundled programs wit
 generated arrays, records, sorting, branching,
 or other mixed input/output remain pending until their own observable contracts
 exist.
+The accepted menu path is covered by original and formatted replay plus focused
+tests for deferred diagnostics in uncalled and invoked subprograms.
 The ordinary subprocess replay uses the production CLI and its own generator.

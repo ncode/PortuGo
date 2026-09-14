@@ -305,6 +305,9 @@ func (i *Interpreter) lvalue(expr ast.Expr) (cell *runtime.Cell, err error) {
 }
 
 func (i *Interpreter) location(expr ast.Expr) (cell *runtime.Cell, err error) {
+	if d, ok := i.info.DeferredDiagnostic(expr.Start()); ok {
+		return nil, d
+	}
 	if _, ok := i.info.TypeOf(expr); !ok {
 		return nil, failure(expr.Start(), diag.RType, fmt.Errorf("missing designator type"))
 	}
