@@ -250,7 +250,13 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   originals have a reviewed finite-completion exclusion, with unchanged source,
   entered input and partial output retained in `docs/bundled-external-stop.md`.
   Their language features remain required; no timeout is reported as a pass.
-- [ ] 2.13 Correct `proposal.md`, delta specs, `design.md`, `tasks.md`, `AGENTS.md`, and affected language documentation from the recordings. Replace rejected candidate features with negative coverage, remove dependent AST/layout/example obligations, preserve retired-ID dispositions, and describe corrections in `CHANGELOG.md`.
+- [x] 2.13 Correct `proposal.md`, delta specs, `design.md`, `tasks.md`, `AGENTS.md`, and affected language documentation from the recordings. Replace rejected candidate features with negative coverage, remove dependent AST/layout/example obligations, preserve retired-ID dispositions, and describe corrections in `CHANGELOG.md`.
+
+  The proposal, design, conformance specification, agent guidance, and language
+  reference now describe only the recorded positive declaration and case-range
+  forms. Rejected variants retain positioned negative coverage; unrecorded forms
+  remain pending without dependent layout or example obligations. Manifest
+  dispositions and retired-ID history remain unchanged.
 - [ ] 2.14 Run recorder, normalizer, replay, manifest, and traceability tests plus the full quality suite and strict OpenSpec validation; require zero evidence-mode errors and zero verified regressions, and publish the remaining pending implementation inventory.
 - [x] 2.15 Mark every completed 2.x task immediately, commit the evidence and corrections, push the next stacked branch, and open its draft PR before group 3.
 

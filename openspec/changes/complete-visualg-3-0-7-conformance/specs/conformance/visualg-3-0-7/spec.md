@@ -70,9 +70,10 @@ Evidence validation SHALL require recorded observations or reviewed non-applicab
 ### Requirement: Recorded feature dispositions
 Disputed feature candidates SHALL receive recorded acceptance or rejection before dependent implementation. Rejection SHALL result in negative compatibility coverage and correction of positive requirements, dependent design, tasks, and examples. Retired requirement or task IDs SHALL retain a traceable disposition or replacement. An unsupported feature SHALL NOT be implemented merely because the initial plan listed it.
 
-#### Scenario: Reject a third-party record extension
-- **WHEN** the reference rejects the proposed named-type, record, or field syntax
-- **THEN** the plan removes the corresponding positive implementation obligations and dependent layouts/examples while retaining a required rejection probe and implementation test
+#### Scenario: Preserve a rejected feature disposition
+- **WHEN** the reference rejects a recorded candidate form such as a vector alias, inline aggregate field, or named callable type
+- **THEN** the plan removes the corresponding positive implementation obligations and dependent layouts/examples while retaining a required positioned rejection probe and implementation test
+- **AND** recorded named-type, record, and scalar-field forms keep only their independently confirmed positive requirements
 
 ### Requirement: Bundled example acceptance
 Every program bundled with the official VisuAlg 3.0.7 release SHALL be inventoried and classified as accepted, dependent on an explicit non-goal, or unusable with a recorded reason. Every accepted example SHALL parse, analyze, and run with deterministic behavior matching its recorded oracle evidence.

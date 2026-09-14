@@ -34,6 +34,9 @@
   the recorded, implementation-verified corpus coverage.
 - Mark the expression and control-flow probe-batch task complete from nine
   stable requirement links covering 299 unique recorded and verified probes.
+- Reconcile the conformance plan and project guidance with the recorded
+  declaration and case-range scope, retaining rejection coverage and pending
+  ownership for unrecorded variants.
 - Verify the recorded reserved-word, repeated-main-section, and builtin-name
   rejection probes against positioned local diagnostics.
 - Correct the reference-corpus progress totals to match the current manifest.
