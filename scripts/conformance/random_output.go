@@ -138,6 +138,10 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		if c.Lines != 21 || c.Minimum < math.MinInt32 || c.Minimum >= c.Bound || c.Bound < 1 || c.Bound > math.MaxInt32 || c.Decimals != 0 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
 		}
+	case "random-int-search-sorted-lines":
+		if c.Lines != 21 || c.Minimum != 0 || c.Bound != 101 || c.Decimals != 0 || c.FixedTail != 0 {
+			return fmt.Errorf("invalid random-output contract")
+		}
 	case "random-randi-repeat-lines":
 		if c.Lines != 11 || c.Minimum < 1 || c.Minimum >= c.Bound || c.Bound < 2 || c.Bound > math.MaxInt32 || c.Decimals != 0 || c.FixedTail != 0 {
 			return fmt.Errorf("invalid random-output contract")
@@ -265,6 +269,31 @@ func (c randomOutputExpectation) compare(output []byte) error {
 		}
 		if lines[20] != "Valor para busca (ESC ou menor que 0 termina) : -1" {
 			return fmt.Errorf("random-output search prompt mismatch")
+		}
+		return nil
+	}
+	if c.Kind == "random-int-search-sorted-lines" {
+		var previous int64
+		for index := range 20 {
+			line := lines[index]
+			if len(line) != 10 {
+				return fmt.Errorf("random-output sorted search row %d width mismatch", index+1)
+			}
+			row, rowErr := strconv.ParseInt(strings.TrimSpace(line[:5]), 10, 64)
+			value, valueErr := strconv.ParseInt(strings.TrimSpace(line[5:]), 10, 64)
+			if rowErr != nil || valueErr != nil || row != int64(index+1) || line != fmt.Sprintf("%5d%5d", row, value) {
+				return fmt.Errorf("random-output sorted search row %d framing mismatch", index+1)
+			}
+			if value < c.Minimum || value >= c.Bound {
+				return fmt.Errorf("random-output sorted search value %d outside domain", index+1)
+			}
+			if index > 0 && value < previous {
+				return fmt.Errorf("random-output sorted search value %d order mismatch", index+1)
+			}
+			previous = value
+		}
+		if lines[20] != "Valor para busca (ESC ou menor que 0 termina) : -1" {
+			return fmt.Errorf("random-output sorted search prompt mismatch")
 		}
 		return nil
 	}

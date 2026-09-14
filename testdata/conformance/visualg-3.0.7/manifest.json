@@ -10630,14 +10630,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-da71c1ad0344/stdout.txt",
             "sha256": "8cfd4d0c1de470b1800bd2d18fc3da83b745704e705692fe0ea366ab85eb272e"
+          },
+          "randomOutput": {
+            "kind": "random-int-search-sorted-lines",
+            "lines": 21,
+            "minimum": 0,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves twenty sorted generated integers and the fixed negative search exit while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomSearchSortedOutput"
+        ]
       }
     },
     {

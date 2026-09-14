@@ -321,6 +321,46 @@ func TestRandomIntegerSearchOutputContract(t *testing.T) {
 	}
 }
 
+func TestRandomIntegerSearchSortedOutputContract(t *testing.T) {
+	t.Parallel()
+	valid := "    1    1\n    2   10\n    3   17\n    4   20\n    5   27\n    6   30\n    7   34\n    8   44\n    9   48\n   10   60\n   11   61\n   12   64\n   13   74\n   14   74\n   15   76\n   16   83\n   17   86\n   18   92\n   19   92\n   20   97\nValor para busca (ESC ou menor que 0 termina) : -1\n"
+	contract := randomOutputExpectation{Kind: "random-int-search-sorted-lines", Lines: 21, Minimum: 0, Bound: 101}
+	for _, tt := range []struct {
+		name   string
+		output string
+		valid  bool
+	}{
+		{"domain, order and framing", valid, true},
+		{"value below domain", strings.Replace(valid, "    1    1\n", "    1   -1\n", 1), false},
+		{"value at excluded bound", strings.Replace(valid, "   20   97\n", "   20  101\n", 1), false},
+		{"leading zero", strings.Replace(valid, "    1    1\n", "    1   01\n", 1), false},
+		{"unsorted values", strings.Replace(valid, "    2   10\n", "    2    0\n", 1), false},
+		{"wrong row number", strings.Replace(valid, "    2   10\n", "    3   10\n", 1), false},
+		{"wrong column spacing", strings.Replace(valid, "    1    1\n", "    1     1\n", 1), false},
+		{"wrong prompt input", strings.Replace(valid, " : -1\n", " : 0\n", 1), false},
+		{"wrong prompt framing", strings.Replace(valid, " : -1\n", ": -1\n", 1), false},
+		{"unexpected search result", valid + "Nao achei.\n", false},
+		{"missing generated line", strings.Replace(valid, "   20   97\n", "", 1), false},
+		{"carriage returns", strings.ReplaceAll(valid, "\n", "\r\n"), false},
+		{"missing final newline", strings.TrimSuffix(valid, "\n"), false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := contract.compare([]byte(tt.output)); (err == nil) != tt.valid {
+				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
+			}
+		})
+	}
+	if err := (randomOutputExpectation{Kind: "random-int-search-sorted-lines", Lines: 20, Minimum: 0, Bound: 101}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong sorted search line count accepted")
+	}
+	if err := (randomOutputExpectation{Kind: "random-int-search-sorted-lines", Lines: 21, Minimum: 1, Bound: 101}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong sorted search minimum accepted")
+	}
+	if err := (randomOutputExpectation{Kind: "random-int-search-sorted-lines", Lines: 21, Minimum: 0, Bound: 100}).compare([]byte(valid)); err == nil {
+		t.Fatal("wrong sorted search bound accepted")
+	}
+}
+
 func TestRandomRandiRepeatOutputContract(t *testing.T) {
 	t.Parallel()
 	valid := " \n ============================================== \nQUANTOS NUMEROS (1-10): 1\nDigite o destaque: 0\n \nA SEQUENCIA É \n 1 \nO NUMERO DE REPETIÇÕES FOI:  0\n \nRESTOU A SEQUENCIA: \n 1"

@@ -56,7 +56,7 @@ do not establish exact portable random sequences or complete branch coverage.
 The latest recordings add `bin2dec.alg`, `buscaseq.alg`, `buscaseqreg.alg`,
 `buscbinr.alg`, `DESTAQUES.ALG`, `SEMNOME.ALG`, `MENU_PRINCIPAL.alg`, and
 `REGISTROS.ALG`. The original `REGISTROS.ALG` exit path now has exact original
-and formatted replay coverage. Two generated-data transcripts remain pending
+and formatted replay coverage. One generated-data transcript remains pending
 a random-output comparison contract. The valid recorded paths through
 `bin2dec.alg` and `MENU_PRINCIPAL.alg` complete in the reference but are rejected
 by the CLI for errors in unexecuted code; those mismatches remain pending.
@@ -100,13 +100,14 @@ The latest bounded grammar audit keeps these two accepted recordings pending:
 These observations do not justify adding a default loop bound or generally
 suppressing diagnostics in unexecuted subprograms.
 
-A replay audit of the five remaining pending accepted programs found no
+A replay audit of the four remaining pending accepted programs found no
 additional byte-exact matches. The `randomicos.alg.ALG` transcript (source
 algorithm `semnome`, probe `bundled-991ec2bd1566`) now has a reviewed
 domain/framing contract for its nine `randi(10)` values and fixed zero tail;
-the mixed integer/text, integer-sort, real-sort, record-sort, integer-search, and
-repeated-value transcripts now have reviewed shape-specific contracts. Four
-generated-output cases and one unexecuted-code path remain pending.
+the mixed integer/text, integer-sort, real-sort, record-sort, integer-search, raw
+integer-search, sorted integer-search, and repeated-value transcripts now have
+reviewed shape-specific contracts. Three generated-output cases and one
+unexecuted-code path remain pending.
 Successful runs still produce different generated values, while a small number
 of paths stop during analysis or execution. Local completion alone does not
 qualify their output or every branch.
@@ -121,11 +122,11 @@ finish with generated output that differs:
 | Unexecuted read | `E002`, line 157 | An undeclared read destination in a procedure avoided by the recorded menu exit. |
 
 These CLI diagnostics are mismatch observations, not replacement reference
-expectations: all five remaining recordings are accepted by the reference. The
+expectations: all four remaining recordings are accepted by the reference. The
 existing [generated-input contract](random-replay-contracts.md) covers only
 group-13 echo/output pairs. It cannot qualify the bundled programs' generated
 tables, sorting, searches or mixed input/output transcripts. Their sources and
-expected output remain unchanged, and all five remain pending.
+expected output remain unchanged, and all four remain pending.
 
 The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
 recording therefore remains pending; the retained diagnostic and preceding output

@@ -29,6 +29,10 @@
 - Qualify a bundled raw integer-search transcript with twenty bounded generated
   integers and fixed negative-sentinel framing for original and formatted replay,
   without promising the random sequence; 9 implementation checks remain.
+- Qualify a bundled sorted integer-search transcript with twenty bounded,
+  nondecreasing integers and fixed negative-sentinel framing for original and
+  formatted replay, without promising the random sequence; 8 implementation
+  checks remain.
 - Clarify that the recorded `arquivo` input directive is in scope while other
   file APIs such as `arqabertura` remain out of scope.
 - Replace the stale open-questions section in `AGENTS.md` with the settled
