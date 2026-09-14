@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"os"
 	"strings"
 	"testing"
@@ -23,6 +24,27 @@ func TestRandomInputReplay(t *testing.T) {
 	}
 	p.Implementation.Expected.RandomInput.Maximum = 2500
 	if err := replayProbe(root, p, executable, []string{"-test.run=^TestReplayChild$", "--"}, ""); err == nil || !strings.Contains(err.Error(), "replayed random input") {
+		t.Fatalf("out-of-domain replay was not rejected: %v", err)
+	}
+}
+
+func TestRandomOutputReplay(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	p := m.Probes[0]
+	p.TimeoutMS = 5000
+	p.Source = writeArtifact(t, root, p.Source.Path, "random-output")
+	p.Implementation.Expected.Stdout = writeArtifact(t, root, "random-output.txt", " 4\n 6\n 8\n 2\n 1\n 7\n 4\n 6\n 0\n 0\n")
+	p.Implementation.Expected.RandomOutput = &randomOutputExpectation{Kind: "randi-lines", Lines: 10, Bound: 10, Review: review{Reason: "Generated lines are qualified by domain and framing.", Link: "tasks.md"}}
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := replayProbe(root, p, executable, []string{"-test.run=^TestReplayChild$", "--"}, ""); err != nil {
+		t.Fatal(err)
+	}
+	p.Source = writeArtifact(t, root, p.Source.Path, "random-output-invalid")
+	if err := replayProbe(root, p, executable, []string{"-test.run=^TestReplayChild$", "--"}, ""); err == nil || !strings.Contains(err.Error(), "replayed random output") {
 		t.Fatalf("out-of-domain replay was not rejected: %v", err)
 	}
 }
@@ -77,6 +99,37 @@ func TestRandomInputOutputContract(t *testing.T) {
 				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
 			}
 		})
+	}
+}
+
+func TestRandomOutputContract(t *testing.T) {
+	t.Parallel()
+	valid := " 4\n 6\n 8\n 2\n 1\n 7\n 4\n 6\n 0\n 0\n"
+	for _, tt := range []struct {
+		name   string
+		output string
+		valid  bool
+	}{
+		{"domain and framing", valid, true},
+		{"upper bound", " 4\n 6\n 8\n 2\n 1\n 7\n 4\n 6\n 0\n 10\n", false},
+		{"fixed tail", " 4\n 6\n 8\n 2\n 1\n 7\n 4\n 6\n 0\n 1\n", false},
+		{"missing leading space", "4\n 6\n 8\n 2\n 1\n 7\n 4\n 6\n 0\n 0\n", false},
+		{"extra leading space", "  4\n 6\n 8\n 2\n 1\n 7\n 4\n 6\n 0\n 0\n", false},
+		{"carriage returns", strings.ReplaceAll(valid, "\n", "\r\n"), false},
+		{"missing final newline", strings.TrimSuffix(valid, "\n"), false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			contract := randomOutputExpectation{Kind: "randi-lines", Lines: 10, Bound: 10, FixedTail: 0}
+			if err := contract.compare([]byte(tt.output)); (err == nil) != tt.valid {
+				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
+			}
+		})
+	}
+	if err := (randomOutputExpectation{Kind: "unknown", Lines: 10, Bound: 10}).compare([]byte(valid)); err == nil {
+		t.Fatal("invalid contract accepted")
+	}
+	if err := (randomOutputExpectation{Kind: "randi-lines", Lines: 1, Bound: int64(math.MaxInt32) + 1}).compare([]byte(" 0\n")); err == nil {
+		t.Fatal("bound beyond randi signed-32-bit range accepted")
 	}
 }
 

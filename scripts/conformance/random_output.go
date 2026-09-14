@@ -98,3 +98,36 @@ func (c randomInputExpectation) compare(output []byte) error {
 	}
 	return nil
 }
+
+// randomOutputExpectation qualifies the fixed framing around generated lines
+// while leaving the reference generator sequence unspecified.
+type randomOutputExpectation struct {
+	Kind      string `json:"kind"`
+	Lines     int    `json:"lines"`
+	Bound     int64  `json:"bound"`
+	FixedTail int64  `json:"fixedTail"`
+	Review    review `json:"review"`
+}
+
+func (c randomOutputExpectation) compare(output []byte) error {
+	if c.Kind != "randi-lines" || c.Lines < 1 || c.Lines > 4096 || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail < 0 || c.FixedTail >= c.Bound {
+		return fmt.Errorf("invalid random-output contract")
+	}
+	lines := strings.Split(string(output), "\n")
+	if len(lines) != c.Lines+1 || lines[len(lines)-1] != "" {
+		return fmt.Errorf("random-output line count mismatch")
+	}
+	for index, line := range lines[:c.Lines] {
+		if !strings.HasPrefix(line, " ") {
+			return fmt.Errorf("random-output line %d spacing mismatch", index+1)
+		}
+		value, err := strconv.ParseInt(line[1:], 10, 64)
+		if err != nil || line[1:] != strconv.FormatInt(value, 10) || value < 0 || value >= c.Bound {
+			return fmt.Errorf("random-output line %d outside domain", index+1)
+		}
+		if index == c.Lines-1 && value != c.FixedTail {
+			return fmt.Errorf("random-output fixed tail mismatch")
+		}
+	}
+	return nil
+}

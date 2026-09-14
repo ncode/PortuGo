@@ -1,10 +1,17 @@
-# Generated-input replay contracts
+# Random replay contracts
 
 Nineteen recorded `aleatorio` programs print a generated value twice: first
 the `leia` echo, then `escreval(value)`. Their values vary between executions.
 The original source, raw observation, normalized observation and hashes remain
 unchanged. Replay qualifies the documented domains without promising matching
 reference seeds, sequences, distributions or generator-consumption counts.
+
+The bundled `randomicos.alg.ALG` example (source algorithm `semnome`, probe
+`bundled-991ec2bd1566`) has a separate `randomOutput` contract. It emits ten
+newline-terminated integer lines with one leading space; the first nine values
+are `randi(10)` results in `[0, 10)`, and the final unassigned vector slot remains
+zero. Replay checks that framing and domain for the original and formatted
+source while continuing to ignore the reference generator sequence.
 
 The optional `implementation.expected.randomInput` contract is restricted to
 accepted group-13 recordings and requires a review reason and document link.
@@ -48,5 +55,10 @@ supported.
 `TestRecordedRandomInputDomains` checks all nineteen original and formatted
 programs using both forced generator endpoints and sixteen deterministic seeds.
 Contract tests reject wrong types, bounds, precision, echo/output disagreement,
-spacing, line counts, invalid specifications, and attempts to replace recorded evidence.
+spacing, line counts, invalid specifications, and attempts to replace recorded
+evidence. The bundled `randomicos.alg.ALG` contract is replayed in
+`TestRecordedBundledRandiOutput` for both source forms, forced endpoints, and
+sixteen deterministic seeds. Bundled programs with generated arrays, records,
+sorting, branching, or mixed input/output remain pending until their own
+observable contracts exist.
 The ordinary subprocess replay uses the production CLI and its own generator.

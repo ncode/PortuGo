@@ -9515,14 +9515,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-991ec2bd1566/stdout.txt",
             "sha256": "3e1f4e3c9cfc1161c5544d8effd4542b54a0bd667435cdf37bed0ad0430a225a"
+          },
+          "randomOutput": {
+            "kind": "randi-lines",
+            "lines": 10,
+            "bound": 10,
+            "fixedTail": 0,
+            "review": {
+              "reason": "The recorded transcript has ten spaced integer lines; the first nine are randi(10) values and the final unassigned vector slot is zero. Replay checks the domain and framing without promising the reference sequence.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandiOutput"
+        ]
       }
     },
     {

@@ -40,5 +40,5 @@ including original-byte positions and unchanged token spelling. Every formatter
 mode rejects the recorded programs without changing their source. Broader
 identifier and keyword tasks remain open; the reference evidence is unchanged.
 
-The manifest contains 1,648 reference recordings: 1,584 verified and 64 pending,
-plus 19 verified project contracts and two explicit exclusions (1,669 total).
+The manifest contains 1,657 recorded probes: 1,638 verified and 19 pending,
+plus 20 verified project contracts and two explicit exclusions (1,679 total).

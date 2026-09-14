@@ -24,9 +24,9 @@ claim CLI support.
 
 The display slice also verifies `CARACOL.ALG`, `Caracol2.ALG`, and `graus.alg`
 with their original screen-clear and color commands. `randomicos.alg.ALG` and
-`RELACIONAR.ALG` now have completed reference recordings, but their random output
-remains pending a domain-based replay contract. Their recorded samples do not
-establish portable exact sequences.
+`RELACIONAR.ALG` now have completed reference recordings. The former has a
+reviewed domain/framing contract; the latter remains pending because its
+recorded sample does not establish a portable exact sequence.
 
 The text slice adds `TABOADA.ALG`, which uses screen clearing, character input,
 and a counted multiplication-table loop. Its original and formatted executions
@@ -101,11 +101,14 @@ The latest bounded grammar audit keeps these three accepted recordings pending:
 These observations do not justify adding a default loop bound or generally
 suppressing diagnostics in unexecuted subprograms.
 
-A replay audit of the sixteen remaining pending accepted programs found no
-additional byte-exact matches. Successful runs still produce different
-generated values, while a small number of paths stop during analysis or
-execution. Local completion alone does not qualify their output or every
-branch.
+A replay audit of the fifteen remaining pending accepted programs found no
+additional byte-exact matches. The `randomicos.alg.ALG` transcript (source
+algorithm `semnome`, probe `bundled-991ec2bd1566`) now has a reviewed
+domain/framing contract for its nine `randi(10)` values and fixed zero tail;
+fourteen generated-output cases and one unexecuted-code path remain pending.
+Successful runs still produce different generated values, while a small number
+of paths stop during analysis or execution. Local completion alone does not
+qualify their output or every branch.
 
 The remaining accepted paths either fail during analysis or execution, or
 finish with generated output that differs:
@@ -117,11 +120,11 @@ finish with generated output that differs:
 | Unexecuted read | `E002`, line 157 | An undeclared read destination in a procedure avoided by the recorded menu exit. |
 
 These CLI diagnostics are mismatch observations, not replacement reference
-expectations: all sixteen remaining recordings are accepted by the reference. The
+expectations: all fifteen remaining recordings are accepted by the reference. The
 existing [generated-input contract](random-replay-contracts.md) covers only
 group-13 echo/output pairs. It cannot qualify the bundled programs' generated
 tables, sorting, searches or mixed input/output transcripts. Their sources and
-expected output remain unchanged, and all sixteen remain pending.
+expected output remain unchanged, and all fifteen remain pending.
 
 The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
 recording therefore remains pending; the retained diagnostic and preceding output

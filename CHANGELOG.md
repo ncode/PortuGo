@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Reject undeclared files and special entries in private conformance recording
+  stages before evidence is captured.
+- Qualify the bundled `randomicos.alg.ALG` transcript (source algorithm
+  `semnome`, probe `bundled-991ec2bd1566`) with a bounded `randi(10)`
+  line-framing contract for original and formatted replay, without promising
+  the reference generator sequence; 19 implementation checks remain.
 - Clarify that the recorded `arquivo` input directive is in scope while other
   file APIs such as `arqabertura` remain out of scope.
 - Replace the stale open-questions section in `AGENTS.md` with the settled
@@ -17,7 +23,7 @@
   from their recorded, implementation-verified requirement traces while
   keeping broader unqualified forms pending.
 - Close the evidence-recording task after validating all bundled-example
-  dispositions and manifest probes; keep the 20 implementation checks pending.
+  dispositions and manifest probes; keep the 19 implementation checks pending.
 - Accept one global `var` section after top-level subprogram declarations,
   including when a `tipo` section precedes them, and retain the repeated-section
   diagnostic.
@@ -85,7 +91,7 @@
   declaration and case-range scope, retaining rejection coverage and pending
   ownership for unrecorded variants.
 - Record fresh conformance and quality evidence, including the complete
-  20-probe pending implementation inventory and zero verified replays.
+  19-probe pending implementation inventory and the verified replay set.
 - Verify the recorded reserved-word, repeated-main-section, and builtin-name
   rejection probes against positioned local diagnostics.
 - Correct the reference-corpus progress totals to match the current manifest.

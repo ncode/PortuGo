@@ -230,6 +230,20 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			add(contract.compare(out))
 		}
 	}
+	if i.Expected.RandomInput != nil && i.Expected.RandomOutput != nil {
+		add(fmt.Errorf("random-input and random-output contracts are mutually exclusive"))
+	}
+	if contract := i.Expected.RandomOutput; contract != nil {
+		add(checkReview(root, &contract.Review))
+		if e.State != "recorded" || e.Accepted == nil || !*e.Accepted {
+			add(fmt.Errorf("random-output contract requires accepted reference evidence"))
+		}
+		out, err := readArtifact(root, e.Normalized)
+		add(err)
+		if err == nil {
+			add(contract.compare(out))
+		}
+	}
 	switch i.State {
 	case "verified":
 		add(checkTests(root, i.Tests))

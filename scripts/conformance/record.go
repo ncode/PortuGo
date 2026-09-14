@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -53,6 +54,42 @@ func checkDuplicateStagedPaths(kind string, paths []string) error {
 		seen[key] = struct{}{}
 	}
 	return nil
+}
+
+func checkRecordingInventory(stage string, staged stagedRecording) error {
+	allowed := make(map[string]struct{}, len(recorderOwnedPaths)+len(staged.Files)+len(staged.Generated)+len(staged.Absent))
+	for _, name := range recorderOwnedPaths {
+		allowed[strings.ToUpper(name)] = struct{}{}
+	}
+	for _, file := range staged.Files {
+		allowed[strings.ToUpper(file.Path)] = struct{}{}
+	}
+	for _, name := range staged.Generated {
+		allowed[strings.ToUpper(name)] = struct{}{}
+	}
+	for _, name := range staged.Absent {
+		allowed[strings.ToUpper(name)] = struct{}{}
+	}
+	return filepath.WalkDir(stage, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if path == stage || entry.IsDir() {
+			return nil
+		}
+		name, err := filepath.Rel(stage, path)
+		if err != nil {
+			return err
+		}
+		name = filepath.ToSlash(name)
+		if entry.Type()&os.ModeSymlink != 0 || !entry.Type().IsRegular() {
+			return fmt.Errorf("invalid recording stage entry: %s", name)
+		}
+		if _, ok := allowed[strings.ToUpper(name)]; !ok {
+			return fmt.Errorf("undeclared recording file: %s", name)
+		}
+		return nil
+	})
 }
 
 func writeNew(name string, data []byte) error {
@@ -257,6 +294,9 @@ func captureRecording(root, stage string, accepted bool, capturedAt, normalizer 
 		return e, err
 	}
 	if err := checkDuplicateStagedPaths("absent", staged.Absent); err != nil {
+		return e, err
+	}
+	if err := checkRecordingInventory(stage, staged); err != nil {
 		return e, err
 	}
 	for _, a := range []artifact{staged.Source, staged.Input} {
