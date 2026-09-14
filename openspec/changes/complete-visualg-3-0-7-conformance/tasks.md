@@ -257,7 +257,12 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   forms. Rejected variants retain positioned negative coverage; unrecorded forms
   remain pending without dependent layout or example obligations. Manifest
   dispositions and retired-ID history remain unchanged.
-- [ ] 2.14 Run recorder, normalizer, replay, manifest, and traceability tests plus the full quality suite and strict OpenSpec validation; require zero evidence-mode errors and zero verified regressions, and publish the remaining pending implementation inventory.
+- [x] 2.14 Run recorder, normalizer, replay, manifest, and traceability tests plus the full quality suite and strict OpenSpec validation; require zero evidence-mode errors and zero verified regressions, and publish the remaining pending implementation inventory.
+
+  Fresh conformance tests, evidence validation, full ordinary and race tests,
+  build, vet, formatter, and strict OpenSpec validation pass on the current
+  stack. Evidence replay reports zero verified regressions; the 24 pending
+  implementation probes are published in `docs/quality-acceptance-2026-09-14.md`.
 - [x] 2.15 Mark every completed 2.x task immediately, commit the evidence and corrections, push the next stacked branch, and open its draft PR before group 3.
 
 ## 3. Semantic Handoff, Interpreter Options, Diagnostics, and CLI Statuses

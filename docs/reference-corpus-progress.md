@@ -57,6 +57,11 @@ unrecorded forms keep their pending owning tasks, and no dependent layout or
 example obligation is inferred. Manifest dispositions and retired-ID history
 were preserved.
 
+Fresh recorder, normalizer, replay, manifest, traceability, quality, and strict
+OpenSpec checks are captured in the [current quality report](quality-acceptance-2026-09-14.md).
+Evidence validation has zero verified regressions; its published inventory
+keeps the 24 pending implementation probes visible.
+
 The initial manifest contained 18 reduced probes:
 
 - Eleven accepted observations from the earlier Windows validation have complete
