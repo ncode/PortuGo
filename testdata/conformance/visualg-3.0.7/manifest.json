@@ -8389,14 +8389,26 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-3b4c69f65b60/stdout.txt",
             "sha256": "8c7d0b2fcd19c66883d5afc0812190796edf6c50e5aaf6d714421cccd7010f4e"
+          },
+          "randomOutput": {
+            "kind": "random-int-text-lines",
+            "lines": 10,
+            "bound": 101,
+            "review": {
+              "reason": "The recorder emits five alternating bounded integer and uppercase text samples; generator sequences remain unqualified.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledMixedRandomOutput"
+        ]
       }
     },
     {

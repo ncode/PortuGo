@@ -133,6 +133,36 @@ func TestRandomOutputContract(t *testing.T) {
 	}
 }
 
+func TestRandomIntegerTextOutputContract(t *testing.T) {
+	t.Parallel()
+	valid := "70\nNHEEX\n99\nMWFJX\n36\nTCWSY\n97\nJVXUJ\n80\nUWQIS\n"
+	contract := randomOutputExpectation{Kind: "random-int-text-lines", Lines: 10, Bound: 101}
+	for _, tt := range []struct {
+		name   string
+		output string
+		valid  bool
+	}{
+		{"domain and framing", valid, true},
+		{"integer upper bound", "70\nNHEEX\n101\nMWFJX\n36\nTCWSY\n97\nJVXUJ\n80\nUWQIS\n", false},
+		{"negative integer", "70\nNHEEX\n-1\nMWFJX\n36\nTCWSY\n97\nJVXUJ\n80\nUWQIS\n", false},
+		{"leading zero", "070\nNHEEX\n99\nMWFJX\n36\nTCWSY\n97\nJVXUJ\n80\nUWQIS\n", false},
+		{"lowercase text", "70\nNHEEX\n99\nmwfjx\n36\nTCWSY\n97\nJVXUJ\n80\nUWQIS\n", false},
+		{"wrong text length", "70\nNHEEX\n99\nMWFJ\n36\nTCWSY\n97\nJVXUJ\n80\nUWQIS\n", false},
+		{"wrong line count", "70\nNHEEX\n99\nMWFJX\n36\nTCWSY\n97\nJVXUJ\n", false},
+		{"carriage returns", strings.ReplaceAll(valid, "\n", "\r\n"), false},
+		{"missing final newline", strings.TrimSuffix(valid, "\n"), false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := contract.compare([]byte(tt.output)); (err == nil) != tt.valid {
+				t.Fatalf("error=%v, want valid=%t", err, tt.valid)
+			}
+		})
+	}
+	if err := (randomOutputExpectation{Kind: "random-int-text-lines", Lines: 10, Bound: 101, FixedTail: 1}).compare([]byte(valid)); err == nil {
+		t.Fatal("fixed tail accepted for mixed random contract")
+	}
+}
+
 func TestRandomInputContractValidation(t *testing.T) {
 	t.Parallel()
 	for _, name := range []string{"accepted", "missing review", "wrong owner", "rejected", "invalid recorded sample", "replaced evidence"} {

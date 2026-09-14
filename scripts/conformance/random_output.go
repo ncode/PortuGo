@@ -110,12 +110,36 @@ type randomOutputExpectation struct {
 }
 
 func (c randomOutputExpectation) compare(output []byte) error {
-	if c.Kind != "randi-lines" || c.Lines < 1 || c.Lines > 4096 || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail < 0 || c.FixedTail >= c.Bound {
+	switch c.Kind {
+	case "randi-lines":
+		if c.Lines < 1 || c.Lines > 4096 || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail < 0 || c.FixedTail >= c.Bound {
+			return fmt.Errorf("invalid random-output contract")
+		}
+	case "random-int-text-lines":
+		if c.Lines < 2 || c.Lines > 4096 || c.Lines%2 != 0 || c.Bound < 1 || c.Bound > math.MaxInt32 || c.FixedTail != 0 {
+			return fmt.Errorf("invalid random-output contract")
+		}
+	default:
 		return fmt.Errorf("invalid random-output contract")
 	}
 	lines := strings.Split(string(output), "\n")
 	if len(lines) != c.Lines+1 || lines[len(lines)-1] != "" {
 		return fmt.Errorf("random-output line count mismatch")
+	}
+	if c.Kind == "random-int-text-lines" {
+		for index, line := range lines[:c.Lines] {
+			if index%2 == 1 {
+				if len(line) != 5 || strings.Trim(line, "ABCDEFGHIJKLMNOPQRSTUVWXYZ") != "" {
+					return fmt.Errorf("random-output text line %d mismatch", index+1)
+				}
+				continue
+			}
+			value, err := strconv.ParseInt(line, 10, 64)
+			if err != nil || line != strconv.FormatInt(value, 10) || value < 0 || value >= c.Bound {
+				return fmt.Errorf("random-output integer line %d outside domain", index+1)
+			}
+		}
+		return nil
 	}
 	for index, line := range lines[:c.Lines] {
 		if !strings.HasPrefix(line, " ") {

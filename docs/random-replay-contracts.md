@@ -13,6 +13,12 @@ are `randi(10)` results in `[0, 10)`, and the final unassigned vector slot remai
 zero. Replay checks that framing and domain for the original and formatted
 source while continuing to ignore the reference generator sequence.
 
+One bundled mixed-input example has a separate `randomOutput` contract. It
+emits ten lines in five alternating pairs: a canonical integer in `[0, 101)`
+followed by five uppercase ASCII letters. Replay checks the line shape,
+integer domain and text alphabet for the original and formatted source without
+promising the generated sequence.
+
 The optional `implementation.expected.randomInput` contract is restricted to
 accepted group-13 recordings and requires a review reason and document link.
 `minimum` and `maximum` are inclusive integer ticks at `10^-decimals`; for
@@ -58,7 +64,9 @@ Contract tests reject wrong types, bounds, precision, echo/output disagreement,
 spacing, line counts, invalid specifications, and attempts to replace recorded
 evidence. The bundled `randomicos.alg.ALG` contract is replayed in
 `TestRecordedBundledRandiOutput` for both source forms, forced endpoints, and
-sixteen deterministic seeds. Bundled programs with generated arrays, records,
-sorting, branching, or mixed input/output remain pending until their own
-observable contracts exist.
+sixteen deterministic seeds. The mixed-input contract is replayed by
+`TestRecordedBundledMixedRandomOutput` with the same source and generator
+coverage. Bundled programs with generated arrays, records, sorting, branching,
+or other mixed input/output remain pending until their own observable contracts
+exist.
 The ordinary subprocess replay uses the production CLI and its own generator.

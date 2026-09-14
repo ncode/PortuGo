@@ -7,7 +7,10 @@
 - Qualify the bundled `randomicos.alg.ALG` transcript (source algorithm
   `semnome`, probe `bundled-991ec2bd1566`) with a bounded `randi(10)`
   line-framing contract for original and formatted replay, without promising
-  the reference generator sequence; 19 implementation checks remain.
+  the reference generator sequence; 18 implementation checks remain.
+- Qualify a bundled mixed random-input transcript with an alternating bounded
+  integer/uppercase-text contract for original and formatted replay, without
+  promising the reference generator sequence.
 - Clarify that the recorded `arquivo` input directive is in scope while other
   file APIs such as `arqabertura` remain out of scope.
 - Replace the stale open-questions section in `AGENTS.md` with the settled
@@ -23,7 +26,7 @@
   from their recorded, implementation-verified requirement traces while
   keeping broader unqualified forms pending.
 - Close the evidence-recording task after validating all bundled-example
-  dispositions and manifest probes; keep the 19 implementation checks pending.
+  dispositions and manifest probes; keep the 18 implementation checks pending.
 - Accept one global `var` section after top-level subprogram declarations,
   including when a `tipo` section precedes them, and retain the repeated-section
   diagnostic.

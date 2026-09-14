@@ -1181,15 +1181,15 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   exclusions, retaining their unchanged sources and partial observations. A
   fresh manifest audit resolves all 229 inventory links, all 1,679 probe links,
   and all 1,813 implementation-test links with no stale or untraced IDs.
-  Shared probe links remain intentional; the 19 pending implementation probes
+  Shared probe links remain intentional; the 18 pending implementation probes
   retain their owning tasks without fabricated tests, and the two reviewed
   non-applicable probes retain their project-test links.
 - [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
   Forty-four original examples still match recorded output byte-for-byte before
-  and after formatting; one additional accepted program now has a reviewed
-  random-output domain/framing contract. Fourteen accepted programs still need
-  a random-output replay contract; one accepted path encounters a CLI error in
+  and after formatting; two additional accepted programs now have reviewed
+  random-output contracts. Thirteen generated-output cases still need a
+  random-output replay contract; one accepted path encounters a CLI error in
   unexecuted code. Four
   rejected programs retain diagnostic or execution-phase differences. The latest
   eleven recordings add eight completed reference runs and three reviewed
@@ -1212,11 +1212,12 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   faca`) and executes zero iterations. The bundled generated-input transcript
   remains pending because its random-output contract is not qualified.
 
-  Auditing the fifteen remaining pending accepted programs found successful
+  Auditing the fourteen remaining pending accepted programs found successful
   local runs with varying output and one frontend rejection. The
   `randomicos.alg.ALG` transcript (source algorithm `semnome`, probe
   `bundled-991ec2bd1566`) is now qualified by a bounded `randi(10)` output
-  contract; fourteen generated-output cases and one frontend rejection remain.
+  contract; the mixed integer/text transcript is now qualified as well, leaving
+  thirteen generated-output cases and one frontend rejection.
   The parser now
   accepts a global variable section after a record type and its subprograms;
   that generated transcript, like the omitted-bound transcript, remains
@@ -1264,7 +1265,7 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   `docs/release-rehearsal-2026-09-14.md`. Build, ordinary and race tests, vet,
   formatter checks, all CLI commands, incremental replay, and strict OpenSpec
   validation pass. The supported-platform CI matrix remains green; release
-  acceptance stays blocked by the 19 pending implementation probes and final
+  acceptance stays blocked by the 18 pending implementation probes and final
   handoff tasks.
 - [ ] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
 - [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.

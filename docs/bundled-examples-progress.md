@@ -90,22 +90,21 @@ prefix before discovering malformed syntax or an invalid assignment, while CLI
 analysis reports errors before execution and may collect more than one
 diagnostic.
 
-The latest bounded grammar audit keeps these three accepted recordings pending:
+The latest bounded grammar audit keeps these two accepted recordings pending:
 
 | Corpus ID | Remaining qualification |
 | --- | --- |
-| `bundled-3b4c69f65b60` | Generated input precedes a counted loop with no upper bound. The CLI now accepts the header and skips that loop, but the recording still establishes no portable random transcript. |
 | `bundled-54f1e50d1c02` | The recorded menu exit avoids a procedure with an undeclared read destination. The CLI rejects that unused body. Selected and unselected read controls are still needed before changing diagnostic timing. |
 | `bundled-fa172f3f5f70` | The CLI now accepts the global `var` section after the record type and procedures, but its generated transcript still needs a portable random-output qualification. |
 
 These observations do not justify adding a default loop bound or generally
 suppressing diagnostics in unexecuted subprograms.
 
-A replay audit of the fifteen remaining pending accepted programs found no
+A replay audit of the fourteen remaining pending accepted programs found no
 additional byte-exact matches. The `randomicos.alg.ALG` transcript (source
 algorithm `semnome`, probe `bundled-991ec2bd1566`) now has a reviewed
 domain/framing contract for its nine `randi(10)` values and fixed zero tail;
-fourteen generated-output cases and one unexecuted-code path remain pending.
+thirteen generated-output cases and one unexecuted-code path remain pending.
 Successful runs still produce different generated values, while a small number
 of paths stop during analysis or execution. Local completion alone does not
 qualify their output or every branch.
@@ -115,16 +114,16 @@ finish with generated output that differs:
 
 | Case | Current CLI result | Pending behavior |
 | --- | --- | --- |
-| Counted-loop form | generated output differs | Omitted counted-loop upper bound is accepted and skips the loop; generated input/output still needs qualification. |
+| Generated data | generated output differs | Remaining random arrays, records, sorting, searches, and mixed input/output need shape-specific qualification. |
 | Declaration order | generated output differs | The CLI accepts the global `var` section after the record type and procedures; generated output still needs qualification. |
 | Unexecuted read | `E002`, line 157 | An undeclared read destination in a procedure avoided by the recorded menu exit. |
 
 These CLI diagnostics are mismatch observations, not replacement reference
-expectations: all fifteen remaining recordings are accepted by the reference. The
+expectations: all fourteen remaining recordings are accepted by the reference. The
 existing [generated-input contract](random-replay-contracts.md) covers only
 group-13 echo/output pairs. It cannot qualify the bundled programs' generated
 tables, sorting, searches or mixed input/output transcripts. Their sources and
-expected output remain unchanged, and all fifteen remain pending.
+expected output remain unchanged, and all fourteen remain pending.
 
 The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
 recording therefore remains pending; the retained diagnostic and preceding output

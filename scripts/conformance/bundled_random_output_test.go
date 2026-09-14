@@ -38,18 +38,40 @@ func TestBundledRandiOutputContractMetadata(t *testing.T) {
 	if err := json.Unmarshal(data, &doc); err != nil {
 		t.Fatal(err)
 	}
+	required := map[string]string{
+		"randi-lines":           "bundled randi example",
+		"random-int-text-lines": "bundled mixed random example",
+	}
+	found := make(map[string]bool)
 	for _, p := range doc.Probes {
-		if p.ID == "bundled-991ec2bd1566" {
-			if len(p.Implementation.Expected.RandomOutput) == 0 || string(p.Implementation.Expected.RandomOutput) == "null" {
-				t.Fatal("bundled randi example has no output contract")
-			}
-			return
+		var contract struct {
+			Kind string `json:"kind"`
+		}
+		if len(p.Implementation.Expected.RandomOutput) == 0 || string(p.Implementation.Expected.RandomOutput) == "null" || json.Unmarshal(p.Implementation.Expected.RandomOutput, &contract) != nil {
+			continue
+		}
+		if _, ok := required[contract.Kind]; !ok {
+			continue
+		}
+		found[contract.Kind] = true
+	}
+	for kind, label := range required {
+		if !found[kind] {
+			t.Fatalf("%s not found", label)
 		}
 	}
-	t.Fatal("bundled randi example not found")
 }
 
 func TestRecordedBundledRandiOutput(t *testing.T) {
+	testRecordedBundledRandomOutput(t, "randi-lines")
+}
+
+func TestRecordedBundledMixedRandomOutput(t *testing.T) {
+	testRecordedBundledRandomOutput(t, "random-int-text-lines")
+}
+
+func testRecordedBundledRandomOutput(t *testing.T, kind string) {
+	t.Helper()
 	root, err := filepath.Abs("../..")
 	if err != nil {
 		t.Fatal(err)
@@ -60,7 +82,8 @@ func TestRecordedBundledRandiOutput(t *testing.T) {
 	}
 	var probe *probe
 	for index := range m.Probes {
-		if m.Probes[index].ID == "bundled-991ec2bd1566" {
+		contract := m.Probes[index].Implementation.Expected.RandomOutput
+		if contract != nil && contract.Kind == kind {
 			probe = &m.Probes[index]
 			break
 		}
