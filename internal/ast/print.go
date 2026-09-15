@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 // Fprint writes a deterministic source-like representation of prog.

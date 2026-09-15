@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/interp"
-	"github.com/ncode/portugol-go/internal/source"
+	"github.com/ncode/PortuGo/internal/interp"
+	"github.com/ncode/PortuGo/internal/source"
 )
 
 func TestSubmissionLimit(t *testing.T) {

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/interp"
+	"github.com/ncode/PortuGo/internal/interp"
 )
 
 func TestInputModesPreserveNextSubmission(t *testing.T) {
@@ -80,9 +80,9 @@ func TestInputModesPreserveNextSubmission(t *testing.T) {
 			if err != nil || ok != (tt.diagnostic == "") {
 				t.Fatalf("ok=%t error=%v diagnostics=%q", ok, err, &stderr)
 			}
-			want := "Portugol REPL. Enter a complete program, fimalgoritmo runs it, :sair exits.\nportugol> " +
-				strings.Repeat("... ", strings.Count(first, "\n")-1) + tt.output + "portugol> " +
-				strings.Repeat("... ", strings.Count(next, "\n")-1) + "99\nnext= 99\nportugol> "
+			want := "Portugol REPL. Enter a complete program, fimalgoritmo runs it, :sair exits.\nportugo> " +
+				strings.Repeat("... ", strings.Count(first, "\n")-1) + tt.output + "portugo> " +
+				strings.Repeat("... ", strings.Count(next, "\n")-1) + "99\nnext= 99\nportugo> "
 			if out.String() != want {
 				t.Errorf("shared input transcript: got %q, want %q", &out, want)
 			}

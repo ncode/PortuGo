@@ -19,7 +19,7 @@ func writeFormatted(path string, data []byte) error {
 	if !info.Mode().IsRegular() {
 		return fmt.Errorf("%s: cannot format a non-regular file", path)
 	}
-	file, err := os.CreateTemp(filepath.Dir(path), ".portugol-fmt-*")
+	file, err := os.CreateTemp(filepath.Dir(path), ".portugo-fmt-*")
 	if err != nil {
 		return err
 	}

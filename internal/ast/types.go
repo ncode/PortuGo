@@ -1,6 +1,6 @@
 package ast
 
-import "github.com/ncode/portugol-go/internal/token"
+import "github.com/ncode/PortuGo/internal/token"
 
 // Program is a complete Portugol source file.
 type Program struct {

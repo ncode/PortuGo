@@ -24,7 +24,7 @@ func commandOutputWithTimeout(t *testing.T, timeout time.Duration, args ...strin
 	if err != nil {
 		t.Fatal(err)
 	}
-	encoded, err := json.Marshal(append([]string{"portugol"}, args...))
+	encoded, err := json.Marshal(append([]string{"portugo"}, args...))
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -65,7 +65,7 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	if len(source) > 64<<10 {
 		return fmt.Errorf("source exceeds replay profile")
 	}
-	dir, err := os.MkdirTemp("", "portugol-probe-")
+	dir, err := os.MkdirTemp("", "portugo-probe-")
 	if err != nil {
 		return err
 	}

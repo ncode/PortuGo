@@ -1248,7 +1248,7 @@ expression/designator evaluation, and loop iteration, even with an empty body.
 Calls share the run's counter; each REPL submission starts a fresh counter.
 The next operation stops before its side effects when the budget is exhausted.
 This work budget cannot interrupt a blocking reader or host operation.
-For example, `portugol run --max-steps 20 examples/execution_budget.alg`
+For example, `portugo run --max-steps 20 examples/execution_budget.alg`
 stops the sample loop early; omitting the flag lets it finish.
 
 Regardless of that budget, execution permits at most 256 active language calls,
@@ -1293,11 +1293,11 @@ and association. The CLI checks the complete formatted source against the same
 byte and syntax limits before writing stdout. If formatting expands an accepted
 input beyond a limit, `fmt` reports `E900`, exits 1, and writes no source output.
 
-`portugol fmt file.alg` writes canonical UTF-8 source with LF line endings to
-stdout. `portugol fmt --check file.alg` writes no source and exits 0 if the
+`portugo fmt file.alg` writes canonical UTF-8 source with LF line endings to
+stdout. `portugo fmt --check file.alg` writes no source and exits 0 if the
 original bytes are already canonical, or exits 1 with a message on stderr if
 formatting would change them. This comparison includes encoding, a leading BOM,
-and line endings. `portugol fmt -w file.alg` replaces the file only after the
+and line endings. `portugo fmt -w file.alg` replaces the file only after the
 complete output parses successfully, preserves file permissions and symlinks,
 and produces no stdout. A second pass leaves the bytes unchanged. Malformed
 input and formatting limits exit 1 without overwriting the original; operational

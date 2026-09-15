@@ -5,8 +5,8 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 // Scan tokenizes decoded Portugol source text.

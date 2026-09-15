@@ -169,7 +169,7 @@ func run(args []string, out, stderr io.Writer) (status int) {
 	}
 	observer := ""
 	if executable == "" {
-		dir, err := os.MkdirTemp("", "portugol-candidate-")
+		dir, err := os.MkdirTemp("", "portugo-candidate-")
 		if err != nil {
 			return fail(err)
 		}
@@ -178,10 +178,10 @@ func run(args []string, out, stderr io.Writer) (status int) {
 				status = fail(fmt.Errorf("clean candidate directory: %w", err))
 			}
 		}()
-		executable = filepath.Join(dir, "portugol.exe")
+		executable = filepath.Join(dir, "portugo.exe")
 		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 		defer cancel()
-		cmd := exec.CommandContext(ctx, "go", "build", "-o", executable, "./cmd/portugol")
+		cmd := exec.CommandContext(ctx, "go", "build", "-o", executable, "./cmd/portugo")
 		cmd.Dir, cmd.Stdout, cmd.Stderr = rootPath, stderr, stderr
 		if err := cmd.Run(); err != nil {
 			return fail(fmt.Errorf("build candidate: %w", err))

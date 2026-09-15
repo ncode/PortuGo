@@ -1,9 +1,9 @@
 package lexer
 
 import (
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/source"
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/source"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 // ScanFile tokenizes decoded source, preserving original-byte source positions.

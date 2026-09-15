@@ -10,9 +10,9 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/ncode/portugol-go/internal/cp1252"
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/cp1252"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 // MaxBytes is the source-file and REPL-submission byte limit before decoding.

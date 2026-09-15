@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 // before emits comments between the preceding printed line and this position.

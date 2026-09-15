@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/PortuGo/internal/runtime"
 )
 
 func TestCaseConversionAllocationGuard(t *testing.T) {

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 func TestDiagnosticContract(t *testing.T) {

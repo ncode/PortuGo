@@ -4,7 +4,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 // Options configures one interpreter. Zero MaxSteps leaves work unlimited.

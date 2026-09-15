@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/PortuGo/internal/runtime"
 )
 
 func numeric1(args []runtime.Value, fn func(float64) float64) (runtime.Value, bool, error) {

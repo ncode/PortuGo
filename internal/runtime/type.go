@@ -6,8 +6,8 @@ import (
 	"strings"
 	"unsafe"
 
-	"github.com/ncode/portugol-go/internal/ast"
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/ast"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 // TypeKind is a Portugol runtime type category.

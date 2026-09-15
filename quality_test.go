@@ -23,7 +23,7 @@ func TestQualityPolicy(t *testing.T) {
 			"openspec validate --all --strict --no-interactive", "bash scripts/check-oracle.sh",
 		}},
 		{".golangci.yml", []string{"version: \"2\"", "errcheck", "govet", "ineffassign", "staticcheck", "unused"}},
-		{"docs/development.md", []string{"honnef.co/go/tools/cmd/staticcheck@v0.6.1", "golangci-lint/v2/cmd/golangci-lint@v2.4.0"}},
+		{"docs/development.md", []string{"honnef.co/go/tools/cmd/staticcheck@v0.8.1", "golangci-lint/v2/cmd/golangci-lint@v2.13.2"}},
 	}
 	for _, check := range checks {
 		t.Run(check.path, func(t *testing.T) {

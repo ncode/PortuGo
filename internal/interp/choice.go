@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ncode/portugol-go/internal/ast"
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/PortuGo/internal/ast"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/runtime"
 )
 
 func (i *Interpreter) matchesCase(selector runtime.Value, label ast.CaseLabel) (bool, error) {

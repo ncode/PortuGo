@@ -5,7 +5,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 func TestOriginalPos(t *testing.T) {

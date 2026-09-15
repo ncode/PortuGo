@@ -13,7 +13,7 @@ program.
 
 ## Get started
 
-You'll need **[Git](https://git-scm.com/install/)** and **Go 1.22 or newer**. The
+You'll need **[Git](https://git-scm.com/install/)** and **Go 1.27 or newer**. The
 [official Go installation guide](https://go.dev/doc/install) has instructions
 for Linux and macOS. You don't need to know Go to use PortuGo; it builds the
 command-line tool for you.
@@ -33,8 +33,8 @@ Then download the project, build it, and run your first example:
 ```sh
 git clone https://github.com/ncode/PortuGo.git
 cd PortuGo
-go build -o portugol ./cmd/portugol
-./portugol run examples/hello.alg
+go build -o portugo ./cmd/portugo
+./portugo run examples/hello.alg
 ```
 
 You should see:
@@ -43,7 +43,7 @@ You should see:
 Ola, Portugol!
 ```
 
-That's your first program running! `portugol` is the executable you just built;
+That's your first program running! `portugo` is the executable you just built;
 the `./` tells your terminal to find it in the current folder. The commands
 below assume you're still in the `PortuGo` folder.
 
@@ -66,7 +66,7 @@ fimalgoritmo
 Run it:
 
 ```sh
-./portugol run boas-vindas.alg
+./portugo run boas-vindas.alg
 ```
 
 Type your name and press Enter. The program will greet you by name.
@@ -81,13 +81,13 @@ complete program, starting with `algoritmo` and ending with `fimalgoritmo`.
 
 | What you'd like to do | Command |
 | --- | --- |
-| Run a program | `./portugol run boas-vindas.alg` |
-| Check syntax and types without running it | `./portugol check boas-vindas.alg` |
-| Preview formatted code in the terminal | `./portugol fmt boas-vindas.alg` |
-| Format and save the file | `./portugol fmt -w boas-vindas.alg` |
-| Check whether a file is already formatted | `./portugol fmt --check boas-vindas.alg` |
-| Start an interactive session | `./portugol repl` |
-| See help for a command | `./portugol run -h` |
+| Run a program | `./portugo run boas-vindas.alg` |
+| Check syntax and types without running it | `./portugo check boas-vindas.alg` |
+| Preview formatted code in the terminal | `./portugo fmt boas-vindas.alg` |
+| Format and save the file | `./portugo fmt -w boas-vindas.alg` |
+| Check whether a file is already formatted | `./portugo fmt --check boas-vindas.alg` |
+| Start an interactive session | `./portugo repl` |
+| See help for a command | `./portugo run -h` |
 
 Put options such as `-w` and `--check` **before** the filename.
 `check` is silent when it succeeds. If something needs attention, diagnostics
@@ -101,7 +101,7 @@ Type `:sair` on its own line to leave the session.
 Experimenting with loops? You can set an execution budget:
 
 ```sh
-./portugol run --max-steps 10000 boas-vindas.alg
+./portugo run --max-steps 10000 boas-vindas.alg
 ```
 
 The program stops with a diagnostic if it uses up that budget. You can also
@@ -122,11 +122,11 @@ The [examples folder](examples/) is a good place to find your next exercise:
 Run any example the same way:
 
 ```sh
-./portugol run examples/fatorial.alg
+./portugo run examples/fatorial.alg
 ```
 
 Already have exercises saved from VisuAlg? Try them with
-`./portugol run path/to/exercise.alg`. PortuGo reads UTF-8 and Windows-1252
+`./portugo run path/to/exercise.alg`. PortuGo reads UTF-8 and Windows-1252
 source files, including the encoding commonly used by VisuAlg.
 
 ## Compatibility and project status

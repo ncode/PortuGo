@@ -1,20 +1,23 @@
 # Development checks
 
-The module remains compatible with Go 1.22. CI runs ordinary tests on Go
-1.22.12 and 1.25.0 on Linux, macOS, and Windows. Its quality and fuzz jobs use
-Go 1.25.0. Install the same pinned tools with that toolchain:
+The module requires Go 1.27 or newer. Every CI job reads the Go version from
+`go.mod`, with ordinary tests on Linux, macOS, and Windows. CI disables automatic
+toolchain switching so checks use the selected Go version. Install the same
+pinned tools with Go 1.27:
 
 ```sh
-go install honnef.co/go/tools/cmd/staticcheck@v0.6.1
-go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.4.0
+go install honnef.co/go/tools/cmd/staticcheck@v0.8.1
+go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2
 npm install --global @fission-ai/openspec@1.8.0
 ```
 
 Tool dependencies stay outside the language module. The lint configuration
 explicitly enables errcheck, govet, ineffassign, staticcheck, and unused, with
-uncapped diagnostics. This pins the behavior of the
-[Go 1.25-compatible golangci-lint release](https://github.com/golangci/golangci-lint/releases/tag/v2.4.0)
-and [Staticcheck 2025.1.1](https://staticcheck.dev/changes/2025.1/).
+uncapped diagnostics. The lint target version is also inferred from `go.mod`.
+This pins the behavior of
+[golangci-lint v2.13.2](https://github.com/golangci/golangci-lint/releases/tag/v2.13.2)
+and [Staticcheck 2026.2.1](https://github.com/dominikh/go-tools/releases/tag/2026.2.1),
+which support Go 1.27.
 
 Run the required checks from the repository root:
 
@@ -108,7 +111,7 @@ duplicate checks, missing results and failed or skipped results fail acceptance.
 These are trusted local result records, not independent attestations. Record
 the actual commands, toolchain/platform, exit status and result in each evidence
 file, including successful commands with empty output. Platform results must
-cover both supported Go versions, and each fuzz campaign must run for 30 seconds.
+cover the Go version selected by CI, and each fuzz campaign must run for 30 seconds.
 Preserve raw operational evidence privately; publish only reviewed, sanitized
 evidence, with hashes recalculated for its published bytes.
 

@@ -5,10 +5,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/source"
-	"github.com/ncode/portugol-go/internal/testprocess"
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/source"
+	"github.com/ncode/PortuGo/internal/testprocess"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 func TestScanGolden(t *testing.T) {

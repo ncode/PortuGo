@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ncode/portugol-go/internal/interp"
+	"github.com/ncode/PortuGo/internal/interp"
 )
 
 func TestObservationAdapter(t *testing.T) {

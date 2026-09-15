@@ -11,9 +11,9 @@ import (
 	"syscall"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/ast"
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/ast"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 func TestUnavailableFileRead(t *testing.T) {

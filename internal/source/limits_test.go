@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/diag"
+	"github.com/ncode/PortuGo/internal/diag"
 )
 
 func TestSourceLimit(t *testing.T) {

@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/source"
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/source"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 func TestScanFileOriginalPositions(t *testing.T) {

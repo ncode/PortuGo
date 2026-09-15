@@ -28,7 +28,7 @@ func TestOriginalByteDiagnostics(t *testing.T) {
 			if err := os.WriteFile(path, []byte(tt.source), 0600); err != nil {
 				t.Fatal(err)
 			}
-			args := []string{"portugol", tt.command, path}
+			args := []string{"portugo", tt.command, path}
 			if tt.command == "repl" {
 				args = args[:2]
 			}

@@ -5,7 +5,7 @@ import (
 	"io"
 	"slices"
 
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 // Code is a stable diagnostic identifier.

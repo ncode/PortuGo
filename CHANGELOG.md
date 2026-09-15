@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Rename the Go module to `github.com/ncode/PortuGo` and the CLI to `portugo`.
+  Require Go 1.27, align all CI jobs with `go.mod`, and update the pinned linters.
+
 - Add a welcoming README with Linux and macOS setup, a first program,
   everyday CLI commands, examples, and compatibility guidance.
 

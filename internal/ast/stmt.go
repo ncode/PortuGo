@@ -1,6 +1,6 @@
 package ast
 
-import "github.com/ncode/portugol-go/internal/token"
+import "github.com/ncode/PortuGo/internal/token"
 
 // FileInputStmt selects a literal input filename in the configuration section.
 type FileInputStmt struct {
