@@ -12,16 +12,16 @@
     "culture": "en-US",
     "product": "VisuAlg"
   },
-  "tasksPath": "openspec/changes/complete-visualg-3-0-7-conformance/tasks.md",
+  "tasksPath": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/tasks.md",
   "inventorySources": [
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md",
     "especificacao-visualg-3.md"
   ],
   "inventory": [
@@ -934,7 +934,7 @@
     {
       "id": "requirement.reference-release-authority",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference release authority",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference release authority",
       "probes": [
         "power-associativity",
         "exp-two"
@@ -943,7 +943,7 @@
     {
       "id": "requirement.reference-provenance-manifest",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference provenance manifest",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference provenance manifest",
       "probes": [
         "project.provenance"
       ]
@@ -951,7 +951,7 @@
     {
       "id": "requirement.interactive-oracle-recording",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Interactive oracle recording",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Interactive oracle recording",
       "probes": [
         "project.recording"
       ]
@@ -959,7 +959,7 @@
     {
       "id": "requirement.complete-oracle-evidence",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Complete oracle evidence",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Complete oracle evidence",
       "probes": [
         "project.recording",
         "project.normalization"
@@ -968,7 +968,7 @@
     {
       "id": "requirement.requirement-traceability",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Requirement traceability",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Requirement traceability",
       "probes": [
         "project.traceability"
       ]
@@ -976,7 +976,7 @@
     {
       "id": "requirement.progressive-conformance-gates",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Progressive conformance gates",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Progressive conformance gates",
       "probes": [
         "project.validation-phases"
       ]
@@ -984,7 +984,7 @@
     {
       "id": "requirement.recorded-feature-dispositions",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Recorded feature dispositions",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Recorded feature dispositions",
       "probes": [
         "constant-declaration",
         "constant-var",
@@ -995,7 +995,7 @@
     {
       "id": "requirement.bundled-example-acceptance",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Bundled example acceptance",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Bundled example acceptance",
       "probes": [
         "bundled-4fdb89658892",
         "bundled-6c81c979714d",
@@ -1073,7 +1073,7 @@
     {
       "id": "requirement.conformance-release-gate",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Conformance release gate",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Conformance release gate",
       "probes": [
         "project.validation-phases"
       ]
@@ -1081,7 +1081,7 @@
     {
       "id": "requirement.operator-vocabulary-and-precedence",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Operator vocabulary and precedence",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Operator vocabulary and precedence",
       "probes": [
         "power-associativity",
         "unary-power",
@@ -1120,7 +1120,7 @@
     {
       "id": "requirement.numeric-evaluation-and-coercion",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Numeric evaluation and coercion",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Numeric evaluation and coercion",
       "probes": [
         "exact-division-integer",
         "integer-overflow-add",
@@ -1190,7 +1190,7 @@
     {
       "id": "requirement.logical-evaluation",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Logical evaluation",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Logical evaluation",
       "probes": [
         "logical-evaluation"
       ]
@@ -1198,7 +1198,7 @@
     {
       "id": "requirement.boolean-numeric-and-string-comparison",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Boolean, numeric, and string comparison",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Boolean, numeric, and string comparison",
       "probes": [
         "comparison-negative-category",
         "comparison-numeric-mixed",
@@ -1300,7 +1300,7 @@
     {
       "id": "requirement.deterministic-expression-order",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Deterministic expression order",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Deterministic expression order",
       "probes": [
         "text-order-no-value-bound",
         "text-order-arguments",
@@ -1316,7 +1316,7 @@
     {
       "id": "requirement.choice-matching-and-ranges",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Choice matching and ranges",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Choice matching and ranges",
       "probes": [
         "case-range",
         "return-switch-continues",
@@ -1412,7 +1412,7 @@
     {
       "id": "requirement.loop-semantics",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Loop semantics",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Loop semantics",
       "probes": [
         "for-mutation",
         "for-edges",
@@ -1423,7 +1423,7 @@
     {
       "id": "requirement.interruption-and-return-propagation",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Interruption and return propagation",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Interruption and return propagation",
       "probes": [
         "return-finite-for",
         "return-finite-while",
@@ -1435,7 +1435,7 @@
     {
       "id": "requirement.i-o-statement-validation",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: I/O statement validation",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: I/O statement validation",
       "probes": [
         "string-size-format-values"
       ]
@@ -1443,7 +1443,7 @@
     {
       "id": "requirement.source-decoding",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Source decoding",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Source decoding",
       "probes": [
         "text-context-copy-accents",
         "text-upper-accents"
@@ -1452,7 +1452,7 @@
     {
       "id": "requirement.physical-newline-tokens",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Physical newline tokens",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Physical newline tokens",
       "probes": [
         "physical-newline-lf",
         "physical-newline-crlf",
@@ -1463,7 +1463,7 @@
     {
       "id": "requirement.strict-identifiers-and-case-handling",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Strict identifiers and case handling",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Strict identifiers and case handling",
       "probes": [
         "leading-underscore",
         "internal-underscore",
@@ -1474,7 +1474,7 @@
     {
       "id": "requirement.complete-keyword-vocabulary",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Complete keyword vocabulary",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Complete keyword vocabulary",
       "probes": [
         "accented-keywords",
         "string-type-caracter",
@@ -1502,7 +1502,7 @@
     {
       "id": "requirement.comments-and-literals",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Comments and literals",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Comments and literals",
       "probes": [
         "slash-comment",
         "brace-comment",
@@ -1573,7 +1573,7 @@
     {
       "id": "requirement.complete-program-grammar",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Complete program grammar",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Complete program grammar",
       "probes": [
         "header-same-line",
         "header-name-next-line",
@@ -1633,7 +1633,7 @@
     {
       "id": "requirement.ordered-and-positioned-syntax",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Ordered and positioned syntax",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Ordered and positioned syntax",
       "probes": [
         "project.positioned-syntax"
       ]
@@ -1641,7 +1641,7 @@
     {
       "id": "requirement.recoverable-parsing",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Recoverable parsing",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Recoverable parsing",
       "probes": [
         "project.frontend-recovery-limits"
       ]
@@ -1649,7 +1649,7 @@
     {
       "id": "requirement.canonical-source-printing",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Canonical source printing",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Canonical source printing",
       "probes": [
         "project.canonical-printing"
       ]
@@ -1657,7 +1657,7 @@
     {
       "id": "requirement.subprogram-declaration-forms",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Subprogram declaration forms",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Subprogram declaration forms",
       "probes": [
         "procedure-no-parentheses",
         "function-no-parentheses",
@@ -1671,7 +1671,7 @@
     {
       "id": "requirement.call-syntax-and-context",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Call syntax and context",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Call syntax and context",
       "probes": [
         "procedure-bare-call",
         "function-bare-call",
@@ -1721,7 +1721,7 @@
     {
       "id": "requirement.value-parameters",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Value parameters",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Value parameters",
       "probes": [
         "value-widening-format",
         "value-argument-evaluation-order",
@@ -1740,7 +1740,7 @@
     {
       "id": "requirement.reference-parameters",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Reference parameters",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Reference parameters",
       "probes": [
         "reference-integer-to-real",
         "reference-integer-as-real-read",
@@ -1768,7 +1768,7 @@
     {
       "id": "requirement.lexical-scope-and-bindings",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Lexical scope and bindings",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Lexical scope and bindings",
       "probes": [
         "ordinary-local-shadowing",
         "local-variable-shadows-function",
@@ -1778,7 +1778,7 @@
     {
       "id": "requirement.declaration-visibility-and-recursion",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Declaration visibility and recursion",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Declaration visibility and recursion",
       "probes": [
         "mutual-function-recursion"
       ]
@@ -1786,7 +1786,7 @@
     {
       "id": "requirement.function-return-behavior",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Function return behavior",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Function return behavior",
       "probes": [
         "return-default-real",
         "function-without-return",
@@ -1836,7 +1836,7 @@
     {
       "id": "requirement.call-frame-safety",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Call-frame safety",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Call-frame safety",
       "probes": [
         "recursive-local-call-frame",
         "recursive-local-accumulation"
@@ -1845,7 +1845,7 @@
     {
       "id": "requirement.declaration-feature-scope",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Declaration feature scope",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Declaration feature scope",
       "probes": [
         "record-copy",
         "constant-form-scalar-types",
@@ -1859,7 +1859,7 @@
     {
       "id": "requirement.ordered-declaration-sections",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Ordered declaration sections",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Ordered declaration sections",
       "probes": [
         "constant-form-empty",
         "constant-form-after-variable",
@@ -1869,7 +1869,7 @@
     {
       "id": "requirement.constants-and-declaration-expressions",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Constants and declaration expressions",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Constants and declaration expressions",
       "probes": [
         "constant-declaration",
         "constant-var",
@@ -1908,7 +1908,7 @@
     {
       "id": "requirement.named-types-and-aliases",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Named types and aliases",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Named types and aliases",
       "probes": [
         "named-type",
         "type-alias-primitives",
@@ -1954,7 +1954,7 @@
     {
       "id": "requirement.record-types-and-fields",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Record types and fields",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Record types and fields",
       "probes": [
         "record-field",
         "record-layout-primitives",
@@ -2000,7 +2000,7 @@
     {
       "id": "requirement.vector-types-and-declared-bounds",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Vector types and declared bounds",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Vector types and declared bounds",
       "probes": [
         "constant-vector-bound",
         "vector-non-one-bound",
@@ -2043,7 +2043,7 @@
     {
       "id": "requirement.five-hundred-slot-storage-limit",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Reference-confirmed storage limits",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Reference-confirmed storage limits",
       "probes": [
         "vector-500-slots",
         "vector-501-slots",
@@ -2054,7 +2054,7 @@
     {
       "id": "requirement.zero-initialization",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Zero initialization",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Zero initialization",
       "probes": [
         "vector-zero-elements"
       ]
@@ -2062,7 +2062,7 @@
     {
       "id": "requirement.assignment-compatibility-and-coercion",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Assignment compatibility and coercion",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Assignment compatibility and coercion",
       "probes": [
         "assignment-equals",
         "assignment-colon-equals"
@@ -2071,7 +2071,7 @@
     {
       "id": "requirement.aggregate-copy-and-reference-semantics",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Aggregate copy and reference semantics",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Aggregate copy and reference semantics",
       "probes": [
         "record-copy",
         "vector-copy",
@@ -2086,7 +2086,7 @@
     {
       "id": "requirement.defensive-storage-access",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Defensive storage access",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Defensive storage access",
       "probes": [
         "project.vector-storage",
         "vector-second-index-oob",
@@ -2096,7 +2096,7 @@
     {
       "id": "requirement.console-input-consumption",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Console input consumption",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Console input consumption",
       "probes": [
         "input-single-integer",
         "input-two-integers",
@@ -2106,7 +2106,7 @@
     {
       "id": "requirement.input-value-conversion",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Input value conversion",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Input value conversion",
       "probes": [
         "input-string-empty",
         "input-string-spaces",
@@ -2160,7 +2160,7 @@
     {
       "id": "requirement.exact-output-rendering",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Exact output rendering",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Exact output rendering",
       "probes": [
         "output-format",
         "output-edges",
@@ -2188,7 +2188,7 @@
     {
       "id": "requirement.width-and-precision-formatting",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Width and precision formatting",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Width and precision formatting",
       "probes": [
         "output-rounding",
         "output-rounding-valid",
@@ -2230,7 +2230,7 @@
     {
       "id": "requirement.cp1252-file-and-stream-behavior",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: CP1252 file and stream behavior",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: CP1252 file and stream behavior",
       "probes": [
         "file-detail-typed-existing",
         "file-detail-typed-missing",
@@ -2248,7 +2248,7 @@
     {
       "id": "requirement.arquivo-input-lifecycle",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Arquivo input lifecycle",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Arquivo input lifecycle",
       "probes": [
         "file-detail-typed-existing",
         "file-input-existing",
@@ -2297,7 +2297,7 @@
     {
       "id": "requirement.random-input-mode",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Random-input mode",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Random-input mode",
       "probes": [
         "random-context-extra-argument",
         "random-input-fixed-integer",
@@ -2360,7 +2360,7 @@
     {
       "id": "requirement.echo-timer-and-chronometer-commands",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Echo, timer, and chronometer commands",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Echo, timer, and chronometer commands",
       "probes": [
         "echo-command-bare",
         "random-input-echo-console",
@@ -2438,7 +2438,7 @@
     {
       "id": "requirement.host-backed-ui-commands",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Host-backed UI commands",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Host-backed UI commands",
       "probes": [
         "display-clear-value",
         "display-clear-bare",
@@ -2541,7 +2541,7 @@
     {
       "id": "requirement.environment-failure-diagnostics",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Environment failure diagnostics",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Environment failure diagnostics",
       "probes": [
         "project.display-host-failures"
       ]
@@ -2549,7 +2549,7 @@
     {
       "id": "requirement.authoritative-built-in-catalog",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Authoritative built-in catalog",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Authoritative built-in catalog",
       "probes": [
         "catalog-div-candidate",
         "catalog-documented-functions",
@@ -2559,7 +2559,7 @@
     {
       "id": "requirement.numeric-built-ins",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Numeric built-ins",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Numeric built-ins",
       "probes": [
         "exp-one",
         "exp-two",
@@ -2726,7 +2726,7 @@
     {
       "id": "requirement.text-built-ins",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Text built-ins",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Text built-ins",
       "probes": [
         "text-context-copy-accents",
         "text-upper-ascii",
@@ -2813,7 +2813,7 @@
     {
       "id": "requirement.character-code-built-ins",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Character-code built-ins",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Character-code built-ins",
       "probes": [
         "code-ascii-empty",
         "code-ascii-first",
@@ -2846,7 +2846,7 @@
     {
       "id": "requirement.numeric-and-character-conversion-built-ins",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Numeric and character conversion built-ins",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Numeric and character conversion built-ins",
       "probes": [
         "numpcarac-string-argument",
         "numpcarac-integers",
@@ -3016,7 +3016,7 @@
     {
       "id": "requirement.random-built-ins",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Random built-ins",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Random built-ins",
       "probes": [
         "randi-empty",
         "randi-unit",
@@ -3063,7 +3063,7 @@
     {
       "id": "requirement.built-in-failure-contract",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Built-in failure contract",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Built-in failure contract",
       "probes": [
         "project.text-code-guards",
         "text-detail-copy-extra",
@@ -3073,7 +3073,7 @@
     {
       "id": "requirement.stable-compile-time-diagnostics",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable compile-time diagnostics",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable compile-time diagnostics",
       "probes": [
         "project.frontend-recovery-limits",
         "project.positioned-diagnostics"
@@ -3082,7 +3082,7 @@
     {
       "id": "requirement.stable-runtime-diagnostics",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable runtime diagnostics",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable runtime diagnostics",
       "probes": [
         "project.positioned-diagnostics",
         "project.execution-limits"
@@ -3091,7 +3091,7 @@
     {
       "id": "requirement.no-user-input-panics",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: No user-input panics",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: No user-input panics",
       "probes": [
         "project.frontend-recovery-limits",
         "project.execution-limits",
@@ -3102,7 +3102,7 @@
     {
       "id": "requirement.resource-limits-and-bounded-execution",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Resource limits and bounded execution",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Resource limits and bounded execution",
       "probes": [
         "project.frontend-recovery-limits",
         "project.execution-limits",
@@ -3114,7 +3114,7 @@
     {
       "id": "requirement.cli-command-behavior",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: CLI command behavior",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: CLI command behavior",
       "probes": [
         "project.cli-contracts"
       ]
@@ -3122,7 +3122,7 @@
     {
       "id": "requirement.cli-exit-statuses",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: CLI exit statuses",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: CLI exit statuses",
       "probes": [
         "project.cli-contracts"
       ]
@@ -3130,7 +3130,7 @@
     {
       "id": "requirement.formatter-contract",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Formatter contract",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Formatter contract",
       "probes": [
         "project.formatter-modes"
       ]
@@ -3138,7 +3138,7 @@
     {
       "id": "requirement.shared-repl-input",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Shared REPL input",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Shared REPL input",
       "probes": [
         "project.repl-shared-input",
         "project.repl-blank-lines"
@@ -3147,7 +3147,7 @@
     {
       "id": "requirement.automatic-repl-submission",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Automatic REPL submission",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Automatic REPL submission",
       "probes": [
         "project.repl-submission"
       ]
@@ -3155,7 +3155,7 @@
     {
       "id": "requirement.repl-recovery",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: REPL recovery",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: REPL recovery",
       "probes": [
         "project.repl-submission"
       ]
