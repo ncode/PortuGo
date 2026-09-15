@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Build versioned Linux, macOS, and Windows archives for amd64 and arm64 with
+  `make dist`, embedded `--version` output, and `SHA256SUMS`. Attach downloads
+  when a GitHub Release is published; PR and manual runs verify the packaging.
+
 - Rename the Go module to `github.com/ncode/PortuGo` and the CLI to `portugo`.
   Require Go 1.27, align all CI jobs with `go.mod`, and update the pinned linters.
   Refresh the README's conformance status and link the acceptance report.

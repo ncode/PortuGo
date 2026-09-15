@@ -1261,6 +1261,10 @@ submission and contributes to the session's failure status.
 | R007 | Built-in function failure |
 | R008 | Host or output I/O |
 
+`portugo --version` prints the executable's version followed by LF and exits 0.
+Published distribution binaries report their release tag; ordinary `go build`
+binaries report `dev`. Extra arguments are rejected with usage status 2.
+
 `run --max-steps N file.alg` and `repl --max-steps N` allow a nonnegative work
 budget. Zero, the default, is unlimited. A step is charged before each statement,
 expression/designator evaluation, and loop iteration, even with an empty body.

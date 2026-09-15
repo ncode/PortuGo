@@ -1,5 +1,8 @@
 # Development checks
 
+See [release builds](releases.md) for `make dist`, downloadable archives, and
+publication from an existing version tag.
+
 The module requires Go 1.27 or newer. Every CI job reads the Go version from
 `go.mod`, with ordinary tests on Linux, macOS, and Windows. CI disables automatic
 toolchain switching so checks use the selected Go version. Install the same
