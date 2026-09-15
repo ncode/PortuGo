@@ -5,8 +5,370 @@
 - Rename the Go module to `github.com/ncode/PortuGo` and the CLI to `portugo`.
   Require Go 1.27, align all CI jobs with `go.mod`, and update the pinned linters.
 
-- Add a welcoming README with Linux and macOS setup, a first program,
-  everyday CLI commands, examples, and compatibility guidance.
+- Keep reviewed rejected-source records visible during replay without treating
+  them as pending accepted behavior; pending accepted records still fail the
+  implementation-acceptance gate.
+- Reject undeclared files and special entries in private conformance recording
+  stages before evidence is captured.
+- Qualify the bundled `randomicos.alg.ALG` transcript (source algorithm
+  `semnome`, probe `bundled-991ec2bd1566`) with a bounded `randi(10)`
+  line-framing contract for original and formatted replay, without promising
+  the reference generator sequence; 15 implementation checks remain.
+- Qualify a bundled mixed random-input transcript with an alternating bounded
+  integer/uppercase-text contract for original and formatted replay, without
+  promising the reference generator sequence.
+- Qualify a bundled integer-sort transcript with a bounded input-domain and
+  sorted-permutation contract for original and formatted replay, without
+  promising the reference generator sequence.
+- Qualify the two bundled real-sort transcripts with bounded decimal input,
+  sorted-permutation, and formatted-row contracts for original and formatted
+  replay, without promising the reference generator sequence.
+- Qualify the two bundled record-sort transcripts with bounded generated fields,
+  row framing, and both name/code sort-order contracts for original and formatted
+  replay, without promising the random sequence.
+- Qualify a bundled integer-search transcript with bounded numbered rows and a
+  fixed not-found result for original and formatted replay, without promising
+  the random sequence; 12 implementation checks remain.
+- Qualify two bundled repeated-value transcripts with a bounded nonzero value,
+  fixed sequence framing and repeated-value checks for original and formatted
+  replay, without promising the random sequence; 10 implementation checks remain.
+- Qualify a bundled raw integer-search transcript with twenty bounded generated
+  integers and fixed negative-sentinel framing for original and formatted replay,
+  without promising the random sequence; 9 implementation checks remain.
+- Qualify a bundled sorted integer-search transcript with twenty bounded,
+  nondecreasing integers and fixed negative-sentinel framing for original and
+  formatted replay, without promising the random sequence; 8 implementation
+  checks remain.
+- Qualify a bundled counting-sort transcript with twenty bounded inputs,
+  documented chronometer framing and a sorted multiset render for original and
+  formatted replay, without promising the random sequence; 7 implementation
+  checks remain.
+- Qualify a bundled record-search transcript with ten bounded code/salary
+  records and fixed negative-sentinel framing for original and formatted replay,
+  without promising the random sequence; 6 implementation checks remain.
+- Qualify a bundled relation transcript with ten source-fixed iterations,
+  positive zero-retried random values, branch-consistent Portuguese framing and
+  blank separators for original and formatted replay, without promising the
+  random sequence; 5 implementation checks remain.
+- Defer undeclared identifiers in uncalled subprogram bodies while retaining
+  their diagnostics when invoked, and promote the accepted menu exit through
+  original and formatted replay; 4 implementation checks remain.
+- Clarify that the recorded `arquivo` input directive is in scope while other
+  file APIs such as `arqabertura` remain out of scope.
+- Replace the stale open-questions section in `AGENTS.md` with the settled
+  dialect, evaluation, I/O, randomness, and CLI decisions.
+- Align the CLI guidance and logical-evaluation pitfall with those settled
+  implementation decisions.
+- Archive the green candidate quality, race, platform, fuzz, and strict
+  specification checks for the current stacked layer.
+- Complete the conformance traceability handoff after auditing all inventory,
+  probe, and implementation-test links; pending probes retain their owning
+  tasks without fabricated test paths.
+- Close the reduced lexical/grammar and type/declaration probe-batch tasks
+  from their recorded, implementation-verified requirement traces while
+  keeping broader unqualified forms pending.
+- Close the evidence-recording task after validating all bundled-example
+  dispositions and manifest probes; keep the 13 implementation checks pending.
+- Accept one global `var` section after top-level subprogram declarations,
+  including when a `tipo` section precedes them, and retain the repeated-section
+  diagnostic.
+- Align the agent guidance for `interrompa` outside loops with the recorded
+  accepted-and-ignored behavior.
+- Close the recorded lexer/parser scope tasks 4.3–4.6 and 4.8 while leaving
+  broader unrecorded forms outside the qualified profile.
+- Promote the recorded bundled binary-conversion example after its original and
+  formatted executions match byte-for-byte.
+- Record the clean-checkout build, CLI, REPL, fixture, replay, and specification
+  rehearsal while keeping release acceptance gated on the remaining probes.
+- Clarify that the reference-corpus README has a complete inventory while
+  implementation acceptance and two source-obligation classifications remain
+  pending.
+
+- Record the remaining source-obligation probes for reserved words, declaration
+  sections, builtin collisions, reference-argument edge cases, interruption,
+  and finite recursion depth. Keep application faults as labeled GUI evidence
+  and leave their unresolved implementation contracts pending.
+- Classify the seven remaining legacy verification markers, linking the
+  declaration-placement recording, resolving the zero-value question with a
+  reference recording, and retaining contextual prose/grammar aliases in trace
+  validation.
+
+- Complete the conformance inventory audit with stable IDs for every legacy
+  marker, checklist row, assumption, environment command, feature, audited
+  defect, requirement, and bundled example; retain the two unresolved behavior
+  questions as pending reference qualifications.
+
+- Verify the two recorded nonassignable `var` argument guards with positioned
+  `E004` regressions, while keeping the reference application's fault
+  observations separate from language-level diagnostic claims.
+
+- Accept the recorded `para ... ate faca` form without an upper bound; it
+  executes zero iterations without inferring a default bound.
+
+- Match the recorded outside-loop `interrompa` behavior by ignoring it without
+  a semantic or runtime diagnostic, while keeping loop breaks scoped to the
+  active lexical call frame.
+
+- Record the remaining source-obligation probes for reserved words, declaration
+  sections, builtin collisions, reference-argument edge cases, interruption,
+  and finite recursion depth. Keep application faults as labeled GUI evidence
+  and leave their unresolved implementation contracts pending.
+- Classify the seven remaining legacy verification markers, linking the
+  declaration-placement recording, preserving the zero-value question as
+  pending, and retaining contextual prose/grammar aliases in trace validation.
+
+- Match the recorded outside-loop `interrompa` behavior by ignoring it without
+  a semantic or runtime diagnostic, while keeping loop breaks scoped to the
+  active lexical call frame.
+
+- Keep conformance execution diagnostics on the stable `source.alg` filename so
+  local filesystem paths cannot enter captured output.
+- Reconcile the environment-command task ledger with its verified typed host
+  surface while keeping unresolved reference qualifications pending.
+- Add stable inventory links for the recorded random-input, file-input, and
+  console-configuration command families without promoting pending reference
+  sequence or GUI qualifications.
+- Mark the environment probe-batch and built-in inventory task complete from
+  the recorded, implementation-verified corpus coverage.
+- Mark the expression and control-flow probe-batch task complete from nine
+  stable requirement links covering 299 unique recorded and verified probes.
+- Reconcile the conformance plan and project guidance with the recorded
+  declaration and case-range scope, retaining rejection coverage and pending
+  ownership for unrecorded variants.
+- Record fresh conformance and quality evidence, including the complete
+  19-probe pending implementation inventory and the verified replay set.
+- Verify the recorded reserved-word, repeated-main-section, and builtin-name
+  rejection probes against positioned local diagnostics.
+- Correct the reference-corpus progress totals to match the current manifest.
+- Correct the randomness handoff notes so completed task status is not described
+  as open work.
+
+- Record the assembled source, runtime, input, storage, host, filesystem, and
+  replay safeguard acceptance sweep, including bounded empty-loop execution.
+
+- Add frontend lexer/parser/printer goldens for line endings, comments,
+  CP1252 source mapping, literals, recovery, ignored suffixes, and resource
+  boundaries.
+
+- Add a call-form parser golden and record frame and alias regression coverage
+  for accepted procedure and function syntax.
+- Record call compatibility coverage for parameterless and bare or
+  parenthesized calls, invalid contexts, reference conversion and copy-back,
+  evaluation order, lexical scope, shadowing, and recursion.
+
+- Add control-flow parser and semantic goldens plus valid and diagnostic run
+  fixtures for repeat, range selection, break, and descending loops.
+
+- Add expression type and rejection tables, a parser golden, and positioned
+  runtime diagnostic fixtures with partial-output checks.
+- Add a complete semantic operand-type matrix for the documented scalar
+  arithmetic, comparison, and logical combinations.
+
+- Reject non-regular direct observation-adapter source and clock paths before
+  opening them, so special files cannot block a bounded read.
+- Skip repository metadata directories at any depth during prohibited-artifact
+  scans, so nested private Git state is never hashed as corpus evidence.
+- Bound default candidate-build output before replay, so compiler diagnostics
+  cannot exhaust validator memory.
+- Bound post-exit Git pipe draining during history and quality validation, so
+  helper processes cannot leave the validator waiting indefinitely.
+- Sanitize replay mismatch errors to report byte metadata without copying
+  captured or expected output into validation artifacts.
+- Sanitize wrapped filesystem errors before they reach conformance stderr or
+  replay-result JSON.
+
+- Validate explicit `[VERIFICAR]` source items against checklist, defect, and
+  feature inventory links while retaining incomplete legacy source coverage;
+  unresolved source markers remain pending.
+
+- Add stable inventory links for the 25 numbered legacy compatibility-checklist
+  rows, 26 evidenced assumptions, the documented builtin catalog, and the
+  recorded CLI status correction; validate their declared source sections
+  against existing probes. Broader marker, defect, feature, and environment
+  coverage remains open.
+
+- Add stable feature links for the documented console, display, timer,
+  breakpoint, echo, and chronometer families; leave unqualified timing, GUI,
+  and source obligations pending.
+
+- Mark the declaration and expression group handoffs complete after their
+  focused slices were published as ready stacked PRs.
+
+- Match the recorded invalid bundled function-name rejection with a positioned
+  `L001` parser regression and link its implementation acceptance test.
+
+- Sort untraced probe diagnostics so manifest validation reports stable errors.
+
+- Link the exponent-associativity verification marker to its recorded probe.
+
+- Link the legacy `:=` verification marker to its recorded assignment probe.
+
+- Link the accented-identifier verification marker to its recorded probe.
+
+- Link the scientific-notation verification marker to its recorded probe.
+
+- Link the string-quote escape verification marker to its recorded rejection
+  probes.
+
+- Link the accented-comparison verification marker to its recorded probe.
+
+- Link the brace-comment verification marker to its recorded probe.
+
+- Link the choice-range verification marker to its recorded probe.
+
+- Link the integer-truncation verification marker to its recorded probe.
+
+- Link the accented-uppercase verification marker to its recorded probe.
+
+- Link the case-sensitive string-position verification marker to its recorded
+  probe.
+
+- Link the exact-integer-division verification marker to its recorded probe.
+
+- Link the numeric-to-text real-format verification marker to its recorded
+  probe.
+
+- Link the invalid numeric-conversion verification marker to its recorded
+  probe.
+
+- Link the default-real-output verification marker to its recorded probe.
+
+- Link the output-width spacing verification marker to its recorded probe.
+
+- Link the typed-input validation verification marker to its recorded probe.
+
+- Link the for-loop final-value verification marker to its recorded probe.
+
+- Link the for-loop control-mutation verification marker to its recorded probe.
+
+- Link the procedure bare-return verification marker to its recorded probe.
+
+- Link the function-without-return verification marker to its recorded probe.
+
+- Link the main-program return verification marker to its recorded probe.
+
+- Link the vector-element reference verification marker to its recorded probe.
+
+- Link the ranged-random domain and precision marker to its recorded probes;
+  statistical uniformity remains open.
+
+- Link the generated file-format marker to its recorded probe; separate input
+  tokenization remains covered by its dedicated probe.
+
+- Link the vector-parameter verification marker to its recorded rejection.
+
+- Mark the grammar documentation coverage complete for recorded spellings,
+  newline/comment retention, source and AST limits, and compatibility
+  rejections; unresolved oracle boundaries remain explicit.
+
+- Mark the subprogram documentation coverage complete for recorded declaration
+  and call forms, parameter and copy-back rules, argument order, lexical scope,
+  and recursion; unqualified call variants remain explicit.
+
+- Mark the declaration documentation coverage complete for accepted aggregates,
+  rejected extensions, assignment aliases, zero/copy behavior, and captured
+  references; unqualified aggregate cases remain explicit.
+
+- Add an aggregate declaration parser golden covering aliases, records, vectors,
+  anchored comments, whole-record copying, and scalar reference arguments;
+  close the declaration fixture and ordering coverage tasks.
+
+- Mark the conformance validation-mode implementation complete after exercising
+  evidence, incremental, and implementation-acceptance checks for artifact
+  integrity, trace coverage, owner readiness, and downgrade history.
+- Bound Git status output during quality-result validation so oversized dirty
+  checkouts fail closed without an unbounded memory read.
+
+- Bound Git revision and tree-lookup output during historical manifest
+  validation before comparing downgrade history.
+
+- Bound replay source reads at the 64 KiB execution profile before staging a
+  candidate run.
+
+- Bound retained replay-output reads at the 1 MiB observation limit before
+  hashing or comparison.
+
+- Bound conformance artifact reads after opening files so growth during a read
+  cannot bypass the repository artifact limit.
+
+- Reject replay runs that consume more clock reads than a supplied deterministic
+  schedule provides instead of silently falling back to elapsed time.
+
+- Reject existing non-private recording stages before capture reads or writes
+  evidence on POSIX hosts; Windows continues to use its ACL model.
+
+- Reject duplicate generated or absent declarations in recording stages before
+  capture writes evidence.
+
+- Verify auxiliary replay input files remain unchanged unless their paths are
+  explicitly declared generated or absent, detecting candidate mutations and
+  deletions.
+
+- Resolve conformance test links to imported `testing.T`, rejecting local and
+  foreign type lookalikes while preserving renamed and dot imports.
+
+- Bound host observation traces while recording so oversized event streams fail
+  before JSON serialization.
+
+- Reject recorder-owned staging and capture paths from auxiliary, generated, or
+  absent reference files before metadata can be published as evidence.
+
+- Enforce the private staging root boundary during capture and reject symlinked
+  roots before normalized evidence can be written.
+
+- Bound direct observation-adapter clock fixture reads by the repository
+  artifact limit before decoding.
+
+- Bound historical manifests loaded from Git by the repository artifact limit
+  before strict decoding.
+
+- Reject conformance artifact and fixture paths that enter repository metadata
+  directories, including case aliases of `.git`.
+
+- Decode previous manifests loaded from Git with the same strict unknown-field
+  and trailing-JSON checks as current manifests.
+
+- Reject unknown fields and trailing JSON in staged recording metadata before
+  capture emits evidence.
+
+- Reject stdout, state and host observation artifacts larger than the adapter's
+  1 MiB output limit before conformance replay.
+
+- Reject unknown fields and trailing JSON in bundled-example catalogs in every
+  conformance validation mode.
+
+- Reject conformance expectations with exit statuses outside the replay
+  contract (`0` for success or `1` for failure), including reviewed exclusions.
+
+- Reject generated and absent expectations that alias replay-owned source or
+  observation files when an observer is enabled.
+
+- Validate bundled-example catalog source hashes and byte counts for reviewed
+  non-goals as well as recorded examples.
+
+- Reject duplicate candidate generated-output destinations in conformance
+  expectations, including reviewed exclusions across every validation mode.
+
+- Reject conformance inputs that collide with replay-owned files, including
+  case aliases and descendants, before validation or replay can accept them.
+
+- Validate conformance clock fixtures with the execution adapter's decoder,
+  rejecting malformed schedules before replay without changing clock behavior.
+
+- Validate optional candidate stdout artifacts on reviewed exclusions, retaining
+  path and hash checks without requiring output for excluded runs.
+
+- Validate retained generated-file layouts on reviewed exclusions, including
+  conflicts with input fixtures, without requiring matching candidate outputs.
+
+- Reject contradictory conformance absence expectations containing generated
+  files or retained inputs, or requiring absence checks through a file.
+
+- Reject case-only aliases across conformance fixture paths and directory
+  components before replay, while preserving exact-path updates.
+
+- Reject trailing ASCII periods and spaces in conformance path components
+  before Windows filename normalization can change their meaning.
 
 - Reject conformance file layouts that require a path to be both a file and
   a parent directory across input and generated destinations.
@@ -74,6 +436,10 @@
   `fimrepita`, report `P001` when that marker is reached, and report `E002` for
   `ate_que` and `até_que` without cascading line errors. Keep the canonical
   repeat syntax as `repita ... ate <condition>`.
+- Add a focused repeat regression that preserves finite conditional completion,
+  charges empty and nonempty iterations under `MaxSteps`, and reports `R006`
+  before another iteration when the budget is exhausted. The recorded
+  `fimrepita` candidate remains rejected when reached.
 
 - Add fixture-access replay setup for existing-file continuation under
   unavailable reads, covering the six recorded permission-denied and
@@ -370,6 +736,9 @@
 - Report invalid numeric powers and nonfinite arithmetic results at their
   operators, preserve recorded nonnumeric division and no-value behavior,
   and accept numeric unary plus through parsing, analysis, and formatting.
+
+- Close the recorded arithmetic safety slice with a positioned invalid-power
+  regression and an explicit boundary for unrecorded operand combinations.
 
 - Match recorded division and remainder operand types, signed conversion,
   divisor handling, and left-to-right evaluation. Preserve positioned guards

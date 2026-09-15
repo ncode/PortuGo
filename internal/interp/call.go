@@ -253,6 +253,7 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 	i.env = callEnv
 	depth := i.depth
 	callDepth := i.calls
+	loopDepth := i.loopDepth
 	outerResult := i.result
 	i.result = nil
 	result := runtime.Cell{Type: retType, Value: runtime.Zero(retType)}
@@ -270,7 +271,17 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 	}
 	i.depth = 0
 	i.calls++
-	defer func() { i.env = outer; i.depth = depth; i.result = outerResult; i.calls-- }()
+	// Loop control is lexical: a break in a callee cannot escape to a caller's
+	// loop. The callee starts outside any loop and restores the caller depth on
+	// return.
+	i.loopDepth = 0
+	defer func() {
+		i.env = outer
+		i.depth = depth
+		i.loopDepth = loopDepth
+		i.result = outerResult
+		i.calls--
+	}()
 	if err := i.configure(config); err != nil {
 		return runtime.Value{}, err
 	}

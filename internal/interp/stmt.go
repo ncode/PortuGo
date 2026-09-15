@@ -114,6 +114,8 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		}
 		return i.execStmts(s.Default)
 	case *ast.WhileStmt:
+		i.loopDepth++
+		defer func() { i.loopDepth-- }()
 		for {
 			if err := i.charge(s.Start()); err != nil {
 				return control{}, err
@@ -140,6 +142,8 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 			}
 		}
 	case *ast.RepeatStmt:
+		i.loopDepth++
+		defer func() { i.loopDepth-- }()
 		if err := i.delay(s.At); err != nil {
 			return control{}, err
 		}
@@ -173,6 +177,9 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 	case *ast.ForStmt:
 		return i.execFor(s)
 	case *ast.BreakStmt:
+		if i.loopDepth == 0 {
+			return control{}, nil
+		}
 		return control{kind: breakControl, at: s.Start()}, nil
 	case *ast.ReturnStmt:
 		if i.result == nil {
@@ -208,6 +215,8 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 
 func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 	defer func() { err = failure(s.Start(), diag.RLoop, err) }()
+	i.loopDepth++
+	defer func() { i.loopDepth-- }()
 	cell, err := i.lookupCell(s.Name)
 	if err != nil {
 		return control{}, err
@@ -215,6 +224,9 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 	from, err := i.evalInt(s.From, diag.EParse)
 	if err != nil {
 		return control{}, err
+	}
+	if s.To == nil {
+		return control{}, nil
 	}
 	to, err := i.evalInt(s.To, diag.EParse)
 	if err != nil {

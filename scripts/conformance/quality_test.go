@@ -4,13 +4,119 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"slices"
 	"strings"
 	"testing"
 	"time"
 )
+
+func TestMain(m *testing.M) {
+	if os.Getenv("PORTUGOL_GO_FAKE_GIT_HOLD") == "1" {
+		time.Sleep(3 * time.Second)
+		os.Exit(0)
+	}
+	if mode := os.Getenv("PORTUGOL_GO_FAKE_GO"); mode != "" {
+		for _, arg := range os.Args[1:] {
+			if arg == "build" && mode == "oversized-build-output" {
+				_, _ = os.Stderr.Write(bytes.Repeat([]byte("x"), maxArtifactBytes*2))
+			}
+		}
+		os.Exit(1)
+	}
+	if mode := os.Getenv("PORTUGOL_GO_FAKE_GIT"); mode != "" {
+		for _, arg := range os.Args[1:] {
+			switch arg {
+			case "rev-parse":
+				if mode == "stalled-rev-parse" {
+					startHoldingChild()
+				}
+				if mode == "oversized-rev-parse" {
+					_, _ = os.Stdout.Write(bytes.Repeat([]byte("x"), maxArtifactBytes+1))
+					os.Exit(0)
+				}
+				_, _ = fmt.Fprintln(os.Stdout, strings.Repeat("a", 40))
+				os.Exit(0)
+			case "status":
+				if mode == "stalled-status" {
+					startHoldingChild()
+					os.Exit(0)
+				}
+				_, _ = os.Stdout.Write(bytes.Repeat([]byte("x"), maxArtifactBytes+1))
+				os.Exit(0)
+			case "ls-tree":
+				if mode == "oversized-ls-tree" {
+					_, _ = os.Stdout.Write(bytes.Repeat([]byte("x"), maxArtifactBytes+1))
+					os.Exit(0)
+				}
+			}
+		}
+		os.Exit(1)
+	}
+	os.Exit(m.Run())
+}
+
+func startHoldingChild() {
+	executable := os.Getenv("PORTUGOL_GO_TEST_EXECUTABLE")
+	if executable == "" {
+		executable = os.Args[0]
+	}
+	child := exec.Command(executable, "-test.run=^TestNoop$")
+	child.Dir = os.TempDir()
+	child.Env = append(os.Environ(), "PORTUGOL_GO_FAKE_GIT_HOLD=1")
+	child.Stdout, child.Stderr = os.Stdout, os.Stderr
+	if err := child.Start(); err != nil {
+		os.Exit(1)
+	}
+}
+
+func installFakeGit(t *testing.T, mode string) {
+	t.Helper()
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(executable)
+	if err != nil {
+		t.Fatal(err)
+	}
+	bin := t.TempDir()
+	name := "git"
+	if runtime.GOOS == "windows" {
+		name += ".exe"
+	}
+	if err := os.WriteFile(filepath.Join(bin, name), data, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("PORTUGOL_GO_FAKE_GIT", mode)
+	t.Setenv("PORTUGOL_GO_TEST_EXECUTABLE", executable)
+	t.Setenv("PATH", bin+string(os.PathListSeparator)+os.Getenv("PATH"))
+}
+
+func installFakeGo(t *testing.T, mode string) {
+	t.Helper()
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	data, err := os.ReadFile(executable)
+	if err != nil {
+		t.Fatal(err)
+	}
+	bin := t.TempDir()
+	name := "go"
+	if runtime.GOOS == "windows" {
+		name += ".exe"
+	}
+	if err := os.WriteFile(filepath.Join(bin, name), data, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("PORTUGOL_GO_FAKE_GO", mode)
+	t.Setenv("PATH", bin+string(os.PathListSeparator)+os.Getenv("PATH"))
+}
 
 func testQualityReport(t *testing.T, commit string) (string, qualityReport) {
 	t.Helper()
@@ -138,6 +244,13 @@ func TestQualityCandidate(t *testing.T) {
 	}
 }
 
+func TestQualityCandidateRejectsOversizedStatus(t *testing.T) {
+	installFakeGit(t, "1")
+	if err := validateQuality(t.TempDir(), "quality.json", ""); err == nil || !strings.Contains(err.Error(), "git output exceeds artifact size limit") {
+		t.Fatalf("error = %v, want bounded git output failure", err)
+	}
+}
+
 func TestReleaseTaskCompletion(t *testing.T) {
 	t.Parallel()
 	for _, tt := range []struct {
@@ -168,10 +281,10 @@ func TestReleaseTaskCompletion(t *testing.T) {
 
 func TestAcceptanceRejectsReplayMismatch(t *testing.T) {
 	t.Parallel()
-	root, quality := testAcceptanceCandidate(t, "- [x] 10.1 Implement\n", "1\n")
+	root, quality := testAcceptanceCandidate(t, "- [x] 10.1 Implement\n", "replay-mismatch-sentinel\n")
 	var out, stderr bytes.Buffer
 	status := run([]string{"validate", "--root", root, "--manifest", "manifest.json", "--previous", "manifest.json", "--mode", "implementation-acceptance", "--quality", quality}, &out, &stderr)
-	if status != 1 || !strings.Contains(stderr.String(), "verified reference regression") || !strings.Contains(out.String(), "stdout mismatch") {
+	if status != 1 || !strings.Contains(stderr.String(), "verified reference regression") || !strings.Contains(out.String(), "stdout mismatch") || !strings.Contains(out.String(), "first difference at byte") || strings.Contains(out.String(), "replay-mismatch-sentinel") {
 		t.Fatalf("status = %d, stdout = %s, stderr = %s; want replay mismatch", status, &out, &stderr)
 	}
 }

@@ -1,8 +1,8 @@
 # Display command recordings
 
 This slice adds 72 VisuAlg 3.0.7 recordings: 57 completed programs and 15
-positioned rejections. Seventy match the implementation and have permanent
-tests; two remain pending. Source bytes, program-output text, and reviewed
+positioned rejections. Seventy-one match the implementation and have permanent
+tests; one remains pending. Source bytes, program-output text, and reviewed
 diagnostic transcriptions are linked by hash from the corpus manifest.
 
 The observations cover clear-screen syntax, ignored arguments, expression
@@ -22,12 +22,12 @@ ignored options, call order, interpreter reuse, and expression contexts.
 survives a later invalid color argument.
 The parser depth tests cover both color expressions at and beyond the limit.
 
-The two pending records are:
+The one pending record is:
 
-- `bundled-991ec2bd1566` and `bundled-7f44aa03fcc5`: accepted original examples
-  print random values. Their samples do not establish exact portable sequences.
+- `bundled-7f44aa03fcc5` (`RELACIONAR.ALG`): the accepted original example
+  prints random values; its sample does not establish an exact portable sequence.
 
-The corpus now has 875 reference recordings: 837 verified and 38 pending,
+The corpus now has 875 reference recordings: 838 verified and 37 pending,
 plus 15 explicitly separate project-contract records. The evidence gate still
 requires mappings for 16 requirements and 31 bundled examples. These recordings
 do not close the remaining environment-command or overall conformance tasks.

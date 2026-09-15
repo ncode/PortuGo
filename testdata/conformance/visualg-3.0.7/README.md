@@ -1,7 +1,8 @@
 # VisuAlg 3.0.7 reference corpus
 
-This directory is being assembled by OpenSpec group 2. It does not yet contain
-the complete evidence inventory and does not establish full conformance.
+This directory contains the complete evidence inventory for OpenSpec group 2.
+It does not establish full conformance; pending implementation checks remain
+under their owning tasks.
 The earlier selected observations remain in `docs/validation/visualg-2026-09-07`.
 
 ## Commands
@@ -101,7 +102,8 @@ executable, installer or distribution archive.
 The JSON model is defined by `scripts/conformance/manifest.go`. Unknown fields
 and trailing JSON are errors. All artifact paths are portable, repository-relative
 paths without parent traversal, drive prefixes, backslashes or symlinks. Artifact
-hashes are lowercase SHA-256 of the exact published bytes.
+paths also cannot enter repository metadata directories such as `.git`, including
+case aliases. Artifact hashes are lowercase SHA-256 of the exact published bytes.
 
 - Top level: `version`, `reference`, `recorderVersion`, `normalizerVersion`,
   `tasksPath`, `inventorySources`, `inventory`, `probes`, optional `retired`.
@@ -111,6 +113,15 @@ hashes are lowercase SHA-256 of the exact published bytes.
   Every requirement in the `specs/` tree adjacent to `tasksPath`, plus every
   requirement in additional declared source files, must have a requirement-kind
   trace. Omitting a source file from `inventorySources` cannot hide its requirements.
+  A declared source containing `## 12. Checklist de conformidade` also requires
+  a checklist-kind trace for each numbered row in that section. Other explicit
+  verification markers are checked independently; two documented legacy
+  obligations remain unresolved while their recorded evidence is retained.
+  Contextual prose and grammar markers are anchored separately, including
+  aliases to existing inventory entries.
+  Feature entries cover every documented environment-command family; pending
+  reference-sequence and GUI qualifications remain independent of that
+  inventory.
 - Probes have stable `id`, `ownerGroup`, existing `tasks`, `source`, `input`,
   optional initial `files`, `timeoutMS`, `evidence`, and `implementation`.
   `evidence.absent` and `implementation.expected.absent` declare relative files

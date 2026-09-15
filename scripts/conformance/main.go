@@ -13,17 +13,14 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strconv"
+	"sync"
 	"time"
 )
 
 func main() { os.Exit(run(os.Args[1:], os.Stdout, os.Stderr)) }
 
-func loadManifest(root, name string) (manifest, error) {
+func decodeManifest(data []byte) (manifest, error) {
 	var m manifest
-	data, err := readFile(root, name)
-	if err != nil {
-		return m, err
-	}
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	if err := decoder.Decode(&m); err != nil {
@@ -33,6 +30,24 @@ func loadManifest(root, name string) (manifest, error) {
 		return m, fmt.Errorf("trailing manifest JSON")
 	}
 	return m, nil
+}
+
+func loadManifest(root, name string) (manifest, error) {
+	data, err := readFile(root, name)
+	if err != nil {
+		return manifest{}, err
+	}
+	return decodeManifest(data)
+}
+
+func publicError(err error) error {
+	var pathErr *os.PathError
+	var linkErr *os.LinkError
+	var execErr *exec.Error
+	if errors.As(err, &pathErr) || errors.As(err, &linkErr) || errors.As(err, &execErr) {
+		return errors.New("filesystem operation failed")
+	}
+	return err
 }
 
 func run(args []string, out, stderr io.Writer) (status int) {
@@ -70,14 +85,18 @@ func run(args []string, out, stderr io.Writer) (status int) {
 		return 2
 	}
 	// A failed error stream cannot change the already failing exit status.
-	fail := func(err error) int { _, _ = fmt.Fprintln(stderr, err); return 1 }
+	fail := func(err error) int { _, _ = fmt.Fprintln(stderr, publicError(err)); return 1 }
 	if args[0] == "capture" {
 		accepts, err := strconv.ParseBool(*accepted)
 		if *stage == "" || *capturedAt == "" || err != nil {
 			_, _ = fmt.Fprintln(stderr, "capture requires --staging, --accepted and --captured-at")
 			return 2
 		}
-		e, err := captureRecording(*stage, accepts, *capturedAt, *normalizer, *guiOnly)
+		rootPath, err := filepath.Abs(*root)
+		if err != nil {
+			return fail(err)
+		}
+		e, err := captureRecording(rootPath, *stage, accepts, *capturedAt, *normalizer, *guiOnly)
 		if err != nil {
 			return fail(err)
 		}
@@ -181,16 +200,12 @@ func run(args []string, out, stderr io.Writer) (status int) {
 		executable = filepath.Join(dir, "portugo.exe")
 		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 		defer cancel()
-		cmd := exec.CommandContext(ctx, "go", "build", "-o", executable, "./cmd/portugo")
-		cmd.Dir, cmd.Stdout, cmd.Stderr = rootPath, stderr, stderr
-		if err := cmd.Run(); err != nil {
-			return fail(fmt.Errorf("build candidate: %w", err))
+		if err := buildCandidate(ctx, cancel, rootPath, executable, "./cmd/portugo", stderr); err != nil {
+			return fail(err)
 		}
 		if needsObserver {
 			observer = filepath.Join(dir, "observations.exe")
-			cmd := exec.CommandContext(ctx, "go", "build", "-o", observer, "./scripts/conformance")
-			cmd.Dir, cmd.Stdout, cmd.Stderr = rootPath, stderr, stderr
-			if err := cmd.Run(); err != nil {
+			if err := buildCandidate(ctx, cancel, rootPath, observer, "./scripts/conformance", stderr); err != nil {
 				return fail(fmt.Errorf("build observation adapter: %w", err))
 			}
 		}
@@ -205,7 +220,7 @@ func run(args []string, out, stderr io.Writer) (status int) {
 		r := replayResult{ID: p.ID, State: p.Implementation.State}
 		if p.Evidence.State == "recorded" && p.Implementation.State != "not-applicable" {
 			if err := replayProbe(rootPath, p, executable, nil, observer); err != nil {
-				r.Error = err.Error()
+				r.Error = publicError(err).Error()
 			}
 		}
 		results = append(results, r)
@@ -219,36 +234,100 @@ func run(args []string, out, stderr io.Writer) (status int) {
 	return 0
 }
 
+func buildCandidate(ctx context.Context, cancel context.CancelFunc, root, executable, packagePath string, stderr io.Writer) error {
+	cmd := exec.CommandContext(ctx, "go", "build", "-o", executable, packagePath)
+	cmd.Dir = root
+	cmd.WaitDelay = time.Second
+	var output boundedCommandOutput
+	output.limit, output.cancel = maxArtifactBytes, cancel
+	cmd.Stdout, cmd.Stderr = &output, &output
+	err := cmd.Run()
+	if _, writeErr := stderr.Write(output.buffer.Bytes()); writeErr != nil {
+		return fmt.Errorf("write candidate build output: %w", writeErr)
+	}
+	if output.overflow {
+		return fmt.Errorf("candidate build output exceeds artifact size limit")
+	}
+	if err != nil {
+		return fmt.Errorf("build candidate: %w", err)
+	}
+	return nil
+}
+
 func previousManifest(root, base, name string) (*manifest, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	resolve := exec.CommandContext(ctx, "git", "rev-parse", "--verify", "--end-of-options", base+"^{commit}")
 	resolve.Dir = root
-	sha, err := resolve.Output()
+	resolve.WaitDelay = time.Second
+	var resolved boundedCommandOutput
+	resolved.limit, resolved.cancel = maxArtifactBytes, cancel
+	resolve.Stdout = &resolved
+	err := resolve.Run()
+	if resolved.overflow {
+		return nil, fmt.Errorf("previous manifest base exceeds artifact size limit")
+	}
 	if err != nil {
 		return nil, fmt.Errorf("resolve previous manifest base: %w", err)
 	}
-	object := string(bytes.TrimSpace(sha)) + ":" + filepath.ToSlash(name)
+	object := string(bytes.TrimSpace(resolved.buffer.Bytes())) + ":" + filepath.ToSlash(name)
 	cmd := exec.CommandContext(ctx, "git", "show", object)
 	cmd.Dir = root
-	data, err := cmd.Output()
+	cmd.WaitDelay = time.Second
+	var output boundedCommandOutput
+	output.limit, output.cancel = maxArtifactBytes, cancel
+	cmd.Stdout = &output
+	err = cmd.Run()
+	if output.overflow {
+		return nil, fmt.Errorf("previous manifest exceeds artifact size limit")
+	}
 	if err != nil {
 		var exit *exec.ExitError
 		if errors.As(err, &exit) {
 			// A new corpus has no previous manifest. Confirm absence in the tree;
 			// other Git errors must not silently disable downgrade checking.
-			list := exec.CommandContext(ctx, "git", "ls-tree", "--name-only", string(bytes.TrimSpace(sha)), "--", name)
+			list := exec.CommandContext(ctx, "git", "ls-tree", "--name-only", string(bytes.TrimSpace(resolved.buffer.Bytes())), "--", name)
 			list.Dir = root
-			paths, listErr := list.Output()
-			if listErr == nil && len(bytes.TrimSpace(paths)) == 0 {
+			list.WaitDelay = time.Second
+			var listed boundedCommandOutput
+			listed.limit, listed.cancel = maxArtifactBytes, cancel
+			list.Stdout = &listed
+			listErr := list.Run()
+			if listed.overflow {
+				return nil, fmt.Errorf("previous manifest path lookup exceeds artifact size limit")
+			}
+			if listErr == nil && len(bytes.TrimSpace(listed.buffer.Bytes())) == 0 {
 				return nil, nil
 			}
 		}
 		return nil, fmt.Errorf("read previous manifest: %w", err)
 	}
-	var m manifest
-	if err := json.Unmarshal(data, &m); err != nil {
+	m, err := decodeManifest(output.buffer.Bytes())
+	if err != nil {
 		return nil, err
 	}
 	return &m, nil
+}
+
+type boundedCommandOutput struct {
+	mu       sync.Mutex
+	buffer   bytes.Buffer
+	limit    int
+	overflow bool
+	cancel   context.CancelFunc
+}
+
+func (b *boundedCommandOutput) Write(p []byte) (int, error) {
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	remaining := b.limit - b.buffer.Len()
+	if len(p) > remaining {
+		if remaining > 0 {
+			_, _ = b.buffer.Write(p[:remaining])
+		}
+		b.overflow = true
+		b.cancel()
+		return len(p), nil
+	}
+	return b.buffer.Write(p)
 }

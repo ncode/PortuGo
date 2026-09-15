@@ -97,6 +97,8 @@ func TestRecordedArgumentRejections(t *testing.T) {
 		{"function-extra-arguments", diag.ECall, 7},
 		{"function-missing-tail-argument", diag.ECall, 9},
 		{"reference-string-as-integer", diag.ETypeMismatch, 4},
+		{"var-expression-argument", diag.ECall, 9},
+		{"var-literal-argument", diag.ECall, 7},
 		{"procedure-missing-tail-argument", diag.ECall, 2},
 		{"procedure-empty-two-arguments", diag.ECall, 2},
 	} {

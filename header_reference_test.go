@@ -67,6 +67,9 @@ func TestRecordedHeaderRejections(t *testing.T) {
 		{"declaration-semicolon-next-line", 4},
 		{"declaration-semicolon-var-same-line", 2},
 		{"declaration-semicolon-var-repeated", 2},
+		{"reserved-const", 3},
+		{"reserved-dos", 3},
+		{"multiple-main-var", 4},
 		{"bundled-ce6fa8f9a2a3", 13}, // estcivil.alg
 		{"bundled-b3549ab1faa5", 1},  // Calculo_media2.alg
 		{"bundled-50f837d55875", 1},  // Calculo_media2.alg.ALG
@@ -88,5 +91,23 @@ func TestRecordedHeaderRejections(t *testing.T) {
 				t.Fatalf("diagnostics = %v, want P001 on line %d", ds, tt.line)
 			}
 		})
+	}
+}
+
+func TestRecordedBuiltinCollision(t *testing.T) {
+	src, err := source.ReadFile("testdata/conformance/visualg-3.0.7/probes/builtin-collision-procedure/source.alg")
+	if err != nil {
+		t.Fatal(err)
+	}
+	file, tokens, ds := lexer.Scan("source.alg", src)
+	if len(ds) == 0 {
+		var prog *ast.Program
+		prog, ds = parser.Parse(tokens)
+		if len(ds) == 0 {
+			_, ds = sema.Analyze(prog)
+		}
+	}
+	if len(ds) != 1 || ds[0].Code != diag.ERedeclared || file.Position(ds[0].Pos).Line != 2 {
+		t.Fatalf("diagnostics = %v, want E003 on line 2", ds)
 	}
 }

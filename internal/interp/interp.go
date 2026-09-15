@@ -34,6 +34,7 @@ type Interpreter struct {
 	initErr            error
 	steps              uint64
 	depth, calls       int
+	loopDepth          int
 	halted             bool
 	result             *runtime.Cell
 	results            []runtime.Value
@@ -107,7 +108,7 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) (ds []diag.Diagnos
 	}
 	i.info = info
 	i.program = prog
-	i.steps, i.depth, i.calls = 0, 0, 0
+	i.steps, i.depth, i.calls, i.loopDepth = 0, 0, 0, 0
 	i.halted = false
 	i.env = newEnv(nil)
 	i.global = i.env

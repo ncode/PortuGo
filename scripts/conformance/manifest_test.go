@@ -97,6 +97,9 @@ func TestManifestValidation(t *testing.T) {
 		{name: "parent path", mode: "evidence", want: "unsafe path", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].Source.Path = "../source.alg" }},
 		{name: "Windows path", mode: "evidence", want: "unsafe path", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].Source.Path = `C:\source.alg` }},
 		{name: "duplicate probe", mode: "evidence", want: "duplicate probe", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes = append(m.Probes, m.Probes[0]) }},
+		{name: "duplicate inventory probe link", mode: "evidence", want: "duplicate probe link", mutate: func(_ *testing.T, _ string, m *manifest) {
+			m.Inventory[0].Probes = []string{"output", "output"}
+		}},
 		{name: "missing task", mode: "evidence", want: "task link", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].Tasks = []string{"10.99"} }},
 		{name: "wrong owner", mode: "evidence", want: "owner group", mutate: func(_ *testing.T, _ string, m *manifest) { m.Probes[0].OwnerGroup = 9 }},
 		{name: "stale requirement", mode: "evidence", want: "trace link", mutate: func(_ *testing.T, _ string, m *manifest) {
@@ -323,6 +326,170 @@ func TestManifestGeneratedInventory(t *testing.T) {
 	p.Implementation.Expected.Generated[1] = p.Implementation.Expected.Generated[0]
 	if err := validate(root, m, "evidence", nil); err == nil || !strings.Contains(err.Error(), "generated") {
 		t.Fatalf("error = %v, want duplicate generated path rejection", err)
+	}
+}
+
+func TestManifestSourceObligations(t *testing.T) {
+	t.Parallel()
+	for _, tt := range []struct {
+		name, source, kind, want string
+		traced                   bool
+	}{
+		{name: "untraced marker", source: "- [VERIFICAR] output behavior\n", want: "untraced verification item"},
+		{name: "qualified marker", source: "1. [VERIFICAR: output behavior]\n", want: "untraced verification item"},
+		{name: "checklist link", source: "- [VERIFICAR] output behavior\n", kind: "checklist", traced: true},
+		{name: "defect link", source: "| [VERIFICAR] output behavior |\n", kind: "defect", traced: true},
+		{name: "feature link", source: "`[VERIFICAR] output behavior`\n", kind: "feature", traced: true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			root, m := testManifest(t)
+			writeArtifact(t, root, "compatibility.md", tt.source)
+			m.InventorySources = append(m.InventorySources, "compatibility.md")
+			if tt.traced {
+				m.Inventory = append(m.Inventory, inventoryItem{
+					ID: "obligation." + tt.kind, Kind: tt.kind,
+					Link: "compatibility.md#" + strings.TrimSpace(tt.source), Probes: []string{"output"},
+				})
+			}
+			err := validate(root, m, "evidence", nil)
+			if tt.want == "" && err != nil || tt.want != "" && (err == nil || !strings.Contains(err.Error(), tt.want)) {
+				t.Fatalf("error = %v, want %q", err, tt.want)
+			}
+		})
+	}
+}
+
+func TestManifestChecklistSource(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	writeArtifact(t, root, "compatibility.md", "## 12. Checklist de conformidade\n\n1. output behavior\n\n## 13. Other notes\n\n1. outside checklist\n")
+	m.InventorySources = append(m.InventorySources, "compatibility.md")
+	if err := validate(root, m, "evidence", nil); err == nil || !strings.Contains(err.Error(), "untraced checklist item") {
+		t.Fatalf("error = %v, want untraced checklist item", err)
+	}
+	m.Inventory = append(m.Inventory, inventoryItem{
+		ID: "checklist.01", Kind: "checklist", Link: "compatibility.md#1. output behavior", Probes: []string{"output"},
+	})
+	if err := validate(root, m, "evidence", nil); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestManifestChecksMarkersAlongsideChecklist(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	writeArtifact(t, root, "compatibility.md", "## 12. Checklist de conformidade\n\n1. output behavior\n\n## Notes\n- [VERIFICAR] another behavior\n")
+	m.InventorySources = append(m.InventorySources, "compatibility.md")
+	m.Inventory = append(m.Inventory, inventoryItem{
+		ID: "checklist.01", Kind: "checklist", Link: "compatibility.md#1. output behavior", Probes: []string{"output"},
+	})
+	if err := validate(root, m, "evidence", nil); err == nil || !strings.Contains(err.Error(), "untraced verification item") {
+		t.Fatalf("error = %v, want untraced verification item", err)
+	}
+	m.Inventory = append(m.Inventory, inventoryItem{
+		ID: "assumption.marker", Kind: "assumption", Link: "compatibility.md#- [VERIFICAR] another behavior", Probes: []string{"output"},
+	})
+	if err := validate(root, m, "evidence", nil); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestManifestRetainsPendingLegacyObligations(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	maxLine := 0
+	for _, pending := range pendingSourceObligations["especificacao-visualg-3.md"] {
+		if pending.line > maxLine {
+			maxLine = pending.line
+		}
+	}
+	for _, marker := range contextualSourceMarkers["especificacao-visualg-3.md"] {
+		if marker.line > maxLine {
+			maxLine = marker.line
+		}
+	}
+	lines := make([]string, maxLine)
+	for i := range lines {
+		lines[i] = "source text"
+	}
+	for _, marker := range contextualSourceMarkers["especificacao-visualg-3.md"] {
+		lines[marker.line-1] = marker.prefix + " [VERIFICAR] contextual marker"
+		if marker.aliasID != "" {
+			m.Inventory = append(m.Inventory, inventoryItem{
+				ID: marker.aliasID, Kind: "assumption",
+				Link: "specs/output/spec.md#Requirement: Output", Probes: []string{"output"},
+			})
+		}
+	}
+	for _, pending := range pendingSourceObligations["especificacao-visualg-3.md"] {
+		lines[pending.line-1] = pending.prefix + " [VERIFICAR] pending details"
+	}
+	writeArtifact(t, root, "especificacao-visualg-3.md", strings.Join(lines, "\n")+"\n")
+	m.InventorySources = append(m.InventorySources, "especificacao-visualg-3.md")
+	if err := validate(root, m, "evidence", nil); err != nil {
+		t.Fatal(err)
+	}
+	lines[pendingSourceObligations["especificacao-visualg-3.md"][0].line-1] = "source text"
+	writeArtifact(t, root, "especificacao-visualg-3.md", strings.Join(lines, "\n")+"\n")
+	if err := validate(root, m, "evidence", nil); err == nil || !strings.Contains(err.Error(), "pending verification item missing") {
+		t.Fatalf("error = %v, want missing pending verification item", err)
+	}
+}
+
+func TestManifestClassifiesContextualLegacyMarkers(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	maxLine := 0
+	for _, marker := range contextualSourceMarkers["especificacao-visualg-3.md"] {
+		if marker.line > maxLine {
+			maxLine = marker.line
+		}
+	}
+	lines := make([]string, maxLine)
+	for i := range lines {
+		lines[i] = "source text"
+	}
+	for _, pending := range pendingSourceObligations["especificacao-visualg-3.md"] {
+		lines[pending.line-1] = pending.prefix + " [VERIFICAR] pending details"
+	}
+	for _, marker := range contextualSourceMarkers["especificacao-visualg-3.md"] {
+		lines[marker.line-1] = marker.prefix + " [VERIFICAR] contextual marker"
+		if marker.aliasID != "" {
+			m.Inventory = append(m.Inventory, inventoryItem{
+				ID: marker.aliasID, Kind: "assumption",
+				Link: "specs/output/spec.md#Requirement: Output", Probes: []string{"output"},
+			})
+		}
+	}
+	writeArtifact(t, root, "especificacao-visualg-3.md", strings.Join(lines, "\n")+"\n")
+	m.InventorySources = append(m.InventorySources, "especificacao-visualg-3.md")
+	if err := validate(root, m, "evidence", nil); err != nil {
+		t.Fatal(err)
+	}
+	lines[contextualSourceMarkers["especificacao-visualg-3.md"][0].line-1] = "source text"
+	writeArtifact(t, root, "especificacao-visualg-3.md", strings.Join(lines, "\n")+"\n")
+	if err := validate(root, m, "evidence", nil); err == nil || !strings.Contains(err.Error(), "contextual verification marker missing") {
+		t.Fatalf("error = %v, want missing contextual marker", err)
+	}
+}
+func TestManifestUntracedProbeOrder(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	for _, id := range []string{"zeta", "alpha"} {
+		p := m.Probes[0]
+		p.ID = id
+		m.Probes = append(m.Probes, p)
+	}
+	for range 20 {
+		err := validate(root, m, "evidence", nil)
+		if err == nil {
+			t.Fatal("validate succeeded, want untraced probe diagnostics")
+		}
+		text := err.Error()
+		alpha, zeta := strings.Index(text, "untraced probe alpha"), strings.Index(text, "untraced probe zeta")
+		if alpha < 0 || zeta < 0 || alpha > zeta {
+			t.Fatalf("error order = %q, want alpha before zeta", text)
+		}
 	}
 }
 

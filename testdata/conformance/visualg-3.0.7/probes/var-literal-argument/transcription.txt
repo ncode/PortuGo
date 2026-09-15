@@ -1,0 +1,3 @@
+Manual transcription of the reference GUI diagnostic.
+Observation: The reference application raised an access violation while invoking a procedure with a literal as a var argument.
+No language-level diagnostic code or column was exposed in the captured UI.

@@ -62,15 +62,16 @@ type fixtureAccess struct {
 // observation also defines the state/host adapter boundary used by group 3.
 // Subprocess replay uses the deterministic execution adapter for these channels.
 type observation struct {
-	ExitCode    int                     `json:"exitCode"`
-	Stdout      artifact                `json:"stdout"`
-	Diagnostics []diagnostic            `json:"diagnostics,omitempty"`
-	Generated   []generatedFile         `json:"generated,omitempty"`
-	Absent      []string                `json:"absent,omitempty"`
-	State       *artifact               `json:"state,omitempty"`
-	HostTrace   *artifact               `json:"hostTrace,omitempty"`
-	Clock       *artifact               `json:"clock,omitempty"`
-	RandomInput *randomInputExpectation `json:"randomInput,omitempty"`
+	ExitCode     int                      `json:"exitCode"`
+	Stdout       artifact                 `json:"stdout"`
+	Diagnostics  []diagnostic             `json:"diagnostics,omitempty"`
+	Generated    []generatedFile          `json:"generated,omitempty"`
+	Absent       []string                 `json:"absent,omitempty"`
+	State        *artifact                `json:"state,omitempty"`
+	HostTrace    *artifact                `json:"hostTrace,omitempty"`
+	Clock        *artifact                `json:"clock,omitempty"`
+	RandomInput  *randomInputExpectation  `json:"randomInput,omitempty"`
+	RandomOutput *randomOutputExpectation `json:"randomOutput,omitempty"`
 }
 
 type implementation struct {

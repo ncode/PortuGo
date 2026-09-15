@@ -55,6 +55,24 @@ func TestImplementationAcceptance(t *testing.T) {
 	}
 }
 
+func TestImplementationAcceptanceAllowsPendingRejectedProbe(t *testing.T) {
+	t.Parallel()
+	root, m := testManifest(t)
+	writeArtifact(t, root, "tasks.md", "- [x] 10.1 Implement output\n")
+	accepted := false
+	m.Probes[0].Evidence.Accepted = &accepted
+	m.Probes[0].Implementation.State = "pending"
+	m.Probes[0].Implementation.Expected.ExitCode = 1
+	m.Probes[0].Implementation.Expected.Diagnostics = []diagnostic{{Code: "P001", Line: 3}}
+	for _, mode := range []string{"incremental", "implementation-acceptance"} {
+		t.Run(mode, func(t *testing.T) {
+			if err := validate(root, m, mode, nil); err != nil {
+				t.Fatalf("rejected pending probe should not block %s: %v", mode, err)
+			}
+		})
+	}
+}
+
 func writeJSON(t *testing.T, root, path string, value any) {
 	t.Helper()
 	data, err := json.Marshal(value)

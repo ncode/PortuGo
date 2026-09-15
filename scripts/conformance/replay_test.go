@@ -20,11 +20,18 @@ func TestReplayChild(t *testing.T) {
 	case "pass":
 		fmt.Print(" 1\n")
 	case "mismatch":
-		fmt.Print("1\n")
+		fmt.Print("replay-mismatch-sentinel\n")
 	case "random-input":
 		fmt.Print("2.8470000000\n 2.847\n")
+	case "random-output":
+		fmt.Print(" 9\n 0\n 8\n 1\n 7\n 2\n 6\n 3\n 5\n 0\n")
+	case "random-output-invalid":
+		fmt.Print(" 9\n 0\n 8\n 1\n 7\n 2\n 6\n 3\n 5\n 10\n")
 	case "reject":
 		fmt.Fprintln(os.Stderr, "source.alg:4:2: E004: invalid call")
+		os.Exit(1)
+	case "budget":
+		fmt.Fprintln(os.Stderr, "source.alg:3:1: R006: execution step budget exhausted")
 		os.Exit(1)
 	case "unpositioned":
 		fmt.Fprintln(os.Stderr, "source.alg:4:0: E004: invalid call")
@@ -41,6 +48,16 @@ func TestReplayChild(t *testing.T) {
 			os.Exit(2)
 		}
 		if err := os.WriteFile("result.dat", b, 0o600); err != nil {
+			os.Exit(2)
+		}
+		fmt.Print(" 1\n")
+	case "mutate-input":
+		if err := os.WriteFile("input.dat", []byte("changed"), 0o600); err != nil {
+			os.Exit(2)
+		}
+		fmt.Print(" 1\n")
+	case "delete-input":
+		if err := os.Remove("input.dat"); err != nil {
 			os.Exit(2)
 		}
 		fmt.Print(" 1\n")
@@ -62,7 +79,7 @@ func TestReplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, tt := range []struct{ source, want string }{
-		{"pass", ""}, {"mismatch", "stdout mismatch"}, {"reject", ""}, {"unpositioned", "unpositioned diagnostic"}, {"hang", "deadline"}, {"flood", "output limit"}, {"file", ""}, {"unexpected-file", "expected absent file"},
+		{"pass", ""}, {"mismatch", "stdout mismatch"}, {"reject", ""}, {"budget", "exit status 1, expected 0"}, {"unpositioned", "unpositioned diagnostic"}, {"hang", "deadline"}, {"flood", "output limit"}, {"file", ""}, {"mutate-input", "input file mismatch"}, {"delete-input", "input file mismatch"}, {"unexpected-file", "expected absent file"},
 	} {
 		t.Run(tt.source, func(t *testing.T) {
 			t.Parallel()
@@ -81,10 +98,12 @@ func TestReplay(t *testing.T) {
 					p.Implementation.Expected.Diagnostics[0].Column = 0
 				}
 			}
-			if tt.source == "file" {
+			if tt.source == "file" || tt.source == "mutate-input" || tt.source == "delete-input" {
 				a := writeArtifact(t, root, "fixture.dat", "\xe9\r\n ")
 				p.Files = []generatedFile{{Path: "input.dat", Content: a}}
-				p.Implementation.Expected.Generated = []generatedFile{{Path: "result.dat", Content: a}}
+				if tt.source == "file" {
+					p.Implementation.Expected.Generated = []generatedFile{{Path: "result.dat", Content: a}}
+				}
 			}
 			p.Implementation.Expected.Absent = []string{"absent.dat"}
 			if tt.source == "unexpected-file" {
@@ -100,6 +119,28 @@ func TestReplay(t *testing.T) {
 				t.Fatalf("error = %v, want %q", err, tt.want)
 			}
 		})
+	}
+}
+
+func TestReplayMismatchReportOmitsOutput(t *testing.T) {
+	t.Parallel()
+	executable, err := os.Executable()
+	if err != nil {
+		t.Fatal(err)
+	}
+	root, m := testManifest(t)
+	p := m.Probes[0]
+	p.Source = writeArtifact(t, root, p.Source.Path, "mismatch")
+	p.TimeoutMS = 5000
+	err = replayProbe(root, p, executable, []string{"-test.run=^TestReplayChild$", "--"}, "")
+	if err == nil || !strings.Contains(err.Error(), "stdout mismatch") {
+		t.Fatalf("error = %v, want stdout mismatch", err)
+	}
+	if !strings.Contains(err.Error(), "first difference at byte") {
+		t.Fatalf("error = %v, want mismatch metadata", err)
+	}
+	if strings.Contains(err.Error(), "replay-mismatch-sentinel") {
+		t.Fatalf("error leaked captured output: %v", err)
 	}
 }
 

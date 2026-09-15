@@ -71,6 +71,25 @@ func TestAnalyzeInvalidInfo(t *testing.T) {
 	}
 }
 
+func TestUncalledSubprogramDefersUndeclaredIdentifier(t *testing.T) {
+	p := parseInfoProgram(t, `algoritmo "lazy body"
+procedimento P
+inicio
+  leia(missing)
+fimprocedimento
+inicio
+  escreval("ok")
+fimalgoritmo`)
+	info, ds := Analyze(p)
+	if len(ds) != 0 || !info.ValidFor(p) {
+		t.Fatalf("uncalled body rejected: %v", ds)
+	}
+	missing := p.Subs[0].(*ast.ProcedureDecl).Body[0].(*ast.ReadStmt).Targets[0]
+	if d, ok := info.DeferredDiagnostic(missing.Start()); !ok || d.Code != diag.EUndeclared {
+		t.Fatalf("missing deferred diagnostic: %+v, present=%t", d, ok)
+	}
+}
+
 func parseInfoProgram(t *testing.T, src string) *ast.Program {
 	t.Helper()
 	_, toks, ds := lexer.Scan("sample.alg", src)
