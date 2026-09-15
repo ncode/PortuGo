@@ -1,5 +1,7 @@
 # PortuGo
 
+[Português (Brasil)](README.pt-BR.md) | English
+
 **Learn and practice Portugol on Linux and macOS, right from your terminal.**
 
 PortuGo aims to close the gap for Linux and macOS users who want to follow
