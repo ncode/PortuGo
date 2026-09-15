@@ -2,10 +2,17 @@
 
 Português (Brasil) | [English](README.md)
 
-O PortuGo executa programas em Portugol pelo terminal no Linux e no macOS.
-Você pode acompanhar cursos que usam VisuAlg, resolver exercícios ou ensinar
-programação em português com o editor de sua preferência. Ele lê arquivos
-`.alg` no dialeto VisuAlg 3.x, sem precisar de Windows, máquina virtual ou Wine.
+**Aprenda e pratique Portugol no Linux e no macOS, direto do terminal.**
+
+O PortuGo é para quem usa Linux ou macOS e quer acompanhar cursos com
+VisuAlg, resolver exercícios ou ensinar programação em português.
+Ele executa programas `.alg` no **dialeto VisuAlg 3.x**, com o editor que
+você já gosta de usar. Você não precisa instalar Windows, máquina virtual
+ou Wine.
+
+Está escrevendo seu primeiro `algoritmo` ou voltando a um exercício das
+aulas? Seja bem-vindo! Os passos abaixo mostram como compilar o projeto
+e colocar seu primeiro programa para rodar.
 
 ## Primeiros passos
 
@@ -36,10 +43,11 @@ arquivo `SHA256SUMS` para verificar a integridade do arquivo baixado.
 
 ### Compilar a partir do código-fonte
 
-Você vai precisar do [Git](https://git-scm.com/install/) e do Go 1.27 ou mais
-recente. O [guia oficial de instalação do Go](https://go.dev/doc/install), em
-inglês, tem instruções para Linux e macOS. O Go compila a ferramenta de linha
-de comando; você não precisa conhecer a linguagem para usar o PortuGo.
+Você vai precisar do **[Git](https://git-scm.com/install/)** e do **Go 1.27 ou
+mais recente**. O [guia oficial de instalação do Go](https://go.dev/doc/install),
+em inglês, tem instruções para Linux e macOS. Você não precisa saber
+programar em Go para usar o PortuGo; ele cuida da compilação da ferramenta
+de linha de comando para você.
 
 Abra um terminal e confira se as duas ferramentas estão disponíveis:
 
@@ -66,14 +74,15 @@ Você deve ver:
 Ola, Portugol!
 ```
 
-`portugo` é o executável que você acabou de compilar. O `./` indica ao
-terminal que ele está na pasta atual. Os comandos abaixo consideram que
-você continua na pasta `PortuGo`.
+Seu primeiro programa já está rodando! `portugo` é o executável que você
+acabou de compilar. O `./` indica ao terminal que ele está na pasta atual.
+Os comandos abaixo consideram que você continua na pasta `PortuGo`.
 
 ## Escreva seu próprio programa
 
-Abra seu editor de texto e salve o código abaixo como `boas-vindas.alg` na
-pasta do projeto. Use texto simples com codificação UTF-8:
+Abra seu editor de texto favorito e salve o código abaixo como
+**`boas-vindas.alg`** na pasta do projeto. Use texto simples com
+codificação UTF-8:
 
 ```portugol
 algoritmo "boas-vindas"
@@ -125,8 +134,8 @@ Na sessão interativa, digite um **programa completo**. A linha com
 valores solicitados em seguida. Para encerrar a sessão, digite `:sair`
 em uma linha separada.
 
-Ao experimentar laços de repetição, você pode limitar o número de passos
-da execução:
+Está experimentando laços de repetição? Você pode limitar o número de
+passos da execução:
 
 ```sh
 ./portugo run --max-steps 10000 boas-vindas.alg
@@ -135,9 +144,10 @@ da execução:
 O programa para e exibe uma mensagem se atingir esse limite. Você também
 pode pressionar Ctrl+C para interromper um comando em execução.
 
-## Mais exemplos
+## Continue explorando
 
-Na [pasta de exemplos](examples/), você encontra programas para praticar:
+A [pasta de exemplos](examples/) é um bom lugar para escolher seu próximo
+exercício:
 
 | Exemplo | O que explorar |
 | --- | --- |
@@ -194,3 +204,5 @@ Você pode executar os testes na pasta do projeto com:
 ```sh
 go test ./...
 ```
+
+Bons estudos!

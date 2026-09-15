@@ -2,8 +2,8 @@
 
 ## Unreleased
 
-- Add a Brazilian Portuguese README with links between languages, and revise
-  the English introduction and instructions for clarity.
+- Add a Brazilian Portuguese README with links between languages, preserving
+  the welcoming tone of the English guide.
 
 - Build versioned Linux, macOS, and Windows archives for amd64 and arm64 with
   `make dist`, embedded `--version` output, and `SHA256SUMS`. Attach downloads
