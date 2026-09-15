@@ -23,13 +23,13 @@ named-record and scalar-field, assignment-alias, and case-range forms have
 positive coverage. Rejected variants retain positioned diagnostics, while
 unrecorded combinations remain pending under their owning tasks.
 
-The [bundled example sweep](bundled-examples-progress.md) verifies 43 original
+The [bundled example sweep](bundled-examples-progress.md) verifies 44 original
 programs against reference output, including formatting and execution. Eleven supplied files have
 recorded reference errors. Bundled-file presence alone does not establish that
 its syntax is accepted by this release.
-Seventeen accepted bundled recordings remain pending: fifteen contain generated
-output outside the current replay contract, including one syntax mismatch,
-and two recorded input paths are blocked by diagnostics in unexecuted code.
+Six accepted bundled recordings remain pending: five contain generated
+output outside the current replay contract, including one syntax mismatch, and
+one recorded input path is blocked by diagnostics in unexecuted code.
 
 ## Program Structure
 
@@ -58,8 +58,9 @@ the next physical line to retain independent later errors.
 
 The `var` block may be omitted or left empty. Top-level `procedimento` and
 `funcao` declarations must appear before `inicio`; one global `var` section may
-appear before or after those declarations. Repeating the global section is a
-`P001` error. Recorded words and statements after `fimalgoritmo` are ignored
+appear before or after those declarations, including after a `tipo` section and
+the subprograms that follow it. Repeating the global section is a `P001` error.
+Recorded words and statements after `fimalgoritmo` are ignored
 during execution. Later physical lines are opaque, including unclosed strings,
 invalid symbols and unfinished blocks.
 Formatting retains the complete decoded suffix immediately after the terminator,
@@ -1354,6 +1355,9 @@ Accepted program output is compared after removing only the two application
 notices and converting CRLF to the CLI's LF. Invalid programs receive positioned
 static diagnostics and are never executed: unlike the reference GUI, the CLI
 does not print preceding statements before reporting a statically known error.
+Unresolved identifiers in procedure and function bodies are retained as deferred
+diagnostics, so an uncalled body does not reject an otherwise executable path;
+the diagnostic is reported when that body is invoked.
 `run` exits 1 for lexical, parsing, semantic, or runtime failures and 0 on success.
 The active OpenSpec change tracks the remaining work; these selected observations
 are not a claim of full reference conformance.

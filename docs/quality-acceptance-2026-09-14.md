@@ -1,9 +1,8 @@
 # Current quality evidence — 2026-09-14
 
-This report records the green GitHub Actions checks for the preceding stacked
-documentation candidate (PR #190), together with fresh local checks on the
-same source. It is a sanitized summary; raw workflow logs remain outside the
-repository.
+This report records the green GitHub Actions checks for the current stacked
+candidate, together with fresh local checks on the same source. It is a
+sanitized summary; raw workflow logs remain outside the repository.
 
 | Check | Result | Coverage |
 | --- | --- | --- |
@@ -21,19 +20,51 @@ repository.
 | Parser fuzz | PASS | 30-second campaign with two workers |
 | Recorder, normalizer, replay, and traceability tests | PASS | `go test ./scripts/conformance -count=1` |
 | Evidence validation and replay | PASS | 1,679 probes; zero verified regressions |
+| Implementation acceptance | PASS | 1,679 probes; zero pending accepted implementations, mismatches, or untraced requirements; reviewed rejected-source records remain traceable |
+| Release acceptance | PASS | All OpenSpec tasks complete; full replay and required quality-result checks pass |
 | Specification validation | PASS | Strict OpenSpec validation |
 
-These checks establish quality and evidence status for the current stack. They
-do not establish implementation acceptance: 21 implementation probes remain
-pending in the manifest.
+These checks establish quality and evidence status for the current stack. The
+four pending manifest probes are reviewed rejected-source recordings; they stay
+visible for traceability but do not represent pending accepted behavior.
+
+The implementation-acceptance runner rebuilt and replayed the exact candidate
+with the required quality report. It passed all required quality-result checks,
+stable diagnostic-position checks, accepted-example coverage, and traceability
+validation. The runner reported no pending accepted behavior, and the OpenSpec
+task list records the final handoff. Post-merge archive and release-tag work
+remains governed by `release.md`. The quality report and raw evidence remain
+outside the repository; this document records only the sanitized result.
+
+Release-mode acceptance was then rerun on the same clean candidate and passed
+with no remaining tasks, mismatches, stale links, or quality failures.
 
 ## Pending implementation inventory
 
 | Owner | Count | Probe IDs |
 | --- | ---: | --- |
-| Bundled example qualification (17.3) | 21 | `bundled-215411a6ad9a`, `bundled-24919c4a2e4c`, `bundled-3b4c69f65b60`, `bundled-43742446e585`, `bundled-460092b86448`, `bundled-467736cf246b`, `bundled-49eb7f47065e`, `bundled-54f1e50d1c02`, `bundled-7f44aa03fcc5`, `bundled-86701928f296`, `bundled-8b2d8c702924`, `bundled-991ec2bd1566`, `bundled-a5945bc9ee4d`, `bundled-acf5d46a3a6a`, `bundled-b1c9cc780302`, `bundled-c47bf27802a4`, `bundled-c6443beee11c`, `bundled-da71c1ad0344`, `bundled-f251f2cd0c22`, `bundled-f4fa0c514cf7`, `bundled-fa172f3f5f70` |
+| Bundled example qualification (17.3) | 4 | See the manifest for the current pending probe inventory. |
 
 The bundled entries retain their recorded sources and outputs while their
-deterministic mismatches remain pending. The two recorded nonassignable `var`
+deterministic mismatches remain pending as reviewed rejections. The two recorded nonassignable `var`
 argument guards are verified by project regressions; their reviewed reference
 application faults remain separate from language-level diagnostic claims.
+
+Fifteen bundled transcripts now have verified generated-output contracts. One
+checks ten spaced integer lines, nine bounded random values and a fixed zero
+tail; the other checks ten alternating bounded integer and uppercase text
+lines; the third checks a bounded generated input sequence and its integer
+permutation; the fourth and fifth check bounded real input sequences, sorted
+permutations, and formatted rows; the sixth and seventh check generated
+code/name records with both sort orders; the eighth checks ten numbered integer
+rows and a fixed not-found search; the ninth checks twenty bounded integers and a
+fixed negative-sentinel search exit; the tenth and eleventh check a repeated
+nonzero integer with fixed prompts and no final LF; the twelfth checks twenty
+numbered sorted integers and the same fixed negative-sentinel search exit; the
+thirteenth checks twenty bounded counting-sort inputs, documented chronometer
+framing and a sorted `v2` multiset; the fourteenth checks ten bounded
+code/salary records and a fixed not-found search result; the fifteenth checks
+ten source-fixed relation iterations with positive zero-retried values,
+branch-specific Portuguese framing, blank separators and final LF. All replay
+the original and formatted source without comparing random sequences. The
+remaining rejected paths stay pending.

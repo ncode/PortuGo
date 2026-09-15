@@ -78,7 +78,8 @@ failure before writing stderr or replay-result JSON.
 
 These mappings verify enforcement by the tooling. They do not declare the
 inventory complete, satisfy missing checklist/audit inputs, or authorize a
-conformance release. Release acceptance and the example sweep remain pending.
+conformance release. The accepted-example sweep is complete; release
+acceptance still depends on the final handoff tasks.
 
 ## CLI contracts
 
@@ -181,8 +182,10 @@ non-applicability is recorded separately from their implementation status:
 All three implementation states are **verified** by focused project tests;
 their reference evidence remains **not-applicable**. These tests establish
 project tooling contracts, not reference language behavior. Recorded probes
-remain required for accepted syntax and original/formatted execution, and
-pending language or host behavior still blocks implementation acceptance.
+remain required for accepted syntax and original/formatted execution. Pending
+accepted language or host behavior still blocks implementation acceptance;
+reviewed rejected-source recordings remain pending without adding required
+behavior.
 
 ## Defensive vector storage
 

@@ -37,7 +37,7 @@ type boundedOutput struct {
 }
 
 func (b *boundedOutput) Write(p []byte) (int, error) {
-	if len(p) > (1<<20)-b.buffer.Len() {
+	if len(p) > maxObservationBytes-b.buffer.Len() {
 		b.overflow = true
 		b.cancel()
 		return 0, fmt.Errorf("output limit exceeded")
@@ -218,7 +218,14 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	if err != nil {
 		return err
 	}
-	if want.RandomInput != nil {
+	if want.RandomOutput != nil {
+		if err := want.RandomOutput.compare(wantOut); err != nil {
+			return fmt.Errorf("recorded random output: %w", err)
+		}
+		if err := want.RandomOutput.compare(stdout.buffer.Bytes()); err != nil {
+			return fmt.Errorf("replayed random output: %w", err)
+		}
+	} else if want.RandomInput != nil {
 		if err := want.RandomInput.compare(wantOut); err != nil {
 			return fmt.Errorf("recorded random input: %w", err)
 		}

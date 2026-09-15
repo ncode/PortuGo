@@ -23,6 +23,10 @@ func TestReplayChild(t *testing.T) {
 		fmt.Print("replay-mismatch-sentinel\n")
 	case "random-input":
 		fmt.Print("2.8470000000\n 2.847\n")
+	case "random-output":
+		fmt.Print(" 9\n 0\n 8\n 1\n 7\n 2\n 6\n 3\n 5\n 0\n")
+	case "random-output-invalid":
+		fmt.Print(" 9\n 0\n 8\n 1\n 7\n 2\n 6\n 3\n 5\n 10\n")
 	case "reject":
 		fmt.Fprintln(os.Stderr, "source.alg:4:2: E004: invalid call")
 		os.Exit(1)

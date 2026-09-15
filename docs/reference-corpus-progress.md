@@ -4,7 +4,7 @@ OpenSpec group 2 is complete. The corpus inventories 229 stable records across
 73 requirements, 73 bundled example filenames, sizes and hashes, 25 checklist
 rows, 48 assumptions, 9 feature records, and one audited defect. All 73 examples now have
 recorded dispositions: 60 accepted, 11 unusable, and 2 reviewed non-goals. The
-manifest has 1,657 recorded probes and 22 reviewed non-applicable probes; 21
+manifest has 1,657 recorded probes and 22 reviewed non-applicable probes; 18
 implementation checks remain pending. Every one of the 33 legacy `[VERIFICAR]`
 markers has a stable inventory link. The original compatibility checklist is
 present in `especificacao-visualg-3.md`; its 25 numbered rows now have stable
@@ -20,7 +20,7 @@ timing, GUI, and reference-sequence behavior.
 The evidence-recording portion of group 2 is complete: all 73 bundled examples
 have a recorded disposition, and every manifest probe is either recorded or
 reviewed not-applicable. Evidence validation reports 1,657 recorded probes, 22
-reviewed not-applicable probes, and no unrecorded entries. The 21 pending
+reviewed not-applicable probes, and no unrecorded entries. The 15 pending
 implementation checks remain visible under their implementation tasks.
 
 The September 14 source-obligation slice adds eight reviewed recordings from
@@ -89,8 +89,14 @@ were preserved.
 Fresh recorder, normalizer, replay, manifest, traceability, quality, and strict
 OpenSpec checks are captured in the [current quality report](quality-acceptance-2026-09-14.md).
 Evidence validation has zero verified regressions; its published inventory
-keeps the current 21 pending implementation probes visible; the two recorded
+keeps the current 15 pending implementation probes visible; the two recorded
 nonassignable `var` guards are now covered by project regressions.
+
+The clean-checkout rehearsal in
+[the release rehearsal report](release-rehearsal-2026-09-14.md) passes the
+build, CLI and REPL smoke commands, ordinary and race suites, vet, formatter,
+incremental replay, and strict OpenSpec checks. Pending implementation and
+handoff tasks continue to block release acceptance.
 
 The clean-checkout rehearsal in
 [the release rehearsal report](release-rehearsal-2026-09-14.md) passes the

@@ -8163,14 +8163,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-215411a6ad9a/stdout.txt",
             "sha256": "346dee4b29872c18bdc14a6572a861b10ba83eb7822a5d424047c31426cf7a60"
+          },
+          "randomOutput": {
+            "kind": "random-real-sort-lines",
+            "lines": 20,
+            "minimum": 0,
+            "bound": 101000,
+            "decimals": 3,
+            "review": {
+              "reason": "The recorded transcript preserves the generated real input multiset and its sorted output while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRealSortOutput"
+        ]
       }
     },
     {
@@ -8389,14 +8403,26 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-3b4c69f65b60/stdout.txt",
             "sha256": "8c7d0b2fcd19c66883d5afc0812190796edf6c50e5aaf6d714421cccd7010f4e"
+          },
+          "randomOutput": {
+            "kind": "random-int-text-lines",
+            "lines": 10,
+            "bound": 101,
+            "review": {
+              "reason": "The recorder emits five alternating bounded integer and uppercase text samples; generator sequences remain unqualified.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledMixedRandomOutput"
+        ]
       }
     },
     {
@@ -8526,7 +8552,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -8539,7 +8565,10 @@
               "line": 8
             }
           ]
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestBundledExtensoRejectsLiteralVectorType"
+        ]
       }
     },
     {
@@ -8573,14 +8602,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-460092b86448/stdout.txt",
             "sha256": "8ec1f7136ca396b2f7fd58cebd53ae1a4c5a68a715eb83b75ddff33857eb6433"
+          },
+          "randomOutput": {
+            "kind": "random-record-search-lines",
+            "lines": 12,
+            "minimum": 0,
+            "bound": 100,
+            "decimals": 2,
+            "review": {
+              "reason": "The recorded transcript preserves ten bounded code and salary records, exact numbered formatting, and fixed negative search framing while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRecordSearchOutput"
+        ]
       }
     },
     {
@@ -8614,14 +8657,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-467736cf246b/stdout.txt",
             "sha256": "d4f3e4baca8c95eba490780b8e18e03ebe5279b6835ba51173f41aaf53e6b43e"
+          },
+          "randomOutput": {
+            "kind": "random-randi-repeat-lines",
+            "lines": 11,
+            "minimum": 1,
+            "bound": 10,
+            "review": {
+              "reason": "The recorded transcript preserves the repeated nonzero random value, fixed prompts and sequence framing while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRandiRepeatOutput"
+        ]
       }
     },
     {
@@ -8855,14 +8911,19 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-54f1e50d1c02/stdout.txt",
             "sha256": "c90d8f6be67a76668269a3d1af5dbfb57143f87338146aef4eadcade505620e3"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledMenuExample",
+          "internal/sema/info_test.go#TestUncalledSubprogramDefersUndeclaredIdentifier",
+          "internal/interp/execution_test.go#TestDeferredSubprogramDiagnosticOnInvocation"
+        ]
       }
     },
     {
@@ -9201,14 +9262,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-7f44aa03fcc5/stdout.txt",
             "sha256": "dc267e68447f8efadc9ce1fdfab34bba31df26188918595917e1b8a7d1632059"
+          },
+          "randomOutput": {
+            "kind": "random-relation-lines",
+            "lines": 40,
+            "minimum": 1,
+            "bound": 11,
+            "review": {
+              "reason": "The recorded transcript preserves ten source-fixed relation iterations, bounded positive random values, exact branch framing, and blank iteration separators while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRelationOutput"
+        ]
       }
     },
     {
@@ -9344,14 +9418,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-86701928f296/stdout.txt",
             "sha256": "c66c056d5b3b076e9f3a0d8d9e525b977ed2e03e60f6fe24503e426c95db9456"
+          },
+          "randomOutput": {
+            "kind": "random-int-search-table-lines",
+            "lines": 12,
+            "minimum": 0,
+            "bound": 100,
+            "review": {
+              "reason": "The recorded transcript preserves ten generated integer rows and the fixed not-found search while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomSearchTableOutput"
+        ]
       }
     },
     {
@@ -9428,14 +9515,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-8b2d8c702924/stdout.txt",
             "sha256": "3b68cc36dd78a58ca9245fe6f9992f7d5125ee36519d0be3c29bc0096e573752"
+          },
+          "randomOutput": {
+            "kind": "random-randi-repeat-lines",
+            "lines": 11,
+            "minimum": 1,
+            "bound": 10,
+            "review": {
+              "reason": "The recorded transcript preserves the repeated nonzero random value, fixed prompts and sequence framing while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRandiRepeatOutput"
+        ]
       }
     },
     {
@@ -9512,14 +9612,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-991ec2bd1566/stdout.txt",
             "sha256": "3e1f4e3c9cfc1161c5544d8effd4542b54a0bd667435cdf37bed0ad0430a225a"
+          },
+          "randomOutput": {
+            "kind": "randi-lines",
+            "lines": 10,
+            "bound": 10,
+            "fixedTail": 0,
+            "review": {
+              "reason": "The recorded transcript has ten spaced integer lines; the first nine are randi(10) values and the final unassigned vector slot is zero. Replay checks the domain and framing without promising the reference sequence.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandiOutput"
+        ]
       }
     },
     {
@@ -9813,14 +9926,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-a5945bc9ee4d/stdout.txt",
             "sha256": "51ae4ff821670390cf4543af8df3e3190ba73293e4e56a31edeec5701470e982"
+          },
+          "randomOutput": {
+            "kind": "random-int-sort-lines",
+            "lines": 40,
+            "minimum": 1,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves the generated input multiset and its sorted output while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomSortOutput"
+        ]
       }
     },
     {
@@ -9897,14 +10023,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-acf5d46a3a6a/stdout.txt",
             "sha256": "10bd0b9d1887746c14dfb733deb6b0966694c3d153f94213e927b18f30c5f33d"
+          },
+          "randomOutput": {
+            "kind": "random-int-countsort-lines",
+            "lines": 44,
+            "minimum": 1,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves twenty bounded inputs, chronometer framing, and a sorted multiset render while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomCountSortOutput"
+        ]
       }
     },
     {
@@ -9938,14 +10077,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-b1c9cc780302/stdout.txt",
             "sha256": "7b23f49dea0302255e1208f3b4af474042c9affd7058359fcae132c717324776"
+          },
+          "randomOutput": {
+            "kind": "random-record-sort-lines",
+            "lines": 42,
+            "minimum": 0,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves generated code/name pairs and both name/code sort orders while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRecordSortOutput"
+        ]
       }
     },
     {
@@ -10254,14 +10406,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c47bf27802a4/stdout.txt",
             "sha256": "4b7bc165edf121663077d14b206c951ed59c2f1497797114aaaac740b5913609"
+          },
+          "randomOutput": {
+            "kind": "random-int-search-lines",
+            "lines": 21,
+            "minimum": 0,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves twenty generated integers and the fixed negative search exit while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomSearchOutput"
+        ]
       }
     },
     {
@@ -10295,14 +10460,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c6443beee11c/stdout.txt",
             "sha256": "0a3c515f4c7599d85a37b016d1710bf648f3ac4dc953fbb466022c5d05ea584e"
+          },
+          "randomOutput": {
+            "kind": "random-real-sort-lines",
+            "lines": 20,
+            "minimum": 0,
+            "bound": 101000,
+            "decimals": 3,
+            "review": {
+              "reason": "The recorded transcript preserves the generated real input multiset and its sorted output while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRealSortOutput"
+        ]
       }
     },
     {
@@ -10496,14 +10675,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-da71c1ad0344/stdout.txt",
             "sha256": "8cfd4d0c1de470b1800bd2d18fc3da83b745704e705692fe0ea366ab85eb272e"
+          },
+          "randomOutput": {
+            "kind": "random-int-search-sorted-lines",
+            "lines": 21,
+            "minimum": 0,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves twenty sorted generated integers and the fixed negative search exit while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomSearchSortedOutput"
+        ]
       }
     },
     {
@@ -10821,14 +11013,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-fa172f3f5f70/stdout.txt",
             "sha256": "97242809ac72920be63d5fc71c945891f3d940cfc03cfb5ce59742b1df47200c"
+          },
+          "randomOutput": {
+            "kind": "random-record-sort-lines",
+            "lines": 42,
+            "minimum": 0,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves generated code/name pairs and both name/code sort orders while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRecordSortOutput"
+        ]
       }
     },
     {

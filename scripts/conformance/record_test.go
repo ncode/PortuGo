@@ -264,6 +264,26 @@ func TestCaptureRejectsRecorderOwnedGeneratedPath(t *testing.T) {
 	}
 }
 
+func TestCaptureRejectsUndeclaredStageFile(t *testing.T) {
+	root, m := testManifest(t)
+	stage := filepath.Join(t.TempDir(), "recording")
+	if err := prepareRecording(root, m.Probes[0], stage); err != nil {
+		t.Fatal(err)
+	}
+	writeArtifact(t, stage, "raw.txt", "Início da execução\r\n 1\r\n\r\nFim da execução.\r\n")
+	if err := os.WriteFile(filepath.Join(stage, "unexpected.txt"), []byte("private\n"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := captureRecording(root, stage, true, "2026-09-07T12:00:00Z", "panel-v1", false); err == nil || !strings.Contains(err.Error(), "undeclared recording file") {
+		t.Fatalf("error = %v, want undeclared file rejection", err)
+	}
+	for _, name := range []string{"normalized.txt", "evidence.json"} {
+		if _, err := os.Stat(filepath.Join(stage, name)); !os.IsNotExist(err) {
+			t.Fatalf("capture created %s after undeclared file", name)
+		}
+	}
+}
+
 func TestCaptureGeneratedBytes(t *testing.T) {
 	t.Parallel()
 	root, m := testManifest(t)

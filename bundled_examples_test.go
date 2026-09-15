@@ -78,8 +78,82 @@ func TestRecordedBundledExamples(t *testing.T) {
 	}
 }
 
+func TestRecordedBundledMenuExample(t *testing.T) {
+	root := "testdata/conformance/visualg-3.0.7/probes"
+	entries, err := os.ReadDir(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, entry := range entries {
+		if !entry.IsDir() {
+			continue
+		}
+		dir := filepath.Join(root, entry.Name())
+		src, err := source.ReadFile(filepath.Join(dir, "source.alg"))
+		if err != nil {
+			if os.IsNotExist(err) {
+				continue
+			}
+			t.Fatal(err)
+		}
+		lower := strings.ToLower(src)
+		if !strings.Contains(lower, "procedimento alterar") || !strings.Contains(lower, "leia(yl)") {
+			continue
+		}
+		input, err := os.ReadFile(filepath.Join(dir, "input.txt"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		want, err := os.ReadFile(filepath.Join(dir, "stdout.txt"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		checkFormattingPreservesExecutionWithInput(t, src, input, want)
+		return
+	}
+	t.Fatal("recorded menu example not found")
+}
+
 func TestBundledGameRejectsLiteralType(t *testing.T) {
 	checkSemanticDiagnostic(t, "testdata/conformance/visualg-3.0.7/probes/bundled-0cef94aa6573/source.alg", diag.EParse, 9)
+}
+
+func TestBundledExtensoRejectsLiteralVectorType(t *testing.T) {
+	path := "testdata/conformance/visualg-3.0.7/probes/bundled-43742446e585/source.alg"
+	src, err := source.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	file, tokens, ds := lexer.Scan("source.alg", src)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	_, ds = parser.Parse(tokens)
+	if len(ds) != 1 || ds[0].Code != diag.EParse || file.Position(ds[0].Pos).Line != 8 {
+		t.Fatalf("diagnostics = %v, want P001 on line 8", ds)
+	}
+}
+
+func TestLiteralTypeAliasRemainsSupported(t *testing.T) {
+	src := `algoritmo "literal-alias"
+tipo
+  literal = inteiro
+var
+  valores: vetor[1..2] de literal
+inicio
+  valores[1] <- 1
+fimalgoritmo`
+	_, tokens, ds := lexer.Scan("source.alg", src)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	prog, ds := parser.Parse(tokens)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	if _, ds = sema.Analyze(prog); len(ds) != 0 {
+		t.Fatal(ds)
+	}
 }
 
 func TestBundledRejectsInvalidFunctionName(t *testing.T) {

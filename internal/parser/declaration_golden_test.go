@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/ncode/portugol-go/internal/ast"
+	"github.com/ncode/portugol-go/internal/diag"
 	"github.com/ncode/portugol-go/internal/lexer"
 	"github.com/ncode/portugol-go/internal/source"
 )
@@ -51,5 +52,67 @@ func TestAggregateDeclarationGolden(t *testing.T) {
 	clearSyntaxPositions(reflect.ValueOf(reparsed))
 	if !reflect.DeepEqual(program, reparsed) {
 		t.Fatal("aggregate declaration golden changed the syntax tree")
+	}
+}
+
+func TestGlobalVarAfterTypedSubprograms(t *testing.T) {
+	src := `algoritmo "global var after type subprogram"
+tipo
+  tdado = registro
+    codigo: inteiro
+  fimregistro
+procedimento incrementar
+inicio
+  dados.codigo <- dados.codigo + 1
+fimprocedimento
+var
+  dados: tdado
+inicio
+  dados.codigo <- 4
+  incrementar()
+  escreval(dados.codigo)
+fimalgoritmo
+`
+	_, tokens, lexDiags := lexer.Scan("trailing-var.alg", src)
+	if len(lexDiags) != 0 {
+		t.Fatalf("lexer diagnostics: %v", lexDiags)
+	}
+	program, parseDiags := Parse(tokens)
+	if len(parseDiags) != 0 {
+		t.Fatalf("parser diagnostics: %v", parseDiags)
+	}
+	if len(program.Types) != 1 || len(program.Subs) != 1 || len(program.Globals) != 1 {
+		t.Fatalf("unexpected declaration counts: types=%d subs=%d globals=%d", len(program.Types), len(program.Subs), len(program.Globals))
+	}
+	var formatted bytes.Buffer
+	if err := ast.Fprint(&formatted, program); err != nil {
+		t.Fatal(err)
+	}
+	_, reparsedTokens, lexDiags := lexer.Scan("trailing-var.alg", formatted.String())
+	if len(lexDiags) != 0 {
+		t.Fatalf("reformatted lexer diagnostics: %v", lexDiags)
+	}
+	if _, parseDiags := Parse(reparsedTokens); len(parseDiags) != 0 {
+		t.Fatalf("reformatted parser diagnostics: %v", parseDiags)
+	}
+}
+
+func TestTypedSubprogramsStillRequireGlobalVar(t *testing.T) {
+	src := `algoritmo "typed subprogram without var"
+tipo
+  numero = inteiro
+procedimento noop
+inicio
+fimprocedimento
+inicio
+fimalgoritmo
+`
+	file, tokens, lexDiags := lexer.Scan("missing-var.alg", src)
+	if len(lexDiags) != 0 {
+		t.Fatalf("lexer diagnostics: %v", lexDiags)
+	}
+	_, parseDiags := Parse(tokens)
+	if len(parseDiags) != 1 || parseDiags[0].Code != diag.EParse || file.Position(parseDiags[0].Pos).Line != 7 {
+		t.Fatalf("diagnostics = %v, want P001 on line 7", parseDiags)
 	}
 }

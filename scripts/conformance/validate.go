@@ -230,14 +230,33 @@ func validateProbe(root string, p probe, mode string, tasks map[string]bool, com
 			add(contract.compare(out))
 		}
 	}
+	if i.Expected.RandomInput != nil && i.Expected.RandomOutput != nil {
+		add(fmt.Errorf("random-input and random-output contracts are mutually exclusive"))
+	}
+	if contract := i.Expected.RandomOutput; contract != nil {
+		add(checkReview(root, &contract.Review))
+		if e.State != "recorded" || e.Accepted == nil || !*e.Accepted {
+			add(fmt.Errorf("random-output contract requires accepted reference evidence"))
+		}
+		out, err := readArtifact(root, e.Normalized)
+		add(err)
+		if err == nil {
+			add(contract.compare(out))
+		}
+	}
 	switch i.State {
 	case "verified":
 		add(checkTests(root, i.Tests))
 	case "pending":
-		if mode == "implementation-acceptance" {
+		// A rejected reference recording is not required language behavior. Keep
+		// its pending mismatch visible in replay output, but do not treat it as
+		// an incomplete implementation during acceptance. Pending accepted
+		// behavior remains a hard failure in both acceptance phases.
+		required := p.Evidence.Accepted == nil || *p.Evidence.Accepted
+		if required && mode == "implementation-acceptance" {
 			add(fmt.Errorf("pending implementation"))
 		}
-		if mode != "evidence" && completed[p.OwnerGroup] {
+		if required && mode != "evidence" && completed[p.OwnerGroup] {
 			add(fmt.Errorf("pending behavior owned by completed group %d", p.OwnerGroup))
 		}
 	case "not-applicable":

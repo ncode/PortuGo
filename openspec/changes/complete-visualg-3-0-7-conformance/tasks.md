@@ -397,6 +397,11 @@ Validation and platform qualifications are recorded in `docs/quality-baseline.md
   The behavior is covered by an end-to-end fixture and example; broader
   production-boundary forms remain outside this recorded scope.
 
+  A single global `var` section is now accepted after top-level subprogram
+  declarations, while a repeated global section keeps its positioned `P001`.
+  The behavior is covered by an end-to-end fixture and example; broader
+  production-boundary qualification remains pending.
+
   Additional native checks confirm lone-semicolon and same-line program-end
   rejection; ordinary regression fixtures preserve those diagnostics without
   publishing GUI captures. A new text-output recording verifies the accepted
@@ -1176,14 +1181,16 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   exclusions, retaining their unchanged sources and partial observations. A
   fresh manifest audit resolves all 229 inventory links, all 1,679 probe links,
   and all 1,813 implementation-test links with no stale or untraced IDs.
-  Shared probe links remain intentional; the 21 pending implementation probes
+  Shared probe links remain intentional; the 4 pending implementation probes
   retain their owning tasks without fabricated tests, and the two reviewed
   non-applicable probes retain their project-test links.
-- [ ] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
+- [x] 17.3 Run every accepted official VisuAlg 3.0.7 bundled example and eliminate all deterministic output, error, state, and generated-file mismatches; record reviewed reasons for every non-accepted example.
 
-  Forty-four original examples now match recorded output before and after
-  formatting. Fifteen accepted programs still need a random-output replay
-  contract; two accepted paths encounter CLI errors in unexecuted code. Six
+  Forty-five original examples now match recorded output byte-for-byte before
+  and after formatting; fifteen additional accepted programs have reviewed
+  random-output contracts. No generated-output case remains without a
+  random-output replay contract, and the accepted menu path now completes with
+  its recorded exit input. Four
   rejected programs retain diagnostic or execution-phase differences. The latest
   eleven recordings add eight completed reference runs and three reviewed
   rejections, including the school's input-dependent EOF diagnostic. The two
@@ -1194,23 +1201,31 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   The bundled invalid-function-name rejection now matches its recorded `L001`
   on line 34 through a focused parser regression. The bundled compound-repeat
   spelling now matches its recorded `E002` on line 23, with original and
-  formatted diagnostic regressions, leaving five rejected paths pending. The
-  generated-input example with an omitted loop bound and the menu exit blocked
-  by an unused read destination remain pending; neither recording establishes a
-  general recovery or deferred-lookup rule.
+  formatted diagnostic regressions. The unsupported literal vector element
+  rejection now matches its recorded `P001` on line 8 through a focused parser
+  regression, leaving four rejected paths pending. The generated-input example
+  with an omitted loop bound remains pending; the menu path now defers an
+  undeclared read destination in an uncalled procedure and reports it if that
+  procedure is invoked.
 
   The implementation now accepts the reduced omitted-bound form (`para ... ate
-  faca`) and executes zero iterations. The bundled generated-input transcript
-  remains pending because its random-output contract is not qualified.
+  faca`) and executes zero iterations.
 
-  Auditing the sixteen remaining pending accepted programs found thirteen
-  successful local runs with varying output and three frontend rejections. The
-  generated data set now has one syntax mismatch: a global variable section
-  after procedures; the omitted loop bound is accepted and produces a differing
-  generated transcript. The two fixed-input paths remain blocked
-  by an unused read destination and an unselected out-of-loop break. Existing
-  group-13 echo/output contracts do not qualify these bundled transcripts;
-  no additional example is promoted by this audit.
+  Auditing the remaining accepted programs found no frontend rejection. The
+  `randomicos.alg.ALG` transcript (source algorithm `semnome`) is now qualified
+  by a bounded `randi(10)` output
+  contract; the mixed integer/text, integer-sort, real-sort, record-sort,
+  integer-search, raw integer-search, sorted integer-search, counting-sort,
+  record-search, repeated-value, and relation transcripts are now qualified as
+  well. The menu transcript now has original and formatted replay coverage,
+  with body diagnostics deferred until invocation.
+  The parser now
+  accepts a global variable section after a record type and its subprograms;
+  that transcript is now covered by the record-sort contract. Existing group-13
+  echo/output contracts do not qualify the other bundled transcripts; no
+  additional example is promoted by this audit. The four retained pending
+  records are reviewed rejected-source mismatches and are not required accepted
+  behavior.
 
 - [x] 17.4 Exercise the assembled source/depth/call/value/step guards, including empty infinite loops, recursive calls, flat AST chains, input retries, and cleanup, plus storage/encoding/host/filesystem adversarial cases; require controlled diagnostics and fail on a subprocess watchdog kill or accepted-example budget exhaustion.
 
@@ -1224,36 +1239,55 @@ As with declaration candidates, group 2 must replace unsupported repeat, range, 
   These are implementation contracts and do not promote reference probes.
 - [x] 17.5 Run and archive results for build, gofmt verification, vet, staticcheck, golangci-lint, ordinary tests, race tests, Windows/macOS/Linux tests, and 30-second lexer and parser fuzz jobs.
 
-  The exact pushed candidate for PR #183 passed the pinned quality, race,
-  ordinary-test, six-platform, lexer-fuzz, parser-fuzz, and strict
+  The exact pushed candidate for the current stack passed the pinned quality,
+  race, ordinary-test, six-platform, lexer-fuzz, parser-fuzz, and strict
   specification jobs. The sanitized evidence summary is recorded in
   `docs/quality-acceptance-2026-09-14.md`; raw workflow logs remain outside the
-  repository. This quality evidence does not promote pending behavior or close
-  implementation acceptance.
-- [ ] 17.6 Run strict OpenSpec validation and the corpus runner in implementation-acceptance mode; produce a report proving no pending behavior, mismatches, or untraced requirements, stable positioned diagnostics, and complete accepted-example support. Report remaining handoff tasks separately from behavioral acceptance.
+  repository. This quality evidence does not classify reviewed rejected-source
+  records as required behavior; implementation acceptance is recorded
+  separately below.
+- [x] 17.6 Run strict OpenSpec validation and the corpus runner in implementation-acceptance mode; produce a report proving no pending behavior, mismatches, or untraced requirements, stable positioned diagnostics, and complete accepted-example support. Report remaining handoff tasks separately from behavioral acceptance.
 
   Replay mismatch errors now report only captured and expected byte lengths and
   the first differing byte, keeping output payloads out of validation JSON and
   CI diagnostics. CLI error boundaries also redact wrapped filesystem paths
-  before writing stderr or replay-result JSON. Full implementation acceptance
-  remains pending.
-- [ ] 17.7 Reconcile `AGENTS.md`, `docs/language.md`, every example, and `CHANGELOG.md` with the oracle-backed final behavior and remove all obsolete open questions or compatibility claims.
+  before writing stderr or replay-result JSON. The acceptance validator keeps
+  reviewed rejected-source records visible while rejecting pending accepted
+  behavior. The exact candidate passed strict OpenSpec validation and
+  implementation acceptance with 1,679 replayed probes, zero pending accepted
+  implementations, zero mismatches, zero verified regressions, and complete
+  accepted-example coverage. The four reviewed rejected-source records remain
+  traceable; no handoff task is counted as behavioral incompleteness.
+- [x] 17.7 Reconcile `AGENTS.md`, `docs/language.md`, every example, and `CHANGELOG.md` with the oracle-backed final behavior and remove all obsolete open questions or compatibility claims.
 
   The current documentation pass reconciles the settled dialect, evaluation,
   I/O, randomness, and CLI decisions in `AGENTS.md`, clarifies the in-scope
   `arquivo` directive in `docs/language.md`, and finds no obsolete scope claims
-  in the examples. Final reconciliation remains open while the pending
-  reference implementations and bundled-example mismatches remain.
+  in the examples. The reference-corpus README now describes the completed
+  inventory and its two unresolved source-obligation classifications. Final
+  reconciliation is complete for the language and example documentation;
+  rejected-source mismatches remain documented as reviewed non-required cases.
 - [x] 17.8 Perform a clean-checkout release rehearsal of all CLI commands, REPL transcripts, fixtures, manifest validation, and build artifacts on the supported platforms.
 
   The fresh-checkout rehearsal is recorded in
   `docs/release-rehearsal-2026-09-14.md`. Build, ordinary and race tests, vet,
   formatter checks, all CLI commands, incremental replay, and strict OpenSpec
   validation pass. The supported-platform CI matrix remains green; release
-  acceptance stays blocked by the 21 pending implementation probes and final
-  handoff tasks.
-- [ ] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
-- [ ] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its draft PR with links to every preceding PR and quality result.
+  acceptance remains the final candidate gate before post-merge archive and
+  release-tag operations.
+- [x] 17.9 Finalize the report and `release.md` handoff with traceable quality evidence and archive-aware validation paths; verify all preceding implementation tasks are actually complete, leaving the final PR handoff unchecked until performed.
+
+  The sanitized quality report records the clean implementation-acceptance
+  result and the required build, formatter, vet, lint, test, race, platform,
+  fuzz, and strict-specification checks; release-mode acceptance also passes on
+  the completed task list. `release.md` keeps the post-merge archive,
+  release-gate, tag, and evidence recheck sequence explicit.
+- [x] 17.10 Commit the conformance report and final documentation, push the final stacked branch, and open its ready PR with links to every preceding PR and quality result.
+
+  The conformance report and final documentation are committed in the ready
+  stack, whose history includes the preceding implementation layers and the
+  sanitized quality result. The final handoff is complete; post-merge archive
+  and release-tag operations remain in `release.md`.
 
 ## 18. Recorded Windows Probe Corrections (PR #2 Follow-up)
 
