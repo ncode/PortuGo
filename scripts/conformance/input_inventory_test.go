@@ -72,6 +72,7 @@ func TestManifestInputInventory(t *testing.T) {
 					p.Implementation.Expected.Generated = p.Evidence.Generated
 					p.Evidence.Absent = []string{"data/input.dat"}
 					p.Implementation.Expected.Absent = p.Evidence.Absent
+					want = "required file is a parent of absent path"
 				case "removed input above output":
 					p.Files[0].Path = "data"
 					p.Evidence.Generated = []generatedFile{{Path: "data/result.dat", Content: second}}

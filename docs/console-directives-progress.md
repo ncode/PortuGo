@@ -19,4 +19,6 @@ The default host keeps output in the supplied writer. These host-call details ar
 implementation contracts; the recordings do not establish a GUI mode transition
 or an `on`/`off` option distinction.
 
-Other environment commands and the remaining conformance inventory stay pending.
+The typed implementation surface for the inventoried environment commands is
+complete. Additional reference recordings and the remaining conformance
+inventory stay pending, including GUI-state and exact timing qualifications.

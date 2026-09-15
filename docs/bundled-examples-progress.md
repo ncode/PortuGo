@@ -9,7 +9,7 @@ The evidence gate checks catalog IDs, source hashes and sizes, classifications,
 recorded acceptance, and reviewed exclusion reasons. Pending entries still fail
 the missing-evidence gate; classifications do not grant them an exemption.
 
-Sixty programs complete successfully in the reference. Forty-three match
+Sixty-one programs complete successfully in the reference. Forty-five match
 the CLI byte for byte and have permanent tests for original and formatted execution.
 The fixed-input cases cover combinations, factorials, minimum selection, means,
 prime decomposition, base conversion, vector sorting, remainders, reversed text,
@@ -24,9 +24,9 @@ claim CLI support.
 
 The display slice also verifies `CARACOL.ALG`, `Caracol2.ALG`, and `graus.alg`
 with their original screen-clear and color commands. `randomicos.alg.ALG` and
-`RELACIONAR.ALG` now have completed reference recordings, but their random output
-remains pending a domain-based replay contract. Their recorded samples do not
-establish portable exact sequences.
+`RELACIONAR.ALG` now have completed reference recordings. The former has a
+reviewed domain/framing contract; the latter now has a reviewed relation
+branch/framing contract without a portable exact sequence claim.
 
 The text slice adds `TABOADA.ALG`, which uses screen clearing, character input,
 and a counted multiplication-table loop. Its original and formatted executions
@@ -55,11 +55,11 @@ do not establish exact portable random sequences or complete branch coverage.
 
 The latest recordings add `bin2dec.alg`, `buscaseq.alg`, `buscaseqreg.alg`,
 `buscbinr.alg`, `DESTAQUES.ALG`, `SEMNOME.ALG`, `MENU_PRINCIPAL.alg`, and
-`REGISTROS.ALG`. The original `REGISTROS.ALG` exit path now has exact original
-and formatted replay coverage. Five generated-data transcripts remain pending
-a random-output comparison contract. The valid recorded paths through
-`bin2dec.alg` and `MENU_PRINCIPAL.alg` complete in the reference but are rejected
-by the CLI for errors in unexecuted code; those mismatches remain pending.
+`REGISTROS.ALG`. The original `REGISTROS.ALG` exit path and the menu exit path
+now have exact original and formatted replay coverage. No generated-data
+transcript remains pending a random-output comparison contract. The menu
+diagnostic is deferred for uncalled subprogram bodies and remains available
+when an affected subprogram is invoked.
 
 Eleven bundled files are unusable on their recorded paths. Their GUI diagnostics
 were individually reviewed; the corpus retains diagnostic evidence and labeled
@@ -79,46 +79,38 @@ manual transcriptions:
 | `EXTENSO4.ALG` | The `LITERAL` vector element type is not recognized on line 8. |
 | `ESCOLA1.alg` | After input `SAIR`, a missing `FIMSE` is reported at EOF on line 320. The preceding prompt and echoed input are retained. |
 
-The two malformed headers and the unrecognized type now have matching positioned
-parser regressions. The game example now also has a matching type rejection.
+The two malformed headers, the three unrecognized-type forms, and the invalid
+function name now have matching positioned parser regressions. The game example
+now also has a matching type rejection.
 The bundled compound-repeat spelling now also has a matching `E002` on line 23,
 before any output. Original and formatted source retain the unknown-identifier
 rejection; formatting does not make the spelling an accepted terminator.
-The other six rejection mappings remain pending. The
-reference may execute a prefix before discovering malformed syntax or an invalid
-assignment, while CLI analysis reports errors before execution and may collect
-more than one diagnostic.
+The other four rejection mappings remain pending. The reference may execute a
+prefix before discovering malformed syntax or an invalid assignment, while CLI
+analysis reports errors before execution and may collect more than one
+diagnostic.
 
-The latest bounded grammar audit keeps these two accepted recordings pending:
+The latest bounded grammar audit leaves four rejected recordings pending; no
+accepted recording remains pending. These observations do not justify adding a
+default loop bound or generally suppressing diagnostics in unexecuted
+subprograms. Acceptance validation keeps these rejected-source mismatches
+visible without treating them as required accepted behavior.
 
-| Corpus ID | Remaining qualification |
-| --- | --- |
-| `bundled-3b4c69f65b60` | Generated input precedes a counted loop with no upper bound. The CLI rejects the header; the recording alone establishes neither a portable random transcript nor the omitted-bound rule. |
-| `bundled-54f1e50d1c02` | The recorded menu exit avoids a procedure with an undeclared read destination. The CLI rejects that unused body. Selected and unselected read controls are still needed before changing diagnostic timing. |
+A replay audit after the lazy body diagnostic fix found no additional byte-exact
+match. The `randomicos.alg.ALG` transcript (source algorithm `semnome`) now has
+a reviewed domain/framing contract for its nine `randi(10)` values and fixed
+zero tail; the mixed
+integer/text, integer-sort, real-sort, record-sort, record-search,
+integer-search, raw integer-search, sorted integer-search, counting-sort,
+repeated-value, and relation transcripts now have reviewed shape-specific
+contracts. The menu exit now retains its recorded output while deferring the
+unexecuted body diagnostic until invocation.
+Successful runs still produce different generated values, while a small number
+of paths stop during analysis or execution. Local completion alone does not
+qualify their output or every branch.
 
-These observations do not justify adding a default loop bound or generally
-suppressing diagnostics in unexecuted subprograms.
-
-A replay audit of all seventeen pending accepted programs found no additional
-byte-exact matches. Thirteen finish without diagnostics but produce different
-generated values. Successful local completion alone does not qualify their
-output or every branch.
-
-The other four fail before producing output:
-
-| Case | Current CLI rejection | Pending behavior |
-| --- | --- | --- |
-| Counted-loop form | `P001`, lines 23 and 24 | Missing counted-loop upper bound, after generated input. |
-| Declaration order | `P001`, line 20 | The global `var` section follows the procedures rather than immediately following the record type. Generated output also needs qualification. |
-| Unexecuted read | `E002`, line 157 | An undeclared read destination in a procedure avoided by the recorded menu exit. |
-| Unselected break | `E006`, line 69 | An out-of-loop `interrompa` in the branch avoided by the recorded valid input. |
-
-These CLI diagnostics are mismatch observations, not replacement reference
-expectations: all seventeen recordings are accepted by the reference. The
-existing [generated-input contract](random-replay-contracts.md) covers only
-group-13 echo/output pairs. It cannot qualify the bundled programs' generated
-tables, sorting, searches or mixed input/output transcripts. Their sources and
-expected output remain unchanged, and all seventeen remain pending.
+The four rejected paths retain their recorded diagnostics and remain pending;
+the accepted menu path now completes in the CLI with the recorded exit input.
 
 The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
 recording therefore remains pending; the retained diagnostic and preceding output
@@ -131,7 +123,6 @@ moving subsequent missing-delimiter diagnostics to line 1. This corrects
 position loss without claiming to match the school's earlier parsing behavior.
 
 The catalog has sixty accepted examples, eleven unusable examples, and two
-awaiting recorded classifications: `Cronometro.alg` and `decpoutras.alg`.
-Incomplete captures are excluded. These
-records do not complete the full example sweep, evidence inventory, or
-conformance release gate.
+reviewed non-goal examples. All 73 catalog entries now have a recorded
+disposition; incomplete captures are excluded. These records do not complete
+the full example sweep, evidence inventory, or conformance release gate.

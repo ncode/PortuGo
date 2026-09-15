@@ -18,13 +18,18 @@ verified. The reference accepts vectors larger than 500 elements; the draft
 500-slot compatibility restriction has therefore been withdrawn. The recordings
 do not establish the upper storage limit in every declaration context.
 
-The [bundled example sweep](bundled-examples-progress.md) verifies 43 original
+Declaration support is form-specific: the recorded scalar constant and alias,
+named-record and scalar-field, assignment-alias, and case-range forms have
+positive coverage. Rejected variants retain positioned diagnostics, while
+unrecorded combinations remain pending under their owning tasks.
+
+The [bundled example sweep](bundled-examples-progress.md) verifies 44 original
 programs against reference output, including formatting and execution. Eleven supplied files have
 recorded reference errors. Bundled-file presence alone does not establish that
 its syntax is accepted by this release.
-Seventeen accepted bundled recordings remain pending: fifteen contain generated
-output outside the current replay contract, including two syntax mismatches,
-and two recorded input paths are blocked by diagnostics in unexecuted code.
+Six accepted bundled recordings remain pending: five contain generated
+output outside the current replay contract, including one syntax mismatch, and
+one recorded input path is blocked by diagnostics in unexecuted code.
 
 ## Program Structure
 
@@ -52,9 +57,12 @@ syntax. An unrecognized statement start is diagnosed once; parsing resumes on
 the next physical line to retain independent later errors.
 
 The `var` block may be omitted or left empty. Top-level `procedimento` and
-`funcao` declarations must appear before `inicio`. Recorded words and statements
-after `fimalgoritmo` are ignored during execution. Later physical lines are
-opaque, including unclosed strings, invalid symbols and unfinished blocks.
+`funcao` declarations must appear before `inicio`; one global `var` section may
+appear before or after those declarations, including after a `tipo` section and
+the subprograms that follow it. Repeating the global section is a `P001` error.
+Recorded words and statements after `fimalgoritmo` are ignored
+during execution. Later physical lines are opaque, including unclosed strings,
+invalid symbols and unfinished blocks.
 Formatting retains the complete decoded suffix immediately after the terminator,
 including same-line comments and whitespace. Each LF and the complete run of CR
 bytes immediately before it become one LF in a single formatting pass. CR bytes
@@ -146,8 +154,8 @@ using it in a declaration receives `P001` on that line.
 These are specific accepted spellings. The recorded type spelling `lógico` is
 rejected with `P001` on its declaration line. `início` is not an alias for
 `inicio`: the recorded program-body opener receives `L001` on that line.
-Further vocabulary and physical-line
-grammar work remains pending; see the [keyword observations](keyword-forms-progress.md).
+Further unrecorded vocabulary and physical-line grammar forms remain outside
+this qualified scope; see the [keyword observations](keyword-forms-progress.md).
 
 Recorded identifiers accept leading and internal underscores. Identifier
 matching ignores case: a declaration named `SoMa` can be assigned through `soma`
@@ -375,7 +383,9 @@ also receive positioned `R002` as a project guard.
 Power with a text or logical operand, and unary minus applied to text or a
 logical value, produce no value. In output statements this uses the same
 recorded no-value handling as `numpcarac`: the current statement emits nothing.
-Additional nonnumeric arithmetic combinations remain pending conformance work.
+The recorded scalar combinations and arithmetic domain failures are covered by
+the conformance fixtures. Combinations without a reference recording remain
+outside the qualified language surface.
 Even exact `/` results remain real: assigning `4/2` to an integer is rejected.
 Mixed `/` expressions retaining an integer also retain a real expression
 category for unary signs. Unary plus reports `P001`. Unary minus interprets the
@@ -448,7 +458,9 @@ Supported statements:
 - procedure calls
 - `retorne` inside functions
 
-`interrompa` outside a loop is a semantic error.
+`interrompa` exits the innermost active loop. When no loop is active, the
+statement is accepted and ignored; a procedure or function call cannot use a
+caller’s loop as its own active loop.
 
 The canonical repeat form is `repita ... ate <condition>`. In the recorded
 keyword-form recovery cases, `ate_que` and `até_que` remain identifier
@@ -457,7 +469,12 @@ reports `E002` at that identifier. A `fimrepita` line is retained as a
 deferred syntax-error marker: an earlier `interrompa` can exit before it, while
 reaching the marker reports `P001` at the marker line. These spellings are
 outside the canonical syntax.
-General conditionless or infinite-repeat semantics remain pending.
+The reference does not establish general conditionless or infinite-repeat
+semantics, so the implementation does not claim a general infinite form. The
+recovery path above remains available for the recorded early-break case.
+Conditional repeats charge each iteration, including empty bodies, against an
+optional execution budget and report `R006` before the next iteration when that
+budget is exhausted.
 The original bundled compound-terminator example also reports `E002` on line 23
 before producing output. Formatting retains the unknown name and its rejection.
 
@@ -504,7 +521,9 @@ applies to descending loops: `5 ate 1 passo -2` visits 5, 3, 1 and leaves -1;
 `1 ate 6 passo 2` visits 1, 3, 5 and leaves 6. These unusual exit rules follow
 the recorded program output; the reference GUI memory grid can disagree. If
 the next iteration value would overflow the signed integer domain, iteration
-stops at the terminal bound instead of wrapping.
+stops at the terminal bound instead of wrapping. `para` also accepts the
+recorded `ate faca` form without an upper bound. It executes zero iterations
+and leaves the loop variable unchanged; no default upper bound is inferred.
 
 ## Subprogram Calls
 
@@ -1322,7 +1341,10 @@ continuation; requested timer delays still wait.
 
 ## Out Of Scope
 
-File I/O and GUI primitives are not implemented in v1.
+The recorded `arquivo` input directive is part of the implementation; its
+documented platform and access limitations remain described above. General
+file I/O outside that directive, including `arqabertura`, and GUI primitives
+remain out of scope for v1.
 
 ## Validation status
 
@@ -1333,9 +1355,17 @@ Accepted program output is compared after removing only the two application
 notices and converting CRLF to the CLI's LF. Invalid programs receive positioned
 static diagnostics and are never executed: unlike the reference GUI, the CLI
 does not print preceding statements before reporting a statically known error.
+Unresolved identifiers in procedure and function bodies are retained as deferred
+diagnostics, so an uncalled body does not reject an otherwise executable path;
+the diagnostic is reported when that body is invoked.
 `run` exits 1 for lexical, parsing, semantic, or runtime failures and 0 on success.
 The active OpenSpec change tracks the remaining work; these selected observations
 are not a claim of full reference conformance.
+
+The [candidate quality evidence](quality-acceptance-2026-09-14.md) records the
+green build, lint, race, platform, fuzz, and strict specification checks for
+the current stacked candidate. Pending reference implementations and bundled
+example qualifications still prevent implementation acceptance.
 
 The [reference corpus progress](reference-corpus-progress.md) tracks the broader
 recording work. New observations confirm particular constant, named-type and
@@ -1355,6 +1385,15 @@ Reviewed exclusions still validate hashes for every retained artifact, including
 optional screenshots, transcriptions and generated-file bytes. Retained generated
 paths must be contained and unique. Excluded runs may retain these observations
 without requiring corresponding candidate output or new captures.
+Candidate generated expectations also require unique destinations, including for
+reviewed exclusions where candidate replay is not run.
+Optional candidate stdout on an exclusion must also retain a valid artifact
+path and hash when present; it need not match the excluded reference output.
+Bundled example catalog source hashes and byte counts are checked against every
+linked probe source, including reviewed non-goals.
+Retained generated files must also form a valid layout with the input fixtures.
+Reference and candidate file layouts are checked separately, so a valid retained
+reference layout does not require a matching candidate layout for an exclusion.
 Recording verifies input-only file hashes before accepting a capture.
 Manifest validation rejects repeated input fixture destinations, including
 entries with identical bytes. Distinct destinations may share a content artifact,
@@ -1364,8 +1403,32 @@ A file destination cannot also be a parent directory of another input or
 generated destination, regardless of declaration order. Input-only files must
 retain their bytes, so a generated descendant cannot replace an input file with
 a directory. Shared directories and similar filename prefixes remain valid.
-An explicitly removed input may have an output at its former parent path;
-removal declarations still cannot make an invalid initial layout valid.
+Removal declarations still cannot make an invalid initial layout valid.
+An absent path cannot contain a generated file or an input required to remain
+present. An absent parent is compatible with input removal only when every
+input beneath it is explicitly declared absent as well.
+Required files also cannot be parents of absent paths: absence checks must not
+traverse a file. An explicitly removed input may instead have absent descendants.
+Artifact and fixture path components cannot end in an ASCII period or space,
+avoiding Windows filename normalization. All validation modes enforce this
+before replay. Leading periods, interior periods and spaces, and nonbreaking
+spaces retain their literal spelling.
+Artifact and fixture paths also cannot enter repository metadata directories
+such as `.git`, including case aliases, at any depth, so validation never
+hashes private Git state as corpus evidence.
+Each probe must use consistent case for declared fixture destinations and
+shared directory components across input, generated, absent and fixture-access
+paths. Validation rejects case-only aliases that would collide on Windows,
+including aliases across file and directory roles. Exact-path input/output
+reuse and consistently spelled shared directories remain valid. This comparison
+does not rename fixture paths or alter the recorded bytes.
+Input fixtures cannot replace the replay runner's root `source.alg` file or use
+it as a directory. When state, host or clock observations are enabled, the same
+rule applies to root `state.json`, `host.json` and `clock.json`. Validation and
+replay reject case aliases too. Nested filenames and similar prefixes remain
+valid; ordinary runs may use the adapter filenames as input fixtures.
+Generated and absent expectations use the same reserved-path rule when an
+observer is enabled, so an expectation cannot alias an adapter output.
 Requirement traceability scans the whole change's specification tree, including
 files omitted from the manifest's declared source list.
 Test links require Go's test-name and declaration shape: a top-level `Test`
@@ -1377,6 +1440,10 @@ required checks; a valid declaration link alone does not establish coverage.
 The [project tooling evidence](conformance-project-evidence.md) separately traces
 provenance, recording, normalization, and validation tests. Those mappings do not
 substitute for language recordings or establish complete reference conformance.
+The conformance validator bounds candidate-build diagnostics before replay, so a
+failed build cannot exhaust its output buffer.
+Git history and quality checks also bound post-exit pipe draining, so an exited
+helper process cannot leave validation waiting indefinitely.
 
 Runtime fixture output is compared byte for byte, including decimal separators,
 whitespace, and newlines. Git preserves committed fixture bytes on every
@@ -1398,5 +1465,26 @@ Manifest diagnostic expectations use `L`, `P`, `S`, `E` or `R` followed by three
 ASCII digits, a positive line, and an omitted or zero column when the exact
 column is unconstrained. Negative expected columns are invalid. Every validation
 mode checks this metadata before replay, including for pending implementations.
+Expected source-run exit statuses are restricted to `0` for success or `1` for
+failure in every validation mode, including reviewed exclusions.
+Clock fixtures also use the execution adapter's JSON decoder during validation.
+Malformed JSON, unknown fields, trailing data, invalid read values and empty
+read schedules fail before replay. Repeated and backward readings remain valid.
+The adapter bounds clock fixture reads by the repository artifact limit before
+decoding, including when invoked directly.
+Direct adapter source and clock paths must be regular files before they are
+opened, so special files cannot block a bounded read.
+Host observation events are bounded while they are recorded, so a trace cannot
+grow beyond the adapter's 1 MiB output limit before serialization.
+Bundled-example catalogs use the same strict JSON boundary: unknown fields and
+trailing values fail validation before catalog entries are considered.
+Stdout, state and host observation artifacts use the adapter's 1 MiB output
+limit; larger retained expectations fail validation before replay.
+Capture also rejects unknown fields and trailing JSON in its staged recording
+metadata before producing evidence.
+Historical manifests loaded for downgrade checks use the same strict decoder as
+the current manifest, so malformed history cannot bypass schema validation.
+Historical manifest output is also bounded by the repository artifact limit
+before it is decoded, matching current-manifest loading.
 Final acceptance requires quality evidence for the candidate commit; the
 separate release gate also requires completed implementation and handoff tasks.

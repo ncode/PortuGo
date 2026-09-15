@@ -77,7 +77,6 @@ type checker struct {
 	scope        *scope
 	subs         map[string]symbol
 	diags        []diag.Diagnostic
-	loopDepth    int
 	returnType   runtime.Type
 	inFunction   bool
 	deferLookup  diag.Code
@@ -207,7 +206,10 @@ func (c *checker) checkSub(sub ast.Subprogram) {
 				return
 			}
 		}
+		previous := c.deferLookup
+		c.deferLookup = diag.EUndeclared
 		c.checkStmts(d.Body)
+		c.deferLookup = previous
 	case *ast.FunctionDecl:
 		c.inFunction = true
 		c.returnType = runtime.TypeFromSpec(d.Return)
@@ -223,7 +225,10 @@ func (c *checker) checkSub(sub ast.Subprogram) {
 				return
 			}
 		}
+		previous := c.deferLookup
+		c.deferLookup = diag.EUndeclared
 		c.checkStmts(d.Body)
+		c.deferLookup = previous
 	}
 }
 
@@ -373,9 +378,9 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		c.checkStmts(s.Default)
 	case *ast.WhileStmt:
 		c.requireBool(s.Cond)
-		c.withLoop(func() { c.checkStmts(s.Body) })
+		c.checkStmts(s.Body)
 	case *ast.RepeatStmt:
-		c.withLoop(func() { c.checkStmts(s.Body) })
+		c.checkStmts(s.Body)
 		if s.Cond != nil {
 			c.requireBool(s.Cond)
 		}
@@ -387,15 +392,18 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			c.error(s.Name.Pos, diag.ETypeMismatch, "loop variable must be inteiro")
 		}
 		c.requireInt(s.From)
-		c.requireInt(s.To)
+		if s.To != nil {
+			c.requireInt(s.To)
+		}
 		if s.Step != nil {
 			c.requireInt(s.Step)
 		}
-		c.withLoop(func() { c.checkStmts(s.Body) })
+		c.checkStmts(s.Body)
 	case *ast.BreakStmt:
-		if c.loopDepth == 0 {
-			c.error(s.At, diag.EBreak, "interrompa outside loop")
-		}
+		// The reference accepts an interruption outside a loop and ignores it
+		// at execution time. Keep the statement in the AST so the interpreter
+		// can apply that behavior without producing a semantic diagnostic.
+		return
 	case *ast.ReturnStmt:
 		if !c.inFunction {
 			c.error(s.At, diag.EReturn, "retorne outside function")
@@ -459,10 +467,7 @@ func (c *checker) expr(expr ast.Expr) (typ runtime.Type) {
 		sym, ok := c.lookupCallable(e.Name, funcSym)
 		if !ok {
 			if c.deferLookup != "" {
-				if c.info.deferred == nil {
-					c.info.deferred = make(map[token.Pos]diag.Diagnostic)
-				}
-				c.info.deferred[e.Name.Pos] = diag.Diagnostic{Code: c.deferLookup, Pos: e.Name.Pos, Message: fmt.Sprintf("undeclared identifier %q", e.Name.Text)}
+				c.recordDeferred(e.Name, c.deferLookup)
 				return runtime.Type{Kind: runtime.DynamicType}
 			}
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
@@ -723,7 +728,16 @@ func (c *checker) writable(expr ast.Expr) (runtime.Type, bool) {
 	switch e := expr.(type) {
 	case *ast.IdentExpr:
 		sym, ok := c.lookup(e.Name)
-		if !ok || sym.kind == funcSym || sym.kind == constSym {
+		if !ok {
+			if c.deferLookup != "" {
+				c.recordDeferred(e.Name, c.deferLookup)
+				c.info.types[expr] = runtime.Type{Kind: runtime.DynamicType}
+				return runtime.Type{Kind: runtime.DynamicType}, false
+			}
+			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
+			return runtime.Type{Kind: runtime.InvalidType}, false
+		}
+		if sym.kind == funcSym || sym.kind == constSym {
 			c.error(e.Name.Pos, diag.EUndeclared, "undeclared identifier %q", e.Name.Text)
 			return runtime.Type{Kind: runtime.InvalidType}, false
 		}
@@ -774,17 +788,18 @@ func (c *checker) requireInt(expr ast.Expr) {
 	}
 }
 
-func (c *checker) withLoop(fn func()) {
-	c.loopDepth++
-	defer func() { c.loopDepth-- }()
-	fn()
-}
-
 func (c *checker) error(pos token.Pos, code diag.Code, format string, args ...any) {
 	if c.stopped {
 		return
 	}
 	c.diags = append(c.diags, diag.Diagnostic{Code: code, Pos: pos, Message: fmt.Sprintf(format, args...)})
+}
+
+func (c *checker) recordDeferred(name token.Token, code diag.Code) {
+	if c.info.deferred == nil {
+		c.info.deferred = make(map[token.Pos]diag.Diagnostic)
+	}
+	c.info.deferred[name.Pos] = diag.Diagnostic{Code: code, Pos: name.Pos, Message: fmt.Sprintf("undeclared identifier %q", name.Text)}
 }
 
 func canon(name string) string {

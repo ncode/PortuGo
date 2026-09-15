@@ -1,10 +1,86 @@
-# Generated-input replay contracts
+# Random replay contracts
 
 Nineteen recorded `aleatorio` programs print a generated value twice: first
 the `leia` echo, then `escreval(value)`. Their values vary between executions.
 The original source, raw observation, normalized observation and hashes remain
 unchanged. Replay qualifies the documented domains without promising matching
 reference seeds, sequences, distributions or generator-consumption counts.
+
+The bundled `randomicos.alg.ALG` example (source algorithm `semnome`, probe
+`bundled-991ec2bd1566`) has a separate `randomOutput` contract. It emits ten
+newline-terminated integer lines with one leading space; the first nine values
+are `randi(10)` results in `[0, 10)`, and the final unassigned vector slot remains
+zero. Replay checks that framing and domain for the original and formatted
+source while continuing to ignore the reference generator sequence.
+
+One bundled mixed-input example has a separate `randomOutput` contract. It
+emits ten lines in five alternating pairs: a canonical integer in `[0, 101)`
+followed by five uppercase ASCII letters. Replay checks the line shape,
+integer domain and text alphabet for the original and formatted source without
+promising the generated sequence.
+
+One bundled integer-sort example has a separate `randomOutput` contract. It
+emits an unconstrained sequence of bounded integers followed by the same values
+in nondecreasing order, using the documented output spacing. Replay checks the
+input domain, sorted permutation and line framing for the original and formatted
+source without promising the generated sequence.
+
+Two bundled real-sort examples have separate `randomOutput` contracts. Each
+emits bounded real input with a fixed decimal grid followed by the same values
+in nondecreasing order, rendered in the documented numbered-row format. Replay
+checks the input grid, sorted permutation and row framing for the original and
+formatted source without promising the generated sequence.
+
+Two bundled record-sort examples have separate `randomOutput` contracts. Each
+emits ten bounded code/name records, then renders the same records sorted by
+name and by code with the documented row framing. Replay checks field domains,
+record permutation, both sort orders and framing for the original and formatted
+source without promising the generated sequence.
+
+One bundled record-search example has a separate `randomOutput` contract. It
+emits ten numbered records with codes from the `randi(100)` domain and cent
+formatted salaries produced by `int(rand * 100000) / 100`, then records the
+fixed negative search sentinel and `Nao achei.` result. Replay checks the exact
+row framing, code and salary domains, prompt/result text and final LF without
+promising the generated sequence.
+
+One bundled relation example has a separate `randomOutput` contract. It emits
+ten four-line iterations with source-fixed values from 1 through 10 and a
+positive value from the zero-retried `randi(11)` domain. Each iteration uses the
+exact Portuguese text for the applicable relation branches and ends with a
+blank line. Replay checks branch consistency, spacing, iteration framing and
+final LF without promising the generated sequence.
+
+One bundled integer-search example has a separate `randomOutput` contract. It
+emits ten numbered rows with generated integers in `[0, 100)`, then records the
+fixed `-1` search input and the resulting not-found message. Replay checks row
+numbering, field widths, integer domains and the fixed search result without
+promising the generated sequence.
+
+One bundled raw integer-search example has a separate `randomOutput` contract.
+It emits twenty canonical integers from the inclusive `0..100` generated-input
+domain, then records the fixed negative search sentinel. Replay checks the line
+count, integer domain and prompt framing without claiming search-branch behavior
+or a matching random sequence.
+
+One bundled sorted integer-search example has a separate `randomOutput` contract.
+It emits twenty numbered rows with canonical integers from `[0, 101)` in
+nondecreasing order, then records the fixed negative search sentinel. Replay
+checks row numbering, field widths, ordering, domain and prompt framing for the
+original and formatted source without promising the generated sequence.
+
+One bundled counting-sort example has a separate `randomOutput` contract. It
+emits twenty canonical generated integers from `[1, 101)`, the documented blank
+lines and chronometer messages, and twenty indexed `v2` rows containing the
+same values in nondecreasing order. Replay accepts only the documented elapsed
+time forms, checks the multiset permutation and row framing, and requires the
+final LF without promising the generated sequence.
+
+Two bundled repeated-value examples have separate `randomOutput` contracts.
+Each emits one nonzero generated integer twice inside fixed sequence framing;
+the transcript has eleven lines and no final LF. Replay checks the prompts,
+spacing, `[1, 10)` domain and repeated value without promising the generated
+sequence.
 
 The optional `implementation.expected.randomInput` contract is restricted to
 accepted group-13 recordings and requires a review reason and document link.
@@ -48,5 +124,24 @@ supported.
 `TestRecordedRandomInputDomains` checks all nineteen original and formatted
 programs using both forced generator endpoints and sixteen deterministic seeds.
 Contract tests reject wrong types, bounds, precision, echo/output disagreement,
-spacing, line counts, invalid specifications, and attempts to replace recorded evidence.
+spacing, line counts, invalid specifications, and attempts to replace recorded
+evidence. The bundled `randomicos.alg.ALG` contract is replayed in
+`TestRecordedBundledRandiOutput` for both source forms, forced endpoints, and
+sixteen deterministic seeds. The mixed-input contract is replayed by
+`TestRecordedBundledMixedRandomOutput`, and the integer-sort contract by
+`TestRecordedBundledRandomSortOutput`, with the same source and generator
+coverage. The real-sort contracts are replayed by
+`TestRecordedBundledRandomRealSortOutput`, and the record-sort contracts by
+`TestRecordedBundledRandomRecordSortOutput`; the integer-search contract is
+replayed by `TestRecordedBundledRandomSearchTableOutput`, and the repeated-value
+contracts by `TestRecordedBundledRandomRandiRepeatOutput`. The raw integer-search
+contract is covered by the bundled replay test, the sorted integer-search
+contract by its bundled replay test, and the counting-sort contract by its
+bundled replay test. The record-search contract is covered by its bundled replay
+test, and the relation contract by its bundled replay test. Bundled programs with
+generated arrays, records, sorting, branching,
+or other mixed input/output remain pending until their own observable contracts
+exist.
+The accepted menu path is covered by original and formatted replay plus focused
+tests for deferred diagnostics in uncalled and invoked subprograms.
 The ordinary subprocess replay uses the production CLI and its own generator.

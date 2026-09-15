@@ -1,0 +1,70 @@
+# Current quality evidence — 2026-09-14
+
+This report records the green GitHub Actions checks for the current stacked
+candidate, together with fresh local checks on the same source. It is a
+sanitized summary; raw workflow logs remain outside the repository.
+
+| Check | Result | Coverage |
+| --- | --- | --- |
+| Build | PASS | `go build ./...` |
+| Formatter verification | PASS | `go run ./scripts/checkfmt` |
+| Vet | PASS | `go vet ./...` |
+| Staticcheck | PASS | Pinned Staticcheck release in GitHub Actions |
+| GolangCI-Lint | PASS | Pinned GolangCI-Lint release in GitHub Actions |
+| Ordinary tests | PASS | `go test ./... -count=1` |
+| Race tests | PASS | `go test -race -count=1 ./...` |
+| Linux | PASS | Go 1.22.12 and 1.25.0 |
+| macOS | PASS | Go 1.22.12 and 1.25.0 |
+| Windows | PASS | Go 1.22.12 and 1.25.0 |
+| Lexer fuzz | PASS | 30-second campaign with two workers |
+| Parser fuzz | PASS | 30-second campaign with two workers |
+| Recorder, normalizer, replay, and traceability tests | PASS | `go test ./scripts/conformance -count=1` |
+| Evidence validation and replay | PASS | 1,679 probes; zero verified regressions |
+| Implementation acceptance | PASS | 1,679 probes; zero pending accepted implementations, mismatches, or untraced requirements; reviewed rejected-source records remain traceable |
+| Release acceptance | PASS | All OpenSpec tasks complete; full replay and required quality-result checks pass |
+| Specification validation | PASS | Strict OpenSpec validation |
+
+These checks establish quality and evidence status for the current stack. The
+four pending manifest probes are reviewed rejected-source recordings; they stay
+visible for traceability but do not represent pending accepted behavior.
+
+The implementation-acceptance runner rebuilt and replayed the exact candidate
+with the required quality report. It passed all required quality-result checks,
+stable diagnostic-position checks, accepted-example coverage, and traceability
+validation. The runner reported no pending accepted behavior, and the OpenSpec
+task list records the final handoff. Post-merge archive and release-tag work
+remains governed by `release.md`. The quality report and raw evidence remain
+outside the repository; this document records only the sanitized result.
+
+Release-mode acceptance was then rerun on the same clean candidate and passed
+with no remaining tasks, mismatches, stale links, or quality failures.
+
+## Pending implementation inventory
+
+| Owner | Count | Probe IDs |
+| --- | ---: | --- |
+| Bundled example qualification (17.3) | 4 | See the manifest for the current pending probe inventory. |
+
+The bundled entries retain their recorded sources and outputs while their
+deterministic mismatches remain pending as reviewed rejections. The two recorded nonassignable `var`
+argument guards are verified by project regressions; their reviewed reference
+application faults remain separate from language-level diagnostic claims.
+
+Fifteen bundled transcripts now have verified generated-output contracts. One
+checks ten spaced integer lines, nine bounded random values and a fixed zero
+tail; the other checks ten alternating bounded integer and uppercase text
+lines; the third checks a bounded generated input sequence and its integer
+permutation; the fourth and fifth check bounded real input sequences, sorted
+permutations, and formatted rows; the sixth and seventh check generated
+code/name records with both sort orders; the eighth checks ten numbered integer
+rows and a fixed not-found search; the ninth checks twenty bounded integers and a
+fixed negative-sentinel search exit; the tenth and eleventh check a repeated
+nonzero integer with fixed prompts and no final LF; the twelfth checks twenty
+numbered sorted integers and the same fixed negative-sentinel search exit; the
+thirteenth checks twenty bounded counting-sort inputs, documented chronometer
+framing and a sorted `v2` multiset; the fourteenth checks ten bounded
+code/salary records and a fixed not-found search result; the fifteenth checks
+ten source-fixed relation iterations with positive zero-retried values,
+branch-specific Portuguese framing, blank separators and final LF. All replay
+the original and formatted source without comparing random sequences. The
+remaining rejected paths stay pending.

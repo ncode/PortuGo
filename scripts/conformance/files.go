@@ -3,7 +3,9 @@ package main
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"errors"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path"
@@ -11,7 +13,12 @@ import (
 	"strings"
 )
 
-const maxArtifactBytes = 16 << 20
+const (
+	maxArtifactBytes    = 16 << 20
+	maxObservationBytes = 1 << 20
+)
+
+var errArtifactTooLarge = errors.New("artifact exceeds size limit")
 
 func safePath(root, name string) (string, error) {
 	if name == "." || !fs.ValidPath(name) || strings.ContainsAny(name, "\\:\x00") {
@@ -19,6 +26,12 @@ func safePath(root, name string) (string, error) {
 	}
 	current := root
 	for _, part := range strings.Split(name, "/") {
+		if strings.EqualFold(part, ".git") {
+			return "", fmt.Errorf("unsafe path %q", name)
+		}
+		if strings.HasSuffix(part, ".") || strings.HasSuffix(part, " ") {
+			return "", fmt.Errorf("unsafe path %q", name)
+		}
 		current = filepath.Join(current, part)
 		info, err := os.Lstat(current)
 		if os.IsNotExist(err) {
@@ -35,6 +48,14 @@ func safePath(root, name string) (string, error) {
 }
 
 func readFile(root, name string) ([]byte, error) {
+	b, err := readFileLimit(root, name, maxArtifactBytes)
+	if errors.Is(err, errArtifactTooLarge) {
+		return nil, fmt.Errorf("invalid file size or type: %s", name)
+	}
+	return b, err
+}
+
+func readFileLimit(root, name string, limit int) ([]byte, error) {
 	p, err := safePath(root, name)
 	if err != nil {
 		return nil, err
@@ -43,10 +64,58 @@ func readFile(root, name string) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("read %s: %w", name, err)
 	}
-	if !info.Mode().IsRegular() || info.Size() > maxArtifactBytes {
+	if !info.Mode().IsRegular() {
 		return nil, fmt.Errorf("invalid file size or type: %s", name)
 	}
-	return os.ReadFile(p)
+	if info.Size() > int64(limit) {
+		return nil, errArtifactTooLarge
+	}
+	f, err := os.Open(p)
+	if err != nil {
+		return nil, fmt.Errorf("read %s: %w", name, err)
+	}
+	b, err := readBounded(f, limit)
+	closeErr := f.Close()
+	if err != nil {
+		return nil, fmt.Errorf("read %s: %w", name, err)
+	}
+	if closeErr != nil {
+		return nil, fmt.Errorf("read %s: %w", name, closeErr)
+	}
+	return b, nil
+}
+
+func readArtifact(root string, a artifact) ([]byte, error) {
+	b, err := readArtifactLimit(root, a, maxArtifactBytes)
+	if errors.Is(err, errArtifactTooLarge) {
+		return nil, fmt.Errorf("invalid file size or type: %s", a.Path)
+	}
+	return b, err
+}
+
+func readArtifactLimit(root string, a artifact, limit int) ([]byte, error) {
+	if !validHash(a.SHA256) {
+		return nil, fmt.Errorf("invalid artifact hash: %s", a.Path)
+	}
+	b, err := readFileLimit(root, a.Path, limit)
+	if err != nil {
+		return nil, err
+	}
+	if hashBytes(b) != a.SHA256 {
+		return nil, fmt.Errorf("hash mismatch: %s", a.Path)
+	}
+	return b, nil
+}
+
+func readBounded(r io.Reader, limit int) ([]byte, error) {
+	b, err := io.ReadAll(io.LimitReader(r, int64(limit)+1))
+	if err != nil {
+		return nil, err
+	}
+	if len(b) > limit {
+		return nil, errArtifactTooLarge
+	}
+	return b, nil
 }
 
 func checkAbsent(root, name string) error {
@@ -67,18 +136,23 @@ func validHash(s string) bool {
 
 func hashBytes(b []byte) string { return fmt.Sprintf("%x", sha256.Sum256(b)) }
 
-func readArtifact(root string, a artifact) ([]byte, error) {
-	if !validHash(a.SHA256) {
-		return nil, fmt.Errorf("invalid artifact hash: %s", a.Path)
+func readReplayOutputArtifact(root string, a artifact) ([]byte, error) {
+	b, err := readArtifactLimit(root, a, maxObservationBytes)
+	if errors.Is(err, errArtifactTooLarge) {
+		return nil, fmt.Errorf("replay output exceeds size limit: %s", a.Path)
 	}
-	b, err := readFile(root, a.Path)
 	if err != nil {
 		return nil, err
 	}
-	if hashBytes(b) != a.SHA256 {
-		return nil, fmt.Errorf("hash mismatch: %s", a.Path)
-	}
 	return b, nil
+}
+
+func readReplaySourceArtifact(root string, a artifact) ([]byte, error) {
+	b, err := readArtifactLimit(root, a, 64<<10)
+	if errors.Is(err, errArtifactTooLarge) {
+		return nil, fmt.Errorf("source exceeds replay profile")
+	}
+	return b, err
 }
 
 func checkProhibited(root string, r reference) error {
@@ -86,10 +160,15 @@ func checkProhibited(root string, r reference) error {
 		if err != nil {
 			return err
 		}
-		if d.IsDir() {
-			if d.Name() == ".git" {
+		if strings.EqualFold(d.Name(), ".git") {
+			if d.IsDir() {
 				return filepath.SkipDir
 			}
+			if d.Type()&os.ModeSymlink == 0 {
+				return nil
+			}
+		}
+		if d.IsDir() {
 			return nil
 		}
 		name, err := filepath.Rel(root, p)

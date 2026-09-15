@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"path"
 	"strings"
 )
@@ -36,8 +38,14 @@ func validateExampleCatalogs(root string, inventory []inventoryItem, probes map[
 			continue
 		}
 		var examples []bundledExample
-		if err := json.Unmarshal(data, &examples); err != nil {
+		decoder := json.NewDecoder(bytes.NewReader(data))
+		decoder.DisallowUnknownFields()
+		if err := decoder.Decode(&examples); err != nil {
 			problems = append(problems, fmt.Errorf("example catalog %s: %w", name, err))
+			continue
+		}
+		if err := decoder.Decode(new(any)); err != io.EOF {
+			problems = append(problems, fmt.Errorf("example catalog %s: trailing JSON", name))
 			continue
 		}
 		seen := make(map[string]bool)
@@ -69,15 +77,15 @@ func validateExampleCatalogs(root string, inventory []inventoryItem, probes map[
 			}
 			for _, id := range item.Probes {
 				p := probes[id]
+				src, err := readArtifact(root, p.Source)
+				if err != nil || len(src) != e.Bytes || p.Source.SHA256 != e.SHA256 {
+					problems = append(problems, fmt.Errorf("example source differs from catalog: %s", e.ID))
+				}
 				if e.Disposition == "non-goal" {
 					if p.Evidence.State != "not-applicable" {
 						problems = append(problems, fmt.Errorf("example non-goal requires reviewed non-applicability: %s", e.ID))
 					}
 					continue
-				}
-				src, err := readArtifact(root, p.Source)
-				if err != nil || len(src) != e.Bytes || p.Source.SHA256 != e.SHA256 {
-					problems = append(problems, fmt.Errorf("example source differs from catalog: %s", e.ID))
 				}
 				if p.Evidence.State != "recorded" || p.Evidence.Accepted == nil || *p.Evidence.Accepted != (e.Disposition == "accepted") {
 					problems = append(problems, fmt.Errorf("example acceptance differs from recording: %s", e.ID))

@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -20,6 +21,9 @@ import (
 	"github.com/ncode/portugol-go/internal/token"
 )
 
+var errObservationSize = errors.New("observation size limit exceeded")
+var errClockExhausted = errors.New("clock fixture exhausted")
+
 // executeProbe is a deterministic subprocess adapter for state/host fixtures.
 // Ordinary output/diagnostic fixtures continue to use the actual CLI.
 func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
@@ -35,23 +39,15 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 	if flags.NArg() != 1 || *steps == 0 {
 		return 2
 	}
-	fail := func(err error) int { _, _ = fmt.Fprintln(stderr, err); return 1 }
-	f, err := os.Open(flags.Arg(0))
+	fail := func(err error) int { _, _ = fmt.Fprintln(stderr, publicError(err)); return 1 }
+	data, err := readBoundedFile(flags.Arg(0), 64<<10, fmt.Errorf("source exceeds replay profile"))
 	if err != nil {
 		return fail(err)
 	}
-	data, err := io.ReadAll(io.LimitReader(f, (64<<10)+1))
-	closeErr := f.Close()
-	if err != nil {
-		return fail(err)
-	}
-	if closeErr != nil {
-		return fail(closeErr)
-	}
-	if len(data) > 64<<10 {
-		return fail(fmt.Errorf("source exceeds replay profile"))
-	}
-	decoded, err := source.DecodeFile(flags.Arg(0), data)
+	// The execution adapter is also used directly by recording tooling. Keep
+	// diagnostic filenames stable and avoid exposing the caller's filesystem
+	// path in captured conformance output.
+	decoded, err := source.DecodeFile("source.alg", data)
 	if err != nil {
 		return fail(err)
 	}
@@ -73,33 +69,28 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 	capture := &boundedOutput{cancel: func() {}}
 	var nowMS []int64
 	if *clock != "" {
-		data, err := os.ReadFile(*clock)
+		data, err := readBoundedFile(*clock, maxArtifactBytes, fmt.Errorf("clock fixture exceeds artifact size limit"))
 		if err != nil {
 			return fail(err)
 		}
-		var fixture struct {
-			NowMS []int64 `json:"nowMS"`
+		nowMS, err = decodeClockFixture(data)
+		if err != nil {
+			return fail(err)
 		}
-		decoder := json.NewDecoder(bytes.NewReader(data))
-		decoder.DisallowUnknownFields()
-		if err := decoder.Decode(&fixture); err != nil {
-			return fail(fmt.Errorf("decode clock fixture: %w", err))
-		}
-		if err := decoder.Decode(new(any)); err != io.EOF {
-			return fail(fmt.Errorf("trailing clock fixture JSON"))
-		}
-		if len(fixture.NowMS) == 0 {
-			return fail(fmt.Errorf("clock fixture has no reads"))
-		}
-		nowMS = fixture.NowMS
 	}
 	h := &recordingHost{events: []hostEvent{}, nowMS: nowMS}
 	i := interp.New(interp.Options{Input: in, Output: capture, Host: h, Random: rand.New(rand.NewPCG(1, 2)), MaxSteps: *steps})
 	ds = i.Run(p, info)
+	if h.clockExhausted {
+		return fail(errClockExhausted)
+	}
 	if _, err := out.Write(capture.buffer.Bytes()); err != nil {
 		return fail(err)
 	}
 	diag.Render(stderr, file, ds)
+	if h.overflow {
+		return fail(errObservationSize)
+	}
 	if *state != "" {
 		values := make(map[string]any)
 		for name, value := range i.State() {
@@ -120,13 +111,57 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 	return 0
 }
 
+func readBoundedFile(name string, limit int, tooLarge error) ([]byte, error) {
+	info, err := os.Stat(name)
+	if err != nil {
+		return nil, err
+	}
+	if !info.Mode().IsRegular() {
+		return nil, errors.New("invalid file size or type")
+	}
+	f, err := os.Open(name)
+	if err != nil {
+		return nil, err
+	}
+	data, readErr := io.ReadAll(io.LimitReader(f, int64(limit)+1))
+	closeErr := f.Close()
+	if readErr != nil {
+		return nil, readErr
+	}
+	if closeErr != nil {
+		return nil, closeErr
+	}
+	if len(data) > limit {
+		return nil, tooLarge
+	}
+	return data, nil
+}
+
+func decodeClockFixture(data []byte) ([]int64, error) {
+	var fixture struct {
+		NowMS []int64 `json:"nowMS"`
+	}
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.DisallowUnknownFields()
+	if err := decoder.Decode(&fixture); err != nil {
+		return nil, fmt.Errorf("decode clock fixture: %w", err)
+	}
+	if err := decoder.Decode(new(any)); err != io.EOF {
+		return nil, fmt.Errorf("trailing clock fixture JSON")
+	}
+	if len(fixture.NowMS) == 0 {
+		return nil, fmt.Errorf("clock fixture has no reads")
+	}
+	return fixture.NowMS, nil
+}
+
 func writeObservation(path string, value any) error {
 	data, err := json.Marshal(value)
 	if err != nil {
 		return err
 	}
-	if len(data) >= 1<<20 {
-		return fmt.Errorf("observation size limit exceeded")
+	if len(data) >= maxObservationBytes {
+		return errObservationSize
 	}
 	return os.WriteFile(path, append(data, '\n'), 0600)
 }
@@ -167,44 +202,72 @@ type hostEvent struct {
 }
 
 type recordingHost struct {
-	elapsed time.Duration
-	events  []hostEvent
-	nowMS   []int64
-	nowRead int
+	elapsed        time.Duration
+	events         []hostEvent
+	eventSize      int
+	overflow       bool
+	nowMS          []int64
+	nowRead        int
+	clockExhausted bool
 }
 
 func (h *recordingHost) Delay(d time.Duration) error {
-	h.events = append(h.events, hostEvent{Operation: "delay", Duration: d})
+	if err := h.appendEvent(hostEvent{Operation: "delay", Duration: d}); err != nil {
+		return err
+	}
 	h.elapsed += d
 	return nil
 }
 func (h *recordingHost) Breakpoint(e interp.Breakpoint) error {
-	h.events = append(h.events, hostEvent{Operation: "breakpoint", Pos: e.Pos})
-	return nil
+	return h.appendEvent(hostEvent{Operation: "breakpoint", Pos: e.Pos})
 }
 func (h *recordingHost) ClearScreen() error {
-	h.events = append(h.events, hostEvent{Operation: "clearScreen"})
-	return nil
+	return h.appendEvent(hostEvent{Operation: "clearScreen"})
 }
 func (h *recordingHost) UseConsole() error {
-	h.events = append(h.events, hostEvent{Operation: "console"})
-	return nil
+	return h.appendEvent(hostEvent{Operation: "console"})
 }
 func (h *recordingHost) SetDisplay(s interp.DisplayState) error {
-	h.events = append(h.events, hostEvent{Operation: "display", Display: &s})
-	return nil
+	return h.appendEvent(hostEvent{Operation: "display", Display: &s})
 }
 func (h *recordingHost) SetEcho(enabled bool) error {
-	h.events = append(h.events, hostEvent{Operation: "echo", Echo: &enabled})
-	return nil
+	return h.appendEvent(hostEvent{Operation: "echo", Echo: &enabled})
 }
 func (h *recordingHost) Now() time.Time {
-	h.events = append(h.events, hostEvent{Operation: "now"})
+	_ = h.appendEvent(hostEvent{Operation: "now"})
 	if h.nowRead < len(h.nowMS) {
 		ms := h.nowMS[h.nowRead]
 		h.nowRead++
 		return time.Unix(0, 0).UTC().Add(time.Duration(ms) * time.Millisecond)
 	}
 	h.nowRead++
+	if len(h.nowMS) != 0 {
+		h.clockExhausted = true
+	}
 	return time.Unix(0, 0).UTC().Add(h.elapsed)
+}
+
+func (h *recordingHost) appendEvent(event hostEvent) error {
+	if h.overflow {
+		return errObservationSize
+	}
+	encoded, err := json.Marshal(event)
+	if err != nil {
+		return err
+	}
+	size := h.eventSize
+	if size == 0 {
+		size = 2
+	}
+	if len(h.events) != 0 {
+		size++
+	}
+	size += len(encoded)
+	if size >= maxObservationBytes {
+		h.overflow = true
+		return errObservationSize
+	}
+	h.events = append(h.events, event)
+	h.eventSize = size
+	return nil
 }

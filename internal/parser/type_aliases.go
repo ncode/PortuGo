@@ -29,7 +29,7 @@ func (p *parser) parseTypeBlock() []ast.TypeDecl {
 			return decls
 		}
 	}
-	if p.peek().Kind != token.VAR && len(p.diags) == 0 {
+	if p.peek().Kind != token.VAR && p.peek().Kind != token.PROCEDIMENTO && p.peek().Kind != token.FUNCAO && len(p.diags) == 0 {
 		p.error(p.peek(), "expected var after types")
 	}
 	return decls

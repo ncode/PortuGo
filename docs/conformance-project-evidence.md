@@ -14,16 +14,38 @@ corresponding conformance gates.
 
 `project.provenance` covers required provenance fields, artifact hashes, safe
 paths, and exclusion of reference binaries and archives. These are properties of
-the corpus validator. `TestManifestValidation`, `TestManifestRejectsSymlink`, and
+the corpus validator. `TestManifestValidation`, `TestManifestRejectsSymlink`,
+`TestCheckProhibitedSkipsRepositoryMetadata`,
+`TestCheckProhibitedSkipsNestedRepositoryMetadata`, and
 `TestLoadRejectsUnknownFieldsAndTrailingJSON` exercise their failure cases.
 Reference version and acquisition metadata remain mandatory for recorded probes.
+Quality-result validation also bounds Git status output before deciding whether
+the candidate checkout is clean; `TestQualityCandidateRejectsOversizedStatus`
+covers that project-only resource guard.
+History validation bounds Git revision and tree-lookup output before comparing
+manifests; `TestPreviousManifestRejectsOversizedGitMetadata` covers those
+project-only guards.
+The default candidate build also captures combined compiler output through the
+same artifact limit before emitting diagnostics; `TestCandidateBuildRejectsOversizedOutput`
+covers that project-only guard.
+History and quality checks bound post-exit Git pipe draining;
+`TestGitValidationBoundsPipeDrain` covers that process-waiting guard.
 
 ## Recording and normalization
 
-`project.recording` covers private staging, source/input integrity, capture
-metadata, required GUI attachments, and generated-file bytes. Its tests are
-`TestPrepareRecording`, `TestCaptureRecording`, `TestCaptureGeneratedBytes`, and
-`TestCaptureInitialFiles`. `project.normalization` uses `TestNormalize` to verify
+`project.recording` covers private staging, root containment, source/input
+integrity, capture metadata, recorder-owned path isolation, required GUI
+attachments, duplicate staged path declarations, and generated-file bytes. Its
+tests are `TestPrepareRecording`,
+`TestPrepareRecordingRejectsRecorderOwnedPaths`, `TestCaptureRecording`,
+`TestCaptureRejectsLooseStagedJSON`, `TestCaptureRejectsDuplicateStagedPaths`,
+`TestPrepareRecordingRejectsDuplicateStagedPaths`, `TestCaptureRejectsSymlinkedStage`,
+`TestCaptureRejectsNonPrivateStage`, `TestCaptureRejectsRecorderOwnedGeneratedPath`,
+`TestCaptureGeneratedBytes`, and `TestCaptureInitialFiles`. Existing stages
+must have no group or other permission bits on POSIX hosts; Windows staging
+privacy remains an ACL concern. Duplicate generated or absent declarations are
+rejected before capture writes evidence.
+`project.normalization` uses `TestNormalize` to verify
 that only the declared envelope and line endings change, including rejection of
 invalid envelopes and preservation of significant output bytes.
 
@@ -37,17 +59,27 @@ actual source, input, capture time, and reviewed observation artifacts.
 specifications, unique IDs, and preservation of probe, inventory, task, and
 retirement history. Its tests are `TestManifestValidation`,
 `TestManifestPreservesVerifiedHistory`, `TestManifestPreservesRetiredHistory`,
-`TestManifestRetirementIDs`, and `TestCommandHistoryValidation`.
+`TestManifestRetirementIDs`, and `TestCommandHistoryValidation`. Test links
+resolve the parameter to the imported `testing.T`, preserving default, renamed,
+and dot imports while rejecting local and foreign type lookalikes in every
+validation mode; `TestManifestTestFunctionLinks` covers those cases.
 
 `project.validation-phases` covers recorded/pending evidence, completed owner
 groups, acceptance rejection of pending implementation, reference disposition,
-and the distinction between pending mismatches and verified regressions. Its
-tests are `TestManifestValidation`, `TestManifestReferenceDisposition`,
-`TestReplay`, and `TestReplaySummary`.
+and the distinction between pending mismatches and verified regressions. Replay
+also checks that auxiliary input fixtures remain byte-identical after execution
+unless they are declared generated or absent. Its tests are
+`TestManifestValidation`, `TestManifestReferenceDisposition`, `TestReplay`,
+and `TestReplaySummary`. Replay mismatch errors expose only captured and
+expected byte lengths plus the first differing byte; output payloads are not
+serialized into validation JSON or CI diagnostics.
+CLI error boundaries also replace wrapped filesystem paths with a generic
+failure before writing stderr or replay-result JSON.
 
 These mappings verify enforcement by the tooling. They do not declare the
 inventory complete, satisfy missing checklist/audit inputs, or authorize a
-conformance release. Release acceptance and the example sweep remain pending.
+conformance release. The accepted-example sweep is complete; release
+acceptance still depends on the final handoff tasks.
 
 ## CLI contracts
 
@@ -79,6 +111,16 @@ failed run. Its tests are `TestStepBudgetAndReuse`, `TestCallAndValueLimits`,
 and `TestWriteBufferLimit`. These safeguards are project policies, not inferred
 reference limits. Recorded programs still fail acceptance if a configured
 limit prevents their required outcome.
+
+`project.assembled-safeguards` records the group-17 acceptance sweep in
+[safeguard-acceptance.md](safeguard-acceptance.md). The sweep covers source and
+encoding bounds, parser and AST depth, empty-loop budgets, recursive calls,
+flat operand chains, input failure/reuse, file cleanup, storage validation,
+host restoration, and bounded replay execution. The replay adapter's
+`TestReplayBudgetExhaustion` test confirms that a finite budget returns a
+positioned `R006`; the child-process helper makes a watchdog expiry a failing
+test. These checks exercise implementation contracts without promoting any
+reference probe or bundled example.
 
 `project.vector-allocation` records the following independent safeguard.
 One vector aggregate is limited to 1,048,576 scalar slots as a project allocation
@@ -140,8 +182,10 @@ non-applicability is recorded separately from their implementation status:
 All three implementation states are **verified** by focused project tests;
 their reference evidence remains **not-applicable**. These tests establish
 project tooling contracts, not reference language behavior. Recorded probes
-remain required for accepted syntax and original/formatted execution, and
-pending language or host behavior still blocks implementation acceptance.
+remain required for accepted syntax and original/formatted execution. Pending
+accepted language or host behavior still blocks implementation acceptance;
+reviewed rejected-source recordings remain pending without adding required
+behavior.
 
 ## Defensive vector storage
 

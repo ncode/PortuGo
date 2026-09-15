@@ -1,11 +1,108 @@
 # Reference corpus progress
 
-OpenSpec group 2 is in progress. The corpus currently inventories 73 requirements
-and 73 bundled example filenames, sizes and hashes. Twelve examples
-now have recorded classifications; the remaining example and reduced recordings
-are pending. The original compatibility
-checklist and audit referenced by the plan have not been located in the checkout.
-Their inventories must be reconciled before this group can close.
+OpenSpec group 2 is complete. The corpus inventories 229 stable records across
+73 requirements, 73 bundled example filenames, sizes and hashes, 25 checklist
+rows, 48 assumptions, 9 feature records, and one audited defect. All 73 examples now have
+recorded dispositions: 60 accepted, 11 unusable, and 2 reviewed non-goals. The
+manifest has 1,657 recorded probes and 22 reviewed non-applicable probes; 18
+implementation checks remain pending. Every one of the 33 legacy `[VERIFICAR]`
+markers has a stable inventory link. The original compatibility checklist is
+present in `especificacao-visualg-3.md`; its 25 numbered rows now have stable
+manifest links to existing probe coverage. Twenty-six evidenced source
+assumptions, the builtin catalog, and one recorded CLI correction are also
+linked. Stable feature entries now cover every documented environment-command
+family through existing probe coverage. The latest source-obligation recordings
+close six previously unrecorded questions; the reference diagnostic behavior
+for nonassignable `var` arguments and maximum recursion or stack-display behavior
+remain unclaimed, along with unqualified
+timing, GUI, and reference-sequence behavior.
+
+The evidence-recording portion of group 2 is complete: all 73 bundled examples
+have a recorded disposition, and every manifest probe is either recorded or
+reviewed not-applicable. Evidence validation reports 1,657 recorded probes, 22
+reviewed not-applicable probes, and no unrecorded entries. The 15 pending
+implementation checks remain visible under their implementation tasks.
+
+The September 14 source-obligation slice adds eight reviewed recordings from
+the Windows reference application. `const` and `dos` are reserved, a second
+main `var` section is rejected, and builtin names cannot be declared as user
+procedures. A finite recursive call at depth 32 completes, while `interrompa`
+outside a loop is accepted and execution continues. The reference application
+raised an internal fault for expression and literal arguments passed to a
+`var` parameter; those two observations are retained as labeled GUI
+transcriptions without treating the fault as a language-level diagnostic.
+The four deterministic rejection cases are now linked to local implementation
+tests; the two nonassignable `var` argument guards now have project regression
+coverage, while their reference application faults remain separate from any
+language-level diagnostic claim. Published GUI evidence contains only reviewed,
+sanitized images and text; raw operational captures remain private.
+
+The follow-up zero-value recording confirms that declared integer, real, text,
+and logical variables read before assignment produce their type zero values.
+The probe is implementation-verified and closes the corresponding legacy
+checklist and source-obligation trace.
+
+The legacy marker audit now classifies seven remaining occurrences explicitly:
+the declaration-placement question is linked to its existing accepted and
+rejected recordings, and the zero-value question is resolved by its new
+recording. The prose instructions and grammar comments at their recorded lines
+are contextual
+references (the grammar aliases point to their existing assumptions). Trace
+validation anchors all seven classifications and accepts no unclassified
+qualified marker.
+
+The environment inventory now includes stable links for random input, file
+input, and console configuration alongside the existing display, timer,
+breakpoint, echo, and chronometer entries. Every linked probe is recorded and
+implementation-verified; unresolved timing, GUI, and reference-sequence
+qualifications remain explicitly pending.
+
+Expression and control-flow inventory links now cover precedence, numeric and
+ logical evaluation, comparisons, evaluation order, case ranges, loops, and
+ interruption with 299 unique recorded and implementation-verified probes.
+Overlapping requirement links share one probe where a recording serves more
+ than one category; unqualified operand combinations remain pending.
+
+The traceability handoff is complete: a fresh audit resolves all 229 inventory
+entries, 1,679 probes, and 1,813 implementation-test links without stale or
+untraced IDs. Shared links are retained where one probe serves multiple
+requirements. Pending implementation probes keep their owning tasks and omit
+nonexistent tests, while reviewed project-only probes keep their test links.
+
+The reduced lexical and grammar batch is complete across nine requirement
+traces and 152 unique implementation-verified probes (149 recorded cases and
+three reviewed project-only contracts). The reduced type and declaration batch
+is complete across fourteen requirement traces and 273 unique recorded and
+implementation-verified probes. Broader unqualified forms remain outside this
+recorded scope; the reviewed nonassignable-argument faults remain separate from
+the language-level diagnostic contract.
+
+The group 2 documentation reconciliation is complete. The proposal, delta
+specifications, design, task ledger, `AGENTS.md`, and language reference now
+use the recorded scope: scalar constants and aliases, named records and scalar
+fields, assignment aliases, and case ranges are positive only in their
+confirmed forms. Rejected variants retain positioned negative coverage;
+unrecorded forms keep their pending owning tasks, and no dependent layout or
+example obligation is inferred. Manifest dispositions and retired-ID history
+were preserved.
+
+Fresh recorder, normalizer, replay, manifest, traceability, quality, and strict
+OpenSpec checks are captured in the [current quality report](quality-acceptance-2026-09-14.md).
+Evidence validation has zero verified regressions; its published inventory
+keeps the current 15 pending implementation probes visible; the two recorded
+nonassignable `var` guards are now covered by project regressions.
+
+The clean-checkout rehearsal in
+[the release rehearsal report](release-rehearsal-2026-09-14.md) passes the
+build, CLI and REPL smoke commands, ordinary and race suites, vet, formatter,
+incremental replay, and strict OpenSpec checks. Pending implementation and
+handoff tasks continue to block release acceptance.
+
+The clean-checkout rehearsal in
+[the release rehearsal report](release-rehearsal-2026-09-14.md) passes the
+build, CLI and REPL smoke commands, ordinary and race suites, vet, formatter,
+incremental replay, and strict OpenSpec checks. Pending implementation and
+handoff tasks continue to block release acceptance.
 
 The initial manifest contained 18 reduced probes:
 
@@ -39,11 +136,11 @@ claim of complete VisuAlg compatibility.
 
 The tooling review corrections now enforce reference acceptance/rejection,
 unique generated-file coverage, mandatory history comparison in validation and
-CI, and auxiliary input integrity during capture. These corrections do not fill
-the outstanding inventory mappings; group 2 remains in progress. All registered
-reference probes have evidence; additional required probes still need to be
-prepared and recorded. Inventory validation discovers the entire change's spec
-tree independently of the manifest's source list.
+CI, and auxiliary input integrity during capture. Those earlier corrections did
+not fill the outstanding inventory mappings; the current audit above closes
+them. All registered reference probes have evidence, and inventory validation
+discovers the entire change's spec tree independently of the manifest's source
+list.
 
 Five additional [project tooling entries](conformance-project-evidence.md) link
 existing provenance, recording, normalization, traceability, and phase-validation
@@ -333,3 +430,18 @@ recordings through original and formatted execution. Fixed host-clock schedules
 preserve each recorded elapsed message and half-second delay order across
 procedure/function calls, interrupted loops, a choice branch, and local
 declaration layouts. Other variable timing combinations remain pending.
+
+The replay adapter now rejects a run when a deterministic clock schedule is
+exhausted, preventing an incomplete fixture from silently falling back to
+elapsed time.
+
+Conformance artifact reads now enforce the repository size limit while reading,
+so files that grow after metadata inspection are rejected before their bytes are
+used.
+
+Retained replay-output artifacts now use the smaller observation limit during
+the read, avoiding a larger allocation before an oversized expectation is
+rejected.
+
+Replay source artifacts now apply the 64 KiB execution profile while reading,
+before a candidate process is staged.

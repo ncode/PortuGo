@@ -44,8 +44,11 @@ cases retain five seconds. Crashes and watchdog expiration fail the test, even
 if a child printed `PASS` before exiting. CI uploads newly discovered failing
 fuzz inputs; reduce and commit them as regression seeds after fixing the cause.
 
-Runtime fixtures compare exact bytes with `internal/golden`. Missing `.out`
-files fail. To intentionally regenerate those fixtures, run
+Runtime fixtures compare exact bytes with `internal/golden`. Successful
+programs use `.out` files; diagnostic programs may pair `.err` files containing
+one `CODE@line:column` entry per ordered diagnostic and an optional `.out` file
+for output emitted before the failure. Missing expected files fail. To
+intentionally regenerate successful fixtures, run
 `go test . -run '^TestRunFixtures$' -update`, then review the diff. Comparison
 errors report a repository-relative path, the first differing byte, lengths,
 and quoted context without normalizing whitespace or encoding.
@@ -56,11 +59,16 @@ CRLF, and Windows-1252 data, even when `core.autocrlf=true` on Windows.
 
 The oracle gate runs evidence validation, which allows recorded probes with
 pending implementations and currently fails for missing recordings and mappings.
+The execution adapter renders source diagnostics with the stable filename
+`source.alg`, so captured output never includes the caller's local filesystem
+path.
 Supply the PR base or parent branch with `--base` (replace `origin/main` for
 stacked work); history comparison is required to detect unreviewed coverage
 downgrades. CI supplies the PR base or pre-push commit and fetches its history.
 Groups 3–16 will additionally require incremental
-replay of completed groups; final acceptance rejects every pending behavior.
+replay of completed groups; final acceptance rejects every pending accepted
+behavior. Reviewed rejected-source recordings remain visible in replay output
+without being treated as required language behavior.
 Missing reference evidence is never proof of compatibility.
 
 Replayed diagnostics must carry a positive source line and column. An omitted

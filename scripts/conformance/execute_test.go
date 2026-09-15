@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/ncode/portugol-go/internal/interp"
+	"github.com/ncode/portugol-go/internal/testprocess"
 )
 
 func TestObservationAdapter(t *testing.T) {
@@ -30,6 +31,22 @@ func TestObservationAdapter(t *testing.T) {
 			t.Fatalf("observation %s: %q (%v)", filepath.Base(path), data, err)
 		}
 	}
+}
+
+func TestReplayBudgetExhaustion(t *testing.T) {
+	testprocess.Run(t, func() {
+		source := filepath.Join(t.TempDir(), "source.alg")
+		program := "algoritmo \"budget\"\ninicio\nenquanto verdadeiro faca\nfimenquanto\nfimalgoritmo\n"
+		if err := os.WriteFile(source, []byte(program), 0600); err != nil {
+			t.Fatal(err)
+		}
+		var out, stderr bytes.Buffer
+		status := executeProbe([]string{"--max-steps", "8", source}, strings.NewReader(""), &out, &stderr)
+		diagnostics := strings.ReplaceAll(stderr.String(), source, filepath.Base(source))
+		if status != 1 || out.Len() != 0 || strings.Count(diagnostics, ": R006:") != 1 {
+			t.Fatalf("status=%d output=%q diagnostics=%q; want one bounded R006", status, &out, diagnostics)
+		}
+	})
 }
 
 func TestObservationAdapterUsesClockFixture(t *testing.T) {
@@ -55,6 +72,53 @@ func TestObservationAdapterUsesClockFixture(t *testing.T) {
 	}
 }
 
+func TestObservationAdapterRejectsExhaustedClockFixture(t *testing.T) {
+	dir := t.TempDir()
+	src := filepath.Join(dir, "source.alg")
+	if err := os.WriteFile(src, []byte("algoritmo \"clock\"\ninicio\ncronometro on\ncronometro off\nfimalgoritmo"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	clock := filepath.Join(dir, "clock.json")
+	if err := os.WriteFile(clock, []byte("{\"nowMS\":[0]}\n"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	var out, stderr bytes.Buffer
+	status := executeProbe([]string{"--clock", clock, src}, strings.NewReader(""), &out, &stderr)
+	if status != 1 || out.Len() != 0 || !strings.Contains(stderr.String(), "clock fixture exhausted") {
+		t.Fatalf("status %d, streams %q %q", status, &out, &stderr)
+	}
+}
+
+func TestObservationAdapterRejectsOversizedClockFixture(t *testing.T) {
+	dir := t.TempDir()
+	src := filepath.Join(dir, "source.alg")
+	if err := os.WriteFile(src, []byte("algoritmo \"clock\"\ninicio\nfimalgoritmo"), 0600); err != nil {
+		t.Fatal(err)
+	}
+	clock := filepath.Join(dir, "clock.json")
+	data := append([]byte(`{"nowMS":[0]}`), []byte(strings.Repeat(" ", maxArtifactBytes))...)
+	if err := os.WriteFile(clock, data, 0600); err != nil {
+		t.Fatal(err)
+	}
+	var out, stderr bytes.Buffer
+	status := executeProbe([]string{"--clock", clock, src}, strings.NewReader(""), &out, &stderr)
+	if status != 1 || !strings.Contains(stderr.String(), "clock fixture exceeds artifact size limit") {
+		t.Fatalf("status %d, stderr %q", status, stderr.String())
+	}
+}
+
+func TestObservationAdapterRejectsNonRegularSource(t *testing.T) {
+	source := filepath.Join(t.TempDir(), "source.alg")
+	if err := os.Mkdir(source, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	var out, stderr bytes.Buffer
+	status := executeProbe([]string{source}, strings.NewReader(""), &out, &stderr)
+	if status != 1 || out.Len() != 0 || !strings.Contains(stderr.String(), "invalid file size or type") {
+		t.Fatalf("status %d, streams %q %q", status, &out, &stderr)
+	}
+}
+
 func TestRecordingHost(t *testing.T) {
 	h := &recordingHost{}
 	before := h.Now()
@@ -65,6 +129,26 @@ func TestRecordingHost(t *testing.T) {
 	}
 	if !h.Now().Equal(before.Add(2*time.Second)) || len(h.events) != 6 {
 		t.Fatalf("non-deterministic host: %+v", h.events)
+	}
+}
+
+func TestRecordingHostBoundsEvents(t *testing.T) {
+	h := &recordingHost{}
+	var err error
+	for range maxObservationBytes {
+		err = h.ClearScreen()
+		if err != nil {
+			break
+		}
+	}
+	if err == nil || !strings.Contains(err.Error(), "observation size limit") {
+		t.Fatalf("error = %v, want observation size limit", err)
+	}
+	if !h.overflow || h.eventSize >= maxObservationBytes {
+		t.Fatalf("event trace exceeded limit: overflow=%v size=%d", h.overflow, h.eventSize)
+	}
+	if err := h.ClearScreen(); err == nil {
+		t.Fatal("accepted event after overflow")
 	}
 }
 

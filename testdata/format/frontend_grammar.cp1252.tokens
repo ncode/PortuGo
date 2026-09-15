@@ -1,0 +1,35 @@
+algoritmo "algoritmo" @1:1
+STRING "grammar" @1:11
+COMMENT "// ação" @1:21
+NEWLINE "\n" @1:28
+var "var" @2:1
+COMMENT "// declarations" @2:5
+NEWLINE "\n" @2:20
+IDENT "_Count" @3:3
+, "," @3:9
+IDENT "Mixed" @3:11
+: ":" @3:16
+real "real" @3:18
+; ";" @3:22
+COMMENT "// action" @3:24
+NEWLINE "\n" @3:33
+inicio "inicio" @4:1
+COMMENT "// body" @4:8
+NEWLINE "\n" @4:15
+COMMENT "{ ação }" @5:3
+NEWLINE "\n" @5:11
+IDENT "Mixed" @6:3
+<- "<-" @6:9
+NUMBER "1e" @6:12
+NEWLINE "\n" @6:14
+escreval "escreval" @7:3
+( "(" @7:11
+IDENT "MIXED" @7:12
++ "+" @7:18
+NUMBER "1e" @7:20
+- "-" @7:22
+NUMBER "2" @7:23
+) ")" @7:24
+COMMENT "// ação" @7:26
+NEWLINE "\n" @7:33
+fimalgoritmo "fimalgoritmo" @8:1

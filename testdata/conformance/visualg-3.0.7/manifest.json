@@ -12,16 +12,17 @@
     "culture": "en-US",
     "product": "VisuAlg"
   },
-  "tasksPath": "openspec/changes/complete-visualg-3-0-7-conformance/tasks.md",
+  "tasksPath": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/tasks.md",
   "inventorySources": [
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md",
-    "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md"
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md",
+    "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md",
+    "especificacao-visualg-3.md"
   ],
   "inventory": [
     {
@@ -137,9 +138,803 @@
       ]
     },
     {
+      "id": "assumption.power-associativity",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#3. ^                       (assoc. à direita? [VERIFICAR] — em Pascal-like geralmente à esquerda)",
+      "probes": [
+        "power-associativity"
+      ]
+    },
+    {
+      "id": "assumption.assignment-colon-equals",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[3.0.6+]` `[VERIFICAR]` Algumas notas citam aceitação de `:=` como alternativa. Não confirmado em fonte primária.",
+      "probes": [
+        "assignment-colon-equals"
+      ]
+    },
+    {
+      "id": "assumption.accented-identifiers",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Se letras acentuadas são aceitas em identificadores (provavelmente sim no 3.x via charset ANSI/Windows-1252, mas não documentado).",
+      "probes": [
+        "accented-identifier"
+      ]
+    },
+    {
+      "id": "assumption.scientific-notation",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- **Numéricos:** inteiros (`42`, `-3`) e reais (`1.5`). Separador decimal é **ponto**, sempre, independente do locale. Sem separador de milhares. Sem notação científica documentada `[VERIFICAR]`.",
+      "probes": [
+        "numeric-exponent"
+      ]
+    },
+    {
+      "id": "assumption.string-quote-escape",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- **Caractere (string):** delimitado por aspas duplas `\"...\"`. Não há documentação de escape de aspas dentro da string `[VERIFICAR: provavelmente não existe escape; aspas internas são impossíveis]`. Aspas simples não são válidas.",
+      "probes": [
+        "backslash-string-quote",
+        "single-quoted-string"
+      ]
+    },
+    {
+      "id": "assumption.accented-comparison-case",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Se a comparação case-insensitive usa apenas A-Z ou também acentuados (provável: tabela ANSI do Delphi, não Unicode).",
+      "probes": [
+        "comparison-string-accent"
+      ]
+    },
+    {
+      "id": "assumption.brace-comment",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Algumas versões aceitam `{ ... }` estilo Pascal? Não documentado; assumir que não.",
+      "probes": [
+        "brace-comment"
+      ]
+    },
+    {
+      "id": "assumption.choice-range-ate",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Suporte a intervalos `caso 1 ate 5`. Aparece em material da comunidade, mas NÃO no help oficial 3.0.5.2. Os valores de caso podem ser expressões ou apenas literais? O help usa apenas literais.",
+      "probes": [
+        "choice-range-inside"
+      ]
+    },
+    {
+      "id": "assumption.int-truncation",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#| `int(x)` | real → inteiro | parte inteira. `[VERIFICAR]` trunca em direção a zero ou floor? Para negativos: `int(-1.8)` = -1 (trunc, comportamento Delphi Int()) ou -2 (floor, comportamento DL)? **DL usa Math.floor, o que provavelmente diverge do original Delphi (Trunc).** |",
+      "probes": [
+        "int-truncation"
+      ]
+    },
+    {
+      "id": "assumption.maiusc-accented",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#| `maiusc(c)` | caracter → caracter | uppercase. `[VERIFICAR]` se acentuados são convertidos (Delphi UpperCase só converte A-Z) |",
+      "probes": [
+        "text-upper-accents"
+      ]
+    },
+    {
+      "id": "assumption.pos-case-sensitive",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#| `pos(subc, c)` | caracter, caracter → inteiro | posição (base 1) de subc em c; 0 se ausente. Ordem dos args: agulha, palheiro. `[VERIFICAR]` se a busca é case-sensitive (provável que sim, ao contrário das comparações!) |",
+      "probes": [
+        "text-position-missing"
+      ]
+    },
+    {
+      "id": "assumption.exact-division-integer",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- Divisão `/` entre dois inteiros: `[VERIFICAR]` ponto crítico. Duas hipóteses observadas na comunidade: (a) sempre produz real; (b) produz inteiro quando a divisão é exata. Teste obrigatório: `x: inteiro; x <- 4/2` dá erro ou não?",
+      "probes": [
+        "exact-division-integer"
+      ]
+    },
+    {
+      "id": "assumption.numpcarac-real-format",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#| `numpcarac(n)` | inteiro/real → caracter | número → string. `[VERIFICAR]` formato de real |",
+      "probes": [
+        "numpcarac-reals"
+      ]
+    },
+    {
+      "id": "assumption.caracpnum-invalid",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#| `caracpnum(c)` | caracter → inteiro ou real | parse numérico (StrToInt/StrToFloat). `[VERIFICAR]` comportamento com string inválida: erro de execução? |",
+      "probes": [
+        "text-conversion-invalid"
+      ]
+    },
+    {
+      "id": "assumption.output-width-auto-space",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#`[VERIFICAR]` Interação exata do espaço automático com `:N` (o espaço entra dentro ou fora do campo? o exemplo oficial \"x 2.5\" com x:4:1 sugere que \" 2.5\" ocupa o campo de 4 e o espaço é o padding do próprio campo). Teste com valores que enchem o campo.",
+      "probes": [
+        "output-format"
+      ]
+    },
+    {
+      "id": "assumption.real-output-default",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Formato default de impressão de reais sem `:N:M` (quantas casas? remove zeros à direita? `2.0` imprime como \"2\"?). Ponto crítico para compatibilidade de saída.",
+      "probes": [
+        "output-format"
+      ]
+    },
+    {
+      "id": "assumption.input-invalid-type",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- Validação de tipo na entrada: valor digitado incompatível com o tipo da variável gera nova solicitação ou erro `[VERIFICAR]`.",
+      "probes": [
+        "input-integer-invalid"
+      ]
+    },
+    {
+      "id": "assumption.for-loop-final-value",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Valor da variável de controle após o término do laço (no Pascal clássico é indefinido; no VisuAlg, pelo modelo de execução descrito, fica `limite + passo` ou além).",
+      "probes": [
+        "for-termination"
+      ]
+    },
+    {
+      "id": "assumption.for-loop-control-mutation",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Modificar a variável de controle dentro do corpo: permitido? afeta o laço?",
+      "probes": [
+        "for-mutation"
+      ]
+    },
+    {
+      "id": "assumption.procedure-bare-return",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` `retorne` em procedimento (retorno antecipado sem valor): aceito?",
+      "probes": [
+        "procedure-bare-return"
+      ]
+    },
+    {
+      "id": "assumption.function-without-return",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Função que termina sem executar `retorne`: erro ou valor default?",
+      "probes": [
+        "function-without-return"
+      ]
+    },
+    {
+      "id": "assumption.main-valued-return",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` `retorne` dentro do programa principal: erro?",
+      "probes": [
+        "main-valued-return"
+      ]
+    },
+    {
+      "id": "assumption.reference-vector-element",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Passar elemento de vetor (`v[i]`) por referência: suportado?",
+      "probes": [
+        "reference-designator-capture-order"
+      ]
+    },
+    {
+      "id": "assumption.random-range-domain",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Para variável inteira com faixa, gera inteiro uniforme; para real, gera real? Granularidade?",
+      "probes": [
+        "random-range-reversed",
+        "random-range-fraction-precision"
+      ]
+    },
+    {
+      "id": "assumption.file-input-format",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Formato do arquivo: um valor por linha? separado por espaço?",
+      "probes": [
+        "file-input-missing"
+      ]
+    },
+    {
+      "id": "assumption.file-command-position",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- O comando `arquivo \"<nome>\"` fica na seção de configuração, antes de `var`; após `var` ou no corpo é rejeitado, e a forma exige um nome de arquivo entre aspas. Há no máximo um por programa.",
+      "probes": [
+        "file-input-missing",
+        "file-detail-after-var",
+        "file-detail-body"
+      ]
+    },
+    {
+      "id": "assumption.vector-procedure-parameter",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `[VERIFICAR]` Vetores como parâmetros: o help oficial não documenta. Comunidade reporta suporte parcial/bugado no 3.x. Testar `procedimento p(v: vetor[1..10] de inteiro)`.",
+      "probes": [
+        "vector-context-procedure-parameter"
+      ]
+    },
+    {
+      "id": "checklist.01",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#1. `x: inteiro; x <- 5/2` → erro? E `x <- 4/2`?",
+      "probes": [
+        "exact-division-integer",
+        "integer-divide-real"
+      ]
+    },
+    {
+      "id": "checklist.02",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#2. `escreva(2.0)`, `escreva(2.5)`, `escreva(1/3)` → formato default de reais.",
+      "probes": [
+        "output-format",
+        "real-output-default-width"
+      ]
+    },
+    {
+      "id": "checklist.03",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#3. `escreva(123:2)` → campo menor que o valor: trunca ou expande?",
+      "probes": [
+        "output-edges"
+      ]
+    },
+    {
+      "id": "checklist.04",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#4. `escreva(\"a\", 1, \"b\")` → posicionamento exato dos espaços automáticos.",
+      "probes": [
+        "output-edges"
+      ]
+    },
+    {
+      "id": "checklist.05",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#5. `se a > 1 e a < 5 entao` sem parênteses → compila?",
+      "probes": [
+        "comparison-and-condition",
+        "logical-precedence-relation-and"
+      ]
+    },
+    {
+      "id": "checklist.06",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#6. `2^3^2` → 64 ou 512?",
+      "probes": [
+        "power-associativity"
+      ]
+    },
+    {
+      "id": "checklist.07",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#7. `nao a = b` → parse.",
+      "probes": [
+        "comparison-negation"
+      ]
+    },
+    {
+      "id": "checklist.08",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#8. `-7 mod 3`, `-7 \\ 3` → sinais.",
+      "probes": [
+        "integer-divide-signs",
+        "integer-modulo-signs"
+      ]
+    },
+    {
+      "id": "checklist.09",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#9. `7.5 mod 2`, `7.5 \\ 2` → erro ou trunca?",
+      "probes": [
+        "integer-divide-real",
+        "integer-modulo-real"
+      ]
+    },
+    {
+      "id": "checklist.10",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#10. `int(-1.8)` → -1 ou -2?",
+      "probes": [
+        "int-truncation"
+      ]
+    },
+    {
+      "id": "checklist.11",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#11. `pos(\"a\", \"BANANA\")` → 0 (case-sensitive) ou 2 (insensitive)?",
+      "probes": [
+        "text-position-first"
+      ]
+    },
+    {
+      "id": "checklist.12",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#12. `maiusc(\"ção\")` → \"ÇÃO\" ou \"çãO\"...?",
+      "probes": [
+        "text-upper-accents"
+      ]
+    },
+    {
+      "id": "checklist.13",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#13. `escolha x` com `caso 1 ate 5` → aceita?",
+      "probes": [
+        "case-range"
+      ]
+    },
+    {
+      "id": "checklist.14",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#14. Variável não inicializada em expressão → erro ou zero?",
+      "probes": [
+        "declaration-semicolon-var",
+        "zero-value"
+      ]
+    },
+    {
+      "id": "checklist.15",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#15. Valor da variável de controle após `fimpara`.",
+      "probes": [
+        "for-termination"
+      ]
+    },
+    {
+      "id": "checklist.16",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#16. Modificar variável de controle dentro do `para`.",
+      "probes": [
+        "for-mutation"
+      ]
+    },
+    {
+      "id": "checklist.17",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#17. Função sem `retorne` executado.",
+      "probes": [
+        "function-without-return"
+      ]
+    },
+    {
+      "id": "checklist.18",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#18. `interrompa` fora de laço.",
+      "probes": [
+        "for-break-mutation"
+      ]
+    },
+    {
+      "id": "checklist.19",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#19. Vetor como parâmetro de subprograma.",
+      "probes": [
+        "vector-context-procedure-parameter",
+        "constant-bound-vector-parameter"
+      ]
+    },
+    {
+      "id": "checklist.20",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#20. `v[i]` como argumento de parâmetro `var`.",
+      "probes": [
+        "reference-designator-capture-order"
+      ]
+    },
+    {
+      "id": "checklist.21",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#21. Leitura com `arquivo`: formato do arquivo gerado.",
+      "probes": [
+        "file-detail-space-separated"
+      ]
+    },
+    {
+      "id": "checklist.22",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#22. String com 31+ caracteres no identificador → erro em que fase?",
+      "probes": [
+        "mixed-case-identifier"
+      ]
+    },
+    {
+      "id": "checklist.23",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#23. Literais: `1.` , `.5`, `1e3` → aceitos?",
+      "probes": [
+        "leading-decimal-point",
+        "trailing-decimal-point",
+        "numeric-source-operator-precedence"
+      ]
+    },
+    {
+      "id": "checklist.24",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#24. `escreval(verdadeiro e falso ou verdadeiro)` → precedência e/ou.",
+      "probes": [
+        "logical-precedence-and-or"
+      ]
+    },
+    {
+      "id": "checklist.25",
+      "kind": "checklist",
+      "link": "especificacao-visualg-3.md#25. Comparação `\"a\" < \"B\"` → ordem com case-insensitivity.",
+      "probes": [
+        "comparison-string-order"
+      ]
+    },
+    {
+      "id": "feature.builtin-catalog",
+      "kind": "feature",
+      "link": "testdata/conformance/visualg-3.0.7/builtin-inventory.json",
+      "probes": [
+        "catalog-documented-functions"
+      ]
+    },
+    {
+      "id": "feature.environment-echo",
+      "kind": "feature",
+      "link": "docs/environment-controls-progress.md#Echo and chronometer recordings",
+      "probes": [
+        "echo-command-bare",
+        "random-input-echo-console",
+        "random-input-echo-random",
+        "echo-command-on",
+        "echo-command-off",
+        "echo-command-number",
+        "echo-command-unknown",
+        "echo-command-quoted",
+        "echo-command-tail",
+        "echo-command-expression",
+        "echo-command-argument",
+        "echo-command-declaration",
+        "file-detail-echo-off"
+      ]
+    },
+    {
+      "id": "feature.environment-chronometer",
+      "kind": "feature",
+      "link": "especificacao-visualg-3.md#8.7 `cronometro on | off`",
+      "probes": [
+        "chronometer-on-off",
+        "chronometer-off",
+        "chronometer-bare",
+        "chronometer-repeat-start",
+        "chronometer-repeat-stop",
+        "chronometer-unknown",
+        "chronometer-number",
+        "chronometer-quoted",
+        "chronometer-expression",
+        "chronometer-tail",
+        "environment-chronometer-milliseconds",
+        "environment-chronometer-seconds",
+        "environment-chronometer-fractional-seconds",
+        "environment-chronometer-minute"
+      ]
+    },
+    {
+      "id": "feature.environment-timer",
+      "kind": "feature",
+      "link": "especificacao-visualg-3.md#8.3 `timer`",
+      "probes": [
+        "execution-timer-zero",
+        "execution-timer-negative",
+        "execution-timer-fraction",
+        "execution-timer-on-off",
+        "execution-timer-bare",
+        "execution-timer-unknown",
+        "execution-timer-quoted",
+        "execution-timer-expression",
+        "environment-timer-straight",
+        "environment-timer-for",
+        "environment-timer-while",
+        "environment-timer-real",
+        "environment-timer-text",
+        "environment-timer-logical",
+        "environment-timer-empty-value",
+        "environment-timer-number-expression",
+        "environment-timer-text-reset",
+        "environment-timer-logical-reset",
+        "environment-timer-empty-reset",
+        "environment-timer-negative-reset",
+        "environment-timer-fraction-reset",
+        "environment-timer-conditional",
+        "environment-timer-procedure",
+        "environment-timer-repeat",
+        "environment-timer-call-expression",
+        "environment-timer-parenthesized",
+        "environment-timer-clock-start",
+        "environment-timer-clock-stop",
+        "environment-timed-procedure",
+        "environment-timed-procedure-local",
+        "environment-timed-function",
+        "environment-timed-for-break",
+        "environment-timed-while-break",
+        "environment-timed-switch",
+        "environment-timed-one-local",
+        "environment-timed-separate-locals",
+        "environment-timer-upper-bound",
+        "environment-timer-real-delay",
+        "environment-timer-large-delay",
+        "environment-timer-enormous-delay",
+        "environment-timer-fraction-loop",
+        "environment-timer-rounding-zero",
+        "environment-timer-rounding-one",
+        "environment-timer-rounding-one-half",
+        "environment-timer-rounding-two-half"
+      ]
+    },
+    {
+      "id": "feature.environment-breakpoint-controls",
+      "kind": "feature",
+      "link": "docs/execution-controls-progress.md#Timer and breakpoint recordings",
+      "probes": [
+        "execution-pause-bare",
+        "execution-pause-call",
+        "execution-pause-tail",
+        "execution-debug-false",
+        "execution-debug-true",
+        "execution-debug-missing",
+        "execution-debug-number",
+        "environment-debug-text",
+        "environment-debug-expression-true",
+        "environment-debug-expression-false",
+        "environment-debug-tail",
+        "environment-debug-call-expression",
+        "environment-pause-call-expression"
+      ]
+    },
+    {
+      "id": "feature.environment-display-controls",
+      "kind": "feature",
+      "link": "docs/display-commands-progress.md#Display command recordings",
+      "probes": [
+        "display-clear-value",
+        "display-clear-bare",
+        "display-clear-call",
+        "display-clear-argument",
+        "display-clear-variable",
+        "display-color-foreground",
+        "display-color-background",
+        "display-color-variable",
+        "display-color-unknown",
+        "display-color-direction",
+        "display-color-missing",
+        "display-color-numeric",
+        "display-color-extra",
+        "display-color-bare",
+        "display-clear-ignored-tail",
+        "display-clear-side-effect",
+        "display-clear-same-line",
+        "display-clear-value-items",
+        "display-color-order",
+        "display-color-extra-ignored",
+        "display-color-extra-unknown",
+        "display-color-no-close",
+        "display-color-no-open",
+        "display-color-empty",
+        "display-color-bad-second",
+        "display-color-bad-first",
+        "display-color-no-value-first",
+        "display-color-no-value-second",
+        "display-color-expression",
+        "display-color-variable-name",
+        "display-palette-0",
+        "display-palette-1",
+        "display-palette-2",
+        "display-palette-3",
+        "display-palette-4",
+        "display-palette-5",
+        "display-palette-6",
+        "display-palette-7",
+        "display-palette-8",
+        "display-palette-9",
+        "display-palette-10",
+        "display-palette-11",
+        "display-palette-12",
+        "display-palette-13",
+        "display-palette-14",
+        "display-palette-15",
+        "display-palette-16",
+        "display-palette-17",
+        "display-palette-18",
+        "display-palette-background-0",
+        "display-palette-background-1",
+        "display-palette-background-2",
+        "display-palette-background-3",
+        "display-context-purple",
+        "display-context-background",
+        "display-context-background-case",
+        "display-context-background-spaces",
+        "display-context-unknown-color-after-yellow",
+        "display-context-unknown-color-background",
+        "display-context-clear-value-effects",
+        "display-context-color-bare-value",
+        "display-context-color-value-unknown",
+        "display-context-clear-value-unknown",
+        "display-context-color-missing-target",
+        "display-context-color-args-next-line",
+        "display-context-color-second-next-line",
+        "display-context-color-unknown-invalid"
+      ]
+    },
+    {
+      "id": "feature.environment-random-input",
+      "kind": "feature",
+      "link": "docs/random-input-progress.md#Random input recordings",
+      "probes": [
+        "randi-empty",
+        "random-context-extra-argument",
+        "randi-unit",
+        "randi-zero",
+        "randi-fraction",
+        "randi-bare",
+        "randi-extra",
+        "randi-string",
+        "randi-logical",
+        "randi-domain",
+        "randi-negative-domain",
+        "randi-wrap-zero",
+        "randi-wrap-unit",
+        "randi-signed-boundary",
+        "randi-vector",
+        "randi-no-value",
+        "randi-evaluation",
+        "random-input-fixed-integer",
+        "random-input-fixed-negative",
+        "random-input-fixed-real",
+        "random-input-console-transition",
+        "random-input-logical-console",
+        "random-input-echo-console",
+        "random-input-echo-random",
+        "random-input-legacy-expression",
+        "random-range-zero-bound",
+        "random-range-fraction-fixed",
+        "random-range-fraction-precision",
+        "random-range-integer-precision",
+        "random-range-negative-precision",
+        "random-range-fractional-precision",
+        "random-range-large-precision",
+        "random-range-expression-bound",
+        "random-boundary-full-signed32",
+        "random-boundary-full-signed32-reversed",
+        "random-range-variable-bound",
+        "random-range-missing-bound",
+        "random-range-parentheses",
+        "random-range-on-reset",
+        "random-range-reversed",
+        "random-range-default-real",
+        "random-range-text",
+        "random-context-call-zero",
+        "random-context-call-bound",
+        "random-context-call-range",
+        "random-context-call-argument-effect",
+        "random-context-declaration",
+        "random-context-enable-tail",
+        "random-context-disable-tail",
+        "random-context-bare-expression",
+        "random-context-unknown-mode",
+        "random-value-real-grid",
+        "random-value-real-zero",
+        "random-value-real-default",
+        "random-value-single-bound",
+        "random-value-single-negative",
+        "random-value-on-integer",
+        "random-value-on-real",
+        "random-value-fraction-origin",
+        "random-value-fraction-integer",
+        "random-value-precision-six",
+        "random-value-precision-seven",
+        "random-value-precision-large",
+        "random-value-expression-fixed",
+        "random-state-text-bound",
+        "random-state-logical-bound",
+        "random-state-no-value-bound",
+        "random-state-text-precision",
+        "random-state-precision-reset",
+        "random-state-subprogram",
+        "random-state-argument-order",
+        "random-state-grouped-bound",
+        "random-quoted-on",
+        "random-quoted-off"
+      ]
+    },
+    {
+      "id": "feature.environment-file-input",
+      "kind": "feature",
+      "link": "docs/file-input-progress.md#File-input recordings",
+      "probes": [
+        "file-detail-typed-existing",
+        "file-input-existing",
+        "file-input-missing",
+        "file-input-exhausted",
+        "file-input-empty",
+        "file-detail-no-newline",
+        "file-detail-lf-lines",
+        "file-detail-cr-lines",
+        "file-detail-space-separated",
+        "file-detail-blank-first",
+        "file-detail-empty-one-response",
+        "file-detail-typed-missing",
+        "file-detail-no-read-missing",
+        "file-detail-bare",
+        "file-detail-numeric",
+        "file-detail-unquoted",
+        "file-detail-parenthesized",
+        "file-detail-tail",
+        "file-detail-after-var",
+        "file-detail-body",
+        "file-detail-duplicate",
+        "file-detail-nested-existing",
+        "file-detail-echo-off",
+        "file-detail-random-existing",
+        "file-detail-random-missing",
+        "file-followup-local",
+        "file-followup-missing-parent",
+        "file-followup-concat-path",
+        "file-followup-empty-text",
+        "file-followup-record-long-text",
+        "file-followup-record-malformed",
+        "file-followup-backslash",
+        "file-atomic-positioned-failure",
+        "file-atomic-missing-parent-read",
+        "file-atomic-replaced-recording",
+        "file-atomic-repeated-recording",
+        "file-atomic-buffer-127",
+        "file-atomic-buffer-128",
+        "file-atomic-buffer-129",
+        "file-atomic-buffer-256",
+        "file-atomic-buffer-126",
+        "file-atomic-buffer-254",
+        "file-access-readable",
+        "file-access-empty",
+        "file-access-denied-no-read",
+        "file-access-denied-console",
+        "file-access-denied-random",
+        "file-access-locked-no-read",
+        "file-access-locked-console",
+        "file-access-locked-random",
+        "file-random-logical-source"
+      ]
+    },
+    {
+      "id": "feature.environment-console",
+      "kind": "feature",
+      "link": "docs/console-directives-progress.md#Console configuration recordings",
+      "probes": [
+        "console-header",
+        "console-body",
+        "console-switch",
+        "console-repeated",
+        "console-after-var",
+        "console-control",
+        "console-off",
+        "console-unknown",
+        "console-number",
+        "console-text",
+        "console-tail",
+        "console-unclosed",
+        "console-body-prefix",
+        "console-expression",
+        "console-local",
+        "console-case"
+      ]
+    },
+    {
+      "id": "defect.cli-error-status",
+      "kind": "defect",
+      "link": "docs/windows-lab-validation-2026-09-07.md#Recorded corrections",
+      "probes": [
+        "project.cli-contracts"
+      ]
+    },
+    {
       "id": "requirement.reference-release-authority",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference release authority",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference release authority",
       "probes": [
         "power-associativity",
         "exp-two"
@@ -148,7 +943,7 @@
     {
       "id": "requirement.reference-provenance-manifest",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference provenance manifest",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Reference provenance manifest",
       "probes": [
         "project.provenance"
       ]
@@ -156,7 +951,7 @@
     {
       "id": "requirement.interactive-oracle-recording",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Interactive oracle recording",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Interactive oracle recording",
       "probes": [
         "project.recording"
       ]
@@ -164,7 +959,7 @@
     {
       "id": "requirement.complete-oracle-evidence",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Complete oracle evidence",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Complete oracle evidence",
       "probes": [
         "project.recording",
         "project.normalization"
@@ -173,7 +968,7 @@
     {
       "id": "requirement.requirement-traceability",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Requirement traceability",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Requirement traceability",
       "probes": [
         "project.traceability"
       ]
@@ -181,7 +976,7 @@
     {
       "id": "requirement.progressive-conformance-gates",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Progressive conformance gates",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Progressive conformance gates",
       "probes": [
         "project.validation-phases"
       ]
@@ -189,7 +984,7 @@
     {
       "id": "requirement.recorded-feature-dispositions",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Recorded feature dispositions",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Recorded feature dispositions",
       "probes": [
         "constant-declaration",
         "constant-var",
@@ -200,7 +995,7 @@
     {
       "id": "requirement.bundled-example-acceptance",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Bundled example acceptance",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Bundled example acceptance",
       "probes": [
         "bundled-4fdb89658892",
         "bundled-6c81c979714d",
@@ -278,7 +1073,7 @@
     {
       "id": "requirement.conformance-release-gate",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Conformance release gate",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/conformance/visualg-3-0-7/spec.md#Requirement: Conformance release gate",
       "probes": [
         "project.validation-phases"
       ]
@@ -286,7 +1081,7 @@
     {
       "id": "requirement.operator-vocabulary-and-precedence",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Operator vocabulary and precedence",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Operator vocabulary and precedence",
       "probes": [
         "power-associativity",
         "unary-power",
@@ -325,7 +1120,7 @@
     {
       "id": "requirement.numeric-evaluation-and-coercion",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Numeric evaluation and coercion",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Numeric evaluation and coercion",
       "probes": [
         "exact-division-integer",
         "integer-overflow-add",
@@ -395,7 +1190,7 @@
     {
       "id": "requirement.logical-evaluation",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Logical evaluation",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Logical evaluation",
       "probes": [
         "logical-evaluation"
       ]
@@ -403,7 +1198,7 @@
     {
       "id": "requirement.boolean-numeric-and-string-comparison",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Boolean, numeric, and string comparison",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Boolean, numeric, and string comparison",
       "probes": [
         "comparison-negative-category",
         "comparison-numeric-mixed",
@@ -505,7 +1300,7 @@
     {
       "id": "requirement.deterministic-expression-order",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Deterministic expression order",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Deterministic expression order",
       "probes": [
         "text-order-no-value-bound",
         "text-order-arguments",
@@ -521,7 +1316,7 @@
     {
       "id": "requirement.choice-matching-and-ranges",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Choice matching and ranges",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Choice matching and ranges",
       "probes": [
         "case-range",
         "return-switch-continues",
@@ -617,7 +1412,7 @@
     {
       "id": "requirement.loop-semantics",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Loop semantics",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Loop semantics",
       "probes": [
         "for-mutation",
         "for-edges",
@@ -628,7 +1423,7 @@
     {
       "id": "requirement.interruption-and-return-propagation",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Interruption and return propagation",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: Interruption and return propagation",
       "probes": [
         "return-finite-for",
         "return-finite-while",
@@ -640,7 +1435,7 @@
     {
       "id": "requirement.i-o-statement-validation",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: I/O statement validation",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/expressions-control-flow/spec.md#Requirement: I/O statement validation",
       "probes": [
         "string-size-format-values"
       ]
@@ -648,7 +1443,7 @@
     {
       "id": "requirement.source-decoding",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Source decoding",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Source decoding",
       "probes": [
         "text-context-copy-accents",
         "text-upper-accents"
@@ -657,7 +1452,7 @@
     {
       "id": "requirement.physical-newline-tokens",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Physical newline tokens",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Physical newline tokens",
       "probes": [
         "physical-newline-lf",
         "physical-newline-crlf",
@@ -668,7 +1463,7 @@
     {
       "id": "requirement.strict-identifiers-and-case-handling",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Strict identifiers and case handling",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Strict identifiers and case handling",
       "probes": [
         "leading-underscore",
         "internal-underscore",
@@ -679,7 +1474,7 @@
     {
       "id": "requirement.complete-keyword-vocabulary",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Complete keyword vocabulary",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Complete keyword vocabulary",
       "probes": [
         "accented-keywords",
         "string-type-caracter",
@@ -707,7 +1502,7 @@
     {
       "id": "requirement.comments-and-literals",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Comments and literals",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Comments and literals",
       "probes": [
         "slash-comment",
         "brace-comment",
@@ -778,7 +1573,7 @@
     {
       "id": "requirement.complete-program-grammar",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Complete program grammar",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Complete program grammar",
       "probes": [
         "header-same-line",
         "header-name-next-line",
@@ -838,7 +1633,7 @@
     {
       "id": "requirement.ordered-and-positioned-syntax",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Ordered and positioned syntax",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Ordered and positioned syntax",
       "probes": [
         "project.positioned-syntax"
       ]
@@ -846,7 +1641,7 @@
     {
       "id": "requirement.recoverable-parsing",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Recoverable parsing",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Recoverable parsing",
       "probes": [
         "project.frontend-recovery-limits"
       ]
@@ -854,7 +1649,7 @@
     {
       "id": "requirement.canonical-source-printing",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Canonical source printing",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Canonical source printing",
       "probes": [
         "project.canonical-printing"
       ]
@@ -862,7 +1657,7 @@
     {
       "id": "requirement.subprogram-declaration-forms",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Subprogram declaration forms",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Subprogram declaration forms",
       "probes": [
         "procedure-no-parentheses",
         "function-no-parentheses",
@@ -876,7 +1671,7 @@
     {
       "id": "requirement.call-syntax-and-context",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Call syntax and context",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Call syntax and context",
       "probes": [
         "procedure-bare-call",
         "function-bare-call",
@@ -926,7 +1721,7 @@
     {
       "id": "requirement.value-parameters",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Value parameters",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Value parameters",
       "probes": [
         "value-widening-format",
         "value-argument-evaluation-order",
@@ -945,7 +1740,7 @@
     {
       "id": "requirement.reference-parameters",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Reference parameters",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Reference parameters",
       "probes": [
         "reference-integer-to-real",
         "reference-integer-as-real-read",
@@ -973,7 +1768,7 @@
     {
       "id": "requirement.lexical-scope-and-bindings",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Lexical scope and bindings",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Lexical scope and bindings",
       "probes": [
         "ordinary-local-shadowing",
         "local-variable-shadows-function",
@@ -983,7 +1778,7 @@
     {
       "id": "requirement.declaration-visibility-and-recursion",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Declaration visibility and recursion",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Declaration visibility and recursion",
       "probes": [
         "mutual-function-recursion"
       ]
@@ -991,7 +1786,7 @@
     {
       "id": "requirement.function-return-behavior",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Function return behavior",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Function return behavior",
       "probes": [
         "return-default-real",
         "function-without-return",
@@ -1041,7 +1836,7 @@
     {
       "id": "requirement.call-frame-safety",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Call-frame safety",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/subprograms/spec.md#Requirement: Call-frame safety",
       "probes": [
         "recursive-local-call-frame",
         "recursive-local-accumulation"
@@ -1050,7 +1845,7 @@
     {
       "id": "requirement.declaration-feature-scope",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Declaration feature scope",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Declaration feature scope",
       "probes": [
         "record-copy",
         "constant-form-scalar-types",
@@ -1064,7 +1859,7 @@
     {
       "id": "requirement.ordered-declaration-sections",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Ordered declaration sections",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Ordered declaration sections",
       "probes": [
         "constant-form-empty",
         "constant-form-after-variable",
@@ -1074,7 +1869,7 @@
     {
       "id": "requirement.constants-and-declaration-expressions",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Constants and declaration expressions",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Constants and declaration expressions",
       "probes": [
         "constant-declaration",
         "constant-var",
@@ -1113,7 +1908,7 @@
     {
       "id": "requirement.named-types-and-aliases",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Named types and aliases",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Named types and aliases",
       "probes": [
         "named-type",
         "type-alias-primitives",
@@ -1159,7 +1954,7 @@
     {
       "id": "requirement.record-types-and-fields",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Record types and fields",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Record types and fields",
       "probes": [
         "record-field",
         "record-layout-primitives",
@@ -1205,7 +2000,7 @@
     {
       "id": "requirement.vector-types-and-declared-bounds",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Vector types and declared bounds",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Vector types and declared bounds",
       "probes": [
         "constant-vector-bound",
         "vector-non-one-bound",
@@ -1248,7 +2043,7 @@
     {
       "id": "requirement.five-hundred-slot-storage-limit",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Reference-confirmed storage limits",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Reference-confirmed storage limits",
       "probes": [
         "vector-500-slots",
         "vector-501-slots",
@@ -1259,7 +2054,7 @@
     {
       "id": "requirement.zero-initialization",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Zero initialization",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Zero initialization",
       "probes": [
         "vector-zero-elements"
       ]
@@ -1267,7 +2062,7 @@
     {
       "id": "requirement.assignment-compatibility-and-coercion",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Assignment compatibility and coercion",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Assignment compatibility and coercion",
       "probes": [
         "assignment-equals",
         "assignment-colon-equals"
@@ -1276,7 +2071,7 @@
     {
       "id": "requirement.aggregate-copy-and-reference-semantics",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Aggregate copy and reference semantics",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Aggregate copy and reference semantics",
       "probes": [
         "record-copy",
         "vector-copy",
@@ -1291,18 +2086,17 @@
     {
       "id": "requirement.defensive-storage-access",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Defensive storage access",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Defensive storage access",
       "probes": [
         "project.vector-storage",
         "vector-second-index-oob",
-        "vector-negative-index",
-        "project.vector-storage"
+        "vector-negative-index"
       ]
     },
     {
       "id": "requirement.console-input-consumption",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Console input consumption",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Console input consumption",
       "probes": [
         "input-single-integer",
         "input-two-integers",
@@ -1312,7 +2106,7 @@
     {
       "id": "requirement.input-value-conversion",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Input value conversion",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Input value conversion",
       "probes": [
         "input-string-empty",
         "input-string-spaces",
@@ -1366,7 +2160,7 @@
     {
       "id": "requirement.exact-output-rendering",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Exact output rendering",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Exact output rendering",
       "probes": [
         "output-format",
         "output-edges",
@@ -1394,7 +2188,7 @@
     {
       "id": "requirement.width-and-precision-formatting",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Width and precision formatting",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Width and precision formatting",
       "probes": [
         "output-rounding",
         "output-rounding-valid",
@@ -1436,7 +2230,7 @@
     {
       "id": "requirement.cp1252-file-and-stream-behavior",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: CP1252 file and stream behavior",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: CP1252 file and stream behavior",
       "probes": [
         "file-detail-typed-existing",
         "file-detail-typed-missing",
@@ -1454,7 +2248,7 @@
     {
       "id": "requirement.arquivo-input-lifecycle",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Arquivo input lifecycle",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Arquivo input lifecycle",
       "probes": [
         "file-detail-typed-existing",
         "file-input-existing",
@@ -1503,7 +2297,7 @@
     {
       "id": "requirement.random-input-mode",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Random-input mode",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Random-input mode",
       "probes": [
         "random-context-extra-argument",
         "random-input-fixed-integer",
@@ -1566,14 +2360,13 @@
     {
       "id": "requirement.echo-timer-and-chronometer-commands",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Echo, timer, and chronometer commands",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Echo, timer, and chronometer commands",
       "probes": [
         "echo-command-bare",
         "random-input-echo-console",
         "random-input-echo-random",
         "echo-command-on",
         "echo-command-off",
-        "echo-command-bare",
         "echo-command-number",
         "echo-command-unknown",
         "echo-command-quoted",
@@ -1645,7 +2438,7 @@
     {
       "id": "requirement.host-backed-ui-commands",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Host-backed UI commands",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Host-backed UI commands",
       "probes": [
         "display-clear-value",
         "display-clear-bare",
@@ -1748,7 +2541,7 @@
     {
       "id": "requirement.environment-failure-diagnostics",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Environment failure diagnostics",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/io-environment/spec.md#Requirement: Environment failure diagnostics",
       "probes": [
         "project.display-host-failures"
       ]
@@ -1756,7 +2549,7 @@
     {
       "id": "requirement.authoritative-built-in-catalog",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Authoritative built-in catalog",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Authoritative built-in catalog",
       "probes": [
         "catalog-div-candidate",
         "catalog-documented-functions",
@@ -1766,7 +2559,7 @@
     {
       "id": "requirement.numeric-built-ins",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Numeric built-ins",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Numeric built-ins",
       "probes": [
         "exp-one",
         "exp-two",
@@ -1933,7 +2726,7 @@
     {
       "id": "requirement.text-built-ins",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Text built-ins",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Text built-ins",
       "probes": [
         "text-context-copy-accents",
         "text-upper-ascii",
@@ -2020,7 +2813,7 @@
     {
       "id": "requirement.character-code-built-ins",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Character-code built-ins",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Character-code built-ins",
       "probes": [
         "code-ascii-empty",
         "code-ascii-first",
@@ -2053,7 +2846,7 @@
     {
       "id": "requirement.numeric-and-character-conversion-built-ins",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Numeric and character conversion built-ins",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Numeric and character conversion built-ins",
       "probes": [
         "numpcarac-string-argument",
         "numpcarac-integers",
@@ -2223,7 +3016,7 @@
     {
       "id": "requirement.random-built-ins",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Random built-ins",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Random built-ins",
       "probes": [
         "randi-empty",
         "randi-unit",
@@ -2270,7 +3063,7 @@
     {
       "id": "requirement.built-in-failure-contract",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Built-in failure contract",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/runtime/standard-library/spec.md#Requirement: Built-in failure contract",
       "probes": [
         "project.text-code-guards",
         "text-detail-copy-extra",
@@ -2280,7 +3073,7 @@
     {
       "id": "requirement.stable-compile-time-diagnostics",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable compile-time diagnostics",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable compile-time diagnostics",
       "probes": [
         "project.frontend-recovery-limits",
         "project.positioned-diagnostics"
@@ -2289,7 +3082,7 @@
     {
       "id": "requirement.stable-runtime-diagnostics",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable runtime diagnostics",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable runtime diagnostics",
       "probes": [
         "project.positioned-diagnostics",
         "project.execution-limits"
@@ -2298,7 +3091,7 @@
     {
       "id": "requirement.no-user-input-panics",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: No user-input panics",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: No user-input panics",
       "probes": [
         "project.frontend-recovery-limits",
         "project.execution-limits",
@@ -2309,10 +3102,11 @@
     {
       "id": "requirement.resource-limits-and-bounded-execution",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Resource limits and bounded execution",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Resource limits and bounded execution",
       "probes": [
         "project.frontend-recovery-limits",
         "project.execution-limits",
+        "project.assembled-safeguards",
         "project.cli-contracts",
         "project.vector-allocation"
       ]
@@ -2320,7 +3114,7 @@
     {
       "id": "requirement.cli-command-behavior",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: CLI command behavior",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: CLI command behavior",
       "probes": [
         "project.cli-contracts"
       ]
@@ -2328,7 +3122,7 @@
     {
       "id": "requirement.cli-exit-statuses",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: CLI exit statuses",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: CLI exit statuses",
       "probes": [
         "project.cli-contracts"
       ]
@@ -2336,7 +3130,7 @@
     {
       "id": "requirement.formatter-contract",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Formatter contract",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Formatter contract",
       "probes": [
         "project.formatter-modes"
       ]
@@ -2344,7 +3138,7 @@
     {
       "id": "requirement.shared-repl-input",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Shared REPL input",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Shared REPL input",
       "probes": [
         "project.repl-shared-input",
         "project.repl-blank-lines"
@@ -2353,7 +3147,7 @@
     {
       "id": "requirement.automatic-repl-submission",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Automatic REPL submission",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Automatic REPL submission",
       "probes": [
         "project.repl-submission"
       ]
@@ -2361,7 +3155,7 @@
     {
       "id": "requirement.repl-recovery",
       "kind": "requirement",
-      "link": "openspec/changes/complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: REPL recovery",
+      "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: REPL recovery",
       "probes": [
         "project.repl-submission"
       ]
@@ -2948,6 +3742,64 @@
       "link": "testdata/conformance/visualg-3.0.7/official-examples.json",
       "probes": [
         "bundled-8576df453f1f"
+      ]
+    },
+    {
+      "id": "assumption.const-dos-reservation",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- `const` e `dos`: a gravação de compatibilidade registra os dois nomes como palavras reservadas; usá-los como nomes de variáveis faz o parser esperar `inicio` na declaração.",
+      "probes": [
+        "reserved-const",
+        "reserved-dos"
+      ]
+    },
+    {
+      "id": "assumption.multiple-main-var-sections",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- O programa principal aceita uma única seção `var`; uma segunda seção é rejeitada antes de `inicio`.",
+      "probes": [
+        "multiple-main-var"
+      ]
+    },
+    {
+      "id": "assumption.interrompa-outside-loop",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#Sai imediatamente do laço mais interno (`para`, `enquanto`, `repita`, `repita..fimrepita`). Fora de um laço, a gravação de compatibilidade mostra que `interrompa` é ignorado e a execução continua.",
+      "probes": [
+        "interrompa-outside-loop"
+      ]
+    },
+    {
+      "id": "assumption.var-argument-assignability",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- A gravação de compatibilidade mostra uma falha interna da aplicação de referência ao passar uma expressão ou literal para parâmetro `var`; nenhum diagnóstico de linguagem foi exposto. `[VERIFICAR]` A proteção da implementação e o contrato de diagnóstico permanecem pendentes.",
+      "probes": [
+        "var-expression-argument",
+        "var-literal-argument"
+      ]
+    },
+    {
+      "id": "assumption.builtin-callable-collision",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- Os nomes das builtins não podem colidir com procedimentos ou funções declarados pelo usuário; a aplicação de referência rejeita a declaração conflitante.",
+      "probes": [
+        "builtin-collision-procedure"
+      ]
+    },
+    {
+      "id": "assumption.recursion-depth-observation",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- A pilha de ativação é visível no IDE (Ctrl-F3). A gravação de compatibilidade conclui uma chamada recursiva com profundidade 32; `[VERIFICAR]` a profundidade máxima e a exibição da pilha continuam sem especificação e não são requisitos de aceitação.",
+      "probes": [
+        "recursive-depth-32"
+      ]
+    },
+    {
+      "id": "assumption.uninitialized-zero-value",
+      "kind": "assumption",
+      "link": "especificacao-visualg-3.md#- Valores iniciais de variáveis: a gravação de referência confirma inicialização com zero/\"\"/FALSO quando lidas antes de qualquer atribuição.",
+      "probes": [
+        "zero-value"
       ]
     }
   ],
@@ -7311,14 +8163,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-215411a6ad9a/stdout.txt",
             "sha256": "346dee4b29872c18bdc14a6572a861b10ba83eb7822a5d424047c31426cf7a60"
+          },
+          "randomOutput": {
+            "kind": "random-real-sort-lines",
+            "lines": 20,
+            "minimum": 0,
+            "bound": 101000,
+            "decimals": 3,
+            "review": {
+              "reason": "The recorded transcript preserves the generated real input multiset and its sorted output while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRealSortOutput"
+        ]
       }
     },
     {
@@ -7537,14 +8403,26 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-3b4c69f65b60/stdout.txt",
             "sha256": "8c7d0b2fcd19c66883d5afc0812190796edf6c50e5aaf6d714421cccd7010f4e"
+          },
+          "randomOutput": {
+            "kind": "random-int-text-lines",
+            "lines": 10,
+            "bound": 101,
+            "review": {
+              "reason": "The recorder emits five alternating bounded integer and uppercase text samples; generator sequences remain unqualified.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledMixedRandomOutput"
+        ]
       }
     },
     {
@@ -7674,7 +8552,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -7687,7 +8565,10 @@
               "line": 8
             }
           ]
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestBundledExtensoRejectsLiteralVectorType"
+        ]
       }
     },
     {
@@ -7721,14 +8602,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-460092b86448/stdout.txt",
             "sha256": "8ec1f7136ca396b2f7fd58cebd53ae1a4c5a68a715eb83b75ddff33857eb6433"
+          },
+          "randomOutput": {
+            "kind": "random-record-search-lines",
+            "lines": 12,
+            "minimum": 0,
+            "bound": 100,
+            "decimals": 2,
+            "review": {
+              "reason": "The recorded transcript preserves ten bounded code and salary records, exact numbered formatting, and fixed negative search framing while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRecordSearchOutput"
+        ]
       }
     },
     {
@@ -7762,14 +8657,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-467736cf246b/stdout.txt",
             "sha256": "d4f3e4baca8c95eba490780b8e18e03ebe5279b6835ba51173f41aaf53e6b43e"
+          },
+          "randomOutput": {
+            "kind": "random-randi-repeat-lines",
+            "lines": 11,
+            "minimum": 1,
+            "bound": 10,
+            "review": {
+              "reason": "The recorded transcript preserves the repeated nonzero random value, fixed prompts and sequence framing while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRandiRepeatOutput"
+        ]
       }
     },
     {
@@ -8003,14 +8911,19 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-54f1e50d1c02/stdout.txt",
             "sha256": "c90d8f6be67a76668269a3d1af5dbfb57143f87338146aef4eadcade505620e3"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledMenuExample",
+          "internal/sema/info_test.go#TestUncalledSubprogramDefersUndeclaredIdentifier",
+          "internal/interp/execution_test.go#TestDeferredSubprogramDiagnosticOnInvocation"
+        ]
       }
     },
     {
@@ -8349,14 +9262,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-7f44aa03fcc5/stdout.txt",
             "sha256": "dc267e68447f8efadc9ce1fdfab34bba31df26188918595917e1b8a7d1632059"
+          },
+          "randomOutput": {
+            "kind": "random-relation-lines",
+            "lines": 40,
+            "minimum": 1,
+            "bound": 11,
+            "review": {
+              "reason": "The recorded transcript preserves ten source-fixed relation iterations, bounded positive random values, exact branch framing, and blank iteration separators while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRelationOutput"
+        ]
       }
     },
     {
@@ -8492,14 +9418,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-86701928f296/stdout.txt",
             "sha256": "c66c056d5b3b076e9f3a0d8d9e525b977ed2e03e60f6fe24503e426c95db9456"
+          },
+          "randomOutput": {
+            "kind": "random-int-search-table-lines",
+            "lines": 12,
+            "minimum": 0,
+            "bound": 100,
+            "review": {
+              "reason": "The recorded transcript preserves ten generated integer rows and the fixed not-found search while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomSearchTableOutput"
+        ]
       }
     },
     {
@@ -8576,14 +9515,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-8b2d8c702924/stdout.txt",
             "sha256": "3b68cc36dd78a58ca9245fe6f9992f7d5125ee36519d0be3c29bc0096e573752"
+          },
+          "randomOutput": {
+            "kind": "random-randi-repeat-lines",
+            "lines": 11,
+            "minimum": 1,
+            "bound": 10,
+            "review": {
+              "reason": "The recorded transcript preserves the repeated nonzero random value, fixed prompts and sequence framing while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRandiRepeatOutput"
+        ]
       }
     },
     {
@@ -8660,14 +9612,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-991ec2bd1566/stdout.txt",
             "sha256": "3e1f4e3c9cfc1161c5544d8effd4542b54a0bd667435cdf37bed0ad0430a225a"
+          },
+          "randomOutput": {
+            "kind": "randi-lines",
+            "lines": 10,
+            "bound": 10,
+            "fixedTail": 0,
+            "review": {
+              "reason": "The recorded transcript has ten spaced integer lines; the first nine are randi(10) values and the final unassigned vector slot is zero. Replay checks the domain and framing without promising the reference sequence.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandiOutput"
+        ]
       }
     },
     {
@@ -8961,14 +9926,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-a5945bc9ee4d/stdout.txt",
             "sha256": "51ae4ff821670390cf4543af8df3e3190ba73293e4e56a31edeec5701470e982"
+          },
+          "randomOutput": {
+            "kind": "random-int-sort-lines",
+            "lines": 40,
+            "minimum": 1,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves the generated input multiset and its sorted output while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomSortOutput"
+        ]
       }
     },
     {
@@ -9045,14 +10023,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-acf5d46a3a6a/stdout.txt",
             "sha256": "10bd0b9d1887746c14dfb733deb6b0966694c3d153f94213e927b18f30c5f33d"
+          },
+          "randomOutput": {
+            "kind": "random-int-countsort-lines",
+            "lines": 44,
+            "minimum": 1,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves twenty bounded inputs, chronometer framing, and a sorted multiset render while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomCountSortOutput"
+        ]
       }
     },
     {
@@ -9086,14 +10077,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-b1c9cc780302/stdout.txt",
             "sha256": "7b23f49dea0302255e1208f3b4af474042c9affd7058359fcae132c717324776"
+          },
+          "randomOutput": {
+            "kind": "random-record-sort-lines",
+            "lines": 42,
+            "minimum": 0,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves generated code/name pairs and both name/code sort orders while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRecordSortOutput"
+        ]
       }
     },
     {
@@ -9358,14 +10362,17 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c2c3c37e29ae/stdout.txt",
             "sha256": "7cac1738cac2d74cb338b1bf3960386b70142a490d260c9b4ea3b8f15acc56df"
           }
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestRecordedBundledExamples"
+        ]
       }
     },
     {
@@ -9399,14 +10406,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c47bf27802a4/stdout.txt",
             "sha256": "4b7bc165edf121663077d14b206c951ed59c2f1497797114aaaac740b5913609"
+          },
+          "randomOutput": {
+            "kind": "random-int-search-lines",
+            "lines": 21,
+            "minimum": 0,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves twenty generated integers and the fixed negative search exit while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomSearchOutput"
+        ]
       }
     },
     {
@@ -9440,14 +10460,28 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-c6443beee11c/stdout.txt",
             "sha256": "0a3c515f4c7599d85a37b016d1710bf648f3ac4dc953fbb466022c5d05ea584e"
+          },
+          "randomOutput": {
+            "kind": "random-real-sort-lines",
+            "lines": 20,
+            "minimum": 0,
+            "bound": 101000,
+            "decimals": 3,
+            "review": {
+              "reason": "The recorded transcript preserves the generated real input multiset and its sorted output while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRealSortOutput"
+        ]
       }
     },
     {
@@ -9490,7 +10524,7 @@
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -9503,7 +10537,10 @@
               "line": 34
             }
           ]
-        }
+        },
+        "tests": [
+          "bundled_examples_test.go#TestBundledRejectsInvalidFunctionName"
+        ]
       }
     },
     {
@@ -9638,14 +10675,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-da71c1ad0344/stdout.txt",
             "sha256": "8cfd4d0c1de470b1800bd2d18fc3da83b745704e705692fe0ea366ab85eb272e"
+          },
+          "randomOutput": {
+            "kind": "random-int-search-sorted-lines",
+            "lines": 21,
+            "minimum": 0,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves twenty sorted generated integers and the fixed negative search exit while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomSearchSortedOutput"
+        ]
       }
     },
     {
@@ -9963,14 +11013,27 @@
         "normalizer": "panel-v1"
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 0,
           "stdout": {
             "path": "testdata/conformance/visualg-3.0.7/probes/bundled-fa172f3f5f70/stdout.txt",
             "sha256": "97242809ac72920be63d5fc71c945891f3d940cfc03cfb5ce59742b1df47200c"
+          },
+          "randomOutput": {
+            "kind": "random-record-sort-lines",
+            "lines": 42,
+            "minimum": 0,
+            "bound": 101,
+            "review": {
+              "reason": "The recorded transcript preserves generated code/name pairs and both name/code sort orders while leaving the random sequence unconstrained.",
+              "link": "docs/random-replay-contracts.md"
+            }
           }
-        }
+        },
+        "tests": [
+          "scripts/conformance/bundled_random_output_test.go#TestRecordedBundledRandomRecordSortOutput"
+        ]
       }
     },
     {
@@ -40778,6 +41841,45 @@
           "internal/interp/execution_test.go#TestFormattedItemBoundary",
           "internal/stdlib/stdlib_test.go#TestCaseConversionAllocationGuard",
           "internal/interp/io_test.go#TestWriteBufferLimit"
+        ]
+      }
+    },
+    {
+      "id": "project.assembled-safeguards",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.4"
+      ],
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "not-applicable",
+        "review": {
+          "reason": "The assembled source, runtime, input, host, storage, encoding, and filesystem safeguards are implementation contracts rather than reference-language limits.",
+          "link": "docs/safeguard-acceptance.md#Safeguard acceptance"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "tests": [
+          "internal/source/limits_test.go#TestSourceLimit",
+          "internal/parser/adversarial_test.go#TestEncodedSourceLimitSubprocess",
+          "internal/parser/limits_test.go#TestStructuralLimits",
+          "internal/interp/execution_test.go#TestStepBudgetAndReuse",
+          "internal/interp/execution_test.go#TestStepBudgetSharedAcrossCalls",
+          "internal/interp/execution_test.go#TestCallAndValueLimits",
+          "internal/interp/execution_test.go#TestRetainedOperandStorage",
+          "internal/interp/execution_test.go#TestDefensiveEvaluationDepth",
+          "internal/interp/io_test.go#TestInputFailurePreservesValue",
+          "internal/interp/execution_test.go#TestInputBufferOwnership",
+          "internal/interp/file_input_test.go#TestFileInputCleanupAndReset",
+          "internal/interp/storage_test.go#TestCorruptedVectorStorage",
+          "internal/interp/display_test.go#TestDisplayHostFailures",
+          "internal/interp/environment_test.go#TestChronometerResetAndFailures",
+          "internal/interp/execution_controls_test.go#TestTimerCallFailureRestoresFrame",
+          "internal/repl/input_modes_test.go#TestInputModesPreserveNextSubmission",
+          "scripts/conformance/privacy_test.go#TestExecuteProbeRedactsDiagnosticSourcePath",
+          "scripts/conformance/execute_test.go#TestReplayBudgetExhaustion",
+          "scripts/conformance/replay_test.go#TestReplay"
         ]
       }
     },
@@ -82774,6 +83876,491 @@
         },
         "tests": [
           "call_arguments_test.go#TestRecordedCallArguments"
+        ]
+      }
+    },
+    {
+      "id": "reserved-const",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.2",
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/reserved-const/source.alg",
+        "sha256": "92b39aebe9bad021a831733eedc1059769b894ab8a015b6c93973e6bf956a6a2"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-14T07:01:11.8355736Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/reserved-const/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/reserved-const/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/reserved-const/screenshot.png",
+          "sha256": "e4e389c987013ddf116d6811c7f14da60ef3749a16ed94be4cd9aa106d7a5bc7"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/reserved-const/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections"
+        ]
+      }
+    },
+    {
+      "id": "reserved-dos",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.2",
+        "4.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/reserved-dos/source.alg",
+        "sha256": "b5790ce3c3809a39859121a2137a95a359fcdc61af33d0231b1817a2b741a931"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-14T07:01:22.1738453Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/reserved-dos/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/reserved-dos/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/reserved-dos/screenshot.png",
+          "sha256": "59462598d7aa65fc9f74bc8b591261cb8eda0f19b6aa0bdf0e248a19c645cdb6"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/reserved-dos/transcription.txt",
+          "sha256": "dd6b2b3cf8116bd5db4fb2af9db1cf5ad45fa5d8ae87e3178e30540e2927559f"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 3
+            }
+          ]
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections"
+        ]
+      }
+    },
+    {
+      "id": "multiple-main-var",
+      "ownerGroup": 4,
+      "tasks": [
+        "2.2",
+        "4.6"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/multiple-main-var/source.alg",
+        "sha256": "134fe71e8ab7e1a1605b3ce5e748bff270fce88ebf67b4ee1858c4b1d8e91f01"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-14T07:01:32.4212231Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/multiple-main-var/transcription.txt",
+          "sha256": "835564ada9fa65f30ad1b1f8179e994aa05f409b15a52a8cc7a5cd2fd23b738b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/multiple-main-var/transcription.txt",
+          "sha256": "835564ada9fa65f30ad1b1f8179e994aa05f409b15a52a8cc7a5cd2fd23b738b"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/multiple-main-var/screenshot.png",
+          "sha256": "4add7c9ddcfcf28b3235e8bf89c18a85e1bef0a1711a721f2ee2cbc077ec66a6"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/multiple-main-var/transcription.txt",
+          "sha256": "835564ada9fa65f30ad1b1f8179e994aa05f409b15a52a8cc7a5cd2fd23b738b"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 4
+            }
+          ]
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedHeaderRejections"
+        ]
+      }
+    },
+    {
+      "id": "var-expression-argument",
+      "ownerGroup": 5,
+      "tasks": [
+        "2.2",
+        "5.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/var-expression-argument/source.alg",
+        "sha256": "da76ffdeab4e4b687e54b48010a06f8e1ef48c26418f6731530797c94e8d257f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-14T07:01:43.4318926Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/var-expression-argument/transcription.txt",
+          "sha256": "89bc35670eed9c23337c71de2df0c3d469d7ad6442564e8b5f3a583a39416dd2"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/var-expression-argument/transcription.txt",
+          "sha256": "89bc35670eed9c23337c71de2df0c3d469d7ad6442564e8b5f3a583a39416dd2"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/var-expression-argument/screenshot.png",
+          "sha256": "716857c98d46977b489ce3097b9a5346c63351c90b051400ce3338d7ccc06352"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/var-expression-argument/transcription.txt",
+          "sha256": "89bc35670eed9c23337c71de2df0c3d469d7ad6442564e8b5f3a583a39416dd2"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E004",
+              "line": 9
+            }
+          ]
+        },
+        "tests": [
+          "call_arguments_test.go#TestRecordedArgumentRejections"
+        ]
+      }
+    },
+    {
+      "id": "var-literal-argument",
+      "ownerGroup": 5,
+      "tasks": [
+        "2.2",
+        "5.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/var-literal-argument/source.alg",
+        "sha256": "b271cfa0c780c01680579faeb48711f534de193805ffe898a5082de68068cb68"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-14T07:08:33.7336176Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/var-literal-argument/transcription.txt",
+          "sha256": "cee8295694b3235bd742c0210efe85bce5216e593f625cd9393d560cb092d2da"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/var-literal-argument/transcription.txt",
+          "sha256": "cee8295694b3235bd742c0210efe85bce5216e593f625cd9393d560cb092d2da"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/var-literal-argument/screenshot.png",
+          "sha256": "716857c98d46977b489ce3097b9a5346c63351c90b051400ce3338d7ccc06352"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/var-literal-argument/transcription.txt",
+          "sha256": "cee8295694b3235bd742c0210efe85bce5216e593f625cd9393d560cb092d2da"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E004",
+              "line": 7
+            }
+          ]
+        },
+        "tests": [
+          "call_arguments_test.go#TestRecordedArgumentRejections"
+        ]
+      }
+    },
+    {
+      "id": "builtin-collision-procedure",
+      "ownerGroup": 5,
+      "tasks": [
+        "2.2",
+        "5.4"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/builtin-collision-procedure/source.alg",
+        "sha256": "450740f9939d051f51e0fb36b67b56181ca388c9ec581b29e5c6198e0d560263"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-09-14T07:01:53.9300851Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/builtin-collision-procedure/transcription.txt",
+          "sha256": "326c8dff18ae7fabb9d636aa7f32899e5fc4e88c78eca9460f81375dc424e91a"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/builtin-collision-procedure/transcription.txt",
+          "sha256": "326c8dff18ae7fabb9d636aa7f32899e5fc4e88c78eca9460f81375dc424e91a"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/builtin-collision-procedure/screenshot.png",
+          "sha256": "55b95db2b7639e314373cfa63bc1afe0eaa19404ebcc3a4fd783ccf430ef416c"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/builtin-collision-procedure/transcription.txt",
+          "sha256": "326c8dff18ae7fabb9d636aa7f32899e5fc4e88c78eca9460f81375dc424e91a"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "E003",
+              "line": 2
+            }
+          ]
+        },
+        "tests": [
+          "header_reference_test.go#TestRecordedBuiltinCollision"
+        ]
+      }
+    },
+    {
+      "id": "recursive-depth-32",
+      "ownerGroup": 5,
+      "tasks": [
+        "2.2",
+        "5.7"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/recursive-depth-32/source.alg",
+        "sha256": "661a1cdfa26696e93ebecaa932917e69466c0a9b62ac376fc1eed288901aa30d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-14T07:02:05.7925949Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/recursive-depth-32/raw.txt",
+          "sha256": "824ebf88817761e3584ada6977a9f964fc765f46d19f9ae524829592633837a8"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/recursive-depth-32/stdout.txt",
+          "sha256": "8221ac66be71558c921fb44cfb66f7997699aea754d917763882d6d9eddc836e"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/recursive-depth-32/stdout.txt",
+            "sha256": "8221ac66be71558c921fb44cfb66f7997699aea754d917763882d6d9eddc836e"
+          }
+        },
+        "tests": [
+          "recursive_reference_test.go#TestRecordedRecursionDepth"
+        ]
+      }
+    },
+    {
+      "id": "interrompa-outside-loop",
+      "ownerGroup": 9,
+      "tasks": [
+        "2.2",
+        "9.1"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/interrompa-outside-loop/source.alg",
+        "sha256": "611a1df0e19e23f422734954a61517933a32265c384378884a22ec4afd3abaaa"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-14T07:02:16.0471985Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/interrompa-outside-loop/raw.txt",
+          "sha256": "44263bc3e10ce2331f7ae3316d6687a3cd5e361ebab0091cf04bebd9f56545af"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/interrompa-outside-loop/stdout.txt",
+          "sha256": "f72c713b7b432dd18949ca10f1be6dbcf493479945653609d1c715b2d8d74356"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/interrompa-outside-loop/stdout.txt",
+            "sha256": "f72c713b7b432dd18949ca10f1be6dbcf493479945653609d1c715b2d8d74356"
+          }
+        },
+        "tests": [
+          "internal/interp/execution_controls_test.go#TestBreakOutsideLoopIsIgnored"
+        ]
+      }
+    },
+    {
+      "id": "zero-value",
+      "ownerGroup": 2,
+      "tasks": [
+        "2.2"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/zero-value/source.alg",
+        "sha256": "053c9129d588b5aef03313edefd9aa6fc4f7c103ab3e9a90707d7b60053a3e09"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/zero-value/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-09-14T12:06:04.9095906Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/zero-value/raw.txt",
+          "sha256": "21e15c10815da36ef0ac81420470beaf992dbe82c9343b1eb93979512ce353ac"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/zero-value/stdout.txt",
+          "sha256": "87ad0d90a70d6d8a7fd19d9465ae5394d0d5a7b2645d39f88acad8d67f39866f"
+        },
+        "normalizer": "panel-v1"
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/zero-value/stdout.txt",
+            "sha256": "87ad0d90a70d6d8a7fd19d9465ae5394d0d5a7b2645d39f88acad8d67f39866f"
+          }
+        },
+        "tests": [
+          "zero_value_reference_test.go#TestRecordedZeroValue"
         ]
       }
     }

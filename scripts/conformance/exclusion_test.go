@@ -35,6 +35,64 @@ func TestReviewedExclusionArtifactHashes(t *testing.T) {
 	}
 }
 
+func TestReviewedExclusionStdout(t *testing.T) {
+	t.Parallel()
+	for _, mode := range []string{"evidence", "incremental", "implementation-acceptance"} {
+		for _, tt := range []struct{ name, want string }{
+			{"independent bytes", ""},
+			{"empty bytes", ""},
+			{"omitted", ""},
+			{"altered bytes", "hash mismatch"},
+			{"missing file", "read missing.txt"},
+			{"invalid hash", "invalid artifact hash"},
+			{"missing hash", "invalid artifact hash"},
+			{"missing path", "unsafe path"},
+			{"unsafe path", "unsafe path"},
+		} {
+			t.Run(mode+"/"+tt.name, func(t *testing.T) {
+				t.Parallel()
+				root, m := testManifest(t)
+				writeArtifact(t, root, "review.md", "Reviewed exclusion retaining candidate output.\n")
+				r := &review{Reason: "Reviewed external-stop exclusion", Link: "review.md"}
+				p := &m.Probes[0]
+				p.Evidence.State, p.Evidence.Review = "not-applicable", r
+				p.Implementation.State, p.Implementation.Review = "not-applicable", r
+				out := &p.Implementation.Expected.Stdout
+				*out = writeArtifact(t, root, "stdout.txt", "Independent candidate output.\n")
+				if err := validate(root, m, mode, nil); err != nil {
+					t.Fatal(err)
+				}
+				switch tt.name {
+				case "empty bytes":
+					*out = writeArtifact(t, root, "stdout.txt", "")
+				case "omitted":
+					*out = artifact{}
+				case "altered bytes":
+					writeArtifact(t, root, "stdout.txt", "Changed bytes.\n")
+				case "missing file":
+					out.Path = "missing.txt"
+				case "invalid hash":
+					out.SHA256 = "invalid"
+				case "missing hash":
+					out.SHA256 = ""
+				case "missing path":
+					out.Path = ""
+				case "unsafe path":
+					out.Path = "../stdout.txt"
+				}
+				err := validate(root, m, mode, nil)
+				if tt.want == "" {
+					if err != nil {
+						t.Fatal(err)
+					}
+				} else if err == nil || !strings.Contains(err.Error(), tt.want) {
+					t.Fatalf("error = %v, want %q", err, tt.want)
+				}
+			})
+		}
+	}
+}
+
 func TestReviewedExclusionGeneratedPaths(t *testing.T) {
 	t.Parallel()
 	for _, mode := range []string{"evidence", "incremental", "implementation-acceptance"} {
@@ -42,6 +100,10 @@ func TestReviewedExclusionGeneratedPaths(t *testing.T) {
 			{"safe", "result.dat", ""},
 			{"unsafe", "../result.dat", "unsafe path"},
 			{"duplicate", "result.dat", "duplicate generated reference path"},
+			{"file period", "result.dat.", "unsafe path"},
+			{"file space", "result.dat ", "unsafe path"},
+			{"directory period", "data./result.dat", "unsafe path"},
+			{"directory space", "data /result.dat", "unsafe path"},
 		} {
 			t.Run(mode+"/"+tt.name, func(t *testing.T) {
 				t.Parallel()
@@ -62,6 +124,64 @@ func TestReviewedExclusionGeneratedPaths(t *testing.T) {
 					t.Fatal(err)
 				}
 				if tt.want != "" && (err == nil || !strings.Contains(err.Error(), tt.want)) {
+					t.Fatalf("error = %v, want %q", err, tt.want)
+				}
+			})
+		}
+	}
+}
+
+func TestReviewedExclusionFileLayouts(t *testing.T) {
+	t.Parallel()
+	tests := []struct {
+		name                                string
+		inputs, generated, expected, absent []string
+		want                                string
+	}{
+		{name: "input parent", inputs: []string{"data"}, generated: []string{"data/output.dat"}, want: "file path is both file and directory"},
+		{name: "input child", inputs: []string{"data/input.dat"}, generated: []string{"data"}, want: "file path is both file and directory"},
+		{name: "deep input parent", inputs: []string{"data"}, generated: []string{"data/nested/output.dat"}, want: "file path is both file and directory"},
+		{name: "generated parent first", generated: []string{"data", "data/output.dat"}, want: "file path is both file and directory"},
+		{name: "generated child first", generated: []string{"data/output.dat", "data"}, want: "file path is both file and directory"},
+		{name: "absent parent", generated: []string{"data/output.dat"}, absent: []string{"data"}, want: "absent path"},
+		{name: "absent child", generated: []string{"data"}, absent: []string{"data/output.dat"}, want: "absent path"},
+		{name: "generated case aliases", generated: []string{"result.dat", "RESULT.DAT"}, want: "case-insensitive path collision"},
+		{name: "directory case aliases", inputs: []string{"Data/input.dat"}, generated: []string{"data/output.dat"}, want: "case-insensitive path collision"},
+		{name: "duplicate expected generated", expected: []string{"result.dat", "result.dat"}, want: "duplicate generated expectation path"},
+		{name: "retained output only", generated: []string{"data/output.dat"}},
+		{name: "shared directory", inputs: []string{"data/input.dat"}, generated: []string{"data/output.dat"}},
+		{name: "similar prefix", inputs: []string{"data"}, generated: []string{"database/output.dat"}},
+		{name: "separate layouts", generated: []string{"data"}, expected: []string{"data/output.dat"}},
+		{name: "input removal", inputs: []string{"input.dat"}, absent: []string{"input.dat"}},
+		{name: "empty layout"},
+	}
+	for _, mode := range []string{"evidence", "incremental", "implementation-acceptance"} {
+		for _, tt := range tests {
+			t.Run(mode+"/"+tt.name, func(t *testing.T) {
+				t.Parallel()
+				root, m := testManifest(t)
+				writeArtifact(t, root, "review.md", "Reviewed exclusion retaining original file observations.\n")
+				r := &review{Reason: "Reviewed external-stop exclusion", Link: "review.md"}
+				p := &m.Probes[0]
+				p.Evidence.State, p.Evidence.Review = "not-applicable", r
+				p.Implementation.State, p.Implementation.Review = "not-applicable", r
+				content := writeArtifact(t, root, "fixture.txt", "Fixture bytes.\n")
+				for _, name := range tt.inputs {
+					p.Files = append(p.Files, generatedFile{Path: name, Content: content})
+				}
+				for _, name := range tt.generated {
+					p.Evidence.Generated = append(p.Evidence.Generated, generatedFile{Path: name, Content: content})
+				}
+				for _, name := range tt.expected {
+					p.Implementation.Expected.Generated = append(p.Implementation.Expected.Generated, generatedFile{Path: name, Content: content})
+				}
+				p.Evidence.Absent = tt.absent
+				err := validate(root, m, mode, nil)
+				if tt.want == "" {
+					if err != nil {
+						t.Fatal(err)
+					}
+				} else if err == nil || !strings.Contains(err.Error(), tt.want) {
 					t.Fatalf("error = %v, want %q", err, tt.want)
 				}
 			})

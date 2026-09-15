@@ -37,6 +37,34 @@ func analyzed(t *testing.T, src string) (*ast.Program, *sema.Info) {
 	return p, info
 }
 
+func TestDeferredSubprogramDiagnosticOnInvocation(t *testing.T) {
+	src := `algoritmo "lazy body"
+procedimento P
+inicio
+  leia(missing)
+fimprocedimento
+inicio
+  P
+fimalgoritmo`
+	_, toks, ds := lexer.Scan("test.alg", src)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	p, ds := parser.Parse(toks)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	info, ds := sema.Analyze(p)
+	if len(ds) != 0 {
+		t.Fatalf("uncalled-body diagnostic leaked into analysis: %v", ds)
+	}
+	var out bytes.Buffer
+	ds = New(Options{Output: &out}).Run(p, info)
+	if len(ds) != 1 || ds[0].Code != diag.EUndeclared || out.Len() != 0 {
+		t.Fatalf("invoked deferred body: diagnostics=%v output=%q", ds, out.String())
+	}
+}
+
 func TestRetainedOperandStorage(t *testing.T) {
 	loop := "para counter de 1 ate " + strconv.Itoa(maxOperands+1) + " faca\nvalue <- 1 e 2\nfimpara\n"
 	plain := "algoritmo \"operand scope\"\nvar counter, value: inteiro\ninicio\n" + loop + "escreval(value)\nfimalgoritmo\n"
@@ -158,6 +186,74 @@ func TestStepBudgetAndReuse(t *testing.T) {
 			}
 		}
 	})
+}
+
+func TestRepeatBudgetAndFiniteCompletion(t *testing.T) {
+	src := "algoritmo \"repeat budget\"\nvar n: inteiro\ninicio\nrepita\nn <- n + 1\nate n = 3\nescreval(n)\nfimalgoritmo"
+	p, info := analyzed(t, src)
+	var out bytes.Buffer
+	if ds := New(Options{Output: &out}).Run(p, info); len(ds) != 0 || out.String() != " 3\n" {
+		t.Fatalf("unbudgeted repeat: diagnostics=%v output=%q", ds, out.String())
+	}
+
+	repeatAt := strings.Index(src, "repita")
+	out.Reset()
+	if ds := New(Options{MaxSteps: 1, Output: &out}).Run(p, info); len(ds) != 1 || ds[0].Code != diag.RLoop || int(ds[0].Pos) != repeatAt || out.Len() != 0 {
+		t.Fatalf("repeat header budget diagnostics=%v output=%q, want R006 at %d", ds, out.String(), repeatAt)
+	}
+
+	// The finite program consumes exactly thirty charges: the repeat statement,
+	// three iteration charges, the body and condition expression trees, and the
+	// final write. The one-step boundary catches regressions that stop charging
+	// the repeat iteration itself.
+	out.Reset()
+	if ds := New(Options{MaxSteps: 30, Output: &out}).Run(p, info); len(ds) != 0 || out.String() != " 3\n" {
+		t.Fatalf("exact repeat budget: diagnostics=%v output=%q", ds, out.String())
+	}
+	out.Reset()
+	ds := New(Options{MaxSteps: 29, Output: &out}).Run(p, info)
+	writeArg := strings.Index(src, "escreval(n)") + len("escreval(")
+	if len(ds) != 1 || ds[0].Code != diag.RLoop || int(ds[0].Pos) != writeArg || out.Len() != 0 {
+		t.Fatalf("short repeat budget: diagnostics=%v output=%q, want R006 at %d", ds, out.String(), writeArg)
+	}
+
+	empty, emptyInfo := analyzed(t, "algoritmo \"empty repeat\"\ninicio\nrepita\nate falso\nfimalgoritmo")
+	emptySrc := "algoritmo \"empty repeat\"\ninicio\nrepita\nate falso\nfimalgoritmo"
+	if ds := New(Options{MaxSteps: 10}).Run(empty, emptyInfo); len(ds) != 1 || ds[0].Code != diag.RLoop || int(ds[0].Pos) != strings.Index(emptySrc, "falso") {
+		t.Fatalf("empty repeat budget diagnostics=%v, want R006 at %d", ds, strings.Index(emptySrc, "falso"))
+	}
+}
+
+func TestStepBudgetSharedAcrossCalls(t *testing.T) {
+	src := "algoritmo \"shared budget\"\nprocedimento p()\ninicio\nescreva(1)\nfimprocedimento\ninicio\np()\np()\nfimalgoritmo"
+	p, info := analyzed(t, src)
+	second := strings.Index(src, "1)")
+	for _, tt := range []struct {
+		name   string
+		limit  uint64
+		output string
+		code   diag.Code
+	}{
+		{name: "exhausted", limit: 7, output: " 1", code: diag.RLoop},
+		{name: "complete", limit: 8, output: " 1 1", code: ""},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			var out bytes.Buffer
+			ds := New(Options{MaxSteps: tt.limit, Output: &out}).Run(p, info)
+			if out.String() != tt.output {
+				t.Fatalf("output=%q, want %q", out.String(), tt.output)
+			}
+			if tt.code == "" {
+				if len(ds) != 0 {
+					t.Fatalf("unexpected diagnostics: %v", ds)
+				}
+				return
+			}
+			if len(ds) != 1 || ds[0].Code != tt.code || int(ds[0].Pos) != second {
+				t.Fatalf("diagnostics=%v, want positioned %s at %d", ds, tt.code, second)
+			}
+		})
+	}
 }
 
 func TestCallAndValueLimits(t *testing.T) {

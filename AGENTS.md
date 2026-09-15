@@ -18,7 +18,8 @@ This file is the contract between the codebase and any coding agent (Claude Code
 - Diagnostics with stable error codes and source positions
 
 **Out of scope (v1):**
-- File I/O (`arqabertura`, etc.) — historical, niche, design later
+- General file I/O outside the recorded `arquivo` input directive
+  (`arqabertura`, etc.) — historical, niche, design later
 - GUI primitives — VisuAlg has none; some dialects do, ignore them
 - Native code emission, bytecode VM — tree-walker is enough until profiling says otherwise
 - LSP, debugger, formatter beyond `fmt` — defer
@@ -61,7 +62,7 @@ golangci-lint run                  # config in .golangci.yml
 
 CI must run: `go vet`, `staticcheck`, `go test -race`, `go test -run=TestFuzz -fuzz=. -fuzztime=30s` on lexer + parser.
 
-No third-party dependencies in core language packages (`token`, `lexer`, `ast`, `parser`, `sema`, `runtime`, `interp`, `stdlib`, `diag`). CLI may depend on `cobra` or stdlib `flag` — prefer `flag` unless we have multi-level subcommands.
+No third-party dependencies in core language packages (`token`, `lexer`, `ast`, `parser`, `sema`, `runtime`, `interp`, `stdlib`, `diag`). The CLI uses the standard-library `flag` package.
 
 ---
 
@@ -121,6 +122,10 @@ fimalgoritmo
 
 `algoritmo`, `var`, `inicio`, `fimalgoritmo` are all required for a complete program. `var` block may be empty (omit it entirely, or `var` with no declarations).
 
+Top-level procedures and functions precede `inicio`; a single global `var`
+section may appear before or after those subprogram declarations. Repeating the
+global section is rejected.
+
 ### 6.2 Types
 
 | Portugol     | Go representation |
@@ -132,6 +137,11 @@ fimalgoritmo
 | `vetor[a..b] de T` | slice with index offset; bounds checked |
 
 Booleans literals: `verdadeiro`, `falso`. String literals use `"..."`. No char type.
+
+Declaration support is evidence-scoped. The recorded scalar constant and alias,
+named-record and scalar-field, assignment-alias, and case-range forms are
+supported; rejected variants keep their positioned diagnostics and unrecorded
+combinations remain pending in the conformance manifest.
 
 Recorded keyword aliases include `função`, `então`, `senão`, `faça`, `até`, and
 `não`, in any letter case. Canonical output uses unaccented keywords and
@@ -164,11 +174,12 @@ enquanto <cond> faca ... fimenquanto
 repita ... ate <cond>
 
 para <i> de <a> ate <b> [passo <p>] faca ... fimpara
+para <i> de <a> ate faca ... fimpara
 
 interrompa     // break out of innermost loop
 ```
 
-`para` semantics: `i` is `inteiro`, `passo` defaults to 1, supports negative step. Loop variable is mutable inside the body but reassigning it does not affect iteration count. Recorded exit-state rules, including descending, empty, and interrupted loops, are defined and tested in `docs/language.md`.
+`para` semantics: `i` is `inteiro`, `passo` defaults to 1, supports negative step. Loop variable is mutable inside the body but reassigning it does not affect iteration count. An omitted upper bound (`ate faca`) executes zero iterations and leaves the loop variable unchanged. Recorded exit-state rules for explicitly bounded loops, including descending, empty, and interrupted loops, are defined and tested in `docs/language.md`.
 
 ### 6.5 I/O
 
@@ -222,13 +233,15 @@ These cost time when wrong. Each must have a regression test.
 
 1. **Declared vector indexing.** Bounds may start at zero or a positive integer; store an offset, do not assume 0 or 1. Vectors have at most two dimensions. An omitted second index selects that dimension's lower bound. Whole-vector assignment is rejected.
 2. **Integer vs real division.** `/` produces `real` for numeric pairs and otherwise returns the right scalar operand. `\` truncates two integers toward zero; other scalar pairs return the right operand and its type after evaluating both operands. Mixing integer and real operands in `+ - *` promotes to real. `%` and `MOD` follow the recorded divisor and conversion rules in `docs/language.md`.
-3. **Short-circuit `e` / `ou`.** VisuAlg historically does **not** short-circuit. Decide once, document, test both branches always evaluate. This is a common source of student bugs and we should not silently change it.
+3. **Logical evaluation.** VisuAlg does **not** short-circuit `e` or `ou`.
+   Both operands are evaluated, and this behavior is documented and tested.
 4. **Case-insensitivity.** `Soma`, `soma`, `SOMA` all refer to the same identifier. Canonicalize at the symbol-table boundary. Keywords likewise.
 5. **Encoding.** Real VisuAlg files are Windows-1252. Detect BOM / UTF-8 validity; otherwise assume CP1252 and transcode. Never read as raw bytes into a Go string and hope.
 6. **Number formatting on output.** Use the recorded deterministic profile in `docs/language.md`; compare fixture bytes exactly.
 7. **Reading multiple values with `leia`.** Each variable consumes one complete input line. Preserve spaces and empty character lines, share unread input across calls, and emit the recorded typed input echo.
 8. **`escolha` fall-through.** Does **not** fall through. Each `caso` is independent.
-9. **`interrompa` outside a loop** is a sema error, not a runtime error.
+9. **`interrompa` outside a loop** is accepted and ignored; inside a loop it
+   exits the innermost active loop.
 10. **Uninitialized variables.** VisuAlg gives them zero values per type. Match this; do not error on read-before-write.
 
 ---
@@ -257,16 +270,21 @@ Never land a bug fix without a regression fixture.
 
 ---
 
-## 10. Open questions
+## 10. Decisions
 
-These are real decisions, not rhetorical. Resolve before implementing the affected area.
-
-1. **Dialect target.** VisuAlg only, or also Portugol Studio (UNIVALI)? They differ on vector syntax (`vetor[10]` vs `vetor[1..10]`), subprogram syntax, and stdlib. Pick one for v1.
-2. **Short-circuit `e` / `ou`.** Spec-faithful (no SC) or pragmatic (SC)? Affects observable behavior of programs with side effects in conditions.
-3. **Decimal separator on I/O — resolved for the current profile.** Output uses the recorded `en-US` decimal dot on every host; input accepts comma or dot. Other reference locales remain unverified.
-4. **Random sequences — resolved.** Match recorded `rand`, `randi`, and command-form `aleatorio` domains with a per-interpreter source. Exact reference seeds and sequences are not promised; file-input interactions and extreme command bounds remain pending.
-5. **File I/O.** v1 = no, v2 = maybe. Confirm.
-6. **CLI framework.** stdlib `flag` or `cobra`? Default: `flag`.
+- **Dialect target.** VisuAlg 3.x is the v1 dialect. Other Portugol dialects
+  remain out of scope.
+- **Logical evaluation.** `e` and `ou` do not short-circuit; both operands are
+  evaluated, as documented in the language reference.
+- **I/O profile.** Output uses the recorded `en-US` decimal dot and input
+  accepts comma or dot. Other reference locales remain unverified.
+- **Randomness.** `rand`, `randi`, and command-form `aleatorio` use a
+  per-interpreter source with the recorded domains. Exact reference seeds and
+  sequences are not promised; file-input interactions and extreme command
+  bounds remain pending.
+- **File I/O.** The recorded `arquivo` input directive is in scope. General
+  file APIs such as `arqabertura` remain out of scope.
+- **CLI.** The command uses the standard-library `flag` package.
 
 ---
 
