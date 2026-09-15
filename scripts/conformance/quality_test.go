@@ -187,7 +187,7 @@ func testAcceptanceCandidate(t *testing.T, tasks, output string) (string, string
 	m.Probes[0].TimeoutMS = 30000
 	writeArtifact(t, root, "tasks.md", tasks)
 	writeArtifact(t, root, "go.mod", "module example.invalid/fixture\n\ngo 1.22\n")
-	writeArtifact(t, root, "cmd/portugol/main.go", fmt.Sprintf("package main\nimport \"fmt\"\nfunc main() { fmt.Print(%q) }\n", output))
+	writeArtifact(t, root, "cmd/portugo/main.go", fmt.Sprintf("package main\nimport \"fmt\"\nfunc main() { fmt.Print(%q) }\n", output))
 	writeArtifact(t, root, ".gitignore", "ignored.go\n")
 	writeJSON(t, root, "manifest.json", m)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
@@ -217,7 +217,7 @@ func TestQualityCandidate(t *testing.T) {
 		mutate     func(*testing.T, string, string)
 	}{
 		{name: "matching clean candidate"},
-		{name: "tracked change", want: "clean checkout", mutate: func(t *testing.T, root, _ string) { writeArtifact(t, root, "cmd/portugol/main.go", "changed") }},
+		{name: "tracked change", want: "clean checkout", mutate: func(t *testing.T, root, _ string) { writeArtifact(t, root, "cmd/portugo/main.go", "changed") }},
 		{name: "untracked source", want: "clean checkout", mutate: func(t *testing.T, root, _ string) { writeArtifact(t, root, "new.go", "package example") }},
 		{name: "ignored source", want: "clean checkout", mutate: func(t *testing.T, root, _ string) { writeArtifact(t, root, "ignored.go", "package example") }},
 		{name: "unknown report field", want: "unknown field", mutate: func(t *testing.T, _ string, name string) {

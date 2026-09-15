@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/lexer"
-	"github.com/ncode/portugol-go/internal/source"
-	"github.com/ncode/portugol-go/internal/testprocess"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/lexer"
+	"github.com/ncode/PortuGo/internal/source"
+	"github.com/ncode/PortuGo/internal/testprocess"
 )
 
 func TestTruncatedEncodedPrograms(t *testing.T) {

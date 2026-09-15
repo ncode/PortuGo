@@ -103,7 +103,7 @@ func replayProbe(root string, p probe, executable string, prefix []string, obser
 	if err != nil {
 		return err
 	}
-	dir, err := os.MkdirTemp("", "portugol-probe-")
+	dir, err := os.MkdirTemp("", "portugo-probe-")
 	if err != nil {
 		return err
 	}

@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/source"
+	"github.com/ncode/PortuGo/internal/source"
 )
 
 func TestRecordedFormatPrecision(t *testing.T) {

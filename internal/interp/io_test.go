@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/runtime"
 )
 
 func TestInputFailurePreservesValue(t *testing.T) {

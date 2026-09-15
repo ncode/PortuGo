@@ -5,7 +5,7 @@ import (
 	"math"
 	"unicode"
 
-	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/PortuGo/internal/runtime"
 )
 
 // This catalog is constructed once and never mutated. Descriptors contain no

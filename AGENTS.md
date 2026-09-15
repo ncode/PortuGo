@@ -1,4 +1,4 @@
-# AGENTS.md — portugol-go
+# AGENTS.md — PortuGo
 
 A Go implementation of **Portugol** (VisuAlg dialect): lexer, parser, semantic analyzer, and tree-walking interpreter, with a CLI and REPL.
 
@@ -29,7 +29,7 @@ This file is the contract between the codebase and any coding agent (Claude Code
 ## 2. Repository layout
 
 ```
-cmd/portugol/          CLI entry point (subcommands: run, check, fmt, repl)
+cmd/portugo/           CLI entry point (subcommands: run, check, fmt, repl)
 internal/token/        TokenKind, keyword table, position type
 internal/lexer/        Scanner — produces []Token
 internal/ast/          AST node definitions, visitor interface

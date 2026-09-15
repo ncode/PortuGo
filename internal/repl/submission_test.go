@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/interp"
+	"github.com/ncode/PortuGo/internal/interp"
 )
 
 func TestAutomaticSubmission(t *testing.T) {
@@ -31,7 +31,7 @@ FIMALGORITMO // completed
 		}
 		if strings.Count(out.String(), "42\n 42\n") != 1 || strings.Count(out.String(), " 7\n") != 1 ||
 			strings.Index(out.String(), " 42\n") >= strings.Index(out.String(), " 7\n") ||
-			!strings.HasSuffix(out.String(), " 7\nportugol> ") {
+			!strings.HasSuffix(out.String(), " 7\nportugo> ") {
 			t.Fatalf("program or input submission order: %q", &out)
 		}
 	}
@@ -56,7 +56,7 @@ fimalgoritmo
 `
 	var out, stderr bytes.Buffer
 	ok, err := Run(interp.Options{Input: strings.NewReader(input), Output: &out, MaxSteps: 100}, &stderr)
-	if err != nil || !ok || stderr.Len() != 0 || strings.Count(out.String(), "fimalgoritmo\n 7\nportugol> ") != 1 {
+	if err != nil || !ok || stderr.Len() != 0 || strings.Count(out.String(), "fimalgoritmo\n 7\nportugo> ") != 1 {
 		t.Fatalf("ok=%t, error=%v, output=%q, diagnostics=%q", ok, err, &out, &stderr)
 	}
 }
@@ -77,7 +77,7 @@ func TestAutomaticSubmissionDiagnostics(t *testing.T) {
 			ok, err := Run(interp.Options{Input: strings.NewReader(input), Output: &out, MaxSteps: 20}, &stderr)
 			if err != nil || ok || strings.Count(stderr.String(), ": "+tt.diagnostic+":") != 1 ||
 				!strings.Contains(stderr.String(), "<repl>:4:") ||
-				!strings.HasSuffix(out.String(), " 7\nportugol> ") {
+				!strings.HasSuffix(out.String(), " 7\nportugo> ") {
 				t.Fatalf("ok=%t, error=%v, output=%q, diagnostics=%q", ok, err, &out, &stderr)
 			}
 		})

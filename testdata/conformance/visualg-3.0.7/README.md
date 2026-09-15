@@ -7,7 +7,7 @@ The earlier selected observations remain in `docs/validation/visualg-2026-09-07`
 
 ## Commands
 
-Run from the repository root with Go 1.22 or newer:
+Run from the repository root with Go 1.27 or newer:
 
 ```sh
 go test ./scripts/conformance

@@ -7,14 +7,14 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ncode/portugol-go/internal/ast"
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/interp"
-	"github.com/ncode/portugol-go/internal/lexer"
-	"github.com/ncode/portugol-go/internal/parser"
-	"github.com/ncode/portugol-go/internal/repl"
-	"github.com/ncode/portugol-go/internal/sema"
-	"github.com/ncode/portugol-go/internal/source"
+	"github.com/ncode/PortuGo/internal/ast"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/interp"
+	"github.com/ncode/PortuGo/internal/lexer"
+	"github.com/ncode/PortuGo/internal/parser"
+	"github.com/ncode/PortuGo/internal/repl"
+	"github.com/ncode/PortuGo/internal/sema"
+	"github.com/ncode/PortuGo/internal/source"
 )
 
 func main() { os.Exit(dispatch(os.Args[1:])) }
@@ -147,7 +147,7 @@ func (b *formatBuffer) Write(p []byte) (int, error) {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: portugol <run|check|fmt> [options] file.alg | portugol repl [--max-steps N]")
+	fmt.Fprintln(os.Stderr, "usage: portugo <run|check|fmt> [options] file.alg | portugo repl [--max-steps N]")
 }
 
 func parsedProgram(path string) (*source.File, *ast.Program, bool, []diag.Diagnostic, error) {

@@ -11,14 +11,14 @@ import (
 	"os"
 	"time"
 
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/interp"
-	"github.com/ncode/portugol-go/internal/lexer"
-	"github.com/ncode/portugol-go/internal/parser"
-	"github.com/ncode/portugol-go/internal/runtime"
-	"github.com/ncode/portugol-go/internal/sema"
-	"github.com/ncode/portugol-go/internal/source"
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/interp"
+	"github.com/ncode/PortuGo/internal/lexer"
+	"github.com/ncode/PortuGo/internal/parser"
+	"github.com/ncode/PortuGo/internal/runtime"
+	"github.com/ncode/PortuGo/internal/sema"
+	"github.com/ncode/PortuGo/internal/source"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 var errObservationSize = errors.New("observation size limit exceeded")

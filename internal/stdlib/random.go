@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/PortuGo/internal/runtime"
 )
 
 func (l *Library) randi(args []runtime.Value) (runtime.Value, bool, error) {

@@ -3,7 +3,7 @@ package interp
 import (
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/PortuGo/internal/runtime"
 )
 
 func TestUnicodeComparisonExtension(t *testing.T) {

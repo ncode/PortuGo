@@ -5,7 +5,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/PortuGo/internal/runtime"
 )
 
 // CallForm identifies the syntax accepted by a built-in.

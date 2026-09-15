@@ -1,3 +1,3 @@
-module github.com/ncode/portugol-go
+module github.com/ncode/PortuGo
 
-go 1.22
+go 1.27

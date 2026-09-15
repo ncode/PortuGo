@@ -6,7 +6,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/PortuGo/internal/runtime"
 )
 
 func TestRandomInputDraws(t *testing.T) {

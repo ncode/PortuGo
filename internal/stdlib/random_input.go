@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/PortuGo/internal/runtime"
 )
 
 // RandomInput generates a scalar leia value using the library's shared source.

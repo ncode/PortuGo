@@ -3,9 +3,9 @@ package interp
 import (
 	"fmt"
 
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/runtime"
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/runtime"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 type env struct {

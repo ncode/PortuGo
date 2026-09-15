@@ -1,8 +1,8 @@
 package interp
 
 import (
-	"github.com/ncode/portugol-go/internal/ast"
-	"github.com/ncode/portugol-go/internal/diag"
+	"github.com/ncode/PortuGo/internal/ast"
+	"github.com/ncode/PortuGo/internal/diag"
 )
 
 func (i *Interpreter) configure(settings []ast.Stmt) error {

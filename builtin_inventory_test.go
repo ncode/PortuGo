@@ -6,12 +6,12 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/lexer"
-	"github.com/ncode/portugol-go/internal/parser"
-	"github.com/ncode/portugol-go/internal/sema"
-	"github.com/ncode/portugol-go/internal/source"
-	"github.com/ncode/portugol-go/internal/stdlib"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/lexer"
+	"github.com/ncode/PortuGo/internal/parser"
+	"github.com/ncode/PortuGo/internal/sema"
+	"github.com/ncode/PortuGo/internal/source"
+	"github.com/ncode/PortuGo/internal/stdlib"
 )
 
 func TestIndependentBuiltinInventory(t *testing.T) {

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/ncode/portugol-go/internal/ast"
-	"github.com/ncode/portugol-go/internal/diag"
+	"github.com/ncode/PortuGo/internal/ast"
+	"github.com/ncode/PortuGo/internal/diag"
 )
 
 type randomInputState struct {

@@ -6,12 +6,12 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/ast"
-	"github.com/ncode/portugol-go/internal/interp"
-	"github.com/ncode/portugol-go/internal/lexer"
-	"github.com/ncode/portugol-go/internal/parser"
-	"github.com/ncode/portugol-go/internal/sema"
-	"github.com/ncode/portugol-go/internal/source"
+	"github.com/ncode/PortuGo/internal/ast"
+	"github.com/ncode/PortuGo/internal/interp"
+	"github.com/ncode/PortuGo/internal/lexer"
+	"github.com/ncode/PortuGo/internal/parser"
+	"github.com/ncode/PortuGo/internal/sema"
+	"github.com/ncode/PortuGo/internal/source"
 )
 
 // endpointRandom forces every draw to an endpoint, independently of a seed.

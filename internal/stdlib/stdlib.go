@@ -6,8 +6,8 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/ncode/portugol-go/internal/cp1252"
-	"github.com/ncode/portugol-go/internal/runtime"
+	"github.com/ncode/PortuGo/internal/cp1252"
+	"github.com/ncode/PortuGo/internal/runtime"
 )
 
 // Library stores stateful random built-ins.

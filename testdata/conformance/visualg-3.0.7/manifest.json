@@ -5092,7 +5092,7 @@
         "tests": [
           "frontend_reference_test.go#TestRecordedFrontendRejections",
           "internal/parser/recovery_test.go#TestWriteTailRecovery",
-          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+          "cmd/portugo/format_test.go#TestFormatterPreservesMalformedFiles"
         ],
         "expected": {
           "exitCode": 1,
@@ -5152,7 +5152,7 @@
         "tests": [
           "frontend_reference_test.go#TestRecordedFrontendRejections",
           "internal/parser/recovery_test.go#TestWriteTailRecovery",
-          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+          "cmd/portugo/format_test.go#TestFormatterPreservesMalformedFiles"
         ],
         "expected": {
           "exitCode": 1,
@@ -5224,7 +5224,7 @@
         },
         "tests": [
           "frontend_reference_test.go#TestRecordedFrontendRejections",
-          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+          "cmd/portugo/format_test.go#TestFormatterPreservesMalformedFiles"
         ]
       }
     },
@@ -5503,7 +5503,7 @@
         "tests": [
           "frontend_reference_test.go#TestRecordedFrontendRejections",
           "frontend_reference_test.go#TestAccentedFormPositions",
-          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+          "cmd/portugo/format_test.go#TestFormatterPreservesMalformedFiles"
         ]
       }
     },
@@ -5606,7 +5606,7 @@
         "tests": [
           "frontend_reference_test.go#TestRecordedFrontendRejections",
           "frontend_reference_test.go#TestAccentedFormPositions",
-          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+          "cmd/portugo/format_test.go#TestFormatterPreservesMalformedFiles"
         ]
       }
     },
@@ -5899,7 +5899,7 @@
         },
         "tests": [
           "frontend_reference_test.go#TestRecordedFrontendRejections",
-          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+          "cmd/portugo/format_test.go#TestFormatterPreservesMalformedFiles"
         ]
       }
     },
@@ -11727,7 +11727,7 @@
       "implementation": {
         "state": "verified",
         "tests": [
-          "cmd/portugol/dispatch_test.go#TestCommandContracts"
+          "cmd/portugo/dispatch_test.go#TestCommandContracts"
         ]
       }
     },
@@ -11833,7 +11833,7 @@
           "internal/repl/input_test.go#TestSharedInputPreservesFinalProgram",
           "internal/repl/input_test.go#TestBufferedSourceAtEOF",
           "internal/repl/input_test.go#TestSourceEncoding",
-          "cmd/portugol/dispatch_test.go#TestCommandContracts"
+          "cmd/portugo/dispatch_test.go#TestCommandContracts"
         ]
       }
     },
@@ -11861,7 +11861,7 @@
           "internal/repl/submission_test.go#TestAutomaticSubmission",
           "internal/repl/submission_test.go#TestAutomaticSubmissionDiagnostics",
           "internal/repl/submission_test.go#TestCP1252TerminatorLookalike",
-          "cmd/portugol/dispatch_test.go#TestCommandContracts",
+          "cmd/portugo/dispatch_test.go#TestCommandContracts",
           "internal/repl/recovery_test.go#TestSourceLimitRecovery",
           "internal/repl/recovery_test.go#TestHostDiagnosticRecovery",
           "internal/repl/recovery_test.go#TestNilDiagnosticWriter"
@@ -20520,7 +20520,7 @@
         },
         "tests": [
           "header_reference_test.go#TestRecordedHeaderRejections",
-          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+          "cmd/portugo/format_test.go#TestFormatterPreservesMalformedFiles"
         ]
       }
     },
@@ -20929,7 +20929,7 @@
         },
         "tests": [
           "header_reference_test.go#TestRecordedHeaderRejections",
-          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles"
+          "cmd/portugo/format_test.go#TestFormatterPreservesMalformedFiles"
         ]
       }
     },
@@ -82477,7 +82477,7 @@
           "internal/source/positions_test.go#TestOriginalPos",
           "internal/source/positions_test.go#TestOriginalLinePositions",
           "internal/lexer/source_test.go#TestScanFileOriginalPositions",
-          "cmd/portugol/source_positions_test.go#TestOriginalByteDiagnostics",
+          "cmd/portugo/source_positions_test.go#TestOriginalByteDiagnostics",
           "internal/parser/comments_test.go#TestCommentSourceSpans",
           "internal/parser/comments_test.go#TestCP1252CommentsRoundTrip",
           "internal/lexer/lexer_test.go#TestCommentLinePositions",
@@ -82508,8 +82508,8 @@
           "internal/parser/comments_test.go#TestCommentAnchorsRoundTrip",
           "internal/parser/comments_test.go#TestCP1252CommentsRoundTrip",
           "internal/parser/format_forms_test.go#TestFormatterASTForms",
-          "cmd/portugol/format_edges_test.go#TestFormatterEdgeCases",
-          "cmd/portugol/format_edges_test.go#TestFormatterOperatorSpellings"
+          "cmd/portugo/format_edges_test.go#TestFormatterEdgeCases",
+          "cmd/portugo/format_edges_test.go#TestFormatterOperatorSpellings"
         ]
       }
     },
@@ -82531,16 +82531,16 @@
       "implementation": {
         "state": "verified",
         "tests": [
-          "cmd/portugol/dispatch_test.go#TestCommandContracts",
-          "cmd/portugol/format_test.go#TestFormatterModes",
-          "cmd/portugol/format_test.go#TestFormatterPreservesMalformedFiles",
-          "cmd/portugol/format_test.go#TestFormatterPreservesResourceLimitedFiles",
-          "cmd/portugol/format_test.go#TestFormatterFlagUsage",
-          "cmd/portugol/format_test.go#TestFormatterWriteSymlink",
+          "cmd/portugo/dispatch_test.go#TestCommandContracts",
+          "cmd/portugo/format_test.go#TestFormatterModes",
+          "cmd/portugo/format_test.go#TestFormatterPreservesMalformedFiles",
+          "cmd/portugo/format_test.go#TestFormatterPreservesResourceLimitedFiles",
+          "cmd/portugo/format_test.go#TestFormatterFlagUsage",
+          "cmd/portugo/format_test.go#TestFormatterWriteSymlink",
           "internal/parser/format_forms_test.go#TestFormatterASTForms",
           "internal/parser/comments_test.go#TestCommentAnchorsRoundTrip",
-          "cmd/portugol/format_edges_test.go#TestFormatterEdgeCases",
-          "cmd/portugol/format_edges_test.go#TestFormatterOperatorSpellings"
+          "cmd/portugo/format_edges_test.go#TestFormatterEdgeCases",
+          "cmd/portugo/format_edges_test.go#TestFormatterOperatorSpellings"
         ]
       }
     },

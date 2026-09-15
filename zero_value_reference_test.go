@@ -5,11 +5,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/interp"
-	"github.com/ncode/portugol-go/internal/lexer"
-	"github.com/ncode/portugol-go/internal/parser"
-	"github.com/ncode/portugol-go/internal/sema"
-	"github.com/ncode/portugol-go/internal/source"
+	"github.com/ncode/PortuGo/internal/interp"
+	"github.com/ncode/PortuGo/internal/lexer"
+	"github.com/ncode/PortuGo/internal/parser"
+	"github.com/ncode/PortuGo/internal/sema"
+	"github.com/ncode/PortuGo/internal/source"
 )
 
 func TestRecordedZeroValue(t *testing.T) {

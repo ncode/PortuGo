@@ -7,13 +7,13 @@ import (
 	"io"
 	"strings"
 
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/interp"
-	"github.com/ncode/portugol-go/internal/lexer"
-	"github.com/ncode/portugol-go/internal/parser"
-	"github.com/ncode/portugol-go/internal/sema"
-	"github.com/ncode/portugol-go/internal/source"
-	"github.com/ncode/portugol-go/internal/token"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/interp"
+	"github.com/ncode/PortuGo/internal/lexer"
+	"github.com/ncode/PortuGo/internal/parser"
+	"github.com/ncode/PortuGo/internal/sema"
+	"github.com/ncode/PortuGo/internal/source"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 // Run starts a complete-program REPL. A program terminator or EOF submits input.
@@ -41,7 +41,7 @@ func Run(options interp.Options, errout io.Writer) (bool, error) {
 	}
 	for {
 		if len(lines) == 0 {
-			if _, err := fmt.Fprint(out, "portugol> "); err != nil {
+			if _, err := fmt.Fprint(out, "portugo> "); err != nil {
 				return false, err
 			}
 		} else {

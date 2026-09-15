@@ -52,7 +52,7 @@ func TestCommandContracts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	replBanner := "Portugol REPL. Enter a complete program, fimalgoritmo runs it, :sair exits.\nportugol> "
+	replBanner := "Portugol REPL. Enter a complete program, fimalgoritmo runs it, :sair exits.\nportugo> "
 	replOversized := strings.Repeat("x", (4<<20)+1) + "\nalgoritmo \"next\"\ninicio\nescreval(7)\nfimalgoritmo\n:sair\n"
 	for _, tt := range []struct {
 		name                  string
@@ -75,9 +75,9 @@ func TestCommandContracts(t *testing.T) {
 		{"repl args", []string{"repl", path}, "", "", "usage:", 2},
 		{"unknown command", []string{"unknown"}, "", "", "usage:", 2},
 		{"repl read", []string{"repl", "--max-steps", "20"}, "algoritmo \"read\"\nvar x: inteiro\ninicio\nleia(x)\nescreval(x)\nfimalgoritmo\n42\n:sair\n", "", "", 0},
-		{"repl EOF", []string{"repl", "--max-steps", "20"}, string(replEOF), replBanner + "... ... ...  42\nportugol> ", "", 0},
-		{"repl automatic", []string{"repl", "--max-steps", "20"}, string(replAuto), replBanner + "... ... ... ... ... 42\n 42\nportugol> ... ... ...  7\nportugol> ", "", 0},
-		{"repl limit recovery", []string{"repl", "--max-steps", "20"}, replOversized, replBanner + "portugol> ... ... ...  7\nportugol> ", "<repl>:1:4194305: E900:", 1},
+		{"repl EOF", []string{"repl", "--max-steps", "20"}, string(replEOF), replBanner + "... ... ...  42\nportugo> ", "", 0},
+		{"repl automatic", []string{"repl", "--max-steps", "20"}, string(replAuto), replBanner + "... ... ... ... ... 42\n 42\nportugo> ... ... ...  7\nportugo> ", "", 0},
+		{"repl limit recovery", []string{"repl", "--max-steps", "20"}, replOversized, replBanner + "portugo> ... ... ...  7\nportugo> ", "<repl>:1:4194305: E900:", 1},
 		{"repl incomplete EOF", []string{"repl"}, "algoritmo \"unfinished\"\ninicio\n", replBanner + "... ... ", "<repl>:3:1: P001:", 1},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
@@ -93,7 +93,7 @@ func TestCommandContracts(t *testing.T) {
 			ctx, cancel := context.WithTimeout(context.Background(), timeout)
 			defer cancel()
 			cmd := exec.CommandContext(ctx, executable, "-test.run=^TestCommandContracts$")
-			args, err := json.Marshal(append([]string{"portugol"}, tt.args...))
+			args, err := json.Marshal(append([]string{"portugo"}, tt.args...))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -109,7 +109,7 @@ func TestCommandContracts(t *testing.T) {
 				t.Errorf("exit %d want %d: %s", got, tt.exit, &stderr)
 			}
 			if tt.name == "repl read" {
-				if !strings.Contains(out.String(), " 42\nportugol> ") {
+				if !strings.Contains(out.String(), " 42\nportugo> ") {
 					t.Errorf("lost shared input: %q", &out)
 				}
 			} else if out.String() != tt.stdout {

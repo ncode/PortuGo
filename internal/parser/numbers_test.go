@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/ast"
-	"github.com/ncode/portugol-go/internal/diag"
-	"github.com/ncode/portugol-go/internal/lexer"
+	"github.com/ncode/PortuGo/internal/ast"
+	"github.com/ncode/PortuGo/internal/diag"
+	"github.com/ncode/PortuGo/internal/lexer"
 )
 
 func TestNumericLiteralKinds(t *testing.T) {

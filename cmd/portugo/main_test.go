@@ -13,7 +13,7 @@ import (
 
 func TestRunExitStatus(t *testing.T) {
 	if path := os.Getenv("PORTUGOL_RUN_FIXTURE"); path != "" {
-		os.Args = []string{"portugol", "run", path}
+		os.Args = []string{"portugo", "run", path}
 		main()
 		os.Exit(0)
 	}

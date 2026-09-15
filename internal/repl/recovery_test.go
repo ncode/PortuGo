@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ncode/portugol-go/internal/interp"
-	"github.com/ncode/portugol-go/internal/source"
+	"github.com/ncode/PortuGo/internal/interp"
+	"github.com/ncode/PortuGo/internal/source"
 )
 
 func TestSourceLimitRecovery(t *testing.T) {
@@ -27,7 +27,7 @@ func TestSourceLimitRecovery(t *testing.T) {
 			ok, err := Run(interp.Options{Input: strings.NewReader(tt.rejected + good), Output: &out, MaxSteps: 100}, &stderr)
 			if err != nil || ok || strings.Count(stderr.String(), ": E900:") != 1 ||
 				strings.Count(stderr.String(), "<repl>:") != 1 ||
-				strings.Count(out.String(), "7\n 7\n") != 1 || !strings.HasSuffix(out.String(), " 7\nportugol> ") {
+				strings.Count(out.String(), "7\n 7\n") != 1 || !strings.HasSuffix(out.String(), " 7\nportugo> ") {
 				t.Fatalf("ok=%t, error=%v, output=%q, diagnostics=%q", ok, err, &out, &stderr)
 			}
 		})
@@ -48,7 +48,7 @@ func TestHostDiagnosticRecovery(t *testing.T) {
 	var stderr bytes.Buffer
 	ok, err := Run(interp.Options{Input: strings.NewReader(input), Output: &out}, &stderr)
 	if err != nil || ok || strings.Count(stderr.String(), ": R008:") != 1 || !strings.Contains(stderr.String(), "<repl>:4:") ||
-		!strings.Contains(out.output.String(), "BEFOREportugol> ") || !strings.HasSuffix(out.output.String(), " 7\nportugol> ") {
+		!strings.Contains(out.output.String(), "BEFOREportugo> ") || !strings.HasSuffix(out.output.String(), " 7\nportugo> ") {
 		t.Fatalf("ok=%t, error=%v, output=%q, diagnostics=%q", ok, err, &out.output, &stderr)
 	}
 }
@@ -61,7 +61,7 @@ func TestNilDiagnosticWriter(t *testing.T) {
 		input := rejected + "algoritmo \"next\"\ninicio\nescreval(7)\nfimalgoritmo\n:sair\n"
 		var out bytes.Buffer
 		ok, err := Run(interp.Options{Input: strings.NewReader(input), Output: &out, MaxSteps: 100}, nil)
-		if err != nil || ok || !strings.HasSuffix(out.String(), " 7\nportugol> ") {
+		if err != nil || ok || !strings.HasSuffix(out.String(), " 7\nportugo> ") {
 			t.Fatalf("nil diagnostic writer: ok=%t, error=%v, output=%q", ok, err, &out)
 		}
 	}
