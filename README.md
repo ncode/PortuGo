@@ -131,11 +131,14 @@ source files, including the encoding commonly used by VisuAlg.
 
 ## Compatibility and project status
 
-PortuGo is actively being developed toward VisuAlg 3.x compatibility, with
-behavior checked against VisuAlg 3.0.7. It already supports variables,
-conditions, loops, procedures, functions, vectors, and numeric and text
-built-ins. Some behaviors still differ or remain unverified; complete
-compatibility is a goal, not a guarantee yet.
+PortuGo targets the VisuAlg 3.x dialect, with behavior checked against
+VisuAlg 3.0.7. It supports variables, conditions, loops, procedures, functions,
+vectors, and numeric and text built-ins.
+
+The [conformance report](docs/quality-acceptance-2026-09-14.md) records passing
+checks for all accepted programs in the reference corpus. Some rejected-program
+cases and behavior outside that corpus remain unverified, so these results
+do not guarantee compatibility with every VisuAlg program.
 
 This is a command-line interpreter. It doesn't recreate the VisuAlg desktop
 interface or graphical debugger. Portugol Studio and other Portugol dialects

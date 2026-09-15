@@ -4,6 +4,7 @@
 
 - Rename the Go module to `github.com/ncode/PortuGo` and the CLI to `portugo`.
   Require Go 1.27, align all CI jobs with `go.mod`, and update the pinned linters.
+  Refresh the README's conformance status and link the acceptance report.
 
 - Keep reviewed rejected-source records visible during replay without treating
   them as pending accepted behavior; pending accepted records still fail the

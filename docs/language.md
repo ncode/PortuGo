@@ -1,4 +1,4 @@
-# Portugol-Go Language Reference
+# PortuGo Language Reference
 
 This implementation targets the VisuAlg 3.x dialect used by Apoio Informática.
 Other Portugol dialects are intentionally out of scope for v1.
