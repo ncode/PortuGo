@@ -17,9 +17,19 @@ import (
 	"github.com/ncode/PortuGo/internal/source"
 )
 
+// version is set at link time for distribution builds and is read-only at runtime.
+var version = "dev"
+
 func main() { os.Exit(dispatch(os.Args[1:])) }
 
 func dispatch(args []string) int {
+	if len(args) == 1 && args[0] == "--version" {
+		if _, err := fmt.Fprintln(os.Stdout, version); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return 1
+		}
+		return 0
+	}
 	if len(args) == 0 {
 		usage()
 		return 2
@@ -147,7 +157,7 @@ func (b *formatBuffer) Write(p []byte) (int, error) {
 }
 
 func usage() {
-	fmt.Fprintln(os.Stderr, "usage: portugo <run|check|fmt> [options] file.alg | portugo repl [--max-steps N]")
+	fmt.Fprintln(os.Stderr, "usage: portugo <run|check|fmt> [options] file.alg | portugo repl [--max-steps N] | portugo --version")
 }
 
 func parsedProgram(path string) (*source.File, *ast.Program, bool, []diag.Diagnostic, error) {

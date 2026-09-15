@@ -13,6 +13,31 @@ program.
 
 ## Get started
 
+### Download a release
+
+Published versions are available from [GitHub Releases](https://github.com/ncode/PortuGo/releases).
+Once a release is published, its **Assets** include the `portugo` executable
+for Linux, macOS, and Windows. Downloading an executable does not require Go.
+
+Choose the archive matching your computer:
+
+| System | Archive name ends with |
+| --- | --- |
+| Linux, 64-bit Intel/AMD | `linux-amd64.tar.gz` |
+| Linux, ARM64 | `linux-arm64.tar.gz` |
+| macOS, Intel | `darwin-amd64.tar.gz` |
+| macOS, Apple Silicon | `darwin-arm64.tar.gz` |
+| Windows, 64-bit Intel/AMD | `windows-amd64.zip` |
+| Windows, ARM64 | `windows-arm64.zip` |
+
+Extract the archive and open a terminal in the extracted folder. Run
+`./portugo --version` to check the installed version, then use
+`./portugo run your-program.alg` to run an exercise. In Windows PowerShell,
+use `.\portugo.exe` in place of `./portugo`. Each release also includes
+`SHA256SUMS` for checking the downloaded archive's integrity.
+
+### Build from source
+
 You'll need **[Git](https://git-scm.com/install/)** and **Go 1.27 or newer**. The
 [official Go installation guide](https://go.dev/doc/install) has instructions
 for Linux and macOS. You don't need to know Go to use PortuGo; it builds the
@@ -88,6 +113,7 @@ complete program, starting with `algoritmo` and ending with `fimalgoritmo`.
 | Check whether a file is already formatted | `./portugo fmt --check boas-vindas.alg` |
 | Start an interactive session | `./portugo repl` |
 | See help for a command | `./portugo run -h` |
+| Show the executable's version | `./portugo --version` |
 
 Put options such as `-w` and `--check` **before** the filename.
 `check` is silent when it succeeds. If something needs attention, diagnostics
