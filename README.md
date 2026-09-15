@@ -1,15 +1,11 @@
 # PortuGo
 
-**Learn and practice Portugol on Linux and macOS, right from your terminal.**
+[Português (Brasil)](README.pt-BR.md) | English
 
-PortuGo aims to close the gap for Linux and macOS users who want to follow
-VisuAlg-based courses, solve exercises, or teach programming in Portuguese.
-It runs `.alg` programs in the **VisuAlg 3.x dialect**, using the editor you
-already enjoy. No Windows installation, virtual machine, or Wine is needed.
-
-Whether you're writing your first `algoritmo` or revisiting an old classroom
-exercise, welcome! The steps below take you from the source code to a running
-program.
+PortuGo runs Portugol programs in your terminal on Linux and macOS. You can
+follow VisuAlg-based courses, solve exercises, or teach programming in
+Portuguese using your preferred editor. It reads `.alg` files in the
+VisuAlg 3.x dialect without needing Windows, a virtual machine, or Wine.
 
 ## Get started
 
@@ -38,10 +34,10 @@ use `.\portugo.exe` in place of `./portugo`. Each release also includes
 
 ### Build from source
 
-You'll need **[Git](https://git-scm.com/install/)** and **Go 1.27 or newer**. The
+You'll need [Git](https://git-scm.com/install/) and Go 1.27 or newer. The
 [official Go installation guide](https://go.dev/doc/install) has instructions
-for Linux and macOS. You don't need to know Go to use PortuGo; it builds the
-command-line tool for you.
+for Linux and macOS. Go builds the command-line tool; you don't need to know
+the language to use PortuGo.
 
 Open a terminal and check that both tools are available:
 
@@ -68,13 +64,13 @@ You should see:
 Ola, Portugol!
 ```
 
-That's your first program running! `portugo` is the executable you just built;
-the `./` tells your terminal to find it in the current folder. The commands
-below assume you're still in the `PortuGo` folder.
+`portugo` is the executable you just built. The `./` tells your terminal to
+find it in the current folder. The commands below assume you're still in the
+`PortuGo` folder.
 
 ## Write something of your own
 
-Open your favorite text editor and save this as **`boas-vindas.alg`** in the
+Open your text editor and save this as `boas-vindas.alg` in the
 project folder, as a plain-text UTF-8 file:
 
 ```portugol
@@ -124,13 +120,13 @@ In the interactive session, enter a **complete program**. The line containing
 `fimalgoritmo` runs it; if it uses `leia`, enter the requested values next.
 Type `:sair` on its own line to leave the session.
 
-Experimenting with loops? You can set an execution budget:
+When experimenting with loops, you can limit the number of execution steps:
 
 ```sh
 ./portugo run --max-steps 10000 boas-vindas.alg
 ```
 
-The program stops with a diagnostic if it uses up that budget. You can also
+The program stops with a diagnostic if it reaches that limit. You can also
 press Ctrl+C to stop a running command.
 
 ## Keep exploring
@@ -187,5 +183,3 @@ You can run the test suite from the project folder with:
 ```sh
 go test ./...
 ```
-
-Happy learning — bons estudos!

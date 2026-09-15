@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add a Brazilian Portuguese README with links between languages, and revise
+  the English introduction and instructions for clarity.
+
 - Build versioned Linux, macOS, and Windows archives for amd64 and arm64 with
   `make dist`, embedded `--version` output, and `SHA256SUMS`. Attach downloads
   when a GitHub Release is published; PR and manual runs verify the packaging.

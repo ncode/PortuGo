@@ -3,8 +3,9 @@
 This implementation targets the VisuAlg 3.x dialect used by Apoio Informática.
 Other Portugol dialects are intentionally out of scope for v1.
 
-New here? Start with the [getting-started guide](../README.md) to build the CLI
-and run your first program on Linux or macOS.
+New here? The getting-started guide is available in
+[English](../README.md) and [Português (Brasil)](../README.pt-BR.md). It explains
+how to build the CLI and run your first program on Linux or macOS.
 
 The finite automated example sweep excludes complete runs of the
 [two nonterminating bundled examples](bundled-external-stop.md). Their original
