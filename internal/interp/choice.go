@@ -22,7 +22,8 @@ func (i *Interpreter) matchesCase(selector runtime.Value, label ast.CaseLabel) (
 			// Only the label is uppercased by the reference.
 			return selector.Str == strings.ToUpper(low.Str), nil
 		}
-		return equalValues(selector, low)
+		match, err := equalValues(selector, low)
+		return match, failure(label.Low.Start(), diag.ETypeMismatch, err)
 	}
 	high, err := i.eval(label.High)
 	if err != nil {

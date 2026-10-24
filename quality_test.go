@@ -21,9 +21,10 @@ func TestQualityPolicy(t *testing.T) {
 			"ubuntu-latest", "macos-latest", "windows-latest",
 			"-fuzz=FuzzLexer -fuzztime=30s", "-fuzz=FuzzParser -fuzztime=30s",
 			"openspec validate --all --strict --no-interactive", "bash scripts/check-oracle.sh",
+			"honnef.co/go/tools/cmd/staticcheck@v0.8.2", "golangci-lint/v2/cmd/golangci-lint@v2.15.0",
 		}},
 		{".golangci.yml", []string{"version: \"2\"", "errcheck", "govet", "ineffassign", "staticcheck", "unused"}},
-		{"docs/development.md", []string{"honnef.co/go/tools/cmd/staticcheck@v0.8.1", "golangci-lint/v2/cmd/golangci-lint@v2.13.2"}},
+		{"docs/development.md", []string{"honnef.co/go/tools/cmd/staticcheck@v0.8.2", "golangci-lint/v2/cmd/golangci-lint@v2.15.0"}},
 	}
 	for _, check := range checks {
 		t.Run(check.path, func(t *testing.T) {

@@ -11,7 +11,7 @@ func (c *checker) checkColorArg(expr ast.Expr, deferInvalid bool) bool {
 	before := len(c.diags)
 	typ := c.expr(expr)
 	switch typ.Kind {
-	case runtime.StringType, runtime.InvalidType:
+	case runtime.StringType, runtime.DynamicType, runtime.InvalidType:
 		if typ.Kind == runtime.InvalidType && c.mixedStringAddition(expr) {
 			if deferInvalid {
 				c.diags = c.diags[:before]

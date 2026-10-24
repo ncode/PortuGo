@@ -415,6 +415,9 @@ produces `7`; a subsequent bare condition on `b` rejects its nonlogical value
 with `E001`. The stored value also determines later assignment and argument
 compatibility: `b <- 8` succeeds, while `b <- verdadeiro` receives `R001`.
 Logical vector elements and record fields retain values in the same way.
+`carac` and `mudacor` check these stored arguments against their concrete
+runtime values, including values in logical vector elements and record fields.
+An incompatible concrete argument still receives `E001` at that argument.
 Function parameters consume the concrete argument; a logical function's
 `retorne` instead takes the comparison's logical payload (`falso` for `"x" = 7`).
 Integer format bounds reject comparison results with `P001`.
@@ -499,7 +502,8 @@ are accepted. There is no fall-through. `outrocaso` runs only if nothing matches
 For the recorded ASCII text cases, single labels are uppercased and compared
 with the unchanged selector: `"B"` matches `caso "b"`, while `"b"` does not.
 Logical single labels use equality. Recorded text and logical ranges do not
-match. Incompatible label types produce a positioned `E001`.
+match. Incompatible label types produce `E001` at the label, including when
+the selector's concrete type is established only during execution.
 
 The range separator must follow its lower expression on the same physical
 line. A missing upper expression or the unsupported `1..5` spelling produces
@@ -594,6 +598,14 @@ one-argument procedure zero, and two function no-value results. The
 implementation preserves the absent-parameter state without supplying a
 general default value; the observations do not establish an omitted-argument
 rule beyond these recorded forms.
+
+As a project execution-control safeguard, a halt inside a nested call unwinds
+active caller evaluations. Remaining operands, output items, format expressions,
+and call arguments are skipped, and unfinished calls do not copy reference
+parameters back. Earlier output and direct global writes remain visible; the
+halt itself adds no diagnostic. A later interpreter run starts normally. These
+nested compositions have project regression coverage and do not extend the
+independently qualified reference forms above.
 
 ## Function Results
 
@@ -1485,6 +1497,11 @@ Bundled-example catalogs use the same strict JSON boundary: unknown fields and
 trailing values fail validation before catalog entries are considered.
 Stdout, state and host observation artifacts use the adapter's 1 MiB output
 limit; larger retained expectations fail validation before replay.
+State observations include records as objects with a `fields` array. Each entry
+has the canonical field `name` and its recursively observed `value`, in declaration
+order, preserving duplicate names and empty layouts. Vectors of records retain
+the same record objects in their flattened `values` array. The observation size
+limit also applies to these complete record snapshots.
 Capture also rejects unknown fields and trailing JSON in its staged recording
 metadata before producing evidence.
 Historical manifests loaded for downgrade checks use the same strict decoder as

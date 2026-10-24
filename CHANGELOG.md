@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- Update CI and development lint pins to Staticcheck v0.8.2 and golangci-lint
+  v2.15.0, supporting the updated Go 1.27 export data format.
+- Validate retained concrete arguments to `carac` and `mudacor` at runtime,
+  including logical vector elements and record fields.
+- Unwind active caller evaluations after a nested execution halt, skipping
+  later output, arguments, and unfinished reference-parameter copy-back.
+- Report incompatible dynamic `escolha` labels as positioned `E001` diagnostics.
+- Preserve record fields in conformance state snapshots, including vectors of
+  records, duplicate field names, and empty layouts, within the observation limit.
+
 - Add a Brazilian Portuguese README with links between languages, preserving
   the welcoming tone of the English guide.
 

@@ -106,7 +106,7 @@ func (c *checker) builtinCallType(name string, call *ast.CallExpr) (runtime.Type
 			c.error(call.Name.Pos, diag.EParse, "expected ')' after character code")
 		} else if len(call.Args) == 1 {
 			t := c.expr(call.Args[0])
-			if t.Kind != runtime.IntegerType && t.Kind != runtime.NumericType && t.Kind != runtime.VoidType && t.Kind != runtime.InvalidType {
+			if t.Kind != runtime.IntegerType && t.Kind != runtime.NumericType && t.Kind != runtime.DynamicType && t.Kind != runtime.VoidType && t.Kind != runtime.InvalidType {
 				c.error(call.Args[0].Start(), diag.ETypeMismatch, "expected inteiro argument")
 			}
 		}

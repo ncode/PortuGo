@@ -9,8 +9,8 @@ toolchain switching so checks use the selected Go version. Install the same
 pinned tools with Go 1.27:
 
 ```sh
-go install honnef.co/go/tools/cmd/staticcheck@v0.8.1
-go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.13.2
+go install honnef.co/go/tools/cmd/staticcheck@v0.8.2
+go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.15.0
 npm install --global @fission-ai/openspec@1.8.0
 ```
 
@@ -18,9 +18,9 @@ Tool dependencies stay outside the language module. The lint configuration
 explicitly enables errcheck, govet, ineffassign, staticcheck, and unused, with
 uncapped diagnostics. The lint target version is also inferred from `go.mod`.
 This pins the behavior of
-[golangci-lint v2.13.2](https://github.com/golangci/golangci-lint/releases/tag/v2.13.2)
-and [Staticcheck 2026.2.1](https://github.com/dominikh/go-tools/releases/tag/2026.2.1),
-which support Go 1.27.
+[golangci-lint v2.15.0](https://github.com/golangci/golangci-lint/releases/tag/v2.15.0)
+and [Staticcheck 2026.2.2](https://github.com/dominikh/go-tools/releases/tag/2026.2.2),
+which support the updated export data format introduced in Go 1.27.2.
 
 Run the required checks from the repository root:
 

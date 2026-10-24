@@ -16,9 +16,14 @@ const (
 	maxTextBytes = runtime.MaxTextBytes
 )
 
+// haltControl unwinds active evaluations without producing a diagnostic.
+type haltControl struct{}
+
+func (haltControl) Error() string { return "execution halted" }
+
 func failure(pos token.Pos, code diag.Code, err error) error {
-	if err == nil {
-		return nil
+	if err == nil || errors.Is(err, haltControl{}) {
+		return err
 	}
 	var d diag.Diagnostic
 	if errors.As(err, &d) {
@@ -28,7 +33,7 @@ func failure(pos token.Pos, code diag.Code, err error) error {
 }
 
 func diagnostics(err error, pos token.Pos, code diag.Code) []diag.Diagnostic {
-	if err == nil {
+	if err == nil || errors.Is(err, haltControl{}) {
 		return nil
 	}
 	var d diag.Diagnostic
