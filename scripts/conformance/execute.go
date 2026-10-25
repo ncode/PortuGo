@@ -188,6 +188,21 @@ func observedValue(v runtime.Value) any {
 			Bounds []runtime.Range `json:"bounds"`
 			Values []any           `json:"values"`
 		}{v.Vec.Type.Ranges, values}
+	case runtime.RecordValue:
+		if v.Rec == nil {
+			return nil
+		}
+		type field struct {
+			Name  string `json:"name"`
+			Value any    `json:"value"`
+		}
+		fields := make([]field, len(v.Rec.Fields))
+		for n, cell := range v.Rec.Fields {
+			fields[n] = field{v.Rec.Type.Fields[n].Name, observedValue(cell.Value)}
+		}
+		return struct {
+			Fields []field `json:"fields"`
+		}{fields}
 	default:
 		return nil
 	}

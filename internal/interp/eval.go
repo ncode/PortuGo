@@ -43,6 +43,9 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 	i.depth++
 	defer func() {
 		i.depth--
+		if err == nil && i.halted {
+			value, err = runtime.Value{}, haltControl{}
+		}
 		err = failure(expr.Start(), diag.RType, err)
 		if err == nil && value.Kind == runtime.StringValue {
 			value.Str = runtime.LimitText(value.Str)

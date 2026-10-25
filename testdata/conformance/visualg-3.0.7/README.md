@@ -28,7 +28,11 @@ State and host-event observations use the current checkout's deterministic
 execution adapter in a subprocess, with the same runtime guards. The adapter
 uses a fixed PCG seed, a clock starting at the Unix epoch, and recorded,
 nonblocking host operations. State JSON maps canonical global names to scalar
-values or vector objects with `bounds` and flattened `values`. Host JSON is an
+values, vector objects with `bounds` and flattened `values`, or record objects
+with a `fields` array of `{ "name": "field", "value": ... }` entries. Record
+fields retain canonical names and declaration order, including duplicate names;
+empty records have an empty array. Vector values recursively include records.
+Host JSON is an
 ordered array of typed operation records. Recorded display commands emit
 `clearScreen` or `display` events; display values contain an RGB `Color` integer
 and a `Background` boolean. Each channel is byte-compared

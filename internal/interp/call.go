@@ -311,6 +311,9 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 	if err != nil {
 		return runtime.Value{}, err
 	}
+	if i.halted {
+		return runtime.Value{}, haltControl{}
+	}
 	if ctrl.kind == breakControl {
 		return runtime.Value{}, failure(ctrl.at, diag.RLoop, fmt.Errorf("interrompa outside loop"))
 	}
