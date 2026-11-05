@@ -1368,7 +1368,8 @@ remain out of scope for v1.
 
 The conformance manifest contains 1,679 probes: 1,673 verified implementations,
 four reviewed rejected-source mismatches, and two reviewed exclusions for
-nonterminating examples. All required accepted programs are verified. The
+nonterminating examples. The manifest contains 1,834 implementation-test links,
+including shared tests. All required accepted programs are verified. The
 [archived conformance task list](../openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/tasks.md)
 is complete; the four rejection differences remain visible without blocking
 accepted-program qualification. Behavior outside the recorded corpus remains
