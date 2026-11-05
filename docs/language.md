@@ -14,23 +14,23 @@ remain required, and a timeout is never a successful completion result.
 
 The [September 9 reference observations](reference-observations-2026-09-09.md)
 record further compatibility gaps in syntax, literals, declarations, and calls.
-Their implementation remains pending unless a corpus entry is explicitly
-verified. The reference accepts vectors larger than 500 elements; the draft
+The manifest identifies the verified forms; unrecorded combinations remain
+unqualified. The reference accepts vectors larger than 500 elements; the draft
 500-slot compatibility restriction has therefore been withdrawn. The recordings
 do not establish the upper storage limit in every declaration context.
 
 Declaration support is form-specific: the recorded scalar constant and alias,
 named-record and scalar-field, assignment-alias, and case-range forms have
 positive coverage. Rejected variants retain positioned diagnostics, while
-unrecorded combinations remain pending under their owning tasks.
+unrecorded combinations remain outside the qualified scope.
 
-The [bundled example sweep](bundled-examples-progress.md) verifies 44 original
-programs against reference output, including formatting and execution. Eleven supplied files have
-recorded reference errors. Bundled-file presence alone does not establish that
-its syntax is accepted by this release.
-Six accepted bundled recordings remain pending: five contain generated
-output outside the current replay contract, including one syntax mismatch, and
-one recorded input path is blocked by diagnostics in unexecuted code.
+The [bundled example sweep](bundled-examples-progress.md) verifies all 60 accepted
+programs in their original and formatted forms: 45 use exact output comparisons
+and 15 use reviewed generated-output contracts. Eleven supplied files have
+recorded reference errors; four of those rejection paths still differ from the
+CLI. Two nonterminating examples are excluded from complete execution. No
+accepted bundled recording remains pending. These results cover the recorded
+input paths, not every interactive branch or every VisuAlg program.
 
 ## Program Structure
 
@@ -715,9 +715,10 @@ Undefined Windows-1252 bytes and unrepresentable output characters also receive
 Encoding is checked before buffering a line. Oversized input lines receive `R003`; exhausted
 headless console input still reports `R004` at the consuming destination.
 The missing-parent fallback is verified both without input and with a console
-read. Access-denial and sharing-lock recordings have platform filesystem
-regressions; generic CLI replay cannot recreate their access restrictions and
-keeps those six probes pending. See [the file-input recordings](file-input-progress.md).
+read. The six access-denial and sharing-lock probes use a verified
+unavailable-open replay contract, with separate platform regressions for native
+error classification and sharing locks. An automated Windows ACL-denial fixture
+remains outside that coverage. See [the file-input recordings](file-input-progress.md).
 
 `eco on` and `eco off` request a typed echo setting from the host. Both recorded
 console and random-input transcripts retain input echo around `eco off`, so the
@@ -1365,32 +1366,42 @@ remain out of scope for v1.
 
 ## Validation status
 
-The current implementation is a VisuAlg-like subset. Fourteen selected VisuAlg
-3.0.7 observations are replayed by `TestRecordedWindowsProbes`; their sources,
-raw panel text, and validation results are linked from the [Windows report](windows-lab-validation-2026-09-07.md).
-Accepted program output is compared after removing only the two application
-notices and converting CRLF to the CLI's LF. Invalid programs receive positioned
-static diagnostics and are never executed: unlike the reference GUI, the CLI
-does not print preceding statements before reporting a statically known error.
-Unresolved identifiers in procedure and function bodies are retained as deferred
-diagnostics, so an uncalled body does not reject an otherwise executable path;
-the diagnostic is reported when that body is invoked.
-`run` exits 1 for lexical, parsing, semantic, or runtime failures and 0 on success.
-The active OpenSpec change tracks the remaining work; these selected observations
-are not a claim of full reference conformance.
+The conformance manifest contains 1,679 probes: 1,673 verified implementations,
+four reviewed rejected-source mismatches, and two reviewed exclusions for
+nonterminating examples. All required accepted programs are verified. The
+[archived conformance task list](../openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/tasks.md)
+is complete; the four rejection differences remain visible without blocking
+accepted-program qualification. Behavior outside the recorded corpus remains
+unverified.
 
-The [candidate quality evidence](quality-acceptance-2026-09-14.md) records the
-green build, lint, race, platform, fuzz, and strict specification checks for
-the current stacked candidate. Pending reference implementations and bundled
-example qualifications still prevent implementation acceptance.
+`TestRecordedWindowsProbes` covers fourteen early observations described in the
+[September 7 Windows report](windows-lab-validation-2026-09-07.md); the full corpus
+has additional focused tests and replay coverage. Accepted deterministic output
+uses exact comparisons after the declared normalization. Generated-output
+contracts check their recorded domains and framing without promising identical
+random sequences.
 
-The [reference corpus progress](reference-corpus-progress.md) tracks the broader
-recording work. New observations confirm particular constant, named-type and
-record forms in the reference application; those forms remain pending in this
-implementation. Corpus validation requires expected acceptance/rejection and
-generated files to agree with the reference, and an explicit history base to
-detect unreviewed regressions in coverage. Removing a probe, inventory entry,
-or linked task requires a reviewed retirement, even for pending behavior.
+Front-end diagnostics ordinarily prevent execution. Unresolved identifiers in
+procedure and function bodies are retained as deferred diagnostics, so an
+uncalled body does not reject an otherwise executable path; the diagnostic is
+reported when that body is invoked. `run` exits 1 for lexical, parsing, semantic,
+or runtime failures and 0 on success. The four reviewed rejection paths can
+differ from the reference in diagnostic timing and preceding output.
+
+The [September 14 quality evidence](quality-acceptance-2026-09-14.md) records
+passing build, lint, race, platform, fuzz, specification, and acceptance checks
+for that historical candidate. It does not qualify a newer commit: every
+release requires fresh results for the exact candidate under the
+[development checks](development.md) and [release procedure](releases.md).
+
+The [reference corpus progress](reference-corpus-progress.md) summarizes current
+coverage and preserves earlier implementation notes. Recorded scalar constants,
+aliases, named records, and scalar fields have verified coverage in their
+confirmed forms; unrecorded combinations remain unqualified. Corpus validation
+requires expected acceptance/rejection and generated files to agree with the
+reference, and an explicit history base to detect unreviewed coverage changes.
+Removing a probe, inventory entry, or linked task requires a reviewed retirement,
+even for pending behavior.
 Downgrading a verified probe requires a scope-correction review distinct from
 any review already attached to its verified state. Update the rationale or
 review link; surrounding whitespace in the rationale does not count as a new

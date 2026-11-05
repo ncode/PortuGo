@@ -63,17 +63,21 @@ and quoted context without normalizing whitespace or encoding.
 This preserves committed fixture bytes on checkout and staging, including LF,
 CRLF, and Windows-1252 data, even when `core.autocrlf=true` on Windows.
 
-The oracle gate runs evidence validation, which allows recorded probes with
-pending implementations and currently fails for missing recordings and mappings.
+The oracle gate runs evidence validation and replay of verified behavior.
+Recorded probes may have pending implementations; the current manifest has no
+missing recordings or mappings and no pending accepted programs. Four reviewed
+rejected-source mismatches remain visible without blocking accepted-program
+qualification.
 The execution adapter renders source diagnostics with the stable filename
 `source.alg`, so captured output never includes the caller's local filesystem
 path.
 Supply the PR base or parent branch with `--base` (replace `origin/main` for
 stacked work); history comparison is required to detect unreviewed coverage
 downgrades. CI supplies the PR base or pre-push commit and fetches its history.
-Groups 3–16 will additionally require incremental
-replay of completed groups; final acceptance rejects every pending accepted
-behavior. Reviewed rejected-source recordings remain visible in replay output
+The conformance implementation groups are complete in the archived task list.
+Incremental validation replays completed groups; final acceptance rejects every
+pending accepted behavior. Reviewed rejected-source recordings remain visible
+in replay output
 without being treated as required language behavior.
 Missing reference evidence is never proof of compatibility.
 
@@ -128,10 +132,15 @@ evidence, with hashes recalculated for its published bytes.
 
 Implementation acceptance reports remaining task IDs on stderr without making
 its own future reporting or handoff a prerequisite. Release mode additionally
-requires every task checkbox complete; malformed or duplicate task entries fail.
-Archive creation and tag creation remain later operations, never prerequisites
-for either command. Passing synthetic regression tests does not qualify the
-current implementation or complete the release handoff.
+requires every checkbox in the manifest's archived conformance task list to be
+complete; malformed or duplicate task entries fail. That gate does not track a
+maintenance change's publication checklist. Complete its implementation and
+review tasks before tagging, then finish publication verification before
+archiving the maintenance change. Archive creation and tag creation are never
+prerequisites for either acceptance command. Passing synthetic regression tests
+does not qualify the current implementation or complete the release handoff.
 
-See the [baseline quality report](quality-baseline.md) for measured coverage,
-checks actually executed, and outstanding conformance work.
+The [baseline quality report](quality-baseline.md) and
+[September 14 acceptance report](quality-acceptance-2026-09-14.md) retain their
+historical results. Use the current manifest for coverage and fresh candidate
+results for release sign-off.
