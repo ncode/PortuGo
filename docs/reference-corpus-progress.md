@@ -4,8 +4,12 @@ OpenSpec group 2 is complete. The corpus inventories 229 stable records across
 73 requirements, 73 bundled example filenames, sizes and hashes, 25 checklist
 rows, 48 assumptions, 9 feature records, and one audited defect. All 73 examples now have
 recorded dispositions: 60 accepted, 11 unusable, and 2 reviewed non-goals. The
-manifest has 1,657 recorded probes and 22 reviewed non-applicable probes; 18
-implementation checks remain pending. Every one of the 33 legacy `[VERIFICAR]`
+manifest has 1,657 recorded probes and 22 reviewed non-applicable probes.
+Across all 1,679 probes, 1,673 implementations are verified, four reviewed
+rejected-source mismatches remain pending, and two nonterminating examples are
+excluded from complete execution. No accepted program remains pending. All 216
+tasks in the [archived conformance change](../openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/tasks.md)
+are complete. Every one of the 33 legacy `[VERIFICAR]`
 markers has a stable inventory link. The original compatibility checklist is
 present in `especificacao-visualg-3.md`; its 25 numbered rows now have stable
 manifest links to existing probe coverage. Twenty-six evidenced source
@@ -20,8 +24,9 @@ timing, GUI, and reference-sequence behavior.
 The evidence-recording portion of group 2 is complete: all 73 bundled examples
 have a recorded disposition, and every manifest probe is either recorded or
 reviewed not-applicable. Evidence validation reports 1,657 recorded probes, 22
-reviewed not-applicable probes, and no unrecorded entries. The 15 pending
-implementation checks remain visible under their implementation tasks.
+reviewed not-applicable probes, and no unrecorded entries. The four reviewed
+rejection mismatches remain visible in the manifest without becoming pending
+accepted behavior.
 
 The September 14 source-obligation slice adds eight reviewed recordings from
 the Windows reference application. `const` and `dos` are reserved, a second
@@ -82,27 +87,23 @@ specifications, design, task ledger, `AGENTS.md`, and language reference now
 use the recorded scope: scalar constants and aliases, named records and scalar
 fields, assignment aliases, and case ranges are positive only in their
 confirmed forms. Rejected variants retain positioned negative coverage;
-unrecorded forms keep their pending owning tasks, and no dependent layout or
-example obligation is inferred. Manifest dispositions and retired-ID history
+unrecorded forms remain outside the qualified scope, and no dependent layout
+or example obligation is inferred. Manifest dispositions and retired-ID history
 were preserved.
 
-Fresh recorder, normalizer, replay, manifest, traceability, quality, and strict
-OpenSpec checks are captured in the [current quality report](quality-acceptance-2026-09-14.md).
-Evidence validation has zero verified regressions; its published inventory
-keeps the current 15 pending implementation probes visible; the two recorded
-nonassignable `var` guards are now covered by project regressions.
+The [September 14 quality report](quality-acceptance-2026-09-14.md) records
+passing recorder, normalizer, replay, manifest, traceability, quality,
+specification, and final acceptance checks for that candidate. The
+[September 14 release rehearsal](release-rehearsal-2026-09-14.md) records the
+associated clean-checkout build, CLI/REPL smoke, test, race, vet, formatter, and
+replay checks. These dated reports are historical evidence; a new release must
+qualify its exact commit again using the [release procedure](releases.md).
 
-The clean-checkout rehearsal in
-[the release rehearsal report](release-rehearsal-2026-09-14.md) passes the
-build, CLI and REPL smoke commands, ordinary and race suites, vet, formatter,
-incremental replay, and strict OpenSpec checks. Pending implementation and
-handoff tasks continue to block release acceptance.
+## Historical implementation slices
 
-The clean-checkout rehearsal in
-[the release rehearsal report](release-rehearsal-2026-09-14.md) passes the
-build, CLI and REPL smoke commands, ordinary and race suites, vet, formatter,
-incremental replay, and strict OpenSpec checks. Pending implementation and
-handoff tasks continue to block release acceptance.
+The notes below preserve the state of earlier implementation slices. Their
+counts, pending work, and gate failures describe those earlier stages, not the
+current manifest or release readiness summarized above.
 
 The initial manifest contained 18 reduced probes:
 

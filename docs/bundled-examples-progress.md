@@ -1,16 +1,18 @@
 # Bundled example progress
 
-The corpus records 71 original programs from the official VisuAlg 3.0.7
-distribution. Their source bytes match the sizes and SHA-256 hashes in the
-73-file catalog. Each observation links its catalog ID, exact source, reference
+The corpus inventories 73 original programs from the official VisuAlg 3.0.7
+distribution: 60 accepted, 11 unusable on their recorded paths, and two reviewed
+nonterminating exclusions. Their source bytes match the catalog sizes and
+SHA-256 hashes. Each observation links its catalog ID, exact source, reference
 outcome, and owning tasks in the conformance manifest.
 
 The evidence gate checks catalog IDs, source hashes and sizes, classifications,
 recorded acceptance, and reviewed exclusion reasons. Pending entries still fail
 the missing-evidence gate; classifications do not grant them an exemption.
 
-Sixty-one programs complete successfully in the reference. Forty-five match
-the CLI byte for byte and have permanent tests for original and formatted execution.
+All 60 accepted programs have verified original and formatted execution.
+Forty-five use byte-for-byte output comparisons; fifteen use reviewed generated-output
+contracts that check domains and framing without comparing random sequences.
 The fixed-input cases cover combinations, factorials, minimum selection, means,
 prime decomposition, base conversion, vector sorting, remainders, reversed text,
 perfect numbers, square-root approximation, and text choices. Each input is
@@ -50,8 +52,9 @@ Random-input recordings add `aleatorio1.alg`, `bbsort.alg`, `bbsortp.alg`,
 The binary-search recording supplies `-1` to exit after generating its data.
 All eight complete in the reference, including the original incomplete-looking
 loop header in `aleatorio1.alg`. Their generated values remain in the recorded
-transcripts. Implementation verification remains pending; these observations
-do not establish exact portable random sequences or complete branch coverage.
+transcripts. Their original and formatted executions now pass the reviewed
+generated-output contracts; these observations do not establish exact portable
+random sequences or complete branch coverage.
 
 The latest recordings add `bin2dec.alg`, `buscaseq.alg`, `buscaseqreg.alg`,
 `buscbinr.alg`, `DESTAQUES.ALG`, `SEMNOME.ALG`, `MENU_PRINCIPAL.alg`, and
@@ -124,5 +127,7 @@ position loss without claiming to match the school's earlier parsing behavior.
 
 The catalog has sixty accepted examples, eleven unusable examples, and two
 reviewed non-goal examples. All 73 catalog entries now have a recorded
-disposition; incomplete captures are excluded. These records do not complete
-the full example sweep, evidence inventory, or conformance release gate.
+disposition; incomplete captures are excluded. The accepted-example sweep and
+evidence inventory are complete within their recorded scope. Release acceptance
+still requires fresh qualification of the exact candidate; these recordings do
+not establish every interactive branch or full-language compatibility.

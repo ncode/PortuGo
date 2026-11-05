@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.0.2 - 2026-11-05
+
 - Update CI and development lint pins to Staticcheck v0.8.2 and golangci-lint
   v2.15.0, supporting the updated Go 1.27 export data format.
 - Validate retained concrete arguments to `carac` and `mudacor` at runtime,
@@ -14,6 +16,10 @@
 
 - Add a Brazilian Portuguese README with links between languages, preserving
   the welcoming tone of the English guide.
+
+- Correct current conformance status and document recoverable maintenance releases.
+
+## 0.0.1 - 2026-09-15
 
 - Build versioned Linux, macOS, and Windows archives for amd64 and arm64 with
   `make dist`, embedded `--version` output, and `SHA256SUMS`. Attach downloads
