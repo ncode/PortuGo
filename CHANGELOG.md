@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Correct the documented implementation-test link total to match the manifest.
+
 ## 0.0.2 - 2026-11-05
 
 - Update CI and development lint pins to Staticcheck v0.8.2 and golangci-lint

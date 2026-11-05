@@ -69,7 +69,7 @@ Overlapping requirement links share one probe where a recording serves more
  than one category; unqualified operand combinations remain pending.
 
 The traceability handoff is complete: a fresh audit resolves all 229 inventory
-entries, 1,679 probes, and 1,813 implementation-test links without stale or
+entries, 1,679 probes, and 1,834 implementation-test links without stale or
 untraced IDs. Shared links are retained where one probe serves multiple
 requirements. Pending implementation probes keep their owning tasks and omit
 nonexistent tests, while reviewed project-only probes keep their test links.
