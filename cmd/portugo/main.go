@@ -87,6 +87,10 @@ func dispatch(args []string) int {
 		fmt.Fprintln(os.Stderr, err)
 		return 1
 	}
+	if command == "run" {
+		ds = diag.Immediate(ds)
+		ok = prog != nil && !diag.HasErrors(ds)
+	}
 	if !ok {
 		diag.Render(os.Stderr, file.Positions, ds)
 		return 1
@@ -132,6 +136,9 @@ func dispatch(args []string) int {
 		return 0
 	}
 	info, ds := sema.Analyze(prog)
+	if command == "run" {
+		ds = diag.Immediate(ds)
+	}
 	diag.Render(os.Stderr, file.Positions, ds)
 	if diag.HasErrors(ds) {
 		return 1

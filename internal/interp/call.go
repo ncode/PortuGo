@@ -253,6 +253,8 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 	i.env = callEnv
 	depth := i.depth
 	callDepth := i.calls
+	operandBase := i.callOperandBase
+	i.callOperandBase = len(i.operands)
 	loopDepth := i.loopDepth
 	outerResult := i.result
 	i.result = nil
@@ -276,6 +278,7 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 	// return.
 	i.loopDepth = 0
 	defer func() {
+		i.callOperandBase = operandBase
 		i.env = outer
 		i.depth = depth
 		i.loopDepth = loopDepth

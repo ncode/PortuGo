@@ -35,11 +35,13 @@ type Interpreter struct {
 	steps              uint64
 	depth, calls       int
 	loopDepth          int
+	unclosed           token.Pos
 	halted             bool
 	result             *runtime.Cell
 	results            []runtime.Value
 	operands           []runtime.Value
 	evalFrames         int
+	callOperandBase    int
 	randomInput        randomInputState
 	chronometerStart   time.Time
 	chronometerRunning bool
@@ -86,12 +88,14 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) (ds []diag.Diagnos
 	i.writeNewline = false
 	i.writeBytes = 0
 	i.writeDepth = 0
+	i.unclosed = token.NoPos
 	i.program = nil
 	i.global = nil
 	i.result = nil
 	i.results = nil
 	i.operands = nil
 	i.evalFrames = 0
+	i.callOperandBase = 0
 	i.randomInput = randomInputState{}
 	i.chronometerStart = time.Time{}
 	i.chronometerRunning = false
@@ -137,6 +141,9 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) (ds []diag.Diagnos
 	}
 	switch ctrl.kind {
 	case noControl:
+		if !i.halted && i.unclosed != token.NoPos {
+			return []diag.Diagnostic{{Code: diag.EParse, Pos: i.unclosed, Message: "expected fimse"}}
+		}
 		if !i.halted && prog.Suffix.Kind == token.INVALID_SUFFIX {
 			return []diag.Diagnostic{{Code: diag.EParse, Pos: prog.End, Message: "unterminated string after fimalgoritmo"}}
 		}

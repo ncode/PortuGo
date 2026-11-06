@@ -1643,7 +1643,46 @@
       "kind": "requirement",
       "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/lexical-grammar/spec.md#Requirement: Recoverable parsing",
       "probes": [
-        "project.frontend-recovery-limits"
+        "project.frontend-recovery-limits",
+        "rejection-assignment-real-to-integer",
+        "rejection-assignment-text-to-integer",
+        "rejection-assignment-logical-to-integer",
+        "rejection-assignment-text-to-real",
+        "rejection-assignment-logical-to-real",
+        "rejection-assignment-integer-to-text",
+        "rejection-assignment-real-to-text",
+        "rejection-assignment-logical-to-text",
+        "rejection-assignment-integer-to-logical",
+        "rejection-assignment-real-to-logical",
+        "rejection-assignment-text-to-logical",
+        "rejection-assignment-rhs-order",
+        "rejection-assignment-target-order",
+        "rejection-condition-later-error",
+        "rejection-repeat-no-newline",
+        "rejection-repeat-newline",
+        "rejection-success-no-newline",
+        "rejection-repeat-escape",
+        "rejection-extra-repeat-reached",
+        "rejection-extra-repeat-unreached",
+        "rejection-body-unused",
+        "rejection-eof-control",
+        "rejection-call-pair",
+        "rejection-call-single",
+        "rejection-call-precompute",
+        "rejection-case-type-reached",
+        "rejection-case-type-unreached",
+        "rejection-body-called",
+        "rejection-call-modulo",
+        "rejection-call-remainder-percent",
+        "rejection-call-modulo-direct",
+        "rejection-call-modulo-precomputed",
+        "rejection-call-modulo-integer",
+        "rejection-call-modulo-eight",
+        "rejection-call-modulo-left",
+        "rejection-call-modulo-unreached",
+        "rejection-call-modulo-text-prefix",
+        "rejection-call-numeric-binary",
+        "rejection-call-comparison"
       ]
     },
     {
@@ -2065,7 +2104,20 @@
       "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/language/types-declarations/spec.md#Requirement: Assignment compatibility and coercion",
       "probes": [
         "assignment-equals",
-        "assignment-colon-equals"
+        "assignment-colon-equals",
+        "rejection-assignment-real-to-integer",
+        "rejection-assignment-text-to-integer",
+        "rejection-assignment-logical-to-integer",
+        "rejection-assignment-text-to-real",
+        "rejection-assignment-logical-to-real",
+        "rejection-assignment-integer-to-text",
+        "rejection-assignment-real-to-text",
+        "rejection-assignment-logical-to-text",
+        "rejection-assignment-integer-to-logical",
+        "rejection-assignment-real-to-logical",
+        "rejection-assignment-text-to-logical",
+        "rejection-assignment-rhs-order",
+        "rejection-assignment-target-order"
       ]
     },
     {
@@ -3076,7 +3128,46 @@
       "link": "openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/specs/tooling/diagnostics-cli-repl/spec.md#Requirement: Stable compile-time diagnostics",
       "probes": [
         "project.frontend-recovery-limits",
-        "project.positioned-diagnostics"
+        "project.positioned-diagnostics",
+        "rejection-assignment-real-to-integer",
+        "rejection-assignment-text-to-integer",
+        "rejection-assignment-logical-to-integer",
+        "rejection-assignment-text-to-real",
+        "rejection-assignment-logical-to-real",
+        "rejection-assignment-integer-to-text",
+        "rejection-assignment-real-to-text",
+        "rejection-assignment-logical-to-text",
+        "rejection-assignment-integer-to-logical",
+        "rejection-assignment-real-to-logical",
+        "rejection-assignment-text-to-logical",
+        "rejection-assignment-rhs-order",
+        "rejection-assignment-target-order",
+        "rejection-condition-later-error",
+        "rejection-repeat-no-newline",
+        "rejection-repeat-newline",
+        "rejection-success-no-newline",
+        "rejection-repeat-escape",
+        "rejection-extra-repeat-reached",
+        "rejection-extra-repeat-unreached",
+        "rejection-body-unused",
+        "rejection-eof-control",
+        "rejection-call-pair",
+        "rejection-call-single",
+        "rejection-call-precompute",
+        "rejection-case-type-reached",
+        "rejection-case-type-unreached",
+        "rejection-body-called",
+        "rejection-call-modulo",
+        "rejection-call-remainder-percent",
+        "rejection-call-modulo-direct",
+        "rejection-call-modulo-precomputed",
+        "rejection-call-modulo-integer",
+        "rejection-call-modulo-eight",
+        "rejection-call-modulo-left",
+        "rejection-call-modulo-unreached",
+        "rejection-call-modulo-text-prefix",
+        "rejection-call-numeric-binary",
+        "rejection-call-comparison"
       ]
     },
     {
@@ -8205,33 +8296,37 @@
       "evidence": {
         "state": "recorded",
         "accepted": false,
-        "capturedAt": "2026-09-09T20:04:41.2056822Z",
+        "capturedAt": "2026-11-06T17:36:37.1937472Z",
         "raw": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-24919c4a2e4c/transcription.txt",
-          "sha256": "be0c42bc9220a34cdfc5e4fcfe7560837324cead027e31d9dc73fbc502ef9eab"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-24919c4a2e4c/reobserved-2026-11-06/raw.txt",
+          "sha256": "e5423ae5dd48a31b5a03352ad11107d72d8182f83ac1edb59d96dfb805fd29e6"
         },
         "normalized": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-24919c4a2e4c/transcription.txt",
-          "sha256": "be0c42bc9220a34cdfc5e4fcfe7560837324cead027e31d9dc73fbc502ef9eab"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-24919c4a2e4c/reobserved-2026-11-06/normalized.txt",
+          "sha256": "195855ba518983f37ea72dab8b6b8d58d3860b126b8e03af8769725bc0d8960d"
         },
         "normalizer": "text-v1",
         "guiOnly": true,
         "screenshot": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-24919c4a2e4c/screenshot.png",
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-24919c4a2e4c/reobserved-2026-11-06/screenshot.png",
           "sha256": "2598c986a985f50b829787a2ad5fea05ce15362e1849f6cf49a1d496c4ecf4b6"
         },
         "transcription": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-24919c4a2e4c/transcription.txt",
-          "sha256": "be0c42bc9220a34cdfc5e4fcfe7560837324cead027e31d9dc73fbc502ef9eab"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-24919c4a2e4c/reobserved-2026-11-06/transcription.txt",
+          "sha256": "5b43604d5471a83116927c605deaca3dadf644d52a9175be02df9fd9db9c5c6a"
+        },
+        "review": {
+          "reason": "Complete prefix reobserved with verified editor readback; old diagnostic evidence and derived output expectations retained unchanged.",
+          "link": "docs/rejection-paths-progress.md"
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
-            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
-            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            "path": "testdata/conformance/visualg-3.0.7/probes/bundled-24919c4a2e4c/reobserved-2026-11-06/stdout.txt",
+            "sha256": "a2200080d97dca256b33ec48dd74c4503a85d743e1aeb077dca53d4d327a2880"
           },
           "diagnostics": [
             {
@@ -8239,7 +8334,14 @@
               "line": 21
             }
           ]
-        }
+        },
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectedExamples"
+        ]
       }
     },
     {
@@ -8698,28 +8800,32 @@
       "evidence": {
         "state": "recorded",
         "accepted": false,
-        "capturedAt": "2026-09-11T08:43:11.3538281Z",
+        "capturedAt": "2026-11-06T17:40:30.4528687Z",
         "raw": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-49eb7f47065e/transcription.txt",
-          "sha256": "f294c30dd7f57af64b5fb053ce17e232c549cb2a5eed7b05659a842f599a9ed4"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-49eb7f47065e/reobserved-2026-11-06/raw.txt",
+          "sha256": "6dcea8dec94117761a770696b94517dd40d4d4aa4f65e3dce7a18cd42dc3a9ea"
         },
         "normalized": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-49eb7f47065e/transcription.txt",
-          "sha256": "f294c30dd7f57af64b5fb053ce17e232c549cb2a5eed7b05659a842f599a9ed4"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-49eb7f47065e/reobserved-2026-11-06/normalized.txt",
+          "sha256": "e3eea11dfdd3a065c5aac79ff2a809841af7c63177ef956163d74ca0eafb0c9e"
         },
         "normalizer": "text-v1",
         "guiOnly": true,
         "screenshot": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-49eb7f47065e/screenshot.png",
-          "sha256": "f4326202d4109b3e29939f0b4c2bc44005961c3fd794d9edede4758f2823313a"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-49eb7f47065e/reobserved-2026-11-06/screenshot.png",
+          "sha256": "302efe7f162c97b017d821c82241ffaeda73384d8e1be893f35a1ca94ab194ee"
         },
         "transcription": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-49eb7f47065e/transcription.txt",
-          "sha256": "f294c30dd7f57af64b5fb053ce17e232c549cb2a5eed7b05659a842f599a9ed4"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-49eb7f47065e/reobserved-2026-11-06/transcription.txt",
+          "sha256": "43cd892ca486efa13de61c32da197776d3e811b7fb7691ea7dacba4b703900ad"
+        },
+        "review": {
+          "reason": "Complete prefix reobserved with verified editor readback; old diagnostic evidence and derived output expectations retained unchanged.",
+          "link": "docs/rejection-paths-progress.md"
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -8732,7 +8838,14 @@
               "line": 301
             }
           ]
-        }
+        },
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectedExamples"
+        ]
       }
     },
     {
@@ -10846,28 +10959,32 @@
       "evidence": {
         "state": "recorded",
         "accepted": false,
-        "capturedAt": "2026-09-11T13:25:47.6188931Z",
+        "capturedAt": "2026-11-06T17:39:22.6356715Z",
         "raw": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f251f2cd0c22/transcription.txt",
-          "sha256": "4f076ec6d300f0dd575fd1267187c314b840c1c7c5cc61822357a93bd111411d"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f251f2cd0c22/reobserved-2026-11-06/raw.txt",
+          "sha256": "dc559ecf18af85a2935c2527f67ce7d97ae50fc2bbc6fb4b011311196aead303"
         },
         "normalized": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f251f2cd0c22/transcription.txt",
-          "sha256": "4f076ec6d300f0dd575fd1267187c314b840c1c7c5cc61822357a93bd111411d"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f251f2cd0c22/reobserved-2026-11-06/normalized.txt",
+          "sha256": "691e8a936082db6a8f6c753bedb1f60dcfaacf86d894316c4f42593d3be6dbbc"
         },
         "normalizer": "text-v1",
         "guiOnly": true,
         "screenshot": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f251f2cd0c22/screenshot.png",
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f251f2cd0c22/reobserved-2026-11-06/screenshot.png",
           "sha256": "7ee97bedf3eaebe5f44fd3bbcb5e22a9fd49def91e813978e9b9d0380062bb08"
         },
         "transcription": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f251f2cd0c22/transcription.txt",
-          "sha256": "4f076ec6d300f0dd575fd1267187c314b840c1c7c5cc61822357a93bd111411d"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f251f2cd0c22/reobserved-2026-11-06/transcription.txt",
+          "sha256": "893513d0aa3898bd6c2b1da4e3c74e177d60c970d9436c0e652b31da8bd27cf2"
+        },
+        "review": {
+          "reason": "Complete prefix reobserved with verified editor readback; old diagnostic evidence and derived output expectations retained unchanged.",
+          "link": "docs/rejection-paths-progress.md"
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
@@ -10880,7 +10997,14 @@
               "line": 320
             }
           ]
-        }
+        },
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectedExamples"
+        ]
       }
     },
     {
@@ -10902,33 +11026,37 @@
       "evidence": {
         "state": "recorded",
         "accepted": false,
-        "capturedAt": "2026-09-09T13:46:26.0704072Z",
+        "capturedAt": "2026-11-06T17:32:58.4712679Z",
         "raw": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/transcription.txt",
-          "sha256": "0239c7264162152ca86b6decb6a854db4d7bd991df5366cb7e643c58a27802cc"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/reobserved-2026-11-06/raw.txt",
+          "sha256": "f1d33f45243d3af2a303b926f8ad62fddedf1a15140e1cd659a945552509d904"
         },
         "normalized": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/transcription.txt",
-          "sha256": "0239c7264162152ca86b6decb6a854db4d7bd991df5366cb7e643c58a27802cc"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/reobserved-2026-11-06/normalized.txt",
+          "sha256": "c4d3e7e7e76ac4c0957f97ba4c6a5c56e0954c340e628e375730a571d45219a7"
         },
         "normalizer": "text-v1",
         "guiOnly": true,
         "screenshot": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/screenshot.png",
-          "sha256": "09c00d1ae48e8b46031c785205043e8fe011e6bb88dd746d928e44b50aaf5eaf"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/reobserved-2026-11-06/screenshot.png",
+          "sha256": "2df916c2e6c7e879a68806b4878f82a5e3521b1c34d138f6cd4e2d278da75229"
         },
         "transcription": {
-          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/transcription.txt",
-          "sha256": "0239c7264162152ca86b6decb6a854db4d7bd991df5366cb7e643c58a27802cc"
+          "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/reobserved-2026-11-06/transcription.txt",
+          "sha256": "b288d6d4756fde1aaea46dd79d9f68d273530759f349ab61aac355b6a1977057"
+        },
+        "review": {
+          "reason": "Complete prefix reobserved with verified editor readback; old diagnostic evidence and derived output expectations retained unchanged.",
+          "link": "docs/rejection-paths-progress.md"
         }
       },
       "implementation": {
-        "state": "pending",
+        "state": "verified",
         "expected": {
           "exitCode": 1,
           "stdout": {
-            "path": "testdata/conformance/visualg-3.0.7/empty.txt",
-            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/reobserved-2026-11-06/stdout.txt",
+            "sha256": "e12a7e051731cf1dbeefa2142a8e1abb1eb5898e2cbe4aa522120829a5588dc7"
           },
           "diagnostics": [
             {
@@ -10936,7 +11064,14 @@
               "line": 16
             }
           ]
-        }
+        },
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectedExamples"
+        ]
       }
     },
     {
@@ -84362,6 +84497,2287 @@
         "tests": [
           "zero_value_reference_test.go#TestRecordedZeroValue"
         ]
+      }
+    },
+    {
+      "id": "rejection-assignment-real-to-integer",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-integer/source.alg",
+        "sha256": "a7a010b4b1e67169bbcae48289cd798ea88358346814ca48b4edb21c97c88d17"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-integer/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:35:23.2326945Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-integer/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-integer/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-integer/screenshot.png",
+          "sha256": "94e55d03646233d179ba1309aa528a8a2d0da8773256cfa848404f6be02ae10a"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-integer/transcription.txt",
+          "sha256": "d1ec50367e0d4c5e1d28ab4507f4582d7cc31f74de784cc3248c39964c9792da"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-integer/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "R001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-assignment-text-to-integer",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-integer/source.alg",
+        "sha256": "3184679c46acb8a20367af90e6eee37919ff43e412db30ca27daf6f115cbcde1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-integer/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:35:45.7612652Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-integer/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-integer/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-integer/screenshot.png",
+          "sha256": "9f40b622a7c510d601fd907256e795f8684a39a24f4eeade684acea27334c611"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-integer/transcription.txt",
+          "sha256": "834ed79fd24cf920a693c21b551a7e7e44d77ea877339dc02e0c7c19f16f4787"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-integer/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-assignment-logical-to-integer",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-integer/source.alg",
+        "sha256": "f600c0bbb94b7e76d47cd2d6c9a4b51d6244d985512daef18f1763b6e3983616"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-integer/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:36:07.9844474Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-integer/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-integer/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-integer/screenshot.png",
+          "sha256": "d7235f419c413f5877ce09c64c40eba6c19fe05b91a853d7eee0ccaa7e3983d1"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-integer/transcription.txt",
+          "sha256": "23dea3ce4d155927aea10e1d6d244a4c3ff557cf05a496f936072da221eb34eb"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-integer/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-assignment-text-to-real",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-real/source.alg",
+        "sha256": "8d326902aa693beb034264c7025128ab94dbe88b853ddcb60353814a09058d24"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-real/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:36:30.0336607Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-real/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-real/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-real/screenshot.png",
+          "sha256": "73f1edce3369aed3b20584127d612e2b707545e5194f9a66140349bf6d3cfda4"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-real/transcription.txt",
+          "sha256": "d56ab66c21251834071d3c59831cd24d48dc3ff2ad7cd0c69688f6dd82c82ac8"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-real/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-assignment-logical-to-real",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-real/source.alg",
+        "sha256": "501f8b93ffe65db183598b616f17811697793daafe9beed5c2be8353eff62975"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-real/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:36:52.5072580Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-real/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-real/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-real/screenshot.png",
+          "sha256": "c49efc9fbfaa1c2475e4f8a07d9df3b1e0b9feb49efd3928eae2823031e89dfe"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-real/transcription.txt",
+          "sha256": "5c0cb24d06f81393d3076880793d158fe34448256e98865cd11e945a1213c1d3"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-real/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-assignment-integer-to-text",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-text/source.alg",
+        "sha256": "1b54543e6de8d0b489e441b74e1a42f3c02953e360e864fcc36ea2300166f6b1"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-text/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:37:16.3943679Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-text/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-text/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-text/screenshot.png",
+          "sha256": "6fb7ceb9991775635dab9d637376abd92abe277f0f29a0ab288fe1231ecb81ee"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-text/transcription.txt",
+          "sha256": "7ac00d9e2a2194e44862f85264c42fa4d8858995fc7fbcce2f6db2a489b63cd1"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-text/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-assignment-real-to-text",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-text/source.alg",
+        "sha256": "294f4212977c3b19ff4a5eae14b4f5ce09bf4b34b51cde22edc4886606e3fe94"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-text/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:37:38.6881372Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-text/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-text/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-text/screenshot.png",
+          "sha256": "c1efd7d380ccf5116bd830cfbc9191df2688798422a8aac0f5b24002e759900b"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-text/transcription.txt",
+          "sha256": "be632ec8d0f5ee3f1bd4ba4933856bd972ddd55ac8d08a7b1116368992684097"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-text/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-assignment-logical-to-text",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-text/source.alg",
+        "sha256": "7d5e68c233d1270726cf215709b4ebb982732fd0e4237dfbb024e6a174951bec"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-text/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:38:02.9387544Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-text/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-text/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-text/screenshot.png",
+          "sha256": "d7227f24aa46a531e2295886f685d8e9a241d73978d4908995cbc2b72feeb8c8"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-text/transcription.txt",
+          "sha256": "05234aa2e12183e121f92b91c869a3999e578e38ad8a820cadd1952920f45029"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-logical-to-text/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-assignment-integer-to-logical",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-logical/source.alg",
+        "sha256": "0033927230f40607f02bf90572b94f01a343e207fbee4052f01845a63a9d8264"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-logical/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:38:25.8069176Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-logical/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-logical/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-logical/screenshot.png",
+          "sha256": "e217a1e951f3f48078f9d6ced06a60c98f5624a784f0a142b745068cbc4b1a94"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-logical/transcription.txt",
+          "sha256": "a8652e165e9ca857d3cd59df4f614fc710b1a9bcc2ce201d55dd0e45bef393e0"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-integer-to-logical/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-assignment-real-to-logical",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-logical/source.alg",
+        "sha256": "db72f9f532d011ec0f091265d80299ff50b7ceb2eb93a5c1a587b3bf9b9089bf"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-logical/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:38:49.8970419Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-logical/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-logical/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-logical/screenshot.png",
+          "sha256": "e27c42f695b4134473f46771d7231031314b3ea498a516e7233634fa28e492b8"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-logical/transcription.txt",
+          "sha256": "57e209da7840e4096181e110ab7f2898ec3739505e8b992413e9c88a834150da"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-real-to-logical/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-assignment-text-to-logical",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-logical/source.alg",
+        "sha256": "6b61245fdd203a1be9f749d05c5f93b2c22c6dd22c8085239fdbca7d0b4419c9"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-logical/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:39:12.0943704Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-logical/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-logical/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-logical/screenshot.png",
+          "sha256": "82971911d395076bd97a450c85ac0eac91c006fa663f4acc0aaf52ebc785cf93"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-logical/transcription.txt",
+          "sha256": "b74203174bed5ceacbc4afe7add022fffda80e6389a60c8a623ff42d3015bec8"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-text-to-logical/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-assignment-rhs-order",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-rhs-order/source.alg",
+        "sha256": "029dfa9f49a01a8662540c21c9b4b296902b332b201a6e821f86162fd7c76476"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-rhs-order/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:39:34.4011986Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-rhs-order/raw.txt",
+          "sha256": "66fc21958884ac34105f603cc9948ae22c9c39a20a297a7dc68b6c0cb72f2640"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-rhs-order/normalized.txt",
+          "sha256": "31d88fbe5eb0a8e6c475cfe887529e878b0971ced2a2069a141d25c7a33e6007"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-rhs-order/screenshot.png",
+          "sha256": "14b7bc078579a20a2424957bc9e32e8fc3dcf0963c8810274c35d56209d19225"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-rhs-order/transcription.txt",
+          "sha256": "e4626868fe787b8395ecfa1f2647ca515fdddf71d23465a683a308fa833f3939"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-rhs-order/stdout.txt",
+            "sha256": "fe9dec951e7fd8f40d969766ded496f9dcc11f6e8f5f7aa27be23f78330526bf"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 11
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-assignment-target-order",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-target-order/source.alg",
+        "sha256": "238e320a1f1412508e37e7cc3d19738d162fe199c42905717e5df51b9f2aacbc"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-target-order/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:39:55.1183919Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-target-order/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-target-order/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-target-order/screenshot.png",
+          "sha256": "bacc137165d7506384953100686b683aaafb325cb10bf6809a0331d461693d8a"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-target-order/transcription.txt",
+          "sha256": "3b88b4e8395ab8361e7b69673eb70969370227faba239802d922887ac2efd1fc"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-assignment-target-order/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "R003",
+              "line": 11
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-condition-later-error",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-condition-later-error/source.alg",
+        "sha256": "8bcd0a80d9898e1c7e0514ec5c79f3f4f43ef78bbaed2583eb47fa12fb53557f"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-condition-later-error/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:40:17.4017437Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-condition-later-error/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-condition-later-error/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-condition-later-error/screenshot.png",
+          "sha256": "f8eda4c87c74fefcb591edec37688f4cb8b853b1102c4d75877c353dda372d8e"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-condition-later-error/transcription.txt",
+          "sha256": "7d56e05b50a3f3fd951ab23ce2cf27b92af8423524f467975183b906fdcee603"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-condition-later-error/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 6
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-repeat-no-newline",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-no-newline/source.alg",
+        "sha256": "b7fc4fc1e6c7dce04e664675eea013c017161ef8e2d295a2793f3e4d98c22bd7"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-no-newline/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T17:42:50.9871860Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-no-newline/raw.txt",
+          "sha256": "f467ade30471fb923a8bbadf3c5e4e75e772eeb6d380a052ac0e0e01f46529e2"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-no-newline/normalized.txt",
+          "sha256": "d100c393cadb363ed1ec73a2e49b8bb229c80d8e6c144cf47f83d615bf8c2748"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-no-newline/screenshot.png",
+          "sha256": "238bbc8d73e4e52e894a3418397c0c8baf942350aeae5a85720f14c5ed406f4c"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-no-newline/transcription.txt",
+          "sha256": "9f2cd405241e5f2db5cc73a24508b0cad632a00b01d68e22cca27a05bc8c3eb4"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-no-newline/stdout.txt",
+            "sha256": "e12a7e051731cf1dbeefa2142a8e1abb1eb5898e2cbe4aa522120829a5588dc7"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-repeat-newline",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-newline/source.alg",
+        "sha256": "c0611bc6de99b0a791239909c5876c994c36a4bed7e65f6cf8d8aa107fa0a159"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-newline/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:40:37.8584831Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-newline/raw.txt",
+          "sha256": "39382476abf9a75921697bf467f330a0bdbf2c4491bbdee742b2b23d50694cae"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-newline/normalized.txt",
+          "sha256": "9821bcc75a0be73a96d71a3ba7c6be17a19a0b232f4476782a49d66356ad8f0c"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-newline/screenshot.png",
+          "sha256": "238bbc8d73e4e52e894a3418397c0c8baf942350aeae5a85720f14c5ed406f4c"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-newline/transcription.txt",
+          "sha256": "196a36483e44d5c7703fec908964a267d36991f43014236ffe27802bd5366979"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-newline/stdout.txt",
+            "sha256": "ed32f242203b8e7cf7822ab7ed18481d883e3e9d91f4f3b14fcb3e4c674c0037"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 5
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-success-no-newline",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-success-no-newline/source.alg",
+        "sha256": "daa089325a34bc224279eedcb275fe624c9667cd55b8f388cfc8aed10b7a0fc9"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-success-no-newline/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T19:40:57.9398147Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-success-no-newline/raw.txt",
+          "sha256": "c7dde7bad36194d30f951cde854595e4f6e1a6887dfb4ef5017488f1800bf44a"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-success-no-newline/normalized.txt",
+          "sha256": "6fecf9081bd58fa5a91e8a1d8093dc89d0e2d87992138ca05ec4270060e69c2c"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-success-no-newline/transcription.txt",
+          "sha256": "0d9e79522f8ed9df642b8228a0d32d8e3568c87535d07ce628690357431895ff"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-success-no-newline/stdout.txt",
+            "sha256": "6fecf9081bd58fa5a91e8a1d8093dc89d0e2d87992138ca05ec4270060e69c2c"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-repeat-escape",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-escape/source.alg",
+        "sha256": "adf908546547476b6bad0e7b09fd4da9233b37f1ed9d45fd997d9feb31b90db9"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-escape/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T17:43:13.0547136Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-escape/raw.txt",
+          "sha256": "0d662afde913da56b2146a2b4fceaa06011fa00da0d59ef4ddcd3811a474e246"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-escape/normalized.txt",
+          "sha256": "047d3736c2c515468d5fa9a076f9cf1b5604b484aadb0e60157c25aee2aca0d5"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-escape/transcription.txt",
+          "sha256": "27b2e9b376d750220cb0f7de919eb0f85b6a723ca42cc7c73fa89393ced86864"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-repeat-escape/stdout.txt",
+            "sha256": "047d3736c2c515468d5fa9a076f9cf1b5604b484aadb0e60157c25aee2aca0d5"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-extra-repeat-reached",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-reached/source.alg",
+        "sha256": "952cdee6d02881713382e457b899720ca7b2fd40d55d17a4ccb82d08ab023bd5"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-reached/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T19:41:18.1461251Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-reached/raw.txt",
+          "sha256": "d83cce4136be832474a0837e43cb1a0cfdfd7ec4a2546fc13468a6853bee3138"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-reached/normalized.txt",
+          "sha256": "357be58d7c127f8315a03aa92c316f40d8c570224fe6e11e31aac4cd9afb0e45"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-reached/screenshot.png",
+          "sha256": "57e6e692011fe5617cfe7d9aa3ac8caf5c82e9fd03e58122d9596d4886a5cb14"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-reached/transcription.txt",
+          "sha256": "c72422038d77a87dac72ac7f5c82c837c4c90714e9b2c15b7ff5870a6d01435b"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-reached/stdout.txt",
+            "sha256": "76d2b0dc0c3f97e2bbf9bc62f097ca2f9f830187ecb4bc8f795f8cdc6bd243c2"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 8
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-extra-repeat-unreached",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-unreached/source.alg",
+        "sha256": "b99035e9ee01160c3e10e3e0e302adf11bbb19ef1364890368c6d488721a8ff6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-unreached/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T19:41:42.6133682Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-unreached/raw.txt",
+          "sha256": "b6c13b88e997c746bc810fff27ffd1ca655a2eaa30e09cf461d7e58ea4c40831"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-unreached/normalized.txt",
+          "sha256": "6e57ed1b8f897df909b0346071b0ce44b7bab55f96caca6c229adce205a875b8"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-unreached/transcription.txt",
+          "sha256": "c4d5b9719113b70bcd4493510f05665af7a6e6564c70e4fbe5bb30447d960ef0"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-extra-repeat-unreached/stdout.txt",
+            "sha256": "6e57ed1b8f897df909b0346071b0ce44b7bab55f96caca6c229adce205a875b8"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-body-unused",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-unused/source.alg",
+        "sha256": "4c956156075f58a06e1c5ae5b8002d7d70baec4676ac7fdcedae4a4d45e4406a"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-unused/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T17:44:14.6966340Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-unused/raw.txt",
+          "sha256": "ad27e3066906b725dc5a6490c3df40a48466941dc7a7b740d606055e48b9f380"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-unused/normalized.txt",
+          "sha256": "4492ab16d3bc7075df10d4209bc0624710513d3a7d7b392e0570fe1085239343"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-unused/transcription.txt",
+          "sha256": "e06a3b630c92003dc782ffd5b1728a7866e79514875744662a2436708db60ca0"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-unused/stdout.txt",
+            "sha256": "4492ab16d3bc7075df10d4209bc0624710513d3a7d7b392e0570fe1085239343"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-eof-control",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-eof-control/source.alg",
+        "sha256": "5c851e19540584ee2bae2606ea5ec33bad7187cd60c4d60194c64b6c80426a41"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-eof-control/input.txt",
+        "sha256": "aabd8021be2a2fd8247862eb3b4dbf64ce3d9132879a63942bc1ee9461f493a4"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T17:46:00.6016591Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-eof-control/raw.txt",
+          "sha256": "fc932a2512454147812c22616ee0ccb8d74005aa25de603b51eb86323478aac7"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-eof-control/normalized.txt",
+          "sha256": "20181224f1930cb8b563175658d463180b1443448800e7852d68d8a925df0635"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-eof-control/screenshot.png",
+          "sha256": "bb2bccedfa392281c3c81e56d7dac51aafea3b09c9f9cc1fc07a0460b7954442"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-eof-control/transcription.txt",
+          "sha256": "ef07e874d49e935109c52f4b019b2784d8e65d7a1fdea371d8d163fc85f312e3"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-eof-control/stdout.txt",
+            "sha256": "c472f6acb54e627282182840072116ae31cc8af999081a0fcb99c6c24d98115f"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 10
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-pair",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-pair/source.alg",
+        "sha256": "1b8f6534cc8e6c8ab6ef9b9ad7031cfbb15f66b51b75609fc72000bb9a3f5131"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-pair/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T17:44:58.5186971Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-pair/raw.txt",
+          "sha256": "385ae69a630c17773831a3187e6993e1585525bcab51b98798fbace96be2fe8d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-pair/normalized.txt",
+          "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-pair/transcription.txt",
+          "sha256": "557f28e50910c757aa452eb6000c8a357eaa9fbd30a1865dd718d6901a2a8dbc"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-pair/stdout.txt",
+            "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-single",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-single/source.alg",
+        "sha256": "2b5d3da38261fb58b55561d4913faa61f95483824f2e5e118cbc65f9a4b5a692"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-single/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T17:45:18.3365053Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-single/raw.txt",
+          "sha256": "385ae69a630c17773831a3187e6993e1585525bcab51b98798fbace96be2fe8d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-single/normalized.txt",
+          "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-single/transcription.txt",
+          "sha256": "c9d5871e115b2942e4c90ae50913be247026325811a15c287b4f2782b2ddf6f4"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-single/stdout.txt",
+            "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-precompute",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-precompute/source.alg",
+        "sha256": "b8de58e3d91af6713e01674d730a279e12b75800c3a015d39d543a578f599cad"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-precompute/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T17:45:40.1041291Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-precompute/raw.txt",
+          "sha256": "385ae69a630c17773831a3187e6993e1585525bcab51b98798fbace96be2fe8d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-precompute/normalized.txt",
+          "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-precompute/transcription.txt",
+          "sha256": "46f82024bc97f68923b47d3a581fd3bdaa8926332f8918668dcf729c2c1c8660"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-precompute/stdout.txt",
+            "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-case-type-reached",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-reached/source.alg",
+        "sha256": "022808f6e91d75a6f7b90b07f905e3c971006cd66c74623d95ffdaf508d40776"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-reached/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T20:01:05.0154234Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-reached/raw.txt",
+          "sha256": "b99707195ef54fb4aa84a82a9d302952047e8beaf4ad425a07161c5b92c11815"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-reached/normalized.txt",
+          "sha256": "b2959389d2d6d82f94fdb90aa7d2023c8932ec6aecf1a0ab70d838f8f014a376"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-reached/screenshot.png",
+          "sha256": "65016f82f65b8c20a3aca7938490ef06956a0998efa66c044932faaced944eeb"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-reached/transcription.txt",
+          "sha256": "d667b316b9e0c20bc94000397208a68229412d93fea8dbaa02bb5b6b0ebc514d"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-reached/stdout.txt",
+            "sha256": "be9351741a8155d01fd028d158546f1005e73ceeb0bb2d093335feac4144e450"
+          },
+          "diagnostics": [
+            {
+              "code": "E001",
+              "line": 8
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-case-type-unreached",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-unreached/source.alg",
+        "sha256": "c8bc480a683e2f59c65d5a21f2cf942ce0f6e94f371ed415b68e488d90371385"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-unreached/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T20:01:28.3213955Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-unreached/raw.txt",
+          "sha256": "b6c13b88e997c746bc810fff27ffd1ca655a2eaa30e09cf461d7e58ea4c40831"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-unreached/normalized.txt",
+          "sha256": "6e57ed1b8f897df909b0346071b0ce44b7bab55f96caca6c229adce205a875b8"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-unreached/transcription.txt",
+          "sha256": "b70f596e7fd803381fbc52038eeff7412822d638d55e8fc0fec898a039475111"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-case-type-unreached/stdout.txt",
+            "sha256": "6e57ed1b8f897df909b0346071b0ce44b7bab55f96caca6c229adce205a875b8"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-body-called",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-called/source.alg",
+        "sha256": "529900def6d9ffd7ea1a74926c4be804e010e5dbda80ede57b92ffa74384f072"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-called/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T17:44:38.3598487Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-called/raw.txt",
+          "sha256": "6bd074b1d4461ea4e6fe9453acbeea789710ad54287cf89ecb2a4ecca62558d6"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-called/normalized.txt",
+          "sha256": "8ad534d3f26e03bc79dacda2b3f13d4511146ff44092ddf7102d6233b82efc8a"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-called/screenshot.png",
+          "sha256": "2157cea1ef18a2f74dc2c5895184852cf65a3b2b0dbe90506859e6a6a24a3268"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-called/transcription.txt",
+          "sha256": "03a292f67312c4f6cbedce165c26b53a956d18b453599ecd2e558708951d2a9b"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-body-called/stdout.txt",
+            "sha256": "ad880c09866b0c1c4e9eaa5d7d2eefc25fdd75e78c2c9e30b119f021a1ccacea"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 11
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-modulo",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo/source.alg",
+        "sha256": "f0506664b76fe3059faafab5d93ae2485de277bda9f4f865679ba91cdcd95b24"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T20:00:22.8037378Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo/raw.txt",
+          "sha256": "def7fd6ce8bee96520403f51e56b2a29587ff1afc6187e0ac2fab1375a9c84af"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo/normalized.txt",
+          "sha256": "e5a177e9b77544477a024bdbc7fa8a15b3fe99527ac7e83938738c2e460ff9b1"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo/screenshot.png",
+          "sha256": "b555de980a8f2e0ff65efe3f02190bc3fd353a0d4a303511f32aafe510ae4df5"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo/transcription.txt",
+          "sha256": "1c52bcc95e75ac674444d9b23e81b198134ec1245234e63fd3e6348490ffba75"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 20
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-remainder-percent",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-remainder-percent/source.alg",
+        "sha256": "d5fa5820a4692fad92c15a3bf7fcb62eb6fcca5596a0db260c516bef4bb0a6b6"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-remainder-percent/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T20:09:04.5901933Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-remainder-percent/raw.txt",
+          "sha256": "def7fd6ce8bee96520403f51e56b2a29587ff1afc6187e0ac2fab1375a9c84af"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-remainder-percent/normalized.txt",
+          "sha256": "e5a177e9b77544477a024bdbc7fa8a15b3fe99527ac7e83938738c2e460ff9b1"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-remainder-percent/screenshot.png",
+          "sha256": "b555de980a8f2e0ff65efe3f02190bc3fd353a0d4a303511f32aafe510ae4df5"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-remainder-percent/transcription.txt",
+          "sha256": "40350c6132111e0a9c5d08438762bb2858f5eecf1986c927b51f774685ca40ab"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-remainder-percent/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 20
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-modulo-direct",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-direct/source.alg",
+        "sha256": "d57baf3b59877f3bfa6672955438c6b8993afb64443c6b1eb9068857ecdfd22c"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-direct/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T20:09:26.6823897Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-direct/raw.txt",
+          "sha256": "39176f360802ff5ffeabcee9394a3a5c4de630d9471b2a67eae6d2bfa67bff4e"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-direct/normalized.txt",
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-direct/transcription.txt",
+          "sha256": "682e06d520a3d3f7ed027bbd6e0da87a041d919b080b34dcc07731ad9bea0325"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-direct/stdout.txt",
+            "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-modulo-precomputed",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-precomputed/source.alg",
+        "sha256": "03a2ddb7663428856bc9e5dbdf6d51f552e5cab1a39518b19a3cef4d603a46f8"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-precomputed/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T20:09:46.6718981Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-precomputed/raw.txt",
+          "sha256": "385ae69a630c17773831a3187e6993e1585525bcab51b98798fbace96be2fe8d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-precomputed/normalized.txt",
+          "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-precomputed/transcription.txt",
+          "sha256": "7a8b943b08e6593004510983aad06bca8c6eff66cb4bb0491f7e7868701cc627"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-precomputed/stdout.txt",
+            "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-modulo-integer",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-integer/source.alg",
+        "sha256": "afae0832d17e0a0f30b4ed501e945567a4eb28e0437ae87affe573d797a328ac"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-integer/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T20:10:07.1812444Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-integer/raw.txt",
+          "sha256": "5e641fad7b7ba41bab87ee24de2faef6877d87b1a3d4d668f9a49dc2e594484b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-integer/normalized.txt",
+          "sha256": "a547830c7965a34805fc013318a66d8543ac0dd350541b2cad38d001dbf2f961"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-integer/transcription.txt",
+          "sha256": "acacf9c8e266caf5e2cd905b8213705b746457724a5fd860fe48297fa666667c"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-integer/stdout.txt",
+            "sha256": "a547830c7965a34805fc013318a66d8543ac0dd350541b2cad38d001dbf2f961"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-modulo-eight",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-eight/source.alg",
+        "sha256": "0316a4e63ec489dd5720fc2b8e0e20596152e99c7001c94b2d8bc78ce976a536"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-eight/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T20:10:27.2360332Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-eight/raw.txt",
+          "sha256": "5e641fad7b7ba41bab87ee24de2faef6877d87b1a3d4d668f9a49dc2e594484b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-eight/normalized.txt",
+          "sha256": "a547830c7965a34805fc013318a66d8543ac0dd350541b2cad38d001dbf2f961"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-eight/transcription.txt",
+          "sha256": "dc0ed70b3857fb5b3b06db33a13d76896bbb209099e5214e589a7502b4a1b665"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-eight/stdout.txt",
+            "sha256": "a547830c7965a34805fc013318a66d8543ac0dd350541b2cad38d001dbf2f961"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-modulo-left",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-left/source.alg",
+        "sha256": "03974a752a78efba0ad0501ddbe205916c9227ff813f655d3f04a3ca3f6924c7"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-left/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T20:11:23.9773283Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-left/raw.txt",
+          "sha256": "783b873c0dd35c4bf3be952d058c937f28571a5095cedaae901498c2eb1f6a1b"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-left/normalized.txt",
+          "sha256": "8982b0e36eb1bacbb400dea0997b13cce756d7a48dbe0b05c560a13c1973afd0"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-left/transcription.txt",
+          "sha256": "00ae5e0f08358c8e308922244b3bc1c2275b68a8a2af35b41c54ba9fbaf95456"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-left/stdout.txt",
+            "sha256": "8982b0e36eb1bacbb400dea0997b13cce756d7a48dbe0b05c560a13c1973afd0"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-modulo-unreached",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-unreached/source.alg",
+        "sha256": "f77c87c76ee77d4709c036f1cc838ee9c889169691eaeee09338494a1ddb9ba4"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-unreached/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T20:12:05.1216458Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-unreached/raw.txt",
+          "sha256": "385ae69a630c17773831a3187e6993e1585525bcab51b98798fbace96be2fe8d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-unreached/normalized.txt",
+          "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-unreached/transcription.txt",
+          "sha256": "fa912ac4deebe64b796a203bb2d8dc48e81c90d04d7f58fe73f2f20991778ae4"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-unreached/stdout.txt",
+            "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-modulo-text-prefix",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-text-prefix/source.alg",
+        "sha256": "392932d1d5d4b88887aae5c20527022746d2bf03a8f6c2d99355ab547947ed8d"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-text-prefix/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": false,
+        "capturedAt": "2026-11-06T20:12:25.4746591Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-text-prefix/raw.txt",
+          "sha256": "def7fd6ce8bee96520403f51e56b2a29587ff1afc6187e0ac2fab1375a9c84af"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-text-prefix/normalized.txt",
+          "sha256": "e5a177e9b77544477a024bdbc7fa8a15b3fe99527ac7e83938738c2e460ff9b1"
+        },
+        "normalizer": "text-v1",
+        "guiOnly": true,
+        "screenshot": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-text-prefix/screenshot.png",
+          "sha256": "4327166a782bc98f77e639ce36839858a4238024774128961237347e65e5b4da"
+        },
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-text-prefix/transcription.txt",
+          "sha256": "1627cd78d4965d20d3467ef3df33ac04a19829688a7c1dcc038ac44e5951be3d"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 1,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-modulo-text-prefix/stdout.txt",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "diagnostics": [
+            {
+              "code": "P001",
+              "line": 20
+            }
+          ]
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-numeric-binary",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-numeric-binary/source.alg",
+        "sha256": "4ae7a20d32cfe736f32e0cb39e321114d5fdd1d2065f736d294ed07951812b44"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-numeric-binary/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T20:00:00.3067766Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-numeric-binary/raw.txt",
+          "sha256": "385ae69a630c17773831a3187e6993e1585525bcab51b98798fbace96be2fe8d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-numeric-binary/normalized.txt",
+          "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-numeric-binary/transcription.txt",
+          "sha256": "efb350c225f702c89f346d361e0ef57b2662b7309373a3574e0246bbb9452a79"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-numeric-binary/stdout.txt",
+            "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
+      }
+    },
+    {
+      "id": "rejection-call-comparison",
+      "ownerGroup": 17,
+      "tasks": [
+        "17.3"
+      ],
+      "source": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-comparison/source.alg",
+        "sha256": "6c74b0c05117b984eee3d35d626b1d3759d71e750b7b39b269ee7bb3ced77535"
+      },
+      "input": {
+        "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-comparison/input.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "timeoutMS": 5000,
+      "maxSteps": 10000,
+      "evidence": {
+        "state": "recorded",
+        "accepted": true,
+        "capturedAt": "2026-11-06T20:00:42.9250619Z",
+        "raw": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-comparison/raw.txt",
+          "sha256": "385ae69a630c17773831a3187e6993e1585525bcab51b98798fbace96be2fe8d"
+        },
+        "normalized": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-comparison/normalized.txt",
+          "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+        },
+        "normalizer": "panel-v1",
+        "transcription": {
+          "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-comparison/transcription.txt",
+          "sha256": "52106ddc184187bc0d5f4662b45213d05abae9c383dd5322ba749c9727ab28d6"
+        }
+      },
+      "implementation": {
+        "state": "verified",
+        "expected": {
+          "exitCode": 0,
+          "stdout": {
+            "path": "testdata/conformance/visualg-3.0.7/probes/rejection-call-comparison/stdout.txt",
+            "sha256": "24d9b35c727e6c78676c2ad378a8c3c47cfb539f3583d3cd9e1eafee51d5679d"
+          }
+        },
+        "tests": [
+          "cmd/portugo/recorded_rejections_test.go#TestRecordedRejectionControls"
+        ],
+        "review": {
+          "reason": "Qualified by exact original or reduced CLI replay and permanent regressions; follow-up ownership is mapped in the rejected-path qualification report.",
+          "link": "docs/rejection-paths-progress.md"
+        }
       }
     }
   ]

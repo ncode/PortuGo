@@ -36,7 +36,7 @@ func Analyze(prog *ast.Program) (*Info, []diag.Diagnostic) {
 		}
 		c.propagateDynamicCells()
 	}
-	info.valid = !diag.HasErrors(c.diags)
+	info.valid = !diag.HasErrors(diag.Immediate(c.diags))
 	return info, diag.Ordered(c.diags)
 }
 
@@ -345,7 +345,18 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 		// Recorded incompatible record destinations report their failure during
 		// execution, where the runtime validates the concrete record layout.
 		if ok && dst.Kind != runtime.RecordType && !logicalResult && !realToInteger && src.Kind != runtime.NumericType && !runtime.Assignable(dst, src) {
-			c.error(s.Value.Start(), diag.ETypeMismatch, "cannot assign %s to %s", src, dst)
+			if c.stopped {
+				return
+			}
+			d := diag.Diagnostic{Code: diag.ETypeMismatch, Pos: s.Value.Start(), Message: fmt.Sprintf("cannot assign %s to %s", src, dst)}
+			if isScalar(dst) && isScalar(src) && (dst.Kind != runtime.IntegerType || src.Kind != runtime.RealType) {
+				d.Deferred = true
+				if c.info.assignments == nil {
+					c.info.assignments = make(map[*ast.AssignStmt]diag.Diagnostic)
+				}
+				c.info.assignments[s] = d
+			}
+			c.diags = append(c.diags, d)
 		}
 	case *ast.CallStmt:
 		c.checkCall(s.Call, true)
@@ -354,6 +365,9 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 			c.checkColorArg(s.Target, c.containsUserCall(s.Color))
 		}
 	case *ast.IfStmt:
+		if s.Invalid != token.NoPos {
+			return
+		}
 		c.requireBool(s.Cond)
 		c.checkStmts(s.Then)
 		c.checkStmts(s.Else)
@@ -368,7 +382,11 @@ func (c *checker) checkStmt(stmt ast.Stmt) {
 					}
 					t := c.expr(expr)
 					if !mismatch && x.Kind != runtime.VoidType && t.Kind != runtime.VoidType && !runtime.Assignable(x, t) && !runtime.Assignable(t, x) {
-						c.error(expr.Start(), diag.ETypeMismatch, "cannot compare %s with %s", x, t)
+						if !c.stopped {
+							d := diag.Diagnostic{Code: diag.ETypeMismatch, Pos: expr.Start(), Message: fmt.Sprintf("cannot compare %s with %s", x, t)}
+							d.Deferred = label.High == nil && isScalar(x) && isScalar(t) && x.Kind != runtime.NumericType && t.Kind != runtime.NumericType
+							c.diags = append(c.diags, d)
+						}
 						mismatch = true
 					}
 				}

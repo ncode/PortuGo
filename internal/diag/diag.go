@@ -54,6 +54,7 @@ type Diagnostic struct {
 	Severity Severity
 	End      token.Pos // Exclusive end; zero means no recorded span.
 	Cause    error     // Retained for inspection, never appended to rendered output.
+	Deferred bool      // Retained in checked syntax or semantic facts for execution; static tools still report it.
 }
 
 // Unwrap exposes the optional underlying cause.
@@ -95,6 +96,17 @@ func Render(w io.Writer, file *token.File, diags []Diagnostic) {
 		}
 		_, _ = fmt.Fprintf(w, "%s: %s\n", d.Code, d.Message)
 	}
+}
+
+// Immediate returns a copy excluding failures retained for execution.
+func Immediate(diags []Diagnostic) []Diagnostic {
+	var out []Diagnostic
+	for _, d := range diags {
+		if !d.Deferred {
+			out = append(out, d)
+		}
+	}
+	return out
 }
 
 // HasErrors reports whether diagnostics contains an error.

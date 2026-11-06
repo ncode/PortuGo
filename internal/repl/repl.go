@@ -139,11 +139,13 @@ func runSource(src string, i *interp.Interpreter, errout io.Writer) (bool, error
 		return false, nil
 	}
 	prog, parseDiags := parser.Parse(toks)
+	parseDiags = diag.Immediate(parseDiags)
 	if len(parseDiags) > 0 {
 		diag.Render(errout, file, parseDiags)
 		return false, nil
 	}
 	info, semaDiags := sema.Analyze(prog)
+	semaDiags = diag.Immediate(semaDiags)
 	if diag.HasErrors(semaDiags) {
 		diag.Render(errout, file, semaDiags)
 		return false, nil

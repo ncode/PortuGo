@@ -104,6 +104,8 @@ func (s *CallStmt) Start() token.Pos { return s.Call.Start() }
 
 // IfStmt is a conditional branch.
 type IfStmt struct {
+	Invalid     token.Pos // Malformed header, rejected when the statement is reached.
+	Unclosed    token.Pos // EOF reached while looking for the missing fimse.
 	ElseAt, End token.Pos
 	At          token.Pos
 	Cond        Expr

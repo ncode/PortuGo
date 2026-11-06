@@ -1,0 +1,10 @@
+Publication redaction: operational handles and private automation metadata omitted.
+Selected Unicode control contents follow unchanged; not native stdout bytes.
+
+[results panel]
+Início da execução
+ 1
+
+
+[simulated console screen state]
+ 1

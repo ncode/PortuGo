@@ -1,0 +1,4 @@
+Digite 3 numeros inteiro!
+Primeiro numero: 3
+Segundo numero: 1
+Terceiro numero: 2

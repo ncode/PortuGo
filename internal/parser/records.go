@@ -2,6 +2,7 @@ package parser
 
 import (
 	"github.com/ncode/PortuGo/internal/ast"
+	"github.com/ncode/PortuGo/internal/diag"
 	"github.com/ncode/PortuGo/internal/token"
 )
 
@@ -19,11 +20,11 @@ func (p *parser) parseRecordType(header token.Pos) ast.TypeSpec {
 		p.expect(token.COLON, "expected ':' after field name")
 		field := p.parseType()
 		p.rememberFragment(first.Pos)
-		if field.Name == "vetor" && len(p.diags) == 0 {
+		if field.Name == "vetor" && !diag.HasErrors(diag.Immediate(p.diags)) {
 			p.error(token.Token{Pos: field.At}, "vector fields are unsupported")
 		}
 		typ.Fields = append(typ.Fields, ast.VarDecl{At: first.Pos, Names: names, Type: field})
-		if len(p.diags) != 0 {
+		if diag.HasErrors(diag.Immediate(p.diags)) {
 			return typ
 		}
 	}
