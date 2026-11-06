@@ -1,6 +1,6 @@
 ## Why
 
-Four recorded rejected programs still differ from the CLI, although every accepted recording is verified. Closing these differences needs precise error selection, rejection timing, and partial-output behavior without regressing accepted programs or weakening the corpus.
+Four rejected-program comparisons remain pending, although every accepted recording is verified. Closing these differences needs precise error selection, rejection timing, and partial-output behavior without regressing accepted programs or weakening the corpus.
 
 ## What Changes
 

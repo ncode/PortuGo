@@ -9,7 +9,7 @@ Acceptance of `close-rejected-program-gaps` SHALL require exact original-source 
 
 #### Scenario: Complete all four rejection mappings
 - **WHEN** all four named probes replay exactly, their regression and reduced-control tests pass, and all previously verified probes replay successfully
-- **THEN** the probes can be marked verified and current progress documentation can report zero pending rejected-example mappings
+- **THEN** the probes can be marked verified and current progress documentation can report all four named mappings verified while retaining any other pending results
 
 ### Requirement: Rejection evidence integrity
 Investigation of the four rejected examples SHALL preserve committed source, stdin, raw observations, normalized evidence, derived expectation artifacts, and their hashes. Corrected expectations SHALL point to new reviewed artifacts while retaining the old artifacts unchanged. New or conflicting reference observations SHALL be added separately with pinned provenance, exact inputs, fresh capture time, sufficient diagnostic and output evidence, and an explicit reviewed disposition. Partial GUI output SHALL NOT be substituted for a complete standard-output contract. A new observation SHALL NOT silently replace or weaken an existing expectation to match current implementation behavior.
