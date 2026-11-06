@@ -219,3 +219,27 @@ fimalgoritmo
 		t.Fatalf("declared call became a repeat marker: exit %d, output %q, diagnostics %q", exit, out, stderr)
 	}
 }
+
+func TestHaltSkipsDeferredIfError(t *testing.T) {
+	path, err := filepath.Abs("../../testdata/cli/halt_deferred_if.alg")
+	if err != nil {
+		t.Fatal(err)
+	}
+	want, err := os.ReadFile("../../testdata/cli/halt_deferred_if.out")
+	if err != nil {
+		t.Fatal(err)
+	}
+	exit, out, stderr := rejectionCommand(t, []string{"run", "--max-steps", "10000", path}, "")
+	if exit != 0 || !bytes.Equal(out, want) || len(stderr) != 0 {
+		t.Fatalf("halt reached deferred error: exit %d, output %q, diagnostics %q", exit, out, stderr)
+	}
+	src, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	input := string(src) + "algoritmo \"next\"\ninicio\nescreval(\"CLEAN\")\nfimalgoritmo\n:sair\n"
+	exit, out, stderr = rejectionCommand(t, []string{"repl", "--max-steps", "10000"}, input)
+	if exit != 0 || strings.Count(string(out), "BEFORE\n") != 1 || !strings.HasSuffix(string(out), "CLEAN\nportugo> ") || len(stderr) != 0 {
+		t.Fatalf("halt contaminated next submission: exit %d, output %q, diagnostics %q", exit, out, stderr)
+	}
+}

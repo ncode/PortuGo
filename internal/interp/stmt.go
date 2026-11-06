@@ -92,7 +92,7 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 			body = s.Then
 		}
 		ctrl, err := i.execStmts(body)
-		if err != nil || ctrl.kind != noControl {
+		if err != nil || ctrl.kind != noControl || i.halted {
 			return ctrl, err
 		}
 		if s.Unclosed != token.NoPos {

@@ -88,3 +88,14 @@ binary exclusions. These files were reviewed locally; exact replay, trace
 validation, historical hash verification, and individual image inspection cover
 their evidence and privacy obligations. No selected production file was omitted
 or failed model review.
+
+A subsequent delegated review used OCR only for local file selection and rule
+resolution. Across 312 changed files, the host reviewed all 15 selected files
+(14 production Go files and the OpenSpec metadata): zero skipped, 100% selected
+coverage. Deterministic filters excluded 297 documentation, test, and evidence
+files in the categories above. The local review found one additional medium
+bug: a choice-range halt could still trigger a recovered branch's missing
+`fimse` error. The branch now returns on a halt before inspecting that deferred
+error. A failing CLI fixture and a subsequent REPL-submission regression verify
+the fix. No confirmed findings remain; this delegated review made no OCR LLM
+endpoint calls.

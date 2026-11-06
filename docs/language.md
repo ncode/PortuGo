@@ -618,7 +618,8 @@ As a project execution-control safeguard, a halt inside a nested call unwinds
 active caller evaluations. Remaining operands, output items, format expressions,
 and call arguments are skipped, and unfinished calls do not copy reference
 parameters back. Earlier output and direct global writes remain visible; the
-halt itself adds no diagnostic. A later interpreter run starts normally. These
+halt itself adds no diagnostic. It also skips a deferred missing-`fimse`
+failure after the halted branch. A later interpreter run starts normally. These
 nested compositions have project regression coverage and do not extend the
 independently qualified reference forms above.
 

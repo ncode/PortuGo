@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Honor execution halts before reporting a recovered branch's deferred
+  missing-`fimse` error, with a regression for a subsequent REPL submission.
 - Match all four remaining rejected bundled examples, preserving their exact
   output prefixes and positioned diagnostics. Retain original evidence and
   qualify the corrected 82-byte assignment and two-byte repeat expectations.
