@@ -5,8 +5,9 @@ Four recorded rejected programs still differ from the CLI, although every accept
 ## What Changes
 
 - Reproduce and reduce the four pending rejection paths against the pinned reference application before implementing behavior not established by existing evidence.
-- Match the existing recorded exit status, diagnostic code and line, and exact standard-output bytes for `EXEMPLO1.alg`, `Tabela_ASCII4.alg`, `ESCOLA1.alg`, and `interrompa.alg`.
-- Keep ordinary front-end errors non-executable. Use deferred diagnostic constructs only where reduced reference controls establish them, with bounded recovery and no source-name or source-hash special cases.
+- Match the reviewed exit status, diagnostic code and line, and complete standard-output bytes for `EXEMPLO1.alg`, `Tabela_ASCII4.alg`, `ESCOLA1.alg`, and `interrompa.alg`.
+- Correct the incomplete output expectations identified by fresh reference runs: the assignment example prints an 82-byte prompt/input prefix, and the repeat example writes ` 1` before failing. Preserve the old observations and qualify new evidence before changing corpus expectations.
+- Keep blocking front-end errors non-executable. Classify errors as deferred only where reduced reference controls establish their execution timing, with bounded recovery and no source-name or source-hash special cases.
 - Add permanent CLI regressions for all four original inputs and reduced positive/negative controls. Preserve original source, stdin, and evidence bytes; add repeat observations separately.
 - Make these four rejected paths required for this change's acceptance, then mark them verified only after original-source replay and traceability pass. Update the language reference, changelog, and current conformance progress from validated results.
 
@@ -23,6 +24,6 @@ None.
 
 ## Impact
 
-Likely implementation seams are parser recovery, semantic diagnostic selection, interpreter user-call/output state, CLI integration, and the conformance replay gate. The reference experiment must determine which seams actually need changes. Tests, corpus metadata, `docs/language.md`, `CHANGELOG.md`, and current progress documents change alongside confirmed implementation work. No core dependencies, new language dialects, release publication, or existing release tags are in scope.
+Likely implementation seams are parser recovery, semantic diagnostic classification, interpreter user-call state, CLI integration, and the conformance replay gate. The reference experiment must determine which seams actually need changes. Tests, corpus metadata, `docs/language.md`, `CHANGELOG.md`, and current progress documents change alongside confirmed implementation work. No core dependencies, new language dialects, release publication, or existing release tags are in scope.
 
-This proposal does not establish the cause of any mismatch. Inconclusive or conflicting reference observations keep the affected task pending; they do not authorize an invented compatibility rule or an implementation-verification claim.
+The fresh runs distinguish three remaining implementation gaps from an incomplete repeat-output expectation. The character-table trigger still needs further reduction. Inconclusive or conflicting reference observations keep the affected task pending; they do not authorize an invented compatibility rule or an implementation-verification claim.

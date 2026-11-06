@@ -1,16 +1,16 @@
 ## 1. Establish the reference contract
 
-- [ ] 1.1 Run a fresh clean test baseline and add bounded subprocess regressions for the four unchanged corpus sources, asserting exact stdout, diagnostic sequence/code/line, and exit status; observe all four fail for the recorded differences.
-- [ ] 1.2 Record reduced assignment-versus-later-syntax controls and a fresh original `EXEMPLO1.alg` run, establishing error precedence and complete output.
-- [ ] 1.3 Record reduced sibling/nested user-call controls and a fresh original `Tabela_ASCII4.alg` run, isolating the line-301 failure from function naming, conversion, and ordinary nesting.
-- [ ] 1.4 Record unused-versus-called malformed subprogram controls and a fresh `ESCOLA1.alg` run with `SAIR`, establishing the prompt/echo prefix and reached EOF error.
+- [ ] 1.1 Run a fresh clean test baseline and add bounded subprocess regressions for the four unchanged corpus sources, asserting exact stdout, diagnostic sequence/code/line, and exit status; observe the current mismatches, and preserve the red implementation cases after reference expectations are qualified.
+- [ ] 1.2 Record reduced assignment-versus-later-syntax controls and a fresh original `EXEMPLO1.alg` run, establishing reached-error timing, target/RHS ordering, and the complete prompt/input prefix.
+- [ ] 1.3 Record reduced sibling/nested user-call controls and a fresh original `Tabela_ASCII4.alg` run, reducing the reproduced line-301 trigger without rejecting the successful simple-call and precomputed-argument controls.
+- [ ] 1.4 Record unused-versus-called malformed subprogram controls and a fresh `ESCOLA1.alg` run with `SAIR`, establishing the prompt/echo prefix and reached EOF error without assuming that invoked malformed bodies fail at their declaration boundary.
 - [ ] 1.5 Record reached-versus-escaped repeat markers, newline-versus-no-newline writes, successful final flushing, and a fresh original `interrompa.alg` run.
-- [ ] 1.6 Review and privacy-screen all new text, screenshots, and metadata; add pinned provenance and traceability through the existing recorder. Preserve old evidence. Resolve conflicting observations explicitly and update/review this proposal if its observable contracts change. Block dependent implementation for every unresolved case.
+- [ ] 1.6 Review and privacy-screen all new text, screenshots, and metadata; add pinned provenance and traceability through the existing recorder. Preserve old evidence. Qualify the fresh 82-byte assignment and two-byte repeat prefixes, add separately reviewed expectation artifacts, and resolve conflicts explicitly before changing mappings. Update/review this proposal if its observable contracts change. Block dependent implementation for every unresolved case.
 
 ## 2. Correct assignment diagnostic precedence
 
 - [ ] 2.1 Add the reduced assignment-order and neighboring valid/error controls from 1.2; observe the applicable regressions fail before production changes.
-- [ ] 2.2 Repair the shared analysis/recovery seam established by 1.2, preserve unrelated diagnostic collection and non-execution after blocking errors, and pass the original EXEMPLO1 regression plus its controls.
+- [ ] 2.2 Repair the shared analysis/recovery seam established by 1.2, preserve preceding I/O and evaluation order, unchanged static check diagnostics, unrelated diagnostic collection, and non-execution after blocking errors, and pass the original EXEMPLO1 regression plus its controls.
 
 ## 3. Correct the character-table rejection
 
@@ -22,10 +22,10 @@
 - [ ] 4.1 Add reached/unreached malformed-body and EOF recovery controls established by 1.4, including nested boundary and resource-limit cases; observe the applicable regressions fail before production changes.
 - [ ] 4.2 Repair only the evidenced recovery/deferred-diagnostic seam, preserving progress and positions, then pass the original school regression with its 41-byte prompt/echo and single EOF diagnostic.
 
-## 5. Correct repeat rejection output
+## 5. Correct the incomplete repeat output expectation
 
-- [ ] 5.1 Add the output/marker controls established by 1.5, including successful no-newline output, prompts/input echo, output-writer failure, and interpreter reuse where affected; observe the applicable regressions fail before production changes.
-- [ ] 5.2 Repair the narrow confirmed output or rejection seam and pass the original interrompa regression with no stdout; preserve the verified unconditional-break escape and earlier output on unrelated runtime failures.
+- [ ] 5.1 Add complete-output evidence/data regressions from 1.5 and the known accepted escape control; demonstrate that the old empty-output expectation conflicts with the reference while the baseline CLI preserves the observed two bytes.
+- [ ] 5.2 Correct the repeat expected-output mapping to the separately reviewed two-byte artifact, retain old evidence, and pass its exact original-source regression. Preserve the verified unconditional-break escape; make no interpreter/output change without a separately confirmed mismatch.
 
 ## 6. Integrate and qualify all four changes
 
