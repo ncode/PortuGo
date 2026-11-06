@@ -7,6 +7,7 @@ import (
 	"github.com/ncode/PortuGo/internal/ast"
 	"github.com/ncode/PortuGo/internal/diag"
 	"github.com/ncode/PortuGo/internal/runtime"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 func (i *Interpreter) execStmts(stmts []ast.Stmt) (control, error) {
@@ -69,10 +70,16 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		if i.halted {
 			return control{}, nil
 		}
+		if d, ok := i.info.AssignmentDiagnostic(s); ok {
+			return control{}, d
+		}
 		return control{}, assign(cell, v)
 	case *ast.CallStmt:
 		return control{}, i.callProcedure(s.Call)
 	case *ast.IfStmt:
+		if s.Invalid != token.NoPos {
+			return control{}, failure(s.Invalid, diag.EParse, fmt.Errorf("malformed se condition"))
+		}
 		cond, err := i.evalBool(s.Cond)
 		if err != nil {
 			return control{}, err
@@ -80,10 +87,21 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		if err := i.delay(s.At); err != nil {
 			return control{}, err
 		}
+		body := s.Else
 		if cond {
-			return i.execStmts(s.Then)
+			body = s.Then
 		}
-		return i.execStmts(s.Else)
+		ctrl, err := i.execStmts(body)
+		if err != nil || ctrl.kind != noControl {
+			return ctrl, err
+		}
+		if s.Unclosed != token.NoPos {
+			if i.calls == 0 {
+				return ctrl, failure(s.Unclosed, diag.EParse, fmt.Errorf("expected fimse"))
+			}
+			i.unclosed = s.Unclosed
+		}
+		return ctrl, nil
 	case *ast.SwitchStmt:
 		x, err := i.eval(s.X)
 		if err != nil {

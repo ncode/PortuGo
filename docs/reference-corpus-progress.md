@@ -4,10 +4,10 @@ OpenSpec group 2 is complete. The corpus inventories 229 stable records across
 73 requirements, 73 bundled example filenames, sizes and hashes, 25 checklist
 rows, 48 assumptions, 9 feature records, and one audited defect. All 73 examples now have
 recorded dispositions: 60 accepted, 11 unusable, and 2 reviewed non-goals. The
-manifest has 1,657 recorded probes and 22 reviewed non-applicable probes.
-Across all 1,679 probes, 1,673 implementations are verified, four reviewed
-rejected-source mismatches remain pending, and two nonterminating examples are
-excluded from complete execution. No accepted program remains pending. All 216
+manifest has 1,696 recorded probes and 22 reviewed non-applicable probes.
+Across all 1,718 probes, 1,716 implementations are verified and two
+nonterminating examples are excluded from complete execution. No accepted
+program remains pending. All 216
 tasks in the [archived conformance change](../openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/tasks.md)
 are complete. Every one of the 33 legacy `[VERIFICAR]`
 markers has a stable inventory link. The original compatibility checklist is
@@ -23,10 +23,10 @@ timing, GUI, and reference-sequence behavior.
 
 The evidence-recording portion of group 2 is complete: all 73 bundled examples
 have a recorded disposition, and every manifest probe is either recorded or
-reviewed not-applicable. Evidence validation reports 1,657 recorded probes, 22
-reviewed not-applicable probes, and no unrecorded entries. The four reviewed
-rejection mismatches remain visible in the manifest without becoming pending
-accepted behavior.
+reviewed not-applicable. Evidence validation reports 1,696 recorded probes, 22
+reviewed not-applicable probes, and no unrecorded entries. The four original
+rejected paths and 39 new reference controls now pass exact
+CLI replay under the [rejection qualification](rejection-paths-progress.md).
 
 The September 14 source-obligation slice adds eight reviewed recordings from
 the Windows reference application. `const` and `dos` are reserved, a second
@@ -69,7 +69,7 @@ Overlapping requirement links share one probe where a recording serves more
  than one category; unqualified operand combinations remain pending.
 
 The traceability handoff is complete: a fresh audit resolves all 229 inventory
-entries, 1,679 probes, and 1,834 implementation-test links without stale or
+entries, 1,718 probes, and 1,877 implementation-test links without stale or
 untraced IDs. Shared links are retained where one probe serves multiple
 requirements. Pending implementation probes keep their owning tasks and omit
 nonexistent tests, while reviewed project-only probes keep their test links.

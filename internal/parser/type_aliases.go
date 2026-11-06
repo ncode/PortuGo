@@ -2,6 +2,7 @@ package parser
 
 import (
 	"github.com/ncode/PortuGo/internal/ast"
+	"github.com/ncode/PortuGo/internal/diag"
 	"github.com/ncode/PortuGo/internal/token"
 )
 
@@ -25,11 +26,11 @@ func (p *parser) parseTypeBlock() []ast.TypeDecl {
 			p.error(token.Token{Pos: typ.At}, "vector type aliases are unsupported")
 		}
 		decls = append(decls, ast.TypeDecl{Name: name, Type: typ})
-		if len(p.diags) != 0 {
+		if diag.HasErrors(diag.Immediate(p.diags)) {
 			return decls
 		}
 	}
-	if p.peek().Kind != token.VAR && p.peek().Kind != token.PROCEDIMENTO && p.peek().Kind != token.FUNCAO && len(p.diags) == 0 {
+	if p.peek().Kind != token.VAR && p.peek().Kind != token.PROCEDIMENTO && p.peek().Kind != token.FUNCAO && !diag.HasErrors(diag.Immediate(p.diags)) {
 		p.error(p.peek(), "expected var after types")
 	}
 	return decls

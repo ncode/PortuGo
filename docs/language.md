@@ -27,8 +27,8 @@ unrecorded combinations remain outside the qualified scope.
 The [bundled example sweep](bundled-examples-progress.md) verifies all 60 accepted
 programs in their original and formatted forms: 45 use exact output comparisons
 and 15 use reviewed generated-output contracts. Eleven supplied files have
-recorded reference errors; four of those rejection paths still differ from the
-CLI. Two nonterminating examples are excluded from complete execution. No
+recorded reference errors; all eleven rejection paths now match the CLI. Two
+nonterminating examples are excluded from complete execution. No
 accepted bundled recording remains pending. These results cover the recorded
 input paths, not every interactive branch or every VisuAlg program.
 
@@ -348,6 +348,15 @@ See [retained operand recordings](retained-operands-progress.md) for the tested
 cases. These behaviors are reference compatibility rules, not ordinary numeric
 identities.
 
+The recorded integer remainder inside a user function also affects pending
+caller text: `Prefixo(4) + Converter("1")` reports `P001` at the caller's
+addition if `Converter` executes `n <- 1 mod 8` before returning text. `%` has
+the same effect. Numeric caller additions remain valid; precomputing the text
+result, reversing the calls, or skipping the remainder preserves the successful
+text concatenation. This accounts for the original character-table rejection;
+it is not a general restriction on nested calls. See the
+[rejection qualification report](rejection-paths-progress.md).
+
 Arithmetic operators are `+`, `-`, `*`, `/`, `\`, `DIV`, `%`, `MOD`, and `^`.
 The case-insensitive word `DIV` is an alias for `\`, with the same precedence,
 operand types, and evaluation order. Formatting emits `\`. The word is reserved:
@@ -472,7 +481,10 @@ spellings rather than a compound terminator; a repeat using either spelling
 reports `E002` at that identifier. A `fimrepita` line is retained as a
 deferred syntax-error marker: an earlier `interrompa` can exit before it, while
 reaching the marker reports `P001` at the marker line. These spellings are
-outside the canonical syntax.
+outside the canonical syntax. A `fimrepita` immediately after a complete
+`repita ... ate` is likewise a reached error marker; an unselected branch skips
+it. The original rejected repeat example preserves its two output bytes,
+space then `1`, without a newline.
 The reference does not establish general conditionless or infinite-repeat
 semantics, so the implementation does not claim a general infinite form. The
 recovery path above remains available for the recorded early-break case.
@@ -503,7 +515,10 @@ For the recorded ASCII text cases, single labels are uppercased and compared
 with the unchanged selector: `"B"` matches `caso "b"`, while `"b"` does not.
 Logical single labels use equality. Recorded text and logical ranges do not
 match. Incompatible label types produce `E001` at the label, including when
-the selector's concrete type is established only during execution.
+the selector's concrete type is established only during execution. A statically
+incompatible scalar single label is rejected when evaluation reaches that
+label; an unselected enclosing branch does not reject execution. `check` still
+reports the static incompatibility. Range-label validation is unchanged.
 
 The range separator must follow its lower expression on the same physical
 line. A missing upper expression or the unsupported `1..5` spelling produces
@@ -1366,14 +1381,13 @@ remain out of scope for v1.
 
 ## Validation status
 
-The conformance manifest contains 1,679 probes: 1,673 verified implementations,
-four reviewed rejected-source mismatches, and two reviewed exclusions for
-nonterminating examples. The manifest contains 1,834 implementation-test links,
-including shared tests. All required accepted programs are verified. The
+The conformance manifest contains 1,718 probes: 1,716 verified implementations
+and two reviewed exclusions for nonterminating examples. It contains 1,877
+implementation-test links, including shared tests. All required accepted programs are verified. The
 [archived conformance task list](../openspec/changes/archive/2026-09-15-complete-visualg-3-0-7-conformance/tasks.md)
-is complete; the four rejection differences remain visible without blocking
-accepted-program qualification. Behavior outside the recorded corpus remains
-unverified.
+is complete. All four original rejection contracts also pass an explicit CLI
+completion gate, independently of the accepted-example sweep. Behavior outside
+the recorded corpus remains unverified.
 
 `TestRecordedWindowsProbes` covers fourteen early observations described in the
 [September 7 Windows report](windows-lab-validation-2026-09-07.md); the full corpus
@@ -1385,9 +1399,25 @@ random sequences.
 Front-end diagnostics ordinarily prevent execution. Unresolved identifiers in
 procedure and function bodies are retained as deferred diagnostics, so an
 uncalled body does not reject an otherwise executable path; the diagnostic is
-reported when that body is invoked. `run` exits 1 for lexical, parsing, semantic,
-or runtime failures and 0 on success. The four reviewed rejection paths can
-differ from the reference in diagnostic timing and preceding output.
+reported when that body is invoked. Recorded incompatible scalar
+assignments retain their static `E001` for `check`, but `run` resolves the target
+and evaluates the RHS before rejecting the reached assignment. Earlier I/O is
+preserved. Existing computed real-to-integer preflight rejection is unchanged.
+
+The recorded malformed compound `se` header reports `P001` when reached. A
+missing `fimse` can recover at a program/subprogram boundary or a repeat's
+`ate`; the reached main-body error reports the retained EOF position. An unused
+malformed subprogram does not reject the main path. Calling the recorded
+malformed procedure preserves both its body output and the following main
+output before reporting the missing `fimse` at EOF. Other closing boundaries
+and resource-limit failures remain blocking. These are evidence-scoped recovery
+rules, not acceptance of arbitrary malformed programs.
+
+`check` reports retained front-end diagnostics without execution. `fmt -w`
+rejects malformed syntax before changing source bytes; formatting accepted
+syntax preserves its recorded rejection behavior. A later REPL submission
+starts with fresh execution state. `run` exits 1 for lexical, parsing, semantic,
+or runtime failures and 0 on success.
 
 The [September 14 quality evidence](quality-acceptance-2026-09-14.md) records
 passing build, lint, race, platform, fuzz, specification, and acceptance checks

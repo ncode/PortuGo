@@ -81,4 +81,20 @@ No release/tag or user-data migration is required. After evidence qualification,
 
 ## Implementation Gate Status
 
-All four original reference paths have been rerun, and reduced controls in all four areas have been observed privately. The proposal now accounts for the two incomplete output expectations. Publication/traceability of that evidence and final reduction of the table rule remain required before dependent implementation; all implementation tasks remain unchecked.
+The existing recorder now retains the fresh four original observations and 39
+reduced controls with pinned provenance, labeled publication redaction, and
+unchanged prior artifacts. Exact replay matches all 1,718 probes; all four
+original mappings are verified and have an independent CLI completion gate.
+
+The table trigger is a numeric remainder in a text-returning callee while the
+caller retains text for addition. `%` and `mod` reproduce the P001; direct,
+precomputed, reversed, skipped-remainder, ordinary arithmetic/comparison, and
+numeric-caller controls succeed. The implementation keeps the existing shared
+operand evaluator and adds the call operand boundary needed for this effect.
+
+The school reduction additionally establishes deferred scalar single-label
+compatibility and called-versus-unused missing-FIMSE behavior. The called
+control preserves BODY and MAIN before EOF; recovery does not fail early at the
+procedure boundary. Parser resource and other closing-boundary failures remain
+blocking. Undefined reference-application faults found during reduction remain
+excluded from language claims. Final quality/OCR/PR checks are tracked in tasks.

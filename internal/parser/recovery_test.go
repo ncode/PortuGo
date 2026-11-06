@@ -180,3 +180,75 @@ func TestRecoveredExpressionChainLimit(t *testing.T) {
 		t.Fatalf("uncontrolled recovery chain: %v", ds)
 	}
 }
+
+func TestDeferredRecoveryKeepsLimits(t *testing.T) {
+	for _, body := range []string{
+		"se " + strings.Repeat("(", 300) + "verdadeiro" + strings.Repeat(")", 300) + " entao\n",
+		strings.Repeat("se verdadeiro entao\n", 300),
+	} {
+		_, tokens, ds := lexer.Scan("limit.alg", "algoritmo \"limit\"\ninicio\n"+body+"fimalgoritmo\n")
+		if len(ds) != 0 {
+			t.Fatal(ds)
+		}
+		prog, ds := Parse(tokens)
+		found := false
+		for _, d := range ds {
+			if d.Code == diag.EResource {
+				found = !d.Deferred && d.Pos != token.NoPos
+			}
+		}
+		if prog != nil || !found || !diag.HasErrors(diag.Immediate(ds)) {
+			t.Fatalf("resource failure became executable: %v", ds)
+		}
+	}
+}
+
+func TestDeferredIfKeepsOtherBoundariesBlocking(t *testing.T) {
+	for _, pair := range [][2]string{
+		{"para i de 1 ate 1 faca", "fimpara"},
+		{"enquanto verdadeiro faca", "fimenquanto"},
+		{"escolha i\ncaso 1", "fimescolha"},
+	} {
+		_, tokens, ds := lexer.Scan("boundary.alg", "algoritmo \"boundary\"\nvar\ni:inteiro\ninicio\n"+pair[0]+"\nse verdadeiro entao\nescreval(i)\n"+pair[1]+"\nfimalgoritmo\n")
+		if len(ds) != 0 {
+			t.Fatal(ds)
+		}
+		_, ds = Parse(tokens)
+		if !diag.HasErrors(diag.Immediate(ds)) {
+			t.Fatalf("unqualified boundary became executable: %v", ds)
+		}
+	}
+}
+
+func TestDeferredRecoveryKeepsLaterTypeDeclarations(t *testing.T) {
+	_, tokens, ds := lexer.Scan("declarations.alg", `algoritmo "declarations"
+procedimento P()
+inicio
+se verdadeiro entao
+escreval("UNUSED")
+fimprocedimento
+funcao F():inteiro
+tipo
+A = inteiro
+B = inteiro
+var
+x:A
+y:B
+inicio
+retorne 1
+fimfuncao
+inicio
+escreval(F())
+fimalgoritmo
+`)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	prog, ds := Parse(tokens)
+	if prog == nil || diag.HasErrors(diag.Immediate(ds)) {
+		t.Fatalf("deferred body blocked later declarations: %v", ds)
+	}
+	if len(prog.Subs) != 2 || len(prog.Subs[1].(*ast.FunctionDecl).Types) != 2 {
+		t.Fatal("lost later type declarations")
+	}
+}

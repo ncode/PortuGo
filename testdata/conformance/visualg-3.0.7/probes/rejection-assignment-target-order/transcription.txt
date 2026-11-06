@@ -1,0 +1,9 @@
+Manual observation of VisuAlg 3.0.7.0, Windows amd64, en-US.
+Observed UTC: 2026-11-06T19:39:55.1183919Z
+Executable SHA-256: 7b297fb338e2ca7004ed55b42aef215c17a1a1d44b27cff50b6dc9be6dd3becf
+Editor source SHA-256: 238e320a1f1412508e37e7cc3d19738d162fe199c42905717e5df51b9f2aacbc
+Editor readback verified; exact source and stdin retained.
+Rejected: project diagnostic mapping R003, original source line 11; exact column not established.
+Qualified language-output prefix: 7 UTF-8 bytes, retained in stdout.txt.
+Unicode control text is preserved with its GUI framing. Display rows and termination notices are not language writes.
+Publication redaction: private automation metadata and operational handles omitted. Selected control text and any diagnostic screenshot retain their contents.

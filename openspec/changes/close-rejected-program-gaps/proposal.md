@@ -26,4 +26,8 @@ None.
 
 Likely implementation seams are parser recovery, semantic diagnostic classification, interpreter user-call state, CLI integration, and the conformance replay gate. The reference experiment must determine which seams actually need changes. Tests, corpus metadata, `docs/language.md`, `CHANGELOG.md`, and current progress documents change alongside confirmed implementation work. No core dependencies, new language dialects, release publication, or existing release tags are in scope.
 
-The fresh runs distinguish three remaining implementation gaps from an incomplete repeat-output expectation. The character-table trigger still needs further reduction. Inconclusive or conflicting reference observations keep the affected task pending; they do not authorize an invented compatibility rule or an implementation-verification claim.
+Fresh original and reduced recordings qualify the three implementation fixes
+and the incomplete repeat-output expectation. The shared evaluator's remainder
+effect explains the character-table trigger; successful neighboring calls remain
+valid. All four mappings and 39 controls pass exact CLI replay. Exploratory
+reference-application faults remain outside the language contract.

@@ -1,0 +1,38 @@
+{
+  "evidence": {
+    "state": "recorded",
+    "accepted": false,
+    "capturedAt": "2026-09-09T13:46:26.0704072Z",
+    "raw": {
+      "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/transcription.txt",
+      "sha256": "0239c7264162152ca86b6decb6a854db4d7bd991df5366cb7e643c58a27802cc"
+    },
+    "normalized": {
+      "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/transcription.txt",
+      "sha256": "0239c7264162152ca86b6decb6a854db4d7bd991df5366cb7e643c58a27802cc"
+    },
+    "normalizer": "text-v1",
+    "guiOnly": true,
+    "screenshot": {
+      "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/screenshot.png",
+      "sha256": "09c00d1ae48e8b46031c785205043e8fe011e6bb88dd746d928e44b50aaf5eaf"
+    },
+    "transcription": {
+      "path": "testdata/conformance/visualg-3.0.7/probes/bundled-f4fa0c514cf7/transcription.txt",
+      "sha256": "0239c7264162152ca86b6decb6a854db4d7bd991df5366cb7e643c58a27802cc"
+    }
+  },
+  "expected": {
+    "exitCode": 1,
+    "stdout": {
+      "path": "testdata/conformance/visualg-3.0.7/empty.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "diagnostics": [
+      {
+        "code": "P001",
+        "line": 16
+      }
+    ]
+  }
+}
