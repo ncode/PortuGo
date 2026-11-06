@@ -193,3 +193,29 @@ func TestAnalysisOnlyDeferredRejections(t *testing.T) {
 		})
 	}
 }
+
+func TestRepeatRecoveryKeepsDeclaredCallable(t *testing.T) {
+	source := `algoritmo "callable"
+procedimento P()
+inicio
+repita
+ate verdadeiro
+fimrepita
+fimprocedimento
+procedimento fimrepita()
+inicio
+escreval("CALLED")
+fimprocedimento
+inicio
+P()
+fimalgoritmo
+`
+	path := filepath.Join(t.TempDir(), "source.alg")
+	if err := os.WriteFile(path, []byte(source), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	exit, out, stderr := rejectionCommand(t, []string{"run", "--max-steps", "10000", path}, "")
+	if exit != 0 || string(out) != "CALLED\n" || len(stderr) != 0 {
+		t.Fatalf("declared call became a repeat marker: exit %d, output %q, diagnostics %q", exit, out, stderr)
+	}
+}

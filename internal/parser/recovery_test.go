@@ -252,3 +252,26 @@ fimalgoritmo
 		t.Fatal("lost later type declarations")
 	}
 }
+
+func TestMalformedIfHeaderKeepsSubprogramBoundary(t *testing.T) {
+	_, tokens, ds := lexer.Scan("header.alg", `algoritmo "header"
+procedimento P()
+inicio
+se verdadeiro e
+fimprocedimento
+procedimento Q()
+inicio
+escreval("Q")
+fimprocedimento
+inicio
+Q()
+fimalgoritmo
+`)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	prog, ds := Parse(tokens)
+	if prog == nil || diag.HasErrors(diag.Immediate(ds)) || len(prog.Subs) != 2 || len(prog.Body) != 1 {
+		t.Fatalf("header swallowed boundary: %v", ds)
+	}
+}

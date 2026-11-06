@@ -70,3 +70,21 @@ Exploratory reference-application faults found during reduction are retained
 privately and excluded from language-diagnostic claims. Wider unrecorded
 malformed-program and remainder compositions remain unqualified. No general
 compatibility claim follows from the completed four input paths.
+
+## Review coverage
+
+OCR reviewed all 14 changed production Go files. Its two parser findings were
+reproduced with failing regressions and fixed: incomplete `se` headers retain
+closing boundaries, and a declared callable named `fimrepita` retains ordinary
+call resolution after a bounded repeat, including forward declarations. A
+follow-up review of the parser correction reported no findings.
+
+OCR's default path exclusions omit `cmd/portugo/deferred_rejections_test.go`,
+`cmd/portugo/recorded_rejections_test.go`, `internal/parser/recovery_test.go`,
+the conformance manifest, and the four `previous-evidence.json` records.
+Unsupported extensions omit the changed Markdown documents/specifications and
+all new `.alg`/`.txt` fixtures and observations. The 27 new diagnostic PNGs are
+binary exclusions. These files were reviewed locally; exact replay, trace
+validation, historical hash verification, and individual image inspection cover
+their evidence and privacy obligations. No selected production file was omitted
+or failed model review.

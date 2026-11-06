@@ -14,7 +14,19 @@ import (
 func Parse(tokens []token.Token) (*ast.Program, []diag.Diagnostic) {
 	original := tokens
 	tokens, comments := collectComments(tokens)
-	p := &parser{tokens: tokens, original: original}
+	p := &parser{tokens: tokens, original: original, callables: make(map[string]bool)}
+	for index, tok := range tokens {
+		if tok.Kind != token.PROCEDIMENTO && tok.Kind != token.FUNCAO {
+			continue
+		}
+		next := index + 1
+		for next < len(tokens) && tokens[next].Kind == token.NEWLINE {
+			next++
+		}
+		if next < len(tokens) && tokens[next].Kind == token.IDENT {
+			p.callables[strings.ToLower(tokens[next].Text)] = true
+		}
+	}
 	prog := p.parseProgram()
 	prog.Comments = comments
 	prog.Fragments = p.fragments
@@ -39,6 +51,7 @@ type parser struct {
 	recoveryPair  bool
 	writeRecovery bool
 	limited       bool
+	callables     map[string]bool
 }
 
 func (p *parser) parseProgram() *ast.Program {
@@ -410,7 +423,7 @@ func (p *parser) parseStmtListUntil(stops map[token.Kind]bool, extraStop func(to
 		if p.match(token.SEMI) {
 			continue
 		}
-		if len(stmts) > 0 && repeatRecovery(p.peek()) == "fimrepita" && p.repeatRecoveryBoundary(p.peek()) {
+		if len(stmts) > 0 && repeatRecovery(p.peek()) == "fimrepita" && p.repeatRecoveryBoundary(p.peek()) && !p.callables[strings.ToLower(p.peek().Text)] {
 			if previous, ok := stmts[len(stmts)-1].(*ast.RepeatStmt); ok && previous.Cond != nil {
 				p.error(p.peek(), "unexpected fimrepita after ate")
 				p.diags[len(p.diags)-1].Deferred = true
@@ -548,7 +561,7 @@ func (p *parser) parseIdentStmt() ast.Stmt {
 
 func (p *parser) parseIf() ast.Stmt {
 	start := p.expect(token.SE, "expected se")
-	before := len(p.diags)
+	before, headerStart := len(p.diags), p.pos
 	cond := p.parseExpr(0)
 	p.expect(token.ENTAO, "expected entao")
 	var invalid token.Pos
@@ -559,7 +572,17 @@ func (p *parser) parseIf() ast.Stmt {
 				p.diags[index].Deferred = true
 			}
 		}
-		p.skipLine()
+		if !p.limited {
+			for index := headerStart; index < p.pos && index < len(p.tokens); index++ {
+				if ifBoundary(p.tokens[index]) {
+					p.pos = index
+					break
+				}
+			}
+		}
+		if !ifBoundary(p.peek()) {
+			p.skipLine()
+		}
 	}
 	p.rememberFragment(start.Pos)
 	thenBody := p.parseStmtListUntil(stopSet(token.SENAO, token.FIMSE), ifBoundary)
@@ -591,7 +614,7 @@ func (p *parser) parseIf() ast.Stmt {
 
 func ifBoundary(tok token.Token) bool {
 	switch tok.Kind {
-	case token.FIMPROCEDIMENTO, token.FIMFUNCAO, token.FIMALGORITMO, token.ATE, token.FIMPARA, token.FIMENQUANTO, token.FIMESCOLHA:
+	case token.SENAO, token.FIMSE, token.FIMPROCEDIMENTO, token.FIMFUNCAO, token.FIMALGORITMO, token.ATE, token.FIMPARA, token.FIMENQUANTO, token.FIMESCOLHA:
 		return true
 	default:
 		return false
