@@ -1,0 +1,241 @@
+Publication redaction: binary/capture metadata omitted; generic type arguments abbreviated.
+Function names, sampling totals, allocation totals, and percentages are otherwise unchanged.
+Raw profile binaries remain private because they contain build paths.
+
+== small-analyze / cpu ==
+Type: cpu
+Duration: 6.10s, Total samples = 5.56s (91.16%)
+Showing nodes accounting for 5.52s, 99.28% of 5.56s total
+Dropped 33 nodes (cum <= 0.03s)
+      flat  flat%   sum%        cum   cum%
+     5.47s 98.38% 98.38%      5.47s 98.38%  runtime.kevent
+     0.05s   0.9% 99.28%      0.05s   0.9%  runtime.madvise
+         0     0% 99.28%      0.03s  0.54%  github.com/ncode/PortuGo/internal/sema.Analyze
+         0     0% 99.28%      0.03s  0.54%  github.com/ncode/PortuGo_test.BenchmarkPortuGo.func1.1
+         0     0% 99.28%      0.04s  0.72%  runtime.(*mheap).alloc.func1
+         0     0% 99.28%      0.04s  0.72%  runtime.(*mheap).allocSpan
+         0     0% 99.28%      3.34s 60.07%  runtime.gcMarkTermination.func3
+         0     0% 99.28%      2.13s 38.31%  runtime.gcStart.func4
+         0     0% 99.28%      5.47s 98.38%  runtime.netpoll
+         0     0% 99.28%      0.03s  0.54%  runtime.newstack
+         0     0% 99.28%      5.47s 98.38%  runtime.startTheWorldWithSema
+         0     0% 99.28%      0.04s  0.72%  runtime.sysUsed (inline)
+         0     0% 99.28%      0.04s  0.72%  runtime.sysUsedOS (inline)
+         0     0% 99.28%      5.52s 99.28%  runtime.systemstack
+         0     0% 99.28%      0.03s  0.54%  testing.(*B).run1.func1
+         0     0% 99.28%      0.03s  0.54%  testing.(*B).runN
+
+== small-analyze / alloc ==
+Type: alloc_space
+Showing nodes accounting for 2359667.12kB, 99.53% of 2370829.38kB total
+Dropped 184 nodes (cum <= 11854.15kB)
+      flat  flat%   sum%        cum   cum%
+1683594.96kB 71.01% 71.01% 1683594.96kB 71.01%  github.com/ncode/PortuGo/internal/sema.(*scope).declare (inline)
+444861.25kB 18.76% 89.78% 444861.25kB 18.76%  slices.Clone[type arguments omitted] (inline)
+112678.67kB  4.75% 94.53% 112678.67kB  4.75%  github.com/ncode/PortuGo/internal/sema.(*checker).recordBinding
+70241.25kB  2.96% 97.49% 70241.25kB  2.96%  github.com/ncode/PortuGo/internal/sema.(*checker).writable
+48290.86kB  2.04% 99.53% 2370642.19kB   100%  github.com/ncode/PortuGo/internal/sema.Analyze
+    0.12kB 5.3e-06% 99.53% 2370800.72kB   100%  testing.(*B).runN
+         0     0% 99.53% 1052155.39kB 44.38%  github.com/ncode/PortuGo/internal/sema.(*checker).checkProgram
+         0     0% 99.53% 70241.25kB  2.96%  github.com/ncode/PortuGo/internal/sema.(*checker).checkStmt
+         0     0% 99.53% 70241.25kB  2.96%  github.com/ncode/PortuGo/internal/sema.(*checker).checkStmts (inline)
+         0     0% 99.53% 1259220.74kB 53.11%  github.com/ncode/PortuGo/internal/sema.(*checker).declareBuiltins (inline)
+         0     0% 99.53% 981914.14kB 41.42%  github.com/ncode/PortuGo/internal/sema.(*checker).declareVars
+         0     0% 99.53% 444861.25kB 18.76%  github.com/ncode/PortuGo/internal/stdlib.Catalog (inline)
+         0     0% 99.53% 2370616.88kB   100%  github.com/ncode/PortuGo_test.BenchmarkPortuGo.func1.1
+         0     0% 99.53% 2370798.08kB   100%  testing.(*B).run1.func1
+
+== calls-run / cpu ==
+Type: cpu
+Duration: 8.02s, Total samples = 6.49s (80.93%)
+Showing nodes accounting for 6.04s, 93.07% of 6.49s total
+Dropped 92 nodes (cum <= 0.03s)
+Showing top 18 nodes out of 75
+      flat  flat%   sum%        cum   cum%
+     5.23s 80.59% 80.59%      5.23s 80.59%  runtime.kevent
+     0.24s  3.70% 84.28%      0.24s  3.70%  runtime.madvise
+     0.13s  2.00% 86.29%      0.13s  2.00%  internal/runtime/atomic.(*UnsafePointer).Load (inline)
+     0.10s  1.54% 87.83%      0.10s  1.54%  runtime.memmove
+     0.06s  0.92% 88.75%      0.06s  0.92%  runtime.nanotime1
+     0.04s  0.62% 89.37%      0.04s  0.62%  runtime.spanOf (inline)
+     0.03s  0.46% 89.83%      0.07s  1.08%  runtime.(*_panic).nextDefer
+     0.03s  0.46% 90.29%      0.04s  0.62%  runtime.mapaccess2_fast64
+     0.03s  0.46% 90.76%      0.04s  0.62%  runtime.tryDeferToSpanScan
+     0.02s  0.31% 91.06%      0.59s  9.09%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).evalBinary
+     0.02s  0.31% 91.37%      0.08s  1.23%  github.com/ncode/PortuGo/internal/sema.(*Info).Binding
+     0.02s  0.31% 91.68%      0.05s  0.77%  github.com/ncode/PortuGo/internal/sema.(*Info).TypeOf (inline)
+     0.02s  0.31% 91.99%      0.05s  0.77%  runtime.(*sweepLocked).sweep
+     0.02s  0.31% 92.30%      0.10s  1.54%  runtime.(*timers).check
+     0.02s  0.31% 92.60%      0.06s  0.92%  runtime.findObject
+     0.01s  0.15% 92.76%      0.59s  9.09%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).callSub
+     0.01s  0.15% 92.91%      0.04s  0.62%  runtime.(*_panic).start
+     0.01s  0.15% 93.07%      0.05s  0.77%  runtime.(*mheap).freeSpanLocked
+
+== calls-run / alloc ==
+Type: alloc_space
+Showing nodes accounting for 14620.91kB, 98.63% of 14823.52kB total
+Dropped 189 nodes (cum <= 74.12kB)
+Showing top 18 nodes out of 31
+      flat  flat%   sum%        cum   cum%
+ 7716.09kB 52.05% 52.05%  7716.09kB 52.05%  github.com/ncode/PortuGo/internal/interp.(*env).define (inline)
+ 3979.73kB 26.85% 78.90% 14321.33kB 96.61%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).callSub
+ 1718.38kB 11.59% 90.49%  1718.38kB 11.59%  github.com/ncode/PortuGo/internal/interp.newEnv (inline)
+  858.59kB  5.79% 96.28%   858.59kB  5.79%  internal/bytealg.MakeNoZero
+  241.53kB  1.63% 97.91%   241.53kB  1.63%  bufio.NewReaderSize (inline)
+   55.31kB  0.37% 98.29% 14289.06kB 96.39%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).evalBinary
+   25.81kB  0.17% 98.46%   271.95kB  1.83%  github.com/ncode/PortuGo/internal/interp.New
+   14.75kB   0.1% 98.56% 14343.91kB 96.76%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).Run
+    5.67kB 0.038% 98.60%   141.44kB  0.95%  regexp.compile
+    3.80kB 0.026% 98.62%   129.11kB  0.87%  testing.(*B).Run
+    0.58kB 0.0039% 98.63%   369.05kB  2.49%  github.com/ncode/PortuGo_test.BenchmarkPortuGo.func1
+    0.55kB 0.0037% 98.63%   294.32kB  1.99%  github.com/ncode/PortuGo_test.loadBenchmarkProgram
+    0.12kB 0.00084% 98.63% 14796.27kB 99.82%  testing.(*B).runN
+         0     0% 98.63%   241.53kB  1.63%  bufio.NewReader (inline)
+         0     0% 98.63% 14323.17kB 96.62%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).callFunction
+         0     0% 98.63% 14322.25kB 96.62%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).callUserFunction
+         0     0% 98.63% 14323.17kB 96.62%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).eval
+         0     0% 98.63% 14324.55kB 96.63%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).execStmt
+
+== vectors-run / cpu ==
+Type: cpu
+Duration: 5.91s, Total samples = 4.80s (81.22%)
+Showing nodes accounting for 4.46s, 92.92% of 4.80s total
+Dropped 84 nodes (cum <= 0.02s)
+Showing top 18 nodes out of 68
+      flat  flat%   sum%        cum   cum%
+     3.86s 80.42% 80.42%      3.86s 80.42%  runtime.kevent
+     0.24s  5.00% 85.42%      0.24s  5.00%  runtime.madvise
+     0.06s  1.25% 86.67%      0.06s  1.25%  internal/runtime/atomic.(*UnsafePointer).Load (inline)
+     0.04s  0.83% 87.50%      0.04s  0.83%  runtime.mapaccess2_fast64
+     0.03s  0.62% 88.12%      0.11s  2.29%  github.com/ncode/PortuGo/internal/runtime.Type.Clone
+     0.03s  0.62% 88.75%      0.14s  2.92%  github.com/ncode/PortuGo/internal/sema.(*Info).Binding
+     0.03s  0.62% 89.38%      0.03s  0.62%  runtime.acquirem (inline)
+     0.03s  0.62% 90.00%      0.03s  0.62%  runtime.casgstatus
+     0.02s  0.42% 90.42%      0.28s  5.83%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).eval
+     0.02s  0.42% 90.83%      0.06s  1.25%  github.com/ncode/PortuGo/internal/interp.assign
+     0.02s  0.42% 91.25%      0.07s  1.46%  github.com/ncode/PortuGo/internal/sema.(*Info).TypeOf (inline)
+     0.02s  0.42% 91.67%      0.05s  1.04%  runtime.gopark
+     0.02s  0.42% 92.08%      0.03s  0.62%  runtime.unlock2
+     0.01s  0.21% 92.29%      0.22s  4.58%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).location
+     0.01s  0.21% 92.50%      0.04s  0.83%  runtime.findRunnable
+     0.01s  0.21% 92.71%      0.08s  1.67%  runtime.schedule
+     0.01s  0.21% 92.92%      4.21s 87.71%  runtime.systemstack
+         0     0% 92.92%      0.44s  9.17%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).Run
+
+== vectors-run / alloc ==
+Type: alloc_space
+Showing nodes accounting for 61427.27kB, 99.48% of 61749.05kB total
+Dropped 201 nodes (cum <= 308.75kB)
+Showing top 18 nodes out of 24
+      flat  flat%   sum%        cum   cum%
+36623.83kB 59.31% 59.31% 47610.98kB 77.10%  github.com/ncode/PortuGo/internal/runtime.Type.Clone
+12228.59kB 19.80% 79.11% 12228.59kB 19.80%  github.com/ncode/PortuGo/internal/runtime.NewVector
+10987.15kB 17.79% 96.91% 10987.15kB 17.79%  slices.Clone[type arguments omitted] (inline)
+ 1248.59kB  2.02% 98.93%  1248.59kB  2.02%  bufio.NewReaderSize (inline)
+  171.56kB  0.28% 99.21% 12400.16kB 20.08%  github.com/ncode/PortuGo/internal/interp.(*env).define (inline)
+  133.48kB  0.22% 99.42%  1405.91kB  2.28%  github.com/ncode/PortuGo/internal/interp.New
+   19.06kB 0.031% 99.45% 23809.06kB 38.56%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).evalBinary
+   14.30kB 0.023% 99.48% 60125.90kB 97.37%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).Run
+    0.58kB 0.00094% 99.48%   331.09kB  0.54%  github.com/ncode/PortuGo_test.BenchmarkPortuGo.func1
+    0.12kB 0.0002% 99.48% 61721.55kB   100%  testing.(*B).runN
+         0     0% 99.48%  1248.59kB  2.02%  bufio.NewReader (inline)
+         0     0% 99.48% 12485.94kB 20.22%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).defineVars
+         0     0% 99.48% 47599.06kB 77.08%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).eval
+         0     0% 99.48% 47599.06kB 77.08%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).execFor
+         0     0% 99.48% 47606.60kB 77.10%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).execStmt
+         0     0% 99.48% 47606.60kB 77.10%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).execStmts
+         0     0% 99.48%    47580kB 77.05%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).location
+         0     0% 99.48%    15860kB 25.68%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).lookupCell
+
+== strings-run / cpu ==
+Type: cpu
+Duration: 5.63s, Total samples = 4.08s (72.48%)
+Showing nodes accounting for 3.45s, 84.56% of 4.08s total
+Dropped 98 nodes (cum <= 0.02s)
+Showing top 18 nodes out of 71
+      flat  flat%   sum%        cum   cum%
+     2.50s 61.27% 61.27%      2.50s 61.27%  runtime.kevent
+     0.36s  8.82% 70.10%      0.36s  8.82%  runtime.madvise
+     0.10s  2.45% 72.55%      0.77s 18.87%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).eval
+     0.06s  1.47% 74.02%      0.66s 16.18%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).callFunction
+     0.06s  1.47% 75.49%      0.10s  2.45%  runtime.mapaccess2_fast64
+     0.05s  1.23% 76.72%      0.08s  1.96%  runtime.(*_panic).nextDefer
+     0.04s  0.98% 77.70%      0.05s  1.23%  runtime.(*pallocBits).summarize
+     0.04s  0.98% 78.68%      0.04s  0.98%  runtime.deferprocStack
+     0.03s  0.74% 79.41%      0.17s  4.17%  github.com/ncode/PortuGo/internal/sema.(*Info).Binding
+     0.03s  0.74% 80.15%      0.03s  0.74%  internal/runtime/maps.(*Map).directoryIndex (inline)
+     0.03s  0.74% 80.88%      0.04s  0.98%  runtime.interhash
+     0.03s  0.74% 81.62%      0.03s  0.74%  runtime.nanotime1
+     0.02s  0.49% 82.11%      0.04s  0.98%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).containsUserCall
+     0.02s  0.49% 82.60%      0.06s  1.47%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).eval.func2
+     0.02s  0.49% 83.09%      0.04s  0.98%  github.com/ncode/PortuGo/internal/runtime.Assignable
+     0.02s  0.49% 83.58%      0.11s  2.70%  github.com/ncode/PortuGo/internal/stdlib.(*Library).Call
+     0.02s  0.49% 84.07%      0.06s  1.47%  github.com/ncode/PortuGo/internal/stdlib.pure.func1
+     0.02s  0.49% 84.56%      0.03s  0.74%  runtime.(*profBuf).read
+
+== strings-run / alloc ==
+Type: alloc_space
+Showing nodes accounting for 99337.06kB, 99.61% of 99728.82kB total
+Dropped 205 nodes (cum <= 498.64kB)
+      flat  flat%   sum%        cum   cum%
+   91700kB 91.95% 91.95% 94644.43kB 94.90%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).callFunction
+ 3753.97kB  3.76% 95.71%  3753.97kB  3.76%  bufio.NewReaderSize (inline)
+ 2922.94kB  2.93% 98.64% 83160.44kB 83.39%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).evalBinary
+  515.81kB  0.52% 99.16%   515.81kB  0.52%  github.com/ncode/PortuGo/internal/interp.(*env).define (inline)
+  401.23kB   0.4% 99.56%  4226.84kB  4.24%  github.com/ncode/PortuGo/internal/interp.New
+   42.98kB 0.043% 99.61% 95279.09kB 95.54%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).Run
+    0.12kB 0.00013% 99.61% 99701.19kB   100%  testing.(*B).runN
+         0     0% 99.61%  3753.97kB  3.76%  bufio.NewReader (inline)
+         0     0% 99.61%   515.81kB  0.52%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).defineVars
+         0     0% 99.61% 94644.43kB 94.90%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).eval
+         0     0% 99.61% 94644.43kB 94.90%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).execFor
+         0     0% 99.61% 94662.98kB 94.92%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).execStmt
+         0     0% 99.61% 94662.98kB 94.92%  github.com/ncode/PortuGo/internal/interp.(*Interpreter).execStmts
+         0     0% 99.61% 99397.05kB 99.67%  github.com/ncode/PortuGo_test.BenchmarkPortuGo.func1.1
+         0     0% 99.61% 99698.55kB   100%  testing.(*B).run1.func1
+
+== declarations-analyze / cpu ==
+Type: cpu
+Duration: 5.23s, Total samples = 4.79s (91.60%)
+Showing nodes accounting for 4.70s, 98.12% of 4.79s total
+Dropped 28 nodes (cum <= 0.02s)
+Showing top 18 nodes out of 39
+      flat  flat%   sum%        cum   cum%
+     4.47s 93.32% 93.32%      4.47s 93.32%  runtime.kevent
+     0.22s  4.59% 97.91%      0.22s  4.59%  runtime.madvise
+     0.01s  0.21% 98.12%      0.03s  0.63%  runtime.mapassign_fast64
+         0     0% 98.12%      0.09s  1.88%  github.com/ncode/PortuGo/internal/sema.(*checker).checkProgram
+         0     0% 98.12%      0.04s  0.84%  github.com/ncode/PortuGo/internal/sema.(*checker).checkStmt
+         0     0% 98.12%      0.04s  0.84%  github.com/ncode/PortuGo/internal/sema.(*checker).checkStmts (inline)
+         0     0% 98.12%      0.05s  1.04%  github.com/ncode/PortuGo/internal/sema.(*checker).declareVars
+         0     0% 98.12%      0.03s  0.63%  github.com/ncode/PortuGo/internal/sema.(*checker).lookup
+         0     0% 98.12%      0.03s  0.63%  github.com/ncode/PortuGo/internal/sema.(*checker).recordBinding
+         0     0% 98.12%      0.04s  0.84%  github.com/ncode/PortuGo/internal/sema.(*checker).writable
+         0     0% 98.12%      0.04s  0.84%  github.com/ncode/PortuGo/internal/sema.(*scope).declare (inline)
+         0     0% 98.12%      0.09s  1.88%  github.com/ncode/PortuGo/internal/sema.Analyze
+         0     0% 98.12%      0.09s  1.88%  github.com/ncode/PortuGo_test.BenchmarkPortuGo.func1.1
+         0     0% 98.12%      0.05s  1.04%  internal/runtime/maps.(*table).grow
+         0     0% 98.12%      0.07s  1.46%  internal/runtime/maps.(*table).rehash
+         0     0% 98.12%      0.07s  1.46%  internal/runtime/maps.(*table).reset
+         0     0% 98.12%      0.07s  1.46%  internal/runtime/maps.newGroups (inline)
+         0     0% 98.12%      0.07s  1.46%  internal/runtime/maps.newTable
+
+== declarations-analyze / alloc ==
+Type: alloc_space
+Showing nodes accounting for 4595978.42kB, 99.59% of 4614984.23kB total
+Dropped 186 nodes (cum <= 23074.92kB)
+      flat  flat%   sum%        cum   cum%
+2166339.66kB 46.94% 46.94% 2166339.66kB 46.94%  github.com/ncode/PortuGo/internal/sema.(*checker).recordBinding
+1345126.29kB 29.15% 76.09% 2430214.01kB 52.66%  github.com/ncode/PortuGo/internal/sema.(*checker).writable
+1082704.05kB 23.46% 99.55% 1082704.05kB 23.46%  github.com/ncode/PortuGo/internal/sema.(*scope).declare (inline)
+ 1808.30kB 0.039% 99.59% 4613047.52kB   100%  github.com/ncode/PortuGo/internal/sema.Analyze
+    0.12kB 2.7e-06% 99.59% 4614954.62kB   100%  testing.(*B).runN
+         0     0% 99.59% 4563675.54kB 98.89%  github.com/ncode/PortuGo/internal/sema.(*checker).checkProgram
+         0     0% 99.59% 2430214.01kB 52.66%  github.com/ncode/PortuGo/internal/sema.(*checker).checkStmt
+         0     0% 99.59% 2430214.01kB 52.66%  github.com/ncode/PortuGo/internal/sema.(*checker).checkStmts (inline)
+         0     0% 99.59% 47152.71kB  1.02%  github.com/ncode/PortuGo/internal/sema.(*checker).declareBuiltins (inline)
+         0     0% 99.59% 2133461.53kB 46.23%  github.com/ncode/PortuGo/internal/sema.(*checker).declareVars
+         0     0% 99.59% 1085087.72kB 23.51%  github.com/ncode/PortuGo/internal/sema.(*checker).lookup
+         0     0% 99.59% 4611732.14kB 99.93%  github.com/ncode/PortuGo_test.BenchmarkPortuGo.func1.1
+         0     0% 99.59% 4614951.98kB   100%  testing.(*B).run1.func1
+

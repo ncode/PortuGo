@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add fixture-checked pipeline benchmarks, repeated baseline samples, and
+  allocation-profile findings for future performance work.
+
 - Honor execution halts before reporting a recovered branch's deferred
   missing-`fimse` error, with a regression for a subsequent REPL submission.
 - Match all four remaining rejected bundled examples, preserving their exact
