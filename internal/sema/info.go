@@ -21,15 +21,16 @@ type Binding struct {
 // Info owns semantic facts for one unchanged AST. Reanalyze after editing syntax.
 // Query results are independent copies; Info can be shared by interpreters.
 type Info struct {
-	program  *ast.Program
-	valid    bool
-	types    map[ast.Expr]runtime.Type
-	bindings map[token.Pos]Binding
-	names    map[token.Pos]string
-	deferred map[token.Pos]diag.Diagnostic
+	program     *ast.Program
+	valid       bool
+	types       map[ast.Expr]runtime.Type
+	bindings    map[token.Pos]Binding
+	names       map[token.Pos]string
+	deferred    map[token.Pos]diag.Diagnostic
+	assignments map[*ast.AssignStmt]diag.Diagnostic
 }
 
-// ValidFor reports whether this result successfully analyzed program.
+// ValidFor reports whether this result permits execution of the unchanged program.
 func (i *Info) ValidFor(program *ast.Program) bool {
 	return i != nil && program != nil && i.valid && i.program == program
 }
@@ -105,5 +106,14 @@ func (i *Info) DeferredDiagnostic(pos token.Pos) (diag.Diagnostic, bool) {
 		return diag.Diagnostic{}, false
 	}
 	d, ok := i.deferred[pos]
+	return d, ok
+}
+
+// AssignmentDiagnostic returns a checked scalar failure retained until assignment.
+func (i *Info) AssignmentDiagnostic(stmt *ast.AssignStmt) (diag.Diagnostic, bool) {
+	if i == nil {
+		return diag.Diagnostic{}, false
+	}
+	d, ok := i.assignments[stmt]
 	return d, ok
 }

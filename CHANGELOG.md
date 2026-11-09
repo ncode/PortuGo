@@ -2,7 +2,18 @@
 
 ## Unreleased
 
-- Correct the documented implementation-test link total to match the manifest.
+- Honor execution halts before reporting a recovered branch's deferred
+  missing-`fimse` error, with a regression for a subsequent REPL submission.
+- Match all four remaining rejected bundled examples, preserving their exact
+  output prefixes and positioned diagnostics. Retain original evidence and
+  qualify the corrected 82-byte assignment and two-byte repeat expectations.
+- Defer the recorded scalar assignment, single case-label, and recovered `se`
+  failures until their execution trigger, while preserving static checking,
+  formatter safety, REPL recovery, and resource limits.
+- Preserve the reference remainder effect on pending caller text without
+  restricting ordinary nested function calls.
+- Add 39 reference controls and an explicit four-example rejection gate;
+  validate all 1,718 probes and 1,877 implementation-test links.
 
 ## 0.0.2 - 2026-11-05
 

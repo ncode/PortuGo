@@ -1,0 +1,16 @@
+Publication redaction: window/control handles and private automation metadata omitted.
+Selected Unicode control contents follow unchanged; these are not native stdout bytes.
+
+[results panel]
+Início da execução
+Digite 3 numeros inteiro!
+Primeiro numero: 3
+Segundo numero: 1
+Terceiro numero: 2
+
+
+[simulated console screen state]
+Digite 3 numeros inteiro!
+Primeiro numero: 3
+Segundo numero: 1
+Terceiro numero: 2

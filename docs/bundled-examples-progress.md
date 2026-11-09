@@ -88,19 +88,17 @@ now also has a matching type rejection.
 The bundled compound-repeat spelling now also has a matching `E002` on line 23,
 before any output. Original and formatted source retain the unknown-identifier
 rejection; formatting does not make the spelling an accepted terminator.
-The other four rejection mappings remain pending. The reference may execute a
-prefix before discovering malformed syntax or an invalid assignment, while CLI
-analysis reports errors before execution and may collect more than one
-diagnostic.
+The four remaining rejection mappings now match exact original-source CLI
+replay. The [November 6 qualification](rejection-paths-progress.md) retains the
+previous evidence and separately records the complete 82-byte assignment and
+two-byte repeat prefixes. The character table stops at P001 line 301 after its
+152-byte banner; the school exit preserves its 41-byte prompt/echo and reports
+one P001 at EOF line 320. All eleven rejected example paths are verified.
+The explicit `TestRecordedRejectedExamples` gate requires each of these four
+mappings to be verified and compares its exit status, complete stdout bytes,
+and diagnostic sequence/code/line; accepted-example success cannot satisfy it.
 
-The latest bounded grammar audit leaves four rejected recordings pending; no
-accepted recording remains pending. These observations do not justify adding a
-default loop bound or generally suppressing diagnostics in unexecuted
-subprograms. Acceptance validation keeps these rejected-source mismatches
-visible without treating them as required accepted behavior.
-
-A replay audit after the lazy body diagnostic fix found no additional byte-exact
-match. The `randomicos.alg.ALG` transcript (source algorithm `semnome`) now has
+Generated-output examples retain their reviewed contracts. The `randomicos.alg.ALG` transcript (source algorithm `semnome`) now has
 a reviewed domain/framing contract for its nine `randi(10)` values and fixed
 zero tail; the mixed
 integer/text, integer-sort, real-sort, record-sort, record-search,
@@ -108,22 +106,12 @@ integer-search, raw integer-search, sorted integer-search, counting-sort,
 repeated-value, and relation transcripts now have reviewed shape-specific
 contracts. The menu exit now retains its recorded output while deferring the
 unexecuted body diagnostic until invocation.
-Successful runs still produce different generated values, while a small number
-of paths stop during analysis or execution. Local completion alone does not
-qualify their output or every branch.
+Successful runs can produce different generated values. Local completion alone
+does not qualify their output or every branch.
 
-The four rejected paths retain their recorded diagnostics and remain pending;
-the accepted menu path now completes in the CLI with the recorded exit input.
-
-The CLI currently completes `Tabela_ASCII4.alg`, unlike the reference. Its
-recording therefore remains pending; the retained diagnostic and preceding output
-record the reference outcome without claiming an implementation match.
-
-The school example's initial capture was waiting for input and was excluded;
-the later capture records the displayed EOF diagnostic. Parser recovery now
-keeps the source's EOF position after consuming the final token, instead of
-moving subsequent missing-delimiter diagnostics to line 1. This corrects
-position loss without claiming to match the school's earlier parsing behavior.
+The school example's incomplete initial capture remains excluded. Fresh
+complete runs and reduced reached/unreached controls qualify its recovered EOF
+path. These results apply to the recorded input, not every interactive branch.
 
 The catalog has sixty accepted examples, eleven unusable examples, and two
 reviewed non-goal examples. All 73 catalog entries now have a recorded

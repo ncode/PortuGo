@@ -14,7 +14,19 @@ import (
 func Parse(tokens []token.Token) (*ast.Program, []diag.Diagnostic) {
 	original := tokens
 	tokens, comments := collectComments(tokens)
-	p := &parser{tokens: tokens, original: original}
+	p := &parser{tokens: tokens, original: original, callables: make(map[string]bool)}
+	for index, tok := range tokens {
+		if tok.Kind != token.PROCEDIMENTO && tok.Kind != token.FUNCAO {
+			continue
+		}
+		next := index + 1
+		for next < len(tokens) && tokens[next].Kind == token.NEWLINE {
+			next++
+		}
+		if next < len(tokens) && tokens[next].Kind == token.IDENT {
+			p.callables[strings.ToLower(tokens[next].Text)] = true
+		}
+	}
 	prog := p.parseProgram()
 	prog.Comments = comments
 	prog.Fragments = p.fragments
@@ -39,6 +51,7 @@ type parser struct {
 	recoveryPair  bool
 	writeRecovery bool
 	limited       bool
+	callables     map[string]bool
 }
 
 func (p *parser) parseProgram() *ast.Program {
@@ -52,7 +65,7 @@ func (p *parser) parseProgram() *ast.Program {
 			// receives the required-header diagnostic below.
 			for p.peek().Kind == token.PROCEDIMENTO || p.peek().Kind == token.FUNCAO {
 				prog.Subs = append(prog.Subs, p.parseSubprogram())
-				if len(p.diags) != 0 {
+				if diag.HasErrors(diag.Immediate(p.diags)) {
 					return prog
 				}
 			}
@@ -75,13 +88,13 @@ func (p *parser) parseProgram() *ast.Program {
 	prog.Consts = p.parseConstBlock()
 	prog.Sections.Type = p.section(token.TIPO)
 	prog.Types = p.parseTypeBlock()
-	if len(p.diags) != 0 {
+	if diag.HasErrors(diag.Immediate(p.diags)) {
 		return prog
 	}
 	if p.peek().Kind == token.VAR {
 		prog.Sections.Var = p.peek()
 		prog.Globals = p.parseVarBlock()
-		if len(p.diags) == 0 {
+		if !diag.HasErrors(diag.Immediate(p.diags)) {
 			if typ := unsupportedGlobalType(prog.Types, prog.Globals); typ != nil {
 				p.error(token.Token{Pos: typ.At}, "unsupported type")
 				return prog
@@ -90,7 +103,7 @@ func (p *parser) parseProgram() *ast.Program {
 	}
 	for p.peek().Kind == token.PROCEDIMENTO || p.peek().Kind == token.FUNCAO {
 		prog.Subs = append(prog.Subs, p.parseSubprogram())
-		if len(p.diags) != 0 {
+		if diag.HasErrors(diag.Immediate(p.diags)) {
 			return prog
 		}
 	}
@@ -101,7 +114,7 @@ func (p *parser) parseProgram() *ast.Program {
 		}
 		prog.Sections.Var = p.peek()
 		prog.Globals = p.parseVarBlock()
-		if len(p.diags) == 0 {
+		if !diag.HasErrors(diag.Immediate(p.diags)) {
 			if typ := unsupportedGlobalType(prog.Types, prog.Globals); typ != nil {
 				p.error(token.Token{Pos: typ.At}, "unsupported type")
 				return prog
@@ -129,7 +142,7 @@ func (p *parser) parseConfig() []ast.Stmt {
 	var settings []ast.Stmt
 	for p.peek().Kind == token.DOS || p.peek().Kind == token.ARQUIVO {
 		settings = append(settings, p.parseStmt())
-		if len(p.diags) != 0 {
+		if diag.HasErrors(diag.Immediate(p.diags)) {
 			break
 		}
 	}
@@ -306,7 +319,7 @@ func (p *parser) parseProcedure() *ast.ProcedureDecl {
 	decl.Consts = p.parseConstBlock()
 	decl.Sections.Type = p.section(token.TIPO)
 	decl.Types = p.parseTypeBlock()
-	if len(p.diags) != 0 {
+	if diag.HasErrors(diag.Immediate(p.diags)) {
 		return decl
 	}
 	if p.peek().Kind == token.VAR {
@@ -339,7 +352,7 @@ func (p *parser) parseFunction() *ast.FunctionDecl {
 	decl.Consts = p.parseConstBlock()
 	decl.Sections.Type = p.section(token.TIPO)
 	decl.Types = p.parseTypeBlock()
-	if len(p.diags) != 0 {
+	if diag.HasErrors(diag.Immediate(p.diags)) {
 		return decl
 	}
 	if p.peek().Kind == token.VAR {
@@ -386,7 +399,7 @@ func hasUnsupportedCallableName(name string) bool {
 
 func (p *parser) parseCallableType() ast.TypeSpec {
 	typ := p.parseType()
-	if len(p.diags) != 0 {
+	if diag.HasErrors(diag.Immediate(p.diags)) {
 		return typ
 	}
 	if typ.Name == "vetor" {
@@ -409,6 +422,14 @@ func (p *parser) parseStmtListUntil(stops map[token.Kind]bool, extraStop func(to
 		}
 		if p.match(token.SEMI) {
 			continue
+		}
+		if len(stmts) > 0 && repeatRecovery(p.peek()) == "fimrepita" && p.repeatRecoveryBoundary(p.peek()) && !p.callables[strings.ToLower(p.peek().Text)] {
+			if previous, ok := stmts[len(stmts)-1].(*ast.RepeatStmt); ok && previous.Cond != nil {
+				p.error(p.peek(), "unexpected fimrepita after ate")
+				p.diags[len(p.diags)-1].Deferred = true
+				stmts = append(stmts, p.parseErrorStmt())
+				continue
+			}
 		}
 		stmt := p.parseStmt()
 		if stmt != nil {
@@ -540,18 +561,64 @@ func (p *parser) parseIdentStmt() ast.Stmt {
 
 func (p *parser) parseIf() ast.Stmt {
 	start := p.expect(token.SE, "expected se")
+	before, headerStart := len(p.diags), p.pos
 	cond := p.parseExpr(0)
 	p.expect(token.ENTAO, "expected entao")
+	var invalid token.Pos
+	if len(p.diags) > before {
+		invalid = p.diags[before].Pos
+		for index := before; index < len(p.diags); index++ {
+			if p.diags[index].Code == diag.EParse {
+				p.diags[index].Deferred = true
+			}
+		}
+		if !p.limited {
+			for index := headerStart; index < p.pos && index < len(p.tokens); index++ {
+				if ifBoundary(p.tokens[index]) {
+					p.pos = index
+					break
+				}
+			}
+		}
+		if !ifBoundary(p.peek()) {
+			p.skipLine()
+		}
+	}
 	p.rememberFragment(start.Pos)
-	thenBody := p.parseStmtList(stopSet(token.SENAO, token.FIMSE))
+	thenBody := p.parseStmtListUntil(stopSet(token.SENAO, token.FIMSE), ifBoundary)
 	var elseBody []ast.Stmt
 	var elseAt token.Pos
 	if p.peek().Kind == token.SENAO {
 		elseAt = p.advance().Pos
-		elseBody = p.parseStmtList(stopSet(token.FIMSE))
+		elseBody = p.parseStmtListUntil(stopSet(token.FIMSE), ifBoundary)
 	}
-	end := p.expect(token.FIMSE, "expected fimse").Pos
-	return &ast.IfStmt{At: start.Pos, Cond: cond, Then: thenBody, Else: elseBody, ElseAt: elseAt, End: end}
+	end := p.peek().Pos
+	var unclosed token.Pos
+	if p.peek().Kind == token.FIMSE {
+		p.advance()
+	} else {
+		p.error(p.peek(), "expected fimse")
+		switch p.peek().Kind {
+		case token.EOF, token.FIMALGORITMO, token.FIMPROCEDIMENTO, token.FIMFUNCAO, token.ATE:
+			if !p.limited {
+				p.diags[len(p.diags)-1].Deferred = true
+			}
+			unclosed = end
+			if len(p.tokens) > 0 {
+				unclosed = p.tokens[len(p.tokens)-1].Pos
+			}
+		}
+	}
+	return &ast.IfStmt{At: start.Pos, Cond: cond, Then: thenBody, Else: elseBody, ElseAt: elseAt, End: end, Invalid: invalid, Unclosed: unclosed}
+}
+
+func ifBoundary(tok token.Token) bool {
+	switch tok.Kind {
+	case token.SENAO, token.FIMSE, token.FIMPROCEDIMENTO, token.FIMFUNCAO, token.FIMALGORITMO, token.ATE, token.FIMPARA, token.FIMENQUANTO, token.FIMESCOLHA:
+		return true
+	default:
+		return false
+	}
 }
 
 func (p *parser) parseSwitch() ast.Stmt {

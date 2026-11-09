@@ -245,6 +245,12 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 		if _, _, err := floats(left, right); err != nil {
 			return runtime.Value{}, err
 		}
+		// A numeric remainder in a callee invalidates pending caller text.
+		for index := range i.callOperandBase {
+			if i.operands[index].Kind == runtime.StringValue {
+				i.operands[index] = runtime.Value{}
+			}
+		}
 		if right.Kind != runtime.IntegerValue || right.Int <= 0 {
 			return runtime.Value{Kind: runtime.IntegerValue, Int: -1}, nil
 		}

@@ -1,0 +1,15 @@
+Manual transcription of VisuAlg 3.0.7.0, Windows amd64, en-US.
+Observed UTC: 2026-11-06T17:32:58.4712679Z
+Executable SHA-256: 7b297fb338e2ca7004ed55b42aef215c17a1a1d44b27cff50b6dc9be6dd3becf
+Source SHA-256: 34bd9ef1be6c0d086fd0ebcc8677f5ce0eec03dacc065b6eb771c29680aecd72
+Input SHA-256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+
+Rejected: P001 on original source line 16. Exact column not established.
+Syntax rejection at fimrepita.
+Qualified language-output prefix: 2 UTF-8 bytes.
+No final LF; bytes are U+0020 U+0031.
+The complete prefix is retained in stdout.txt. raw.txt retains both selected Unicode controls, including GUI framing. Screen-clear rows and panel framing are not language writes.
+
+Source was decoded from the unchanged corpus bytes and editor readback was verified before execution. Source/stdin were restaged from those bytes for capture after private observation review.
+Publication redaction: operational handles, private automation metadata, and connection details are omitted; selected text controls and the application diagnostic screenshot retain their original contents. No native-console byte claim is made.
+Old evidence and derived expectation artifacts are retained unchanged.

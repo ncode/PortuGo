@@ -57,11 +57,13 @@ func executeProbe(args []string, in io.Reader, out, stderr io.Writer) int {
 		return 1
 	}
 	p, ds := parser.Parse(toks)
+	ds = diag.Immediate(ds)
 	if diag.HasErrors(ds) {
 		diag.Render(stderr, file, ds)
 		return 1
 	}
 	info, ds := sema.Analyze(p)
+	ds = diag.Immediate(ds)
 	if diag.HasErrors(ds) {
 		diag.Render(stderr, file, ds)
 		return 1
