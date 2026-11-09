@@ -144,3 +144,16 @@ The [baseline quality report](quality-baseline.md) and
 [September 14 acceptance report](quality-acceptance-2026-09-14.md) retain their
 historical results. Use the current manifest for coverage and fresh candidate
 results for release sign-off.
+
+## Performance measurements
+
+[The performance baseline](performance.md) documents fixture-checked stage
+benchmarks, repeated samples, allocation targets, profiling commands, and current
+measurement limitations. For a comparable local campaign:
+
+```sh
+GOMAXPROCS=1 go test . -run '^$' -bench '^BenchmarkPortuGo$' -benchmem -benchtime=1s -count=6 -cpu=1
+```
+
+Keep raw measurement output and profiles outside the checkout, and screen
+metadata before publication.

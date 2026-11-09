@@ -1,0 +1,41 @@
+# Publication redaction: hardware model omitted; benchmark samples unchanged.
+goos: darwin
+goarch: arm64
+pkg: github.com/ncode/PortuGo
+BenchmarkPortuGo/calls/run     	    3848	    668104 ns/op	  253666 B/op	    3278 allocs/op
+BenchmarkPortuGo/calls/run     	    3732	    682624 ns/op	  253666 B/op	    3278 allocs/op
+BenchmarkPortuGo/calls/run     	    3283	    764777 ns/op	  253666 B/op	    3278 allocs/op
+BenchmarkPortuGo/calls/run     	    3139	    740188 ns/op	  253666 B/op	    3278 allocs/op
+BenchmarkPortuGo/calls/run     	    3349	    728614 ns/op	  253666 B/op	    3278 allocs/op
+BenchmarkPortuGo/calls/run     	    3296	    726422 ns/op	  253666 B/op	    3278 allocs/op
+PASS
+goos: darwin
+goarch: arm64
+pkg: github.com/ncode/PortuGo
+BenchmarkPortuGo/vectors/run     	    5122	    503670 ns/op	  206585 B/op	    3096 allocs/op
+BenchmarkPortuGo/vectors/run     	    4858	    496640 ns/op	  206585 B/op	    3096 allocs/op
+BenchmarkPortuGo/vectors/run     	    5046	    485347 ns/op	  206585 B/op	    3096 allocs/op
+BenchmarkPortuGo/vectors/run     	    5041	    485219 ns/op	  206585 B/op	    3096 allocs/op
+BenchmarkPortuGo/vectors/run     	    5067	    485924 ns/op	  206585 B/op	    3096 allocs/op
+BenchmarkPortuGo/vectors/run     	    5016	    486265 ns/op	  206585 B/op	    3096 allocs/op
+PASS
+goos: darwin
+goarch: arm64
+pkg: github.com/ncode/PortuGo
+BenchmarkPortuGo/strings/run     	    4495	    551709 ns/op	  111116 B/op	    1018 allocs/op
+BenchmarkPortuGo/strings/run     	    4231	    566022 ns/op	  111116 B/op	    1018 allocs/op
+BenchmarkPortuGo/strings/run     	    4177	    574839 ns/op	  111116 B/op	    1018 allocs/op
+BenchmarkPortuGo/strings/run     	    4158	    572467 ns/op	  111116 B/op	    1018 allocs/op
+BenchmarkPortuGo/strings/run     	    4243	    563376 ns/op	  111116 B/op	    1018 allocs/op
+BenchmarkPortuGo/strings/run     	    4354	    564281 ns/op	  111116 B/op	    1018 allocs/op
+PASS
+goos: darwin
+goarch: arm64
+pkg: github.com/ncode/PortuGo
+BenchmarkPortuGo/declarations/analyze 	    5454	    439104 ns/op	 1346952 B/op	      91 allocs/op
+BenchmarkPortuGo/declarations/analyze 	    5364	    461407 ns/op	 1346952 B/op	      91 allocs/op
+BenchmarkPortuGo/declarations/analyze 	    4921	    476615 ns/op	 1346952 B/op	      91 allocs/op
+BenchmarkPortuGo/declarations/analyze 	    4941	    475590 ns/op	 1346952 B/op	      91 allocs/op
+BenchmarkPortuGo/declarations/analyze 	    5115	    467568 ns/op	 1346952 B/op	      91 allocs/op
+BenchmarkPortuGo/declarations/analyze 	    5043	    485760 ns/op	 1346952 B/op	      91 allocs/op
+PASS
