@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Preserve comment attachment and supported declaration order when global
+  variables follow procedures or functions during formatting.
+- Bound live runtime storage across declarations, active calls, retained
+  operands, and temporary aggregate copies with a positioned `R003` safeguard.
+- Reduce repeated vector-layout copying and semantic map/catalog setup
+  allocations while preserving independent semantic metadata queries.
+
 - Add fixture-checked pipeline benchmarks, repeated baseline samples, and
   allocation-profile findings for future performance work.
 

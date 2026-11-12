@@ -23,8 +23,7 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 	if d, ok := i.info.DeferredDiagnostic(expr.Start()); ok {
 		return value, d
 	}
-	typ, ok := i.info.TypeOf(expr)
-	if !ok {
+	if _, ok := i.info.KindOf(expr); !ok {
 		return value, failure(expr.Start(), diag.RType, fmt.Errorf("missing expression type"))
 	}
 	if i.depth == maxDepth {
@@ -38,6 +37,7 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 		if i.evalFrames == 0 {
 			clear(i.operands)
 			i.operands = i.operands[:0]
+			i.releaseRetainedStorage()
 		}
 	}()
 	i.depth++
@@ -53,7 +53,7 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 		// Numeric reference parameters can change a caller's runtime type.
 		actual := value.Type()
 		// Numeric built-ins can produce no value for a domain failure.
-		if err == nil && !value.Comparison && actual.Kind != runtime.VoidType && !runtime.Assignable(typ, actual) && !runtime.Assignable(actual, typ) {
+		if err == nil && !value.Comparison && actual.Kind != runtime.VoidType && !i.info.Compatible(expr, actual) {
 			err = failure(expr.Start(), diag.RType, fmt.Errorf("inconsistent expression value"))
 		}
 	}()
@@ -73,7 +73,7 @@ func (i *Interpreter) eval(expr ast.Expr) (value runtime.Value, err error) {
 		}
 		return literalValue(e), nil
 	case *ast.IdentExpr:
-		if binding, ok := i.info.Binding(e.Name); ok && (binding.Builtin || i.subs[binding.ID] != nil) {
+		if binding, ok := i.info.Reference(e.Name); ok && (binding.Builtin || i.subs[binding.ID] != nil) {
 			return i.callFunction(&ast.CallExpr{Name: e.Name, Bare: true})
 		}
 		cell, err := i.lookupCell(e.Name)
@@ -187,6 +187,7 @@ func (i *Interpreter) evalBinary(e *ast.BinaryExpr) (value runtime.Value, err er
 			last := len(i.operands) - 1
 			i.operands[last] = runtime.Value{}
 			i.operands = i.operands[:last]
+			i.releaseRetainedStorage()
 		}
 	}()
 	if left.SyntaxAbsence || right.SyntaxAbsence {
@@ -317,7 +318,7 @@ func (i *Interpreter) location(expr ast.Expr) (cell *runtime.Cell, err error) {
 	if d, ok := i.info.DeferredDiagnostic(expr.Start()); ok {
 		return nil, d
 	}
-	if _, ok := i.info.TypeOf(expr); !ok {
+	if _, ok := i.info.KindOf(expr); !ok {
 		return nil, failure(expr.Start(), diag.RType, fmt.Errorf("missing designator type"))
 	}
 	defer func() { err = failure(expr.Start(), diag.RStorage, err) }()
@@ -329,15 +330,15 @@ func (i *Interpreter) location(expr ast.Expr) (cell *runtime.Cell, err error) {
 		if err != nil {
 			return nil, err
 		}
-		baseType, _ := i.info.TypeOf(e.X)
+		baseKind, _ := i.info.KindOf(e.X)
 		if base.Kind != runtime.RecordValue || base.Rec == nil {
-			if baseType.Kind == runtime.DynamicType {
+			if baseKind == runtime.DynamicType {
 				return nil, failure(e.Name.Pos, diag.EUndeclared, fmt.Errorf("unknown field %q", e.Name.Text))
 			}
 			return nil, fmt.Errorf("cannot select a field of a non-record")
 		}
 		cell, err := base.Rec.Cell(e.Name.Text)
-		if err != nil && baseType.Kind == runtime.DynamicType {
+		if err != nil && baseKind == runtime.DynamicType {
 			err = failure(e.Name.Pos, diag.EUndeclared, err)
 		}
 		return cell, err

@@ -9,10 +9,8 @@ import (
 )
 
 func (c *checker) declareBuiltins() {
-	for _, descriptor := range stdlib.Catalog() {
-		for _, name := range descriptor.Names() {
-			c.scope.declare(symbol{name: name, kind: builtinSym})
-		}
+	for name := range stdlib.BuiltinNames() {
+		c.scope.declare(symbol{name: name, kind: builtinSym})
 	}
 }
 

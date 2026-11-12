@@ -14,11 +14,17 @@ import (
 
 func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err error) {
 	defer func() { err = failure(call.Start(), diag.RCall, err) }()
-	b, ok := i.info.Binding(call.Name)
+	b, ok := i.info.Reference(call.Name)
 	if !ok {
 		return value, failure(call.Start(), diag.RType, fmt.Errorf("missing call binding"))
 	}
 	if b.Builtin {
+		rootBase := len(i.argumentRoots)
+		defer func() {
+			clear(i.argumentRoots[rootBase:])
+			i.argumentRoots = i.argumentRoots[:rootBase]
+			i.releaseRetainedStorage()
+		}()
 		descriptor, ok := stdlib.Lookup(b.Name)
 		if !ok {
 			return value, failure(call.Start(), diag.RType, fmt.Errorf("missing builtin descriptor"))
@@ -83,6 +89,10 @@ func (i *Interpreter) callFunction(call *ast.CallExpr) (value runtime.Value, err
 			v.Comparison = false
 			v.RealFallback = false
 			args[idx] = v
+			if v.Kind == runtime.RecordValue || v.Kind == runtime.VectorValue {
+				// Later argument calls can replace the value's owning cell.
+				i.argumentRoots = append(i.argumentRoots, v)
+			}
 		}
 		if signature.Rule == stdlib.PowerCall && len(call.Args) != 0 && len(call.Args) != signature.Arity {
 			return runtime.Value{}, failure(call.Start(), diag.EParse, fmt.Errorf("expected ')' after numeric argument"))
@@ -131,7 +141,7 @@ func (i *Interpreter) containsUserCall(expr ast.Expr) bool {
 			}
 		}
 	case *ast.CallExpr:
-		if binding, ok := i.info.Binding(e.Name); ok && !binding.Builtin {
+		if binding, ok := i.info.Reference(e.Name); ok && !binding.Builtin {
 			return true
 		}
 		for _, arg := range e.Args {
@@ -140,7 +150,7 @@ func (i *Interpreter) containsUserCall(expr ast.Expr) bool {
 			}
 		}
 	case *ast.IdentExpr:
-		binding, ok := i.info.Binding(e.Name)
+		binding, ok := i.info.Reference(e.Name)
 		return ok && !binding.Builtin && i.subs[binding.ID] != nil
 	case *ast.IndexExpr:
 		if i.containsUserCall(e.X) {
@@ -166,7 +176,7 @@ func (i *Interpreter) callProcedure(call *ast.CallExpr) (err error) {
 		return err
 	}
 	defer func() { err = failure(call.Start(), diag.RCall, err) }()
-	b, ok := i.info.Binding(call.Name)
+	b, ok := i.info.Reference(call.Name)
 	if !ok {
 		return failure(call.Start(), diag.RType, fmt.Errorf("missing call binding"))
 	}
@@ -208,6 +218,7 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 	}
 	outer := i.env
 	callEnv := newEnv(i.global)
+	defer i.releaseEnv(callEnv)
 	var references []struct{ caller, parameter *runtime.Cell }
 	for idx, param := range params {
 		b, ok := i.info.Binding(param.Name)
@@ -216,7 +227,10 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 		}
 		typ := b.Type
 		if idx >= len(args) {
-			cell := callEnv.define(b.ID, typ)
+			cell, err := i.define(callEnv, b.ID, typ)
+			if err != nil {
+				return runtime.Value{}, err
+			}
 			cell.Value.MissingArgument = true
 			continue
 		}
@@ -242,13 +256,23 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 			}
 			v = runtime.Value{Kind: runtime.IntegerValue, Int: int64(v.Real)}
 		}
-		cell := callEnv.define(b.ID, typ)
-		if err := assign(cell, v); err != nil {
+		cell, err := i.define(callEnv, b.ID, typ)
+		if err != nil {
+			return runtime.Value{}, err
+		}
+		if err := i.assign(cell, v); err != nil {
 			return runtime.Value{}, err
 		}
 		if caller != nil {
 			references = append(references, struct{ caller, parameter *runtime.Cell }{caller, cell})
 		}
+	}
+	// Callable result types are scalar; retained results own no aggregates.
+	if retType.Kind != runtime.VoidType {
+		if err := i.reserveStorage(1); err != nil {
+			return runtime.Value{}, err
+		}
+		defer func() { i.storageUsed-- }()
 	}
 	i.env = callEnv
 	depth := i.depth
@@ -331,7 +355,9 @@ func (i *Interpreter) callSub(at token.Pos, params []ast.Param, config []ast.Stm
 	// The reference copies parameters back in declaration order, including their
 	// numeric types. Repeated destinations therefore receive the last value.
 	for _, ref := range references {
-		*ref.caller = runtime.Cell{Type: ref.parameter.Type.Clone(), Value: runtime.Clone(ref.parameter.Value)}
+		if err := i.copyCell(ref.caller, ref.parameter); err != nil {
+			return runtime.Value{}, err
+		}
 	}
 	return result.Value, nil
 }

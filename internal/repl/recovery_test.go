@@ -67,6 +67,16 @@ func TestNilDiagnosticWriter(t *testing.T) {
 	}
 }
 
+func TestLiveStorageRecovery(t *testing.T) {
+	input := "algoritmo \"large\"\nvar v: vetor[1..524288] de vetor[1..1] de vetor[1..1] de inteiro\ninicio\nfimalgoritmo\n" +
+		"algoritmo \"next\"\nvar v: vetor[1..2] de inteiro\ninicio\nv[1] <- 7\nescreval(v[1])\nfimalgoritmo\n:sair\n"
+	var out, stderr bytes.Buffer
+	ok, err := Run(interp.Options{Input: strings.NewReader(input), Output: &out, MaxSteps: 100}, &stderr)
+	if err != nil || ok || strings.Count(stderr.String(), ": R003:") != 1 || !strings.HasSuffix(out.String(), " 7\nportugo> ") {
+		t.Fatalf("ok=%t error=%v output=%q diagnostics=%q", ok, err, &out, &stderr)
+	}
+}
+
 type failOnceWriter struct {
 	output bytes.Buffer
 	failed bool

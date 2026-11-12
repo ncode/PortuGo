@@ -2,8 +2,9 @@
 
 The first reproducible baseline identifies allocation work in semantic symbol
 maps/catalog copies, vector type queries, builtin argument buffers, and recursive
-call frames. This change adds measurements and correctness-checked workloads;
-it makes no production optimization or speedup claim.
+call frames. The initial baseline includes measurements and correctness-checked
+workloads and makes no production optimization or speedup claim. The
+matched follow-up below records the changes retained after measurement.
 
 ## Scope and method
 
@@ -146,6 +147,49 @@ go tool pprof -alloc_space -top "$profile_dir/portugo.test" "$profile_dir/alloc.
 After a measured improvement, run `go test ./...`, `go test -race -count=1 ./...`,
 `go vet ./...`, pinned linters, and the complete conformance replay. Benchmark
 results are not noisy CI pass/fail thresholds; CI checks workload correctness.
+
+## Matched optimization follow-up
+
+On November 12, 2026, a fresh baseline at `cb78635` and the review fixes were
+measured on the same host with Go 1.27.4, macOS arm64, `GOMAXPROCS=1`, and
+`-cpu=1`. Each version ran all six workloads and six stages with `-benchmem`,
+`-benchtime=1s`, and `-count=6`: 216 samples per version, 432 total. The benchmark
+harness and checked outputs were unchanged. The benchstat version above was
+used for comparison. Raw output remains private; the table contains screened
+medians without hardware-model or local-path metadata.
+
+| Stage | Before B/op | After B/op | Before allocations/op | After allocations/op |
+| --- | ---: | ---: | ---: | ---: |
+| small/analyze | 25,920 | 12,160 | 23 | 17 |
+| declarations/analyze | 1,346,952 | 669,856 | 91 | 29 |
+| vectors/run | 206,585 | 46,898 | 3,096 | 24 |
+| strings/run | 111,116 | 111,180 | 1,018 | 1,018 |
+| calls/run | 253,666 | 253,730 | 3,278 | 3,278 |
+
+Retained changes avoid full layout copies for immutable semantic facts, size
+semantic maps from cheap known counts, and traverse builtin names without
+copying the catalog. Small and declaration analysis use 53.09% and 50.27% fewer
+bytes respectively; vector execution uses 77.30% fewer bytes and 99.22% fewer
+allocations. Full-layout semantic queries still return independent copies.
+The new live-storage accounting adds 64 B/op to non-vector run workloads without
+adding allocations. Recursive frame allocation remains a separate candidate.
+A separate two-second vector-run allocation capture with `-memprofilerate=1`
+attributes 87.49% of allocated bytes to vector creation; raw profiles and their
+local build metadata remain private.
+
+The invocation-local builtin argument-array candidate was rejected. Escape
+analysis showed the three-value array moving to the heap through the existing
+call interface. Six matched string-run samples used 162,382 B/op and 1,018
+allocations/op, compared with 111,180 B/op and the same allocation count for the
+retained slice implementation. No reusable buffer or pooling was introduced.
+
+The targeted analysis and execution stages showed no timing regression. Vector
+run medians were 450.2 and 324.0 µs/op. Small-program formatting rose 3.74%
+(720.0 to 746.9 ns/op); unchanged small scan/parse stages rose 2.23% and 2.81%,
+and declaration parsing rose 3.00%. Other unchanged stages shifted down slightly.
+Those campaign shifts limit causal timing claims; the allocation reductions
+above are the acceptance evidence. These synthetic workloads and this single
+host do not establish a general CPU or production-latency improvement.
 
 ## Published evidence
 

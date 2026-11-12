@@ -29,6 +29,9 @@ func failure(pos token.Pos, code diag.Code, err error) error {
 	if errors.As(err, &d) {
 		return d
 	}
+	if errors.Is(err, runtime.ErrStorageSize) {
+		code = diag.RStorage
+	}
 	return diag.Diagnostic{Code: code, Pos: pos, Message: err.Error(), Cause: err}
 }
 
