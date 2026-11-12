@@ -33,6 +33,10 @@ type Interpreter struct {
 	options            Options
 	initErr            error
 	steps              uint64
+	storageUsed        int
+	storageLimit       int
+	retainedStorage    []runtime.Value
+	argumentRoots      []runtime.Value
 	depth, calls       int
 	loopDepth          int
 	unclosed           token.Pos
@@ -69,11 +73,12 @@ func New(options Options) *Interpreter {
 		options.WorkingDir, err = os.Getwd()
 	}
 	return &Interpreter{
-		in:      bufio.NewReader(options.Input),
-		out:     options.Output,
-		lib:     stdlib.New(options.Random),
-		options: options,
-		initErr: err,
+		in:           bufio.NewReader(options.Input),
+		out:          options.Output,
+		lib:          stdlib.New(options.Random),
+		options:      options,
+		initErr:      err,
+		storageLimit: runtime.MaxStorageUnits,
 	}
 }
 
@@ -91,6 +96,10 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) (ds []diag.Diagnos
 	i.unclosed = token.NoPos
 	i.program = nil
 	i.global = nil
+	i.env = nil
+	i.storageUsed = 0
+	i.retainedStorage = nil
+	i.argumentRoots = nil
 	i.result = nil
 	i.results = nil
 	i.operands = nil
@@ -129,7 +138,7 @@ func (i *Interpreter) Run(prog *ast.Program, info *sema.Info) (ds []diag.Diagnos
 		}
 	}
 	for _, sub := range prog.Subs {
-		b, ok := info.Binding(sub.NameToken())
+		b, ok := info.Reference(sub.NameToken())
 		if !ok {
 			return diagnostics(fmt.Errorf("missing subprogram binding"), sub.Start(), diag.RType)
 		}
@@ -163,7 +172,7 @@ func (i *Interpreter) State() map[string]runtime.Value {
 	}
 	for _, decl := range i.program.Globals {
 		for _, name := range decl.Names {
-			b, ok := i.info.Binding(name)
+			b, ok := i.info.Reference(name)
 			if !ok {
 				continue
 			}
@@ -189,14 +198,16 @@ func (i *Interpreter) defineVars(decl ast.VarDecl) error {
 		if !runtime.Assignable(b.Type, typ) || !b.Type.DynamicBounds() && (err != nil || slots != b.Slots) {
 			return failure(name.Pos, diag.RStorage, fmt.Errorf("inconsistent storage layout"))
 		}
-		i.env.define(b.ID, typ)
+		if _, err := i.define(i.env, b.ID, typ); err != nil {
+			return failure(name.Pos, diag.RStorage, err)
+		}
 	}
 	return nil
 }
 
 func (i *Interpreter) defineConsts(decls []ast.ConstDecl) error {
 	for _, decl := range decls {
-		b, ok := i.info.Binding(decl.Name)
+		b, ok := i.info.Reference(decl.Name)
 		if !ok {
 			return failure(decl.Name.Pos, diag.RType, fmt.Errorf("missing constant binding"))
 		}
@@ -206,6 +217,9 @@ func (i *Interpreter) defineConsts(decls []ast.ConstDecl) error {
 		}
 		value.Comparison = false
 		value.RealFallback = false
+		if err := i.reserveStorage(1); err != nil {
+			return failure(decl.Name.Pos, diag.RStorage, err)
+		}
 		i.env.cells[b.ID] = &runtime.Cell{Type: value.Type(), Value: runtime.Clone(value)}
 	}
 	return nil

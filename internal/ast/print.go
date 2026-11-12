@@ -18,7 +18,12 @@ func Fprint(w io.Writer, prog *Program) error {
 	p.before(prog.At, 0)
 	p.line(`algoritmo "%s"`, prog.Name)
 	p.printStmts(prog.Config)
-	p.printDecls(prog.Sections, prog.Consts, prog.Types, prog.Globals)
+	sections, globals := prog.Sections, prog.Globals
+	trailingVar := len(prog.Subs) != 0 && sections.Var.Kind == token.VAR && sections.Var.Pos > prog.Subs[0].Start()
+	if trailingVar {
+		sections.Var, globals = token.Token{}, nil
+	}
+	p.printDecls(sections, prog.Consts, prog.Types, globals)
 	for _, sub := range prog.Subs {
 		for len(p.comments) > 0 && p.comments[0].Inline && !p.comments[0].Semicolon && p.comments[0].Pos < sub.Start() && p.hasPending {
 			p.pending += " " + p.comments[0].Text
@@ -27,8 +32,10 @@ func Fprint(w io.Writer, prog *Program) error {
 		p.line("")
 		p.printSub(sub)
 	}
-	sections := prog.Sections
-	if len(prog.Subs) != 0 {
+	sections = prog.Sections
+	if trailingVar {
+		p.printDecls(DeclSections{Var: sections.Var}, nil, nil, prog.Globals)
+	} else if len(prog.Subs) != 0 {
 		sections = DeclSections{}
 	}
 	p.begin(prog.Begin, sections)
@@ -94,6 +101,9 @@ func (p *printer) printDecls(sections DeclSections, consts []ConstDecl, types []
 			}
 		}
 		p.indent--
+	}
+	if len(decls) == 0 && sections.Var.Kind != token.VAR {
+		return
 	}
 	p.section(sections.Var, "var")
 	p.indent++

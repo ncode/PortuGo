@@ -2,6 +2,7 @@ package stdlib
 
 import (
 	"fmt"
+	"iter"
 	"slices"
 	"strings"
 
@@ -237,6 +238,22 @@ func (d Descriptor) validate() error {
 
 // Catalog returns independent descriptor storage in declaration order.
 func Catalog() []Descriptor { return slices.Clone(builtins.entries) }
+
+// BuiltinNames yields canonical names and aliases without copying the catalog.
+func BuiltinNames() iter.Seq[string] {
+	return func(yield func(string) bool) {
+		for _, d := range builtins.entries {
+			if !yield(d.name) {
+				return
+			}
+			for _, alias := range d.aliases {
+				if !yield(alias) {
+					return
+				}
+			}
+		}
+	}
+}
 
 // Lookup resolves a canonical lowercase name or alias.
 func Lookup(name string) (Descriptor, bool) {

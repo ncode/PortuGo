@@ -32,25 +32,58 @@ func (e *env) lookup(key token.Pos) (*runtime.Cell, bool) {
 	return nil, false
 }
 
-func assign(cell *runtime.Cell, v runtime.Value) error {
+func (i *Interpreter) assign(cell *runtime.Cell, v runtime.Value) error {
+	if v.Comparison && cell.Type.Kind == runtime.BoolType && v.Kind == runtime.RecordValue {
+		if err := i.reserveStorage(1); err != nil {
+			return err
+		}
+		defer func() { i.storageUsed-- }()
+	}
 	converted, err := runtime.ConvertForAssign(cell.Type, v)
 	if err != nil {
 		return err
 	}
+	units := valueStorage(converted)
+	if err := i.reserveStorage(units); err != nil {
+		return err
+	}
+	old := cell.Value
 	if v.Comparison && cell.Type.Kind == runtime.BoolType {
 		cell.Type = converted.Type().Clone()
 		cell.Value = runtime.Clone(converted)
+	} else if cell.Type.Kind == runtime.RecordType {
+		var replaced []runtime.Value
+		if cell.Value.Rec != nil {
+			for _, field := range cell.Value.Rec.Fields {
+				if field.Value.Kind == runtime.RecordValue || field.Value.Kind == runtime.VectorValue {
+					replaced = append(replaced, field.Value)
+				}
+			}
+		}
+		if err := cell.Value.Rec.AssignFrom(converted.Rec); err != nil {
+			i.storageUsed -= units
+			return err
+		}
+		// The cloned container/backing cells are temporary; copied field values remain.
+		i.storageUsed -= 1 + len(converted.Rec.Fields)
+		if len(replaced) != 0 {
+			roots := i.retentionRoots()
+			for _, value := range replaced {
+				i.releaseValue(value, roots)
+			}
+		}
 		return nil
+	} else {
+		cell.Value = runtime.Clone(converted)
 	}
-	if cell.Type.Kind == runtime.RecordType {
-		return cell.Value.Rec.AssignFrom(converted.Rec)
+	if old.Kind == runtime.RecordValue || old.Kind == runtime.VectorValue {
+		i.releaseValue(old, i.retentionRoots())
 	}
-	cell.Value = runtime.Clone(converted)
 	return nil
 }
 
 func (i *Interpreter) lookupCell(name token.Token) (*runtime.Cell, error) {
-	b, ok := i.info.Binding(name)
+	b, ok := i.info.Reference(name)
 	if !ok {
 		return nil, failure(name.Pos, diag.RType, fmt.Errorf("missing variable binding"))
 	}

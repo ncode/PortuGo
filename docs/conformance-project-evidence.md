@@ -130,6 +130,17 @@ boundary and multiplication without allocating the large arrays;
 `TestConstantBoundAllocationGuard` checks rejection before dynamic allocation
 and successful interpreter reuse. This is not an inferred reference limit.
 
+The assembled safeguard also covers the independent 2,097,152-unit live-storage
+budget. `TestStorageUnits` verifies cell/container arithmetic without expanding
+large layouts. The `TestLiveStorage*` regressions cover cumulative declarations,
+nested containers, constants, exact boundaries, recursive versus sequential call
+lifetimes, failed and successful copies, captured fields, retained callee values,
+pending builtin arguments, and reset after failure or halt.
+`TestLiveStorageRecovery` checks a rejected nested layout followed by a valid
+REPL submission; the diagnostic fixture
+`live_storage_nested.alg` rejects before allocation. These are project-only
+limits and keep the existing reference non-applicability rationale.
+
 ## Front-end recovery and limits
 
 `project.frontend-recovery-limits` covers retained statements between independent
