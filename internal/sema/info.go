@@ -18,6 +18,13 @@ type Binding struct {
 	Builtin bool
 }
 
+// Reference identifies a binding without exposing its mutable type layout.
+type Reference struct {
+	ID      token.Pos
+	Name    string
+	Builtin bool
+}
+
 // Info owns semantic facts for one unchanged AST. Reanalyze after editing syntax.
 // Query results are independent copies; Info can be shared by interpreters.
 type Info struct {
@@ -44,8 +51,42 @@ func (i *Info) TypeOf(expr ast.Expr) (runtime.Type, bool) {
 	return t.Clone(), ok
 }
 
+// KindOf returns only an expression's resolved type category.
+func (i *Info) KindOf(expr ast.Expr) (runtime.TypeKind, bool) {
+	if i == nil {
+		return runtime.InvalidType, false
+	}
+	t, ok := i.types[expr]
+	return t.Kind, ok
+}
+
+// Compatible checks the evaluator's bidirectional type compatibility without
+// returning or copying the stored layout.
+func (i *Info) Compatible(expr ast.Expr, actual runtime.Type) bool {
+	if i == nil {
+		return false
+	}
+	t, ok := i.types[expr]
+	return ok && (runtime.Assignable(t, actual) || runtime.Assignable(actual, t))
+}
+
 // Binding returns the declaration resolved at a declaration or use token.
 func (i *Info) Binding(name token.Token) (Binding, bool) {
+	b, ok := i.binding(name)
+	if !ok {
+		return Binding{}, false
+	}
+	b.Type = b.Type.Clone()
+	return b, true
+}
+
+// Reference returns immutable identity facts for a declaration or use token.
+func (i *Info) Reference(name token.Token) (Reference, bool) {
+	b, ok := i.binding(name)
+	return Reference{ID: b.ID, Name: b.Name, Builtin: b.Builtin}, ok
+}
+
+func (i *Info) binding(name token.Token) (Binding, bool) {
 	if i == nil {
 		return Binding{}, false
 	}
@@ -53,7 +94,6 @@ func (i *Info) Binding(name token.Token) (Binding, bool) {
 	if !ok || i.names[name.Pos] != canon(name.Text) {
 		return Binding{}, false
 	}
-	b.Type = b.Type.Clone()
 	return b, true
 }
 

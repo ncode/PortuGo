@@ -45,10 +45,10 @@ func (i *Interpreter) matchesCase(selector runtime.Value, label ast.CaseLabel) (
 func (i *Interpreter) dynamicChoiceBound(expr ast.Expr) bool {
 	switch e := expr.(type) {
 	case *ast.IdentExpr:
-		binding, ok := i.info.Binding(e.Name)
+		binding, ok := i.info.Reference(e.Name)
 		return ok && !binding.Builtin
 	case *ast.CallExpr:
-		binding, ok := i.info.Binding(e.Name)
+		binding, ok := i.info.Reference(e.Name)
 		return ok && !binding.Builtin
 	default:
 		return false

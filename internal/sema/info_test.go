@@ -8,6 +8,7 @@ import (
 	"github.com/ncode/PortuGo/internal/lexer"
 	"github.com/ncode/PortuGo/internal/parser"
 	"github.com/ncode/PortuGo/internal/runtime"
+	"github.com/ncode/PortuGo/internal/token"
 )
 
 func TestAnalyzeFacts(t *testing.T) {
@@ -51,6 +52,46 @@ fimalgoritmo`)
 	use, _ = info.Binding(local.Name)
 	if use.ID != proc.Params[0].Name.Pos {
 		t.Fatal("shadowed use did not bind to its parameter")
+	}
+}
+
+func TestInfoScalarQueries(t *testing.T) {
+	p := parseInfoProgram(t, "algoritmo \"facts\"\nvar V: vetor[1..2] de inteiro\ninicio\nescreval(v[1])\nfimalgoritmo\n")
+	info, ds := Analyze(p)
+	if len(ds) != 0 {
+		t.Fatal(ds)
+	}
+	name := p.Globals[0].Names[0]
+	ref, ok := info.Reference(name)
+	if !ok || ref.ID != name.Pos || ref.Name != "v" || ref.Builtin {
+		t.Fatalf("reference = %+v, present=%t", ref, ok)
+	}
+	ref.Name = "changed"
+	ref, _ = info.Reference(name)
+	if ref.Name != "v" {
+		t.Fatal("reference mutation affected semantic information")
+	}
+	expr := p.Body[0].(*ast.WriteStmt).Args[0].Expr.(*ast.IndexExpr).X
+	if kind, ok := info.KindOf(expr); !ok || kind != runtime.VectorType {
+		t.Fatalf("kind = %v, present=%t", kind, ok)
+	}
+	binding, _ := info.Binding(name)
+	if !info.Compatible(expr, binding.Type) {
+		t.Fatal("matching vector layout rejected")
+	}
+	binding.Type.Ranges[0].Low = 0
+	if info.Compatible(expr, binding.Type) {
+		t.Fatal("incompatible vector layout accepted")
+	}
+	if _, ok := info.Reference(token.Token{Pos: name.Pos, Text: "other"}); ok {
+		t.Fatal("reference ignored token identity")
+	}
+	var missing *Info
+	if _, ok := missing.Reference(name); ok {
+		t.Fatal("nil info has a reference")
+	}
+	if _, ok := missing.KindOf(expr); ok || missing.Compatible(expr, runtime.Type{}) {
+		t.Fatal("nil info has type facts")
 	}
 }
 

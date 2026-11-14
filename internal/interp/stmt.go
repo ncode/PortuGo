@@ -73,7 +73,7 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		if d, ok := i.info.AssignmentDiagnostic(s); ok {
 			return control{}, d
 		}
-		return control{}, assign(cell, v)
+		return control{}, i.assign(cell, v)
 	case *ast.CallStmt:
 		return control{}, i.callProcedure(s.Call)
 	case *ast.IfStmt:
@@ -210,7 +210,7 @@ func (i *Interpreter) execStmt(stmt ast.Stmt) (ctrl control, err error) {
 		if i.result.Type.Kind == runtime.BoolType && v.Comparison {
 			v = runtime.Value{Kind: runtime.BoolValue, Bool: v.Bool}
 		}
-		return control{}, failure(s.Start(), diag.ETypeMismatch, assign(i.result, v))
+		return control{}, failure(s.Start(), diag.ETypeMismatch, i.assign(i.result, v))
 	case *ast.ReadStmt:
 		return control{}, i.execRead(s)
 	case *ast.WriteStmt:
@@ -265,7 +265,7 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 		if err := i.charge(s.Start()); err != nil {
 			return control{}, err
 		}
-		if err := assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: cur}); err != nil {
+		if err := i.assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: cur}); err != nil {
 			return control{}, err
 		}
 		if err := i.delay(s.At); err != nil {
@@ -280,7 +280,7 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 		}
 		if ctrl.kind == breakControl {
 			final = min(cell.Value.Int, to)
-			return control{}, assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final})
+			return control{}, i.assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final})
 		}
 		// VisuAlg caps the exposed exit value at the terminal bound, even
 		// for descending loops. Body assignments do not change progression.
@@ -295,7 +295,7 @@ func (i *Interpreter) execFor(s *ast.ForStmt) (ctrl control, err error) {
 		final = min(next, to)
 		cur = next
 	}
-	if err := assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final}); err != nil {
+	if err := i.assign(cell, runtime.Value{Kind: runtime.IntegerValue, Int: final}); err != nil {
 		return control{}, err
 	}
 	return control{}, i.delay(s.At)

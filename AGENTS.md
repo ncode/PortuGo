@@ -85,6 +85,10 @@ Each stage:
 
 The lexer is **case-preserving** in token text but Sema canonicalizes identifiers and keywords to lowercase. Portugol is case-insensitive.
 
+Semantic information is immutable and may be shared across interpreters. Use
+`Reference`, `KindOf`, and `Compatible` when only identity or type facts are
+needed; `Binding` and `TypeOf` must retain their independent-copy guarantees.
+
 ---
 
 ## 5. Coding conventions
@@ -120,11 +124,14 @@ inicio
 fimalgoritmo
 ```
 
-`algoritmo`, `var`, `inicio`, `fimalgoritmo` are all required for a complete program. `var` block may be empty (omit it entirely, or `var` with no declarations).
+`algoritmo`, `inicio`, and `fimalgoritmo` are required for a complete program.
+The `var` block is optional and may be empty.
 
 Top-level procedures and functions precede `inicio`; a single global `var`
 section may appear before or after those subprogram declarations. Repeating the
 global section is rejected.
+Formatting preserves whether that section precedes or follows the subprograms,
+keeping comments attached to their original constructs.
 
 ### 6.2 Types
 
@@ -243,6 +250,13 @@ These cost time when wrong. Each must have a regression test.
 9. **`interrompa` outside a loop** is accepted and ignored; inside a loop it
    exits the innermost active loop.
 10. **Uninitialized variables.** VisuAlg gives them zero values per type. Match this; do not error on read-before-write.
+11. **Live storage accounting.** Reserve cells and aggregate containers before
+    allocation or copying through the interpreter's storage accounting. The
+    2,097,152-unit run-wide budget is separate from the per-aggregate scalar-slot
+    limit and `--max-steps`; exhaustion reports positioned `R003`. Release only
+    storage whose lifetime has ended: operands and pending arguments can retain
+    callee values. Each run starts fresh. See `docs/language.md` for the exact
+    counting rules; this safeguard does not bound process memory.
 
 ---
 
@@ -304,3 +318,6 @@ Never land a bug fix without a regression fixture.
 - When adding an AST node, update: `internal/ast/`, the printer, the parser, sema, interp, and at least one fixture.
 - Don't introduce dependencies in core packages. Ask first.
 - Don't paper over an ambiguity in the spec by picking a behavior silently. Add a test that pins the choice and a note in `docs/language.md`.
+- For performance changes, follow `docs/performance.md`: compare matched repeated
+  measurements, preserve semantic isolation and evaluation order, and discard
+  candidates that fail the measurement gate.

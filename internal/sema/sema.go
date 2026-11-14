@@ -14,12 +14,24 @@ import (
 
 // Analyze resolves names, types, layouts, calls, loop control, and returns.
 func Analyze(prog *ast.Program) (*Info, []diag.Diagnostic) {
+	builtins := 0
+	for range stdlib.BuiltinNames() {
+		builtins++
+	}
+	bindings, expressions, symbols, types, subs := 0, 0, builtins, 0, 0
+	if prog != nil {
+		names := declarationNames(prog.Globals) + len(prog.Consts)
+		bindings = names + len(prog.Types) + len(prog.Subs) + len(prog.Body)
+		expressions = 2 * len(prog.Body)
+		symbols += names
+		types, subs = len(prog.Types), len(prog.Subs)
+	}
 	dynamicCells := make(map[dynamicCell]bool)
 	var info *Info
 	var c *checker
 	for pass := 0; pass < 2; pass++ {
-		info = &Info{program: prog, types: make(map[ast.Expr]runtime.Type), bindings: make(map[token.Pos]Binding), names: make(map[token.Pos]string)}
-		c = &checker{scope: newScope(nil), subs: make(map[string]symbol), info: info, dynamicCells: dynamicCells, copyBack: make(map[dynamicCell][]dynamicCell)}
+		info = &Info{program: prog, types: make(map[ast.Expr]runtime.Type, expressions), bindings: make(map[token.Pos]Binding, bindings), names: make(map[token.Pos]string, bindings)}
+		c = &checker{scope: newScope(nil, symbols, types), subs: make(map[string]symbol, subs), info: info, dynamicCells: dynamicCells, copyBack: make(map[dynamicCell][]dynamicCell)}
 		if pass == 0 {
 			if prog == nil {
 				c.error(token.NoPos, diag.ETypeMismatch, "missing program")
@@ -85,8 +97,16 @@ type checker struct {
 	copyBack     map[dynamicCell][]dynamicCell
 }
 
-func newScope(parent *scope) *scope {
-	return &scope{parent: parent, syms: make(map[string]symbol), types: make(map[string]symbol)}
+func declarationNames(decls []ast.VarDecl) int {
+	n := 0
+	for _, decl := range decls {
+		n += len(decl.Names)
+	}
+	return n
+}
+
+func newScope(parent *scope, symbols, types int) *scope {
+	return &scope{parent: parent, syms: make(map[string]symbol, symbols), types: make(map[string]symbol, types)}
 }
 
 func (s *scope) lookup(name string) (symbol, bool) {
@@ -184,7 +204,6 @@ func paramsFromAST(params []ast.Param) []paramSig {
 
 func (c *checker) checkSub(sub ast.Subprogram) {
 	outer := c.scope
-	c.scope = newScope(outer)
 	prevReturn, prevInFunction := c.returnType, c.inFunction
 	defer func() {
 		c.scope = outer
@@ -193,6 +212,7 @@ func (c *checker) checkSub(sub ast.Subprogram) {
 
 	switch d := sub.(type) {
 	case *ast.ProcedureDecl:
+		c.scope = newScope(outer, len(d.Params)+len(d.Consts)+declarationNames(d.Locals), len(d.Types))
 		c.inFunction = false
 		c.declareParams(d.Params)
 		if !c.declareConsts(d.Consts) {
@@ -211,6 +231,7 @@ func (c *checker) checkSub(sub ast.Subprogram) {
 		c.checkStmts(d.Body)
 		c.deferLookup = previous
 	case *ast.FunctionDecl:
+		c.scope = newScope(outer, len(d.Params)+len(d.Consts)+declarationNames(d.Locals), len(d.Types))
 		c.inFunction = true
 		c.returnType = runtime.TypeFromSpec(d.Return)
 		c.declareParams(d.Params)

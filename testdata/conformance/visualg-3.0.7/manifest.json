@@ -42014,7 +42014,17 @@
           "internal/repl/input_modes_test.go#TestInputModesPreserveNextSubmission",
           "scripts/conformance/privacy_test.go#TestExecuteProbeRedactsDiagnosticSourcePath",
           "scripts/conformance/execute_test.go#TestReplayBudgetExhaustion",
-          "scripts/conformance/replay_test.go#TestReplay"
+          "scripts/conformance/replay_test.go#TestReplay",
+          "internal/runtime/storage_test.go#TestStorageUnits",
+          "internal/interp/live_storage_test.go#TestLiveStorageLimit",
+          "internal/interp/live_storage_test.go#TestLiveStorageAccounting",
+          "internal/interp/live_storage_test.go#TestLiveStorageCallLifetimes",
+          "internal/interp/live_storage_test.go#TestLiveStorageRetainedCalleeRecords",
+          "internal/interp/live_storage_test.go#TestLiveStorageRecordCopy",
+          "internal/interp/live_storage_test.go#TestLiveStorageCopyBackRetainsPendingValue",
+          "internal/interp/live_storage_test.go#TestLiveStorageRecordFieldRetention",
+          "internal/repl/recovery_test.go#TestLiveStorageRecovery",
+          "internal/interp/live_storage_test.go#TestLiveStorageBuiltinArguments"
         ]
       }
     },
@@ -82644,7 +82654,8 @@
           "internal/parser/comments_test.go#TestCP1252CommentsRoundTrip",
           "internal/parser/format_forms_test.go#TestFormatterASTForms",
           "cmd/portugo/format_edges_test.go#TestFormatterEdgeCases",
-          "cmd/portugo/format_edges_test.go#TestFormatterOperatorSpellings"
+          "cmd/portugo/format_edges_test.go#TestFormatterOperatorSpellings",
+          "cmd/portugo/trailing_var_test.go#TestFormatterTrailingVarComments"
         ]
       }
     },
@@ -82675,7 +82686,8 @@
           "internal/parser/format_forms_test.go#TestFormatterASTForms",
           "internal/parser/comments_test.go#TestCommentAnchorsRoundTrip",
           "cmd/portugo/format_edges_test.go#TestFormatterEdgeCases",
-          "cmd/portugo/format_edges_test.go#TestFormatterOperatorSpellings"
+          "cmd/portugo/format_edges_test.go#TestFormatterOperatorSpellings",
+          "cmd/portugo/trailing_var_test.go#TestFormatterTrailingVarComments"
         ]
       }
     },

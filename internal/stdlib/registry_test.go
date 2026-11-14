@@ -2,6 +2,7 @@ package stdlib
 
 import (
 	"math"
+	"slices"
 	"strings"
 	"testing"
 
@@ -97,6 +98,15 @@ func TestCatalogImmutable(t *testing.T) {
 	entries[0] = Descriptor{}
 	if Catalog()[0].Name() == "" {
 		t.Fatal("catalog exposes its storage")
+	}
+	names := slices.Collect(BuiltinNames())
+	if len(names) != 28 {
+		t.Fatalf("builtin names = %d, want 28", len(names))
+	}
+	for _, name := range names {
+		if _, ok := Lookup(name); !ok {
+			t.Fatalf("unknown builtin name %q", name)
+		}
 	}
 	if _, ok := Lookup("frac"); ok {
 		t.Fatal("rejected legacy name remains in catalog")

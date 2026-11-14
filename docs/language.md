@@ -61,6 +61,9 @@ The `var` block may be omitted or left empty. Top-level `procedimento` and
 `funcao` declarations must appear before `inicio`; one global `var` section may
 appear before or after those declarations, including after a `tipo` section and
 the subprograms that follow it. Repeating the global section is a `P001` error.
+Formatting preserves whether the global `var` section precedes or follows the
+subprograms, keeping leading, body, inline, and closing comments with their
+original constructs, including comments inside multiline expressions.
 Recorded words and statements after `fimalgoritmo` are ignored
 during execution. Later physical lines are opaque, including unclosed strings,
 invalid symbols and unfinished blocks.
@@ -1315,6 +1318,23 @@ aggregate is capped at 1,048,576 scalar slots, including record fields, with
 checked dimension products. Oversized literal layouts receive `E900` during
 analysis; constant-dependent layouts receive `R003` at declaration initialization,
 before allocation. An empty record counts as one cell for this project guard.
+An independent run-wide budget permits 2,097,152 live storage units. Every
+variable, constant, parameter, function-result, vector-element, and record-field
+cell counts once; each vector or record container counts one additional unit.
+Nested backing storage and temporary aggregate copies count recursively.
+Allocation cost is checked before expansion; exceeding the remaining budget
+reports `R003` at the declaration, call, or assignment before the rejected
+allocation. A failed copy preserves its destination. Completed calls and
+temporary copies release their storage; captured references do not double count
+their existing cells. Values retained by an operand stack or pending builtin
+arguments stay charged until those values are released. Each interpreter run
+and REPL submission starts fresh accounting, including after a diagnostic or halt.
+
+This storage count is independent of `--max-steps` and the per-aggregate
+scalar-slot limit. It is not a process-memory or Go-heap bound: source buffers,
+semantic metadata, string bytes, output/operand buffers, and Go callers' explicit
+`State()` snapshots retain their separate contracts. There is no CLI memory
+option. These limits are project safeguards, not measured reference quotas.
 One enclosing evaluation may retain at most 65,536 intermediate operands across
 nested language calls. Exceeding that project safeguard reports `R003` at the
 operator. Independent outer evaluations release retained values, including after

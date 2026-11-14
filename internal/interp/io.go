@@ -36,7 +36,7 @@ func (i *Interpreter) execRead(s *ast.ReadStmt) error {
 		if err != nil {
 			return failure(target.Start(), diag.RInput, err)
 		}
-		if err := assign(cell, v); err != nil {
+		if err := i.assign(cell, v); err != nil {
 			return err
 		}
 		switch v.Kind {
